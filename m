@@ -2,95 +2,54 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 722032A5E0
-	for <lists+target-devel@lfdr.de>; Sat, 25 May 2019 19:44:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 823BC2A753
+	for <lists+target-devel@lfdr.de>; Sun, 26 May 2019 01:10:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726599AbfEYRoW (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 25 May 2019 13:44:22 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:38058 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726395AbfEYRoV (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Sat, 25 May 2019 13:44:21 -0400
-Received: by mail-pl1-f193.google.com with SMTP id f97so5433759plb.5;
-        Sat, 25 May 2019 10:44:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=HBBbVG82QaZnu+ByWQxbSng2FF/splMwlHyR9tDwYd4=;
-        b=Mu55dkKEf3Q0XHw1cx3eLiYIjHMoihyXfRYsyq2xBoW17W5etjNHXjPTO6n/jIS/Cx
-         4keoFkMisEQxIQHTSfqVGCzyD/uLioOCzIQRqIWy85iLttEbdeRdau8pikqSiVZOf0Es
-         6aew72FVU4pRYxhwDVah62vMZdtm8qblWq4Bh2jeRjlH9oz4z0zA4t52c9IlOKB/6Swu
-         Q2XmvmJn+g5m+4Ub8wojUtrnVRHa8m9r8t51BeOIfurEqf4siJV1tettNa6wJ8dWuAdL
-         wo03+vOhZHXn9L1YsqRO93JAYWcyTLXUMG/oAwav15ep2VoJ6xxHuWkfd6zebreIEChc
-         3w1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=HBBbVG82QaZnu+ByWQxbSng2FF/splMwlHyR9tDwYd4=;
-        b=I1JWzcBhyPx+cVUdBZ2UO15fN86Mpc9sINgNZ2SoxBV8me+apurA6Swq0IdZnM5m0A
-         n3JpncdBZS2GCmT9wSYYDq8BlqQSon/9X9LB9pdllqb4Gfsl3SccxEvg3nY9Obn1WGh0
-         Drshm06qUKyF+Q14b/XOLnwzUosKcRFky2cim1b89/Wqvnu264NmxWZV/BYtQgdNdDWL
-         AiyQAWua9n9xTStt7pTtfd236OjUhvR9cqE4xE7co2er0FszRgHkyE2o9WcjoiuPoA2K
-         EQXvLyRsQiYAG20PKlUN0vx8uLXJSK24EuOme6n0NBE4xh72lJuBi2tjLDrch267deHK
-         eA8A==
-X-Gm-Message-State: APjAAAXSpBJryK8B3JqShLpgw0Oitu2w9XYjyDpivohCf1bmrv3RCmKw
-        e032RV/k0XyICVZc+n5ghl0=
-X-Google-Smtp-Source: APXvYqwR/AYBys7vAhckZqKznuWDoJXs7aeyZs2h5ID5Khi81ZvERndEb8ALKTHiMkm0p7kAs87ztw==
-X-Received: by 2002:a17:902:1029:: with SMTP id b38mr73906099pla.72.1558806261207;
-        Sat, 25 May 2019 10:44:21 -0700 (PDT)
-Received: from hari-Inspiron-1545 ([183.83.92.73])
-        by smtp.gmail.com with ESMTPSA id a12sm3624932pgq.0.2019.05.25.10.44.18
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 25 May 2019 10:44:20 -0700 (PDT)
-Date:   Sat, 25 May 2019 23:14:16 +0530
-From:   Hariprasad Kelam <hariprasad.kelam@gmail.com>
-To:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Hariprasad Kelam <hariprasad.kelam@gmail.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] target/iscsi: fix possible condition with no effect (if ==
- else)
-Message-ID: <20190525174416.GA21510@hari-Inspiron-1545>
+        id S1727513AbfEYXKp (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 25 May 2019 19:10:45 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:55056 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727497AbfEYXKp (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Sat, 25 May 2019 19:10:45 -0400
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 8B050C0587F5;
+        Sat, 25 May 2019 23:10:45 +0000 (UTC)
+Received: from [10.10.120.40] (ovpn-120-40.rdu2.redhat.com [10.10.120.40])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 35BA55C23E;
+        Sat, 25 May 2019 23:10:45 +0000 (UTC)
+Subject: Re: tcmu-runner libtcmu.so versioning
+To:     David Disseldorp <ddiss@suse.de>, target-devel@vger.kernel.org
+References: <20190522150417.0650ed2f@suse.de>
+From:   Mike Christie <mchristi@redhat.com>
+Message-ID: <5CE9CB74.8070109@redhat.com>
+Date:   Sat, 25 May 2019 18:10:44 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.24 (2015-08-30)
+In-Reply-To: <20190522150417.0650ed2f@suse.de>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.32]); Sat, 25 May 2019 23:10:45 +0000 (UTC)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-fix below warning reported by coccicheck
+On 05/22/2019 08:04 AM, David Disseldorp wrote:
+> Hi,
+> 
+> Some ABI changes went into libtcmu between v1.3.0 and v1.4.0 without a
+> corresponding .so version bump (e.g. 566c2ad5c8a). This breaks
+> dependency checking in some package managers, allowing for a v1.4.0
+> tcmu-runner to be installed alongside a v1.3.0 libtcmu.so
+> 
+> Should we consider adding a 2nd (minor) .so version number to libtcmu,
+> so that it can be bumped for backwards compatible ABI changes like this
+> one?
+> 
 
-drivers/target/iscsi/iscsi_target_nego.c:175:6-8: WARNING: possible
-condition with no effect (if == else)
-
-Signed-off-by: Hariprasad Kelam <hariprasad.kelam@gmail.com>
----
- drivers/target/iscsi/iscsi_target_nego.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
-
-diff --git a/drivers/target/iscsi/iscsi_target_nego.c b/drivers/target/iscsi/iscsi_target_nego.c
-index 8a5e8d1..b6fb70a 100644
---- a/drivers/target/iscsi/iscsi_target_nego.c
-+++ b/drivers/target/iscsi/iscsi_target_nego.c
-@@ -168,12 +168,7 @@ static u32 iscsi_handle_authentication(
- 	else if (strstr("CHAP", authtype))
- 		return chap_main_loop(conn, auth, in_buf, out_buf,
- 				&in_length, out_length);
--	else if (strstr("SPKM1", authtype))
--		return 2;
--	else if (strstr("SPKM2", authtype))
--		return 2;
--	else if (strstr("KRB5", authtype))
--		return 2;
-+	/* ret 2 in  SPKM1,SPKM2,KRB5 cases */
- 	else
- 		return 2;
- }
--- 
-2.7.4
+That seems ok to me.
 
