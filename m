@@ -2,61 +2,95 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E6AB29529
-	for <lists+target-devel@lfdr.de>; Fri, 24 May 2019 11:54:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 722032A5E0
+	for <lists+target-devel@lfdr.de>; Sat, 25 May 2019 19:44:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390013AbfEXJyG convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+target-devel@lfdr.de>); Fri, 24 May 2019 05:54:06 -0400
-Received: from smtphost.uff.br ([200.20.0.13]:53827 "EHLO smtphost.uff.br"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389582AbfEXJyF (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Fri, 24 May 2019 05:54:05 -0400
-X-Greylist: delayed 3535 seconds by postgrey-1.27 at vger.kernel.org; Fri, 24 May 2019 05:54:04 EDT
-Received: from mta.uff.br (mail.uff.br [200.20.0.16])
-        by smtphost.uff.br (Postfix) with ESMTP id AC1022D1B9
-        for <target-devel@vger.kernel.org>; Fri, 24 May 2019 05:29:13 -0300 (BRT)
-Received: from DESKTOP-C54UF22.mshome.net (unknown [197.168.249.76])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: rge@vm.uff.br)
-        by mta.uff.br (Postfix) with ESMTPSA id 6BF6C90E86
-        for <target-devel@vger.kernel.org>; Fri, 24 May 2019 05:27:47 -0300 (BRT)
-Content-Type: text/plain; charset="utf-8"
+        id S1726599AbfEYRoW (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 25 May 2019 13:44:22 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:38058 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726395AbfEYRoV (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Sat, 25 May 2019 13:44:21 -0400
+Received: by mail-pl1-f193.google.com with SMTP id f97so5433759plb.5;
+        Sat, 25 May 2019 10:44:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=HBBbVG82QaZnu+ByWQxbSng2FF/splMwlHyR9tDwYd4=;
+        b=Mu55dkKEf3Q0XHw1cx3eLiYIjHMoihyXfRYsyq2xBoW17W5etjNHXjPTO6n/jIS/Cx
+         4keoFkMisEQxIQHTSfqVGCzyD/uLioOCzIQRqIWy85iLttEbdeRdau8pikqSiVZOf0Es
+         6aew72FVU4pRYxhwDVah62vMZdtm8qblWq4Bh2jeRjlH9oz4z0zA4t52c9IlOKB/6Swu
+         Q2XmvmJn+g5m+4Ub8wojUtrnVRHa8m9r8t51BeOIfurEqf4siJV1tettNa6wJ8dWuAdL
+         wo03+vOhZHXn9L1YsqRO93JAYWcyTLXUMG/oAwav15ep2VoJ6xxHuWkfd6zebreIEChc
+         3w1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=HBBbVG82QaZnu+ByWQxbSng2FF/splMwlHyR9tDwYd4=;
+        b=I1JWzcBhyPx+cVUdBZ2UO15fN86Mpc9sINgNZ2SoxBV8me+apurA6Swq0IdZnM5m0A
+         n3JpncdBZS2GCmT9wSYYDq8BlqQSon/9X9LB9pdllqb4Gfsl3SccxEvg3nY9Obn1WGh0
+         Drshm06qUKyF+Q14b/XOLnwzUosKcRFky2cim1b89/Wqvnu264NmxWZV/BYtQgdNdDWL
+         AiyQAWua9n9xTStt7pTtfd236OjUhvR9cqE4xE7co2er0FszRgHkyE2o9WcjoiuPoA2K
+         EQXvLyRsQiYAG20PKlUN0vx8uLXJSK24EuOme6n0NBE4xh72lJuBi2tjLDrch267deHK
+         eA8A==
+X-Gm-Message-State: APjAAAXSpBJryK8B3JqShLpgw0Oitu2w9XYjyDpivohCf1bmrv3RCmKw
+        e032RV/k0XyICVZc+n5ghl0=
+X-Google-Smtp-Source: APXvYqwR/AYBys7vAhckZqKznuWDoJXs7aeyZs2h5ID5Khi81ZvERndEb8ALKTHiMkm0p7kAs87ztw==
+X-Received: by 2002:a17:902:1029:: with SMTP id b38mr73906099pla.72.1558806261207;
+        Sat, 25 May 2019 10:44:21 -0700 (PDT)
+Received: from hari-Inspiron-1545 ([183.83.92.73])
+        by smtp.gmail.com with ESMTPSA id a12sm3624932pgq.0.2019.05.25.10.44.18
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 25 May 2019 10:44:20 -0700 (PDT)
+Date:   Sat, 25 May 2019 23:14:16 +0530
+From:   Hariprasad Kelam <hariprasad.kelam@gmail.com>
+To:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Hariprasad Kelam <hariprasad.kelam@gmail.com>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] target/iscsi: fix possible condition with no effect (if ==
+ else)
+Message-ID: <20190525174416.GA21510@hari-Inspiron-1545>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Spende
-To:     target-devel@vger.kernel.org
-From:   rge@vm.uff.br
-Date:   Fri, 24 May 2019 01:27:44 -0700
-Reply-To: dannywattlove@gmail.com
-X-NTi-UFF-MailScanner-ID: 6BF6C90E86.A2E46
-X-NTi-UFF-MailScanner: Found to be clean
-X-NTi-UFF-MailScanner-From: rge@vm.uff.br
-X-Spam-Status: No
-Message-Id: <20190524082913.AC1022D1B9@smtphost.uff.br>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Lieber Freund,
+fix below warning reported by coccicheck
 
-Ich bin Herr Richard Wahl der Mega-Gewinner von $ 533M In Mega Millions Jackpot spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt. Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt. Ich habe mich freiwillig dazu entschieden, Ihnen den Betrag von € 2.000.000,00 zu spenden eine der ausgewählten 5, um meine Gewinne zu überprüfen, finden Sie auf meiner You Tube Seite unten.
+drivers/target/iscsi/iscsi_target_nego.c:175:6-8: WARNING: possible
+condition with no effect (if == else)
 
-UHR MICH HIER: https://www.youtube.com/watch?v=tne02ExNDrw
+Signed-off-by: Hariprasad Kelam <hariprasad.kelam@gmail.com>
+---
+ drivers/target/iscsi/iscsi_target_nego.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-Das ist dein Spendencode: [DF00430342018]
-
-Antworten Sie mit dem Spendencode auf diese E-Mail: wahlfoundationorg@gmail.com
-
-Ich hoffe, Sie und Ihre Familie glücklich zu machen.
-
-Grüße
-
-Herr Richard Wahl
-
+diff --git a/drivers/target/iscsi/iscsi_target_nego.c b/drivers/target/iscsi/iscsi_target_nego.c
+index 8a5e8d1..b6fb70a 100644
+--- a/drivers/target/iscsi/iscsi_target_nego.c
++++ b/drivers/target/iscsi/iscsi_target_nego.c
+@@ -168,12 +168,7 @@ static u32 iscsi_handle_authentication(
+ 	else if (strstr("CHAP", authtype))
+ 		return chap_main_loop(conn, auth, in_buf, out_buf,
+ 				&in_length, out_length);
+-	else if (strstr("SPKM1", authtype))
+-		return 2;
+-	else if (strstr("SPKM2", authtype))
+-		return 2;
+-	else if (strstr("KRB5", authtype))
+-		return 2;
++	/* ret 2 in  SPKM1,SPKM2,KRB5 cases */
+ 	else
+ 		return 2;
+ }
 -- 
-Esta mensagem foi verificada pelo sistema de antiv�rus e
- acredita-se estar livre de perigo.
+2.7.4
 
