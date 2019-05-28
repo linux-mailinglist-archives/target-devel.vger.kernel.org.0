@@ -2,95 +2,112 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1F672B156
-	for <lists+target-devel@lfdr.de>; Mon, 27 May 2019 11:31:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8E6D2BCD0
+	for <lists+target-devel@lfdr.de>; Tue, 28 May 2019 03:22:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725996AbfE0JbU (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 27 May 2019 05:31:20 -0400
-Received: from mx2.suse.de ([195.135.220.15]:42208 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725991AbfE0JbU (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Mon, 27 May 2019 05:31:20 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 5DF4DADE5;
-        Mon, 27 May 2019 09:31:19 +0000 (UTC)
-Date:   Mon, 27 May 2019 11:31:18 +0200
-From:   David Disseldorp <ddiss@suse.de>
-To:     Hariprasad Kelam <hariprasad.kelam@gmail.com>
-Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Subject: Re: [PATCH] target/iscsi: fix possible condition with no effect (if
+        id S1727567AbfE1BV7 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 27 May 2019 21:21:59 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:38452 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727090AbfE1BV7 (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Mon, 27 May 2019 21:21:59 -0400
+Received: by mail-pf1-f194.google.com with SMTP id b76so10393782pfb.5;
+        Mon, 27 May 2019 18:21:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=WyrVEd7Z066n8x3W3p36ZvDVCldsmbGvGU0q2zkOUWY=;
+        b=JPfj5asYw7HCuZpjdcUxtFWyEFHcmHBfYWpcQ4cmCmn01QcNRXP91gGo5EDqXK0ebD
+         yGi03pUH40J20cuiByrNO5+e2WHsEB1cGlo+knxIfa3kdjvc5aSFrbfY38H09Y9MD/XE
+         fDpB+LX6OBDNmaFUxzMNfQaxGSJeTuLYKuaQ/ihD1gRzlWNDwA1g/GKXwk6q7q4PuWGH
+         IZSRIHQV+dD2le7wFYYByLBYCm11oAeO5vEAM6i1GN0ndtqDz4qnifhYOMYizJ6iuJDk
+         nRDuDJ+0zMOWpVOtpNL4NfZ+FTwbGGSld7XcgS5vRk1TkzoL7CEf3Jxz3aNdPmhCoVAS
+         zV+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=WyrVEd7Z066n8x3W3p36ZvDVCldsmbGvGU0q2zkOUWY=;
+        b=foZCkTpH9/ignb7hIeNbTVrINpBRNWUkLuSrzPAZwxUFv3aJip0Y/uzSlqnWpfrxvN
+         Np27XY6lMkIOuAMMXMKmOkmXR62XibVgchSjrsf/5TlOW/GfVbm0so1zqKv8oW5eRIuW
+         Qxsoj+XP6apVZTIH70+P44IE+AEM13fVVcegcvWlNxdFQCgRIxe5mdDPikW8ViGXa9yc
+         A1V2v5HrDZuaOdAgONmnV47fcCYtxrGSDVtin2YhG6SNBjyIiNHKGjJSoS9anKFXuB3L
+         TSFWJ26e2tALidB4umt4VsS4LVqXmS1egp8ZYyp6UdihdWI3Bx/AgM+iEsFJwDEnEwxF
+         +POQ==
+X-Gm-Message-State: APjAAAWNsJZGizINknDxOMEtPA1wFdSUIuomkPvR9eLlB+K4RuzI/s/N
+        qOMMHbNMdQ/G5haI6bxVFFM=
+X-Google-Smtp-Source: APXvYqyW68YD00mOZxccK/5Hfm2Oq2XQwQPqlkvlJYDNTAxHBRx4vFXkEwopqCBFuWDslX1lqw7MXQ==
+X-Received: by 2002:a63:ed09:: with SMTP id d9mr12668611pgi.419.1559006518896;
+        Mon, 27 May 2019 18:21:58 -0700 (PDT)
+Received: from hari-Inspiron-1545 ([183.83.89.153])
+        by smtp.gmail.com with ESMTPSA id z125sm15537156pfb.75.2019.05.27.18.21.55
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 27 May 2019 18:21:57 -0700 (PDT)
+Date:   Tue, 28 May 2019 06:51:52 +0530
+From:   Hariprasad Kelam <hariprasad.kelam@gmail.com>
+To:     ddiss@suse.de, "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Hariprasad Kelam <hariprasad.kelam@gmail.com>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [Patch v2] target/iscsi: fix possible condition with no effect (if
  == else)
-Message-ID: <20190527113118.68e6ab4c@suse.de>
-In-Reply-To: <20190525174416.GA21510@hari-Inspiron-1545>
-References: <20190525174416.GA21510@hari-Inspiron-1545>
+Message-ID: <20190528012151.GA4845@hari-Inspiron-1545>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Sat, 25 May 2019 23:14:16 +0530, Hariprasad Kelam wrote:
+fix below warning reported by coccicheck
 
-> fix below warning reported by coccicheck
-> 
-> drivers/target/iscsi/iscsi_target_nego.c:175:6-8: WARNING: possible
-> condition with no effect (if == else)
-> 
-> Signed-off-by: Hariprasad Kelam <hariprasad.kelam@gmail.com>
-> ---
->  drivers/target/iscsi/iscsi_target_nego.c | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
-> 
-> diff --git a/drivers/target/iscsi/iscsi_target_nego.c b/drivers/target/iscsi/iscsi_target_nego.c
-> index 8a5e8d1..b6fb70a 100644
-> --- a/drivers/target/iscsi/iscsi_target_nego.c
-> +++ b/drivers/target/iscsi/iscsi_target_nego.c
-> @@ -168,12 +168,7 @@ static u32 iscsi_handle_authentication(
->  	else if (strstr("CHAP", authtype))
->  		return chap_main_loop(conn, auth, in_buf, out_buf,
->  				&in_length, out_length);
-> -	else if (strstr("SPKM1", authtype))
-> -		return 2;
-> -	else if (strstr("SPKM2", authtype))
-> -		return 2;
-> -	else if (strstr("KRB5", authtype))
-> -		return 2;
-> +	/* ret 2 in  SPKM1,SPKM2,KRB5 cases */
->  	else
->  		return 2;
->  }
+drivers/target/iscsi/iscsi_target_nego.c:175:6-8: WARNING: possible
+condition with no effect (if == else)
 
-Looks okay, though I'd prefer to drop the unnecessary "else" too. The
-CANSRP hunk can also be removed here. I.e. something like:
+Signed-off-by: Hariprasad Kelam <hariprasad.kelam@gmail.com>
+---
+Changes in v2: treat SRP as unsupported authtype.
+               Remove unnecessary else
+               return 2 in all unsupported cases
 
+---
+---
+ drivers/target/iscsi/iscsi_target_nego.c | 15 ++-------------
+ 1 file changed, 2 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/target/iscsi/iscsi_target_nego.c b/drivers/target/iscsi/iscsi_target_nego.c
+index 8a5e8d1..92ce2fd 100644
 --- a/drivers/target/iscsi/iscsi_target_nego.c
 +++ b/drivers/target/iscsi/iscsi_target_nego.c
 @@ -160,22 +160,11 @@ static u32 iscsi_handle_authentication(
  
-        if (strstr("None", authtype))
-                return 1;
+ 	if (strstr("None", authtype))
+ 		return 1;
 -#ifdef CANSRP
--       else if (strstr("SRP", authtype))
--               return srp_main_loop(conn, auth, in_buf, out_buf,
--                               &in_length, out_length);
+-	else if (strstr("SRP", authtype))
+-		return srp_main_loop(conn, auth, in_buf, out_buf,
+-				&in_length, out_length);
 -#endif
-        else if (strstr("CHAP", authtype))
-                return chap_main_loop(conn, auth, in_buf, out_buf,
-                                &in_length, out_length);
--       else if (strstr("SPKM1", authtype))
--               return 2;
--       else if (strstr("SPKM2", authtype))
--               return 2;
--       else if (strstr("KRB5", authtype))
--               return 2;
--       else
--               return 2;
-+       /* SRP, SPKM1, SPKM2 and KRB5 are unsupported */
-+       return 2;
+ 	else if (strstr("CHAP", authtype))
+ 		return chap_main_loop(conn, auth, in_buf, out_buf,
+ 				&in_length, out_length);
+-	else if (strstr("SPKM1", authtype))
+-		return 2;
+-	else if (strstr("SPKM2", authtype))
+-		return 2;
+-	else if (strstr("KRB5", authtype))
+-		return 2;
+-	else
+-		return 2;
++	/* SRP, SPKM1, SPKM2 and KRB5 are unsupported */
++	return 2;
  }
+ 
+ static void iscsi_remove_failed_auth_entry(struct iscsi_conn *conn)
+-- 
+2.7.4
 
-Cheers, David
