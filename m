@@ -2,57 +2,93 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A89E3360BB
-	for <lists+target-devel@lfdr.de>; Wed,  5 Jun 2019 18:03:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05D81385B4
+	for <lists+target-devel@lfdr.de>; Fri,  7 Jun 2019 09:50:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728322AbfFEQDa (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 5 Jun 2019 12:03:30 -0400
-Received: from 313717.com ([176.126.78.19]:49476 "EHLO treehousetv.com"
-        rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726421AbfFEQDa (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Wed, 5 Jun 2019 12:03:30 -0400
-X-Greylist: delayed 3608 seconds by postgrey-1.27 at vger.kernel.org; Wed, 05 Jun 2019 12:03:29 EDT
-To:     target-devel@vger.kernel.org
-Subject: Get your USB drives
-Message-ID: <75c26048307c81d2c42056801dc6ba44@vecteezy.com>
-Date:   Wed, 05 Jun 2019 14:00:36 +0200
-From:   "Stacy" <schssereutz@aol.jp>
-Reply-To: halsyid@sina.com
+        id S1727463AbfFGHud (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 7 Jun 2019 03:50:33 -0400
+Received: from smtp4.iitb.ac.in ([103.21.127.18]:52710 "EHLO smtp1.iitb.ac.in"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725497AbfFGHud (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Fri, 7 Jun 2019 03:50:33 -0400
+X-Greylist: delayed 4344 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 Jun 2019 03:50:32 EDT
+Received: from ldns1.iitb.ac.in (ldns1.iitb.ac.in [10.200.12.1])
+        by smtp1.iitb.ac.in (Postfix) with SMTP id DCD331040B68
+        for <target-devel@vger.kernel.org>; Fri,  7 Jun 2019 12:02:14 +0530 (IST)
+Received: (qmail 844 invoked by uid 510); 7 Jun 2019 12:02:14 +0530
+X-Qmail-Scanner-Diagnostics: from 10.200.1.25 by ldns1 (envelope-from <rws@aero.iitb.ac.in>, uid 501) with qmail-scanner-2.11
+ spamassassin: 3.4.1. mhr: 1.0. {clamdscan: 0.100.0/25472} 
+ Clear:RC:1(10.200.1.25):SA:0(1.5/7.0):. Processed in 2.129489 secs; 07 Jun 2019 12:02:14 +0530
+X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on ldns1.iitb.ac.in
+X-Spam-Level: *
+X-Spam-Status: No, score=1.5 required=7.0 tests=BAYES_50,IITB_ORIG,
+        MISSING_HEADERS,PROPER_IITB_MSGID,T_RP_MATCHES_RCVD autolearn=disabled
+        version=3.4.1
+X-Spam-Pyzor: Reported 0 times.
+X-Envelope-From: rws@aero.iitb.ac.in
+X-Qmail-Scanner-Mime-Attachments: |
+X-Qmail-Scanner-Zip-Files: |
+Received: from unknown (HELO ldns1.iitb.ac.in) (10.200.1.25)
+  by ldns1.iitb.ac.in with SMTP; 7 Jun 2019 12:02:12 +0530
+Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
+        by ldns1.iitb.ac.in (Postfix) with ESMTP id 1281D36003A;
+        Fri,  7 Jun 2019 12:01:55 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id E7FFE8902E540;
+        Fri,  7 Jun 2019 12:01:54 +0530 (IST)
+Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
+        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id t04tMySI6Lj7; Fri,  7 Jun 2019 12:01:54 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id D3A328902E543;
+        Fri,  7 Jun 2019 12:01:53 +0530 (IST)
+X-Virus-Scanned: amavisd-new at aero.iitb.ac.in
+Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
+        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id zwjYGIjQ2_lT; Fri,  7 Jun 2019 12:01:53 +0530 (IST)
+Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
+        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 752AD8902E537;
+        Fri,  7 Jun 2019 12:01:49 +0530 (IST)
+Date:   Fri, 7 Jun 2019 12:01:49 +0530 (IST)
+From:   Martins Henry <rws@aero.iitb.ac.in>
+Message-ID: <630023291.60470.1559889109394.JavaMail.zimbra@aero.iitb.ac.in>
+Subject: Thanks and I wait for your answer
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.101.1.5]
+X-Mailer: Zimbra 8.8.12_GA_3803 (ZimbraWebClient - FF11 (Win)/8.8.12_GA_3794)
+Thread-Index: Z4di5DXkV78PrTTCqXhStc9XBmMYjg==
+Thread-Topic: Thanks and I wait for your answer
+To:     unlisted-recipients:; (no To-header on input)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hi,
+Hello,
 
-I wanted to follow up from last week. Did you receive the email I sent you?
+I am Martin Henry, An American Citizen; I am the personal secretary to
+Mr. Donald Railton, the controller of a Lottery Company. Please I am
+having big problem now, I have a 6yrs old daughter who has leukemia, a
+disease of the blood, and she needs a bone marrow transplant or she
+will die.
 
-Our company manufactures USB Flash Drives, printed with your logo.  They
-make the perfect marketing tool for your business or organization.
+Please I am only asking for your help and you will benefit from it
+also. As an insider with Lottery Firm, working as the personal
+secretary to the controller, I want you to send me your name to play,
+I have some numbers that are going to win, stored in his secret data
+system in the office. The Lottery is an online entry with credit card
+anywhere with a name and address. All I want you to do is to send your
+name to play it and I will send confirmation to you.
 
-We offer low minimum quantities, and all memory sizes. Over 150 Stock
-Models as well as 100 % custom shaped USB drives.  Memory sizes include up
-to 128GB !
+I will play with my card on your name and the Prize will be shared
+equally between us. Immediately the results are released they will
+contact you for payment as the oversea winner. The lotto can be played
+with 9.00 dollars, or 50 dollars but the prize will be Millions.
+Remember that I am playing on your name with my card; I just want to
+front you for this, because I need this money to save the life of my
+little daughter.
 
-We can pre-load your media files, images, presentations and files onto the
-drives for you.  These are ideal handouts for trade shows, branding,
-corporate gifts and employees.
-Our USB Pricing is at an ALL TIME LOW - now is the time to get your USB
-drives.
-
-Let us send you a quote!   We will EARN your business!
-* Please reply back and let me know what quantity and memory size
-you need for a Fast Quote! *
-
-Are you a school or nonprofit?  Please let us know for even further
-discounts.
-
-Thanks!
-
-Stacy King
-National Account Rep
-Promo / Branded Flash Drives
-
+Thanks and I wait for your answer
+Martin Henry.
