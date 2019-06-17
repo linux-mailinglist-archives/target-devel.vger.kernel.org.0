@@ -2,84 +2,73 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF17E47377
-	for <lists+target-devel@lfdr.de>; Sun, 16 Jun 2019 09:02:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5421B47ADF
+	for <lists+target-devel@lfdr.de>; Mon, 17 Jun 2019 09:28:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726062AbfFPHC1 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sun, 16 Jun 2019 03:02:27 -0400
-Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:55747 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726054AbfFPHC0 (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Sun, 16 Jun 2019 03:02:26 -0400
-Received: from localhost.localdomain ([86.243.180.47])
-        by mwinf5d17 with ME
-        id RK2N2000C11lVym03K2NQE; Sun, 16 Jun 2019 09:02:23 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 16 Jun 2019 09:02:23 +0200
-X-ME-IP: 86.243.180.47
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     martin.petersen@oracle.com
-Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] scsi: tcmu: Simplify 'tcmu_update_uio_info()'
-Date:   Sun, 16 Jun 2019 09:02:20 +0200
-Message-Id: <20190616070220.24189-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        id S1726437AbfFQH2k (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 17 Jun 2019 03:28:40 -0400
+Received: from slot0.nejknio.cf ([89.32.41.233]:59590 "EHLO slot0.nejknio.cf"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726401AbfFQH2j (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Mon, 17 Jun 2019 03:28:39 -0400
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=nejknio.cf;
+ h=Content-Type:MIME-Version:Content-Transfer-Encoding:Content-Description:Subject:To:From:Date:Reply-To:Message-ID; i=trade1@nejknio.cf;
+ bh=73Xs4LxjK+lP+h5mKCyFyWTpkoQ=;
+ b=dwieWsemZwbR1G+juJzx7Bc362TXbgdtgn/57gWONXjNT6wwDhhKtB87KydtvBbFDiJTYSTe+VVX
+   8s6OkjFqBVOqAtgQKWw+h5MLyKkK1mE8LOs8m14Utq4wDfbGw9ryquqLPr2+8tTt8zjp1a/VvxZl
+   fR/TAZQ0gDCHfwSZys5tnwb5n1Dh03dwRhUh2/H7TxXdhdBRL8zbqlS0pDRgpnNMTWixngV8UNcR
+   VMpWhmAUxDWBySIIfIJv7K9DNbiMhD7V6B9tGPJUjTgN4AsJpbjMWXf9mtQLdRLv3VLSeX5h7yN/
+   YdMBQ+4+GTsHG4bGqTnS67gCiCyQwBaRSPQjWA==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=nejknio.cf;
+ b=RfenBZK081vwu3/mH+EdI9uGIZQayjj4wU04Xlh+zL5eKD34vJrPv1Ohsm82hJMhst5Z5DVqkUsi
+   kl9rStwBEyzaWkYfUDu4BJL7dQd+p5fHD0qCuFu0Rcveb4LnMr5nKNMmuhVWYgIiGJR2/fmi3b3V
+   mshmKRD0jcxSDcu3kO75GHYdMHrQv3LJtlgYBOKBx00kC8P6o0eauDN90K7auw3bdmSAheLOX3IN
+   HKW7x3XSYAdVx3jvM8WUmcghKyLoa5s2Ik3QtXE05POtF7wJdwy8IpNSgxJpYJm0Wrpd/dn5hfuy
+   tjhbz1lnvrw4wnMARISNRE12mJANKFoxBYuwVQ==;
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: PRODUCT INQUIRY FOR EXPORT SHIPMENT
+To:     Recipients <trade1@nejknio.cf>
+From:   "Mark Maths" <trade1@nejknio.cf>
+Date:   Mon, 17 Jun 2019 10:08:52 +0300
+Reply-To: purchase_m.maths@aol.com
+Message-ID: <0.0.1.D83.1D524DB79F0ED1C.0@slot0.nejknio.cf>
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Use 'kasprintf()' instead of:
-   - snprintf(NULL, 0...
-   - kmalloc(...
-   - snprintf(...
+Dear Sales team,
+ =
 
-This is less verbose and saves 7 bytes (i.e. the space for '/(null)') if
-'udev->dev_config' is NULL.
+In furtherance to our market research, we have reviewed all your products t=
+ypes and we have finally interested in your product for our market here in =
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/target/target_core_user.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-index b43d6385a1a0..04eda111920e 100644
---- a/drivers/target/target_core_user.c
-+++ b/drivers/target/target_core_user.c
-@@ -1824,20 +1824,18 @@ static int tcmu_update_uio_info(struct tcmu_dev *udev)
- {
- 	struct tcmu_hba *hba = udev->hba->hba_ptr;
- 	struct uio_info *info;
--	size_t size, used;
- 	char *str;
- 
- 	info = &udev->uio_info;
--	size = snprintf(NULL, 0, "tcm-user/%u/%s/%s", hba->host_id, udev->name,
--			udev->dev_config);
--	size += 1; /* for \0 */
--	str = kmalloc(size, GFP_KERNEL);
--	if (!str)
--		return -ENOMEM;
- 
--	used = snprintf(str, size, "tcm-user/%u/%s", hba->host_id, udev->name);
- 	if (udev->dev_config[0])
--		snprintf(str + used, size - used, "/%s", udev->dev_config);
-+		str = kasprintf(GFP_KERNEL, "tcm-user/%u/%s/%s", hba->host_id,
-+				udev->name, udev->dev_config);
-+	else
-+		str = kasprintf(GFP_KERNEL, "tcm-user/%u/%s", hba->host_id,
-+				udev->name);
-+	if (!str)
-+		return -ENOMEM;
- 
- 	/* If the old string exists, free it */
- 	kfree(info->name);
--- 
-2.20.1
+United State for your production. We introduce ourselves as Emilxa Tram SRL=
+, A general group of company located in the United State. =
 
+
+We are sourcing for new suppliers from your location =
+
+
+Kindly advice us if you accept new purchase orders, I will forward our PO f=
+or urgent order.
+
+Waiting for your response to send order. Reply to ( purchase_m.maths@aol.co=
+m)
+
+Best regards.
+Mark Maths
+Company Address:
+Emilxa Tram SRL Company Limited
+P.O. Box 978
+Road Town
+Tortola
+British Virgin Islands
+Contact information:
+Tel: +1 (284) 493 7235
+Email: purchase_m.maths@aol.com
+https://meridianbvi.com/contact-us/
