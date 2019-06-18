@@ -2,77 +2,96 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0643F483B4
-	for <lists+target-devel@lfdr.de>; Mon, 17 Jun 2019 15:18:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CE634ADEF
+	for <lists+target-devel@lfdr.de>; Wed, 19 Jun 2019 00:44:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726599AbfFQNR6 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 17 Jun 2019 09:17:58 -0400
-Received: from stargate.chelsio.com ([12.32.117.8]:28441 "EHLO
-        stargate.chelsio.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725884AbfFQNR6 (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Mon, 17 Jun 2019 09:17:58 -0400
-Received: from fcoe-test11.asicdesigners.com (fcoe-test11.blr.asicdesigners.com [10.193.185.180])
-        by stargate.chelsio.com (8.13.8/8.13.8) with ESMTP id x5HDHpv8018550;
-        Mon, 17 Jun 2019 06:17:52 -0700
-From:   Varun Prakash <varun@chelsio.com>
-To:     martin.petersen@oracle.com
-Cc:     target-devel@vger.kernel.org, dt@chelsio.com, indranil@chelsio.com,
-        ganji.aravind@chelsio.com, varun@chelsio.com
-Subject: [PATCH] scsi: target: cxgbit: add support for IEEE_8021QAZ_APP_SEL_STREAM selector
-Date:   Mon, 17 Jun 2019 18:47:45 +0530
-Message-Id: <1560777465-5343-1-git-send-email-varun@chelsio.com>
-X-Mailer: git-send-email 2.0.2
+        id S1730341AbfFRWoA (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 18 Jun 2019 18:44:00 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:58484 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730176AbfFRWoA (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Tue, 18 Jun 2019 18:44:00 -0400
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id E361C308FC4E;
+        Tue, 18 Jun 2019 22:43:59 +0000 (UTC)
+Received: from mchristi.msp.csb (unknown [10.64.242.22])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 6903D5C1B5;
+        Tue, 18 Jun 2019 22:43:58 +0000 (UTC)
+Reply-To: mchristi@redhat.com
+Subject: Re: [PATCH] scsi: tcmu: Simplify 'tcmu_update_uio_info()'
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        martin.petersen@oracle.com
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20190616070220.24189-1-christophe.jaillet@wanadoo.fr>
+From:   Michael Christie <mchristi@redhat.com>
+Organization: Red Hat
+Message-ID: <2ffa1964-30b1-d8bd-a2e2-608fe4f06f45@redhat.com>
+Date:   Tue, 18 Jun 2019 17:43:57 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.0
+MIME-Version: 1.0
+In-Reply-To: <20190616070220.24189-1-christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.43]); Tue, 18 Jun 2019 22:44:00 +0000 (UTC)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-IEEE_8021QAZ_APP_SEL_STREAM is a valid selector
-for iSCSI connections, so add code to use
-IEEE_8021QAZ_APP_SEL_STREAM selector to get priority
-mask.
+On 06/16/2019 02:02 AM, Christophe JAILLET wrote:
+> Use 'kasprintf()' instead of:
+>    - snprintf(NULL, 0...
+>    - kmalloc(...
+>    - snprintf(...
+> 
+> This is less verbose and saves 7 bytes (i.e. the space for '/(null)') if
+> 'udev->dev_config' is NULL.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>  drivers/target/target_core_user.c | 16 +++++++---------
+>  1 file changed, 7 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
+> index b43d6385a1a0..04eda111920e 100644
+> --- a/drivers/target/target_core_user.c
+> +++ b/drivers/target/target_core_user.c
+> @@ -1824,20 +1824,18 @@ static int tcmu_update_uio_info(struct tcmu_dev *udev)
+>  {
+>  	struct tcmu_hba *hba = udev->hba->hba_ptr;
+>  	struct uio_info *info;
+> -	size_t size, used;
+>  	char *str;
+>  
+>  	info = &udev->uio_info;
+> -	size = snprintf(NULL, 0, "tcm-user/%u/%s/%s", hba->host_id, udev->name,
+> -			udev->dev_config);
+> -	size += 1; /* for \0 */
+> -	str = kmalloc(size, GFP_KERNEL);
+> -	if (!str)
+> -		return -ENOMEM;
+>  
+> -	used = snprintf(str, size, "tcm-user/%u/%s", hba->host_id, udev->name);
+>  	if (udev->dev_config[0])
+> -		snprintf(str + used, size - used, "/%s", udev->dev_config);
+> +		str = kasprintf(GFP_KERNEL, "tcm-user/%u/%s/%s", hba->host_id,
+> +				udev->name, udev->dev_config);
+> +	else
+> +		str = kasprintf(GFP_KERNEL, "tcm-user/%u/%s", hba->host_id,
+> +				udev->name);
+> +	if (!str)
+> +		return -ENOMEM;
+>  
+>  	/* If the old string exists, free it */
+>  	kfree(info->name);
+> 
 
-Signed-off-by: Varun Prakash <varun@chelsio.com>
----
- drivers/target/iscsi/cxgbit/cxgbit_cm.c   | 8 +++++---
- drivers/target/iscsi/cxgbit/cxgbit_main.c | 3 ++-
- 2 files changed, 7 insertions(+), 4 deletions(-)
+Thanks.
 
-diff --git a/drivers/target/iscsi/cxgbit/cxgbit_cm.c b/drivers/target/iscsi/cxgbit/cxgbit_cm.c
-index dab09b6..9d0ed93 100644
---- a/drivers/target/iscsi/cxgbit/cxgbit_cm.c
-+++ b/drivers/target/iscsi/cxgbit/cxgbit_cm.c
-@@ -878,10 +878,12 @@ static u8 cxgbit_get_iscsi_dcb_priority(struct net_device *ndev, u16 local_port)
- 		return 0;
- 
- 	if (caps & DCB_CAP_DCBX_VER_IEEE) {
--		iscsi_dcb_app.selector = IEEE_8021QAZ_APP_SEL_ANY;
--
-+		iscsi_dcb_app.selector = IEEE_8021QAZ_APP_SEL_STREAM;
- 		ret = dcb_ieee_getapp_mask(ndev, &iscsi_dcb_app);
--
-+		if (!ret) {
-+			iscsi_dcb_app.selector = IEEE_8021QAZ_APP_SEL_ANY;
-+			ret = dcb_ieee_getapp_mask(ndev, &iscsi_dcb_app);
-+		}
- 	} else if (caps & DCB_CAP_DCBX_VER_CEE) {
- 		iscsi_dcb_app.selector = DCB_APP_IDTYPE_PORTNUM;
- 
-diff --git a/drivers/target/iscsi/cxgbit/cxgbit_main.c b/drivers/target/iscsi/cxgbit/cxgbit_main.c
-index 4a7bb0b..4cd63c0 100644
---- a/drivers/target/iscsi/cxgbit/cxgbit_main.c
-+++ b/drivers/target/iscsi/cxgbit/cxgbit_main.c
-@@ -592,7 +592,8 @@ static void cxgbit_dcb_workfn(struct work_struct *work)
- 	iscsi_app = &dcb_work->dcb_app;
- 
- 	if (iscsi_app->dcbx & DCB_CAP_DCBX_VER_IEEE) {
--		if (iscsi_app->app.selector != IEEE_8021QAZ_APP_SEL_ANY)
-+		if ((iscsi_app->app.selector != IEEE_8021QAZ_APP_SEL_STREAM) &&
-+		    (iscsi_app->app.selector != IEEE_8021QAZ_APP_SEL_ANY))
- 			goto out;
- 
- 		priority = iscsi_app->app.priority;
--- 
-2.0.2
-
+Acked-by: Mike Christie <mchristi@redhat.com>
