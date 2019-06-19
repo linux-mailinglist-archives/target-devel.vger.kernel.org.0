@@ -2,96 +2,88 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CE634ADEF
-	for <lists+target-devel@lfdr.de>; Wed, 19 Jun 2019 00:44:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 840D64AF58
+	for <lists+target-devel@lfdr.de>; Wed, 19 Jun 2019 03:10:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730341AbfFRWoA (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 18 Jun 2019 18:44:00 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:58484 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730176AbfFRWoA (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Tue, 18 Jun 2019 18:44:00 -0400
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id E361C308FC4E;
-        Tue, 18 Jun 2019 22:43:59 +0000 (UTC)
-Received: from mchristi.msp.csb (unknown [10.64.242.22])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 6903D5C1B5;
-        Tue, 18 Jun 2019 22:43:58 +0000 (UTC)
-Reply-To: mchristi@redhat.com
+        id S1726181AbfFSBKr (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 18 Jun 2019 21:10:47 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:37354 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725988AbfFSBKr (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Tue, 18 Jun 2019 21:10:47 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5J14gVQ192813;
+        Wed, 19 Jun 2019 01:10:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2018-07-02;
+ bh=gYDJ565bmJ/QILPFBSke6/24C2eShrgNLI/7RNOCw/w=;
+ b=icfG0FHWMgimSuNPuK9FMjXUPxMOECtOivd6pKYKAlFth5lA7sZVGJOzbZjppfZVnNXh
+ WbcVRbEE6oOHJG366THADmDiveFXk/KKvFk4+5vy8jbmFc/pBS/WkR7y+rbS+gzmYezk
+ m0epdJZz6kg+TwkEQXfBBQ5DzItXsVMXAu21UcDifGXzV0CHDlW441b7FVcxIhpJp4lu
+ XQnwPL3CPNAo9ATiseE3r36n1e5GjbhD8KtmOyEQeHJWa3sdsOTm8o/vmrmVBg4UBmBI
+ 4QXYi7tCtcLTStp8798vWxD4u6aFhZK5Fb5RjHgHbAbKnpq4iFAVWIIltkuvaYvIIJr+ nw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 2t78098g35-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 Jun 2019 01:10:45 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5J19D8l054858;
+        Wed, 19 Jun 2019 01:10:44 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 2t77yn20dn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 Jun 2019 01:10:44 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5J1AgQA031238;
+        Wed, 19 Jun 2019 01:10:43 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 18 Jun 2019 18:10:42 -0700
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
 Subject: Re: [PATCH] scsi: tcmu: Simplify 'tcmu_update_uio_info()'
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        martin.petersen@oracle.com
-Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
 References: <20190616070220.24189-1-christophe.jaillet@wanadoo.fr>
-From:   Michael Christie <mchristi@redhat.com>
-Organization: Red Hat
-Message-ID: <2ffa1964-30b1-d8bd-a2e2-608fe4f06f45@redhat.com>
-Date:   Tue, 18 Jun 2019 17:43:57 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
-MIME-Version: 1.0
+Date:   Tue, 18 Jun 2019 21:10:40 -0400
 In-Reply-To: <20190616070220.24189-1-christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.43]); Tue, 18 Jun 2019 22:44:00 +0000 (UTC)
+        (Christophe JAILLET's message of "Sun, 16 Jun 2019 09:02:20 +0200")
+Message-ID: <yq1blyuxtv3.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9292 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=920
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906190007
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9292 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=984 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906190007
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 06/16/2019 02:02 AM, Christophe JAILLET wrote:
+
+Christophe,
+
 > Use 'kasprintf()' instead of:
 >    - snprintf(NULL, 0...
 >    - kmalloc(...
 >    - snprintf(...
-> 
+>
 > This is less verbose and saves 7 bytes (i.e. the space for '/(null)') if
 > 'udev->dev_config' is NULL.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
->  drivers/target/target_core_user.c | 16 +++++++---------
->  1 file changed, 7 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-> index b43d6385a1a0..04eda111920e 100644
-> --- a/drivers/target/target_core_user.c
-> +++ b/drivers/target/target_core_user.c
-> @@ -1824,20 +1824,18 @@ static int tcmu_update_uio_info(struct tcmu_dev *udev)
->  {
->  	struct tcmu_hba *hba = udev->hba->hba_ptr;
->  	struct uio_info *info;
-> -	size_t size, used;
->  	char *str;
->  
->  	info = &udev->uio_info;
-> -	size = snprintf(NULL, 0, "tcm-user/%u/%s/%s", hba->host_id, udev->name,
-> -			udev->dev_config);
-> -	size += 1; /* for \0 */
-> -	str = kmalloc(size, GFP_KERNEL);
-> -	if (!str)
-> -		return -ENOMEM;
->  
-> -	used = snprintf(str, size, "tcm-user/%u/%s", hba->host_id, udev->name);
->  	if (udev->dev_config[0])
-> -		snprintf(str + used, size - used, "/%s", udev->dev_config);
-> +		str = kasprintf(GFP_KERNEL, "tcm-user/%u/%s/%s", hba->host_id,
-> +				udev->name, udev->dev_config);
-> +	else
-> +		str = kasprintf(GFP_KERNEL, "tcm-user/%u/%s", hba->host_id,
-> +				udev->name);
-> +	if (!str)
-> +		return -ENOMEM;
->  
->  	/* If the old string exists, free it */
->  	kfree(info->name);
-> 
 
-Thanks.
+Applied to 5.3/scsi-queue. Thanks!
 
-Acked-by: Mike Christie <mchristi@redhat.com>
+-- 
+Martin K. Petersen	Oracle Linux Engineering
