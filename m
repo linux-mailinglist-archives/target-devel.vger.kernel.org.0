@@ -2,114 +2,288 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00F1356F92
-	for <lists+target-devel@lfdr.de>; Wed, 26 Jun 2019 19:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 767B259B25
+	for <lists+target-devel@lfdr.de>; Fri, 28 Jun 2019 14:31:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726320AbfFZRdm (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 26 Jun 2019 13:33:42 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:47350 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726042AbfFZRdl (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Wed, 26 Jun 2019 13:33:41 -0400
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 9D1CC30832DE
-        for <target-devel@vger.kernel.org>; Wed, 26 Jun 2019 17:33:41 +0000 (UTC)
-Received: from localhost.localdomain (ovpn-121-222.rdu2.redhat.com [10.10.121.222])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 2E5C21001B00
-        for <target-devel@vger.kernel.org>; Wed, 26 Jun 2019 17:33:41 +0000 (UTC)
-Date:   Wed, 26 Jun 2019 10:33:37 -0700
-From:   Chris Leech <cleech@redhat.com>
-To:     target-devel@vger.kernel.org
-Subject: Re: [PATCH V2] iscsi: set auth_protocol back to NULL if CHAP_A value
- is not supported.
-Message-ID: <20190626173337.GA14883@localhost.localdomain>
-Mail-Followup-To: Chris Leech <cleech@redhat.com>,
-        target-devel@vger.kernel.org
-References: <20190626172734.20751-1-mlombard@redhat.com>
+        id S1727405AbfF1Mb3 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 28 Jun 2019 08:31:29 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:39646 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727128AbfF1Maq (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Fri, 28 Jun 2019 08:30:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
+        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+        Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=V/HBcP10AaKg9f7QXCB/xlHhS75hL4oliVjFK2WwiWw=; b=DJ/WCxxkcrYW8G3KYkrHJnkf2P
+        jVRL0+UHsVSIf8VtGu+GJ+NK1gVs4f5L9BvDhdSkrkObRcuIcNwh2ckXwuFieia/rKgL36WvMuY9Z
+        nT6Huh3yl0ut6x0Rf6Y6sz2cdaYXiy4rO0wROl5LruZdy9aIj8Om8dOt6vWBqldhQ8ZRGOC88ma64
+        OFQp1WxYj3pk+dzTAvSUbFUgAbYZl7CWLsPeAzeYBMiW0VyvKiQQYnT4iHs9pYsGgFzLfwMG6XVwm
+        MePcBZkCo2f+oz0eiS7lY82L4KICcgRa9NnZD/K3rytV4FuomrWxv11teHb5arzgZjfDBfeN8hU6i
+        gjFHMc4Q==;
+Received: from [186.213.242.156] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hgq1W-00054w-6k; Fri, 28 Jun 2019 12:30:38 +0000
+Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
+        (envelope-from <mchehab@bombadil.infradead.org>)
+        id 1hgq1S-0005Tu-Ta; Fri, 28 Jun 2019 09:30:34 -0300
+From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@infradead.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Jens Axboe <axboe@kernel.dk>,
+        Akinobu Mita <akinobu.mita@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Moritz Fischer <mdf@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Jiri Kosina <jikos@kernel.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Petr Mladek <pmladek@suse.com>,
+        Joe Lawrence <joe.lawrence@redhat.com>,
+        Paul Moore <paul@paul-moore.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-fpga@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, live-patching@vger.kernel.org,
+        netdev@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-watchdog@vger.kernel.org
+Subject: [PATCH 37/39] docs: adds some directories to the main documentation index
+Date:   Fri, 28 Jun 2019 09:30:30 -0300
+Message-Id: <b26fc645cb2c81fe88ab13616c65664d2c3cead5.1561724493.git.mchehab+samsung@kernel.org>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <cover.1561724493.git.mchehab+samsung@kernel.org>
+References: <cover.1561724493.git.mchehab+samsung@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190626172734.20751-1-mlombard@redhat.com>
-User-Agent: Mutt/1.12.0 (2019-05-25)
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.44]); Wed, 26 Jun 2019 17:33:41 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Wed, Jun 26, 2019 at 07:27:34PM +0200, Maurizio Lombardi wrote:
-> If the CHAP_A value is not supported, the chap_server_open() function
-> should free the auth_protocol pointer and set it to NULL, or
-> we will leave a dangling pointer around.
-> 
-> [   66.010905] Unsupported CHAP_A value
-> [   66.011660] Security negotiation failed.
-> [   66.012443] iSCSI Login negotiation failed.
-> [   68.413924] general protection fault: 0000 [#1] SMP PTI
-> [   68.414962] CPU: 0 PID: 1562 Comm: targetcli Kdump: loaded Not tainted 4.18.0-80.el8.x86_64 #1
-> [   68.416589] Hardware name: Red Hat KVM, BIOS 0.5.1 01/01/2011
-> [   68.417677] RIP: 0010:__kmalloc_track_caller+0xc2/0x210
-> 
-> v2: use the chap_close() function and fix yet another dangling pointer
-> 
-> Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+The contents of those directories were orphaned at the documentation
+body.
 
-Reviewed-by: Chris Leech <cleech@redhat.com>
+While those directories could likely be moved to be inside some guide,
+I'm opting to just adding their indexes to the main one, removing the
+:orphan: and adding the SPDX header.
 
-> ---
->  drivers/target/iscsi/iscsi_target_auth.c | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/target/iscsi/iscsi_target_auth.c b/drivers/target/iscsi/iscsi_target_auth.c
-> index b6e4862cc242..51ddca2033e0 100644
-> --- a/drivers/target/iscsi/iscsi_target_auth.c
-> +++ b/drivers/target/iscsi/iscsi_target_auth.c
-> @@ -81,6 +81,12 @@ static int chap_check_algorithm(const char *a_str)
->  	return CHAP_DIGEST_UNKNOWN;
->  }
->  
-> +static void chap_close(struct iscsi_conn *conn)
-> +{
-> +	kfree(conn->auth_protocol);
-> +	conn->auth_protocol = NULL;
-> +}
-> +
->  static struct iscsi_chap *chap_server_open(
->  	struct iscsi_conn *conn,
->  	struct iscsi_node_auth *auth,
-> @@ -118,7 +124,7 @@ static struct iscsi_chap *chap_server_open(
->  	case CHAP_DIGEST_UNKNOWN:
->  	default:
->  		pr_err("Unsupported CHAP_A value\n");
-> -		kfree(conn->auth_protocol);
-> +		chap_close(conn);
->  		return NULL;
->  	}
->  
-> @@ -133,19 +139,13 @@ static struct iscsi_chap *chap_server_open(
->  	 * Generate Challenge.
->  	 */
->  	if (chap_gen_challenge(conn, 1, aic_str, aic_len) < 0) {
-> -		kfree(conn->auth_protocol);
-> +		chap_close(conn);
->  		return NULL;
->  	}
->  
->  	return chap;
->  }
->  
-> -static void chap_close(struct iscsi_conn *conn)
-> -{
-> -	kfree(conn->auth_protocol);
-> -	conn->auth_protocol = NULL;
-> -}
-> -
->  static int chap_server_compute_md5(
->  	struct iscsi_conn *conn,
->  	struct iscsi_node_auth *auth,
-> -- 
-> Maurizio Lombardi
-> 
+For the drivers, the rationale is that the documentation contains
+a mix of Kernelspace, uAPI and admin-guide. So, better to keep them on
+separate directories, as we've be doing with similar subsystem-specific
+docs that were not split yet.
+
+For the others, well... I'm too lazy to do the move. Also, it
+seems to make sense to keep at least some of those at the main
+dir (like kbuild, for example). In any case, a latter patch
+could do the move.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+---
+ Documentation/cdrom/index.rst           |  2 +-
+ Documentation/fault-injection/index.rst |  2 +-
+ Documentation/fb/index.rst              |  2 +-
+ Documentation/fpga/index.rst            |  2 +-
+ Documentation/ide/index.rst             |  2 +-
+ Documentation/index.rst                 | 14 ++++++++++++++
+ Documentation/kbuild/index.rst          |  2 +-
+ Documentation/livepatch/index.rst       |  2 +-
+ Documentation/netlabel/index.rst        |  2 +-
+ Documentation/pcmcia/index.rst          |  2 +-
+ Documentation/power/index.rst           |  2 +-
+ Documentation/target/index.rst          |  2 +-
+ Documentation/timers/index.rst          |  2 +-
+ Documentation/watchdog/index.rst        |  2 +-
+ 14 files changed, 27 insertions(+), 13 deletions(-)
+
+diff --git a/Documentation/cdrom/index.rst b/Documentation/cdrom/index.rst
+index efbd5d111825..338ad5f94e7c 100644
+--- a/Documentation/cdrom/index.rst
++++ b/Documentation/cdrom/index.rst
+@@ -1,4 +1,4 @@
+-:orphan:
++.. SPDX-License-Identifier: GPL-2.0
+ 
+ =====
+ cdrom
+diff --git a/Documentation/fault-injection/index.rst b/Documentation/fault-injection/index.rst
+index 92b5639ed07a..8408a8a91b34 100644
+--- a/Documentation/fault-injection/index.rst
++++ b/Documentation/fault-injection/index.rst
+@@ -1,4 +1,4 @@
+-:orphan:
++.. SPDX-License-Identifier: GPL-2.0
+ 
+ ===============
+ fault-injection
+diff --git a/Documentation/fb/index.rst b/Documentation/fb/index.rst
+index d47313714635..baf02393d8ee 100644
+--- a/Documentation/fb/index.rst
++++ b/Documentation/fb/index.rst
+@@ -1,4 +1,4 @@
+-:orphan:
++.. SPDX-License-Identifier: GPL-2.0
+ 
+ ============
+ Frame Buffer
+diff --git a/Documentation/fpga/index.rst b/Documentation/fpga/index.rst
+index 2c87d1ea084f..f80f95667ca2 100644
+--- a/Documentation/fpga/index.rst
++++ b/Documentation/fpga/index.rst
+@@ -1,4 +1,4 @@
+-:orphan:
++.. SPDX-License-Identifier: GPL-2.0
+ 
+ ====
+ fpga
+diff --git a/Documentation/ide/index.rst b/Documentation/ide/index.rst
+index 45bc12d3957f..813dfe611a31 100644
+--- a/Documentation/ide/index.rst
++++ b/Documentation/ide/index.rst
+@@ -1,4 +1,4 @@
+-:orphan:
++.. SPDX-License-Identifier: GPL-2.0
+ 
+ ==================================
+ Integrated Drive Electronics (IDE)
+diff --git a/Documentation/index.rst b/Documentation/index.rst
+index e69d2fde7735..075c732501a2 100644
+--- a/Documentation/index.rst
++++ b/Documentation/index.rst
+@@ -35,6 +35,7 @@ trying to get it to work optimally on a given system.
+    :maxdepth: 2
+ 
+    admin-guide/index
++   kbuild/index
+ 
+ Firmware-related documentation
+ ------------------------------
+@@ -77,6 +78,9 @@ merged much easier.
+    kernel-hacking/index
+    trace/index
+    maintainer/index
++   fault-injection/index
++   livepatch/index
++
+ 
+ Kernel API documentation
+ ------------------------
+@@ -94,12 +98,22 @@ needed).
+    core-api/index
+    accounting/index
+    block/index
++   cdrom/index
++   ide/index
++   fb/index
++   fpga/index
+    hid/index
+    iio/index
+    infiniband/index
+    leds/index
+    media/index
++   netlabel/index
+    networking/index
++   pcmcia/index
++   power/index
++   target/index
++   timers/index
++   watchdog/index
+    input/index
+    hwmon/index
+    gpu/index
+diff --git a/Documentation/kbuild/index.rst b/Documentation/kbuild/index.rst
+index 42d4cbe4460c..e323a3f2cc81 100644
+--- a/Documentation/kbuild/index.rst
++++ b/Documentation/kbuild/index.rst
+@@ -1,4 +1,4 @@
+-:orphan:
++.. SPDX-License-Identifier: GPL-2.0
+ 
+ ===================
+ Kernel Build System
+diff --git a/Documentation/livepatch/index.rst b/Documentation/livepatch/index.rst
+index edd291d51847..17674a9e21b2 100644
+--- a/Documentation/livepatch/index.rst
++++ b/Documentation/livepatch/index.rst
+@@ -1,4 +1,4 @@
+-:orphan:
++.. SPDX-License-Identifier: GPL-2.0
+ 
+ ===================
+ Kernel Livepatching
+diff --git a/Documentation/netlabel/index.rst b/Documentation/netlabel/index.rst
+index 47f1e0e5acd1..984e1b191b12 100644
+--- a/Documentation/netlabel/index.rst
++++ b/Documentation/netlabel/index.rst
+@@ -1,4 +1,4 @@
+-:orphan:
++.. SPDX-License-Identifier: GPL-2.0
+ 
+ ========
+ NetLabel
+diff --git a/Documentation/pcmcia/index.rst b/Documentation/pcmcia/index.rst
+index 779c8527109e..7ae1f62fca14 100644
+--- a/Documentation/pcmcia/index.rst
++++ b/Documentation/pcmcia/index.rst
+@@ -1,4 +1,4 @@
+-:orphan:
++.. SPDX-License-Identifier: GPL-2.0
+ 
+ ======
+ pcmcia
+diff --git a/Documentation/power/index.rst b/Documentation/power/index.rst
+index 20415f21e48a..002e42745263 100644
+--- a/Documentation/power/index.rst
++++ b/Documentation/power/index.rst
+@@ -1,4 +1,4 @@
+-:orphan:
++.. SPDX-License-Identifier: GPL-2.0
+ 
+ ================
+ Power Management
+diff --git a/Documentation/target/index.rst b/Documentation/target/index.rst
+index b68f48982392..4b24f81f747e 100644
+--- a/Documentation/target/index.rst
++++ b/Documentation/target/index.rst
+@@ -1,4 +1,4 @@
+-:orphan:
++.. SPDX-License-Identifier: GPL-2.0
+ 
+ ==================
+ TCM Virtual Device
+diff --git a/Documentation/timers/index.rst b/Documentation/timers/index.rst
+index 91f6f8263c48..df510ad0c989 100644
+--- a/Documentation/timers/index.rst
++++ b/Documentation/timers/index.rst
+@@ -1,4 +1,4 @@
+-:orphan:
++.. SPDX-License-Identifier: GPL-2.0
+ 
+ ======
+ timers
+diff --git a/Documentation/watchdog/index.rst b/Documentation/watchdog/index.rst
+index 33a0de631e84..c177645081d8 100644
+--- a/Documentation/watchdog/index.rst
++++ b/Documentation/watchdog/index.rst
+@@ -1,4 +1,4 @@
+-:orphan:
++.. SPDX-License-Identifier: GPL-2.0
+ 
+ ======================
+ Linux Watchdog Support
+-- 
+2.21.0
+
