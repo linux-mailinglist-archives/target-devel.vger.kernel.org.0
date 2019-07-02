@@ -2,98 +2,75 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E0F45D2B2
-	for <lists+target-devel@lfdr.de>; Tue,  2 Jul 2019 17:22:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FCFA5D2EC
+	for <lists+target-devel@lfdr.de>; Tue,  2 Jul 2019 17:30:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726213AbfGBPWT (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 2 Jul 2019 11:22:19 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:41837 "EHLO
+        id S1726046AbfGBPaj (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 2 Jul 2019 11:30:39 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:42080 "EHLO
         mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725835AbfGBPWT (ORCPT
+        with ESMTP id S1725780AbfGBPaj (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 2 Jul 2019 11:22:19 -0400
-Received: by mail-pg1-f194.google.com with SMTP id q4so6357600pgj.8;
-        Tue, 02 Jul 2019 08:22:18 -0700 (PDT)
+        Tue, 2 Jul 2019 11:30:39 -0400
+Received: by mail-pg1-f194.google.com with SMTP id t132so4484393pgb.9
+        for <target-devel@vger.kernel.org>; Tue, 02 Jul 2019 08:30:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=kj2iqZ3cddozRXWMsn7Ev9o9aw1c31FcRRKlce4rrD0=;
-        b=VS7czYRv/+6aS3EsQdWmiuHLzAvgk/WTwaU70gqUWu1sGi9bLK0JNbwqaJOKKdYEiH
-         T8sO0WTyTWVcV2LWGnKNIRO1liWEk81aXPG0PV11LzbN5HYCyliv4PKGns6hnn/GdqBm
-         ML5mUtQ2rKDGkW3luL6Xarp0H3mtui0VZ0OppG5gzh5fv2a3mGbDnXS6MHWfWDO1sc8b
-         goEab9NNL32ltJDgKy15YGCOtbP2BLnrsN50ksZa/Pe000D2Kr4ij0i3mQtRVQP7Rof6
-         K49AP4h1MLA4RuxJsCIOJ1pOZF+tpA8oOIQBTyqicCo32/rOgG90AIPoL+PKBCW3qq/S
-         PXKQ==
-X-Gm-Message-State: APjAAAVbegbe0o/l/g3KwT/BvYnOIccjcke4CvvYswxF6I9hKr3HgQzW
-        if6PozCpDGJG8LIiGaZPKTlmLAIH
-X-Google-Smtp-Source: APXvYqxvONcRcpjM1uC0mIKUkyqzQw2Fdg2yqsQtOE8qHzQFrV16iw0FfG+KYJ2TZy7UcFTSYW/q3w==
-X-Received: by 2002:a63:52:: with SMTP id 79mr30859589pga.381.1562080938393;
-        Tue, 02 Jul 2019 08:22:18 -0700 (PDT)
+        bh=ul4nyYNUk2KAfGSQ1JouGplC1zKdE4lEcUHNBHmpVWc=;
+        b=Kw7kUaxtWYZ84qhDnCYgHfsdYrzm1Jpavip5sD5xh7NL6kHB2Cm0tTj+K8yjMZ4fUA
+         TOhuRxYBWBPX02v47R4iZ3ctFVrhDl+MJVE7SUa+yiQsLqDQ0HES3HwvWypJAQhr+nSg
+         TGmxdiZoRliXzw97bhpeGRPP6fg4y6QESsLIZ3c+DdOu7vayqCNW6VuagxVRzMnTP87q
+         XUeOKjOm4xmlK/RhEPLSTq3X/EJc9dHk8UyMKFxTsYF5f6zxKJMUf/pkZ6PoOYaG8JMO
+         dfdQKkwk8HZiWgAnW0uPSaKlrxFxwL7iJ/nCXbjqBNwUBHa2THgfjscj3vMxqeaDN50W
+         b1Sg==
+X-Gm-Message-State: APjAAAV7vxH+l4hVrgXFaHBjtR+SWkmWTAIzxeY0AAh6oeE0XyxYwrOH
+        sPEamHGXJQjYWB8xiqUH6K4=
+X-Google-Smtp-Source: APXvYqx6Zng6nsPXIkmWSl8eCIDJT2/8QaDk9Z7DXFYdQdQOaHYfxXkqrfIviGOaK2mekaspegIJ6A==
+X-Received: by 2002:a63:211c:: with SMTP id h28mr18442310pgh.438.1562081438660;
+        Tue, 02 Jul 2019 08:30:38 -0700 (PDT)
 Received: from desktop-bart.svl.corp.google.com ([2620:15c:2cd:202:4308:52a3:24b6:2c60])
-        by smtp.gmail.com with ESMTPSA id a16sm20235061pfd.68.2019.07.02.08.22.17
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 02 Jul 2019 08:22:17 -0700 (PDT)
-Subject: Re: [PATCH] scsi: target/iblock: Fix overrun in WRITE SAME emulation
-To:     Roman Bolshakov <r.bolshakov@yadro.com>,
-        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org
-Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>
-References: <20190701171226.81654-1-r.bolshakov@yadro.com>
+        by smtp.gmail.com with ESMTPSA id 4sm13715800pfc.92.2019.07.02.08.30.37
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 02 Jul 2019 08:30:37 -0700 (PDT)
 From:   Bart Van Assche <bvanassche@acm.org>
-Message-ID: <87cb4792-ebb5-fd37-5fab-b3f66e9ed5e9@acm.org>
-Date:   Tue, 2 Jul 2019 08:22:16 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+To:     "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, Mike Christie <mchristie@redhat.com>,
+        Christoph Hellwig <hch@lst.de>, target-devel@vger.kernel.org,
+        Roman Bolshakov <r.bolshakov@yadro.com>,
+        Bart Van Assche <bvanassche@acm.org>
+Subject: [PATCH 0/2] Use REQ_OP_WRITE_SAME to implement WRITE SAME
+Date:   Tue,  2 Jul 2019 08:30:29 -0700
+Message-Id: <20190702153031.3832-1-bvanassche@acm.org>
+X-Mailer: git-send-email 2.22.0.410.gd8fdbe21b5-goog
 MIME-Version: 1.0
-In-Reply-To: <20190701171226.81654-1-r.bolshakov@yadro.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 7/1/19 10:12 AM, Roman Bolshakov wrote:
-> WRITE SAME corrupts data on the block device behind iblock if the
-> command is emulated. The emulation code issues (M - 1) * N times more
-> bios than requested, where M is the number of 512 blocks per real block
-> size and N is the NUMBER OF LOGICAL BLOCKS specified in WRITE SAME
-> command. So, for a device with 4k blocks, 7 * N more LBAs gets written
-> after the requested range.
-> 
-> The issue happens because the number of 512 byte sectors to be written
-> is decreased one by one while the real bios are typically from 1 to 8
-> 512 byte sectors per bio.
-> 
-> Signed-off-by: Roman Bolshakov <r.bolshakov@yadro.com>
-> ---
->   drivers/target/target_core_iblock.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/target/target_core_iblock.c b/drivers/target/target_core_iblock.c
-> index f4a075303e9a..6949ea8bc387 100644
-> --- a/drivers/target/target_core_iblock.c
-> +++ b/drivers/target/target_core_iblock.c
-> @@ -502,7 +502,7 @@ iblock_execute_write_same(struct se_cmd *cmd)
->   
->   		/* Always in 512 byte units for Linux/Block */
->   		block_lba += sg->length >> SECTOR_SHIFT;
-> -		sectors -= 1;
-> +		sectors -= sg->length >> SECTOR_SHIFT;
->   	}
->   
->   	iblock_submit_bios(&list);
+Hi Martin,
 
-Please add the following to this patch:
-
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Cc: <stable@vger.kernel.org>
-Fixes: c66ac9db8d4a ("[SCSI] target: Add LIO target core v4.0.0-rc6")
+The SCSI target iblock backend uses regular writes to implement the SCSI WRITE
+SAME command. That is suboptimal for at least SCSI and NVMe SSDs. This patch
+series makes the iblock backend use REQ_OP_WRITE_SAME instead. Please consider
+these patches for inclusion in the upstream kernel.
 
 Thanks,
 
 Bart.
 
+Bart Van Assche (2):
+  block: Add blkdev_submit_write_same()
+  target/core: Use REQ_OP_WRITE_SAME to implement WRITE SAME
+
+ block/blk-lib.c                     | 37 ++++++++++++++++++++++++++++-
+ drivers/target/target_core_iblock.c | 17 +++++++++++++
+ include/linux/blkdev.h              |  3 +++
+ 3 files changed, 56 insertions(+), 1 deletion(-)
+
+-- 
+2.22.0.410.gd8fdbe21b5-goog
 
