@@ -2,49 +2,50 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 53B0F5D2ED
-	for <lists+target-devel@lfdr.de>; Tue,  2 Jul 2019 17:30:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DB365D2EE
+	for <lists+target-devel@lfdr.de>; Tue,  2 Jul 2019 17:30:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726213AbfGBPal (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 2 Jul 2019 11:30:41 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:46290 "EHLO
+        id S1726473AbfGBPam (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 2 Jul 2019 11:30:42 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:43070 "EHLO
         mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725780AbfGBPak (ORCPT
+        with ESMTP id S1725780AbfGBPam (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 2 Jul 2019 11:30:40 -0400
-Received: by mail-pg1-f195.google.com with SMTP id i8so4642610pgm.13
-        for <target-devel@vger.kernel.org>; Tue, 02 Jul 2019 08:30:40 -0700 (PDT)
+        Tue, 2 Jul 2019 11:30:42 -0400
+Received: by mail-pg1-f195.google.com with SMTP id f25so7850179pgv.10
+        for <target-devel@vger.kernel.org>; Tue, 02 Jul 2019 08:30:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=JdxZDknBCH4Y0pORYGWSEKm4OhG9/jzP3OKwV//agmA=;
-        b=tzKjdEouW5N17DlVUD979v3OGMTY0pgf3OiNFEc7vc2pcj+22tGV0QDiucnkE+S7L2
-         PxXCkS5McL4DKXCL18KRBGIq85PEY5dLmdnK38dyu5Dkoz/R+R8WuWZ0vryfCUkxNhiu
-         1fa0mZo6jqhlG5w1YWzpz6vcArxbxtIYkt7Ra/0Rg7p9kjU3okggCfxhH/lbZFbD+zNr
-         GHHplost0+utblfuXuxgHdBDDf6p2SJPxOSwXSvPLBXKwEgBsv/h0hVDdJXwzHkF/+cV
-         7BHlBR2mWNdIPMQWIL4sXrAmkogVVUFpHrX4yVN796VxRlAhfY6YoCi4CeXFF5TT/RLP
-         B/bQ==
-X-Gm-Message-State: APjAAAUE/jmkidaEd+hVucW3S3G52rdiiABmaioCIhh3rqB6OPiTUSVJ
-        WGGDfdat9OM3wfF4pg65eYQ=
-X-Google-Smtp-Source: APXvYqxUmPjeH4LnkrfEVZq95XdLyxE6+us+zl0iSDE33ixMKmb3kj04Wb5Uf5+KRIjR4AsQmqdavA==
-X-Received: by 2002:a65:458d:: with SMTP id o13mr17524934pgq.34.1562081440058;
-        Tue, 02 Jul 2019 08:30:40 -0700 (PDT)
+        bh=lRTEQQZbuuBJxAImOBI/bNHaIZm7d0VoieTYyQhMdh8=;
+        b=dKsdeZB/unotGiTcVMfOXGLF3A37xRBi1kRzx2fSvf1/wlfNrg0bdJh6MQsWMggCSp
+         AWnMnDlzD7SziFyoA6ScqX+PKdSQK9Wn5mRzDk4vSJg0eZXynAgGhVAn/PlcE9A5aX0Q
+         gaa4gftLhvLRWVkh4xQsBOia3oMIMByqpolH4fmeyna1Qd+eugMTNbV3XvR6oZogX/j1
+         bsftKkjEUbo8uaxqiI+m0YulWJuqvOejWXgGS/nlgkEDsX/k0OXiyMS1I14p0lmGsFIM
+         +PKfFi0+pKqTn2YK+CDl9lhzPGpnUz0w5kF+5oM9LEt6Yj/rRPrHTyPGh15rt3RHDSsF
+         1K6g==
+X-Gm-Message-State: APjAAAUJW4n4//8943bfHY+IfycfpWmmAdO5xFqTc1A6Dx5pBEG9AMOl
+        2tZ42X/JD22UjmZP0L/cMvc=
+X-Google-Smtp-Source: APXvYqytW5ZC8/F/1b1Q+/cHKSVebFO5aXPpyChnIwMXlKG7tyiUideQvhb1aGP5fDQ8u5JZD+Uh5g==
+X-Received: by 2002:a63:f146:: with SMTP id o6mr30595925pgk.179.1562081441609;
+        Tue, 02 Jul 2019 08:30:41 -0700 (PDT)
 Received: from desktop-bart.svl.corp.google.com ([2620:15c:2cd:202:4308:52a3:24b6:2c60])
-        by smtp.gmail.com with ESMTPSA id 4sm13715800pfc.92.2019.07.02.08.30.38
+        by smtp.gmail.com with ESMTPSA id 4sm13715800pfc.92.2019.07.02.08.30.40
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 02 Jul 2019 08:30:39 -0700 (PDT)
+        Tue, 02 Jul 2019 08:30:40 -0700 (PDT)
 From:   Bart Van Assche <bvanassche@acm.org>
 To:     "Martin K . Petersen" <martin.petersen@oracle.com>
 Cc:     Jens Axboe <axboe@kernel.dk>, Mike Christie <mchristie@redhat.com>,
         Christoph Hellwig <hch@lst.de>, target-devel@vger.kernel.org,
         Roman Bolshakov <r.bolshakov@yadro.com>,
         Bart Van Assche <bvanassche@acm.org>,
+        Nicholas Bellinger <nab@linux-iscsi.org>,
         Mike Christie <mchristi@redhat.com>,
         Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 1/2] block: Add blkdev_submit_write_same()
-Date:   Tue,  2 Jul 2019 08:30:30 -0700
-Message-Id: <20190702153031.3832-2-bvanassche@acm.org>
+Subject: [PATCH 2/2] target/core: Use REQ_OP_WRITE_SAME to implement WRITE SAME
+Date:   Tue,  2 Jul 2019 08:30:31 -0700
+Message-Id: <20190702153031.3832-3-bvanassche@acm.org>
 X-Mailer: git-send-email 2.22.0.410.gd8fdbe21b5-goog
 In-Reply-To: <20190702153031.3832-1-bvanassche@acm.org>
 References: <20190702153031.3832-1-bvanassche@acm.org>
@@ -55,87 +56,63 @@ Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Add an asynchronous version of blkdev_issue_write_same().
+Use blkdev_submit_write_same() instead of open-coding it.
 
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Christoph Hellwig <hch@lst.de>
+Note: as one can see in target_alloc_sgl(), the target core sets the
+offset in a scatter/gather list to zero for all allocated pages.
+
+Cc: Nicholas Bellinger <nab@linux-iscsi.org>
 Cc: Mike Christie <mchristi@redhat.com>
+Cc: Christoph Hellwig <hch@lst.de>
 Cc: Hannes Reinecke <hare@suse.de>
+Cc: Roman Bolshakov <r.bolshakov@yadro.com>
 Signed-off-by: Bart Van Assche <bvanassche@acm.org>
 ---
- block/blk-lib.c        | 37 ++++++++++++++++++++++++++++++++++++-
- include/linux/blkdev.h |  3 +++
- 2 files changed, 39 insertions(+), 1 deletion(-)
+ drivers/target/target_core_iblock.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/block/blk-lib.c b/block/blk-lib.c
-index 5f2c429d4378..f0cd9400d98a 100644
---- a/block/blk-lib.c
-+++ b/block/blk-lib.c
-@@ -187,7 +187,8 @@ static int __blkdev_issue_write_same(struct block_device *bdev, sector_t sector,
-  * @page:	page containing data
-  *
-  * Description:
-- *    Issue a write same request for the sectors in question.
-+ *    Issue a write same request for the sectors in question and wait until it
-+ *    has finished.
-  */
- int blkdev_issue_write_same(struct block_device *bdev, sector_t sector,
- 				sector_t nr_sects, gfp_t gfp_mask,
-@@ -209,6 +210,40 @@ int blkdev_issue_write_same(struct block_device *bdev, sector_t sector,
- }
- EXPORT_SYMBOL(blkdev_issue_write_same);
- 
-+/**
-+ * blkdev_submit_write_same - queue a write same operation
-+ * @bdev:	target blockdev
-+ * @sector:	start sector
-+ * @nr_sects:	number of sectors to write
-+ * @gfp_mask:	memory allocation flags (for bio_alloc)
-+ * @page:	page containing data
-+ * @bi_end_io:  will be called upon completion
-+ * @bi_private: will be stored in the bio->bi_private field of the bio passed
-+ *		to @bi_end_io.
-+ *
-+ * Description:
-+ *    Submit a write same request asynchronously for the sectors in question.
-+ *    @bi_end_io will be called upon request completion.
-+ */
-+int blkdev_submit_write_same(struct block_device *bdev, sector_t sector,
-+			     sector_t nr_sects, gfp_t gfp_mask,
-+			     struct page *page, bio_end_io_t bi_end_io,
-+			     void *bi_private)
-+{
-+	struct bio *bio = NULL;
+diff --git a/drivers/target/target_core_iblock.c b/drivers/target/target_core_iblock.c
+index b5ed9c377060..c8e64fe87f7f 100644
+--- a/drivers/target/target_core_iblock.c
++++ b/drivers/target/target_core_iblock.c
+@@ -465,6 +465,8 @@ iblock_execute_write_same(struct se_cmd *cmd)
+ 	sector_t block_lba = target_to_linux_sector(dev, cmd->t_task_lba);
+ 	sector_t sectors = target_to_linux_sector(dev,
+ 					sbc_get_write_same_sectors(cmd));
++	struct blk_plug plug;
 +	int ret;
-+
-+	ret = __blkdev_issue_write_same(bdev, sector, nr_sects, gfp_mask, page,
-+					&bio);
-+	if (ret)
-+		return ret;
-+	bio->bi_end_io = bi_end_io;
-+	bio->bi_private = bi_private;
-+	submit_bio(bio);
-+	return 0;
-+}
-+EXPORT_SYMBOL(blkdev_submit_write_same);
-+
- static int __blkdev_issue_write_zeroes(struct block_device *bdev,
- 		sector_t sector, sector_t nr_sects, gfp_t gfp_mask,
- 		struct bio **biop, unsigned flags)
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 1aafeb923e7b..3d627e0a72c0 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -1184,6 +1184,9 @@ static inline bool blk_needs_flush_plug(struct task_struct *tsk)
- extern int blkdev_issue_flush(struct block_device *, gfp_t, sector_t *);
- extern int blkdev_issue_write_same(struct block_device *bdev, sector_t sector,
- 		sector_t nr_sects, gfp_t gfp_mask, struct page *page);
-+extern int blkdev_submit_write_same(struct block_device *bdev, sector_t sector,
-+		sector_t nr_sects, gfp_t gfp_mask, struct page *page,
-+		bio_end_io_t bi_end_io, void *bi_private);
  
- #define BLKDEV_DISCARD_SECURE	(1 << 0)	/* issue a secure erase */
+ 	if (cmd->prot_op) {
+ 		pr_err("WRITE_SAME: Protection information with IBLOCK"
+@@ -481,6 +483,7 @@ iblock_execute_write_same(struct se_cmd *cmd)
+ 		return TCM_INVALID_CDB_FIELD;
+ 	}
  
++	/* 1. Use REQ_OP_WRITE_ZEROES if supported and if appropriate. */
+ 	if (bdev_write_zeroes_sectors(bdev)) {
+ 		if (!iblock_execute_zero_out(bdev, cmd))
+ 			return 0;
+@@ -491,6 +494,20 @@ iblock_execute_write_same(struct se_cmd *cmd)
+ 		goto fail;
+ 	cmd->priv = ibr;
+ 
++	/* 2. Try REQ_OP_WRITE_SAME. */
++	blk_start_plug(&plug);
++	ret = blkdev_submit_write_same(bdev, block_lba, sectors, GFP_KERNEL,
++				       sg_page(sg), iblock_bio_done, cmd);
++	blk_finish_plug(&plug);
++	if (ret == 0)
++		return 0;
++	if (ret != -EOPNOTSUPP)
++		goto fail;
++
++	/*
++	 * 3. If neither REQ_OP_WRITE_SAME nor REQ_OP_WRITE_ZEROES are
++	 * supported, use REQ_OP_WRITE.
++	 */
+ 	bio = iblock_get_bio(cmd, block_lba, 1, REQ_OP_WRITE, 0);
+ 	if (!bio)
+ 		goto fail_free_ibr;
 -- 
 2.22.0.410.gd8fdbe21b5-goog
 
