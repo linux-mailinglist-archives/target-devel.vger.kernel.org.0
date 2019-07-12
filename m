@@ -2,120 +2,59 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EEEFC6490C
-	for <lists+target-devel@lfdr.de>; Wed, 10 Jul 2019 17:05:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EB9867CB6
+	for <lists+target-devel@lfdr.de>; Sun, 14 Jul 2019 04:30:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728201AbfGJPDc (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 10 Jul 2019 11:03:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35508 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728192AbfGJPDc (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Wed, 10 Jul 2019 11:03:32 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 47E952064A;
-        Wed, 10 Jul 2019 15:03:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562771011;
-        bh=LMO9SlGP21+nsQr6IidSCJbD4Vg7RTJcjTaiZ0yhzkI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HoEYXNC0ZyXNuuIhQ0C0QecXby4+pSaCpVjSklvtNZcgco6h7VGeLozuRH5i2BuMC
-         3o/UIuQNXeb6Jrhz7ughDmpK8G5KrbUWx2bxtSNjCpEp6vCl/RjNLJe2lvZPqBnWQ/
-         fkRjQzmp7RVrP/nTNwq3s6LFu3Wvm9OsUtfccv/o=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Maurizio Lombardi <mlombard@redhat.com>,
-        Chris Leech <cleech@redhat.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 5/8] scsi: iscsi: set auth_protocol back to NULL if CHAP_A value is not supported
-Date:   Wed, 10 Jul 2019 11:03:15 -0400
-Message-Id: <20190710150319.7258-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190710150319.7258-1-sashal@kernel.org>
-References: <20190710150319.7258-1-sashal@kernel.org>
+        id S1728175AbfGNCaL convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+target-devel@lfdr.de>); Sat, 13 Jul 2019 22:30:11 -0400
+Received: from mail.iara.government.bg ([95.43.208.99]:44974 "EHLO
+        iara.government.bg" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727918AbfGNCaL (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Sat, 13 Jul 2019 22:30:11 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by iara.government.bg (Postfix) with ESMTP id C6DE02F1CBE;
+        Sat, 13 Jul 2019 07:46:53 +0300 (EEST)
+Received: from iara.government.bg ([127.0.0.1])
+        by localhost (iara.government.bg [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 4Q--FE1SZFy3; Sat, 13 Jul 2019 07:46:53 +0300 (EEST)
+Received: from localhost (localhost [127.0.0.1])
+        by iara.government.bg (Postfix) with ESMTP id 9E6E334E38C;
+        Sat, 13 Jul 2019 03:58:15 +0300 (EEST)
+X-Virus-Scanned: amavisd-new at iara.government.bg
+Received: from iara.government.bg ([127.0.0.1])
+        by localhost (iara.government.bg [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 6ZtyKNr8uUtU; Sat, 13 Jul 2019 03:58:15 +0300 (EEST)
+Received: from [10.108.11.57] (unknown [105.12.6.226])
+        by iara.government.bg (Postfix) with ESMTPSA id 6F0C1249E7A;
+        Sat, 13 Jul 2019 02:32:26 +0300 (EEST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: =?utf-8?b?RndkOiBSZTog4oKsIDIsMDAwLDAwMC4wMCBFdXJv?=
+To:     Recipients <silistra@iara.government.bg>
+From:   silistra@iara.government.bg
+Date:   Fri, 12 Jul 2019 16:32:10 -0700
+Reply-To: carfleon@gmail.com
+Message-Id: <20190712233227.6F0C1249E7A@iara.government.bg>
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+Lieber Freund,
 
-[ Upstream commit 5dd6c49339126c2c8df2179041373222362d6e49 ]
+Ich bin Herr Richard Wahl der Mega-Gewinner von $ 533M In Mega Millions Jackpot spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt. Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt. Ich habe mich freiwillig dazu entschieden, Ihnen den Betrag von € 2.000.000,00 zu spenden eine der ausgewählten 5, um meine Gewinne zu überprüfen, finden Sie auf meiner You Tube Seite unten.
 
-If the CHAP_A value is not supported, the chap_server_open() function
-should free the auth_protocol pointer and set it to NULL, or we will leave
-a dangling pointer around.
+UHR MICH HIER: https://www.youtube.com/watch?v=tne02ExNDrw
 
-[   66.010905] Unsupported CHAP_A value
-[   66.011660] Security negotiation failed.
-[   66.012443] iSCSI Login negotiation failed.
-[   68.413924] general protection fault: 0000 [#1] SMP PTI
-[   68.414962] CPU: 0 PID: 1562 Comm: targetcli Kdump: loaded Not tainted 4.18.0-80.el8.x86_64 #1
-[   68.416589] Hardware name: Red Hat KVM, BIOS 0.5.1 01/01/2011
-[   68.417677] RIP: 0010:__kmalloc_track_caller+0xc2/0x210
+Das ist dein Spendencode: [DF00430342018]
 
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Chris Leech <cleech@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/target/iscsi/iscsi_target_auth.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+Antworten Sie mit dem Spendencode auf diese E-Mail: liezlnatashavanessa@gmail.com
 
-diff --git a/drivers/target/iscsi/iscsi_target_auth.c b/drivers/target/iscsi/iscsi_target_auth.c
-index 4e680d753941..e2fa3a3bc81d 100644
---- a/drivers/target/iscsi/iscsi_target_auth.c
-+++ b/drivers/target/iscsi/iscsi_target_auth.c
-@@ -89,6 +89,12 @@ static int chap_check_algorithm(const char *a_str)
- 	return CHAP_DIGEST_UNKNOWN;
- }
- 
-+static void chap_close(struct iscsi_conn *conn)
-+{
-+	kfree(conn->auth_protocol);
-+	conn->auth_protocol = NULL;
-+}
-+
- static struct iscsi_chap *chap_server_open(
- 	struct iscsi_conn *conn,
- 	struct iscsi_node_auth *auth,
-@@ -126,7 +132,7 @@ static struct iscsi_chap *chap_server_open(
- 	case CHAP_DIGEST_UNKNOWN:
- 	default:
- 		pr_err("Unsupported CHAP_A value\n");
--		kfree(conn->auth_protocol);
-+		chap_close(conn);
- 		return NULL;
- 	}
- 
-@@ -141,19 +147,13 @@ static struct iscsi_chap *chap_server_open(
- 	 * Generate Challenge.
- 	 */
- 	if (chap_gen_challenge(conn, 1, aic_str, aic_len) < 0) {
--		kfree(conn->auth_protocol);
-+		chap_close(conn);
- 		return NULL;
- 	}
- 
- 	return chap;
- }
- 
--static void chap_close(struct iscsi_conn *conn)
--{
--	kfree(conn->auth_protocol);
--	conn->auth_protocol = NULL;
--}
--
- static int chap_server_compute_md5(
- 	struct iscsi_conn *conn,
- 	struct iscsi_node_auth *auth,
--- 
-2.20.1
+Ich hoffe, Sie und Ihre Familie glücklich zu machen.
 
+Grüße
+
+Herr Richard Wahl
