@@ -2,83 +2,128 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD8B478E97
-	for <lists+target-devel@lfdr.de>; Mon, 29 Jul 2019 17:02:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F81D79153
+	for <lists+target-devel@lfdr.de>; Mon, 29 Jul 2019 18:46:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728494AbfG2PCp (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 29 Jul 2019 11:02:45 -0400
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:36088 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727168AbfG2PCo (ORCPT
+        id S1728189AbfG2QqP (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 29 Jul 2019 12:46:15 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:39217 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728014AbfG2QqO (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 29 Jul 2019 11:02:44 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 3D4EF8EE128;
-        Mon, 29 Jul 2019 08:02:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1564412564;
-        bh=AXFFEJd9Z+18E4ObOxvkjLDLsngNOvQy6aoRiwcys2A=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=EprW1r+EW/YWTOUw/uvCXRsE7c7By6UIgumC4MaW1eJu2fXPEecjGfFRQfkdy0U2I
-         B8HdedUX5X0f0fbVa0MDGNpR6c/0Wl600FHmM+Z5t1Yj7ayetkPnygB+bcqiLnCkvs
-         r+9sqS+4sCpGDEZjL2W4X6Hl2wEe45cRXMEkmnWA=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id ql8M7lsLqgpc; Mon, 29 Jul 2019 08:02:44 -0700 (PDT)
-Received: from jarvis.lan (unknown [50.35.71.147])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 943F48EE116;
-        Mon, 29 Jul 2019 08:02:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1564412564;
-        bh=AXFFEJd9Z+18E4ObOxvkjLDLsngNOvQy6aoRiwcys2A=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=EprW1r+EW/YWTOUw/uvCXRsE7c7By6UIgumC4MaW1eJu2fXPEecjGfFRQfkdy0U2I
-         B8HdedUX5X0f0fbVa0MDGNpR6c/0Wl600FHmM+Z5t1Yj7ayetkPnygB+bcqiLnCkvs
-         r+9sqS+4sCpGDEZjL2W4X6Hl2wEe45cRXMEkmnWA=
-Message-ID: <1564412562.3501.9.camel@HansenPartnership.com>
-Subject: Re: [PATCH] target: iscsi: iscsi_target_tpg: Fix a possible
- null-pointer dereference in iscsit_tpg_add_network_portal()
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Jia-Ju Bai <baijiaju1990@gmail.com>, martin.petersen@oracle.com,
-        kstewart@linuxfoundation.org, allison@lohutok.net,
-        rfontana@redhat.com, tglx@linutronix.de, gregkh@linuxfoundation.org
-Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Mon, 29 Jul 2019 08:02:42 -0700
-In-Reply-To: <20190729022956.18192-1-baijiaju1990@gmail.com>
-References: <20190729022956.18192-1-baijiaju1990@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        Mon, 29 Jul 2019 12:46:14 -0400
+Received: by mail-pg1-f193.google.com with SMTP id u17so28541153pgi.6
+        for <target-devel@vger.kernel.org>; Mon, 29 Jul 2019 09:46:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=XB62ZlwhO0yjn1D18g6mJedhYXvVJ+OT4E/XDQe9ZCk=;
+        b=kNGpuKj266Cp80GsF21mWtbjwjw0TwpMwcxKSTrWp1fKs229lQ5Q6fKNDlF8XNZOby
+         DIzPP5WCZcmvdoALsMOTeDg/H1GNliIN45wzak4RfJPYn8DhadOjKojLjSnwjQKNX9+c
+         F+p98alnCGB01sujC8ZfcDPZtrNUcOETIWJr8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=XB62ZlwhO0yjn1D18g6mJedhYXvVJ+OT4E/XDQe9ZCk=;
+        b=G6t4tFNvkl7xfCT12Zr6lU7kK/613bGBX5XZYyO5wHMndj2cyt/CamLLP/5/M4TnkS
+         Lnp/hLiokdydmZJrfyKP4Nkzpw582ijGu+R4Vhk7b6dI5k+9M3X8CBYMicaKOvNaBv4a
+         f93BAeUtcCeafVZVZ8uuduTZtYNSVCvdOc9lPVT6Ys4aTonx+Z0Qi4xBar+RyBW1P9du
+         KlKx+ZJwOJa3URBf1mSQEEFS24fqbxIul06Ft9la1xrsRMDr9pFHfhGAr2Hyj1TwaJta
+         UedoLqfLqCkCFkvD0AhWgd6G2DJ7qMONJn1do0+xpWbo0lUC+grx6Kix7T0JFwrpdZeV
+         0k4g==
+X-Gm-Message-State: APjAAAU8ANBKS1unygmJjjJ2TaxLJdYnbL6jQCk+JyrntS42pZgPEsjY
+        F0TVp/kW342drBsKKg4hDNbkzQ==
+X-Google-Smtp-Source: APXvYqz9qJOM5dIi2ju6tb+8erAlPufIhyFtbb5+Wt/6x+Za99SlREIVsU/CBsi5YAwjGE7lxc5zNw==
+X-Received: by 2002:aa7:9ab5:: with SMTP id x21mr37126562pfi.139.1564418774350;
+        Mon, 29 Jul 2019 09:46:14 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id 35sm70258236pgw.91.2019.07.29.09.46.13
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 29 Jul 2019 09:46:13 -0700 (PDT)
+Date:   Mon, 29 Jul 2019 09:46:12 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Cc:     Michael Cyr <mikecyr@linux.ibm.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: [PATCH] scsi: ibmvscsi_tgt: Mark expected switch fall-throughs
+Message-ID: <201907290946.C8FFE767@keescook>
+References: <20190729112902.GA3768@embeddedor>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190729112902.GA3768@embeddedor>
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Mon, 2019-07-29 at 10:29 +0800, Jia-Ju Bai wrote:
-> In iscsit_tpg_add_network_portal(), there is an if statement on line
-> 496
-> to check whether tpg->tpg_tiqn is NULL:
->     if (tpg->tpg_tiqn)
+On Mon, Jul 29, 2019 at 06:29:02AM -0500, Gustavo A. R. Silva wrote:
+> Mark switch cases where we are expecting to fall through.
 > 
-> When tpg->tpg_tiqn is NULL, it is used on line 508:
->     pr_debug(..., tpg->tpg_tiqn->tiqn, ...);
+> This patch fixes the following warnings (Building: powerpc allyesconfig):
 > 
-> Thus, a possible null-pointer dereference may occur.
+> drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c: In function 'ibmvscsis_adapter_info':
+> drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c:1582:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
+>    if (connection_broken(vscsi))
+>       ^
+> drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c:1584:2: note: here
+>   default:
+>   ^~~~~~~
+> drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c: In function 'ibmvscsis_ping_response':
+> drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c:2494:16: warning: this statement may fall through [-Wimplicit-fallthrough=]
+>    vscsi->flags |= CLIENT_FAILED;
+> drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c:2495:2: note: here
+>   case H_DROPPED:
+>   ^~~~
+> drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c:2496:16: warning: this statement may fall through [-Wimplicit-fallthrough=]
+>    vscsi->flags |= RESPONSE_Q_DOWN;
+> drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c:2497:2: note: here
+>   case H_REMOTE_PARM:
+>   ^~~~
 > 
-> To fix this bug, tpg->tpg_tiqn is checked before being used.
-> 
-> This bug is found by a static analysis tool STCheck written by us.
+> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 
-I don't really think this is helpful.  The first question is, is the
-implied might be NULL check correct?  The tpg_tiqn is always set by a
-non-dummy driver and I think network configuration is only done for the
-non dummy driver, so I suspect the NULL check is wrong.  Secondly even
-if the NULL check were correct, I think there's still a need for some
-debugging output, so the proposed patch also looks wrong.
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-James
+-Kees
 
+> ---
+>  drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c b/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c
+> index 7f9535392a93..a929fe76102b 100644
+> --- a/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c
+> +++ b/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c
+> @@ -1581,6 +1581,7 @@ static long ibmvscsis_adapter_info(struct scsi_info *vscsi,
+>  	case H_PERMISSION:
+>  		if (connection_broken(vscsi))
+>  			flag_bits = (RESPONSE_Q_DOWN | CLIENT_FAILED);
+> +		/* Fall through */
+>  	default:
+>  		dev_err(&vscsi->dev, "adapter_info: h_copy_rdma to client failed, rc %ld\n",
+>  			rc);
+> @@ -2492,8 +2493,10 @@ static long ibmvscsis_ping_response(struct scsi_info *vscsi)
+>  		break;
+>  	case H_CLOSED:
+>  		vscsi->flags |= CLIENT_FAILED;
+> +		/* Fall through */
+>  	case H_DROPPED:
+>  		vscsi->flags |= RESPONSE_Q_DOWN;
+> +		/* Fall through */
+>  	case H_REMOTE_PARM:
+>  		dev_err(&vscsi->dev, "ping_response: h_send_crq failed, rc %ld\n",
+>  			rc);
+> -- 
+> 2.22.0
+> 
+
+-- 
+Kees Cook
