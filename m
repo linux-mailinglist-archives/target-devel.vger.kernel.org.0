@@ -2,99 +2,130 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 820E17835C
-	for <lists+target-devel@lfdr.de>; Mon, 29 Jul 2019 04:30:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A46C078AE1
+	for <lists+target-devel@lfdr.de>; Mon, 29 Jul 2019 13:50:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726270AbfG2CaF (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sun, 28 Jul 2019 22:30:05 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:41762 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726216AbfG2CaF (ORCPT
+        id S2387781AbfG2Lum (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 29 Jul 2019 07:50:42 -0400
+Received: from gateway34.websitewelcome.com ([192.185.150.107]:35114 "EHLO
+        gateway34.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2387482AbfG2Lum (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sun, 28 Jul 2019 22:30:05 -0400
-Received: by mail-pf1-f196.google.com with SMTP id m30so27190796pff.8;
-        Sun, 28 Jul 2019 19:30:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=Sd/DjDKLeclOpZaxncDp/vjS9lj3GlycX2/FHJjPnxs=;
-        b=BMUkO3xi4i5Xc3KrFoN5BWow64A86h/9Icz0HkUm4MQDgmut7d6OdEBpHl1UHTYIlx
-         DkwSKRZOyyvD1ZA9MKj2Ga6VuqYq7sg9SJ99OBV00l5GQ9h2p68TScg4mVFak0q7YHcj
-         XsCvJ4sCVNxByWe2ppiN5tkxjhAFEnIy/Utf1TmjOSMVFPnfysw3WWbjuaRv3AGlQnFt
-         ePVl300eQknArGxDN/EaObpWs+d6JxIA8RsKlpu41OOF7/zsef0le6CiPWtySNsw1DpO
-         yuH2cNtaubcBktdVBFPNoFXacioUyCJGU6OFvJ54nwqLTmuTsQMg7BHusq/NmOo/dKq6
-         0iiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=Sd/DjDKLeclOpZaxncDp/vjS9lj3GlycX2/FHJjPnxs=;
-        b=ZglRInrJBHpZQHQKmChSu02OCMjcUYjkv97gTmHbVzSN4FhyhfVAIuENiT8Dlsq1YC
-         80n85CXnVA0cOC6pqgIn1hfJ9XcOwy5IlyxD+zGxi13k60smL5+Hnzr38Kc3nkOKUdIM
-         1uFBv9djKuk7RmTCw9CNUcYSYLHMK1BBKDwMxJTQgPqvxY5RE54+h7OSJ1+WENKZRyrH
-         o7RUsECAISSyboTti3EOhIuTJsdtYLmIgA8Rl/p59rhUI7q6uPBEs31FjcpbbOt5d53f
-         8Wz655tB1zr1uPcJyZOpy+r2e2V4izdcOkv2LwruAlUt34+CdVAzdt5H4ZzhW+eamizz
-         6zFw==
-X-Gm-Message-State: APjAAAUrpuvSZxCwUaldoVJRM4O8YL0jqGSbXhOjONhzSu3Rh34Bi3qY
-        jHERvsHf3I/CMXqOTbMxMhw=
-X-Google-Smtp-Source: APXvYqzdf1rHwoSc3NoauOY0IX65jj4xPPvhB4ljTe0Trb7U/qI87Y3y5Nc5ce7lPDVuoWA8nIWddQ==
-X-Received: by 2002:a62:26c1:: with SMTP id m184mr32754682pfm.200.1564367404905;
-        Sun, 28 Jul 2019 19:30:04 -0700 (PDT)
-Received: from oslab.tsinghua.edu.cn ([2402:f000:4:72:808::3ca])
-        by smtp.gmail.com with ESMTPSA id d6sm52862840pgf.55.2019.07.28.19.30.01
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 28 Jul 2019 19:30:04 -0700 (PDT)
-From:   Jia-Ju Bai <baijiaju1990@gmail.com>
-To:     martin.petersen@oracle.com, kstewart@linuxfoundation.org,
-        allison@lohutok.net, rfontana@redhat.com, tglx@linutronix.de,
-        gregkh@linuxfoundation.org
+        Mon, 29 Jul 2019 07:50:42 -0400
+X-Greylist: delayed 1296 seconds by postgrey-1.27 at vger.kernel.org; Mon, 29 Jul 2019 07:50:42 EDT
+Received: from cm17.websitewelcome.com (cm17.websitewelcome.com [100.42.49.20])
+        by gateway34.websitewelcome.com (Postfix) with ESMTP id EA4AC42AAAD
+        for <target-devel@vger.kernel.org>; Mon, 29 Jul 2019 06:29:05 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id s3pxhoe7r90ons3pxhgItB; Mon, 29 Jul 2019 06:29:05 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+        Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=nTNq8k0oMaS+PPNp0AqzfLae8nXfzeNscQDCOrTOOdA=; b=ls/83NAkEaXSGpDkCGJhhzQXmg
+        vhrXJ8dTfh17VYQYN2BgzQoyPHoCNjCemvTZ+Iq7rkUscRfwa7GlQmF38GnaxiUwKhgQeFW97IKJm
+        x2gcsRC29B18WF8wyaDo2UiCY+x6gpSl4B/ZSZt33xgIn+q7YBQVk8xB6Z13JNSnttExV2zX7N8J5
+        6qsBrJjgJVYHxygEsf3emqIhFjxvjeN3Jj4brrr9g+lnv/7kQQtcydf4ciwoe2mqfWz7WjMNUAK8U
+        p2FQH48AXxrPtCB3MRUf46dZk0PgIn1e632NMa1jFlzgI6BBFp+Mv2pDf84abUNLMap60DvWMFrd/
+        4E7P8TVg==;
+Received: from [187.192.11.120] (port=47322 helo=embeddedor)
+        by gator4166.hostgator.com with esmtpa (Exim 4.92)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1hs3pw-000Joy-Pw; Mon, 29 Jul 2019 06:29:04 -0500
+Date:   Mon, 29 Jul 2019 06:29:02 -0500
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+To:     Michael Cyr <mikecyr@linux.ibm.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
 Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jia-Ju Bai <baijiaju1990@gmail.com>
-Subject: [PATCH] target: iscsi: iscsi_target_tpg: Fix a possible null-pointer dereference in iscsit_tpg_add_network_portal()
-Date:   Mon, 29 Jul 2019 10:29:56 +0800
-Message-Id: <20190729022956.18192-1-baijiaju1990@gmail.com>
-X-Mailer: git-send-email 2.17.0
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Kees Cook <keescook@chromium.org>
+Subject: [PATCH] scsi: ibmvscsi_tgt: Mark expected switch fall-throughs
+Message-ID: <20190729112902.GA3768@embeddedor>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.192.11.120
+X-Source-L: No
+X-Exim-ID: 1hs3pw-000Joy-Pw
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: (embeddedor) [187.192.11.120]:47322
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 29
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-In iscsit_tpg_add_network_portal(), there is an if statement on line 496
-to check whether tpg->tpg_tiqn is NULL:
-    if (tpg->tpg_tiqn)
+Mark switch cases where we are expecting to fall through.
 
-When tpg->tpg_tiqn is NULL, it is used on line 508:
-    pr_debug(..., tpg->tpg_tiqn->tiqn, ...);
+This patch fixes the following warnings (Building: powerpc allyesconfig):
 
-Thus, a possible null-pointer dereference may occur.
+drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c: In function 'ibmvscsis_adapter_info':
+drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c:1582:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
+   if (connection_broken(vscsi))
+      ^
+drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c:1584:2: note: here
+  default:
+  ^~~~~~~
+drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c: In function 'ibmvscsis_ping_response':
+drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c:2494:16: warning: this statement may fall through [-Wimplicit-fallthrough=]
+   vscsi->flags |= CLIENT_FAILED;
+drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c:2495:2: note: here
+  case H_DROPPED:
+  ^~~~
+drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c:2496:16: warning: this statement may fall through [-Wimplicit-fallthrough=]
+   vscsi->flags |= RESPONSE_Q_DOWN;
+drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c:2497:2: note: here
+  case H_REMOTE_PARM:
+  ^~~~
 
-To fix this bug, tpg->tpg_tiqn is checked before being used.
-
-This bug is found by a static analysis tool STCheck written by us.
-
-Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 ---
- drivers/target/iscsi/iscsi_target_tpg.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/target/iscsi/iscsi_target_tpg.c b/drivers/target/iscsi/iscsi_target_tpg.c
-index 8075f60fd02c..bf97be36ec1f 100644
---- a/drivers/target/iscsi/iscsi_target_tpg.c
-+++ b/drivers/target/iscsi/iscsi_target_tpg.c
-@@ -505,9 +505,11 @@ struct iscsi_tpg_np *iscsit_tpg_add_network_portal(
- 		spin_unlock(&tpg_np_parent->tpg_np_parent_lock);
- 	}
- 
--	pr_debug("CORE[%s] - Added Network Portal: %pISpc,%hu on %s\n",
--		tpg->tpg_tiqn->tiqn, &np->np_sockaddr, tpg->tpgt,
--		np->np_transport->name);
-+	if (tpg->tpg_tiqn) {
-+		pr_debug("CORE[%s] - Added Network Portal: %pISpc,%hu on %s\n",
-+			tpg->tpg_tiqn->tiqn, &np->np_sockaddr, tpg->tpgt,
-+			np->np_transport->name);
-+	}
- 
- 	return tpg_np;
- }
+diff --git a/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c b/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c
+index 7f9535392a93..a929fe76102b 100644
+--- a/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c
++++ b/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c
+@@ -1581,6 +1581,7 @@ static long ibmvscsis_adapter_info(struct scsi_info *vscsi,
+ 	case H_PERMISSION:
+ 		if (connection_broken(vscsi))
+ 			flag_bits = (RESPONSE_Q_DOWN | CLIENT_FAILED);
++		/* Fall through */
+ 	default:
+ 		dev_err(&vscsi->dev, "adapter_info: h_copy_rdma to client failed, rc %ld\n",
+ 			rc);
+@@ -2492,8 +2493,10 @@ static long ibmvscsis_ping_response(struct scsi_info *vscsi)
+ 		break;
+ 	case H_CLOSED:
+ 		vscsi->flags |= CLIENT_FAILED;
++		/* Fall through */
+ 	case H_DROPPED:
+ 		vscsi->flags |= RESPONSE_Q_DOWN;
++		/* Fall through */
+ 	case H_REMOTE_PARM:
+ 		dev_err(&vscsi->dev, "ping_response: h_send_crq failed, rc %ld\n",
+ 			rc);
 -- 
-2.17.0
+2.22.0
 
