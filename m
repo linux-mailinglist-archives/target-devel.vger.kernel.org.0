@@ -2,75 +2,99 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2900978292
-	for <lists+target-devel@lfdr.de>; Mon, 29 Jul 2019 01:59:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 820E17835C
+	for <lists+target-devel@lfdr.de>; Mon, 29 Jul 2019 04:30:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726375AbfG1X7d (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sun, 28 Jul 2019 19:59:33 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:34734 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726279AbfG1X7d (ORCPT
+        id S1726270AbfG2CaF (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 28 Jul 2019 22:30:05 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:41762 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726216AbfG2CaF (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sun, 28 Jul 2019 19:59:33 -0400
-Received: by mail-ot1-f67.google.com with SMTP id n5so60851387otk.1
-        for <target-devel@vger.kernel.org>; Sun, 28 Jul 2019 16:59:33 -0700 (PDT)
+        Sun, 28 Jul 2019 22:30:05 -0400
+Received: by mail-pf1-f196.google.com with SMTP id m30so27190796pff.8;
+        Sun, 28 Jul 2019 19:30:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=8HerNJ+KPshsmAFkEGOs3SrN9ygWfkRsx5jp23KpQmk=;
-        b=ClvSw5i6Gxdg2SnCiMkKnuTDkj2xyVtCB7FMI/qaNsOClr1/7vT6g26bNpoFoS1TEt
-         ezuJNXJkNUs/w7OxL993CmXHAlm8MthO0pNMeWTiY8AVhMlWZUmoPtqiyBCZD8mM9L3u
-         WYAIyUOjiuXePvOILVzlUDPr25mXY2F8ZH90MMsx6CoJBMmVOxXum5xtLPmGl7CwSF98
-         Q8KbHiuHCV0HfQU/5e31plnIoJlIDFMQNTJW8P4VSsUac5+/HgXUTUoieGrCsOWUWekL
-         otKGLKEVPoebgDJKFvyQUODqIkjdAMRZmXpDBIGq6nbZV4Efsx55+LqOxVHSkVAtsSe7
-         OY1Q==
+        h=from:to:cc:subject:date:message-id;
+        bh=Sd/DjDKLeclOpZaxncDp/vjS9lj3GlycX2/FHJjPnxs=;
+        b=BMUkO3xi4i5Xc3KrFoN5BWow64A86h/9Icz0HkUm4MQDgmut7d6OdEBpHl1UHTYIlx
+         DkwSKRZOyyvD1ZA9MKj2Ga6VuqYq7sg9SJ99OBV00l5GQ9h2p68TScg4mVFak0q7YHcj
+         XsCvJ4sCVNxByWe2ppiN5tkxjhAFEnIy/Utf1TmjOSMVFPnfysw3WWbjuaRv3AGlQnFt
+         ePVl300eQknArGxDN/EaObpWs+d6JxIA8RsKlpu41OOF7/zsef0le6CiPWtySNsw1DpO
+         yuH2cNtaubcBktdVBFPNoFXacioUyCJGU6OFvJ54nwqLTmuTsQMg7BHusq/NmOo/dKq6
+         0iiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=8HerNJ+KPshsmAFkEGOs3SrN9ygWfkRsx5jp23KpQmk=;
-        b=dAQKtlhmLXt5vFUbG1JjB8/I3dHHGl4WefEMiGS304uqCOfboppka68X9yUnZ6y2Ba
-         AukJNKER5L1j78n9Gz19HByehkJvzB67hZP5H5P+bxUP0o34g7QEgr6+yQ+Y9VPXmuSh
-         bHCJKg1O+RkQyCjEb1KsFN0NzIiSBLFHmBU+EnKIbOru4eU3GxfAFxNrYLiXBeKA9NgC
-         rDpoDhhOjPDpP/MHWN539dtJuzHDDM/3unrXx/QI+uEk6kGgvm8dZoGwYh0dERwMLVBP
-         puMA3Ic1RXTTd5zlYvgpFwofUgXaFOXhkR5J4as+GTZ8j2u1BsWDch+Mnmwrqq52/PqX
-         im9w==
-X-Gm-Message-State: APjAAAWg01t3++20bJryZVhJxaH0rt1PVxd9J5B9WGF5Fyaho/05BWuo
-        D+RB4ugUhfB8MYNlPT8w2n1HP6KxFzlNkGwiy2s=
-X-Google-Smtp-Source: APXvYqy0SEbg3Q922DqQYc3ryazpWhuGHyCmbgkwKcM/N/RLO1KZ1txk7ET1AE/lCzNZIJBd7IrmCDx2tXDjIk0R6Lg=
-X-Received: by 2002:a9d:7ccd:: with SMTP id r13mr12561194otn.196.1564358372768;
- Sun, 28 Jul 2019 16:59:32 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a9d:7614:0:0:0:0:0 with HTTP; Sun, 28 Jul 2019 16:59:32
- -0700 (PDT)
-Reply-To: williamrobert416@gmail.com
-From:   "Mr. Robert William" <omarmariam373@gmail.com>
-Date:   Mon, 29 Jul 2019 00:59:32 +0100
-Message-ID: <CA+FSRKCvoY50VasAKiuKEnp8p=SCYqdnBVG4ZzeROzmBGxZGJQ@mail.gmail.com>
-Subject: Its Urgent
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=Sd/DjDKLeclOpZaxncDp/vjS9lj3GlycX2/FHJjPnxs=;
+        b=ZglRInrJBHpZQHQKmChSu02OCMjcUYjkv97gTmHbVzSN4FhyhfVAIuENiT8Dlsq1YC
+         80n85CXnVA0cOC6pqgIn1hfJ9XcOwy5IlyxD+zGxi13k60smL5+Hnzr38Kc3nkOKUdIM
+         1uFBv9djKuk7RmTCw9CNUcYSYLHMK1BBKDwMxJTQgPqvxY5RE54+h7OSJ1+WENKZRyrH
+         o7RUsECAISSyboTti3EOhIuTJsdtYLmIgA8Rl/p59rhUI7q6uPBEs31FjcpbbOt5d53f
+         8Wz655tB1zr1uPcJyZOpy+r2e2V4izdcOkv2LwruAlUt34+CdVAzdt5H4ZzhW+eamizz
+         6zFw==
+X-Gm-Message-State: APjAAAUrpuvSZxCwUaldoVJRM4O8YL0jqGSbXhOjONhzSu3Rh34Bi3qY
+        jHERvsHf3I/CMXqOTbMxMhw=
+X-Google-Smtp-Source: APXvYqzdf1rHwoSc3NoauOY0IX65jj4xPPvhB4ljTe0Trb7U/qI87Y3y5Nc5ce7lPDVuoWA8nIWddQ==
+X-Received: by 2002:a62:26c1:: with SMTP id m184mr32754682pfm.200.1564367404905;
+        Sun, 28 Jul 2019 19:30:04 -0700 (PDT)
+Received: from oslab.tsinghua.edu.cn ([2402:f000:4:72:808::3ca])
+        by smtp.gmail.com with ESMTPSA id d6sm52862840pgf.55.2019.07.28.19.30.01
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 28 Jul 2019 19:30:04 -0700 (PDT)
+From:   Jia-Ju Bai <baijiaju1990@gmail.com>
+To:     martin.petersen@oracle.com, kstewart@linuxfoundation.org,
+        allison@lohutok.net, rfontana@redhat.com, tglx@linutronix.de,
+        gregkh@linuxfoundation.org
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jia-Ju Bai <baijiaju1990@gmail.com>
+Subject: [PATCH] target: iscsi: iscsi_target_tpg: Fix a possible null-pointer dereference in iscsit_tpg_add_network_portal()
+Date:   Mon, 29 Jul 2019 10:29:56 +0800
+Message-Id: <20190729022956.18192-1-baijiaju1990@gmail.com>
+X-Mailer: git-send-email 2.17.0
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+In iscsit_tpg_add_network_portal(), there is an if statement on line 496
+to check whether tpg->tpg_tiqn is NULL:
+    if (tpg->tpg_tiqn)
+
+When tpg->tpg_tiqn is NULL, it is used on line 508:
+    pr_debug(..., tpg->tpg_tiqn->tiqn, ...);
+
+Thus, a possible null-pointer dereference may occur.
+
+To fix this bug, tpg->tpg_tiqn is checked before being used.
+
+This bug is found by a static analysis tool STCheck written by us.
+
+Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+---
+ drivers/target/iscsi/iscsi_target_tpg.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/target/iscsi/iscsi_target_tpg.c b/drivers/target/iscsi/iscsi_target_tpg.c
+index 8075f60fd02c..bf97be36ec1f 100644
+--- a/drivers/target/iscsi/iscsi_target_tpg.c
++++ b/drivers/target/iscsi/iscsi_target_tpg.c
+@@ -505,9 +505,11 @@ struct iscsi_tpg_np *iscsit_tpg_add_network_portal(
+ 		spin_unlock(&tpg_np_parent->tpg_np_parent_lock);
+ 	}
+ 
+-	pr_debug("CORE[%s] - Added Network Portal: %pISpc,%hu on %s\n",
+-		tpg->tpg_tiqn->tiqn, &np->np_sockaddr, tpg->tpgt,
+-		np->np_transport->name);
++	if (tpg->tpg_tiqn) {
++		pr_debug("CORE[%s] - Added Network Portal: %pISpc,%hu on %s\n",
++			tpg->tpg_tiqn->tiqn, &np->np_sockaddr, tpg->tpgt,
++			np->np_transport->name);
++	}
+ 
+ 	return tpg_np;
+ }
 -- 
-Hello,
+2.17.0
 
-I am Eng. Robert William, a retired Marine Engineer residing in
-Trinidad & Tobago.
-Unfortunately i am admitted to the hospital for a cancer (Sickness)
-over a year now,my doctor reported that i have only few months to pass
-away. Please i need your consent to invest my money (USD$1.8 Million)
-in any business of your
-
-choice in your country before i die, i have no other relatives not
-even children because i lost my family in a fire disaster in 2005.
-Please i need your urgent and
-
-kind response to enable me send you more information on how to contact
-my bank as my next of kin to process the fund into your bank account.
-
-
-Mr Robert William
