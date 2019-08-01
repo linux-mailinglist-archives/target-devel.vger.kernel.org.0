@@ -2,86 +2,102 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BFCF97B3DE
-	for <lists+target-devel@lfdr.de>; Tue, 30 Jul 2019 22:01:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F3767DFF1
+	for <lists+target-devel@lfdr.de>; Thu,  1 Aug 2019 18:18:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726268AbfG3UBL (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 30 Jul 2019 16:01:11 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:39508 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726859AbfG3UBI (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Tue, 30 Jul 2019 16:01:08 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x6UJwRc7003782;
-        Tue, 30 Jul 2019 20:00:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2018-07-02;
- bh=I7g93oDAJADygq6HSUWo+aeYES9vSI9AEdt1OGiyNz8=;
- b=XMg6rveVIGSKpDg4eBg4bBESeRtboHPucj9F2SYq6R2ALT81L2o0uSab+zMSEXDwvYqy
- xnAwa763jDgYu9X/2Oz5GyjC/iRfxrp+6z8zA5zkuAwvqTpc9Ty7H3FXlsH9kQcS4gIJ
- xv0ficoyJOcFiKaeThUoYpNMk6SFP5HT+Bq9c+qWh/ETtmyRqv24yNSbL1BKSiRQw1ws
- MsFXXISiLPgwpo3TkN7YToBMGbECGJztcSjwRAYWiMTMq87cYM0goin5C3ExAIR1wqz1
- PRxZwfK+HucTveSFZa0hgWYpSD97L4bU0tQV1aiL3KfGLns0uME+DncUgqpoiEirIfCQ jg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 2u0e1trw67-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 30 Jul 2019 20:00:42 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x6UJwOFO051471;
-        Tue, 30 Jul 2019 20:00:41 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 2u2jp4b17d-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 30 Jul 2019 20:00:41 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x6UK0d5B021969;
-        Tue, 30 Jul 2019 20:00:40 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 30 Jul 2019 13:00:39 -0700
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc:     Michael Cyr <mikecyr@linux.ibm.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH] scsi: ibmvscsi_tgt: Mark expected switch fall-throughs
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20190729112902.GA3768@embeddedor>
-Date:   Tue, 30 Jul 2019 16:00:35 -0400
-In-Reply-To: <20190729112902.GA3768@embeddedor> (Gustavo A. R. Silva's message
-        of "Mon, 29 Jul 2019 06:29:02 -0500")
-Message-ID: <yq1wofzl2cc.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+        id S1731808AbfHAQSs (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 1 Aug 2019 12:18:48 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:40302 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727024AbfHAQSs (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Thu, 1 Aug 2019 12:18:48 -0400
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 8A46D14D534;
+        Thu,  1 Aug 2019 16:18:48 +0000 (UTC)
+Received: from [10.10.120.21] (ovpn-120-21.rdu2.redhat.com [10.10.120.21])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 387EA5D9CA;
+        Thu,  1 Aug 2019 16:18:48 +0000 (UTC)
+Subject: Re: Reporting of errors detected by handler_read() before it returns
+To:     David Butterfield <dab21774@gmail.com>,
+        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>
+References: <5e14ffb2-d08d-7ee4-7bba-09a83627b0d5@gmail.com>
+From:   Mike Christie <mchristi@redhat.com>
+Message-ID: <5D4310E7.5020701@redhat.com>
+Date:   Thu, 1 Aug 2019 11:18:47 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.6.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9334 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=807
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1907300203
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9334 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=875 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1907300203
+In-Reply-To: <5e14ffb2-d08d-7ee4-7bba-09a83627b0d5@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Thu, 01 Aug 2019 16:18:48 +0000 (UTC)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+Sorry for the late reply. Maybe add a tcmu prefix to the subject next time.
 
-Gustavo,
+On 07/23/2019 09:07 PM, David Butterfield wrote:
+> In tcmu-runner.h some comments in struct tcmur_handler say this:
+> 
+> 	/*
+> 	 * Below callbacks are only executed by generic_handle_cmd.
+> 	 * Returns:
+> 	 * - TCMU_STS_OK if the handler has queued the command.
+> 	 * - TCMU_STS_NO_RESOURCE if the handler was not able to allocate
+> 	 *   resources for the command.
+> 	 *
+> 	 * If TCMU_STS_OK is returned from the callout the handler must call
+> 	 * the tcmulib_cmd->done function with TCMU_STS return code.
+> 	 */
+> 	rw_fn_t write;
+> 	rw_fn_t read;
+> 	flush_fn_t flush;
+> 	unmap_fn_t unmap;
+> 
+> It is not clear what the handler should do if it detects a non-resource error, processing
+> one of those command types, before returning from the handler's callout function.
+>     
+> The comment appears to say that rhandler->write() could return TCMU_STS_OK after calling
+> cmd->done(..., TCMU_STS_error) (so callers should be warned that the completion can occur
+> before the request call returns).
+> 
+> But given that the caller has to check for TCMU_STS_NO_RESOURCE anyway, perhaps it is also
+> permitted to simply return other errors directly from the callout function, always omitting
+> the call to cmd->done() when TCMU_STS_OK is not returned.
+> 
+> However, the code in file_example.c does not do either of those things, and directly
+> violates the comment in tcmu-runner.h -- this excerpt is from file_read():
+> 
+> 	while (remaining) {
+> 		ret = preadv(state->fd, iov, iov_cnt, offset);
+> 		if (ret < 0) {
+> 			tcmu_err("read failed: %m\n");
+> 			ret = TCMU_STS_RD_ERR;
+> 			goto done;
+> 		}
+> 		...
+> 	}
+> 	ret = TCMU_STS_OK;
+> done:
+> 	return ret;
+> 
+> The file_read() function operates synchronously, and never issues a call to cmd->done()
+> for successful reads returning TCMU_STS_OK, contradicting the comment in tcmu-runner.h.
+> 
+> Assuming the function is required to call cmd->done() for a successful operation, a
+> question remains which of these solutions is more correct or preferred.  (I would prefer
+> the first one be allowed -- to return any TCMU_STS_error directly from the function and
+> omit the call to cmd->done() whenever returning TCMU_STS_OK.)
+> 
 
-> Mark switch cases where we are expecting to fall through.
+Update your tcmu-runner git repo :)
 
-Applied to 5.4/scsi-queue, thanks!
+A little bit ago, the comments in tcmu-runner.h were updated to make it
+clear what type of handler can do what, and also support for not having
+to call cmd->done in handlers like file_example was added.
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
