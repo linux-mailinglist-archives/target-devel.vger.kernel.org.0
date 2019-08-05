@@ -2,59 +2,61 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EEE7680FD2
-	for <lists+target-devel@lfdr.de>; Mon,  5 Aug 2019 02:43:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2169D81234
+	for <lists+target-devel@lfdr.de>; Mon,  5 Aug 2019 08:24:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726764AbfHEAn7 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sun, 4 Aug 2019 20:43:59 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:35945 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726709AbfHEAn7 (ORCPT
+        id S1726423AbfHEGYH (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 5 Aug 2019 02:24:07 -0400
+Received: from esa4.hgst.iphmx.com ([216.71.154.42]:58178 "EHLO
+        esa4.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725976AbfHEGYH (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sun, 4 Aug 2019 20:43:59 -0400
-Received: by mail-pg1-f194.google.com with SMTP id l21so38753367pgm.3;
-        Sun, 04 Aug 2019 17:43:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=TgZ9+rbKeAVKT4OSxX6UTZLTIVp5FDzLdAz6+W1+EeM=;
-        b=u2V97PcEo76l33qCbk2NupEBzVoIDm08juiRXRpFKbKu25eXEobqbwIrFCKHw2YHEg
-         LqFWQtOG19Nv8AzldyXrcTaVGE28XUYTZLZxcmcGZ7jzqRdRuEbxlbkCgqtgQKl/+mNo
-         YGEjiZ/IX6ai7dMXpm4jRhaBE4x2/mSMzdfEm2xYNFifgGh6WGzYrHbrxTmwuuYxjC6X
-         h6QS5aayFPlvIBlqHKreAjLQLWYyzYS9VfsuYCcTw11u12K4MjR5HYRkQFMMzI391CQ2
-         uBUHX22xJTV1miuxY3/qjt4iqk2CRalvWfGAr7Aa9sf46SqSVvYQaFaq1z2nKgsqgum4
-         S/OA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=TgZ9+rbKeAVKT4OSxX6UTZLTIVp5FDzLdAz6+W1+EeM=;
-        b=s9s+VuDXyyZn0JaUFAcCwR/TLlHBmtH3Vh3pyI/QelZXT9EDNIxZHlvWsKjM6dM0Vu
-         Ry9LaFTy0dCLqkpntOPyLmmDZixFEwK3sWVRAuCiV+caERX917s0mXOr5iffADmsyR9y
-         AtX+Cru0TENZA+rlI5bajEDudfOJn/9t8/vfL6XZiStw4DoMkhxDx7bkzt8mWDztg7cb
-         HsTO43EujnKDEwYeNAFVBnkZmN9c1H5afOrwKIadioV/t/JGtWaVY05L3oRKe65Jmoqk
-         GQPfUjqllsywaXMVKnsSRQgsHb/6ZZCo7uEVnGWqIrB4vdCYSYcj+6sUt3yqzOa3qvK1
-         bdBg==
-X-Gm-Message-State: APjAAAWzrLVgdSFmz2mDXbq4dLh435jXgsVmkj1SEfizpjM3sDDExJpa
-        NEu45kul04yKe5D4TkDvJu2lAgIp
-X-Google-Smtp-Source: APXvYqyNZyPx2u6uQ/oDlTxjnuOWY8+Dxcu1HQLLFuAXuaWn37qCEIcLhdsoXBlTrAQRXfmdFMO5AA==
-X-Received: by 2002:a62:e403:: with SMTP id r3mr67570752pfh.37.1564965838155;
-        Sun, 04 Aug 2019 17:43:58 -0700 (PDT)
-Received: from k8s-VirtualBox.cn.ibm.com ([103.49.135.195])
-        by smtp.gmail.com with ESMTPSA id 85sm87257202pfv.130.2019.08.04.17.43.55
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sun, 04 Aug 2019 17:43:57 -0700 (PDT)
-From:   Li Zhong <lizhongfs@gmail.com>
+        Mon, 5 Aug 2019 02:24:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1564986248; x=1596522248;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=dy07uosSr7cKziYkXSNyPTsOxT7lydWAZPZiedfNQB4=;
+  b=Gb1z+smh2ZUJRHzz12c5n8FKcXRtoAued/OQZ95xNLR5nQOE9C2qhIvN
+   X7uiGx47OIxlDIGehgP1B7FI9RiMFMtD+MLJPKx+Xi4PkuYLqxx9bLpjU
+   ZgYW6RbqItgxtuRKbZzuMxiSv9krdp4DTN36S0HUDY8J4CVFN0cj3Me1e
+   KKBPqj2VkDO29a4scztFqAg3D3VGblLIyx6nQJzvKIGjoSmY5hxVqI0ZH
+   GOw5NWkXGNAWwR9K80gv+DFf8K2LwsMF4f8Kq1X4Erzc3eWLbiorq3VCO
+   4raXw43EmrPTuzEjnsvfzwPiaa86I+04c1bsICqSgnU9ukJr+ykdpBDzq
+   Q==;
+IronPort-SDR: nHS2v3CCOze4Dhg6c0h6DWdijIXBMv4OsAtd4mrMj1skBC7kOq5GUhTLr2y68GREaZvHKcvztQ
+ iRVPtUB1ko03SScBatApfCXPpR7eYLNOAoLw4X/DX3/ymD8lsyjNkcQgGVcAXrbL23Qc+JuG0A
+ I9V9lw9EUCYJ/IkDbItlsnLtKpriDt7WT5fK0w3tMFnhO2I150cnx4ceqR3Xm5nxlq8sjbT8Wy
+ llKJtNycCRlhnMKZTGCnmVxdTFgF+uPzjLOVW1rytxCifcPdSsBQTyANORjfODFSShhjErKF6S
+ sdE=
+X-IronPort-AV: E=Sophos;i="5.64,348,1559491200"; 
+   d="scan'208";a="114977754"
+Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 05 Aug 2019 14:24:07 +0800
+IronPort-SDR: obY7fVXZQ1GYI4Ao5QcID/UPNrlYBK9BSWCyXUaXD9PJ7z7CjkgfqHoZ52P3sOu8Mv5QVpQZTj
+ 5VTMgdY44rCQ5ogBD25O2M1joW6LX3Bji1Mu91TL7Id8KBBMedeypXDdUO2oXccejIP/bzsbB6
+ evL1CVHx+CAndA2FmtX7+MDiG9+bgaKiCmgYbIZwqL6AXwC4RoXI6D6exg0U6sntrjTIfGcx4h
+ yu5NLrE1yJiXmYsMViiVTwwqztKTT4MIDAoazTuL114y+fJqVixUqGwCm/XDARAOHb5Dqlryy+
+ qExjG8wpVy4MX9cbRo0GGwB8
+Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2019 23:21:59 -0700
+IronPort-SDR: 0ifyC7AQgrYkOhlpSlsHxA8cotwCTpt8O3eVbCNt7e5nVAiqUYE93p1q0Xr/e6C8zYEHadQdvO
+ IQ+odcXFW9a+Og/hrY2O9+ZAsinMydpZ37V+eSAMUnoxvBuTlWguRkoWgiGGcpyxGEuqeIHq42
+ aH9dFc/VvpaDNWd0d0Sgo6kBxagd5dIqbbNnKg5r+6CzMHAFqYyjW34dgme/D3Z0gQyY20UHwR
+ KhgvUFeg6jzsg2cmSfiON1/jDT/sqYGyNh6gKUiNmHlyuV+iE4wvLs8SY82ZooCrcrBvB9q+BH
+ Isc=
+Received: from naota.dhcp.fujisawa.hgst.com (HELO naota.fujisawa.hgst.com) ([10.149.53.115])
+  by uls-op-cesaip02.wdc.com with ESMTP; 04 Aug 2019 23:24:06 -0700
+From:   Naohiro Aota <naohiro.aota@wdc.com>
 To:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Cc:     martin.petersen@oracle.com, lizhongfs@gmail.com,
-        mchristi@redhat.com
-Subject: [RFC PATCH v2] target: tcmu: clean the nl_cmd of the udev when nl send fails
-Date:   Mon,  5 Aug 2019 08:43:36 +0800
-Message-Id: <20190805004336.16181-1-lizhongfs@gmail.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <5D446BC2.9000303@redhat.com>
-References: <5D446BC2.9000303@redhat.com>
+Cc:     Nicholas Bellinger <nab@linux-iscsi.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Naohiro Aota <naohiro.aota@wdc.com>
+Subject: [PATCH] scsi: target/tcm_loop: update upper limit of LUN
+Date:   Mon,  5 Aug 2019 15:23:13 +0900
+Message-Id: <20190805062313.343221-1-naohiro.aota@wdc.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: target-devel-owner@vger.kernel.org
@@ -62,73 +64,39 @@ Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-If the userspace process crashes while we send the nl msg, it is possible
-that the cmd in curr_nl_cmd of tcmu_dev never gets reset to 0, and
-and returns busy for other commands after the userspace process is
-restartd.
+targetcli-fb (or its library: rtslib-fb) allows us to create LUN up to
+65535. On the other hand, the kernel driver is limiting max_lun to 0.
 
-More details below:
+This limitation causes an actual problem when you delete a loopback device
+(using /sys/class/scsi_device/${lun}/device/delete) and rescan it (using
+/sys/class/scsi_host/host${h}/scan). You can delete the device, but cannot
+rescan it because its LUN is larger than the max_lun and so the scan
+request results in -EINVAL error in scsi_scan_host_selected().
 
-/backstores/user:file/file> set attribute dev_size=2048
-Cannot set attribute dev_size: [Errno 3] No such process
-/backstores/user:file/file> set attribute dev_size=2048
-Cannot set attribute dev_size: [Errno 16] Device or resource busy
+This commit fix the upper limit to be as same as rtslib-fb allows.
 
-with following kernel messages:
-[173605.747169] Unable to reconfigure device
-[173616.686674] tcmu daemon: command reply support 1.
-[173623.866978] netlink cmd 3 already executing on file
-[173623.866984] Unable to reconfigure device
-
-Also, it is not safe to leave the nl_cmd in the list, and not get
-deleted.
-
-This patch removes the nl_cmd from the list, and clear its data if
-it is not sent successfully.
-
-Signed-off-by: Li Zhong <lizhongfs@gmail.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
 ---
- drivers/target/target_core_user.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/target/loopback/tcm_loop.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-index 04eda111920e..68045cbca595 100644
---- a/drivers/target/target_core_user.c
-+++ b/drivers/target/target_core_user.c
-@@ -1708,6 +1708,24 @@ static int tcmu_init_genl_cmd_reply(struct tcmu_dev *udev, int cmd)
- 	return 0;
- }
+diff --git a/drivers/target/loopback/tcm_loop.c b/drivers/target/loopback/tcm_loop.c
+index 3305b47fdf53..3db541ad727d 100644
+--- a/drivers/target/loopback/tcm_loop.c
++++ b/drivers/target/loopback/tcm_loop.c
+@@ -336,10 +336,10 @@ static int tcm_loop_driver_probe(struct device *dev)
+ 	 */
+ 	*((struct tcm_loop_hba **)sh->hostdata) = tl_hba;
+ 	/*
+-	 * Setup single ID, Channel and LUN for now..
++	 * Setup single ID, and Channel for now..
+ 	 */
+ 	sh->max_id = 2;
+-	sh->max_lun = 0;
++	sh->max_lun = 65536;
+ 	sh->max_channel = 0;
+ 	sh->max_cmd_len = SCSI_MAX_VARLEN_CDB_SIZE;
  
-+static void tcmu_destroy_genl_cmd_reply(struct tcmu_dev *udev)
-+{
-+	struct tcmu_nl_cmd *nl_cmd = &udev->curr_nl_cmd;
-+
-+	if (!tcmu_kern_cmd_reply_supported)
-+		return;
-+
-+	if (udev->nl_reply_supported <= 0)
-+		return;
-+
-+	mutex_lock(&tcmu_nl_cmd_mutex);
-+
-+	list_del(&nl_cmd->nl_list);
-+	memset(nl_cmd, 0, sizeof(*nl_cmd));
-+
-+	mutex_unlock(&tcmu_nl_cmd_mutex);
-+}
-+
- static int tcmu_wait_genl_cmd_reply(struct tcmu_dev *udev)
- {
- 	struct tcmu_nl_cmd *nl_cmd = &udev->curr_nl_cmd;
-@@ -1788,6 +1806,8 @@ static int tcmu_netlink_event_send(struct tcmu_dev *udev,
- 	if (ret == 0 ||
- 	   (ret == -ESRCH && cmd == TCMU_CMD_ADDED_DEVICE))
- 		return tcmu_wait_genl_cmd_reply(udev);
-+	else
-+		tcmu_destroy_genl_cmd_reply(udev);
- 
- 	return ret;
- }
 -- 
-2.20.1
+2.22.0
 
