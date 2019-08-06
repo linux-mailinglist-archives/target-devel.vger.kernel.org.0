@@ -2,98 +2,115 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 67F4D82FA3
-	for <lists+target-devel@lfdr.de>; Tue,  6 Aug 2019 12:23:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4CDB83817
+	for <lists+target-devel@lfdr.de>; Tue,  6 Aug 2019 19:42:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731922AbfHFKXy (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 6 Aug 2019 06:23:54 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:44087 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726713AbfHFKXy (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Tue, 6 Aug 2019 06:23:54 -0400
-Received: by mail-ed1-f66.google.com with SMTP id k8so81764920edr.11;
-        Tue, 06 Aug 2019 03:23:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=nHAZm0GZeVyi0k2jXAqZJ6+K/F+OXmkni52x4h/2WKU=;
-        b=W6yaIi5Eo9POup4WUZfRIHlyJ8IGxq+DvAHVwLOkie5rWs0Fk9vvDlFBrcwFpoK+VL
-         Tj0JydlTDm1RimAaQo0IBtt0NGVl1bzVHDI3DDYlzgCDaqlQoQAc43r3qj7Ivm8RcyhC
-         eJKN/HvOYiTmeFsPcLvX9daiIIXSgCUlLR/bJOUTieraPl+UPBZrrJQFtXaclzq/bra+
-         AF+Zksj+MchmgA6LNPHlmULwQwjjdyA4PjX01pHQg3/ZCrqEzkOKxlLBpKVN6jmSv01r
-         C80UUtClWdQqFzFISc93OQENgf7/tFHSDLNumfYDptwVttiXjO3XgQEc1Tc+85IfBkBA
-         9y8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=nHAZm0GZeVyi0k2jXAqZJ6+K/F+OXmkni52x4h/2WKU=;
-        b=tdMKdsBAdbrtBhxYHaokf5Ibn8HPuH0qfkGNbT9ewlu3G53+zDCY7us5ksycetQ2h7
-         FwJDyc/3bYG7IxkiJz1H2jq4VaD5ifz+PK4x3PcJmgURTUAamDCVMppm5BTWasdnuFNI
-         FdaX/uicv9gbV3FqAk5Vontu7PjgXXrPEQKGz77dBRPW+YMANLuv6ffSxkAAyq98CQ1v
-         +hGjiNrdkkyUBD3vk6qqimDRME+4CyQAuj6gHpLIQcJgikQunC9ja1Wz07efWj+DIr/x
-         W5v/IYufaoqS+IP5nNJFJqLkwUwTBAIDDCKJrem5zWYBThyvXe8hLj3kcqnqGAv6Esjf
-         mGeg==
-X-Gm-Message-State: APjAAAXnHzPpDYVmlDzTcxBmn72mkgc1nizfYx7ehTUl3n9XDfEeYsA7
-        KfWiSDPa9ZRdjbGSZ7rTp3k=
-X-Google-Smtp-Source: APXvYqxNSOOeEKipsPzXzNB35eNLgJeH0dlFgOZerwtyAg1/J6mRzv95o7+dpOqMTQU7nPiqxQkS0w==
-X-Received: by 2002:a17:906:8386:: with SMTP id p6mr2356514ejx.139.1565087031956;
-        Tue, 06 Aug 2019 03:23:51 -0700 (PDT)
-Received: from continental ([187.112.244.117])
-        by smtp.gmail.com with ESMTPSA id jt17sm14779247ejb.90.2019.08.06.03.23.44
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 06 Aug 2019 03:23:51 -0700 (PDT)
-Date:   Tue, 6 Aug 2019 07:24:56 -0300
-From:   Marcos Paulo de Souza <marcos.souza.org@gmail.com>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        Keith Busch <kbusch@kernel.org>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Doug Gilbert <dgilbert@interlog.com>,
-        Kai =?iso-8859-1?Q?M=E4kisara?= <Kai.Makisara@kolumbus.fi>,
-        Hannes Reinecke <hare@suse.com>,
-        Omar Sandoval <osandov@fb.com>, Ming Lei <ming.lei@redhat.com>,
-        Chaitanya Kulkarni <chaitanya.kulkarni@wdc.com>,
-        Damien Le Moal <damien.lemoal@wdc.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        "open list:BLOCK LAYER" <linux-block@vger.kernel.org>,
-        "open list:NVM EXPRESS DRIVER" <linux-nvme@lists.infradead.org>,
-        "open list:SCSI SUBSYSTEM" <linux-scsi@vger.kernel.org>,
-        "open list:SCSI TARGET SUBSYSTEM" <target-devel@vger.kernel.org>
-Subject: Re: [PATCH] block: Remove request_queue argument from
- blk_execute_rq_nowait
-Message-ID: <20190806102456.GA29914@continental>
-References: <20190806011754.7722-1-marcos.souza.org@gmail.com>
- <20190806051911.GA13409@lst.de>
+        id S1733290AbfHFRmW (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 6 Aug 2019 13:42:22 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:40932 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727549AbfHFRmW (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Tue, 6 Aug 2019 13:42:22 -0400
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 91D0565F4A;
+        Tue,  6 Aug 2019 17:42:21 +0000 (UTC)
+Received: from [10.10.123.111] (ovpn-123-111.rdu2.redhat.com [10.10.123.111])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id CD20110002B9;
+        Tue,  6 Aug 2019 17:42:20 +0000 (UTC)
+Subject: Re: [PATCH] scsi: target/tcm_loop: update upper limit of LUN
+To:     Naohiro Aota <naohiro.aota@wdc.com>
+References: <20190805062313.343221-1-naohiro.aota@wdc.com>
+ <5D485A56.9070208@redhat.com>
+ <20190806024505.gpabcyu57vhvnrto@naota.dhcp.fujisawa.hgst.com>
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        Nicholas Bellinger <nab@linux-iscsi.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+From:   Mike Christie <mchristi@redhat.com>
+Message-ID: <5D49BBFC.7020402@redhat.com>
+Date:   Tue, 6 Aug 2019 12:42:20 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190806051911.GA13409@lst.de>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+In-Reply-To: <20190806024505.gpabcyu57vhvnrto@naota.dhcp.fujisawa.hgst.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.25]); Tue, 06 Aug 2019 17:42:21 +0000 (UTC)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Tue, Aug 06, 2019 at 07:19:11AM +0200, Christoph Hellwig wrote:
-> On Mon, Aug 05, 2019 at 10:17:51PM -0300, Marcos Paulo de Souza wrote:
-> > +void blk_execute_rq_nowait(struct gendisk *bd_disk, struct request *rq,
-> > +			int at_head, rq_end_io_fn *done)
+On 08/05/2019 09:45 PM, Naohiro Aota wrote:
+> On Mon, Aug 05, 2019 at 11:33:26AM -0500, Mike Christie wrote:
+>> On 08/05/2019 01:23 AM, Naohiro Aota wrote:
+>>> targetcli-fb (or its library: rtslib-fb) allows us to create LUN up to
+>>> 65535. On the other hand, the kernel driver is limiting max_lun to 0.
+>>>
+>>> This limitation causes an actual problem when you delete a loopback
+>>> device
+>>> (using /sys/class/scsi_device/${lun}/device/delete) and rescan it (using
+>>> /sys/class/scsi_host/host${h}/scan). You can delete the device, but
+>>> cannot
+>>> rescan it because its LUN is larger than the max_lun and so the scan
+>>> request results in -EINVAL error in scsi_scan_host_selected().
+>>
+>> How are you kicking off this rescan?
+>>
+>> Just to make sure I understood you, does the initial LU have LUN 0, you
+>> delete that, then are you creating another LU with a LUN value that is
+>> not 0?
 > 
-> We store a ->rq_disk in struct request, so we should also not need
-> that.  And at_head should either become a bool, or be replaced with
-> a flags argument, ints used boolean are usually not a good idea.
-
-Makes sense.
-
+> Not exactly. I'm working on a case multiple device is added at once to
+> one loopback scsi host. You can create two or more device using
+> "targetcli" command and they may have their LUN larger than 0. For
+> example,
 > 
-> > @@ -81,7 +80,7 @@ void blk_execute_rq(struct request_queue *q, struct gendisk *bd_disk,
+> $ sudo targetcli
+> /backstores/fileio> cd /loopback
+> /loopback> create
+> Created target naa.5001405218077d66.
+> /loopback> exit
+> $ sudo truncate -s 1048576 /mnt/nvme/foo{1,2,3}
+> $ sudo targetcli /backstores/fileio create name=foo1
+> file_or_dev=/mnt/nvme/foo1
+> Created fileio foo1 with size 1048576
+> $ sudo targetcli /loopback/naa.5001405218077d66/luns create
+> /backstores/fileio/foo1
+> Created LUN 0.
+> (Do the same above for foo2 and foo3)
 > 
-> And all the same argument changes that apply to blk_execute_rq_nowait
-> apply to blk_execute_rq as well.
+> Then, you'll see each of them has LUN 0, 1, 2 assigned: (rtslib scans
+> used LUN and assign free one)
+> 
+> $ lsscsi
+> ...
+> [7:0:1:0]    disk    LIO-ORG  foo1             4.0   /dev/sdd
+> [7:0:1:1]    disk    LIO-ORG  foo2             4.0   /dev/sde
+> [7:0:1:2]    disk    LIO-ORG  foo3             4.0   /dev/sdf
+> 
+> Now, you can delete one of these device:
+> 
+> $ echo 1 > /sys/class/scsi_device/7\:0\:1\:2/device/delete
+> $ lsscsi
+> ...
+> [7:0:1:0]    disk    LIO-ORG  foo1             4.0   /dev/sdd
+> [7:0:1:1]    disk    LIO-ORG  foo2             4.0   /dev/sde
+> 
+> But, you cannot recover it by the scanning:
+> 
 
-Thanks for the suggestions, I will send a v2 soon.
+Why are you using the scsi sysfs interface instead of the target
+configfs interface?
+
+I know the comment for max_lun says it wants to support 1 LUN, but the
+code like in tcm_loop_port_link seems to support multiple LUNs, so your
+patch looks like it could be ok. I would just set max_luns to the kernel
+(scsi-ml/lio) limit and not some userspace value.
+
+I think the only problem you might have with your patch is that if you
+delete the device via the scsi sysfs interface you will not be able to
+unmap the LUN from LIO until you add it back due to tcm_loop_port_unlink
+failing to look up the device and being able to decrement the tpg refcount.
