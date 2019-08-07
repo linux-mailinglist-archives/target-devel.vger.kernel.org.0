@@ -2,115 +2,111 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C4CDB83817
-	for <lists+target-devel@lfdr.de>; Tue,  6 Aug 2019 19:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8500284260
+	for <lists+target-devel@lfdr.de>; Wed,  7 Aug 2019 04:21:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733290AbfHFRmW (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 6 Aug 2019 13:42:22 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:40932 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727549AbfHFRmW (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Tue, 6 Aug 2019 13:42:22 -0400
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 91D0565F4A;
-        Tue,  6 Aug 2019 17:42:21 +0000 (UTC)
-Received: from [10.10.123.111] (ovpn-123-111.rdu2.redhat.com [10.10.123.111])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id CD20110002B9;
-        Tue,  6 Aug 2019 17:42:20 +0000 (UTC)
-Subject: Re: [PATCH] scsi: target/tcm_loop: update upper limit of LUN
-To:     Naohiro Aota <naohiro.aota@wdc.com>
-References: <20190805062313.343221-1-naohiro.aota@wdc.com>
- <5D485A56.9070208@redhat.com>
- <20190806024505.gpabcyu57vhvnrto@naota.dhcp.fujisawa.hgst.com>
-Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        Nicholas Bellinger <nab@linux-iscsi.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-From:   Mike Christie <mchristi@redhat.com>
-Message-ID: <5D49BBFC.7020402@redhat.com>
-Date:   Tue, 6 Aug 2019 12:42:20 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.6.0
+        id S1728789AbfHGCVV (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 6 Aug 2019 22:21:21 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:52294 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728772AbfHGCVU (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Tue, 6 Aug 2019 22:21:20 -0400
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 87072C7BC258933B7C0F;
+        Wed,  7 Aug 2019 10:21:19 +0800 (CST)
+Received: from [127.0.0.1] (10.133.205.88) by DGGEMS407-HUB.china.huawei.com
+ (10.3.19.207) with Microsoft SMTP Server id 14.3.439.0; Wed, 7 Aug 2019
+ 10:21:11 +0800
+To:     <bvanassche@acm.org>, <dledford@redhat.com>, <jgg@mellanox.com>
+CC:     <linux-rdma@vger.kernel.org>, <target-devel@vger.kernel.org>,
+        <yebiaoxiang@huawei.com>, Xiexiangyou <xiexiangyou@huawei.com>
+From:   Jiangyiwen <jiangyiwen@huawei.com>
+Subject: [bug report] rdma: rtnl_lock deadlock?
+Message-ID: <5D4A3597.5020406@huawei.com>
+Date:   Wed, 7 Aug 2019 10:21:11 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.1.0
 MIME-Version: 1.0
-In-Reply-To: <20190806024505.gpabcyu57vhvnrto@naota.dhcp.fujisawa.hgst.com>
-Content-Type: text/plain; charset=windows-1252
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.25]); Tue, 06 Aug 2019 17:42:21 +0000 (UTC)
+X-Originating-IP: [10.133.205.88]
+X-CFilter-Loop: Reflected
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 08/05/2019 09:45 PM, Naohiro Aota wrote:
-> On Mon, Aug 05, 2019 at 11:33:26AM -0500, Mike Christie wrote:
->> On 08/05/2019 01:23 AM, Naohiro Aota wrote:
->>> targetcli-fb (or its library: rtslib-fb) allows us to create LUN up to
->>> 65535. On the other hand, the kernel driver is limiting max_lun to 0.
->>>
->>> This limitation causes an actual problem when you delete a loopback
->>> device
->>> (using /sys/class/scsi_device/${lun}/device/delete) and rescan it (using
->>> /sys/class/scsi_host/host${h}/scan). You can delete the device, but
->>> cannot
->>> rescan it because its LUN is larger than the max_lun and so the scan
->>> request results in -EINVAL error in scsi_scan_host_selected().
->>
->> How are you kicking off this rescan?
->>
->> Just to make sure I understood you, does the initial LU have LUN 0, you
->> delete that, then are you creating another LU with a LUN value that is
->> not 0?
-> 
-> Not exactly. I'm working on a case multiple device is added at once to
-> one loopback scsi host. You can create two or more device using
-> "targetcli" command and they may have their LUN larger than 0. For
-> example,
-> 
-> $ sudo targetcli
-> /backstores/fileio> cd /loopback
-> /loopback> create
-> Created target naa.5001405218077d66.
-> /loopback> exit
-> $ sudo truncate -s 1048576 /mnt/nvme/foo{1,2,3}
-> $ sudo targetcli /backstores/fileio create name=foo1
-> file_or_dev=/mnt/nvme/foo1
-> Created fileio foo1 with size 1048576
-> $ sudo targetcli /loopback/naa.5001405218077d66/luns create
-> /backstores/fileio/foo1
-> Created LUN 0.
-> (Do the same above for foo2 and foo3)
-> 
-> Then, you'll see each of them has LUN 0, 1, 2 assigned: (rtslib scans
-> used LUN and assign free one)
-> 
-> $ lsscsi
-> ...
-> [7:0:1:0]    disk    LIO-ORG  foo1             4.0   /dev/sdd
-> [7:0:1:1]    disk    LIO-ORG  foo2             4.0   /dev/sde
-> [7:0:1:2]    disk    LIO-ORG  foo3             4.0   /dev/sdf
-> 
-> Now, you can delete one of these device:
-> 
-> $ echo 1 > /sys/class/scsi_device/7\:0\:1\:2/device/delete
-> $ lsscsi
-> ...
-> [7:0:1:0]    disk    LIO-ORG  foo1             4.0   /dev/sdd
-> [7:0:1:1]    disk    LIO-ORG  foo2             4.0   /dev/sde
-> 
-> But, you cannot recover it by the scanning:
-> 
+Hello,
 
-Why are you using the scsi sysfs interface instead of the target
-configfs interface?
+I find a scenario may cause deadlock of rtnl_lock as follows:
 
-I know the comment for max_lun says it wants to support 1 LUN, but the
-code like in tcm_loop_port_link seems to support multiple LUNs, so your
-patch looks like it could be ok. I would just set max_luns to the kernel
-(scsi-ml/lio) limit and not some userspace value.
+1. CPU1 add rtnl_lock and wait kworker finished.
+CPU1 add rtnl_lock before call unregister_netdevice_queue() and
+then wait sport->work(function srpt_refresh_port_work) finished
+in srpt_remove_one().
 
-I think the only problem you might have with your patch is that if you
-delete the device via the scsi sysfs interface you will not be able to
-unmap the LUN from LIO until you add it back due to tcm_loop_port_unlink
-failing to look up the device and being able to decrement the tpg refcount.
+[<0>] __switch_to+0x94/0xe8
+[<0>] __flush_work+0x128/0x280
+[<0>] __cancel_work_timer+0x13c/0x1b0
+[<0>] cancel_work_sync+0x24/0x30
+[<0>] srpt_remove_one+0xf0/0x530 [ib_srpt]
+[<0>] ib_unregister_device+0x124/0x230 [ib_core]
+[<0>] rxe_unregister_device+0x30/0x40 [rdma_rxe]
+[<0>] rxe_remove+0x20/0x50 [rdma_rxe]
+[<0>] rxe_notify+0xe8/0x150 [rdma_rxe]
+[<0>] notifier_call_chain+0x5c/0xa0
+[<0>] raw_notifier_call_chain+0x3c/0x50
+[<0>] call_netdevice_notifiers_info+0x3c/0x80
+[<0>] rollback_registered_many+0x35c/0x568
+[<0>] rollback_registered+0x68/0xb0
+[<0>] unregister_netdevice_queue+0xc0/0x110
+[<0>] __tun_detach+0x25c/0x2a0 [tun]
+[<0>] tun_chr_close+0x30/0x60 [tun]
+[<0>] __fput+0xa4/0x1e0
+[<0>] ____fput+0x20/0x30
+[<0>] task_work_run+0xc0/0xf8
+[<0>] do_notify_resume+0x12c/0x138
+[<0>] work_pending+0x8/0x10
+[<0>] 0xffffffffffffffff
+
+2. CPU2 run sport->work and wait for rxe->usdev_lock.
+CPU2 run work(sport->work function: srpt_refresh_port_work) and
+wait for rxe->usdev_lock in rxe_query_port().
+
+[<0>] __switch_to+0x94/0xe8
+[<0>] rxe_query_port+0x6c/0xd0 [rdma_rxe]
+[<0>] ib_query_port+0x84/0x120 [ib_core]
+[<0>] srpt_refresh_port+0xa4/0x1b8 [ib_srpt]
+[<0>] srpt_refresh_port_work+0x20/0x30 [ib_srpt]
+[<0>] process_one_work+0x1b4/0x3f8
+[<0>] worker_thread+0x54/0x470
+[<0>] kthread+0x134/0x138
+[<0>] ret_from_fork+0x10/0x18
+[<0>] 0xffffffffffffffff
+
+3. CPU3 add rxe->usdev_lock and wait for rtnl_lock.
+CPU3 run ib_cache_task work and add rxe->usdev_lock, then wait for
+rtnl_lock is unlocked.
+
+[<0>] __switch_to+0x94/0xe8
+[<0>] rtnl_lock+0x1c/0x28
+[<0>] ib_get_eth_speed+0x78/0x1c0 [ib_core]
+[<0>] rxe_query_port+0x80/0xd0 [rdma_rxe]
+[<0>] ib_query_port+0x84/0x120 [ib_core]
+[<0>] ib_cache_update.part.7+0x74/0x388 [ib_core]
+[<0>] ib_cache_task+0x68/0x80 [ib_core]
+[<0>] process_one_work+0x1b4/0x3f8
+[<0>] worker_thread+0x54/0x470
+[<0>] kthread+0x134/0x138
+[<0>] ret_from_fork+0x10/0x18
+[<0>] 0xffffffffffffffff
+
+So, deadlock is produced, that is, CPU1 wait for CPU2 work is
+finished, CPU2 wait for CPU3 unlock rxe->usdev_lock, CPU3 wait
+for CPU1 unlock rtnl_lock.
+
+I don't know how to solve it.
+
+Thanks,
+Yiwen.
+
