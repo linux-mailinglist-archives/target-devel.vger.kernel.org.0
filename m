@@ -2,83 +2,81 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D33F884784
-	for <lists+target-devel@lfdr.de>; Wed,  7 Aug 2019 10:35:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57EE184B3F
+	for <lists+target-devel@lfdr.de>; Wed,  7 Aug 2019 14:10:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387645AbfHGIeq (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 7 Aug 2019 04:34:46 -0400
-Received: from mga05.intel.com ([192.55.52.43]:2100 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387637AbfHGIeq (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Wed, 7 Aug 2019 04:34:46 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Aug 2019 01:34:45 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,356,1559545200"; 
-   d="scan'208";a="168558382"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 07 Aug 2019 01:34:43 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1hvHP9-0005t0-2O; Wed, 07 Aug 2019 16:34:43 +0800
-Date:   Wed, 7 Aug 2019 16:34:35 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc:     kbuild-all@01.org,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Allison Randal <allison@lohutok.net>,
-        Enrico Weigelt <info@metux.net>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] net: fix semicolon.cocci warnings
-Message-ID: <20190807083435.xhbc77vzwmyzgwj7@48261080c7f1>
-References: <201908071628.H05RbOmY%lkp@intel.com>
+        id S1729808AbfHGMKj (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 7 Aug 2019 08:10:39 -0400
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:34626 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729408AbfHGMKj (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Wed, 7 Aug 2019 08:10:39 -0400
+Received: by mail-qt1-f193.google.com with SMTP id k10so18866530qtq.1
+        for <target-devel@vger.kernel.org>; Wed, 07 Aug 2019 05:10:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=TyUqRDmRKloW/sMIvGnAqMuGW5YCqBPaj3KDrOKJEqs=;
+        b=ceI/F6gB0pxxridkgCFoiRA3F2G+kFZJApg7pEkSENU7ARCk7TexijHl2DK49nkYpP
+         RjzEO0d7RqIjCSDZJYs+YFh76CV4jxQp0IOyEG81LxHwCg6Be/yrkxqjVdGNMITJpIGz
+         ZOgb2OWFAspX3mvhnNJBG+G6IH4+jtQLZo5M+MaRrPW4OoKFdcGwTe5vMicDCSViruCo
+         J0c/noMtEbxiK06G9/WA+Piez2tvMHS7swkjoxfxU9u1FGTBG6ah1XHd89BlvDAJE9qx
+         cfSopX76jwUOHLNCwL3xWmmfwrjSgBlyFIpmYgJpaK2yLdIfLsqcOd9NetaO5dYkXXqW
+         a2Kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=TyUqRDmRKloW/sMIvGnAqMuGW5YCqBPaj3KDrOKJEqs=;
+        b=SRRZKXjnQfhtO1Lujdgrn9bcvGh54+sg2+aok4cl/Wa7DzeWZ8uu/VPlsBToYhFmvq
+         /Bc2lAD7XNl0xfytKzad0wkirOhZ5vn0CDNBngK0L4ZXJ8am9U99FIiEKtLBgbQts98D
+         YTF+L7JgNHXtxhDasVyl59ooL6KoGNggz4UfHTXJEXrF06fxR8EcjmhC8cv0hlOGWl/q
+         AIULLjissw9NSSXX2S71Vks1AvdAFzM54n0LKcZrtymoGwHPBv9cLSlF7+M4NxcBVOuo
+         bCRShyIv7Mvr4vSP3Pw/25rki2Y2UywCyLuxbGr0zncolcNSAjR/SPV43zW5Bb3jJ8fk
+         sb+Q==
+X-Gm-Message-State: APjAAAUuPkInwPx/Tt5fue8TUieI5dBrQYCb1DGZwF/PK/iL35gzPokg
+        1XmTs+9YvDIqIO3PhAS0xYDbwA==
+X-Google-Smtp-Source: APXvYqyO8Is2rHqVcjoXVwRl+RRSxDujV+x1nKfBnEd3h/w6218ooFi47opkUhvYiPV6BdOH6CTKTg==
+X-Received: by 2002:a05:6214:11af:: with SMTP id u15mr7693849qvv.115.1565179838709;
+        Wed, 07 Aug 2019 05:10:38 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-156-34-55-100.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.55.100])
+        by smtp.gmail.com with ESMTPSA id l80sm19618120qke.24.2019.08.07.05.10.38
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 07 Aug 2019 05:10:38 -0700 (PDT)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1hvKm5-00010p-S2; Wed, 07 Aug 2019 09:10:37 -0300
+Date:   Wed, 7 Aug 2019 09:10:37 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Jiangyiwen <jiangyiwen@huawei.com>
+Cc:     bvanassche@acm.org, dledford@redhat.com,
+        linux-rdma@vger.kernel.org, target-devel@vger.kernel.org,
+        yebiaoxiang@huawei.com, Xiexiangyou <xiexiangyou@huawei.com>
+Subject: Re: [bug report] rdma: rtnl_lock deadlock?
+Message-ID: <20190807121037.GC1557@ziepe.ca>
+References: <5D4A3597.5020406@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <201908071628.H05RbOmY%lkp@intel.com>
-X-Patchwork-Hint: ignore
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <5D4A3597.5020406@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-From: kbuild test robot <lkp@intel.com>
+On Wed, Aug 07, 2019 at 10:21:11AM +0800, Jiangyiwen wrote:
+> Hello,
+> 
+> I find a scenario may cause deadlock of rtnl_lock as follows:
+> 
+> 1. CPU1 add rtnl_lock and wait kworker finished.
+> CPU1 add rtnl_lock before call unregister_netdevice_queue() and
+> then wait sport->work(function srpt_refresh_port_work) finished
+> in srpt_remove_one().
 
-drivers/target/iscsi/cxgbit/cxgbit_target.c:1451:47-48: Unneeded semicolon
+This is an old kernel, this issue has been fixed
 
-
- Remove unneeded semicolon.
-
-Generated by: scripts/coccinelle/misc/semicolon.cocci
-
-Fixes: d7840976e391 ("net: Use skb accessors in network drivers")
-CC: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: kbuild test robot <lkp@intel.com>
----
-
-tree:   https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   958eb4327c1761c609bde8e9f7c04e9d1c6fbb96
-commit: d7840976e3915669382c62ddd1700960f348328e [1656/4974] net: Use skb accessors in network drivers
-
- cxgbit_target.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/drivers/target/iscsi/cxgbit/cxgbit_target.c
-+++ b/drivers/target/iscsi/cxgbit/cxgbit_target.c
-@@ -1448,7 +1448,7 @@ cxgbit_lro_skb_merge(struct cxgbit_sock
- 		hpdu_cb->frags++;
- 		hpdu_cb->hfrag_idx = hfrag_idx;
- 
--		len = skb_frag_size(&hssi->frags[hfrag_idx]);;
-+		len = skb_frag_size(&hssi->frags[hfrag_idx]);
- 		hskb->len += len;
- 		hskb->data_len += len;
- 		hskb->truesize += len;
+Jason
