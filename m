@@ -2,121 +2,149 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FB0086860
-	for <lists+target-devel@lfdr.de>; Thu,  8 Aug 2019 20:01:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A90F2868DF
+	for <lists+target-devel@lfdr.de>; Thu,  8 Aug 2019 20:38:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732885AbfHHSBy (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 8 Aug 2019 14:01:54 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:48620 "EHLO mx1.redhat.com"
+        id S2390130AbfHHSid (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 8 Aug 2019 14:38:33 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:55192 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732609AbfHHSBy (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 8 Aug 2019 14:01:54 -0400
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        id S1725535AbfHHSid (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Thu, 8 Aug 2019 14:38:33 -0400
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id D33593064FD3;
-        Thu,  8 Aug 2019 18:01:53 +0000 (UTC)
-Received: from mchristi.msp.csb (ovpn-125-55.rdu2.redhat.com [10.10.125.55])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 53D385D772;
-        Thu,  8 Aug 2019 18:01:53 +0000 (UTC)
-Reply-To: mchristi@redhat.com
-Subject: Re: tcmu: Reporting of errors detected by handler_read() before it
- returns
-To:     David Butterfield <dab21774@gmail.com>,
-        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>
-References: <5e14ffb2-d08d-7ee4-7bba-09a83627b0d5@gmail.com>
- <5D4310E7.5020701@redhat.com>
- <9f2e4a82-a16f-80bb-2c5d-847ec2d24c5f@gmail.com>
- <5D446455.4080100@redhat.com>
- <4b2b4cfc-230f-31fd-d93f-2fa2a076ab36@gmail.com>
-From:   Michael Christie <mchristi@redhat.com>
-Organization: Red Hat
-Message-ID: <f3bfd765-34b8-cddd-be2d-19fdb6a29293@redhat.com>
-Date:   Thu, 8 Aug 2019 13:02:16 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
+        by mx1.redhat.com (Postfix) with ESMTPS id 8747C306731B;
+        Thu,  8 Aug 2019 18:38:32 +0000 (UTC)
+Received: from [10.10.120.114] (ovpn-120-114.rdu2.redhat.com [10.10.120.114])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9B31819C7F;
+        Thu,  8 Aug 2019 18:38:31 +0000 (UTC)
+Subject: Re: [PATCH] scsi: target/tcm_loop: update upper limit of LUN
+To:     Naohiro Aota <naohiro.aota@wdc.com>
+References: <20190805062313.343221-1-naohiro.aota@wdc.com>
+ <5D485A56.9070208@redhat.com>
+ <20190806024505.gpabcyu57vhvnrto@naota.dhcp.fujisawa.hgst.com>
+ <5D49BBFC.7020402@redhat.com>
+ <20190808084221.agvnr5yflxzdvtgh@naota.dhcp.fujisawa.hgst.com>
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        Nicholas Bellinger <nab@linux-iscsi.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+From:   Mike Christie <mchristi@redhat.com>
+Message-ID: <5D4C6C27.7040004@redhat.com>
+Date:   Thu, 8 Aug 2019 13:38:31 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.6.0
 MIME-Version: 1.0
-In-Reply-To: <4b2b4cfc-230f-31fd-d93f-2fa2a076ab36@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.45]); Thu, 08 Aug 2019 18:01:53 +0000 (UTC)
+In-Reply-To: <20190808084221.agvnr5yflxzdvtgh@naota.dhcp.fujisawa.hgst.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.48]); Thu, 08 Aug 2019 18:38:32 +0000 (UTC)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 08/08/2019 12:50 AM, David Butterfield wrote:
-> Thanks for your help.  I'm afraid I'm still confused somehow about this.
-> 
->>> If the handler successfully completes execution of the block I/O command
->>> in the callout function, what TCMU_STS code should it return from the
->>> callout function
+On 08/08/2019 03:42 AM, Naohiro Aota wrote:
+> On Tue, Aug 06, 2019 at 12:42:20PM -0500, Mike Christie wrote:
+>> On 08/05/2019 09:45 PM, Naohiro Aota wrote:
+>>> On Mon, Aug 05, 2019 at 11:33:26AM -0500, Mike Christie wrote:
+>>>> On 08/05/2019 01:23 AM, Naohiro Aota wrote:
+>>>>> targetcli-fb (or its library: rtslib-fb) allows us to create LUN up to
+>>>>> 65535. On the other hand, the kernel driver is limiting max_lun to 0.
+>>>>>
+>>>>> This limitation causes an actual problem when you delete a loopback
+>>>>> device
+>>>>> (using /sys/class/scsi_device/${lun}/device/delete) and rescan it
+>>>>> (using
+>>>>> /sys/class/scsi_host/host${h}/scan). You can delete the device, but
+>>>>> cannot
+>>>>> rescan it because its LUN is larger than the max_lun and so the scan
+>>>>> request results in -EINVAL error in scsi_scan_host_selected().
+>>>>
+>>>> How are you kicking off this rescan?
+>>>>
+>>>> Just to make sure I understood you, does the initial LU have LUN 0, you
+>>>> delete that, then are you creating another LU with a LUN value that is
+>>>> not 0?
+>>>
+>>> Not exactly. I'm working on a case multiple device is added at once to
+>>> one loopback scsi host. You can create two or more device using
+>>> "targetcli" command and they may have their LUN larger than 0. For
+>>> example,
+>>>
+>>> $ sudo targetcli
+>>> /backstores/fileio> cd /loopback
+>>> /loopback> create
+>>> Created target naa.5001405218077d66.
+>>> /loopback> exit
+>>> $ sudo truncate -s 1048576 /mnt/nvme/foo{1,2,3}
+>>> $ sudo targetcli /backstores/fileio create name=foo1
+>>> file_or_dev=/mnt/nvme/foo1
+>>> Created fileio foo1 with size 1048576
+>>> $ sudo targetcli /loopback/naa.5001405218077d66/luns create
+>>> /backstores/fileio/foo1
+>>> Created LUN 0.
+>>> (Do the same above for foo2 and foo3)
+>>>
+>>> Then, you'll see each of them has LUN 0, 1, 2 assigned: (rtslib scans
+>>> used LUN and assign free one)
+>>>
+>>> $ lsscsi
+>>> ...
+>>> [7:0:1:0]    disk    LIO-ORG  foo1             4.0   /dev/sdd
+>>> [7:0:1:1]    disk    LIO-ORG  foo2             4.0   /dev/sde
+>>> [7:0:1:2]    disk    LIO-ORG  foo3             4.0   /dev/sdf
+>>>
+>>> Now, you can delete one of these device:
+>>>
+>>> $ echo 1 > /sys/class/scsi_device/7\:0\:1\:2/device/delete
+>>> $ lsscsi
+>>> ...
+>>> [7:0:1:0]    disk    LIO-ORG  foo1             4.0   /dev/sdd
+>>> [7:0:1:1]    disk    LIO-ORG  foo2             4.0   /dev/sde
+>>>
+>>> But, you cannot recover it by the scanning:
+>>>
 >>
->> What is says on line 128.
->>
->> You must return a TCMU_STS code. It can TMCU_STS_OK or a TCMU_STS error
->> value like TCMU_STS_WR_ERR.
+>> Why are you using the scsi sysfs interface instead of the target
+>> configfs interface?
 > 
-> So, then, line 137 is intended to apply only to line 131 and not line 128?
-
-Correct.
-
-> I was reading it as applying to both.
+> Xfstests btrfs/003 uses the SCSI sysfs interface to emulate missing
+> block device. We can use any SCSI devices to run the test case, so we
+> cannot use target configfs here.
 > 
->> For handlers like file_example that operate like described on line 128,
->> tcmu-runner core will do cmd->done for it.
-> 
-> If TCMU_STS_OK is returned from file_read(), how does runner know whether that is
-> 
->     (1) TCMU_STS_OK because the handler is async and it queued the command, and
-> 	there will be a future call to tcmur_cmd_complete() from the handl>
->     (2) TCMU_STS_OK because the handler executed the entire command successfully
-> 	and runner needs to issue the cmd->done for it now?
+> Even the end result of missing "/dev/sd?" is the same, they are two
+> distinct interfaces. So, we need to fix the broken result of the SCSI
+> sysfs interface anyway?
 
-If you set nr_threads > 0 and implement the callouts below then
-TCMU_STS_OK means you completed the command in the callout successfully.
-
-If you set nr_threads = 0 and implement the callouts below then OK means
-it got queued successfully and the handler is going to complete it by
-calling tcmur_cmd_complete.
-
-We do not have any handlers where nr_threads = 0, the callouts below are
-implemented and the handler executes the command in the callout, so it's
-not supported right now.
-
+I agree.
 
 > 
-> Also, I wonder why the return from async handlers for successful queueing
-> of the command is TCMU_STS_OK rather than TCMU_STS_ASYNC_HANDLED.
-
-It's just one of those things that needs to be cleaned up.
-
-tcmu-runner uses it internally and when interacting with libtcmu, and
-runner handlers that only implement a handle_cmd can use it directly.
-
+>> I know the comment for max_lun says it wants to support 1 LUN, but the
+>> code like in tcm_loop_port_link seems to support multiple LUNs, so your
+>> patch looks like it could be ok. I would just set max_luns to the kernel
+>> (scsi-ml/lio) limit and not some userspace value.
 > 
->>> 125         /*
->>> 126          * Below callouts are only executed by generic_handle_cmd.
->>> 127          *
->>> 128          * Handlers that completely execute cmds from the callout's calling
->>> 129          * context must return a TCMU_STS code from the callout.
->>> 130          *
->>> 131          * Async handlers that queue a command from the callout and complete
->>> 132          * it from their own async context return:
->>> 133          * - TCMU_STS_OK if the handler has queued the command.
->>> 134          * - TCMU_STS_NO_RESOURCE if the handler was not able to allocate
->>> 135          *   resources to queue the command.
->>> 136          *
->>> 137          * If TCMU_STS_OK is returned from the callout the handler must call
->>> 138          * tcmur_cmd_complete with a TCMU_STS return code to complete the
->>> 139          * command.
->>> 140          */
->>> 141         int (*read)(struct tcmu_device *dev, struct tcmur_cmd *cmd,
->>> 142                     struct iovec *iovec, size_t iov_cnt, size_t len, off_t off);
->>> 143         int (*write)(struct tcmu_device *dev, struct tcmur_cmd *cmd,
->>> 144                      struct iovec *iovec, size_t iov_cnt, size_t len, off_t off);
->>> 145         int (*flush)(struct tcmu_device *dev, struct tcmur_cmd *cmd);
+> Hm, taking look at the code (target_fabric_make_lun), there is no upper
+> limit check there. So, set max_lun = U64_MAX right?
+> I once considered that but when I create LUN larger than 65535,
+> "targetcli ls" died complaining "LUN must be 0 to 65535". So I used
+> 65536 here.
 > 
+> Or, should we use max_lun = U64_MAX and fix userland side? They need to
+> be the same, anyway, I believe...
 
+I do not think the kernel should use the limit from one userspace
+application. What if you are using a different app or what happens when
+someone updates targetcli. You do not want to have to update the kernel
+each time. I think the driver should report what it is limited to.
+
+The targetcli limit might be due to how it allocates the LUN,
+probes/scans configfs, etc. I think in some places you could end up doing
+
+for i <  U64_MAX
+    do some inefficient configfs probe/scan
+
+so for targetcli a value less than U64_MAX makes sense so some commands
+do not take minutes. Other apps might work differently though.
