@@ -2,85 +2,62 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E86B857D4
-	for <lists+target-devel@lfdr.de>; Thu,  8 Aug 2019 03:53:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84361857E3
+	for <lists+target-devel@lfdr.de>; Thu,  8 Aug 2019 03:59:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389698AbfHHBwx (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 7 Aug 2019 21:52:53 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:55504 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389653AbfHHBww (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Wed, 7 Aug 2019 21:52:52 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x781o0aF138954;
-        Thu, 8 Aug 2019 01:52:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2018-07-02;
- bh=0HweoGIP9twY0ZpxIdqNNY4AvjCEOqsAyhf92D3CWUc=;
- b=3cUIkOy1j12h4biMXA6zIo+l0vPGGaDpiXGXaR/JRU5ncFkwWqZCSz2keGrjlfnEv4wj
- jgMtXWxZwTqVgLOF+4zIBVyvbdArXoumKYnQqey1XiNzL5QhAJJ2hS6bGFnsfPEVQt0P
- Ow4XocjyPHsGV5WzQRAI5YY53hJ5KhFNzNO2SIGmF8qDe5iRJnEEVDBHjVjeHvqC1aRn
- DTK3kzJOXbadSBIFZEZ4DRVPdbRfZoaCdf8HbtfGJCiwRGtGJ93ul3wGbyzXtCTQaNvy
- /5MnMCmUoSq1IN8BDYkaudk/0dorRVABr6cs1m4vZYXJvuEuFLMiGAErATcO8zHGIgNj lA== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 2u527pyh32-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 08 Aug 2019 01:52:41 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x781lwYd143059;
-        Thu, 8 Aug 2019 01:52:40 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 2u7668a24y-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 08 Aug 2019 01:52:40 +0000
-Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x781qdiK015022;
-        Thu, 8 Aug 2019 01:52:39 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 07 Aug 2019 18:52:38 -0700
-To:     Li Zhong <lizhongfs@gmail.com>
-Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        martin.petersen@oracle.com, mchristi@redhat.com
-Subject: Re: [RFC PATCH v2] target: tcmu: clean the nl_cmd of the udev when nl send fails
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <5D446BC2.9000303@redhat.com>
-        <20190805004336.16181-1-lizhongfs@gmail.com>
-Date:   Wed, 07 Aug 2019 21:52:36 -0400
-In-Reply-To: <20190805004336.16181-1-lizhongfs@gmail.com> (Li Zhong's message
-        of "Mon, 5 Aug 2019 08:43:36 +0800")
-Message-ID: <yq1sgqcctjv.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+        id S2387536AbfHHB7b (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 7 Aug 2019 21:59:31 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:4189 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730038AbfHHB7b (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Wed, 7 Aug 2019 21:59:31 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 7AB4C678FD00CB725A9E;
+        Thu,  8 Aug 2019 09:59:27 +0800 (CST)
+Received: from [127.0.0.1] (10.133.205.88) by DGGEMS409-HUB.china.huawei.com
+ (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Thu, 8 Aug 2019
+ 09:59:18 +0800
+Subject: Re: [bug report] rdma: rtnl_lock deadlock?
+To:     Jason Gunthorpe <jgg@ziepe.ca>
+References: <5D4A3597.5020406@huawei.com> <20190807121037.GC1557@ziepe.ca>
+CC:     <bvanassche@acm.org>, <dledford@redhat.com>,
+        <linux-rdma@vger.kernel.org>, <target-devel@vger.kernel.org>,
+        <yebiaoxiang@huawei.com>, Xiexiangyou <xiexiangyou@huawei.com>
+From:   Jiangyiwen <jiangyiwen@huawei.com>
+Message-ID: <5D4B81F6.7010002@huawei.com>
+Date:   Thu, 8 Aug 2019 09:59:18 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.1.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9342 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=900
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1908080016
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9342 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=968 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908080016
+In-Reply-To: <20190807121037.GC1557@ziepe.ca>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.133.205.88]
+X-CFilter-Loop: Reflected
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+Hi Jason,
 
-Li,
+On 2019/8/7 20:10, Jason Gunthorpe wrote:
+> On Wed, Aug 07, 2019 at 10:21:11AM +0800, Jiangyiwen wrote:
+>> Hello,
+>>
+>> I find a scenario may cause deadlock of rtnl_lock as follows:
+>>
+>> 1. CPU1 add rtnl_lock and wait kworker finished.
+>> CPU1 add rtnl_lock before call unregister_netdevice_queue() and
+>> then wait sport->work(function srpt_refresh_port_work) finished
+>> in srpt_remove_one().
+> This is an old kernel, this issue has been fixed
+>
+> Jason
+>
+Thank you for your reply, and can you tell me the commit id?
+I use the kernel version is Linux4.19.36.
 
-> If the userspace process crashes while we send the nl msg, it is
-> possible that the cmd in curr_nl_cmd of tcmu_dev never gets reset to
-> 0, and and returns busy for other commands after the userspace process
-> is restartd.
+Thanks,
+Yiwen.
 
-Applied to 5.4/scsi-queue, thanks!
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
