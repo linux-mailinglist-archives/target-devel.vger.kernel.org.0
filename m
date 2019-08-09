@@ -2,149 +2,284 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A90F2868DF
-	for <lists+target-devel@lfdr.de>; Thu,  8 Aug 2019 20:38:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA5B1877E2
+	for <lists+target-devel@lfdr.de>; Fri,  9 Aug 2019 12:54:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390130AbfHHSid (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 8 Aug 2019 14:38:33 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:55192 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725535AbfHHSid (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 8 Aug 2019 14:38:33 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 8747C306731B;
-        Thu,  8 Aug 2019 18:38:32 +0000 (UTC)
-Received: from [10.10.120.114] (ovpn-120-114.rdu2.redhat.com [10.10.120.114])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9B31819C7F;
-        Thu,  8 Aug 2019 18:38:31 +0000 (UTC)
-Subject: Re: [PATCH] scsi: target/tcm_loop: update upper limit of LUN
-To:     Naohiro Aota <naohiro.aota@wdc.com>
-References: <20190805062313.343221-1-naohiro.aota@wdc.com>
- <5D485A56.9070208@redhat.com>
- <20190806024505.gpabcyu57vhvnrto@naota.dhcp.fujisawa.hgst.com>
- <5D49BBFC.7020402@redhat.com>
- <20190808084221.agvnr5yflxzdvtgh@naota.dhcp.fujisawa.hgst.com>
-Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        Nicholas Bellinger <nab@linux-iscsi.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-From:   Mike Christie <mchristi@redhat.com>
-Message-ID: <5D4C6C27.7040004@redhat.com>
-Date:   Thu, 8 Aug 2019 13:38:31 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.6.0
+        id S2406267AbfHIKyU (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 9 Aug 2019 06:54:20 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:43232 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726037AbfHIKyU (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Fri, 9 Aug 2019 06:54:20 -0400
+Received: by mail-ed1-f67.google.com with SMTP id e3so94549781edr.10;
+        Fri, 09 Aug 2019 03:54:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=H5XurvOQOZFexbnR2zKf7+V0lcVL5rSNl6BESH2rPC4=;
+        b=RG9D6uR5HZ9BwPKJjVcEuc+a8EUfQ6FBuoTwmiWzc/IzCRO69axkaOfboC24l1EkcP
+         jk7cVId8ks4maLCIPEM9n5MVpDVvQFM87JhEMsurO8W9rAT5tQ/So/7dTdDKOnIK2Ahy
+         pQNH/KebM37B0WthWx7zhFdICiG4I9BuUabQ3xm9gUmlUFw7ds+q+QoaEs0BraT9SgC6
+         U8yWc9UVmdFBkV1ORrod3ZaN55MJUq29lglY29qABdTfyOfJWRjH1mKnew6s5064VrD0
+         Bt77tDp8eaH0BW4l7ulZSYCJlJTIESBQqPp3qVfscce8FP+n+SFabveyOaK8eGCHuQlV
+         ea2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=H5XurvOQOZFexbnR2zKf7+V0lcVL5rSNl6BESH2rPC4=;
+        b=B65+0gu1w+DdfEf38I3ciDc4QSADlef9yMGF1vO/r8j2gZgDPUfw50O8uCW8LxDMrn
+         hhqRiRNB542JjVAy6u8cbHyAAmrruvtG4B8fyEdTOmgiOf1tsELX5i4IjYDELsHCi8A4
+         rcnDozEenpUQ2cyGWRvdKRZPLZoMNLIU7Tyk7U/4BM1Kr8Ch8hbxizD4wWP+ehG49VE/
+         G+POXXzfHxsXbwmexFwQMwHcJh2UilM8295c+hgTKQeTQtDGy/nHLCmQKv4y1zXxAl//
+         lxzdeET2L27iBldVYcFZ0ZzZK2RnwNU8RX0tK0spiir+RChO0zrwwvAOTBiPe/wEif6q
+         UysQ==
+X-Gm-Message-State: APjAAAVPh4pQAQZGus0+T2NJ98wepsR792Pntrsn/MExXoWoQTamEhQ8
+        QoML63uc2lPLh4+R70uc0yyYQM3LqzqEUA==
+X-Google-Smtp-Source: APXvYqxQKYXqWN1Vw4R02O4soPR5PrQ/ub8cDL/Q2LdQnDCeOWommtd7ZkCAIGOMu95I4sF16LaZCg==
+X-Received: by 2002:a50:9918:: with SMTP id k24mr20823245edb.173.1565348057349;
+        Fri, 09 Aug 2019 03:54:17 -0700 (PDT)
+Received: from continental.suse.de ([177.96.42.43])
+        by smtp.gmail.com with ESMTPSA id x55sm22289167edm.11.2019.08.09.03.54.11
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Fri, 09 Aug 2019 03:54:16 -0700 (PDT)
+From:   Marcos Paulo de Souza <marcos.souza.org@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Marcos Paulo de Souza <marcos.souza.org@gmail.com>, hch@lst.de,
+        axboe@kernel.dk, linux-block@vger.kernel.org,
+        Keith Busch <kbusch@kernel.org>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Doug Gilbert <dgilbert@interlog.com>,
+        =?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+        Hannes Reinecke <hare@suse.com>,
+        Omar Sandoval <osandov@fb.com>, Ming Lei <ming.lei@redhat.com>,
+        Damien Le Moal <damien.lemoal@wdc.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        linux-nvme@lists.infradead.org (open list:NVM EXPRESS DRIVER),
+        linux-scsi@vger.kernel.org (open list:SCSI SUBSYSTEM),
+        target-devel@vger.kernel.org (open list:SCSI TARGET SUBSYSTEM)
+Subject: [PATCHv2  1/4] block: Remove request_queue argument from blk_execute_rq_nowait
+Date:   Fri,  9 Aug 2019 07:54:30 -0300
+Message-Id: <20190809105433.8946-2-marcos.souza.org@gmail.com>
+X-Mailer: git-send-email 2.22.0
+In-Reply-To: <20190809105433.8946-1-marcos.souza.org@gmail.com>
+References: <20190809105433.8946-1-marcos.souza.org@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20190808084221.agvnr5yflxzdvtgh@naota.dhcp.fujisawa.hgst.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.48]); Thu, 08 Aug 2019 18:38:32 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 08/08/2019 03:42 AM, Naohiro Aota wrote:
-> On Tue, Aug 06, 2019 at 12:42:20PM -0500, Mike Christie wrote:
->> On 08/05/2019 09:45 PM, Naohiro Aota wrote:
->>> On Mon, Aug 05, 2019 at 11:33:26AM -0500, Mike Christie wrote:
->>>> On 08/05/2019 01:23 AM, Naohiro Aota wrote:
->>>>> targetcli-fb (or its library: rtslib-fb) allows us to create LUN up to
->>>>> 65535. On the other hand, the kernel driver is limiting max_lun to 0.
->>>>>
->>>>> This limitation causes an actual problem when you delete a loopback
->>>>> device
->>>>> (using /sys/class/scsi_device/${lun}/device/delete) and rescan it
->>>>> (using
->>>>> /sys/class/scsi_host/host${h}/scan). You can delete the device, but
->>>>> cannot
->>>>> rescan it because its LUN is larger than the max_lun and so the scan
->>>>> request results in -EINVAL error in scsi_scan_host_selected().
->>>>
->>>> How are you kicking off this rescan?
->>>>
->>>> Just to make sure I understood you, does the initial LU have LUN 0, you
->>>> delete that, then are you creating another LU with a LUN value that is
->>>> not 0?
->>>
->>> Not exactly. I'm working on a case multiple device is added at once to
->>> one loopback scsi host. You can create two or more device using
->>> "targetcli" command and they may have their LUN larger than 0. For
->>> example,
->>>
->>> $ sudo targetcli
->>> /backstores/fileio> cd /loopback
->>> /loopback> create
->>> Created target naa.5001405218077d66.
->>> /loopback> exit
->>> $ sudo truncate -s 1048576 /mnt/nvme/foo{1,2,3}
->>> $ sudo targetcli /backstores/fileio create name=foo1
->>> file_or_dev=/mnt/nvme/foo1
->>> Created fileio foo1 with size 1048576
->>> $ sudo targetcli /loopback/naa.5001405218077d66/luns create
->>> /backstores/fileio/foo1
->>> Created LUN 0.
->>> (Do the same above for foo2 and foo3)
->>>
->>> Then, you'll see each of them has LUN 0, 1, 2 assigned: (rtslib scans
->>> used LUN and assign free one)
->>>
->>> $ lsscsi
->>> ...
->>> [7:0:1:0]    disk    LIO-ORG  foo1             4.0   /dev/sdd
->>> [7:0:1:1]    disk    LIO-ORG  foo2             4.0   /dev/sde
->>> [7:0:1:2]    disk    LIO-ORG  foo3             4.0   /dev/sdf
->>>
->>> Now, you can delete one of these device:
->>>
->>> $ echo 1 > /sys/class/scsi_device/7\:0\:1\:2/device/delete
->>> $ lsscsi
->>> ...
->>> [7:0:1:0]    disk    LIO-ORG  foo1             4.0   /dev/sdd
->>> [7:0:1:1]    disk    LIO-ORG  foo2             4.0   /dev/sde
->>>
->>> But, you cannot recover it by the scanning:
->>>
->>
->> Why are you using the scsi sysfs interface instead of the target
->> configfs interface?
-> 
-> Xfstests btrfs/003 uses the SCSI sysfs interface to emulate missing
-> block device. We can use any SCSI devices to run the test case, so we
-> cannot use target configfs here.
-> 
-> Even the end result of missing "/dev/sd?" is the same, they are two
-> distinct interfaces. So, we need to fix the broken result of the SCSI
-> sysfs interface anyway?
+Commit a1ce35fa4985 ("block: remove dead elevator code") removed code
+that was using the request_queue argument. This got simplified by
+calling blk_mq_sched_insert_request which already gets the request_queue
+from the request being inserted in the scheduler queue for execution.
 
-I agree.
+Signed-off-by: Marcos Paulo de Souza <marcos.souza.org@gmail.com>
+---
+ block/blk-exec.c                   | 8 +++-----
+ drivers/block/sx8.c                | 4 ++--
+ drivers/nvme/host/core.c           | 4 ++--
+ drivers/nvme/host/lightnvm.c       | 2 +-
+ drivers/nvme/host/pci.c            | 7 +++----
+ drivers/scsi/scsi_error.c          | 2 +-
+ drivers/scsi/sg.c                  | 3 +--
+ drivers/scsi/st.c                  | 2 +-
+ drivers/target/target_core_pscsi.c | 5 ++---
+ include/linux/blkdev.h             | 4 ++--
+ 10 files changed, 18 insertions(+), 23 deletions(-)
 
-> 
->> I know the comment for max_lun says it wants to support 1 LUN, but the
->> code like in tcm_loop_port_link seems to support multiple LUNs, so your
->> patch looks like it could be ok. I would just set max_luns to the kernel
->> (scsi-ml/lio) limit and not some userspace value.
-> 
-> Hm, taking look at the code (target_fabric_make_lun), there is no upper
-> limit check there. So, set max_lun = U64_MAX right?
-> I once considered that but when I create LUN larger than 65535,
-> "targetcli ls" died complaining "LUN must be 0 to 65535". So I used
-> 65536 here.
-> 
-> Or, should we use max_lun = U64_MAX and fix userland side? They need to
-> be the same, anyway, I believe...
+diff --git a/block/blk-exec.c b/block/blk-exec.c
+index 1db44ca0f4a6..80890b0b9c67 100644
+--- a/block/blk-exec.c
++++ b/block/blk-exec.c
+@@ -32,7 +32,6 @@ static void blk_end_sync_rq(struct request *rq, blk_status_t error)
 
-I do not think the kernel should use the limit from one userspace
-application. What if you are using a different app or what happens when
-someone updates targetcli. You do not want to have to update the kernel
-each time. I think the driver should report what it is limited to.
+ /**
+  * blk_execute_rq_nowait - insert a request into queue for execution
+- * @q:		queue to insert the request in
+  * @bd_disk:	matching gendisk
+  * @rq:		request to insert
+  * @at_head:    insert request at head or tail of queue
+@@ -45,9 +44,8 @@ static void blk_end_sync_rq(struct request *rq, blk_status_t error)
+  * Note:
+  *    This function will invoke @done directly if the queue is dead.
+  */
+-void blk_execute_rq_nowait(struct request_queue *q, struct gendisk *bd_disk,
+-			   struct request *rq, int at_head,
+-			   rq_end_io_fn *done)
++void blk_execute_rq_nowait(struct gendisk *bd_disk, struct request *rq,
++			int at_head, rq_end_io_fn *done)
+ {
+ 	WARN_ON(irqs_disabled());
+ 	WARN_ON(!blk_rq_is_passthrough(rq));
+@@ -81,7 +79,7 @@ void blk_execute_rq(struct request_queue *q, struct gendisk *bd_disk,
+ 	unsigned long hang_check;
 
-The targetcli limit might be due to how it allocates the LUN,
-probes/scans configfs, etc. I think in some places you could end up doing
+ 	rq->end_io_data = &wait;
+-	blk_execute_rq_nowait(q, bd_disk, rq, at_head, blk_end_sync_rq);
++	blk_execute_rq_nowait(bd_disk, rq, at_head, blk_end_sync_rq);
 
-for i <  U64_MAX
-    do some inefficient configfs probe/scan
+ 	/* Prevent hang_check timer from firing at us during very long I/O */
+ 	hang_check = sysctl_hung_task_timeout_secs;
+diff --git a/drivers/block/sx8.c b/drivers/block/sx8.c
+index 4478eb7efee0..2cdf2771f8e8 100644
+--- a/drivers/block/sx8.c
++++ b/drivers/block/sx8.c
+@@ -539,7 +539,7 @@ static int carm_array_info (struct carm_host *host, unsigned int array_idx)
+ 	spin_unlock_irq(&host->lock);
 
-so for targetcli a value less than U64_MAX makes sense so some commands
-do not take minutes. Other apps might work differently though.
+ 	DPRINTK("blk_execute_rq_nowait, tag == %u\n", rq->tag);
+-	blk_execute_rq_nowait(host->oob_q, NULL, rq, true, NULL);
++	blk_execute_rq_nowait(NULL, rq, true, NULL);
+
+ 	return 0;
+
+@@ -578,7 +578,7 @@ static int carm_send_special (struct carm_host *host, carm_sspc_t func)
+ 	crq->msg_bucket = (u32) rc;
+
+ 	DPRINTK("blk_execute_rq_nowait, tag == %u\n", rq->tag);
+-	blk_execute_rq_nowait(host->oob_q, NULL, rq, true, NULL);
++	blk_execute_rq_nowait(NULL, rq, true, NULL);
+
+ 	return 0;
+ }
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 8f3fbe5ca937..6682fdcece0f 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -756,7 +756,7 @@ static void nvme_execute_rq_polled(struct request_queue *q,
+
+ 	rq->cmd_flags |= REQ_HIPRI;
+ 	rq->end_io_data = &wait;
+-	blk_execute_rq_nowait(q, bd_disk, rq, at_head, nvme_end_sync_rq);
++	blk_execute_rq_nowait(bd_disk, rq, at_head, nvme_end_sync_rq);
+
+ 	while (!completion_done(&wait)) {
+ 		blk_poll(q, request_to_qc_t(rq->mq_hctx, rq), true);
+@@ -941,7 +941,7 @@ static int nvme_keep_alive(struct nvme_ctrl *ctrl)
+ 	rq->timeout = ctrl->kato * HZ;
+ 	rq->end_io_data = ctrl;
+
+-	blk_execute_rq_nowait(rq->q, NULL, rq, 0, nvme_keep_alive_end_io);
++	blk_execute_rq_nowait(NULL, rq, 0, nvme_keep_alive_end_io);
+
+ 	return 0;
+ }
+diff --git a/drivers/nvme/host/lightnvm.c b/drivers/nvme/host/lightnvm.c
+index ba009d4c9dfa..5d0e330e86d0 100644
+--- a/drivers/nvme/host/lightnvm.c
++++ b/drivers/nvme/host/lightnvm.c
+@@ -685,7 +685,7 @@ static int nvme_nvm_submit_io(struct nvm_dev *dev, struct nvm_rq *rqd)
+
+ 	rq->end_io_data = rqd;
+
+-	blk_execute_rq_nowait(q, NULL, rq, 0, nvme_nvm_end_io);
++	blk_execute_rq_nowait(NULL, rq, 0, nvme_nvm_end_io);
+
+ 	return 0;
+ }
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index db160cee42ad..d8f83696b4ba 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1332,7 +1332,7 @@ static enum blk_eh_timer_return nvme_timeout(struct request *req, bool reserved)
+
+ 	abort_req->timeout = ADMIN_TIMEOUT;
+ 	abort_req->end_io_data = NULL;
+-	blk_execute_rq_nowait(abort_req->q, NULL, abort_req, 0, abort_endio);
++	blk_execute_rq_nowait(NULL, abort_req, 0, abort_endio);
+
+ 	/*
+ 	 * The aborted req will be completed on receiving the abort req.
+@@ -2205,9 +2205,8 @@ static int nvme_delete_queue(struct nvme_queue *nvmeq, u8 opcode)
+ 	req->end_io_data = nvmeq;
+
+ 	init_completion(&nvmeq->delete_done);
+-	blk_execute_rq_nowait(q, NULL, req, false,
+-			opcode == nvme_admin_delete_cq ?
+-				nvme_del_cq_end : nvme_del_queue_end);
++	blk_execute_rq_nowait(NULL, req, false,
++			      opcode == nvme_admin_delete_cq ? nvme_del_cq_end : nvme_del_queue_end);
+ 	return 0;
+ }
+
+diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
+index 1c470e31ae81..49cda23c7fb8 100644
+--- a/drivers/scsi/scsi_error.c
++++ b/drivers/scsi/scsi_error.c
+@@ -1988,7 +1988,7 @@ static void scsi_eh_lock_door(struct scsi_device *sdev)
+ 	req->timeout = 10 * HZ;
+ 	rq->retries = 5;
+
+-	blk_execute_rq_nowait(req->q, NULL, req, 1, eh_lock_door_done);
++	blk_execute_rq_nowait(NULL, req, 1, eh_lock_door_done);
+ }
+
+ /**
+diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+index cce757506383..81ece3ed0474 100644
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -835,8 +835,7 @@ sg_common_write(Sg_fd * sfp, Sg_request * srp,
+
+ 	srp->rq->timeout = timeout;
+ 	kref_get(&sfp->f_ref); /* sg_rq_end_io() does kref_put(). */
+-	blk_execute_rq_nowait(sdp->device->request_queue, sdp->disk,
+-			      srp->rq, at_head, sg_rq_end_io);
++	blk_execute_rq_nowait(sdp->disk, srp->rq, at_head, sg_rq_end_io);
+ 	return 0;
+ }
+
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index e3266a64a477..3b828f260294 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -583,7 +583,7 @@ static int st_scsi_execute(struct st_request *SRpnt, const unsigned char *cmd,
+ 	rq->retries = retries;
+ 	req->end_io_data = SRpnt;
+
+-	blk_execute_rq_nowait(req->q, NULL, req, 1, st_scsi_execute_end);
++	blk_execute_rq_nowait(NULL, req, 1, st_scsi_execute_end);
+ 	return 0;
+ }
+
+diff --git a/drivers/target/target_core_pscsi.c b/drivers/target/target_core_pscsi.c
+index c9d92b3e777d..021212569d1b 100644
+--- a/drivers/target/target_core_pscsi.c
++++ b/drivers/target/target_core_pscsi.c
+@@ -1000,9 +1000,8 @@ pscsi_execute_cmd(struct se_cmd *cmd)
+ 		req->timeout = PS_TIMEOUT_OTHER;
+ 	scsi_req(req)->retries = PS_RETRY;
+
+-	blk_execute_rq_nowait(pdv->pdv_sd->request_queue, NULL, req,
+-			(cmd->sam_task_attr == TCM_HEAD_TAG),
+-			pscsi_req_done);
++	blk_execute_rq_nowait(NULL, req, (cmd->sam_task_attr == TCM_HEAD_TAG),
++			      pscsi_req_done);
+
+ 	return 0;
+
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index 1ef375dafb1c..8e8f088c75a5 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -867,8 +867,8 @@ extern int blk_rq_map_user_iov(struct request_queue *, struct request *,
+ 			       gfp_t);
+ extern void blk_execute_rq(struct request_queue *, struct gendisk *,
+ 			  struct request *, int);
+-extern void blk_execute_rq_nowait(struct request_queue *, struct gendisk *,
+-				  struct request *, int, rq_end_io_fn *);
++extern void blk_execute_rq_nowait(struct gendisk *, struct request *, int,
++				rq_end_io_fn *);
+
+ /* Helper to convert REQ_OP_XXX to its string format XXX */
+ extern const char *blk_op_str(unsigned int op);
+--
+2.22.0
+
