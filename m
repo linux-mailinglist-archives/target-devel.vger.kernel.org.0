@@ -2,72 +2,62 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA5B1877E2
-	for <lists+target-devel@lfdr.de>; Fri,  9 Aug 2019 12:54:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EE7A88E86
+	for <lists+target-devel@lfdr.de>; Sat, 10 Aug 2019 23:19:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406267AbfHIKyU (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 9 Aug 2019 06:54:20 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:43232 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726037AbfHIKyU (ORCPT
+        id S1726549AbfHJVTG (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 10 Aug 2019 17:19:06 -0400
+Received: from esa5.hgst.iphmx.com ([216.71.153.144]:18081 "EHLO
+        esa5.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726201AbfHJVTG (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 9 Aug 2019 06:54:20 -0400
-Received: by mail-ed1-f67.google.com with SMTP id e3so94549781edr.10;
-        Fri, 09 Aug 2019 03:54:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=H5XurvOQOZFexbnR2zKf7+V0lcVL5rSNl6BESH2rPC4=;
-        b=RG9D6uR5HZ9BwPKJjVcEuc+a8EUfQ6FBuoTwmiWzc/IzCRO69axkaOfboC24l1EkcP
-         jk7cVId8ks4maLCIPEM9n5MVpDVvQFM87JhEMsurO8W9rAT5tQ/So/7dTdDKOnIK2Ahy
-         pQNH/KebM37B0WthWx7zhFdICiG4I9BuUabQ3xm9gUmlUFw7ds+q+QoaEs0BraT9SgC6
-         U8yWc9UVmdFBkV1ORrod3ZaN55MJUq29lglY29qABdTfyOfJWRjH1mKnew6s5064VrD0
-         Bt77tDp8eaH0BW4l7ulZSYCJlJTIESBQqPp3qVfscce8FP+n+SFabveyOaK8eGCHuQlV
-         ea2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=H5XurvOQOZFexbnR2zKf7+V0lcVL5rSNl6BESH2rPC4=;
-        b=B65+0gu1w+DdfEf38I3ciDc4QSADlef9yMGF1vO/r8j2gZgDPUfw50O8uCW8LxDMrn
-         hhqRiRNB542JjVAy6u8cbHyAAmrruvtG4B8fyEdTOmgiOf1tsELX5i4IjYDELsHCi8A4
-         rcnDozEenpUQ2cyGWRvdKRZPLZoMNLIU7Tyk7U/4BM1Kr8Ch8hbxizD4wWP+ehG49VE/
-         G+POXXzfHxsXbwmexFwQMwHcJh2UilM8295c+hgTKQeTQtDGy/nHLCmQKv4y1zXxAl//
-         lxzdeET2L27iBldVYcFZ0ZzZK2RnwNU8RX0tK0spiir+RChO0zrwwvAOTBiPe/wEif6q
-         UysQ==
-X-Gm-Message-State: APjAAAVPh4pQAQZGus0+T2NJ98wepsR792Pntrsn/MExXoWoQTamEhQ8
-        QoML63uc2lPLh4+R70uc0yyYQM3LqzqEUA==
-X-Google-Smtp-Source: APXvYqxQKYXqWN1Vw4R02O4soPR5PrQ/ub8cDL/Q2LdQnDCeOWommtd7ZkCAIGOMu95I4sF16LaZCg==
-X-Received: by 2002:a50:9918:: with SMTP id k24mr20823245edb.173.1565348057349;
-        Fri, 09 Aug 2019 03:54:17 -0700 (PDT)
-Received: from continental.suse.de ([177.96.42.43])
-        by smtp.gmail.com with ESMTPSA id x55sm22289167edm.11.2019.08.09.03.54.11
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 09 Aug 2019 03:54:16 -0700 (PDT)
-From:   Marcos Paulo de Souza <marcos.souza.org@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Marcos Paulo de Souza <marcos.souza.org@gmail.com>, hch@lst.de,
-        axboe@kernel.dk, linux-block@vger.kernel.org,
-        Keith Busch <kbusch@kernel.org>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Doug Gilbert <dgilbert@interlog.com>,
-        =?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-        Hannes Reinecke <hare@suse.com>,
-        Omar Sandoval <osandov@fb.com>, Ming Lei <ming.lei@redhat.com>,
-        Damien Le Moal <damien.lemoal@wdc.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        linux-nvme@lists.infradead.org (open list:NVM EXPRESS DRIVER),
-        linux-scsi@vger.kernel.org (open list:SCSI SUBSYSTEM),
-        target-devel@vger.kernel.org (open list:SCSI TARGET SUBSYSTEM)
-Subject: [PATCHv2  1/4] block: Remove request_queue argument from blk_execute_rq_nowait
-Date:   Fri,  9 Aug 2019 07:54:30 -0300
-Message-Id: <20190809105433.8946-2-marcos.souza.org@gmail.com>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190809105433.8946-1-marcos.souza.org@gmail.com>
-References: <20190809105433.8946-1-marcos.souza.org@gmail.com>
+        Sat, 10 Aug 2019 17:19:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1565471947; x=1597007947;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Vz6doSWrgt+VF7RB1ZPlJqx3Dg2TF1XRt1ORZGZVpgg=;
+  b=LKE/3engzjS7Q4q9ycg2MovK4wudv76m3q65XvmSL4VdQQyTntWVQCsq
+   4Jxbgis1MSXaMGU/A/Klz/KX/Mlm5nAdO+AD5fcH9hEytEBUfB6aq2s3P
+   jVdspAazqGqYr/hE1F7mqmelVRu+Pvca8nYln6szG2UjUBTfOBXDMDBPy
+   S1NY64VPoTN0SljNi9GseES4eXQ71RDimG+MA7piQ1Vj0HG5rQas5+Psl
+   Anu1GGNLYITzFpUWHVKcsgtE1OPJfxBgf3UL9EIthvekWTo/Wifp7jOCa
+   NESbVRRJ+kTn4NbDkoa1AGrJycwujaCgcFtGOJmfs/y+HAldZTnonJmvr
+   Q==;
+IronPort-SDR: aeO6KRg3ruyq1Oskte7/MZy+BX+WsTYc4vslXafuP/1gl5V1sl4kURuWr+1YOUS8BS72CtlVzA
+ 6JJxFlJ9/eYhlKbuDlaZA3baUu7Su/ZWBvgelvdTjFEyU8Gg1p4rftAJqhnKnxUrPPz+PA8NSs
+ VzeU3sAnbCB4/G50KyrFPYVG4MmMg6SLdZJNk0bawIQF53nQoGTlQKnelcaIFqOh9TQOX4RBI8
+ XqNG1WAhBwgP/p81t2Nqcj3d2KR54kLiBz5kxmXyLTc0JepbiA24jJgod2X4v+3rqkNREYAxfr
+ i7g=
+X-IronPort-AV: E=Sophos;i="5.64,370,1559491200"; 
+   d="scan'208";a="116512329"
+Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 11 Aug 2019 05:19:06 +0800
+IronPort-SDR: 8+DrJLfzaEyNU8plSpyKZvEqcqI26YHexRE4cqOn8aBBniI8oIJPca0MsJ1xFAkV4dkerad7fk
+ PZ4zy2MPV4hOcQhN3Av61ZyRhWmk86poUsizOkXK+ekEjPVCW0ckGEb/rtmQPh4YRLc6+kUVRM
+ aaejEzWU0M+KbXWacnA5WkEIKxTjzGxRiB8pqDWpdy6Kqn/YlLJ1a+ARilRIJbMhPrv8EHUapP
+ +WKE00koTwAO74Waz2pGtNqzDMULGB0nuMWw/zIBBpZiuqtpnfa9HDOz0icJKLqTQZBiksMOgp
+ dxIXtuEofsdolrlDdtvLTegh
+Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2019 14:16:45 -0700
+IronPort-SDR: SZYSiCS7n1dRqel+x7TOez1Vq1BCLcgZTQTP3YZp3m8P+R8iF3SGxEYdPzz5IupjReA3T1cfU3
+ EjuSJWzk8VjUWKgRDaEM0US+EmlC+qew0DbQISgkNk06IlyZBaiRx3lXMezINVdGNATX4qRWhJ
+ 5jkcX9pHiE5NINtx5NJA7R3u+S+2CQqBmYtHbQA71nVkAtDJhnEB78elwuU+2QI/03SvuXtvAU
+ H1s09hoTWKO3FwXNe1YnK6qvDYhO8jsitT22Peh07uN3uQg21X4KFv/V22FqQtl1silKaeYo8O
+ XIw=
+Received: from dhcp-10-88-173-43.hgst.com (HELO localhost.localdomain) ([10.88.173.43])
+  by uls-op-cesaip01.wdc.com with ESMTP; 10 Aug 2019 14:19:05 -0700
+From:   Dmitry Fomichev <dmitry.fomichev@wdc.com>
+To:     linux-scsi@vger.kernel.org,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        target-devel@vger.kernel.org, Mike Christie <mchristi@redhat.com>,
+        Bart Van Assche <bvanassche@acm.org>
+Cc:     Damien Le Moal <damien.lemoal@wdc.com>
+Subject: [PATCH] tcmu: avoid use-after-free after command timeout
+Date:   Sat, 10 Aug 2019 14:19:03 -0700
+Message-Id: <20190810211903.6572-1-dmitry.fomichev@wdc.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: target-devel-owner@vger.kernel.org
@@ -75,211 +65,63 @@ Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Commit a1ce35fa4985 ("block: remove dead elevator code") removed code
-that was using the request_queue argument. This got simplified by
-calling blk_mq_sched_insert_request which already gets the request_queue
-from the request being inserted in the scheduler queue for execution.
+In tcmu_handle_completion() function, the variable called read_len is
+always initialized with a value taken from se_cmd structure. If this
+function is called to complete an expired (timed out) out command, the
+session command pointed by se_cmd is likely to be already deallocated by
+the target core at that moment. As the result, this access triggers a
+use-after-free warning from KASAN.
 
-Signed-off-by: Marcos Paulo de Souza <marcos.souza.org@gmail.com>
+This patch fixes the code not to touch se_cmd when completing timed out
+TCMU commands. It also resets the pointer to se_cmd at the time when the
+TCMU_CMD_BIT_EXPIRED flag is set because it is going to become invalid
+after calling target_complete_cmd() later in the same function,
+tcmu_check_expired_cmd().
+
+Signed-off-by: Dmitry Fomichev <dmitry.fomichev@wdc.com>
 ---
- block/blk-exec.c                   | 8 +++-----
- drivers/block/sx8.c                | 4 ++--
- drivers/nvme/host/core.c           | 4 ++--
- drivers/nvme/host/lightnvm.c       | 2 +-
- drivers/nvme/host/pci.c            | 7 +++----
- drivers/scsi/scsi_error.c          | 2 +-
- drivers/scsi/sg.c                  | 3 +--
- drivers/scsi/st.c                  | 2 +-
- drivers/target/target_core_pscsi.c | 5 ++---
- include/linux/blkdev.h             | 4 ++--
- 10 files changed, 18 insertions(+), 23 deletions(-)
+ drivers/target/target_core_user.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/block/blk-exec.c b/block/blk-exec.c
-index 1db44ca0f4a6..80890b0b9c67 100644
---- a/block/blk-exec.c
-+++ b/block/blk-exec.c
-@@ -32,7 +32,6 @@ static void blk_end_sync_rq(struct request *rq, blk_status_t error)
-
- /**
-  * blk_execute_rq_nowait - insert a request into queue for execution
-- * @q:		queue to insert the request in
-  * @bd_disk:	matching gendisk
-  * @rq:		request to insert
-  * @at_head:    insert request at head or tail of queue
-@@ -45,9 +44,8 @@ static void blk_end_sync_rq(struct request *rq, blk_status_t error)
-  * Note:
-  *    This function will invoke @done directly if the queue is dead.
-  */
--void blk_execute_rq_nowait(struct request_queue *q, struct gendisk *bd_disk,
--			   struct request *rq, int at_head,
--			   rq_end_io_fn *done)
-+void blk_execute_rq_nowait(struct gendisk *bd_disk, struct request *rq,
-+			int at_head, rq_end_io_fn *done)
- {
- 	WARN_ON(irqs_disabled());
- 	WARN_ON(!blk_rq_is_passthrough(rq));
-@@ -81,7 +79,7 @@ void blk_execute_rq(struct request_queue *q, struct gendisk *bd_disk,
- 	unsigned long hang_check;
-
- 	rq->end_io_data = &wait;
--	blk_execute_rq_nowait(q, bd_disk, rq, at_head, blk_end_sync_rq);
-+	blk_execute_rq_nowait(bd_disk, rq, at_head, blk_end_sync_rq);
-
- 	/* Prevent hang_check timer from firing at us during very long I/O */
- 	hang_check = sysctl_hung_task_timeout_secs;
-diff --git a/drivers/block/sx8.c b/drivers/block/sx8.c
-index 4478eb7efee0..2cdf2771f8e8 100644
---- a/drivers/block/sx8.c
-+++ b/drivers/block/sx8.c
-@@ -539,7 +539,7 @@ static int carm_array_info (struct carm_host *host, unsigned int array_idx)
- 	spin_unlock_irq(&host->lock);
-
- 	DPRINTK("blk_execute_rq_nowait, tag == %u\n", rq->tag);
--	blk_execute_rq_nowait(host->oob_q, NULL, rq, true, NULL);
-+	blk_execute_rq_nowait(NULL, rq, true, NULL);
-
- 	return 0;
-
-@@ -578,7 +578,7 @@ static int carm_send_special (struct carm_host *host, carm_sspc_t func)
- 	crq->msg_bucket = (u32) rc;
-
- 	DPRINTK("blk_execute_rq_nowait, tag == %u\n", rq->tag);
--	blk_execute_rq_nowait(host->oob_q, NULL, rq, true, NULL);
-+	blk_execute_rq_nowait(NULL, rq, true, NULL);
-
- 	return 0;
- }
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 8f3fbe5ca937..6682fdcece0f 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -756,7 +756,7 @@ static void nvme_execute_rq_polled(struct request_queue *q,
-
- 	rq->cmd_flags |= REQ_HIPRI;
- 	rq->end_io_data = &wait;
--	blk_execute_rq_nowait(q, bd_disk, rq, at_head, nvme_end_sync_rq);
-+	blk_execute_rq_nowait(bd_disk, rq, at_head, nvme_end_sync_rq);
-
- 	while (!completion_done(&wait)) {
- 		blk_poll(q, request_to_qc_t(rq->mq_hctx, rq), true);
-@@ -941,7 +941,7 @@ static int nvme_keep_alive(struct nvme_ctrl *ctrl)
- 	rq->timeout = ctrl->kato * HZ;
- 	rq->end_io_data = ctrl;
-
--	blk_execute_rq_nowait(rq->q, NULL, rq, 0, nvme_keep_alive_end_io);
-+	blk_execute_rq_nowait(NULL, rq, 0, nvme_keep_alive_end_io);
-
- 	return 0;
- }
-diff --git a/drivers/nvme/host/lightnvm.c b/drivers/nvme/host/lightnvm.c
-index ba009d4c9dfa..5d0e330e86d0 100644
---- a/drivers/nvme/host/lightnvm.c
-+++ b/drivers/nvme/host/lightnvm.c
-@@ -685,7 +685,7 @@ static int nvme_nvm_submit_io(struct nvm_dev *dev, struct nvm_rq *rqd)
-
- 	rq->end_io_data = rqd;
-
--	blk_execute_rq_nowait(q, NULL, rq, 0, nvme_nvm_end_io);
-+	blk_execute_rq_nowait(NULL, rq, 0, nvme_nvm_end_io);
-
- 	return 0;
- }
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index db160cee42ad..d8f83696b4ba 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1332,7 +1332,7 @@ static enum blk_eh_timer_return nvme_timeout(struct request *req, bool reserved)
-
- 	abort_req->timeout = ADMIN_TIMEOUT;
- 	abort_req->end_io_data = NULL;
--	blk_execute_rq_nowait(abort_req->q, NULL, abort_req, 0, abort_endio);
-+	blk_execute_rq_nowait(NULL, abort_req, 0, abort_endio);
-
+diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
+index 04eda111920e..a0231491fa36 100644
+--- a/drivers/target/target_core_user.c
++++ b/drivers/target/target_core_user.c
+@@ -1132,14 +1132,16 @@ static void tcmu_handle_completion(struct tcmu_cmd *cmd, struct tcmu_cmd_entry *
+ 	struct se_cmd *se_cmd = cmd->se_cmd;
+ 	struct tcmu_dev *udev = cmd->tcmu_dev;
+ 	bool read_len_valid = false;
+-	uint32_t read_len = se_cmd->data_length;
++	uint32_t read_len;
+ 
  	/*
- 	 * The aborted req will be completed on receiving the abort req.
-@@ -2205,9 +2205,8 @@ static int nvme_delete_queue(struct nvme_queue *nvmeq, u8 opcode)
- 	req->end_io_data = nvmeq;
-
- 	init_completion(&nvmeq->delete_done);
--	blk_execute_rq_nowait(q, NULL, req, false,
--			opcode == nvme_admin_delete_cq ?
--				nvme_del_cq_end : nvme_del_queue_end);
-+	blk_execute_rq_nowait(NULL, req, false,
-+			      opcode == nvme_admin_delete_cq ? nvme_del_cq_end : nvme_del_queue_end);
- 	return 0;
- }
-
-diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
-index 1c470e31ae81..49cda23c7fb8 100644
---- a/drivers/scsi/scsi_error.c
-+++ b/drivers/scsi/scsi_error.c
-@@ -1988,7 +1988,7 @@ static void scsi_eh_lock_door(struct scsi_device *sdev)
- 	req->timeout = 10 * HZ;
- 	rq->retries = 5;
-
--	blk_execute_rq_nowait(req->q, NULL, req, 1, eh_lock_door_done);
-+	blk_execute_rq_nowait(NULL, req, 1, eh_lock_door_done);
- }
-
- /**
-diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
-index cce757506383..81ece3ed0474 100644
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -835,8 +835,7 @@ sg_common_write(Sg_fd * sfp, Sg_request * srp,
-
- 	srp->rq->timeout = timeout;
- 	kref_get(&sfp->f_ref); /* sg_rq_end_io() does kref_put(). */
--	blk_execute_rq_nowait(sdp->device->request_queue, sdp->disk,
--			      srp->rq, at_head, sg_rq_end_io);
-+	blk_execute_rq_nowait(sdp->disk, srp->rq, at_head, sg_rq_end_io);
- 	return 0;
- }
-
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index e3266a64a477..3b828f260294 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -583,7 +583,7 @@ static int st_scsi_execute(struct st_request *SRpnt, const unsigned char *cmd,
- 	rq->retries = retries;
- 	req->end_io_data = SRpnt;
-
--	blk_execute_rq_nowait(req->q, NULL, req, 1, st_scsi_execute_end);
-+	blk_execute_rq_nowait(NULL, req, 1, st_scsi_execute_end);
- 	return 0;
- }
-
-diff --git a/drivers/target/target_core_pscsi.c b/drivers/target/target_core_pscsi.c
-index c9d92b3e777d..021212569d1b 100644
---- a/drivers/target/target_core_pscsi.c
-+++ b/drivers/target/target_core_pscsi.c
-@@ -1000,9 +1000,8 @@ pscsi_execute_cmd(struct se_cmd *cmd)
- 		req->timeout = PS_TIMEOUT_OTHER;
- 	scsi_req(req)->retries = PS_RETRY;
-
--	blk_execute_rq_nowait(pdv->pdv_sd->request_queue, NULL, req,
--			(cmd->sam_task_attr == TCM_HEAD_TAG),
--			pscsi_req_done);
-+	blk_execute_rq_nowait(NULL, req, (cmd->sam_task_attr == TCM_HEAD_TAG),
-+			      pscsi_req_done);
-
- 	return 0;
-
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 1ef375dafb1c..8e8f088c75a5 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -867,8 +867,8 @@ extern int blk_rq_map_user_iov(struct request_queue *, struct request *,
- 			       gfp_t);
- extern void blk_execute_rq(struct request_queue *, struct gendisk *,
- 			  struct request *, int);
--extern void blk_execute_rq_nowait(struct request_queue *, struct gendisk *,
--				  struct request *, int, rq_end_io_fn *);
-+extern void blk_execute_rq_nowait(struct gendisk *, struct request *, int,
-+				rq_end_io_fn *);
-
- /* Helper to convert REQ_OP_XXX to its string format XXX */
- extern const char *blk_op_str(unsigned int op);
---
-2.22.0
+ 	 * cmd has been completed already from timeout, just reclaim
+ 	 * data area space and free cmd
+ 	 */
+-	if (test_bit(TCMU_CMD_BIT_EXPIRED, &cmd->flags))
++	if (test_bit(TCMU_CMD_BIT_EXPIRED, &cmd->flags)) {
++		WARN_ON_ONCE(se_cmd);
+ 		goto out;
++	}
+ 
+ 	list_del_init(&cmd->queue_entry);
+ 
+@@ -1152,6 +1154,7 @@ static void tcmu_handle_completion(struct tcmu_cmd *cmd, struct tcmu_cmd_entry *
+ 		goto done;
+ 	}
+ 
++	read_len = se_cmd->data_length;
+ 	if (se_cmd->data_direction == DMA_FROM_DEVICE &&
+ 	    (entry->hdr.uflags & TCMU_UFLAG_READ_LEN) && entry->rsp.read_len) {
+ 		read_len_valid = true;
+@@ -1307,6 +1310,7 @@ static int tcmu_check_expired_cmd(int id, void *p, void *data)
+ 		 */
+ 		scsi_status = SAM_STAT_CHECK_CONDITION;
+ 		list_del_init(&cmd->queue_entry);
++		cmd->se_cmd = NULL;
+ 	} else {
+ 		list_del_init(&cmd->queue_entry);
+ 		idr_remove(&udev->commands, id);
+-- 
+2.21.0
 
