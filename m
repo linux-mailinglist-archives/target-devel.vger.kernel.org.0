@@ -2,62 +2,197 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1908C8A251
-	for <lists+target-devel@lfdr.de>; Mon, 12 Aug 2019 17:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6927B8A530
+	for <lists+target-devel@lfdr.de>; Mon, 12 Aug 2019 20:00:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727805AbfHLPaU (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 12 Aug 2019 11:30:20 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:49245 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727503AbfHLPaU (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Mon, 12 Aug 2019 11:30:20 -0400
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 912E585536;
-        Mon, 12 Aug 2019 15:30:20 +0000 (UTC)
-Received: from [10.10.124.11] (ovpn-124-11.rdu2.redhat.com [10.10.124.11])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id B55775C1B5;
-        Mon, 12 Aug 2019 15:30:19 +0000 (UTC)
-Subject: Re: [PATCH v2] tcmu: avoid use-after-free after command timeout
-To:     Dmitry Fomichev <dmitry.fomichev@wdc.com>,
-        linux-scsi@vger.kernel.org,
+        id S1726551AbfHLSAZ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 12 Aug 2019 14:00:25 -0400
+Received: from esa6.hgst.iphmx.com ([216.71.154.45]:16839 "EHLO
+        esa6.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726090AbfHLSAZ (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Mon, 12 Aug 2019 14:00:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1565632825; x=1597168825;
+  h=from:to:subject:date:message-id:references:
+   content-transfer-encoding:mime-version;
+  bh=/lS/qKtCo63AiHHtzKp9qRIK2jbP/snX1++4B7Em8ps=;
+  b=b6XHbPnCkj9eWdVE6p1kOVNke7eBmqTs9dxf9JdbKoXjV+k8nA+QWUNQ
+   FHuoZpXO/Q8/NrFpDx96smJeg29u24NN6mj/RYr8raP+zXa5yk/6zxpRn
+   bLPq9uqQKqD5NzTZ+8NRNKwk49qPZgeip2ARtbBk5dSItSV3KNB1b5Cg5
+   O4AJ2/CS9AkBCsScHGR3AL4U8s0bYN4DyhO4Ky8BLXuL1gP31sCHqDCk8
+   caxqVDJkjgy2K3W8kTJzcOH02Iec2mRLtadRTJs5fYqjx3ncdwgADutTq
+   7eDUJluckttGbqLJuNoZ9y1Y1T4fE6/7JFkbLn58UalkJmzVRrYXcePKN
+   Q==;
+IronPort-SDR: ZR9i/RpeqnycmDgxdn3MkghW2mX79+VlvOtZDM5g3bLzo9hxxxzjwUThcdHJ9PiqGsiw5mGrP5
+ RXg+/PX1E16yc0H2pUI1XIH2CM0VBLdjte2yD34IGZG+rF4qlRPwuqSgoOxwRDRMDsYiD2FqqE
+ 5MqIaSJm6SIqpdeXz0KRESzCf+C8wQJKb8KYn64dSZI8pySP1Pu9r3KaSsLA7kUTSc8qCNDv/x
+ OdxAab4NZ+sPLiqIVVtrH05q+ZsihAQm9W8FRmbqjhzpzbMA0MRyWX6x4pvtPnXen8nhZtO1xL
+ SHI=
+X-IronPort-AV: E=Sophos;i="5.64,378,1559491200"; 
+   d="scan'208";a="117262144"
+Received: from mail-co1nam03lp2055.outbound.protection.outlook.com (HELO NAM03-CO1-obe.outbound.protection.outlook.com) ([104.47.40.55])
+  by ob1.hgst.iphmx.com with ESMTP; 13 Aug 2019 02:00:25 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=epZ6lUOiLh1o2nsaLN4EC2qvKIsK5O91XO8x8XBhzNo5eMiCaeD2GBXNWro6qbIw6/UOiJPAAVBdYGR+G9+NHms6VZ56Up1Qtb9dJPcG4FxSOS8TluE7ur6T4tKcZXwtHJHviTAwahGYXNVtq/1Ck4rTQ6a9lWu3hDJ5ueNcLL9IvKYXnjwQcprLX4c4Zc3ujWtMYIZUIn2YR08QBsls82CXvaSXcYlIc0iXKveF0PgUQ8a2MZLeSoJ4qjtRmAWTePcQ/S06ctlIVD54twMOrV0dkuxZWePakIeQ5mycyz+kpgwKAfrM9oNDCFMa/SV/1DrNDz5JhBZNuFK1bFtgbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8m2ifUliA4OBqrjDM/H1Aag76HJDGRwkA2iHRlawRYU=;
+ b=FHYlFce5cU8yiPAaLg+USpctqZZ150Ae8u1hj+WrXtk5/boqjiOCDHh18yh6svjXiFS//0yzw25dO6DShPKtoH7nSMbwGok1JUaiHrDCTLiNeBFjLHNTRYxbXNhHqKlkqgrIHcfH5jMIUMKpVuekBtOVWNgvcWAHNAnaVVbK2zepMU529Z9aLNP267tnGckfIiSx9CZ4u4l9zE5v8OYdJSwoXDg/3tzeA3u0ouWjEJUr2384A5bEzPSahfK/f5muNqjWtUemzHMlzQOrTRZB5byKEshkjjbWdWapTwi+bqarwdchcLwNpbPt+77nKoRTOYYRKRpM5IXRKtnuZBAelQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
+ header.d=wdc.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8m2ifUliA4OBqrjDM/H1Aag76HJDGRwkA2iHRlawRYU=;
+ b=QZWk1VqPY6v4ZhPdBESBFT1/U90D0/c4/OCnjlUk96B4fTPikcrC+l3yb9IOsmxcX6At1zfrGM0CBNAfPaor8La5Unw5FZYINTDPdS6d2x3VHmqqh6uZzPtNJUKnKGgukzH+vsGSC5LWpTexNaOCHjOSkPEChjJaq2rk+Zk0sfU=
+Received: from BYAPR04MB5816.namprd04.prod.outlook.com (20.179.58.207) by
+ BYAPR04MB4712.namprd04.prod.outlook.com (52.135.240.27) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2157.20; Mon, 12 Aug 2019 18:00:22 +0000
+Received: from BYAPR04MB5816.namprd04.prod.outlook.com
+ ([fe80::a538:afd0:d62a:55bc]) by BYAPR04MB5816.namprd04.prod.outlook.com
+ ([fe80::a538:afd0:d62a:55bc%7]) with mapi id 15.20.2157.020; Mon, 12 Aug 2019
+ 18:00:22 +0000
+From:   Damien Le Moal <Damien.LeMoal@wdc.com>
+To:     Dmitry Fomichev <Dmitry.Fomichev@wdc.com>,
+        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
-        target-devel@vger.kernel.org, Bart Van Assche <bvanassche@acm.org>
+        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>,
+        Mike Christie <mchristi@redhat.com>,
+        Bart Van Assche <bvanassche@acm.org>
+Subject: Re: [PATCH v2] tcmu: avoid use-after-free after command timeout
+Thread-Topic: [PATCH v2] tcmu: avoid use-after-free after command timeout
+Thread-Index: AQHVUHIgO5axZ6IT/ESs5nhTjFMRQw==
+Date:   Mon, 12 Aug 2019 18:00:22 +0000
+Message-ID: <BYAPR04MB5816B8BFAE68F477F5A0C8D3E7D30@BYAPR04MB5816.namprd04.prod.outlook.com>
 References: <20190811182510.1706-1-dmitry.fomichev@wdc.com>
-Cc:     Damien Le Moal <damien.lemoal@wdc.com>
-From:   Mike Christie <mchristi@redhat.com>
-Message-ID: <5D51860B.1060902@redhat.com>
-Date:   Mon, 12 Aug 2019 10:30:19 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.6.0
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Damien.LeMoal@wdc.com; 
+x-originating-ip: [199.255.44.250]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: b249963a-013f-4ad3-3e04-08d71f4ef24b
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:BYAPR04MB4712;
+x-ms-traffictypediagnostic: BYAPR04MB4712:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <BYAPR04MB47129802DF4487F7E736086AE7D30@BYAPR04MB4712.namprd04.prod.outlook.com>
+wdcipoutbound: EOP-TRUE
+x-ms-oob-tlc-oobclassifiers: OLM:6790;
+x-forefront-prvs: 012792EC17
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(366004)(136003)(396003)(376002)(39860400002)(346002)(199004)(189003)(186003)(2501003)(229853002)(5660300002)(446003)(256004)(26005)(14444005)(6436002)(25786009)(55016002)(9686003)(8936002)(86362001)(33656002)(6506007)(71190400001)(71200400001)(53546011)(76176011)(102836004)(53936002)(6246003)(7696005)(66446008)(66556008)(64756008)(66946007)(66476007)(316002)(66066001)(74316002)(305945005)(76116006)(8676002)(478600001)(7736002)(14454004)(81166006)(81156014)(476003)(2906002)(486006)(3846002)(99286004)(52536014)(6116002)(110136005);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR04MB4712;H:BYAPR04MB5816.namprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: xOhyLvdGQJctuKtIVQrraMvxUu8oVsExG2gGTmvR8NikEp7O3ECbUXOT54QwSmN52uN7zJFhJcGwzGRqDBjZssASwPKRIxYzAVJmgLPKSBPuGkdkUzbKV+muJiVCHrHme0WvjvmQ+ZtmTwsQNeEaNjpnwVEaQ1aykER9ASN9Niz1zOk4LhGojyU7iWSaVE8E9vLGZlhYzuQAKOF85gd6iAUwflBV7luQw4KKaKaZ29oVUwezBFNrO6N8wOAW2Dj3bkhHqs1aDBnJJWS7Lx1Q5TscQWxZjUni/GKAaGXfpMtv9iLVzPFukpGuhMw8qpk3pGzQQLMtUY0y5weVeT78e1RXhhr/uYc6XT1LdgQUILebGQFE0kAuO245nj/6qZdNKOQUB7Ie9TZO2Rn6pZZB5Q6oT/tosEUG2f778cEgKBo=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-In-Reply-To: <20190811182510.1706-1-dmitry.fomichev@wdc.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.28]); Mon, 12 Aug 2019 15:30:20 +0000 (UTC)
+X-OriginatorOrg: wdc.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b249963a-013f-4ad3-3e04-08d71f4ef24b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Aug 2019 18:00:22.8512
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Hyx1RSOv90H9FngNBTXvd4/EmBhnd0vMprnJOLSnUABKlDmmqAwSKTKgeYAJPkji+jxJ+kVGHsnBxYo4ho9vmw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR04MB4712
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 08/11/2019 01:25 PM, Dmitry Fomichev wrote:
-> In tcmu_handle_completion() function, the variable called read_len is
-> always initialized with a value taken from se_cmd structure. If this
-> function is called to complete an expired (timed out) out command, the
-> session command pointed by se_cmd is likely to be already deallocated by
-> the target core at that moment. As the result, this access triggers a
-> use-after-free warning from KASAN.
-> 
-> This patch fixes the code not to touch se_cmd when completing timed out
-> TCMU commands. It also resets the pointer to se_cmd at the time when the
-> TCMU_CMD_BIT_EXPIRED flag is set because it is going to become invalid
-> after calling target_complete_cmd() later in the same function,
-> tcmu_check_expired_cmd().
-> 
-> Signed-off-by: Dmitry Fomichev <dmitry.fomichev@wdc.com>
-> ---
-
-Acked-by: Mike Christie <mchristi@redhat.com>
-
+On 2019/08/11 11:25, Dmitry Fomichev wrote:=0A=
+> In tcmu_handle_completion() function, the variable called read_len is=0A=
+> always initialized with a value taken from se_cmd structure. If this=0A=
+> function is called to complete an expired (timed out) out command, the=0A=
+> session command pointed by se_cmd is likely to be already deallocated by=
+=0A=
+> the target core at that moment. As the result, this access triggers a=0A=
+> use-after-free warning from KASAN.=0A=
+> =0A=
+> This patch fixes the code not to touch se_cmd when completing timed out=
+=0A=
+> TCMU commands. It also resets the pointer to se_cmd at the time when the=
+=0A=
+> TCMU_CMD_BIT_EXPIRED flag is set because it is going to become invalid=0A=
+> after calling target_complete_cmd() later in the same function,=0A=
+> tcmu_check_expired_cmd().=0A=
+> =0A=
+> Signed-off-by: Dmitry Fomichev <dmitry.fomichev@wdc.com>=0A=
+> ---=0A=
+>  drivers/target/target_core_user.c | 9 +++++++--=0A=
+>  1 file changed, 7 insertions(+), 2 deletions(-)=0A=
+> =0A=
+> diff --git a/drivers/target/target_core_user.c b/drivers/target/target_co=
+re_user.c=0A=
+> index 04eda111920e..661bb9358364 100644=0A=
+> --- a/drivers/target/target_core_user.c=0A=
+> +++ b/drivers/target/target_core_user.c=0A=
+> @@ -1132,14 +1132,16 @@ static void tcmu_handle_completion(struct tcmu_cm=
+d *cmd, struct tcmu_cmd_entry *=0A=
+>  	struct se_cmd *se_cmd =3D cmd->se_cmd;=0A=
+>  	struct tcmu_dev *udev =3D cmd->tcmu_dev;=0A=
+>  	bool read_len_valid =3D false;=0A=
+> -	uint32_t read_len =3D se_cmd->data_length;=0A=
+> +	uint32_t read_len;=0A=
+>  =0A=
+>  	/*=0A=
+>  	 * cmd has been completed already from timeout, just reclaim=0A=
+>  	 * data area space and free cmd=0A=
+>  	 */=0A=
+> -	if (test_bit(TCMU_CMD_BIT_EXPIRED, &cmd->flags))=0A=
+> +	if (test_bit(TCMU_CMD_BIT_EXPIRED, &cmd->flags)) {=0A=
+> +		WARN_ON_ONCE(se_cmd);=0A=
+>  		goto out;=0A=
+> +	}=0A=
+>  =0A=
+>  	list_del_init(&cmd->queue_entry);=0A=
+>  =0A=
+> @@ -1152,6 +1154,7 @@ static void tcmu_handle_completion(struct tcmu_cmd =
+*cmd, struct tcmu_cmd_entry *=0A=
+>  		goto done;=0A=
+>  	}=0A=
+>  =0A=
+> +	read_len =3D se_cmd->data_length;=0A=
+>  	if (se_cmd->data_direction =3D=3D DMA_FROM_DEVICE &&=0A=
+>  	    (entry->hdr.uflags & TCMU_UFLAG_READ_LEN) && entry->rsp.read_len) {=
+=0A=
+>  		read_len_valid =3D true;=0A=
+> @@ -1307,6 +1310,7 @@ static int tcmu_check_expired_cmd(int id, void *p, =
+void *data)=0A=
+>  		 */=0A=
+>  		scsi_status =3D SAM_STAT_CHECK_CONDITION;=0A=
+>  		list_del_init(&cmd->queue_entry);=0A=
+> +		cmd->se_cmd =3D NULL;=0A=
+>  	} else {=0A=
+>  		list_del_init(&cmd->queue_entry);=0A=
+>  		idr_remove(&udev->commands, id);=0A=
+> @@ -2022,6 +2026,7 @@ static void tcmu_reset_ring(struct tcmu_dev *udev, =
+u8 err_level)=0A=
+>  =0A=
+>  		idr_remove(&udev->commands, i);=0A=
+>  		if (!test_bit(TCMU_CMD_BIT_EXPIRED, &cmd->flags)) {=0A=
+> +			WARN_ON(!cmd->se_cmd);=0A=
+=0A=
+May be WARN_ON_ONCE() similarly to the previous one ? No strong opinion abo=
+ut it=0A=
+though.=0A=
+=0A=
+>  			list_del_init(&cmd->queue_entry);=0A=
+>  			if (err_level =3D=3D 1) {=0A=
+>  				/*=0A=
+> =0A=
+=0A=
+Apart from the optional nit above:=0A=
+=0A=
+Reviewed-by: Damien Le Moal <damien.lemoal@wdc.com>=0A=
+=0A=
+-- =0A=
+Damien Le Moal=0A=
+Western Digital Research=0A=
