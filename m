@@ -2,84 +2,102 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BB9E964D7
-	for <lists+target-devel@lfdr.de>; Tue, 20 Aug 2019 17:44:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0098C96754
+	for <lists+target-devel@lfdr.de>; Tue, 20 Aug 2019 19:20:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729933AbfHTPoE (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 20 Aug 2019 11:44:04 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:43662 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729918AbfHTPoE (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Tue, 20 Aug 2019 11:44:04 -0400
-Received: by mail-pf1-f193.google.com with SMTP id v12so3612180pfn.10;
-        Tue, 20 Aug 2019 08:44:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=4jRGLtVU5r9UcS9Qnr4Iu+vrayhHUr2Qi0LuhCw4B3Q=;
-        b=ZEgYH6WpwJ66w2qiG1Hdsowzrhc5EwdcDFKBZ5TeIPu4Zc5gVxx6bnntKJeU6svWfp
-         E5ynQeWHpK+LU85r0ZCwBzGpYSVLSys0iJQPcy/IHQWE8HfcZ0ks/QsXmTiS2momWgwA
-         K2h2KmwSrecFCBSMLNXJ288dDhjk6n2ItuWhOgcmyr19rBM2YzMHDyZHo/b6G6rCoyMR
-         S5+qAxfnTY7AKFI4idzQcMFCcLD+GDN7KhPXIGhSGoP1+FXUoKOzSx6vwLPRuSD/lNUN
-         EtjAxyK92EqMv/ng6leEw2hPrf0wo9PVLMyTq0wHmlJ7w8z0VjGAYD+O+MbDQGUe8/AD
-         gq9w==
-X-Gm-Message-State: APjAAAUU92qeVKcR26vV2ZvPa6J2S4XKdz7f68MftEMkDmL/aM+XRxSD
-        Q9chHzH8RiGIqvNMON7T6xA=
-X-Google-Smtp-Source: APXvYqx2pobOajqPTHDvlFOo68MYoWh6qh4ybTZ1m5Aqb0Jb1f4gNOlQ4RQ7gtwyPMVrC3K/XmvJEg==
-X-Received: by 2002:a63:9249:: with SMTP id s9mr24545774pgn.356.1566315843146;
-        Tue, 20 Aug 2019 08:44:03 -0700 (PDT)
-Received: from desktop-bart.svl.corp.google.com ([2620:15c:2cd:202:4308:52a3:24b6:2c60])
-        by smtp.gmail.com with ESMTPSA id j6sm30761926pfg.158.2019.08.20.08.44.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Aug 2019 08:44:02 -0700 (PDT)
+        id S1730503AbfHTRT1 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 20 Aug 2019 13:19:27 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:49804 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725971AbfHTRT1 (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Tue, 20 Aug 2019 13:19:27 -0400
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id DD5D26412B;
+        Tue, 20 Aug 2019 17:19:26 +0000 (UTC)
+Received: from [10.10.123.202] (ovpn-123-202.rdu2.redhat.com [10.10.123.202])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 165F45C298;
+        Tue, 20 Aug 2019 17:19:25 +0000 (UTC)
 Subject: Re: [PATCH v2 1/2] scsi: target/tcm_loop: ignore already deleted scsi
  device
-To:     Mike Christie <mchristi@redhat.com>,
+To:     Bart Van Assche <bvanassche@acm.org>,
         Naohiro Aota <naohiro.aota@wdc.com>,
         linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Cc:     Nicholas Bellinger <nab@linux-iscsi.org>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>
 References: <20190820090429.1961085-1-naohiro.aota@wdc.com>
  <1973f310-ad00-ff88-fe08-a31f81dc5c33@acm.org> <5D5C1159.4030507@redhat.com>
-From:   Bart Van Assche <bvanassche@acm.org>
-Message-ID: <737dd6be-a8c9-492c-8057-1f16b3d90519@acm.org>
-Date:   Tue, 20 Aug 2019 08:43:59 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ <737dd6be-a8c9-492c-8057-1f16b3d90519@acm.org>
+Cc:     Nicholas Bellinger <nab@linux-iscsi.org>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>
+From:   Mike Christie <mchristi@redhat.com>
+Message-ID: <5D5C2B9D.1070307@redhat.com>
+Date:   Tue, 20 Aug 2019 12:19:25 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.6.0
 MIME-Version: 1.0
-In-Reply-To: <5D5C1159.4030507@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+In-Reply-To: <737dd6be-a8c9-492c-8057-1f16b3d90519@acm.org>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.39]); Tue, 20 Aug 2019 17:19:26 +0000 (UTC)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 8/20/19 8:27 AM, Mike Christie wrote:
-> tcm loop does not take a reference to the scsi_device at creation/link
-> time then need to release at removal/unlink time. The above
-> scsi_device_put is for the successful scsi_device_lookup call. tcm loop
-> works like a scsi host driver that does its own scanning via
-> scsi_add_device (maybe similar to scsi drivers that are raid cards).
-> Like other host drivers it does not take a reference to the device when
-> it is added and relies on scsi-ml to handle all that for it before doing
-> operations like queuecommand.
+On 08/20/2019 10:43 AM, Bart Van Assche wrote:
+> On 8/20/19 8:27 AM, Mike Christie wrote:
+>> tcm loop does not take a reference to the scsi_device at creation/link
+>> time then need to release at removal/unlink time. The above
+>> scsi_device_put is for the successful scsi_device_lookup call. tcm loop
+>> works like a scsi host driver that does its own scanning via
+>> scsi_add_device (maybe similar to scsi drivers that are raid cards).
+>> Like other host drivers it does not take a reference to the device when
+>> it is added and relies on scsi-ml to handle all that for it before doing
+>> operations like queuecommand.
+>>
+>> The leak is if you removed the scsi_device via the scsi ml sysfs
+>> interface then there is no way to completely unlink the lio port because
+>> if scsi_device_lookup fails we return from the function and do not do
+>> not release our refcount on the tl_tpg_port_count.
 > 
-> The leak is if you removed the scsi_device via the scsi ml sysfs
-> interface then there is no way to completely unlink the lio port because
-> if scsi_device_lookup fails we return from the function and do not do
-> not release our refcount on the tl_tpg_port_count.
+> Hi Mike,
+> 
+> Does this mean that you think that this patch is the right way to
+> address the reported issue?
+> 
 
-Hi Mike,
+It fixes that very specific issue, but it leaves others. Maybe it could
+be used in a patchset that builds on it?
 
-Does this mean that you think that this patch is the right way to 
-address the reported issue?
+I think we could hit issues like:
 
-Thanks,
+1. tcm_loop_port_unlink runs and releases tl_tpg_port_count count.
+2. userspace initiated scan commands were in progress and complete.
+target_fabric_port_unlink->core_dev_del_lun->core_tpg_remove_lun was
+waiting for those last IOs and now completes and deletes the mapped lun
+from lio.
+3. scsi-ml scan completed before the unmapping and so now we have a
+scsi_device but no lio lun mapping.
 
-Bart.
+
+The problem with this is that:
+
+1. We can hit mismatched settings like this:
+
+A. We now have this scsi_device at LUN0, but no lio mapping. User thinks
+everything got cleaned up ok, so they decide to map another lio lun.
+B. tcm_loop_port_link just does a scsi_add_device which does
+scsi_probe_and_add_lun with rescan=true. So the original scsi_device is
+returned. It is not reprobed so whatever settings the old device has
+will be used. Maybe that scsi_device was for a disk and now the user was
+adding a CD.
+
+2. And hit races like:
+
+A. tl_tpg_port_count might now be zero so the tpg and nexus can be removed.
+B. That removal can race with IO being sent to the scsi_device. If a
+command has passed tcm_loop_submission_work's NULL tl_nexus check then
+we will hit a NULL pointer crash later in the function.
+
 
