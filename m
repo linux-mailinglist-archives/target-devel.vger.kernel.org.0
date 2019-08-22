@@ -2,150 +2,92 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BC1898BB5
-	for <lists+target-devel@lfdr.de>; Thu, 22 Aug 2019 08:54:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87527993AD
+	for <lists+target-devel@lfdr.de>; Thu, 22 Aug 2019 14:33:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730029AbfHVGvc (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 22 Aug 2019 02:51:32 -0400
-Received: from esa6.hgst.iphmx.com ([216.71.154.45]:10584 "EHLO
-        esa6.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726039AbfHVGvb (ORCPT
+        id S2387583AbfHVMdS (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 22 Aug 2019 08:33:18 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:36127 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388567AbfHVMdS (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 22 Aug 2019 02:51:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1566456692; x=1597992692;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=JkP45uwW+hF8WFoDLnW910LzdkhblqJJv02cLzZ7uJw=;
-  b=FBaQ3gBkge/RkTfb/0LxAJMVnrbNLPpZqMiv3vUPjWCK5WGCcyNP6eXx
-   oxMRGTe9V4Op+s+OUSKOyXr5Yu32Zq545R7AkiuD0ogGQdpAFhMBqBjBF
-   hPKept3fr1mUmrpGX4o6fUcmU+TdTrfRdLfiaFnIgqKLMI4RVOLYvkNQv
-   xCrv1PeM1EAohx0XVYy6Gidf65Et9GAHv/RnY3bK30HQFeIwEdRJpmvOb
-   E62ILGLWQp/H3FkEUy5UjUgOwAoNP5drInrZ5fBWcoAcys2d82vsJ2EMx
-   /RmDCxaXLTKy3n36ruYMVQGpLlH+EVM0CrOsejfxJxm9z6YPoaXMgWNCF
-   Q==;
-IronPort-SDR: cCAGCEPevxlLFW9Hf3D/ICewU2DZJsiNfcBef5umZR7rYpghFoucLCoQckPhQr8+GJ6GuEHMG8
- Hu3Vl+M972SjQuLUHSnareFYH3Z2y+Ibw72n8XoXYIiE9ehNhV1giB38hBYwKfEbGFq3NQKxRa
- SzYJ3CJgUy83dCLxcnyG/oWDR0fbr3mf8UeaWmFl3lS17PqsASdMfYopiwuvEyrerxlIUNFI4h
- LGV8Kxbipf+L+dCGnTfHtA7AfXRl1igZJcqvVI4fAn1WNBCC4iJ+GJuGmOpwcwt3D6Q0k69Iz/
- p54=
-X-IronPort-AV: E=Sophos;i="5.64,415,1559491200"; 
-   d="scan'208";a="117992710"
-Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 22 Aug 2019 14:51:31 +0800
-IronPort-SDR: ai2gmQTAk/uSuTy4/VGKSBhdo9Q58Q94OVIakwebnlSnrpBKvP7siTPZHRaKqecgGK4WzaW7um
- ksTsLNIlGbJFBxb034l2bRayF45YA3i7DTfXKtjepvo+aX+hWIRgEbcRvFCPfSPSRCtE2XNaWx
- tv4hHEEHJk9kYP3ygC/QE3ncTPdbFY0SvQG3IyPs4AFrJGyvM7/zyNyQM9sirYPnFzXrvF4FFA
- l+8gUAHaI7a/10g34nEiN8IiFzMFIOp6YhK0a9am4eDv7NY6IegJKLwGGxDi+cuvQ1E/GThXDp
- x7MzpKp0H3mnzcvmDwTp3OH3
-Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2019 23:48:51 -0700
-IronPort-SDR: wXCm4mlhEBGVfIA9YLA9WU1v15T8O1df7CfEr9TxbaSxSzh8Bi1UogAm2J8xPpsYFsjROs/zO5
- 6TJ55tG4VikMmQgPjbuNOhY9wdwMBifydTWIWqKdK4M1iOCKytdGwiAZybTrzc3CpkXiM+eEAT
- zNDuQVU8f1ZX+zbeLY7/rH0XOjT4trk6e6jACEZZrqAnJ7h/zu6LA5yzAf2pa9HkveZYwQ82G0
- IZMsJUupK1Z98h5/yQBC7UysA4BlQIYJDGwrOmyBCtXAXNiRhz3abMY/1Jp8N7JsGngkNwEMY7
- XmY=
-WDCIronportException: Internal
-Received: from naota.dhcp.fujisawa.hgst.com ([10.149.53.115])
-  by uls-op-cesaip02.wdc.com with SMTP; 21 Aug 2019 23:51:30 -0700
-Received: (nullmailer pid 3941984 invoked by uid 1000);
-        Thu, 22 Aug 2019 06:51:29 -0000
-Date:   Thu, 22 Aug 2019 15:51:29 +0900
-From:   Naohiro Aota <naohiro.aota@wdc.com>
-To:     Mike Christie <mchristi@redhat.com>,
-        Bart Van Assche <bvanassche@acm.org>
-Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        Nicholas Bellinger <nab@linux-iscsi.org>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>
-Subject: Re: [PATCH v2 1/2] scsi: target/tcm_loop: ignore already deleted
- scsi device
-Message-ID: <20190822065129.owelr7fkbfap42r2@naota.dhcp.fujisawa.hgst.com>
-References: <20190820090429.1961085-1-naohiro.aota@wdc.com>
- <1973f310-ad00-ff88-fe08-a31f81dc5c33@acm.org>
- <5D5C1159.4030507@redhat.com>
- <737dd6be-a8c9-492c-8057-1f16b3d90519@acm.org>
- <5D5C2B9D.1070307@redhat.com>
+        Thu, 22 Aug 2019 08:33:18 -0400
+Received: by mail-lf1-f65.google.com with SMTP id j17so4410765lfp.3
+        for <target-devel@vger.kernel.org>; Thu, 22 Aug 2019 05:33:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
+        b=nfhgajuufA7rWI/YoBLFz2MWYaw/EzcvL2MRwGBVBXpJ+tHWl2GL+cxwap1G98IxOg
+         Ob8ehEbbgRZ3WBc6H6INDo6rFKWg1dShWne+N7WlaDMjxzobTy9bfGotsqwkLgth0oBn
+         aFRE9bDH3zL9ejw2DLDEghsx62j9+IoAMKFY7exQ52raYsJyqYnlEmgXZQ9/smkmqgEX
+         EQAP508jHUPPlenbqzaW7zl1nbW0QVhHxOtJ6BjCBPObzqbvZUQubv/1ZBGu34QxLlzr
+         g5VyuWeEvTh0mpgHHzh7oUHX6eiZr48bFwQE9pIAipVx1Ls3pv2tH/0wsMuzyRz0o8Dy
+         fVYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
+        b=tuTbJrUFmzb33TyznvndiVX+Liqz+fWLZIvGktqxeIxSN8N92bgovVI1vSDIWm1g1T
+         Bc2Sg0rINVCn3qPC2S5lN4L1+7fc4ZkE1aT/63EwnkrcQ3OvZBSuiGwNqsBWlg97xFIW
+         yfkEBM1MkV5PncQkvFcGMoUgwF4x9lrV3qI3FZUiU/T0uuJOwKbFcFtwAYMNvEOAYjgT
+         +kb+k7yBHi/O0cfw6EZa1JTG6rqIKbRlWrz7O4sV3Smy9RQaufc445cNulMSCJIbN7xU
+         kcUzyAHAvred/2Bq9t4qoyyEXs2Z14S9IU+1q04BGwD9Gd2xT1xZgfcU4JeMN9Z5OD+k
+         ajzg==
+X-Gm-Message-State: APjAAAXvVTSnmEoSzZWX+L/MDNeSd+BJwDOmWnJv/mYQgYSQW2GfCoXP
+        eaIrubMpuZbxF8rEtL0s/7XKJa6OAXXgtMueCrg=
+X-Google-Smtp-Source: APXvYqxAIR78YU+T6kxFuF/fM9DMLrbHL7/RRwQn0EMggjH+Xv1U3mJHoN258ezWnIEWlEwEkubNeP3e4OaNpSk81nY=
+X-Received: by 2002:ac2:54bc:: with SMTP id w28mr222870lfk.17.1566477196677;
+ Thu, 22 Aug 2019 05:33:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <5D5C2B9D.1070307@redhat.com>
-User-Agent: NeoMutt/20180716
+Received: by 2002:ab3:6a0f:0:0:0:0:0 with HTTP; Thu, 22 Aug 2019 05:33:16
+ -0700 (PDT)
+Reply-To: eku.lawfirm@gmail.com
+From:   "Law firm(Eku and Associates)" <ezeobodo1@gmail.com>
+Date:   Thu, 22 Aug 2019 12:33:16 +0000
+Message-ID: <CAN-_bTYkX9Q_V1vycr99xF0J=w6om=+jKr8KLhHqjcjhJ7XE6A@mail.gmail.com>
+Subject: MY $25,000,000.00 INVESTMENT PROPOSAL WITH YOU AND IN YOUR COUNTRY.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Tue, Aug 20, 2019 at 12:19:25PM -0500, Mike Christie wrote:
->CAUTION: This email originated from outside of Western Digital. Do not click on links or open attachments unless you recognize the sender and know that the content is safe.
->
->
->On 08/20/2019 10:43 AM, Bart Van Assche wrote:
->> On 8/20/19 8:27 AM, Mike Christie wrote:
->>> tcm loop does not take a reference to the scsi_device at creation/link
->>> time then need to release at removal/unlink time. The above
->>> scsi_device_put is for the successful scsi_device_lookup call. tcm loop
->>> works like a scsi host driver that does its own scanning via
->>> scsi_add_device (maybe similar to scsi drivers that are raid cards).
->>> Like other host drivers it does not take a reference to the device when
->>> it is added and relies on scsi-ml to handle all that for it before doing
->>> operations like queuecommand.
->>>
->>> The leak is if you removed the scsi_device via the scsi ml sysfs
->>> interface then there is no way to completely unlink the lio port because
->>> if scsi_device_lookup fails we return from the function and do not do
->>> not release our refcount on the tl_tpg_port_count.
->>
->> Hi Mike,
->>
->> Does this mean that you think that this patch is the right way to
->> address the reported issue?
->>
->
->It fixes that very specific issue, but it leaves others. Maybe it could
->be used in a patchset that builds on it?
->
->I think we could hit issues like:
->
->1. tcm_loop_port_unlink runs and releases tl_tpg_port_count count.
->2. userspace initiated scan commands were in progress and complete.
->target_fabric_port_unlink->core_dev_del_lun->core_tpg_remove_lun was
->waiting for those last IOs and now completes and deletes the mapped lun
->from lio.
->3. scsi-ml scan completed before the unmapping and so now we have a
->scsi_device but no lio lun mapping.
+--=20
+Dear,
+With due respect this is not spam or Scam mail, because I have
+contacted you before and there was no response from you,I apologise if
+the contents of this mail are contrary to your moral ethics, which I
+feel may be of great disturbance to your person, but please treat this
+with absolute confidentiality, believing that this email reaches you
+in good faith. My contacting you is not a mistake or a coincidence
+because God can use any person known or unknown to accomplish great
+things.
+I am a lawyer and I have an investment business proposal to offer you.
+It is not official but should be considered as legal and confidential
+business. I have a customer's deposit of $US25 million dollars ready
+to be moved for investment if you can partner with us. We are ready to
+offer you 10% of this total amount as your compensation for supporting
+the transaction to completion. If you are interested to help me please
+reply me with your full details as stated below:
+(1) Your full names:
+(2) Your address:
+(3) Your occupation:
+(4) Your mobile telephone number:
+(5) Your nationality:
+(6) Your present location:
+(7) Your age:
+So that I will provide you more details on what to do and what is
+required for successful completion.
+Note: DO NOT REPLY ME IF YOU ARE NOT INTERESTED AND WITHOUT THE ABOVE
+MENTIONED DETAILS
 
-Right, this can happen. Actually, this can happen even without my
-patch if the scan can occur between scsi_remove_device() in
-tcm_loop_port_unlink() and core_tpg_remove_lun(), right?
-
-I presumed we need to use some lock around here. I digged around the
-code but cannot figure out a suitable lock here. Actually, I tried
-(struct Scsi_Host)->scan_mutex, but it didn't work.
-
-Or, we should block tcm_loop_queuecommand() to proceed the INQUIRY
-commads on this LUN? move/introduce new hook after
-transport_clear_lun_ref(lun)?
-
-Any idea?
-
->The problem with this is that:
->
->1. We can hit mismatched settings like this:
->
->A. We now have this scsi_device at LUN0, but no lio mapping. User thinks
->everything got cleaned up ok, so they decide to map another lio lun.
->B. tcm_loop_port_link just does a scsi_add_device which does
->scsi_probe_and_add_lun with rescan=true. So the original scsi_device is
->returned. It is not reprobed so whatever settings the old device has
->will be used. Maybe that scsi_device was for a disk and now the user was
->adding a CD.
->
->2. And hit races like:
->
->A. tl_tpg_port_count might now be zero so the tpg and nexus can be removed.
->B. That removal can race with IO being sent to the scsi_device. If a
->command has passed tcm_loop_submission_work's NULL tl_nexus check then
->we will hit a NULL pointer crash later in the function.
->
->
+Sinc=C3=A8rement v=C3=B4tre,
+Avocat Etienne Eku Esq.(Lawfirm)
+Procureur principal. De Cabinet d=E2=80=99avocats de l=E2=80=99Afrique de l=
+=E2=80=99ouest.
+Skype:westafricalawfirm
