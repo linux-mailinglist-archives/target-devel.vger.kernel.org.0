@@ -2,161 +2,92 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 20F69A203A
-	for <lists+target-devel@lfdr.de>; Thu, 29 Aug 2019 17:59:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 284B6A2218
+	for <lists+target-devel@lfdr.de>; Thu, 29 Aug 2019 19:21:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727959AbfH2P7t (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 29 Aug 2019 11:59:49 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:37544 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727600AbfH2P7t (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 29 Aug 2019 11:59:49 -0400
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id E467210F23E2;
-        Thu, 29 Aug 2019 15:59:48 +0000 (UTC)
-Received: from manaslu.redhat.com (unknown [10.35.206.41])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id AFB715D721;
-        Thu, 29 Aug 2019 15:59:46 +0000 (UTC)
-From:   Maurizio Lombardi <mlombard@redhat.com>
-To:     cleech@redhat.com
-Cc:     mchristi@redhat.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org
-Subject: [PATCH 4/4] target-iscsi: rename some variables to avoid confusion.
-Date:   Thu, 29 Aug 2019 17:59:29 +0200
-Message-Id: <20190829155929.27701-5-mlombard@redhat.com>
-In-Reply-To: <20190829155929.27701-1-mlombard@redhat.com>
-References: <20190829155929.27701-1-mlombard@redhat.com>
+        id S1727736AbfH2RVh (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 29 Aug 2019 13:21:37 -0400
+Received: from mail-pf1-f180.google.com ([209.85.210.180]:36468 "EHLO
+        mail-pf1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727594AbfH2RVg (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Thu, 29 Aug 2019 13:21:36 -0400
+Received: by mail-pf1-f180.google.com with SMTP id w2so2515087pfi.3
+        for <target-devel@vger.kernel.org>; Thu, 29 Aug 2019 10:21:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=4Qu73IVvOMqSFwggsLa8khZSft5OQHpTShEKNjWUwrE=;
+        b=EMDpiF/h4mw2zAqaVcMxVQ7OT3KUyeNqEyJHmLeG+/ZHtfDrAA5L5lsfbnHIwCTJpa
+         rqtxLB5OxG9F33zi5fSIGdTH/StnREa3ve82sTRWPXIGra/wJQAl+oizqAVp1ckdsGQY
+         1DRqSJ5yVLLvRt0JpNAmVh7doLJQ3MkZDUx9g=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=4Qu73IVvOMqSFwggsLa8khZSft5OQHpTShEKNjWUwrE=;
+        b=ghgdbOrfriuS93bLwVZbnKDgGbNs4I6WXrX9rp8TetZ8jNspzUxfUr+SZaDYUtwmR7
+         ObCvY9MXHTXtJ7L5FLMl+Aw830fmAWKGaQWH89cId68teMcovQwHwakt2Ank8IJAWwcd
+         35t70dPsKaFdKEQlZAalCbcGAJahyyLQKB0RMREwHy7RMNwcCoP7ev5HF9n9sCUHWrRA
+         gQKSJPukP0MOwUv6IZEqOi8V9SpDP20jWkafDrlrvRollh0Ejnqwf4UoTb8GgaE5rinH
+         s+MvYdQpf/eIOjOrvptFzJ45kfPIC6ndgtX5Ydp1VnvyE+WfUcOBbexgqUyvj3HWDDC+
+         YjPw==
+X-Gm-Message-State: APjAAAWK3Qk+O4TpXAIoT+zVO81pfNIWu/zPmZlIz9cENDVmPPrmRWNO
+        PhACEkyjUAXNKFmWijz0W9TwuzewDVU=
+X-Google-Smtp-Source: APXvYqyzgH7P8udfSR4ASf9YRaZs5zKRx7SjKeXYB9gEOM47sV2TxA8nfyY9woUtvVe0wmsTYAHZSA==
+X-Received: by 2002:a17:90a:9a7:: with SMTP id 36mr11117228pjo.93.1567099295801;
+        Thu, 29 Aug 2019 10:21:35 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id b13sm3196839pjz.10.2019.08.29.10.21.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Aug 2019 10:21:34 -0700 (PDT)
+Date:   Thu, 29 Aug 2019 10:21:33 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     laokz <laokz@foxmail.com>
+Cc:     Greg KH <greg@kroah.com>, Dan Carpenter <dan.carpenter@oracle.com>,
+        security@kernel.org, stefani <stefani@seibold.net>,
+        Michael Cyr <mikecyr@linux.ibm.com>,
+        target-devel <target-devel@vger.kernel.org>
+Subject: Re: Bug report: KFIFO kfifo_init() may introduce buffer overflow
+Message-ID: <201908291021.DF893CEE5B@keescook>
+References: <8ce9f318994535cc9c15e5c67e2b5383df3bc40a.camel@foxmail.com>
+ <20190722114700.GE3089@kadam>
+ <20190722115010.GF3089@kadam>
+ <5c803b0a07ca822f9474f9b438ed924092c5df4b.camel@foxmail.com>
+ <20190802073057.GD26174@kroah.com>
+ <5d49567f.1c69fb81.f0e1d.3d10SMTPIN_ADDED_BROKEN@mx.google.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2 (mx1.redhat.com [10.5.110.66]); Thu, 29 Aug 2019 15:59:48 +0000 (UTC)
+In-Reply-To: <5d49567f.1c69fb81.f0e1d.3d10SMTPIN_ADDED_BROKEN@mx.google.com>
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-This patch renames some variables in chap_server_compute_hash()
-to make it harder to confuse the initiator's challenge with
-the target's challenge when the mutual chap authentication is used.
+On Tue, Aug 06, 2019 at 06:27:13PM +0800, laokz wrote:
+> On Fri, Aug 2, 2019 at 09:30 +0200，Greg KH wrote:
+> > On Mon, Jul 22, 2019 at 09:26:23PM +0800, laokz wrote:
+> > > Hello Dan,
+> > > 
+> > > On Mon, Jul 22, 2019 at 14:50 +0300，Dan Carpenter wrote:
+> > > > > It looks like you're right.  Probably the fix is to:
+> > > > > 1) Change INITIAL_SRP_LIMIT to 8192
+> > > > 
+> > > > I meant 1024 not 8192.
+> > > 
+> > > Nice to see that. It really helped for me. Thank you very much.
+> > 
+> > Did anything ever happen with this?  Was a patch submitted to resolve
+> > this issue?
+> Sorry for the late reply. I didn't submit any patch, for as newbie I wasn't
+> quite sure about the severity of this issue. The developers may do their
+> choice.
 
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
----
- drivers/target/iscsi/iscsi_target_auth.c | 40 ++++++++++++------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+It's worth fixing regardless. :) Did a patch get sent for this?
 
-diff --git a/drivers/target/iscsi/iscsi_target_auth.c b/drivers/target/iscsi/iscsi_target_auth.c
-index 976c8c73d261..7ccef7b1c60b 100644
---- a/drivers/target/iscsi/iscsi_target_auth.c
-+++ b/drivers/target/iscsi/iscsi_target_auth.c
-@@ -207,8 +207,8 @@ static int chap_server_compute_hash(
- 	unsigned long id;
- 	unsigned char id_as_uchar;
- 	unsigned char type;
--	unsigned char identifier[10], *challenge = NULL;
--	unsigned char *challenge_binhex = NULL;
-+	unsigned char identifier[10], *initiatorchg = NULL;
-+	unsigned char *initiatorchg_binhex = NULL;
- 	unsigned char *digest = NULL;
- 	unsigned char *response = NULL;
- 	unsigned char *client_digest = NULL;
-@@ -218,7 +218,7 @@ static int chap_server_compute_hash(
- 	struct iscsi_chap *chap = conn->auth_protocol;
- 	struct crypto_shash *tfm = NULL;
- 	struct shash_desc *desc = NULL;
--	int auth_ret = -1, ret, challenge_len;
-+	int auth_ret = -1, ret, initiatorchg_len;
- 
- 	digest = kzalloc(chap->digest_size, GFP_KERNEL);
- 	if (!digest) {
-@@ -248,15 +248,15 @@ static int chap_server_compute_hash(
- 	memset(chap_n, 0, MAX_CHAP_N_SIZE);
- 	memset(chap_r, 0, MAX_RESPONSE_LENGTH);
- 
--	challenge = kzalloc(CHAP_CHALLENGE_STR_LEN, GFP_KERNEL);
--	if (!challenge) {
-+	initiatorchg = kzalloc(CHAP_CHALLENGE_STR_LEN, GFP_KERNEL);
-+	if (!initiatorchg) {
- 		pr_err("Unable to allocate challenge buffer\n");
- 		goto out;
- 	}
- 
--	challenge_binhex = kzalloc(CHAP_CHALLENGE_STR_LEN, GFP_KERNEL);
--	if (!challenge_binhex) {
--		pr_err("Unable to allocate challenge_binhex buffer\n");
-+	initiatorchg_binhex = kzalloc(CHAP_CHALLENGE_STR_LEN, GFP_KERNEL);
-+	if (!initiatorchg_binhex) {
-+		pr_err("Unable to allocate initiatorchg_binhex buffer\n");
- 		goto out;
- 	}
- 	/*
-@@ -391,7 +391,7 @@ static int chap_server_compute_hash(
- 	 * Get CHAP_C.
- 	 */
- 	if (extract_param(nr_in_ptr, "CHAP_C", CHAP_CHALLENGE_STR_LEN,
--			challenge, &type) < 0) {
-+			initiatorchg, &type) < 0) {
- 		pr_err("Could not find CHAP_C.\n");
- 		goto out;
- 	}
-@@ -400,28 +400,28 @@ static int chap_server_compute_hash(
- 		pr_err("Could not find CHAP_C.\n");
- 		goto out;
- 	}
--	challenge_len = DIV_ROUND_UP(strlen(challenge), 2);
--	if (!challenge_len) {
-+	initiatorchg_len = DIV_ROUND_UP(strlen(initiatorchg), 2);
-+	if (!initiatorchg_len) {
- 		pr_err("Unable to convert incoming challenge\n");
- 		goto out;
- 	}
--	if (challenge_len > 1024) {
-+	if (initiatorchg_len > 1024) {
- 		pr_err("CHAP_C exceeds maximum binary size of 1024 bytes\n");
- 		goto out;
- 	}
--	if (hex2bin(challenge_binhex, challenge, challenge_len) < 0) {
-+	if (hex2bin(initiatorchg_binhex, initiatorchg, initiatorchg_len) < 0) {
- 		pr_err("Malformed CHAP_C\n");
- 		goto out;
- 	}
--	pr_debug("[server] Got CHAP_C=%s\n", challenge);
-+	pr_debug("[server] Got CHAP_C=%s\n", initiatorchg);
- 	/*
- 	 * During mutual authentication, the CHAP_C generated by the
- 	 * initiator must not match the original CHAP_C generated by
- 	 * the target.
- 	 */
--	if (challenge_len == chap->challenge_len &&
--				!memcmp(challenge_binhex, chap->challenge,
--				challenge_len)) {
-+	if (initiatorchg_len == chap->challenge_len &&
-+				!memcmp(initiatorchg_binhex, chap->challenge,
-+				initiatorchg_len)) {
- 		pr_err("initiator CHAP_C matches target CHAP_C, failing"
- 		       " login attempt\n");
- 		goto out;
-@@ -453,7 +453,7 @@ static int chap_server_compute_hash(
- 	/*
- 	 * Convert received challenge to binary hex.
- 	 */
--	ret = crypto_shash_finup(desc, challenge_binhex, challenge_len,
-+	ret = crypto_shash_finup(desc, initiatorchg_binhex, initiatorchg_len,
- 				 digest);
- 	if (ret < 0) {
- 		pr_err("crypto_shash_finup() failed for ma challenge\n");
-@@ -479,8 +479,8 @@ static int chap_server_compute_hash(
- 	kzfree(desc);
- 	if (tfm)
- 		crypto_free_shash(tfm);
--	kfree(challenge);
--	kfree(challenge_binhex);
-+	kfree(initiatorchg);
-+	kfree(initiatorchg_binhex);
- 	kfree(digest);
- 	kfree(response);
- 	kfree(server_digest);
 -- 
-Maurizio Lombardi
-
+Kees Cook
