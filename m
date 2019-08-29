@@ -2,27 +2,27 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B285A24B9
-	for <lists+target-devel@lfdr.de>; Thu, 29 Aug 2019 20:25:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B72AA25C9
+	for <lists+target-devel@lfdr.de>; Thu, 29 Aug 2019 20:32:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729665AbfH2SQN (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 29 Aug 2019 14:16:13 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58196 "EHLO mail.kernel.org"
+        id S1727650AbfH2SOZ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 29 Aug 2019 14:14:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55770 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729630AbfH2SQM (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 29 Aug 2019 14:16:12 -0400
+        id S1728708AbfH2SOD (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Thu, 29 Aug 2019 14:14:03 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 93EC02342C;
-        Thu, 29 Aug 2019 18:16:10 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 923D5233FF;
+        Thu, 29 Aug 2019 18:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567102571;
-        bh=FT5S8CfGpyNkkHr+ptSaEIc1V6jjrI6BUr3yjEz4r18=;
+        s=default; t=1567102442;
+        bh=ELasd/krHemGHvL2GqE3FAxmL4MQO+r/h4KTacutGvk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AyMg9sllf9watCvY9sOkqwWtuDuUREFDU4LCGgmE4M1yFQHrp+CE1GHvFEtAZUYUC
-         OZMsWLfcNRsRNxNX4cXbaMSKwBG5qrPpe/2DoYJlzdBx7J7FlQ37aGd+O8UrxT6pow
-         H2913Zov1ufT4I/0TyVGDYxTCuJg8fpED3v8zNm4=
+        b=aB+Pt/XeB4nI2bXDn6jo67aYqMKUtctORiEnxL2vZa4FPHHE5uOyQdwfjVwKFNiAC
+         v+zwZ+r5mPpub6Op7+EgJ8FTcTcTLP62QfBA/v6c/Xzg+E2nJkTM4A5V/ThDamb795
+         ribWY5x0sfOwfiWIV7BykjMidoipv0yY0SyVTKgY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Dmitry Fomichev <dmitry.fomichev@wdc.com>,
@@ -31,12 +31,12 @@ Cc:     Dmitry Fomichev <dmitry.fomichev@wdc.com>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
         target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 17/45] scsi: target: tcmu: avoid use-after-free after command timeout
-Date:   Thu, 29 Aug 2019 14:15:17 -0400
-Message-Id: <20190829181547.8280-17-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.2 30/76] scsi: target: tcmu: avoid use-after-free after command timeout
+Date:   Thu, 29 Aug 2019 14:12:25 -0400
+Message-Id: <20190829181311.7562-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190829181547.8280-1-sashal@kernel.org>
-References: <20190829181547.8280-1-sashal@kernel.org>
+In-Reply-To: <20190829181311.7562-1-sashal@kernel.org>
+References: <20190829181311.7562-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -73,10 +73,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-index c46efa47d68a5..7159e8363b83b 100644
+index b43d6385a1a09..95b2371fb67b6 100644
 --- a/drivers/target/target_core_user.c
 +++ b/drivers/target/target_core_user.c
-@@ -1143,14 +1143,16 @@ static void tcmu_handle_completion(struct tcmu_cmd *cmd, struct tcmu_cmd_entry *
+@@ -1132,14 +1132,16 @@ static void tcmu_handle_completion(struct tcmu_cmd *cmd, struct tcmu_cmd_entry *
  	struct se_cmd *se_cmd = cmd->se_cmd;
  	struct tcmu_dev *udev = cmd->tcmu_dev;
  	bool read_len_valid = false;
@@ -95,7 +95,7 @@ index c46efa47d68a5..7159e8363b83b 100644
  
  	list_del_init(&cmd->queue_entry);
  
-@@ -1163,6 +1165,7 @@ static void tcmu_handle_completion(struct tcmu_cmd *cmd, struct tcmu_cmd_entry *
+@@ -1152,6 +1154,7 @@ static void tcmu_handle_completion(struct tcmu_cmd *cmd, struct tcmu_cmd_entry *
  		goto done;
  	}
  
@@ -103,7 +103,7 @@ index c46efa47d68a5..7159e8363b83b 100644
  	if (se_cmd->data_direction == DMA_FROM_DEVICE &&
  	    (entry->hdr.uflags & TCMU_UFLAG_READ_LEN) && entry->rsp.read_len) {
  		read_len_valid = true;
-@@ -1318,6 +1321,7 @@ static int tcmu_check_expired_cmd(int id, void *p, void *data)
+@@ -1307,6 +1310,7 @@ static int tcmu_check_expired_cmd(int id, void *p, void *data)
  		 */
  		scsi_status = SAM_STAT_CHECK_CONDITION;
  		list_del_init(&cmd->queue_entry);
@@ -111,7 +111,7 @@ index c46efa47d68a5..7159e8363b83b 100644
  	} else {
  		list_del_init(&cmd->queue_entry);
  		idr_remove(&udev->commands, id);
-@@ -2036,6 +2040,7 @@ static void tcmu_reset_ring(struct tcmu_dev *udev, u8 err_level)
+@@ -2024,6 +2028,7 @@ static void tcmu_reset_ring(struct tcmu_dev *udev, u8 err_level)
  
  		idr_remove(&udev->commands, i);
  		if (!test_bit(TCMU_CMD_BIT_EXPIRED, &cmd->flags)) {
