@@ -2,92 +2,123 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 284B6A2218
-	for <lists+target-devel@lfdr.de>; Thu, 29 Aug 2019 19:21:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B285A24B9
+	for <lists+target-devel@lfdr.de>; Thu, 29 Aug 2019 20:25:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727736AbfH2RVh (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 29 Aug 2019 13:21:37 -0400
-Received: from mail-pf1-f180.google.com ([209.85.210.180]:36468 "EHLO
-        mail-pf1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727594AbfH2RVg (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Thu, 29 Aug 2019 13:21:36 -0400
-Received: by mail-pf1-f180.google.com with SMTP id w2so2515087pfi.3
-        for <target-devel@vger.kernel.org>; Thu, 29 Aug 2019 10:21:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=4Qu73IVvOMqSFwggsLa8khZSft5OQHpTShEKNjWUwrE=;
-        b=EMDpiF/h4mw2zAqaVcMxVQ7OT3KUyeNqEyJHmLeG+/ZHtfDrAA5L5lsfbnHIwCTJpa
-         rqtxLB5OxG9F33zi5fSIGdTH/StnREa3ve82sTRWPXIGra/wJQAl+oizqAVp1ckdsGQY
-         1DRqSJ5yVLLvRt0JpNAmVh7doLJQ3MkZDUx9g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=4Qu73IVvOMqSFwggsLa8khZSft5OQHpTShEKNjWUwrE=;
-        b=ghgdbOrfriuS93bLwVZbnKDgGbNs4I6WXrX9rp8TetZ8jNspzUxfUr+SZaDYUtwmR7
-         ObCvY9MXHTXtJ7L5FLMl+Aw830fmAWKGaQWH89cId68teMcovQwHwakt2Ank8IJAWwcd
-         35t70dPsKaFdKEQlZAalCbcGAJahyyLQKB0RMREwHy7RMNwcCoP7ev5HF9n9sCUHWrRA
-         gQKSJPukP0MOwUv6IZEqOi8V9SpDP20jWkafDrlrvRollh0Ejnqwf4UoTb8GgaE5rinH
-         s+MvYdQpf/eIOjOrvptFzJ45kfPIC6ndgtX5Ydp1VnvyE+WfUcOBbexgqUyvj3HWDDC+
-         YjPw==
-X-Gm-Message-State: APjAAAWK3Qk+O4TpXAIoT+zVO81pfNIWu/zPmZlIz9cENDVmPPrmRWNO
-        PhACEkyjUAXNKFmWijz0W9TwuzewDVU=
-X-Google-Smtp-Source: APXvYqyzgH7P8udfSR4ASf9YRaZs5zKRx7SjKeXYB9gEOM47sV2TxA8nfyY9woUtvVe0wmsTYAHZSA==
-X-Received: by 2002:a17:90a:9a7:: with SMTP id 36mr11117228pjo.93.1567099295801;
-        Thu, 29 Aug 2019 10:21:35 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id b13sm3196839pjz.10.2019.08.29.10.21.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Aug 2019 10:21:34 -0700 (PDT)
-Date:   Thu, 29 Aug 2019 10:21:33 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     laokz <laokz@foxmail.com>
-Cc:     Greg KH <greg@kroah.com>, Dan Carpenter <dan.carpenter@oracle.com>,
-        security@kernel.org, stefani <stefani@seibold.net>,
-        Michael Cyr <mikecyr@linux.ibm.com>,
-        target-devel <target-devel@vger.kernel.org>
-Subject: Re: Bug report: KFIFO kfifo_init() may introduce buffer overflow
-Message-ID: <201908291021.DF893CEE5B@keescook>
-References: <8ce9f318994535cc9c15e5c67e2b5383df3bc40a.camel@foxmail.com>
- <20190722114700.GE3089@kadam>
- <20190722115010.GF3089@kadam>
- <5c803b0a07ca822f9474f9b438ed924092c5df4b.camel@foxmail.com>
- <20190802073057.GD26174@kroah.com>
- <5d49567f.1c69fb81.f0e1d.3d10SMTPIN_ADDED_BROKEN@mx.google.com>
+        id S1729665AbfH2SQN (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 29 Aug 2019 14:16:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58196 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729630AbfH2SQM (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Thu, 29 Aug 2019 14:16:12 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 93EC02342C;
+        Thu, 29 Aug 2019 18:16:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1567102571;
+        bh=FT5S8CfGpyNkkHr+ptSaEIc1V6jjrI6BUr3yjEz4r18=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=AyMg9sllf9watCvY9sOkqwWtuDuUREFDU4LCGgmE4M1yFQHrp+CE1GHvFEtAZUYUC
+         OZMsWLfcNRsRNxNX4cXbaMSKwBG5qrPpe/2DoYJlzdBx7J7FlQ37aGd+O8UrxT6pow
+         H2913Zov1ufT4I/0TyVGDYxTCuJg8fpED3v8zNm4=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Dmitry Fomichev <dmitry.fomichev@wdc.com>,
+        Mike Christie <mchristi@redhat.com>,
+        Damien Le Moal <damien.lemoal@wdc.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 17/45] scsi: target: tcmu: avoid use-after-free after command timeout
+Date:   Thu, 29 Aug 2019 14:15:17 -0400
+Message-Id: <20190829181547.8280-17-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190829181547.8280-1-sashal@kernel.org>
+References: <20190829181547.8280-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5d49567f.1c69fb81.f0e1d.3d10SMTPIN_ADDED_BROKEN@mx.google.com>
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Tue, Aug 06, 2019 at 06:27:13PM +0800, laokz wrote:
-> On Fri, Aug 2, 2019 at 09:30 +0200，Greg KH wrote:
-> > On Mon, Jul 22, 2019 at 09:26:23PM +0800, laokz wrote:
-> > > Hello Dan,
-> > > 
-> > > On Mon, Jul 22, 2019 at 14:50 +0300，Dan Carpenter wrote:
-> > > > > It looks like you're right.  Probably the fix is to:
-> > > > > 1) Change INITIAL_SRP_LIMIT to 8192
-> > > > 
-> > > > I meant 1024 not 8192.
-> > > 
-> > > Nice to see that. It really helped for me. Thank you very much.
-> > 
-> > Did anything ever happen with this?  Was a patch submitted to resolve
-> > this issue?
-> Sorry for the late reply. I didn't submit any patch, for as newbie I wasn't
-> quite sure about the severity of this issue. The developers may do their
-> choice.
+From: Dmitry Fomichev <dmitry.fomichev@wdc.com>
 
-It's worth fixing regardless. :) Did a patch get sent for this?
+[ Upstream commit a86a75865ff4d8c05f355d1750a5250aec89ab15 ]
 
+In tcmu_handle_completion() function, the variable called read_len is
+always initialized with a value taken from se_cmd structure. If this
+function is called to complete an expired (timed out) out command, the
+session command pointed by se_cmd is likely to be already deallocated by
+the target core at that moment. As the result, this access triggers a
+use-after-free warning from KASAN.
+
+This patch fixes the code not to touch se_cmd when completing timed out
+TCMU commands. It also resets the pointer to se_cmd at the time when the
+TCMU_CMD_BIT_EXPIRED flag is set because it is going to become invalid
+after calling target_complete_cmd() later in the same function,
+tcmu_check_expired_cmd().
+
+Signed-off-by: Dmitry Fomichev <dmitry.fomichev@wdc.com>
+Acked-by: Mike Christie <mchristi@redhat.com>
+Reviewed-by: Damien Le Moal <damien.lemoal@wdc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/target/target_core_user.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
+index c46efa47d68a5..7159e8363b83b 100644
+--- a/drivers/target/target_core_user.c
++++ b/drivers/target/target_core_user.c
+@@ -1143,14 +1143,16 @@ static void tcmu_handle_completion(struct tcmu_cmd *cmd, struct tcmu_cmd_entry *
+ 	struct se_cmd *se_cmd = cmd->se_cmd;
+ 	struct tcmu_dev *udev = cmd->tcmu_dev;
+ 	bool read_len_valid = false;
+-	uint32_t read_len = se_cmd->data_length;
++	uint32_t read_len;
+ 
+ 	/*
+ 	 * cmd has been completed already from timeout, just reclaim
+ 	 * data area space and free cmd
+ 	 */
+-	if (test_bit(TCMU_CMD_BIT_EXPIRED, &cmd->flags))
++	if (test_bit(TCMU_CMD_BIT_EXPIRED, &cmd->flags)) {
++		WARN_ON_ONCE(se_cmd);
+ 		goto out;
++	}
+ 
+ 	list_del_init(&cmd->queue_entry);
+ 
+@@ -1163,6 +1165,7 @@ static void tcmu_handle_completion(struct tcmu_cmd *cmd, struct tcmu_cmd_entry *
+ 		goto done;
+ 	}
+ 
++	read_len = se_cmd->data_length;
+ 	if (se_cmd->data_direction == DMA_FROM_DEVICE &&
+ 	    (entry->hdr.uflags & TCMU_UFLAG_READ_LEN) && entry->rsp.read_len) {
+ 		read_len_valid = true;
+@@ -1318,6 +1321,7 @@ static int tcmu_check_expired_cmd(int id, void *p, void *data)
+ 		 */
+ 		scsi_status = SAM_STAT_CHECK_CONDITION;
+ 		list_del_init(&cmd->queue_entry);
++		cmd->se_cmd = NULL;
+ 	} else {
+ 		list_del_init(&cmd->queue_entry);
+ 		idr_remove(&udev->commands, id);
+@@ -2036,6 +2040,7 @@ static void tcmu_reset_ring(struct tcmu_dev *udev, u8 err_level)
+ 
+ 		idr_remove(&udev->commands, i);
+ 		if (!test_bit(TCMU_CMD_BIT_EXPIRED, &cmd->flags)) {
++			WARN_ON(!cmd->se_cmd);
+ 			list_del_init(&cmd->queue_entry);
+ 			if (err_level == 1) {
+ 				/*
 -- 
-Kees Cook
+2.20.1
+
