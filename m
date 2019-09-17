@@ -2,53 +2,61 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C8F9B0C07
-	for <lists+target-devel@lfdr.de>; Thu, 12 Sep 2019 11:56:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BE1AB4712
+	for <lists+target-devel@lfdr.de>; Tue, 17 Sep 2019 07:50:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730428AbfILJ4A (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 12 Sep 2019 05:56:00 -0400
-Received: from mx2.suse.de ([195.135.220.15]:53784 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730580AbfILJz7 (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 12 Sep 2019 05:55:59 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 4C4E9B6EC;
-        Thu, 12 Sep 2019 09:55:58 +0000 (UTC)
-From:   David Disseldorp <ddiss@suse.de>
-To:     target-devel@vger.kernel.org
-Cc:     martin.petersen@oracle.com, mchristi@redhat.com,
-        bvanassche@acm.org, David Disseldorp <ddiss@suse.de>
-Subject: [PATCH 3/3] target: remove unused extension parameters
-Date:   Thu, 12 Sep 2019 11:55:47 +0200
-Message-Id: <20190912095547.22427-4-ddiss@suse.de>
-X-Mailer: git-send-email 2.16.4
-In-Reply-To: <20190912095547.22427-1-ddiss@suse.de>
-References: <20190912095547.22427-1-ddiss@suse.de>
+        id S2392392AbfIQFuY convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+target-devel@lfdr.de>); Tue, 17 Sep 2019 01:50:24 -0400
+Received: from mail.11d03.mspz7.gob.ec ([190.214.23.250]:33140 "EHLO
+        mail.11d03.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725922AbfIQFuY (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Tue, 17 Sep 2019 01:50:24 -0400
+X-Greylist: delayed 5010 seconds by postgrey-1.27 at vger.kernel.org; Tue, 17 Sep 2019 01:50:23 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTP id 416F9405298A7;
+        Mon, 16 Sep 2019 23:11:49 -0500 (-05)
+Received: from mail.11d03.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.11d03.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id pLnP_PV_QbrE; Mon, 16 Sep 2019 23:11:48 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTP id 706D740526C7F;
+        Mon, 16 Sep 2019 23:11:48 -0500 (-05)
+X-Virus-Scanned: amavisd-new at 11d03.mspz7.gob.ec
+Received: from mail.11d03.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.11d03.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id PlutBY13B8-T; Mon, 16 Sep 2019 23:11:48 -0500 (-05)
+Received: from [10.33.79.142] (unknown [105.4.0.133])
+        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTPSA id 0B83C4052671B;
+        Mon, 16 Sep 2019 23:11:38 -0500 (-05)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Millionen_Euro?=
+To:     Recipients <vicenta.sinche@11d03.mspz7.gob.ec>
+From:   ''Tayeb souami'' <vicenta.sinche@11d03.mspz7.gob.ec>
+Date:   Tue, 17 Sep 2019 06:11:29 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20190917041139.0B83C4052671B@mail.11d03.mspz7.gob.ec>
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Signed-off-by: David Disseldorp <ddiss@suse.de>
----
- drivers/target/iscsi/iscsi_target_parameters.h | 3 ---
- 1 file changed, 3 deletions(-)
+Lieber Freund,
 
-diff --git a/drivers/target/iscsi/iscsi_target_parameters.h b/drivers/target/iscsi/iscsi_target_parameters.h
-index daf47f38e081..240c4c4344f6 100644
---- a/drivers/target/iscsi/iscsi_target_parameters.h
-+++ b/drivers/target/iscsi/iscsi_target_parameters.h
-@@ -93,9 +93,6 @@ extern void iscsi_set_session_parameters(struct iscsi_sess_ops *,
- #define OFMARKER			"OFMarker"
- #define IFMARKINT			"IFMarkInt"
- #define OFMARKINT			"OFMarkInt"
--#define X_EXTENSIONKEY			"X-com.sbei.version"
--#define X_EXTENSIONKEY_CISCO_NEW	"X-com.cisco.protocol"
--#define X_EXTENSIONKEY_CISCO_OLD	"X-com.cisco.iscsi.draft"
- 
- /*
-  * Parameter names of iSCSI Extentions for RDMA (iSER).  See RFC-5046
--- 
-2.16.4
+Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden, um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite unten.
 
+UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
+
+Das ist dein Spendencode: [TS530342018]
+
+Antworten Sie mit dem SPENDE-CODE an diese 
+
+E-Mail:Tayebsouam.spende@gmail.com
+
+Ich hoffe, Sie und Ihre Familie glücklich zu machen.
+
+Grüße
+Herr Tayeb Souami
