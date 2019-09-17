@@ -2,61 +2,51 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BE1AB4712
-	for <lists+target-devel@lfdr.de>; Tue, 17 Sep 2019 07:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67CE8B6796
+	for <lists+target-devel@lfdr.de>; Wed, 18 Sep 2019 17:59:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392392AbfIQFuY convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+target-devel@lfdr.de>); Tue, 17 Sep 2019 01:50:24 -0400
-Received: from mail.11d03.mspz7.gob.ec ([190.214.23.250]:33140 "EHLO
-        mail.11d03.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725922AbfIQFuY (ORCPT
+        id S1731812AbfIRP7V convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+target-devel@lfdr.de>); Wed, 18 Sep 2019 11:59:21 -0400
+Received: from mail.funvisis.gob.ve ([200.11.216.34]:58358 "EHLO
+        mail.funvisis.gob.ve" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727152AbfIRP7V (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 17 Sep 2019 01:50:24 -0400
-X-Greylist: delayed 5010 seconds by postgrey-1.27 at vger.kernel.org; Tue, 17 Sep 2019 01:50:23 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTP id 416F9405298A7;
-        Mon, 16 Sep 2019 23:11:49 -0500 (-05)
-Received: from mail.11d03.mspz7.gob.ec ([127.0.0.1])
-        by localhost (mail.11d03.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id pLnP_PV_QbrE; Mon, 16 Sep 2019 23:11:48 -0500 (-05)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTP id 706D740526C7F;
-        Mon, 16 Sep 2019 23:11:48 -0500 (-05)
-X-Virus-Scanned: amavisd-new at 11d03.mspz7.gob.ec
-Received: from mail.11d03.mspz7.gob.ec ([127.0.0.1])
-        by localhost (mail.11d03.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id PlutBY13B8-T; Mon, 16 Sep 2019 23:11:48 -0500 (-05)
-Received: from [10.33.79.142] (unknown [105.4.0.133])
-        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTPSA id 0B83C4052671B;
-        Mon, 16 Sep 2019 23:11:38 -0500 (-05)
-Content-Type: text/plain; charset="utf-8"
+        Wed, 18 Sep 2019 11:59:21 -0400
+X-Greylist: delayed 10373 seconds by postgrey-1.27 at vger.kernel.org; Wed, 18 Sep 2019 11:59:21 EDT
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by linuxmail.funvisis.gob.ve (Postfix) with ESMTP id 7177C1743B1E;
+        Wed, 18 Sep 2019 02:49:03 -0400 (BOT)
+X-Virus-Scanned: by amavisd-new-2.7.1 (20120429) (Debian) at funvisis.gob.ve
+Received: from mail.funvisis.gob.ve ([127.0.0.1])
+        by localhost (linuxmail.funvisis.gob.ve [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id oSoUceCed09M; Wed, 18 Sep 2019 02:49:01 -0400 (BOT)
+Received: from DESKTOP-JI11M64.domain.name (unknown [43.224.129.169])
+        by linuxmail.funvisis.gob.ve (Postfix) with ESMTPA id 81A6F178BFFF;
+        Tue, 17 Sep 2019 18:26:46 -0400 (BOT)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8BIT
 Content-Description: Mail message body
-Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Millionen_Euro?=
-To:     Recipients <vicenta.sinche@11d03.mspz7.gob.ec>
-From:   ''Tayeb souami'' <vicenta.sinche@11d03.mspz7.gob.ec>
-Date:   Tue, 17 Sep 2019 06:11:29 +0200
-Reply-To: Tayebsouam.spende@gmail.com
-Message-Id: <20190917041139.0B83C4052671B@mail.11d03.mspz7.gob.ec>
+Subject: RE!! Lening
+To:     Recipients <mlinares@funvisis.gob.ve>
+From:   mlinares@funvisis.gob.ve
+Date:   Wed, 18 Sep 2019 03:56:34 +0530
+Reply-To: blacktowerfinancialmgt@yahoo.com
+Message-Id: <20190918064904.7177C1743B1E@linuxmail.funvisis.gob.ve>
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Lieber Freund,
 
-Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden, um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite unten.
+We geven leningen aan zakelijke leningen aan internationale leningen persoonlijke leningen. Wij geven leningen met een rentepercentage van 2%. De lening wordt geopend voor iedereen die de nationaliteit kent. U bereikt ons voor uw lening om u financieel te laten beginnen en u te helpen uw financi�le probleem op te lossen. 
 
-UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
+Indien u een lening nodig heeft, vult u onderstaand aanvraagformulier in voor de lening. 
 
-Das ist dein Spendencode: [TS530342018]
-
-Antworten Sie mit dem SPENDE-CODE an diese 
-
-E-Mail:Tayebsouam.spende@gmail.com
-
-Ich hoffe, Sie und Ihre Familie glücklich zu machen.
-
-Grüße
-Herr Tayeb Souami
+Volledige naam................
+Land...................
+Bedrag.....................
+Telefoonnummer........
+Duur van de lening.........
+Sex....................... 
+Bedankt.
