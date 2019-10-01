@@ -2,139 +2,95 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 04493C2AC6
-	for <lists+target-devel@lfdr.de>; Tue,  1 Oct 2019 01:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D451AC2DBB
+	for <lists+target-devel@lfdr.de>; Tue,  1 Oct 2019 09:08:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729612AbfI3XWg (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 30 Sep 2019 19:22:36 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:33376 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727118AbfI3XWg (ORCPT
+        id S1732662AbfJAG7Q (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 1 Oct 2019 02:59:16 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:38900 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725777AbfJAG7Q (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 30 Sep 2019 19:22:36 -0400
-Received: by mail-pl1-f195.google.com with SMTP id d22so4514479pls.0
-        for <target-devel@vger.kernel.org>; Mon, 30 Sep 2019 16:22:36 -0700 (PDT)
+        Tue, 1 Oct 2019 02:59:16 -0400
+Received: by mail-io1-f65.google.com with SMTP id u8so45136223iom.5
+        for <target-devel@vger.kernel.org>; Mon, 30 Sep 2019 23:59:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=tBn/gbnB4105qxYqqNyBUGFgkHvTZYe46a7LXvOTj08=;
+        b=g+D6seToPTqf/Ehf1i/HYX42ovCXF33OfpmaopdpwbXRZAKt/Z248hGTup1OU099ib
+         MbBStODioeso5pYElGoiyM4QKS+2XHDHPXpjYIYCYFEs7s/LQb9DptktuNofHHttT5Ue
+         LLn51UEvVUBDYPlHmbxqbhhTfzcAMx1en+ow27tf/Lg4ZUN4cYtHgRC4am1kP8g9vuc4
+         Qj+Xmtq+FoDr05QX17zlc2Z/kPgVsKU+9w/z5EtlXfsgXvylUfNxJapD+EUKp8SpxKZA
+         mU4rY6n/a05hz6t3lwt4eBUzTOPVDzPhssrnfoNIXvfMX4Xb1i1ukiDWE40ATcog3+Ds
+         X8sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
          :content-transfer-encoding;
-        bh=uxGGBUzIfLNd6+WejbualuXBYnZCiMhALRVzr6e9yGc=;
-        b=mwApIBKIyj1zmWMEZ0s+iWCLfD10KHfL8ialmRhzoFItUNBc+M+2eKbTLa7DZJS6bu
-         GETeIo5/e3qkYjJzMSa3xVobs/k6T93g8sb31MYpfkp83UUTvm74mJ+bX6VuutmYDl/k
-         xtNQf05K6p0doL20Y4nZ/y6biHGJYow8o/Wv2E4sftDw7zr0W+WvDoPYAfcl4UZc93EJ
-         /MdunX+hKUDQA2xTLrHk2p80VaO4EnuV5IGBHkgYV+dPqdKXx1BjXH3L0BXwKjlPZggw
-         3k28EJyvAFa5I1YeZg8kMwYAE+K+1hYFhSXJPYbwqvB+2W4mgtcUVaNuZ5yamUmLoyW+
-         i7Fg==
-X-Gm-Message-State: APjAAAV+Hy0oeRKsllBRvIwJkUuHigQgRaSq4obEid1rBLGcsvpvznz/
-        OppM/r12YBBxqMv7OOd8ZPA=
-X-Google-Smtp-Source: APXvYqykt5Hs3vORajaGQNvj0uL1dq7+Bh1/DO+XoROxIEguTV9ax7BVVkY1+b4z4m5cdToSgByemg==
-X-Received: by 2002:a17:902:b704:: with SMTP id d4mr22382204pls.204.1569885751294;
-        Mon, 30 Sep 2019 16:22:31 -0700 (PDT)
-Received: from desktop-bart.svl.corp.google.com ([2620:15c:2cd:202:4308:52a3:24b6:2c60])
-        by smtp.gmail.com with ESMTPSA id b69sm13738994pfb.132.2019.09.30.16.22.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Sep 2019 16:22:30 -0700 (PDT)
-From:   Bart Van Assche <bvanassche@acm.org>
-To:     "Martin K . Petersen" <martin.petersen@oracle.com>
-Cc:     Mike Christie <mchristie@redhat.com>,
-        Christoph Hellwig <hch@lst.de>, target-devel@vger.kernel.org,
-        Bart Van Assche <bvanassche@acm.org>,
-        Hannes Reinecke <hare@suse.de>,
-        Nicholas Bellinger <nab@linux-iscsi.org>
-Subject: [PATCH] target: Remove tpg_list and se_portal_group.se_tpg_node
-Date:   Mon, 30 Sep 2019 16:22:24 -0700
-Message-Id: <20190930232224.58980-1-bvanassche@acm.org>
-X-Mailer: git-send-email 2.23.0.444.g18eeb5a265-goog
+        bh=tBn/gbnB4105qxYqqNyBUGFgkHvTZYe46a7LXvOTj08=;
+        b=kHEREFEZXdhDV7EXdABYOOwRlE2gUfoFsAjmfzm+CwF4lKia2MkpU3v6t8JlWq2YrL
+         mRG+M02z1Cx/44dLASOx9cFs7HonIKk41tdc2NhJ/OcfX7kpa0O5ox2FNun759m6Q7Au
+         p0KXstP55aSJNY/iD8dk875ptm+CLf5aOtF18HL1ZjJs5pnBzNiAf5nZgZQ6mDbNBS6U
+         AFD7FzPvs6hnbpj+hTlIaQFckwALPxY73dGd+7EjIqzGAhd5tf+cnh6jm/tNORZPJVu6
+         RvR5ZsNMkEQC7nBWVEV/BbIsZLgyk8NDIyK9zsxWiixgmcsdYNXFz7XP+30xLzqC5HX0
+         VTlQ==
+X-Gm-Message-State: APjAAAVi1jHJccxKxUvqdCc7Rs+YOl0f0M+omat+3Ta45g2CaQedYUl2
+        BiXvNF0EBrZiCSuxAcDTN6rN7lq9Nb9PG6ID5TE=
+X-Google-Smtp-Source: APXvYqwyhaY7Nuo2wVzEwQSSxyeykldQaBF3TEdkJMWBSgc/Q/mSsvb/GpcvPvS+4wLTRU3NFI1F1sK4iHsqLfra6aQ=
+X-Received: by 2002:a92:6a04:: with SMTP id f4mr17614035ilc.207.1569913155300;
+ Mon, 30 Sep 2019 23:59:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:6e02:68b:0:0:0:0 with HTTP; Mon, 30 Sep 2019 23:59:14
+ -0700 (PDT)
+From:   ACCESS BANK PLC <econgbank@gmail.com>
+Date:   Mon, 30 Sep 2019 23:59:14 -0700
+Message-ID: <CAHixukou8ekZ4cbLF_dagKcMYnPWHA_c6mVY3zYD_4Q==j32Xg@mail.gmail.com>
+Subject: Darlehen
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Maintaining tpg_list without ever iterating over it is not useful. Hence
-remove tpg_list. This patch does not change the behavior of the SCSI
-target code.
+Gr=C3=BC=C3=9Fe dich.
 
-Cc: Mike Christie <mchristie@redhat.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Hannes Reinecke <hare@suse.de>
-Cc: Nicholas Bellinger <nab@linux-iscsi.org>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
----
- drivers/target/target_core_tpg.c   | 12 ------------
- drivers/target/target_core_xcopy.c |  1 -
- include/target/target_core_base.h  |  1 -
- 3 files changed, 14 deletions(-)
+Willkommen bei Frau Christabel als Teil ihres Wohlfahrtspaketes
+Anbieten eines Floating Loans mit 2% Zinssatz ohne jegliche Sicherheiten
+Sicherheit. Dies soll Einzelpersonen und Unternehmen helfen, ihre
+Finanzen zu erreichen
+Ziele.
 
-diff --git a/drivers/target/target_core_tpg.c b/drivers/target/target_core_tpg.c
-index e5a71addbb06..d24e0a3ba3ff 100644
---- a/drivers/target/target_core_tpg.c
-+++ b/drivers/target/target_core_tpg.c
-@@ -32,9 +32,6 @@
- 
- extern struct se_device *g_lun0_dev;
- 
--static DEFINE_SPINLOCK(tpg_lock);
--static LIST_HEAD(tpg_list);
--
- /*	__core_tpg_get_initiator_node_acl():
-  *
-  *	mutex_lock(&tpg->acl_node_mutex); must be held when calling
-@@ -475,7 +472,6 @@ int core_tpg_register(
- 	se_tpg->se_tpg_wwn = se_wwn;
- 	atomic_set(&se_tpg->tpg_pr_ref_count, 0);
- 	INIT_LIST_HEAD(&se_tpg->acl_node_list);
--	INIT_LIST_HEAD(&se_tpg->se_tpg_node);
- 	INIT_LIST_HEAD(&se_tpg->tpg_sess_list);
- 	spin_lock_init(&se_tpg->session_lock);
- 	mutex_init(&se_tpg->tpg_lun_mutex);
-@@ -494,10 +490,6 @@ int core_tpg_register(
- 		}
- 	}
- 
--	spin_lock_bh(&tpg_lock);
--	list_add_tail(&se_tpg->se_tpg_node, &tpg_list);
--	spin_unlock_bh(&tpg_lock);
--
- 	pr_debug("TARGET_CORE[%s]: Allocated portal_group for endpoint: %s, "
- 		 "Proto: %d, Portal Tag: %u\n", se_tpg->se_tpg_tfo->fabric_name,
- 		se_tpg->se_tpg_tfo->tpg_get_wwn(se_tpg) ?
-@@ -519,10 +511,6 @@ int core_tpg_deregister(struct se_portal_group *se_tpg)
- 		tfo->tpg_get_wwn(se_tpg) ? tfo->tpg_get_wwn(se_tpg) : NULL,
- 		se_tpg->proto_id, tfo->tpg_get_tag(se_tpg));
- 
--	spin_lock_bh(&tpg_lock);
--	list_del(&se_tpg->se_tpg_node);
--	spin_unlock_bh(&tpg_lock);
--
- 	while (atomic_read(&se_tpg->tpg_pr_ref_count) != 0)
- 		cpu_relax();
- 
-diff --git a/drivers/target/target_core_xcopy.c b/drivers/target/target_core_xcopy.c
-index b9b1e92c6f8d..425c1070de08 100644
---- a/drivers/target/target_core_xcopy.c
-+++ b/drivers/target/target_core_xcopy.c
-@@ -467,7 +467,6 @@ int target_xcopy_setup_pt(void)
- 	}
- 
- 	memset(&xcopy_pt_tpg, 0, sizeof(struct se_portal_group));
--	INIT_LIST_HEAD(&xcopy_pt_tpg.se_tpg_node);
- 	INIT_LIST_HEAD(&xcopy_pt_tpg.acl_node_list);
- 	INIT_LIST_HEAD(&xcopy_pt_tpg.tpg_sess_list);
- 
-diff --git a/include/target/target_core_base.h b/include/target/target_core_base.h
-index 7c9716fe731e..1728e883b7b2 100644
---- a/include/target/target_core_base.h
-+++ b/include/target/target_core_base.h
-@@ -876,7 +876,6 @@ struct se_portal_group {
- 	/* Spinlock for adding/removing sessions */
- 	spinlock_t		session_lock;
- 	struct mutex		tpg_lun_mutex;
--	struct list_head	se_tpg_node;
- 	/* linked list for initiator ACL list */
- 	struct list_head	acl_node_list;
- 	struct hlist_head	tpg_lun_hlist;
--- 
-2.23.0.444.g18eeb5a265-goog
+* Pers=C3=B6nlicher Kredit (ungesichert)
+* Business-Darlehen (ungesichert)
+* Schuldenkonsolidierungsdarlehen
+* Verbessere dein Zuhause
 
+Bitte geben Sie uns folgendes an:
+Vollst=C3=A4ndiger Name.......
+Heimatadresse....
+Telefon:..........
+Handy, Mobiltelefon..........
+Land...........
+Besetzung:........
+Sex:...............
+Alter:..............
+Monatliches Einkommen......
+Ben=C3=B6tigte Menge ......
+Darlehensdauer: ...........
+Notwendigkeit f=C3=BCr Darlehensantrag .....
+Hast du dich vorher beworben? .........
+
+Alle Antworten sollten an weitergeleitet werden
+
+  Frau Christabel
+Darlehensoffizier
+E-Mail: christabelfundinginc2@gmail.com
+
+Sobald wir den Antrag erhalten haben, werden wir Ihren Kredit bearbeiten
+Antrag auf Genehmigung
+
+Danke und viele Gr=C3=BC=C3=9Fe.
