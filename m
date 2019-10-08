@@ -2,126 +2,146 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 37B53CEC7B
-	for <lists+target-devel@lfdr.de>; Mon,  7 Oct 2019 21:10:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55D97D020B
+	for <lists+target-devel@lfdr.de>; Tue,  8 Oct 2019 22:20:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728915AbfJGTKQ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 7 Oct 2019 15:10:16 -0400
-Received: from mx4.ucr.edu ([138.23.248.66]:6448 "EHLO mx4.ucr.edu"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728793AbfJGTKQ (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Mon, 7 Oct 2019 15:10:16 -0400
-X-Greylist: delayed 425 seconds by postgrey-1.27 at vger.kernel.org; Mon, 07 Oct 2019 15:10:15 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=ucr.edu; i=@ucr.edu; q=dns/txt; s=selector3;
-  t=1570475417; x=1602011417;
-  h=mime-version:from:date:message-id:subject:to;
-  bh=qKkd59j86O9FUZiM0WpoYxgW00QFfLIb89TLtsimzfI=;
-  b=Qr4YUBvg/4O+0M+VR+an9bkTHipTfXatezhW8wij4rnvjMOYGJbCR69n
-   gxfStEMTgMW+hX6bpIY0lz8Dl7WwNaNZh7yNFRfGJjguL6kNlWESHI4fk
-   pcTzYfgz4wMGrZeW1QC7ukZQ312LyILBOIowNKMQrVRVAXbkS98lN1BJy
-   a5VjCBOEBa3csUWInEW04pXLUpxsxKj9sQKFQfMYuIyB63/lNdxccNopi
-   Cc2v53s3hQY3hGmur6AoUbP5RYERJAeBYgfcPwTffogeFdON9OX9b4j+w
-   LdkzF55jwOhgJSD1yd2HtnOvyxildBR+OOr6XLVEILMbqb4uhVcTi8ba8
-   g==;
-IronPort-SDR: aQtoo634aNrwqFtKexGrXureaMmWmHjdJdd3BUXQ9zJe/shQ3HL9eZs0ErIwLiSvTbb4dI41Sy
- /ZxKV6zP3j4kUCNeXjpq2TLrR+oEws8YDb3VIld6zf0JTLMWopQBZZWwpIBJuH0VRdHMKUJ2Hu
- 520FQx9Z/VbRjcG9J8pXIy8i3EL22nAO3vfLdJRhbFZU1ZzAe5yvPiOhTNG1izl61A4TI3L/FF
- eHpWascpvUeQATUN2Mzqp9eWaPzmUFgrEm9Q/e+ytflWcCLo14F+y+m5rWzX5LWfBlnIE+Mzre
- PGk=
-IronPort-PHdr: =?us-ascii?q?9a23=3Addpo7BVB4MGlX7T7ZqkXdjdbpeLV8LGtZVwlr6?=
- =?us-ascii?q?E/grcLSJyIuqrYZRWGtadThVPEFb/W9+hDw7KP9fy5Aipdvt3Y6SFKWacPfi?=
- =?us-ascii?q?dNsd8RkQ0kDZzNImzAB9muURYHGt9fXkRu5XCxPBsdMs//Y1rPvi/6tmZKSV?=
- =?us-ascii?q?3wOgVvO+v6BJPZgdip2OCu4Z3TZBhDiCagbb9oIxi6sAvcutMWjIZgJao91w?=
- =?us-ascii?q?bFr39VcOlK2G1kIk6ekQzh7cmq5p5j9CpQu/Ml98FeVKjxYro1Q79FAjk4Km?=
- =?us-ascii?q?45/MLkuwXNQguJ/XscT34ZkgFUDAjf7RH1RYn+vy3nvedgwiaaPMn2TbcpWT?=
- =?us-ascii?q?S+6qpgVRHlhDsbOzM/7WrakdJ7gr5Frx29phx/24/Ub5+TNPpiZaPWYNcWSX?=
- =?us-ascii?q?NcUspNSyBNB4WxZJYNAeUcJ+ZVt4byqVsAoxW9GAeiGv/gxyRUhnPqx6A2z/?=
- =?us-ascii?q?gtHR3E0QEmAtkAsG7UrNLwNKoKU++1zajJzTXeb/NRxDzy64jIfQogofqRWr?=
- =?us-ascii?q?9xccvQyUk1GAPEklmctYLoMiiI1usRqWiX9fRvWv+yi2M+rQx6vzuhxt80h4?=
- =?us-ascii?q?XXmo4YzkrI+CZ5zYovO9G0VE12bcS5HJZUsyyXMZZ9TNk4TGFyoik6z6ULuZ?=
- =?us-ascii?q?u8fCcX1psq3wXfa/mbc4iQ5RLjSfqRLS94hH17fLK/gA6/8U26xe39Usm4yV?=
- =?us-ascii?q?JKrihYntXVuHAByhje58ydRvty+Ueh3jmP1wTN5e1ePU80kq/bJ4Ygwr42iJ?=
- =?us-ascii?q?UTrVzOEjHqlEjylqObdUUp9vK25+j7YbjqvIKQOotwhw3mN6QhgM2/AeA2Mg?=
- =?us-ascii?q?gUWGib/Pyx1b3i/E35WrpKj+E6nrXXvZ3BOMQUurS5DxVL3Yk+9hazFy2m38?=
- =?us-ascii?q?gAnXkbMFJFfwqKj5TzNFHUL/D3E+u/j02xnzh12fDJILnhD47TLnjMjrjhZ6?=
- =?us-ascii?q?xx601Cxwopy9BQ+ZZUBqsGIPLpVU+i/ODfWxowKRC1xaD/BclwzJgTX0qIGK?=
- =?us-ascii?q?aSNK6UuliNoqoMKvWBLLQJtSn0MeRts/31kXImkEUBVa2o24YHZnelGPhvP0?=
- =?us-ascii?q?SeZzzrmNhXVS82vg07Rfeip1mPUC5Vamz6C74z4iETDIOgEJvZQYaskPqN0X?=
- =?us-ascii?q?H/VrRSYmFdDVbEK37ue4yAE6MFbCaTOchnujgDVaW9TIxn0xyy4kuy1bN9M+?=
- =?us-ascii?q?z88S0VsYni055+4OiX3Tw07z1/CIyi3mCCQmVo1jcJQTEx9KVyvVFtjFGOzf?=
- =?us-ascii?q?48y/ZGHNpa/OhCUgoSPJXZietgBJS6XgPHY8fMU129Q/24DjwrCNE82dkDZw?=
- =?us-ascii?q?B6AdrmxgzKxSWnH/oZmqKGALQq/a/GmXv8PcBwzzDBzqZlx10nRNZfcG6rnK?=
- =?us-ascii?q?hy8yDNCIPT1UaUjaCnceIbxiGJvFWDzHuTuglhUQd2GfHXXXEOe03Phd/ioF?=
- =?us-ascii?q?7JVfmjBalxdkNqycOEJbpXIubui1oOEPz4P9LRS2mq3Xq7H1CFyq7aP6TwfG?=
- =?us-ascii?q?BI7STPCFUD2zIT9HfOYRksBi6g+zqFJCFlDxTib166oro2k2+yUkJhl1LCVE?=
- =?us-ascii?q?Zmzbfgv0dN3fE=3D?=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2HFAgDmiptdh8fQVdFmDoIQhBCETY5?=
- =?us-ascii?q?ggw2CCgGGd4VZgRiKNAEIAQEBDi8BAYcfIzcGDgIDCQEBBQEBAQEBBQQBAQI?=
- =?us-ascii?q?QAQEBCA0JCCmFQII6KQGDVRF8DwImAiQSAQUBIgE0gwCCCwWiZoEDPIsmgTK?=
- =?us-ascii?q?ECwGEWQEJDYFIEnoojA6CF4ERgl0HiD2CWASBOAEBAZUsllQBBgKCEBSMVIh?=
- =?us-ascii?q?EG4IqAZcUjiyZSw8jgUWBfDMaJX8GZ4FPTxAUgWmNcQRXJJIcAQE?=
-X-IPAS-Result: =?us-ascii?q?A2HFAgDmiptdh8fQVdFmDoIQhBCETY5ggw2CCgGGd4VZg?=
- =?us-ascii?q?RiKNAEIAQEBDi8BAYcfIzcGDgIDCQEBBQEBAQEBBQQBAQIQAQEBCA0JCCmFQ?=
- =?us-ascii?q?II6KQGDVRF8DwImAiQSAQUBIgE0gwCCCwWiZoEDPIsmgTKECwGEWQEJDYFIE?=
- =?us-ascii?q?noojA6CF4ERgl0HiD2CWASBOAEBAZUsllQBBgKCEBSMVIhEG4IqAZcUjiyZS?=
- =?us-ascii?q?w8jgUWBfDMaJX8GZ4FPTxAUgWmNcQRXJJIcAQE?=
-X-IronPort-AV: E=Sophos;i="5.67,269,1566889200"; 
-   d="scan'208";a="81220658"
-Received: from mail-lj1-f199.google.com ([209.85.208.199])
-  by smtpmx4.ucr.edu with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 07 Oct 2019 12:03:10 -0700
-Received: by mail-lj1-f199.google.com with SMTP id i18so3796123ljg.14
-        for <target-devel@vger.kernel.org>; Mon, 07 Oct 2019 12:03:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=ESofDjYlaGWbuPOVSuea9qOggnj5mZzg5iY6K5NGehg=;
-        b=QNQ1m0RkGKnQmc9XtJ/szCd0awaSb8iDaPUZc0HyQrCcw7iI3O7HRrRDAsKEpc+wCx
-         dUc6d65ebyxZ6m4bc5Cn3+OyjoKhYd2u+olgfCRw8x4In6Hs3nGCCG7D+lrwuRU7bxf6
-         YS9dxLOXZO1clM28dOxzRVoXMasB0hssMlH0DBN1JCjoWh9KWXahA+92rb/WMwEalMbe
-         KykC5NCtAOiAiAqIsYBCHn0TtQDaqbUJRJlPpw+w5v2v5FL9zj45LbY9MlWCcj5XXZb/
-         Xj+nk1OKga+w+6dh+Is0XZOEqlgJ7ApbBnlRrlyLRo2UbHncvHU2dThu2W+SnHTSn+JC
-         Axhg==
-X-Gm-Message-State: APjAAAUD9UFOlHI0QI6BWN9AZyPP/hwN4XCOyXf4DvVXvFeUWRj9cvdN
-        Dc3rElxzIYfMj0L7w17/ZhZC5uiX7C6OaIQK6T6MiHHyu1fnCwRfWhV8Lw2VKvkpjtF3086cBln
-        tAB7g83KFV4xzkHWjCNwa2JSpcJ0YG9h/QNBh6s2n6w==
-X-Received: by 2002:a2e:89cd:: with SMTP id c13mr19382941ljk.92.1570474987352;
-        Mon, 07 Oct 2019 12:03:07 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqxPt2y/kkUfF2dViia+Gw42gIv9azn/ATOBEVLWWAlSLPnIIR6FYLzrKHUfg/QEdwY0P6m32CFv87gaTDTQITI=
-X-Received: by 2002:a2e:89cd:: with SMTP id c13mr19382924ljk.92.1570474987121;
- Mon, 07 Oct 2019 12:03:07 -0700 (PDT)
+        id S1730722AbfJHUUT (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 8 Oct 2019 16:20:19 -0400
+Received: from mail1.bemta25.messagelabs.com ([195.245.230.69]:40727 "EHLO
+        mail1.bemta25.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727835AbfJHUUS (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Tue, 8 Oct 2019 16:20:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
+        s=200619tsfj; t=1570566015; i=@ts.fujitsu.com;
+        bh=78uPEKUEOadX+e1OkbXD2/8K1blmereSmu+ST01Bplo=;
+        h=From:To:Subject:Date:Message-ID:Content-Type:
+         Content-Transfer-Encoding:MIME-Version;
+        b=DvRvby+V6lncBy1KSkDicQCU2QIGiEVBVQgI0fz/hPcCP+YtvCNo8GF2xf9dNtQ/Q
+         08FpTfF5OoE4ZuWE6qPMglnekmx3UA/qWC6yxqGIqBTvGJhZSXeXW4qugjEoKEf5/0
+         mqgbZFIUTE8XjCD1pgBeqh0wDJWm3D7hzQeG4OyzzJ8SkRlY8y0p74Cii+xpMOOkM8
+         gJ2L0PkArM/HalIVk2rh/HCF1Hyn6P0Sr264LBvBT3TcSbATv6XB8zNDj4QSSGebzQ
+         6O3f2sIW/SFfGlzxihK1bK1YHcqYAmZGo7pli2A3RyOXZ3I+lOYdhP8dl18jOdZu8S
+         4vp8keIL/D4JQ==
+Received: from [46.226.52.199] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-5.bemta.az-b.eu-west-1.aws.symcld.net id 35/66-04297-F7FEC9D5; Tue, 08 Oct 2019 20:20:15 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrIKsWRWlGSWpSXmKPExsViZ8MxVbfu/Zx
+  YgyVz9S3WH9nAaNG69C2TA5PH+31X2Tw+b5ILYIpizcxLyq9IYM34sPcsa8Ffvoq255/ZGhhf
+  cHUxcnEICbQwSfzrn8kO4RxllPhxexkThHOGUeLdlnaWLkZODjYBV4mW5Y8YQRIiAu2MEsfmd
+  rKCJIQFbCROPTwHViQi4Cjx9cZFKFtPomfBdWYQm0VARWLy7QZ2EJtXwF+ia+0lsF5GAVmJL4
+  2rwWqYBcQlNj37DhaXEBCQWLLnPDOELSrx8vE/qLiBxNal+1ggbAWJq3u3s0D06kncmDqFDcL
+  Wlli28DUzxC5BiZMzn7BMYBSehWTFLCQts5C0zELSsoCRZRWjRVJRZnpGSW5iZo6uoYGBrqGh
+  ka6hpbmuobGBXmKVbpJeaqlueWpxia6hXmJ5sV5xZW5yTopeXmrJJkZg3KQUHG3awdhz5LXeI
+  UZJDiYlUV6Ty3NihfiS8lMqMxKLM+KLSnNSiw8xynBwKEnwCr0DygkWpaanVqRl5gBjGCYtwc
+  GjJMJrApLmLS5IzC3OTIdInWK055jwcu4iZo6dR+cByYNgsvH57sXMQix5+XmpUuK8694CtQm
+  AtGWU5sENhaWcS4yyUsK8jAwMDEI8BalFuZklqPKvGMU5GJWEeZNBpvBk5pXA7X4FdBYT0Fn5
+  LrNBzipJREhJNTCtORG7u+yRutmjb33+AQ0/JsguFlttvPv0iSnpyiwLLm760N1/umT/MvXk2
+  wvXioRNDLz+d65Hyb6kC57fP11y3n3zTumv7+2iiw+xvvE6WPMy8LmcCFfh64tNV6Ild4s2vj
+  Jj4k9Pt7qbuX8N/8kFJaYfaytapnJwuvncLvP8GBUt1iwZrpgY/JNPovbuq9DtB1lVdfVfvvn
+  5/7qFnmai4t/sLGPpvk0p6qp7BQKliz8e3CP3JmadnYmca+TK8sMXQzI+ZcoYSSdlyyuvKBJs
+  vp/RfqMgo0D+tJHYB5VX83jmlU3TVUqbLjvHu8Nfzm5TQvKTq7a+EVOefPvF6/Z5pe2swA1bH
+  b9xhy0qXKfEUpyRaKjFXFScCAD7m72OtAMAAA==
+X-Env-Sender: bodo.stroesser@ts.fujitsu.com
+X-Msg-Ref: server-18.tower-287.messagelabs.com!1570566013!176256!1
+X-Originating-IP: [62.60.8.149]
+X-SYMC-ESS-Client-Auth: outbound-route-from=pass
+X-StarScan-Received: 
+X-StarScan-Version: 9.43.12; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 7347 invoked from network); 8 Oct 2019 20:20:14 -0000
+Received: from unknown (HELO mailhost2.uk.fujitsu.com) (62.60.8.149)
+  by server-18.tower-287.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 8 Oct 2019 20:20:14 -0000
+Received: from R01UKEXCASM121.r01.fujitsu.local (ex2k13_121.fs.fujitsu.com [10.183.43.173])
+        by mailhost2.uk.fujitsu.com (8.14.5/8.14.5) with ESMTP id x98KKDrx016820
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=FAIL);
+        Tue, 8 Oct 2019 21:20:13 +0100
+Received: from R01UKEXCASM125.r01.fujitsu.local (10.183.43.177) by
+ R01UKEXCASM121.r01.fujitsu.local (10.183.43.173) with Microsoft SMTP Server
+ (TLS) id 15.0.1473.3; Tue, 8 Oct 2019 21:20:12 +0100
+Received: from R01UKEXCASM125.r01.fujitsu.local ([fe80::39fc:a7b:1dd:1341]) by
+ R01UKEXCASM125.r01.fujitsu.local ([fe80::39fc:a7b:1dd:1341%23]) with mapi id
+ 15.00.1473.003; Tue, 8 Oct 2019 21:20:12 +0100
+From:   "bodo.stroesser@ts.fujitsu.com" <bodo.stroesser@ts.fujitsu.com>
+To:     "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>,
+        "Mike Christie (mchristi@redhat.com)" <mchristi@redhat.com>
+Subject: Wrong resetting of Logical Unit Number field in CDB
+Thread-Topic: Wrong resetting of Logical Unit Number field in CDB
+Thread-Index: AdV+ErJiFiD5bW47T/a1O2arOy/zoQ==
+Date:   Tue, 8 Oct 2019 20:20:12 +0000
+Message-ID: <ac680e032540400a8cd7b1bf03361df3@R01UKEXCASM125.r01.fujitsu.local>
+Accept-Language: en-GB, en-US
+Content-Language: de-DE
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.183.43.93]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-From:   Yizhuo Zhai <yzhai003@ucr.edu>
-Date:   Mon, 7 Oct 2019 12:03:50 -0700
-Message-ID: <CABvMjLQxcV5UE3_j84SV3u2LxJKVoQ2G+5CZCuKtAd6A_6FDNw@mail.gmail.com>
-Subject: Potential NULL pointer deference in cxgbit
-To:     martin.petersen@oracle.com,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Allison Randal <allison@lohutok.net>, varun@chelsio.com,
-        Enrico Weigelt <info@metux.net>, bvanassche@acm.org,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Zhiyun Qian <zhiyunq@cs.ucr.edu>,
-        Chengyu Song <csong@cs.ucr.edu>
-Content-Type: text/plain; charset="UTF-8"
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hi All:
+Hi,
 
-drivers/target/iscsi/cxgbit/cxgbit_ddp.c:
+We use TCMUser to run userspace tape and changer emulations.
 
-Inside function cxgbit_ddp_sgl_check(), sg_next() could return NULL,
-however, the return value of sg_next() is not checked and get
-dereferenced. This could potentially be unsafe.
+Current tests with a new version of backup SW failed, due to that applicati=
+on
+using SECURITY PROTOCOL IN / OUT  SCSI commands.
+The CDBs of these commands in byte 1 contain relevant information that
+is overwritten in passthrough_parse_cdb() / target_core_device.c
 
--- 
-Kind Regards,
+This is the related part of the code:
 
-Yizhuo Zhai
+        /*
+         * Clear a lun set in the cdb if the initiator talking to use spoke
+         * and old standards version, as we can't assume the underlying dev=
+ice
+         * won't choke up on it.
+         */
+        switch (cdb[0]) {
+        case READ_10: /* SBC - RDProtect */
+        case READ_12: /* SBC - RDProtect */
+        case READ_16: /* SBC - RDProtect */
+        case SEND_DIAGNOSTIC: /* SPC - SELF-TEST Code */
+        case VERIFY: /* SBC - VRProtect */
+        case VERIFY_16: /* SBC - VRProtect */
+        case WRITE_VERIFY: /* SBC - VRProtect */
+        case WRITE_VERIFY_12: /* SBC - VRProtect */
+        case MAINTENANCE_IN: /* SPC - Parameter Data Format for SA RTPG */
+                break;
+        default:
+                cdb[1] &=3D 0x1f; /* clear logical unit number */
+                break;
+        }
 
-Computer Science, Graduate Student
-University of California, Riverside
+Obviously the list of command codes for which bits 5,6,7 of byte 1 are _not=
+_ reset
+is not complete. Now I'm wondering what would be the right fix:
+
+1) Scan the SCSI specs and add all other missing command codes to the list =
+of
+   Codes to skip
+
+2) Create a list of commands that definitely have the LUN field in byte 1 a=
+nd
+   reset the bits only in those. (Might be better than 1), because I expect=
+ new
+   commands to not have the LUN field.)
+
+3) Remove the code entirely, because it is no longer needed / useful (?)
+
+For 1) and 2) an additionally question is, based on what SCSI version the l=
+ists would
+have to be created?
+
+Based on your help and hints I'd like to create a patch.
+
+Thank you,
+Bodo
+
+
+
+
