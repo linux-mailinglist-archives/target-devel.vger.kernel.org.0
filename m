@@ -2,161 +2,88 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B94FDADF3
-	for <lists+target-devel@lfdr.de>; Thu, 17 Oct 2019 15:10:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1420ADBB5C
+	for <lists+target-devel@lfdr.de>; Fri, 18 Oct 2019 03:42:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394307AbfJQNKs (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 17 Oct 2019 09:10:48 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:40884 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726898AbfJQNKs (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 17 Oct 2019 09:10:48 -0400
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id A47EE69089;
-        Thu, 17 Oct 2019 13:10:47 +0000 (UTC)
-Received: from manaslu.redhat.com (ovpn-204-199.brq.redhat.com [10.40.204.199])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 39C57600C4;
-        Thu, 17 Oct 2019 13:10:46 +0000 (UTC)
-From:   Maurizio Lombardi <mlombard@redhat.com>
-To:     cleech@redhat.com
-Cc:     mchristi@redhat.com, target-devel@vger.kernel.org,
-        hch@infradead.org
-Subject: [PATCH V2 3/3] target-iscsi: rename some variables to avoid confusion.
-Date:   Thu, 17 Oct 2019 15:10:37 +0200
-Message-Id: <20191017131037.9903-4-mlombard@redhat.com>
-In-Reply-To: <20191017131037.9903-1-mlombard@redhat.com>
-References: <20191017131037.9903-1-mlombard@redhat.com>
+        id S2409460AbfJRBmW (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 17 Oct 2019 21:42:22 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:41634 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388373AbfJRBmW (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Thu, 17 Oct 2019 21:42:22 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9I1dKQI090383;
+        Fri, 18 Oct 2019 01:42:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2019-08-05;
+ bh=wEun/DCoVTOWFkkGv9K5YI5H50zUlibyXN+NlQIRTP8=;
+ b=O5JwhHiuIGQxpaCqPVigH94/RpFrCtnjw8ZgP64cyw4m45+ssfyf7S8EqLqdqu7geXiE
+ AaAnIfKLUNzocoXx6WY1cJWVKi3M3GRhbplgVDXO4ZYlqUSFE9GO3mYM2gl6zYoj9ff4
+ +1OySCsPKMA8AXBp3X/CQivmDwDBQhhKgKCyxTEuW+cNPeztHay9dcfrr6GlG+TdDwMV
+ XDK70oTq6LaRMz7DdiHatLfDV29off3LXj0jrufpNiPSI28maGKqkYGSDNrVB4JxInID
+ 1uFfL/Absn2W8N0AyQma7aVttAZKOyC5TJ5TanFqOTQvcUxkbQNNKk2SB1kVy+ZeBbTM +g== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 2vq0q40nut-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 18 Oct 2019 01:42:03 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9I1cArH136888;
+        Fri, 18 Oct 2019 01:42:02 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 2vq0ed21kg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 18 Oct 2019 01:42:02 +0000
+Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x9I1fxdJ032013;
+        Fri, 18 Oct 2019 01:41:59 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 18 Oct 2019 01:41:59 +0000
+To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Cc:     "target-devel\@vger.kernel.org" <target-devel@vger.kernel.org>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Mike Christie <mchristi@redhat.com>,
+        Hannes Reinecke <hare@suse.de>
+Subject: Re: [PATCH] target: do not overwrite CDB byte 1
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <12498eab-76fd-eaad-1316-c2827badb76a@ts.fujitsu.com>
+Date:   Thu, 17 Oct 2019 21:41:57 -0400
+In-Reply-To: <12498eab-76fd-eaad-1316-c2827badb76a@ts.fujitsu.com> (Bodo
+        Stroesser's message of "Mon, 14 Oct 2019 20:29:04 +0200")
+Message-ID: <yq1r23akexm.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.28]); Thu, 17 Oct 2019 13:10:47 +0000 (UTC)
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9413 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910180014
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9413 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910180014
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-This patch renames some variables in chap_server_compute_hash()
-to make it harder to confuse the initiator's challenge with
-the target's challenge when the mutual chap authentication is used.
 
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
----
- drivers/target/iscsi/iscsi_target_auth.c | 40 ++++++++++++------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+Bodo,
 
-diff --git a/drivers/target/iscsi/iscsi_target_auth.c b/drivers/target/iscsi/iscsi_target_auth.c
-index f3973ab19da2..0e54627d9aa8 100644
---- a/drivers/target/iscsi/iscsi_target_auth.c
-+++ b/drivers/target/iscsi/iscsi_target_auth.c
-@@ -215,8 +215,8 @@ static int chap_server_compute_hash(
- 	unsigned long id;
- 	unsigned char id_as_uchar;
- 	unsigned char type;
--	unsigned char identifier[10], *challenge = NULL;
--	unsigned char *challenge_binhex = NULL;
-+	unsigned char identifier[10], *initiatorchg = NULL;
-+	unsigned char *initiatorchg_binhex = NULL;
- 	unsigned char *digest = NULL;
- 	unsigned char *response = NULL;
- 	unsigned char *client_digest = NULL;
-@@ -226,7 +226,7 @@ static int chap_server_compute_hash(
- 	struct iscsi_chap *chap = conn->auth_protocol;
- 	struct crypto_shash *tfm = NULL;
- 	struct shash_desc *desc = NULL;
--	int auth_ret = -1, ret, challenge_len;
-+	int auth_ret = -1, ret, initiatorchg_len;
- 
- 	digest = kzalloc(chap->digest_size, GFP_KERNEL);
- 	if (!digest) {
-@@ -256,15 +256,15 @@ static int chap_server_compute_hash(
- 	memset(chap_n, 0, MAX_CHAP_N_SIZE);
- 	memset(chap_r, 0, MAX_RESPONSE_LENGTH);
- 
--	challenge = kzalloc(CHAP_CHALLENGE_STR_LEN, GFP_KERNEL);
--	if (!challenge) {
-+	initiatorchg = kzalloc(CHAP_CHALLENGE_STR_LEN, GFP_KERNEL);
-+	if (!initiatorchg) {
- 		pr_err("Unable to allocate challenge buffer\n");
- 		goto out;
- 	}
- 
--	challenge_binhex = kzalloc(CHAP_CHALLENGE_STR_LEN, GFP_KERNEL);
--	if (!challenge_binhex) {
--		pr_err("Unable to allocate challenge_binhex buffer\n");
-+	initiatorchg_binhex = kzalloc(CHAP_CHALLENGE_STR_LEN, GFP_KERNEL);
-+	if (!initiatorchg_binhex) {
-+		pr_err("Unable to allocate initiatorchg_binhex buffer\n");
- 		goto out;
- 	}
- 	/*
-@@ -399,7 +399,7 @@ static int chap_server_compute_hash(
- 	 * Get CHAP_C.
- 	 */
- 	if (extract_param(nr_in_ptr, "CHAP_C", CHAP_CHALLENGE_STR_LEN,
--			challenge, &type) < 0) {
-+			initiatorchg, &type) < 0) {
- 		pr_err("Could not find CHAP_C.\n");
- 		goto out;
- 	}
-@@ -408,28 +408,28 @@ static int chap_server_compute_hash(
- 		pr_err("Could not find CHAP_C.\n");
- 		goto out;
- 	}
--	challenge_len = DIV_ROUND_UP(strlen(challenge), 2);
--	if (!challenge_len) {
-+	initiatorchg_len = DIV_ROUND_UP(strlen(initiatorchg), 2);
-+	if (!initiatorchg_len) {
- 		pr_err("Unable to convert incoming challenge\n");
- 		goto out;
- 	}
--	if (challenge_len > 1024) {
-+	if (initiatorchg_len > 1024) {
- 		pr_err("CHAP_C exceeds maximum binary size of 1024 bytes\n");
- 		goto out;
- 	}
--	if (hex2bin(challenge_binhex, challenge, challenge_len) < 0) {
-+	if (hex2bin(initiatorchg_binhex, initiatorchg, initiatorchg_len) < 0) {
- 		pr_err("Malformed CHAP_C\n");
- 		goto out;
- 	}
--	pr_debug("[server] Got CHAP_C=%s\n", challenge);
-+	pr_debug("[server] Got CHAP_C=%s\n", initiatorchg);
- 	/*
- 	 * During mutual authentication, the CHAP_C generated by the
- 	 * initiator must not match the original CHAP_C generated by
- 	 * the target.
- 	 */
--	if (challenge_len == chap->challenge_len &&
--				!memcmp(challenge_binhex, chap->challenge,
--				challenge_len)) {
-+	if (initiatorchg_len == chap->challenge_len &&
-+				!memcmp(initiatorchg_binhex, chap->challenge,
-+				initiatorchg_len)) {
- 		pr_err("initiator CHAP_C matches target CHAP_C, failing"
- 		       " login attempt\n");
- 		goto out;
-@@ -461,7 +461,7 @@ static int chap_server_compute_hash(
- 	/*
- 	 * Convert received challenge to binary hex.
- 	 */
--	ret = crypto_shash_finup(desc, challenge_binhex, challenge_len,
-+	ret = crypto_shash_finup(desc, initiatorchg_binhex, initiatorchg_len,
- 				 digest);
- 	if (ret < 0) {
- 		pr_err("crypto_shash_finup() failed for ma challenge\n");
-@@ -487,8 +487,8 @@ static int chap_server_compute_hash(
- 	kzfree(desc);
- 	if (tfm)
- 		crypto_free_shash(tfm);
--	kfree(challenge);
--	kfree(challenge_binhex);
-+	kfree(initiatorchg);
-+	kfree(initiatorchg_binhex);
- 	kfree(digest);
- 	kfree(response);
- 	kfree(server_digest);
+> passthrough_parse_cdb() - used by TCMU and PSCSI - attepts to reset
+> the LUN field of SCSI-2 CDBs (bits 5,6,7 of byte 1).  The current code
+> is wrong, as for newer commands not having the LUN field it overwrites
+> relevant command bits (e.g. for SECURITY PROTOCOL IN / OUT) We think
+> this code was unnecessary from the beginning or at least it is no
+> longer useful. So we remove it entirely.
+
+Applied to 5.4/scsi-fixes, thanks!
+
 -- 
-Maurizio Lombardi
-
+Martin K. Petersen	Oracle Linux Engineering
