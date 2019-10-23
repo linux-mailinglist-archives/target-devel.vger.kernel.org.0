@@ -2,76 +2,100 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFA65DF267
-	for <lists+target-devel@lfdr.de>; Mon, 21 Oct 2019 18:07:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ACAAE0FE7
+	for <lists+target-devel@lfdr.de>; Wed, 23 Oct 2019 04:05:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729203AbfJUQGZ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 21 Oct 2019 12:06:25 -0400
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:33479 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726276AbfJUQGZ (ORCPT
+        id S2387856AbfJWCFf (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 22 Oct 2019 22:05:35 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:44860 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725874AbfJWCFf (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 21 Oct 2019 12:06:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1571673983;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=b4n683HFZLOiX/EWrwiLKOhWpCGTf5pC8zd1qhZEknc=;
-        b=X0hpPhoB5TjJ2sWx5lYNfNZdYarCp3J4AfZQzaH1I81gb6riZZoBJzkFW8cNkG1WQXmWmO
-        Sg1Ayi6zhrNtbLYtVHJL1QJOvVp5MxxvrQ2D+NbmTcBYr6S5OWJl7jE7QSJ9Ld8smzj/qY
-        CzARZSE1ctqMXw4yG695i2dtcPWl1Ls=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-181-SWHQOxSaOySatwIMnCC7cg-1; Mon, 21 Oct 2019 12:06:20 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3E0CC100550E;
-        Mon, 21 Oct 2019 16:06:19 +0000 (UTC)
-Received: from [10.10.120.68] (ovpn-120-68.rdu2.redhat.com [10.10.120.68])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A2E8F196AE;
-        Mon, 21 Oct 2019 16:06:18 +0000 (UTC)
-Subject: Re: [PATCH 0/3] target: minor iSCSI parameter parsing fixes
-To:     David Disseldorp <ddiss@suse.de>, target-devel@vger.kernel.org
-References: <20190912095547.22427-1-ddiss@suse.de>
-Cc:     martin.petersen@oracle.com, bvanassche@acm.org
-From:   Mike Christie <mchristi@redhat.com>
-Message-ID: <5DADD77A.6010903@redhat.com>
-Date:   Mon, 21 Oct 2019 11:06:18 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.6.0
+        Tue, 22 Oct 2019 22:05:35 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9N24ePc017040;
+        Wed, 23 Oct 2019 02:05:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2019-08-05;
+ bh=lY4zP94alq01uAWKdV/BiL6+B7d28BacWcxtzqymDMw=;
+ b=Nnhbb/QJGkog+ByHqz8O6vTBjnMDrjH5K0ycSCbI27QV6tDcnWXoxNUD9pY7zrZnUGTM
+ R0pLz0Xojg0OOWUUnOJLCTT4AfOtgWwNTSQUV1XCCOvvOGMpJMl1BXOH6GaDl0SsNIi3
+ KmQPMNHtlHybEm7o07GRVVyTHLfZzKwq5wtgC/LZV0WW012+u5n060dGYwEOtZRmq/NF
+ V1ctCpZR55wKNaBPhmJMmAvdSlLkgnmuD4t+awkjv3zKAMu8CpIfbE4gXX+sz3zS1ByL
+ +oCPXt+er23HalqbOeAmptB0fwZ88fyPPx91F8c+KrbltGcQTgYsdugMo7R5giyyHyij 2w== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 2vqtept956-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 23 Oct 2019 02:05:30 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9N24iRi019900;
+        Wed, 23 Oct 2019 02:05:30 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 2vsx240vdw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 23 Oct 2019 02:05:29 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x9N25QBf013342;
+        Wed, 23 Oct 2019 02:05:28 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 22 Oct 2019 19:05:26 -0700
+To:     bvanassche@acm.org
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        target-devel@vger.kernel.org
+Subject: Re: [bug report] target/cxgbit: Fix endianness annotations
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <20191014115025.GA9350@mwanda>
+Date:   Tue, 22 Oct 2019 22:05:24 -0400
+In-Reply-To: <20191014115025.GA9350@mwanda> (Dan Carpenter's message of "Mon,
+        14 Oct 2019 14:50:25 +0300")
+Message-ID: <yq1tv80dxnf.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20190912095547.22427-1-ddiss@suse.de>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-MC-Unique: SWHQOxSaOySatwIMnCC7cg-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9418 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=775
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910230018
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9418 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=857 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910230018
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 09/12/2019 04:55 AM, David Disseldorp wrote:
-> This patchset includes some minor fixes for parsing iSCSI CHAP_A and
-> SendTargets fields. Patch 1/3 was already submitted and reviewed by
-> Lee.
-> I used the following libiscsi hacks to test for these bugs:
-> https://github.com/ddiss/libiscsi/commits/bogus_chap_a
-> https://github.com/ddiss/libiscsi/commits/bogus_sendtarget_key
-> https://github.com/ddiss/libiscsi/commits/bogus_sendtarget_val
-> I'll work on turning these into propper libiscsi regression tests
-> (pending https://github.com/sahlberg/libiscsi/issues/297).
->=20
-> Cheers, David
->=20
->  drivers/target/iscsi/iscsi_target.c            | 14 ++++++--------
->  drivers/target/iscsi/iscsi_target_auth.c       |  2 +-
->  drivers/target/iscsi/iscsi_target_parameters.h |  3 ---
->  3 files changed, 7 insertions(+), 12 deletions(-)
->=20
 
-Reviewed-by: Mike Christie <mchristi@redhat.com>
+Bart?
 
+> This is a semi-automatic email about new static checker warnings.
+>
+> The patch 5cadafb236df: "target/cxgbit: Fix endianness annotations"
+> from Jan 13, 2017, leads to the following Smatch complaint:
+>
+>     drivers/target/iscsi/cxgbit/cxgbit_cm.c:1836 cxgbit_fw4_ack()
+>     warn: variable dereferenced before check 'p' (see line 1834)
+>
+> drivers/target/iscsi/cxgbit/cxgbit_cm.c
+>   1833			struct sk_buff *p = cxgbit_sock_peek_wr(csk);
+>   1834			const u32 csum = (__force u32)p->csum;
+>                                                       ^^^^^^^
+> We moved this dereference earlier
+>
+>   1835	
+>   1836			if (unlikely(!p)) {
+>                                       ^
+> so now it's before the NULL check
+>
+>   1837				pr_err("csk 0x%p,%u, cr %u,%u+%u, empty.\n",
+>   1838				       csk, csk->tid, credits,
+>
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
