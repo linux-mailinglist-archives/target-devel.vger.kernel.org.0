@@ -2,84 +2,98 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BBE6E0FF4
-	for <lists+target-devel@lfdr.de>; Wed, 23 Oct 2019 04:15:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 185D4E1005
+	for <lists+target-devel@lfdr.de>; Wed, 23 Oct 2019 04:30:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388558AbfJWCPK (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 22 Oct 2019 22:15:10 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:46160 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725874AbfJWCPK (ORCPT
+        id S2388674AbfJWCa2 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 22 Oct 2019 22:30:28 -0400
+Received: from mail-pf1-f170.google.com ([209.85.210.170]:37610 "EHLO
+        mail-pf1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729994AbfJWCa2 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 22 Oct 2019 22:15:10 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9N2ErTJ022111;
-        Wed, 23 Oct 2019 02:14:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2019-08-05;
- bh=3a9jFkrcvxVs3fii45LjWauXKvjD0VM9U6tfo5OtgaY=;
- b=edprELAo+4xAUC/L50STj1mzOsQTnPp07+043DUcwWCG4VPsHgiI3Gc8pSMAkC4ZXLHK
- A1zNyFdXkme3lw6rkG+afJmdRKG78/zOJ34SBHagAWm7d4nxws2Mh1WGZ/pC1czOLCnZ
- iCRNPzLBlhx8crS5TjObj7kglBzuWVnPdowVcp8uoR3zh9yYNyjV6HZ4M84wtG3DPS+1
- pD+oW9ABcSZPeUBtz/N0OWuSeJ3ugLZwVwBSH84UNDw8Q8/D5TIVGIH9ndJwIXl3J7nJ
- yPTnDke2qwReoQhjIPnFRc9EmcEIkb62hh4tP0MbM9vXFWsEGa5uclQbca3Gs178Xehw dw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 2vqu4qt4vv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 23 Oct 2019 02:14:58 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9N2DZ35034192;
-        Wed, 23 Oct 2019 02:14:57 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2vsx2416kx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 23 Oct 2019 02:14:57 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x9N2Eud5011493;
-        Wed, 23 Oct 2019 02:14:56 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 22 Oct 2019 19:14:55 -0700
-To:     Mike Christie <mchristi@redhat.com>
-Cc:     David Disseldorp <ddiss@suse.de>, target-devel@vger.kernel.org,
-        martin.petersen@oracle.com, bvanassche@acm.org
-Subject: Re: [PATCH 0/3] target: minor iSCSI parameter parsing fixes
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20190912095547.22427-1-ddiss@suse.de>
-        <5DADD77A.6010903@redhat.com>
-Date:   Tue, 22 Oct 2019 22:14:53 -0400
-In-Reply-To: <5DADD77A.6010903@redhat.com> (Mike Christie's message of "Mon,
-        21 Oct 2019 11:06:18 -0500")
-Message-ID: <yq1pniodx7m.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+        Tue, 22 Oct 2019 22:30:28 -0400
+Received: by mail-pf1-f170.google.com with SMTP id y5so11897106pfo.4
+        for <target-devel@vger.kernel.org>; Tue, 22 Oct 2019 19:30:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=6MsDRyTZ9EonxVtfjk0lJpPvQ+NP2ezk1jEdwUyIj1U=;
+        b=LG8ReDmy4pDvJDaNAmxxHOqHZGkAso+2lkXX8xJiDi7kBaG+Idf0HgkLqZaDnIOMvP
+         EvJqbVnRtWlhhz5IeWZfBWeCy6Ym70UNt6aJsJD4MxKe4RtGvFDaGgSnEImBFHwmderQ
+         jh9xRCnsePCZby9yW1lUL0YnvwPUtudWOm2nADTXxrbTLRy/6ungoUsbTzp6QJ0TBcy8
+         kx4LFm66weuLB66oaRdOyOaHv4nCY9RWzSCb1k5YVRKlGNW4tRPJi4mj7hehrpyozWso
+         ERTHLTQps27sgDMjcaBho0AFPC+EmgkKDom6j4j/n9yN9FOa3vmJPSHDkUm6TKNsB2Ie
+         4GZg==
+X-Gm-Message-State: APjAAAXHtvfc/5wwEq/N7NBkACrHFWZ9rbOQnOUzjUCIn91qA7aW5Qj0
+        /LWkTd0V03MpQBS/NojnuOdeeuny
+X-Google-Smtp-Source: APXvYqxvmEx5zdRQFpr0nfhcxdme87gBlvWRNwz3cPgCy3CB6O1bYFnb9uiPj47DZjPDDcuIBmtp9A==
+X-Received: by 2002:a63:9302:: with SMTP id b2mr4606680pge.342.1571797826467;
+        Tue, 22 Oct 2019 19:30:26 -0700 (PDT)
+Received: from localhost.localdomain ([2601:647:4000:c3:28f0:4a5a:dfde:9bba])
+        by smtp.gmail.com with ESMTPSA id x14sm4027569pfm.96.2019.10.22.19.30.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Oct 2019 19:30:25 -0700 (PDT)
+Subject: Re: [bug report] target/cxgbit: Fix endianness annotations
+To:     "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        target-devel@vger.kernel.org
+References: <20191014115025.GA9350@mwanda> <yq1tv80dxnf.fsf@oracle.com>
+From:   Bart Van Assche <bvanassche@acm.org>
+Autocrypt: addr=bvanassche@acm.org; prefer-encrypt=mutual; keydata=
+ mQENBFSOu4oBCADcRWxVUvkkvRmmwTwIjIJvZOu6wNm+dz5AF4z0FHW2KNZL3oheO3P8UZWr
+ LQOrCfRcK8e/sIs2Y2D3Lg/SL7qqbMehGEYcJptu6mKkywBfoYbtBkVoJ/jQsi2H0vBiiCOy
+ fmxMHIPcYxaJdXxrOG2UO4B60Y/BzE6OrPDT44w4cZA9DH5xialliWU447Bts8TJNa3lZKS1
+ AvW1ZklbvJfAJJAwzDih35LxU2fcWbmhPa7EO2DCv/LM1B10GBB/oQB5kvlq4aA2PSIWkqz4
+ 3SI5kCPSsygD6wKnbRsvNn2mIACva6VHdm62A7xel5dJRfpQjXj2snd1F/YNoNc66UUTABEB
+ AAG0JEJhcnQgVmFuIEFzc2NoZSA8YnZhbmFzc2NoZUBhY20ub3JnPokBOQQTAQIAIwUCVI67
+ igIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEHFcPTXFzhAJ8QkH/1AdXblKL65M
+ Y1Zk1bYKnkAb4a98LxCPm/pJBilvci6boefwlBDZ2NZuuYWYgyrehMB5H+q+Kq4P0IBbTqTa
+ jTPAANn62A6jwJ0FnCn6YaM9TZQjM1F7LoDX3v+oAkaoXuq0dQ4hnxQNu792bi6QyVdZUvKc
+ macVFVgfK9n04mL7RzjO3f+X4midKt/s+G+IPr4DGlrq+WH27eDbpUR3aYRk8EgbgGKvQFdD
+ CEBFJi+5ZKOArmJVBSk21RHDpqyz6Vit3rjep7c1SN8s7NhVi9cjkKmMDM7KYhXkWc10lKx2
+ RTkFI30rkDm4U+JpdAd2+tP3tjGf9AyGGinpzE2XY1K5AQ0EVI67igEIAKiSyd0nECrgz+H5
+ PcFDGYQpGDMTl8MOPCKw/F3diXPuj2eql4xSbAdbUCJzk2ETif5s3twT2ER8cUTEVOaCEUY3
+ eOiaFgQ+nGLx4BXqqGewikPJCe+UBjFnH1m2/IFn4T9jPZkV8xlkKmDUqMK5EV9n3eQLkn5g
+ lco+FepTtmbkSCCjd91EfThVbNYpVQ5ZjdBCXN66CKyJDMJ85HVr5rmXG/nqriTh6cv1l1Js
+ T7AFvvPjUPknS6d+BETMhTkbGzoyS+sywEsQAgA+BMCxBH4LvUmHYhpS+W6CiZ3ZMxjO8Hgc
+ ++w1mLeRUvda3i4/U8wDT3SWuHcB3DWlcppECLkAEQEAAYkBHwQYAQIACQUCVI67igIbDAAK
+ CRBxXD01xc4QCZ4dB/0QrnEasxjM0PGeXK5hcZMT9Eo998alUfn5XU0RQDYdwp6/kMEXMdmT
+ oH0F0xB3SQ8WVSXA9rrc4EBvZruWQ+5/zjVrhhfUAx12CzL4oQ9Ro2k45daYaonKTANYG22y
+ //x8dLe2Fv1By4SKGhmzwH87uXxbTJAUxiWIi1np0z3/RDnoVyfmfbbL1DY7zf2hYXLLzsJR
+ mSsED/1nlJ9Oq5fALdNEPgDyPUerqHxcmIub+pF0AzJoYHK5punqpqfGmqPbjxrJLPJfHVKy
+ goMj5DlBMoYqEgpbwdUYkH6QdizJJCur4icy8GUNbisFYABeoJ91pnD4IGei3MTdvINSZI5e
+Message-ID: <2cf646a5-3853-b07d-9b02-c0e5dbb9a91d@acm.org>
+Date:   Tue, 22 Oct 2019 19:30:24 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9418 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=950
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910230020
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9418 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910230020
+In-Reply-To: <yq1tv80dxnf.fsf@oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+On 2019-10-22 19:05, Martin K. Petersen wrote:
+> 
+> Bart?
+> 
+>> This is a semi-automatic email about new static checker warnings.
+>>
+>> The patch 5cadafb236df: "target/cxgbit: Fix endianness annotations"
+>> from Jan 13, 2017, leads to the following Smatch complaint:
+>>
+>>     drivers/target/iscsi/cxgbit/cxgbit_cm.c:1836 cxgbit_fw4_ack()
+>>     warn: variable dereferenced before check 'p' (see line 1834)
+>>
 
->> This patchset includes some minor fixes for parsing iSCSI CHAP_A and
->> SendTargets fields. Patch 1/3 was already submitted and reviewed by
->> Lee.
+Hi Martin,
 
-> Reviewed-by: Mike Christie <mchristi@redhat.com>
+Thanks for the reminder - Dan's email had escaped from my attention. I
+will submit a patch.
 
-Applied to 5.5/scsi-queue, thanks!
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Bart.
