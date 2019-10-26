@@ -2,85 +2,271 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D98EE466E
-	for <lists+target-devel@lfdr.de>; Fri, 25 Oct 2019 10:58:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4069AE57F8
+	for <lists+target-devel@lfdr.de>; Sat, 26 Oct 2019 04:04:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406288AbfJYI6J (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 25 Oct 2019 04:58:09 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:25874 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2404657AbfJYI6J (ORCPT
+        id S1725954AbfJZCEP (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 25 Oct 2019 22:04:15 -0400
+Received: from mail-wm1-f45.google.com ([209.85.128.45]:39799 "EHLO
+        mail-wm1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726032AbfJZCEO (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 25 Oct 2019 04:58:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1571993888;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=jsZVO3+pX6zr/sTcOfDNHnaIUrnWuSFIvYurbXLUiJA=;
-        b=Hpigz4X9pYm09rBli7eZWn0kFX6AutWzEiJgf57lxmRPIb4sEJxqyVlScjqBpDnZndNdhr
-        NFK1WZidEBL7+DWathYxfV+Kin+37V4yJU3lTHhC4au5uY0UiJrX1pSqlwFIqTVeZjJ7lh
-        S22D2ED4/Eb5O0pGpx62cqObsHfvXpg=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-169-Ql0bmPTnN2erxjlC_W3NyQ-1; Fri, 25 Oct 2019 04:58:05 -0400
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 30703800D41;
-        Fri, 25 Oct 2019 08:58:04 +0000 (UTC)
-Received: from [10.40.204.165] (ovpn-204-165.brq.redhat.com [10.40.204.165])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 537DD1F3;
-        Fri, 25 Oct 2019 08:58:02 +0000 (UTC)
-Subject: Re: [PATCH V2 0/3] iscsi: chap: introduce support for SHA1, SHA256
- and SHA3-256
-To:     "Martin K. Petersen" <martin.petersen@oracle.com>
-References: <20191017131037.9903-1-mlombard@redhat.com>
- <yq1k18td6aq.fsf@oracle.com>
-Cc:     cleech@redhat.com, mchristi@redhat.com,
-        target-devel@vger.kernel.org, hch@infradead.org
-From:   Maurizio Lombardi <mlombard@redhat.com>
-Message-ID: <4a399a7c-e776-7844-1c30-ca41f61ddc3f@redhat.com>
-Date:   Fri, 25 Oct 2019 10:58:00 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.0
+        Fri, 25 Oct 2019 22:04:14 -0400
+Received: by mail-wm1-f45.google.com with SMTP id r141so3799796wme.4
+        for <target-devel@vger.kernel.org>; Fri, 25 Oct 2019 19:04:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=MeIHFdaBu0T6yK2+iHV6kkaUrpqcm6MmB5JiQgz4jSc=;
+        b=G+2+72c+hPbVE20k/7OUUB877IyZVb5w9HMaP/5ZEOhSrhnXXG6vijMgSyD7bW7//6
+         PqYiEMgQARZFb62sByjwwYqIVrCdJUt1eqMH+ssmrc6qHqrKuhPzi22rY1Z2sUqEvQuE
+         5JgFxT9ajYASa7q3NM7Z6KqSwvgc8n25a6bWxJeJhPyg2RtdX11K0+en2O7q4godBm0g
+         GIPsxw+BwwMuGOVYgNDLTLdCjUglB221DUw+cCh90ZcITOb5nKFSr8sC2jDCCcBaLE+7
+         NTo2ZvExqiA9HK571DuVqJL7ct5Z8YhHfDhPsk2oZSXa4eOrCDMtPi6kolRx3fAMjjsS
+         wGAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=MeIHFdaBu0T6yK2+iHV6kkaUrpqcm6MmB5JiQgz4jSc=;
+        b=DH91b3jSE9q8GtqAhT31JKYi3zG3LgzbT4HZzM1j1toFTtkPAEDaaKeAlybuDQqBNi
+         wOkxK7oSUvIVpx2D8xXeQq9qwynh6jaey6V0vjXFYhHlut/TfZwKKECasQbCENlzPGfQ
+         ZZo1WjjlVUIUa+JouCG+kHgb0k5r2bibA6iamgYDAbgAy20z0RU47Bl5njzHZe5iU379
+         zxxzY+vx7xdllshaTOgSynsQbmJH9+BWlE12VvBWgfqqwxCQi+wRgLoNaMkG9+R7r8Cg
+         jrEtuW7kFeCiW4VR+43v/RwMdHxaFID4aXgvaqglw0sJ79mlZqSwGYi79v0TAObJYwaa
+         Q1aw==
+X-Gm-Message-State: APjAAAXMtq9J+Xawfm8aY6F+14HnAB73FPmHsVGA8SRjgNJb3MK4Jowi
+        Z/+frhSYQtCdluSZakOC0Pr8Z2s8++Q9bs3jEVrYkJhX
+X-Google-Smtp-Source: APXvYqwKqnO1ahCjSbuRJho8gh0KYrJJ5n0GVVtRB3NpMyUlmF0egso1uGAxjHmfGkngpedloIG5g2H6QwrZt+eJ+Bk=
+X-Received: by 2002:a05:600c:21c4:: with SMTP id x4mr5652845wmj.172.1572055450744;
+ Fri, 25 Oct 2019 19:04:10 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <yq1k18td6aq.fsf@oracle.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-MC-Unique: Ql0bmPTnN2erxjlC_W3NyQ-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=ISO-8859-2
-Content-Transfer-Encoding: quoted-printable
+From:   Thomas <wolverine6218@gmail.com>
+Date:   Fri, 25 Oct 2019 19:03:43 -0700
+Message-ID: <CAHTmSeTfOjVDMMtG6mVPKJyRWeMgvnCowq5Uyze=vMzPiQ4S5Q@mail.gmail.com>
+Subject: Possible LIO crash under heavy ESXi 6.7U3 load with iSCSI
+To:     target-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hello,
+Hi All,
 
-Dne 25.10.2019 v 02:20 Martin K. Petersen napsal(a):
->=20
-> Hi Maurizio,
->=20
->> iSCSI with the Challenge-Handshake Authentication Protocol is not FIPS
->> compliant.  This is due to the fact that CHAP currently uses MD5 as
->> the only supported digest algorithm and MD5 is not allowed by FIPS.
->>
->> When FIPS mode is enabled on the target server, the CHAP
->> authentication won't work because the target driver will be prevented
->> from using the MD5 module.
->>
->> Given that CHAP is agnostic regarding the algorithm it uses, this
->> patchset introduce support for three new alternatives: SHA1, SHA256
->> and SHA3-256.
->=20
-> Can you please submit these on top of 5.5/scsi-queue which has your
-> string parsing fixes in place?
->=20
+First post so thank you for welcoming me to the LIO community.
 
-I will rebase on top of 5.5/scsi-queue and send a V3.
+My test environment consists of an Ubuntu 19.04 system 100Gb Mellanox
+NICs and with 8 SSDs using ZoL 0.8.2. For LIO, I've included all of
+the fixes from linux-stable 5.0.x, plus selected patches from 5.2.x
+(on top of what Ubuntu 19.04 ships).
 
-Thanks,
-Maurizio
+The specific patches from 5.2.x are:
 
+    scsi: target/iblock: Fix overrun in WRITE SAME emulation
+        5676234f20fef02f6ca9bd66c63a8860fce62645
+
+    scsi: target/iscsi: Make sure PDU processing continues if parsing
+a command fails
+        4b3766ec0e1840f45bc9238e7e749922bdcb7016
+
+    scsi: target/iscsi: Detect conn_cmd_list corruption early
+        b0055acaedf56a2717a6e2a4b700f1959a1b60df
+
+    scsi: target/core: Fix a race condition in the LUN lookup code
+        63f7479439c95bcd49b7dd4af809862c316c71a3
+
+    scsi: target: alua: fix the tg_pt_gps_count
+        82129697df9d90afd22736acd89d24f98bde2522
+
+I create an iSCSI target using a ZVOL and provide access to 8 ESXi
+nodes (6.7 U3) using iSCSI over 100GbE. Each ESXi host has 1 VM on it
+(Ubuntu 19.04, installed on local SSD storage on the host, not iSCSI).
+Each VM also has a dedicated 1000 GB VMDK stored on the LIO iSCSI
+target. A number of VMware specific optimizations are configured in
+VMware, including:
+
+- Configure all storage device multipathing as Round Robin
+- For iSCSI Initiator, change LoginTimeout (in Advanced Settings) from
+5 to 30 (seconds)
+- Disable OnRetryErrors
+- Disallows systems to delay acknowledgment of received data packets.
+- Increase the iSCSI/MaxIOSize from 128 KB to 512 KB
+- Decrease Disk/DiskMaxIOSize from 32767 to 4096 in order to avoid
+Windows EFI boot issues
+
+On each VM, I kick off fio to run a sequence of 4K and 16K random
+writes with fairly high thread count. After about an hour, LIO will
+crash (from what I can tell). Snippet is below. Can you please share
+your thoughts on this issue? Thank you so much in advance!
+
+2019-10-24-10:09:41 hwub1904 kernel: [ 6852.321773] ABORT_TASK: Found
+referenced iSCSI task_tag: 4314390
+2019-10-24-10:09:41 hwub1904 kernel: [ 6852.321776] ABORT_TASK:
+Sending TMR_TASK_DOES_NOT_EXIST for ref_tag: 4314390
+2019-10-24-10:09:42 hwub1904 kernel: [ 6853.319473] ABORT_TASK: Found
+referenced iSCSI task_tag: 4314414
+2019-10-24-10:09:45 hwub1904 kernel: [ 6856.243200] ABORT_TASK: Found
+referenced iSCSI task_tag: 4273070
+2019-10-24-10:09:45 hwub1904 kernel: [ 6856.299526] ABORT_TASK:
+Sending TMR_FUNCTION_COMPLETE for ref_tag: 4273070
+2019-10-24-10:09:45 hwub1904 kernel: [ 6856.304012] ABORT_TASK: Found
+referenced iSCSI task_tag: 4273071
+2019-10-24-10:09:46 hwub1904 kernel: [ 6856.901479] ABORT_TASK:
+Sending TMR_FUNCTION_COMPLETE for ref_tag: 4273071
+2019-10-24-10:09:46 hwub1904 kernel: [ 6856.901609] ABORT_TASK: Found
+referenced iSCSI task_tag: 4273072
+2019-10-24-10:09:46 hwub1904 kernel: [ 6857.399495] ABORT_TASK:
+Sending TMR_FUNCTION_COMPLETE for ref_tag: 4273072
+2019-10-24-10:09:46 hwub1904 kernel: [ 6857.399625] ABORT_TASK: Found
+referenced iSCSI task_tag: 4273073
+2019-10-24-10:09:46 hwub1904 kernel: [ 6857.699773] ABORT_TASK:
+Sending TMR_FUNCTION_COMPLETE for ref_tag: 4273073
+2019-10-24-10:09:46 hwub1904 kernel: [ 6857.699902] ABORT_TASK: Found
+referenced iSCSI task_tag: 4273074
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.197744] ABORT_TASK: Found
+referenced iSCSI task_tag: 4386793
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.302888] ABORT_TASK: Found
+referenced iSCSI task_tag: 4544843
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.305024] ABORT_TASK:
+Sending TMR_FUNCTION_COMPLETE for ref_tag: 4386793
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.305365] ABORT_TASK: Found
+referenced iSCSI task_tag: 4386926
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.305367] ABORT_TASK:
+Sending TMR_TASK_DOES_NOT_EXIST for ref_tag: 4386926
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.307177] ABORT_TASK: Found
+referenced iSCSI task_tag: 4320448
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.307179] ABORT_TASK:
+Sending TMR_TASK_DOES_NOT_EXIST for ref_tag: 4320448
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.307934] ABORT_TASK: Found
+referenced iSCSI task_tag: 4320449
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.307936] ABORT_TASK:
+Sending TMR_TASK_DOES_NOT_EXIST for ref_tag: 4320449
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.308008] ABORT_TASK: Found
+referenced iSCSI task_tag: 4320450
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.308009] ABORT_TASK:
+Sending TMR_TASK_DOES_NOT_EXIST for ref_tag: 4320450
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.308061] ABORT_TASK: Found
+referenced iSCSI task_tag: 4320451
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.308061] ABORT_TASK:
+Sending TMR_TASK_DOES_NOT_EXIST for ref_tag: 4320451
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.308119] ABORT_TASK: Found
+referenced iSCSI task_tag: 4320452
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.308120] ABORT_TASK:
+Sending TMR_TASK_DOES_NOT_EXIST for ref_tag: 4320452
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.308194] ABORT_TASK: Found
+referenced iSCSI task_tag: 4320453
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.313034] BUG: unable to
+handle kernel NULL pointer dereference at 0000000000000008
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.320990] #PF error: [normal
+kernel read fault]
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.322038] ABORT_TASK: Found
+referenced iSCSI task_tag: 4386794
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.325767] PGD 0 P4D 0
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.331883] ABORT_TASK:
+Sending TMR_TASK_DOES_NOT_EXIST for ref_tag: 4386794
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.334441] Oops: 0000 [#1] SMP PTI
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.334444] CPU: 5 PID: 5641
+Comm: target_completi Tainted: P           O      5.0.0-25-7-nd
+#21-ND.30
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.353164] ABORT_TASK: Found
+referenced iSCSI task_tag: 4386795
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.354591] Hardware name: HW2221
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.360722] ABORT_TASK:
+Sending TMR_TASK_DOES_NOT_EXIST for ref_tag: 4386795
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.368471] Workqueue:
+   (null) (target_completion)
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.375828] ABORT_TASK: Found
+referenced iSCSI task_tag: 4386796
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.381375] RIP:
+0010:process_one_work+0x2e/0x410
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.381377] Code: 00 55 48 89
+e5 41 57 41 56 41 55 41 54 53 48 83 ec 08 48 8b 06 48 8b 5f 40 49 89
+c4 45 30 e4 a8 04 b8 00 00 00 00 4c 0f 44 e0 <49> 8b 44 24 08 44 8b a8
+00 01 00 00 41 83 e5 20 44 89 6d d4 f6 43
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.387544] ABORT_TASK:
+Sending TMR_TASK_DOES_NOT_EXIST for ref_tag: 4386796
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.392247] RSP:
+0018:ffffb4d28f89be70 EFLAGS: 00010046
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.392249] RAX:
+0000000000000000 RBX: ffff89c140b62700 RCX: ffffd4a280752560
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.392250] RDX:
+ffffd4a280752560 RSI: ffff89c140b62718 RDI: ffff89f1389835c0
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.392251] RBP:
+ffffb4d28f89bea0 R08: ffff89f08c379e00 R09: ffff89c131195a98
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.392253] R10:
+0000000000000069 R11: 0000000000000001 R12: 0000000000000000
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.422652] ABORT_TASK: Found
+referenced iSCSI task_tag: 4386797
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.423742] R13:
+ffff89c140b62720 R14: ffffd4a280752580 R15: ffff89f1389835e8
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.430996] ABORT_TASK:
+Sending TMR_TASK_DOES_NOT_EXIST for ref_tag: 4386797
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.438238] FS:
+0000000000000000(0000) GS:ffff89c140b40000(0000)
+knlGS:0000000000000000
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.438239] CS:  0010 DS: 0000
+ES: 0000 CR0: 0000000080050033
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.438240] CR2:
+00000000000000b0 CR3: 0000002ec533a003 CR4: 00000000007606e0
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.445663] ABORT_TASK: Found
+referenced iSCSI task_tag: 4386798
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.452722] DR0:
+0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.458927] ABORT_TASK:
+Sending TMR_TASK_DOES_NOT_EXIST for ref_tag: 4386798
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.466058] DR3:
+0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.466059] PKRU: 55555554
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.466059] Call Trace:
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.466067]  rescuer_thread+0x2d5/0x3a0
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.473372] ABORT_TASK: Found
+referenced iSCSI task_tag: 4386799
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.481428]  kthread+0x120/0x140
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.487361] ABORT_TASK:
+Sending TMR_TASK_DOES_NOT_EXIST for ref_tag: 4386799
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.494493]  ? worker_thread+0x400/0x400
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.494495]  ?
+__kthread_parkme+0x70/0x70
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.501017] ABORT_TASK: Found
+referenced iSCSI task_tag: 4386800
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.507835]  ret_from_fork+0x35/0x40
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.512970] ABORT_TASK:
+Sending TMR_FUNCTION_COMPLETE for ref_tag: 4314414
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.513096] ABORT_TASK: Found
+referenced iSCSI task_tag: 4314415
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.514997] ABORT_TASK:
+Sending TMR_TASK_DOES_NOT_EXIST for ref_tag: 4386800
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.522235] Modules linked in:
+nvmet(O) target_core_user target_core_pscsi target_core_file
+target_core_iblock iscsi_target_mod mst_pciconf(O) tcm_qla2xxx
+target_core_mod ntb_netdev ntb_transport rdma_ucm(O) ib_ucm(O)
+ib_ipoib(O) ib_umad(O) mlx4_en(O) mlx4_ib(O) mlx4_core(O) eraraid(O)
+nls_iso8859_1 sch_fq_codel ib_iser(O) intel_rapl rdma_cm(O) iw_cm(O)
+skx_edac nfit ib_cm(O) iscsi_tcp libiscsi_tcp x86_pkg_temp_thermal
+libiscsi intel_powerclamp scsi_transport_iscsi coretemp kvm_intel kvm
+irqbypass ipmi_ssif crct10dif_pclmul crc32_pclmul ghash_clmulni_intel
+aesni_intel aes_x86_64 crypto_simd cryptd glue_helper intel_cstate
+intel_rapl_perf zfs(PO) zunicode(PO) zavl(PO) zlua(PO) icp(PO) joydev
+input_leds mei_me mei ioatdma dca wmi ipmi_si ipmi_devintf
+ipmi_msghandler acpi_power_meter acpi_pad zcommon(PO) znvpair(PO)
+spl(O) qat_api(O) intel_qat(O) uio authenc bcache crc64 bonding 8021q
+garp mrp stp llc xfs nfsd auth_rpcgss nfs_acl lockd grace sunrpc
+ip_tables x_tables autofs4 btrfs
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.522295]  zstd_compress
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.525366] ABORT_TASK: Found
+referenced iSCSI task_tag: 4386801
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.527476]  raid10 raid456
+async_raid6_recov async_memcpy async_pq async_xor async_tx xor
+raid6_pq libcrc32c raid1 raid0 multipath linear mlx5_ib(O) hid_generic
+usbhid hid ib_uverbs(O) ib_core(O) ntb_hw_switchtec(O) ntb qla2xxx
+mlx5_core(O) pci_stub nvme_fc(O) devlink nvme_fabrics(O)
+scsi_transport_fc cls(O) nvme(O) i40e nvme_core(O) ahci i2c_i801
+lpc_ich mlx_compat(O) libahci [last unloaded: mst_pci]
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.534787] ABORT_TASK:
+Sending TMR_TASK_DOES_NOT_EXIST for ref_tag: 4386801
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.544082] CR2: 0000000000000008
+2019-10-24-10:09:48 hwub1904 kernel: [ 6859.544084] ---[ end trace
+3bad5cf525ebcd7c ]---
+
+
+Thank you for your comments.
