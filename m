@@ -2,182 +2,103 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E7A35E7197
-	for <lists+target-devel@lfdr.de>; Mon, 28 Oct 2019 13:38:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BA4DEA01C
+	for <lists+target-devel@lfdr.de>; Wed, 30 Oct 2019 16:57:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389141AbfJ1Mil (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 28 Oct 2019 08:38:41 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:41201 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727024AbfJ1Mil (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Mon, 28 Oct 2019 08:38:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1572266319;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=uTXmcDggs9arSmYol0p3kqWQyviimG5Qsl31yFm8+WA=;
-        b=XLHni5J7FFXj//65J+XGaRQXDhaJeSLRot4tNfHYS9+66UJSMcf1wiA6OQ2LOhOihnWpEF
-        T3qM3lKo/diAk4GBH3QG/TzS1hBHg+UemPBVXsueisOT9bQRHhw4DNAs3hLTiWxo2L3sQP
-        40rbVYiOPiNZXxXu3EFfn/gyuepiriA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-198-04R8wVCSPb6LUdIR-LVYHg-1; Mon, 28 Oct 2019 08:38:37 -0400
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1727502AbfJ3Pxh (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 30 Oct 2019 11:53:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54874 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728213AbfJ3Pxg (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Wed, 30 Oct 2019 11:53:36 -0400
+Received: from sasha-vm.mshome.net (100.50.158.77.rev.sfr.net [77.158.50.100])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7CBCF180491C;
-        Mon, 28 Oct 2019 12:38:36 +0000 (UTC)
-Received: from manaslu.redhat.com (ovpn-204-92.brq.redhat.com [10.40.204.92])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0F26D600C9;
-        Mon, 28 Oct 2019 12:38:33 +0000 (UTC)
-From:   Maurizio Lombardi <mlombard@redhat.com>
-To:     cleech@redhat.com
-Cc:     mchristi@redhat.com, target-devel@vger.kernel.org,
-        hch@infradead.org, martin.petersen@oracle.com
-Subject: [PATCH V3 3/3] target-iscsi: rename some variables to avoid confusion.
-Date:   Mon, 28 Oct 2019 13:38:22 +0100
-Message-Id: <20191028123822.5864-4-mlombard@redhat.com>
-In-Reply-To: <20191028123822.5864-1-mlombard@redhat.com>
-References: <20191028123822.5864-1-mlombard@redhat.com>
+        by mail.kernel.org (Postfix) with ESMTPSA id 860E4208E3;
+        Wed, 30 Oct 2019 15:53:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1572450815;
+        bh=WuQLmPEfBsjVnEpbu69Sp690ofNhB83WUOxpWR1JbBQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=kD3H+j8oZxE44EUXrQB3KJiNtoDjWL3mB9XH1x9Dvig5+mlr2L7WYOLZQRcZMSE9R
+         dDwcxHNeMXsg9KpwobX0O3W/1jMb90R6t2QI4Zu7EGKILQmF9a45/yG1idqzThHSp7
+         VDhvKrkzpq2h68tgpldVQialYtcNWGeiZPh0SO6M=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Hannes Reinecke <hare@suse.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.3 57/81] scsi: target: core: Do not overwrite CDB byte 1
+Date:   Wed, 30 Oct 2019 11:49:03 -0400
+Message-Id: <20191030154928.9432-57-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191030154928.9432-1-sashal@kernel.org>
+References: <20191030154928.9432-1-sashal@kernel.org>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-MC-Unique: 04R8wVCSPb6LUdIR-LVYHg-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-This patch renames some variables in chap_server_compute_hash()
-to avoid confusing the initiator's challenge with
-the target's challenge when the mutual chap authentication is used.
+From: Bodo Stroesser <bstroesser@ts.fujitsu.com>
 
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+[ Upstream commit 27e84243cb63601a10e366afe3e2d05bb03c1cb5 ]
+
+passthrough_parse_cdb() - used by TCMU and PSCSI - attepts to reset the LUN
+field of SCSI-2 CDBs (bits 5,6,7 of byte 1).  The current code is wrong as
+for newer commands not having the LUN field it overwrites relevant command
+bits (e.g. for SECURITY PROTOCOL IN / OUT). We think this code was
+unnecessary from the beginning or at least it is no longer useful. So we
+remove it entirely.
+
+Link: https://lore.kernel.org/r/12498eab-76fd-eaad-1316-c2827badb76a@ts.fujitsu.com
+Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Hannes Reinecke <hare@suse.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/iscsi/iscsi_target_auth.c | 43 ++++++++++++------------
- 1 file changed, 22 insertions(+), 21 deletions(-)
+ drivers/target/target_core_device.c | 21 ---------------------
+ 1 file changed, 21 deletions(-)
 
-diff --git a/drivers/target/iscsi/iscsi_target_auth.c b/drivers/target/iscs=
-i/iscsi_target_auth.c
-index f3973ab19da2..09c6bde0a978 100644
---- a/drivers/target/iscsi/iscsi_target_auth.c
-+++ b/drivers/target/iscsi/iscsi_target_auth.c
-@@ -215,8 +215,8 @@ static int chap_server_compute_hash(
- =09unsigned long id;
- =09unsigned char id_as_uchar;
- =09unsigned char type;
--=09unsigned char identifier[10], *challenge =3D NULL;
--=09unsigned char *challenge_binhex =3D NULL;
-+=09unsigned char identifier[10], *client_challenge =3D NULL;
-+=09unsigned char *client_challenge_binhex =3D NULL;
- =09unsigned char *digest =3D NULL;
- =09unsigned char *response =3D NULL;
- =09unsigned char *client_digest =3D NULL;
-@@ -226,7 +226,7 @@ static int chap_server_compute_hash(
- =09struct iscsi_chap *chap =3D conn->auth_protocol;
- =09struct crypto_shash *tfm =3D NULL;
- =09struct shash_desc *desc =3D NULL;
--=09int auth_ret =3D -1, ret, challenge_len;
-+=09int auth_ret =3D -1, ret, client_challenge_len;
-=20
- =09digest =3D kzalloc(chap->digest_size, GFP_KERNEL);
- =09if (!digest) {
-@@ -256,15 +256,15 @@ static int chap_server_compute_hash(
- =09memset(chap_n, 0, MAX_CHAP_N_SIZE);
- =09memset(chap_r, 0, MAX_RESPONSE_LENGTH);
-=20
--=09challenge =3D kzalloc(CHAP_CHALLENGE_STR_LEN, GFP_KERNEL);
--=09if (!challenge) {
-+=09client_challenge =3D kzalloc(CHAP_CHALLENGE_STR_LEN, GFP_KERNEL);
-+=09if (!client_challenge) {
- =09=09pr_err("Unable to allocate challenge buffer\n");
- =09=09goto out;
- =09}
-=20
--=09challenge_binhex =3D kzalloc(CHAP_CHALLENGE_STR_LEN, GFP_KERNEL);
--=09if (!challenge_binhex) {
--=09=09pr_err("Unable to allocate challenge_binhex buffer\n");
-+=09client_challenge_binhex =3D kzalloc(CHAP_CHALLENGE_STR_LEN, GFP_KERNEL)=
-;
-+=09if (!client_challenge_binhex) {
-+=09=09pr_err("Unable to allocate client_challenge_binhex buffer\n");
- =09=09goto out;
- =09}
- =09/*
-@@ -399,7 +399,7 @@ static int chap_server_compute_hash(
- =09 * Get CHAP_C.
- =09 */
- =09if (extract_param(nr_in_ptr, "CHAP_C", CHAP_CHALLENGE_STR_LEN,
--=09=09=09challenge, &type) < 0) {
-+=09=09=09client_challenge, &type) < 0) {
- =09=09pr_err("Could not find CHAP_C.\n");
- =09=09goto out;
- =09}
-@@ -408,28 +408,29 @@ static int chap_server_compute_hash(
- =09=09pr_err("Could not find CHAP_C.\n");
- =09=09goto out;
- =09}
--=09challenge_len =3D DIV_ROUND_UP(strlen(challenge), 2);
--=09if (!challenge_len) {
-+=09client_challenge_len =3D DIV_ROUND_UP(strlen(client_challenge), 2);
-+=09if (!client_challenge_len) {
- =09=09pr_err("Unable to convert incoming challenge\n");
- =09=09goto out;
- =09}
--=09if (challenge_len > 1024) {
-+=09if (client_challenge_len > 1024) {
- =09=09pr_err("CHAP_C exceeds maximum binary size of 1024 bytes\n");
- =09=09goto out;
- =09}
--=09if (hex2bin(challenge_binhex, challenge, challenge_len) < 0) {
-+=09if (hex2bin(client_challenge_binhex, client_challenge,
-+=09=09    client_challenge_len) < 0) {
- =09=09pr_err("Malformed CHAP_C\n");
- =09=09goto out;
- =09}
--=09pr_debug("[server] Got CHAP_C=3D%s\n", challenge);
-+=09pr_debug("[server] Got CHAP_C=3D%s\n", client_challenge);
- =09/*
- =09 * During mutual authentication, the CHAP_C generated by the
- =09 * initiator must not match the original CHAP_C generated by
- =09 * the target.
- =09 */
--=09if (challenge_len =3D=3D chap->challenge_len &&
--=09=09=09=09!memcmp(challenge_binhex, chap->challenge,
--=09=09=09=09challenge_len)) {
-+=09if (client_challenge_len =3D=3D chap->challenge_len &&
-+=09=09=09=09!memcmp(client_challenge_binhex,
-+=09=09=09=09chap->challenge, client_challenge_len)) {
- =09=09pr_err("initiator CHAP_C matches target CHAP_C, failing"
- =09=09       " login attempt\n");
- =09=09goto out;
-@@ -461,8 +462,8 @@ static int chap_server_compute_hash(
- =09/*
- =09 * Convert received challenge to binary hex.
- =09 */
--=09ret =3D crypto_shash_finup(desc, challenge_binhex, challenge_len,
--=09=09=09=09 digest);
-+=09ret =3D crypto_shash_finup(desc, client_challenge_binhex,
-+=09=09=09=09 client_challenge_len, digest);
- =09if (ret < 0) {
- =09=09pr_err("crypto_shash_finup() failed for ma challenge\n");
- =09=09goto out;
-@@ -487,8 +488,8 @@ static int chap_server_compute_hash(
- =09kzfree(desc);
- =09if (tfm)
- =09=09crypto_free_shash(tfm);
--=09kfree(challenge);
--=09kfree(challenge_binhex);
-+=09kfree(client_challenge);
-+=09kfree(client_challenge_binhex);
- =09kfree(digest);
- =09kfree(response);
- =09kfree(server_digest);
---=20
-Maurizio Lombardi
+diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
+index 04bf2acd3800d..2d19f0e332b01 100644
+--- a/drivers/target/target_core_device.c
++++ b/drivers/target/target_core_device.c
+@@ -1074,27 +1074,6 @@ passthrough_parse_cdb(struct se_cmd *cmd,
+ 	struct se_device *dev = cmd->se_dev;
+ 	unsigned int size;
+ 
+-	/*
+-	 * Clear a lun set in the cdb if the initiator talking to use spoke
+-	 * and old standards version, as we can't assume the underlying device
+-	 * won't choke up on it.
+-	 */
+-	switch (cdb[0]) {
+-	case READ_10: /* SBC - RDProtect */
+-	case READ_12: /* SBC - RDProtect */
+-	case READ_16: /* SBC - RDProtect */
+-	case SEND_DIAGNOSTIC: /* SPC - SELF-TEST Code */
+-	case VERIFY: /* SBC - VRProtect */
+-	case VERIFY_16: /* SBC - VRProtect */
+-	case WRITE_VERIFY: /* SBC - VRProtect */
+-	case WRITE_VERIFY_12: /* SBC - VRProtect */
+-	case MAINTENANCE_IN: /* SPC - Parameter Data Format for SA RTPG */
+-		break;
+-	default:
+-		cdb[1] &= 0x1f; /* clear logical unit number */
+-		break;
+-	}
+-
+ 	/*
+ 	 * For REPORT LUNS we always need to emulate the response, for everything
+ 	 * else, pass it up.
+-- 
+2.20.1
 
