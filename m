@@ -2,27 +2,27 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BA4DEA01C
-	for <lists+target-devel@lfdr.de>; Wed, 30 Oct 2019 16:57:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E186EA0A2
+	for <lists+target-devel@lfdr.de>; Wed, 30 Oct 2019 16:58:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727502AbfJ3Pxh (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 30 Oct 2019 11:53:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54874 "EHLO mail.kernel.org"
+        id S1728511AbfJ3P6T (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 30 Oct 2019 11:58:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60098 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728213AbfJ3Pxg (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Wed, 30 Oct 2019 11:53:36 -0400
+        id S1729274AbfJ3P6R (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Wed, 30 Oct 2019 11:58:17 -0400
 Received: from sasha-vm.mshome.net (100.50.158.77.rev.sfr.net [77.158.50.100])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 860E4208E3;
-        Wed, 30 Oct 2019 15:53:33 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CF2C121906;
+        Wed, 30 Oct 2019 15:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572450815;
-        bh=WuQLmPEfBsjVnEpbu69Sp690ofNhB83WUOxpWR1JbBQ=;
+        s=default; t=1572451096;
+        bh=JFFwixxiEsokXIStsm47zGSngsWatKm5/5jagaqWF60=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kD3H+j8oZxE44EUXrQB3KJiNtoDjWL3mB9XH1x9Dvig5+mlr2L7WYOLZQRcZMSE9R
-         dDwcxHNeMXsg9KpwobX0O3W/1jMb90R6t2QI4Zu7EGKILQmF9a45/yG1idqzThHSp7
-         VDhvKrkzpq2h68tgpldVQialYtcNWGeiZPh0SO6M=
+        b=S+i5PRvduKwHIdaKDkm80+MVQHY1esYaMgOgMlCn/56ZP+dP3OR602bXH7xfe3vXe
+         z5N20XTAJS+/2IL73o0vxJO6Tho4hlv6xDKpdxCgDj7n9fqTlsievF/wzP7/Tvk9QH
+         sHw3FB6meWwVil+yIIYCUgZhLRXXpMc0Q1MT8zhw=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
@@ -31,12 +31,12 @@ Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
         target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.3 57/81] scsi: target: core: Do not overwrite CDB byte 1
-Date:   Wed, 30 Oct 2019 11:49:03 -0400
-Message-Id: <20191030154928.9432-57-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 10/13] scsi: target: core: Do not overwrite CDB byte 1
+Date:   Wed, 30 Oct 2019 11:57:48 -0400
+Message-Id: <20191030155751.10960-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191030154928.9432-1-sashal@kernel.org>
-References: <20191030154928.9432-1-sashal@kernel.org>
+In-Reply-To: <20191030155751.10960-1-sashal@kernel.org>
+References: <20191030155751.10960-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -68,12 +68,12 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 21 deletions(-)
 
 diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
-index 04bf2acd3800d..2d19f0e332b01 100644
+index bb6a6c35324ae..4198ed4ac6073 100644
 --- a/drivers/target/target_core_device.c
 +++ b/drivers/target/target_core_device.c
-@@ -1074,27 +1074,6 @@ passthrough_parse_cdb(struct se_cmd *cmd,
- 	struct se_device *dev = cmd->se_dev;
- 	unsigned int size;
+@@ -1056,27 +1056,6 @@ passthrough_parse_cdb(struct se_cmd *cmd,
+ {
+ 	unsigned char *cdb = cmd->t_task_cdb;
  
 -	/*
 -	 * Clear a lun set in the cdb if the initiator talking to use spoke
