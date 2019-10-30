@@ -2,27 +2,27 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58606EA144
-	for <lists+target-devel@lfdr.de>; Wed, 30 Oct 2019 17:10:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06B2DEA13A
+	for <lists+target-devel@lfdr.de>; Wed, 30 Oct 2019 17:10:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727996AbfJ3QAe (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 30 Oct 2019 12:00:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56910 "EHLO mail.kernel.org"
+        id S1727813AbfJ3P7q (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 30 Oct 2019 11:59:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58252 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728563AbfJ3PzU (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Wed, 30 Oct 2019 11:55:20 -0400
+        id S1728169AbfJ3P4i (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Wed, 30 Oct 2019 11:56:38 -0400
 Received: from sasha-vm.mshome.net (100.50.158.77.rev.sfr.net [77.158.50.100])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 55CB0208C0;
-        Wed, 30 Oct 2019 15:55:18 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2623920874;
+        Wed, 30 Oct 2019 15:56:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572450920;
-        bh=3zR5LJ09aUw6Xp7NTfJ2jsB8JLyk4o3y5+Lz4rXqc+k=;
+        s=default; t=1572450998;
+        bh=9FLjLiH7v5XHJHv+NXNnLPQ7INHN9b6L2M7gM2XWXIM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MR5eks3tImq8P/XQStCM57kVKLR4XXtoy/eXMLVpdaz+96hI1D+hsswdvHlMkScKi
-         WGLPHhmhWqoWN2QPaEih3zq6QZxu8PO7T6BkZAppNNx7PSQ+AflWCptSiFTPSwbQ4n
-         bDXYdH93y+FeAwjj27UtBQIOj05c6Jl+tAbKD/WI=
+        b=SEAZ94SCpsLtNodicIjDGv+JFiIA1aQoHoCWYC6u89T5tcO9Aq+bVgNpym8rnVA+h
+         gcF0HhHBDk6AIHDV0OgUQvhKwziBAd3B1lWESoixLkorLiYwqeRJuKYdgBBiD/TDTD
+         4Gtb2rysOtHXZo3eq9RnUhrJNCrx7cc+7y46HyWo=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
@@ -31,12 +31,12 @@ Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
         target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 26/38] scsi: target: core: Do not overwrite CDB byte 1
-Date:   Wed, 30 Oct 2019 11:53:54 -0400
-Message-Id: <20191030155406.10109-26-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 17/24] scsi: target: core: Do not overwrite CDB byte 1
+Date:   Wed, 30 Oct 2019 11:55:48 -0400
+Message-Id: <20191030155555.10494-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191030155406.10109-1-sashal@kernel.org>
-References: <20191030155406.10109-1-sashal@kernel.org>
+In-Reply-To: <20191030155555.10494-1-sashal@kernel.org>
+References: <20191030155555.10494-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -68,10 +68,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 21 deletions(-)
 
 diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
-index 47b5ef153135c..e9ff2a7c0c0e6 100644
+index 84742125f7730..92b52d2314b53 100644
 --- a/drivers/target/target_core_device.c
 +++ b/drivers/target/target_core_device.c
-@@ -1128,27 +1128,6 @@ passthrough_parse_cdb(struct se_cmd *cmd,
+@@ -1151,27 +1151,6 @@ passthrough_parse_cdb(struct se_cmd *cmd,
  	struct se_device *dev = cmd->se_dev;
  	unsigned int size;
  
