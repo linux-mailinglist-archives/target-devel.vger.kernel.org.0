@@ -2,97 +2,76 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C6EEEC2BE
-	for <lists+target-devel@lfdr.de>; Fri,  1 Nov 2019 13:35:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CFF62EC6D5
+	for <lists+target-devel@lfdr.de>; Fri,  1 Nov 2019 17:32:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726982AbfKAMfN (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 1 Nov 2019 08:35:13 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:38837 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726229AbfKAMfN (ORCPT
+        id S1726701AbfKAQcL (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 1 Nov 2019 12:32:11 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:33426 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727737AbfKAQcK (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 1 Nov 2019 08:35:13 -0400
-Received: by mail-pf1-f194.google.com with SMTP id c13so6984491pfp.5;
-        Fri, 01 Nov 2019 05:35:11 -0700 (PDT)
+        Fri, 1 Nov 2019 12:32:10 -0400
+Received: by mail-ed1-f67.google.com with SMTP id c4so8000486edl.0
+        for <target-devel@vger.kernel.org>; Fri, 01 Nov 2019 09:32:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=JrQpRLrI0AXjDn7h5/imwTuVbTmOR/egWWcExOPFss8=;
-        b=c6DPO1+dJWaR5QwK5nITdiQa2VSCzKU0UJyzM52uZfJImnUT8znF/v1Z7fehu7ljzX
-         O6Ip6olUXWGHvKGJubiCywGulBq2cwaG1/GdUjlFMUYp1dVqrvI+47su7liqpbLo9Y/c
-         kVhIIexHaGvj7SIEEho4OEFnFBe59YCzC7m7g9SPFUwDTYM+ngM1dkB5goMnyD3/jDue
-         GWGh9bmQtv0XtdEScK9NTd6Ja5sXhF5Pz/s2NIfnr9la7/UAPlWpEXhotxVblLNrT9Sh
-         8xMGgDKVtRPU096775ABViaSa9SQOhh1AmN+ZbPpKFSkHW4ey8cSiaJscwcuMPFfn+8o
-         LU1Q==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=latS+LOZUfL1yiiuFRKw1aKCiSm5Bt/9vWdEAhPRwuM=;
+        b=sCaw+CY/lfkqL7Gb+Ib6WDJClsvhMf+3qrxCnJ920wI47Dvu/FMBjwPUZEd0tlqmS8
+         xSpfgKPJ+lXUhQ7hwIeKw+uVkyQ9k3Qr/AQPh/KfsowE9MWHKtwSBv2i0viqWP9TWtZ0
+         1+0N/MWvWaQMiKDngM1L5JRDrX5IW8cdknaEQOieCEvr75jsZk7FeGIYd6RAZG+sRJWK
+         pdqAf+LIovZ4YFgibX/tYnqWK9UHvkqGrle0at+KKTrZe1F+4MfycmAEWRwTaLAom6bb
+         WNVL1f47PIoay39sVa3iQ0WzcgS+KS2ogpxpUOidJlZrkY+l+yiZfzzQiUu2ta9zrCc1
+         c9Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=JrQpRLrI0AXjDn7h5/imwTuVbTmOR/egWWcExOPFss8=;
-        b=TNSPv/h2NAeOirwv6Y/441UsadGIGRp0ZcCBawzxoe7MjM/cGfaVTBhANglxMZxw7X
-         z1ztZ43QkELTsmPDpHOmBDCMsmCO4RiNehViBwh3Uz8s2n0rPhqTVhuN4flez5c57dyj
-         1pk9hBPAwS+6ykuUvqbAKjiC4+GMix2jSFC3q2TUc7VXyAakr25WJhHXlEtbEV2zwQBZ
-         3KJdRVQyDTLnYkdtD0CUpTFrmzuCiteMgqorcbb3vmARxD1E/AXjvpACU56RWPZ37zm8
-         sJQFsZ4BOMfYrypg0bUHYBeVTbenvziz5GvfY7XV2eizPsUR6mjuiT821C65BP9TqPfu
-         k+MQ==
-X-Gm-Message-State: APjAAAWOQexuLPBlG8H/pC5PiDVzbvEpsMZVXWx6IKt6Zy3wARfDHKB6
-        0K+J9DHXlm7EKpFSHKBDZBM=
-X-Google-Smtp-Source: APXvYqwchZ6piwRCYF/jZ4yGwFTa6igUGC6aCHKEwPMGqPkQaHu6ZhJXRtktRNJlTRM0R8WwMaIlgA==
-X-Received: by 2002:a63:7247:: with SMTP id c7mr13095692pgn.311.1572611711190;
-        Fri, 01 Nov 2019 05:35:11 -0700 (PDT)
-Received: from saurav ([117.232.233.44])
-        by smtp.gmail.com with ESMTPSA id q23sm7703887pjd.2.2019.11.01.05.35.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Nov 2019 05:35:10 -0700 (PDT)
-Date:   Fri, 1 Nov 2019 18:05:03 +0530
-From:   Saurav Girepunje <saurav.girepunje@gmail.com>
-To:     mikecyr@linux.ibm.com, jejb@linux.ibm.com,
-        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     saurav.girepunje@hotmail.com
-Subject: [PATCH] scsi: ibmvscsi_tgt: Remove unneeded variable rc
-Message-ID: <20191101120407.GA9369@saurav>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=latS+LOZUfL1yiiuFRKw1aKCiSm5Bt/9vWdEAhPRwuM=;
+        b=L4qbSLMVSavfEFVOWnkONH3977860VaqCGor13UgbyCdBjd5MGOyqXOL1LUi8zZ61I
+         66jdf/v5eUmZKNUPCLLjERoFWg1Gayiviavigi6YMXbhutE/BJ6oGnp2ja7lUnBAuAWR
+         IJVCuFH5wg+xjYBuRWZL7QGq9rL+bWkQd4qnB8eu+txW31qSCptz3nJUVR8hjCHk+lNq
+         wPdTAUARikrFKJDgLsXWa5m2N9U+/AmoG9HCcNDJA6mpc0FizXgZhPq4U88/GXtb7Mh7
+         R3/JPseRmniT0moZyRHeOSqm+d/8PFIuoSYqp2D9G9mujWFjITDUzC02DUN6tB2U2a3k
+         j7ww==
+X-Gm-Message-State: APjAAAWW0gqyrhbzZlLTU9UPtt7NF0cuqRcxomyl+2feyOElkAFryzm5
+        zcK4SgqW714kFTX4dPyt9GeskAMVA/X9JewK460=
+X-Google-Smtp-Source: APXvYqzGPfmvNfdVSdHPKmmnQ1NtPf9kq47NKcNexcyxsKKYL0aAAV6+ncUt1jefMe8qONnm+HMEKlWZWp9sRSMSIl0=
+X-Received: by 2002:a17:906:c9d8:: with SMTP id hk24mr2883359ejb.159.1572625928946;
+ Fri, 01 Nov 2019 09:32:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Received: by 2002:a05:6402:1118:0:0:0:0 with HTTP; Fri, 1 Nov 2019 09:32:08
+ -0700 (PDT)
+Reply-To: moneygram.1820@outlook.fr
+From:   "Mary Coster, I.M.F director-Benin" <eco.bank1204@gmail.com>
+Date:   Fri, 1 Nov 2019 17:32:08 +0100
+Message-ID: <CAOE+jAAMvXZ-cm7SLrn1SeQAzjG1KK_BAgzC3Cp9xUNt_nCyKA@mail.gmail.com>
+Subject: Contact Money Gram international service-Benin to receive your
+ payment funds US$2.500,000 Million
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Variable rc is not modified in ibmvscsis_srp_i_logout function.
-So remove unneeded variable rc.
-
-Issue found using coccicheck tool.
-
-Signed-off-by: Saurav Girepunje <saurav.girepunje@gmail.com>
----
- drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c b/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c
-index 7f9535392a93..09a4dbd0a9e5 100644
---- a/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c
-+++ b/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c
-@@ -2353,7 +2353,6 @@ static long ibmvscsis_srp_i_logout(struct scsi_info *vscsi,
- {
- 	struct iu_entry *iue = cmd->iue;
- 	struct srp_i_logout *log_out = &vio_iu(iue)->srp.i_logout;
--	long rc = ADAPT_SUCCESS;
- 
- 	if ((vscsi->debit > 0) || !list_empty(&vscsi->schedule_q) ||
- 	    !list_empty(&vscsi->waiting_rsp)) {
-@@ -2369,7 +2368,7 @@ static long ibmvscsis_srp_i_logout(struct scsi_info *vscsi,
- 		ibmvscsis_post_disconnect(vscsi, WAIT_IDLE, 0);
- 	}
- 
--	return rc;
-+	return ADAPT_SUCCESS;
- }
- 
- /* Called with intr lock held */
--- 
-2.20.1
-
+Attn Dear,Funds Beneficiary.
+Contact Money Gram international service-Benin to receive your payment
+funds US$2.500,000 Million approved this morning through the UN
+payment settlement organization.
+Contact Person, Mr. John Dave.
+Official Director.Money Gram-Benin
+Email: moneygram.1820@outlook.fr
+Telephone +229 62619517
+Once you get intouch with Mr. John Dave, Money Gram Director, send to
+him your address including your phone numbers. He will be sending the
+transfer to you  $5000.00 USD daily until you received your complete
+payment $2.5m
+from the office.
+Note,I have paid the whole service fees for you but only small money
+you been required to send to this office is $23.00 only via Money Gram
+transfer.
+God bless
+Mary Coster, I.M.F director-Benin
+m.coster@aol.com
