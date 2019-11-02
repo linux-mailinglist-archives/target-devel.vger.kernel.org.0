@@ -2,76 +2,42 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CFF62EC6D5
-	for <lists+target-devel@lfdr.de>; Fri,  1 Nov 2019 17:32:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1BDEED034
+	for <lists+target-devel@lfdr.de>; Sat,  2 Nov 2019 19:27:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726701AbfKAQcL (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 1 Nov 2019 12:32:11 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:33426 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727737AbfKAQcK (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Fri, 1 Nov 2019 12:32:10 -0400
-Received: by mail-ed1-f67.google.com with SMTP id c4so8000486edl.0
-        for <target-devel@vger.kernel.org>; Fri, 01 Nov 2019 09:32:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=latS+LOZUfL1yiiuFRKw1aKCiSm5Bt/9vWdEAhPRwuM=;
-        b=sCaw+CY/lfkqL7Gb+Ib6WDJClsvhMf+3qrxCnJ920wI47Dvu/FMBjwPUZEd0tlqmS8
-         xSpfgKPJ+lXUhQ7hwIeKw+uVkyQ9k3Qr/AQPh/KfsowE9MWHKtwSBv2i0viqWP9TWtZ0
-         1+0N/MWvWaQMiKDngM1L5JRDrX5IW8cdknaEQOieCEvr75jsZk7FeGIYd6RAZG+sRJWK
-         pdqAf+LIovZ4YFgibX/tYnqWK9UHvkqGrle0at+KKTrZe1F+4MfycmAEWRwTaLAom6bb
-         WNVL1f47PIoay39sVa3iQ0WzcgS+KS2ogpxpUOidJlZrkY+l+yiZfzzQiUu2ta9zrCc1
-         c9Cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=latS+LOZUfL1yiiuFRKw1aKCiSm5Bt/9vWdEAhPRwuM=;
-        b=L4qbSLMVSavfEFVOWnkONH3977860VaqCGor13UgbyCdBjd5MGOyqXOL1LUi8zZ61I
-         66jdf/v5eUmZKNUPCLLjERoFWg1Gayiviavigi6YMXbhutE/BJ6oGnp2ja7lUnBAuAWR
-         IJVCuFH5wg+xjYBuRWZL7QGq9rL+bWkQd4qnB8eu+txW31qSCptz3nJUVR8hjCHk+lNq
-         wPdTAUARikrFKJDgLsXWa5m2N9U+/AmoG9HCcNDJA6mpc0FizXgZhPq4U88/GXtb7Mh7
-         R3/JPseRmniT0moZyRHeOSqm+d/8PFIuoSYqp2D9G9mujWFjITDUzC02DUN6tB2U2a3k
-         j7ww==
-X-Gm-Message-State: APjAAAWW0gqyrhbzZlLTU9UPtt7NF0cuqRcxomyl+2feyOElkAFryzm5
-        zcK4SgqW714kFTX4dPyt9GeskAMVA/X9JewK460=
-X-Google-Smtp-Source: APXvYqzGPfmvNfdVSdHPKmmnQ1NtPf9kq47NKcNexcyxsKKYL0aAAV6+ncUt1jefMe8qONnm+HMEKlWZWp9sRSMSIl0=
-X-Received: by 2002:a17:906:c9d8:: with SMTP id hk24mr2883359ejb.159.1572625928946;
- Fri, 01 Nov 2019 09:32:08 -0700 (PDT)
+        id S1726675AbfKBS1f (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 2 Nov 2019 14:27:35 -0400
+Received: from [211.53.128.215] ([211.53.128.215]:35509 "EHLO MAIL.isd.co.kr"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726523AbfKBS1e (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Sat, 2 Nov 2019 14:27:34 -0400
+Received: from 192.168.1.163 (217.217.179.17) by MAIL.isd.co.kr (10.10.10.22)
+ with Microsoft SMTP Server id 14.3.123.3; Sun, 3 Nov 2019 03:27:30 +0900
+Date:   Sat, 2 Nov 2019 19:27:27 +0100
+From:   Peter Wong <choimj@isd.co.kr>
+Reply-To: Peter Wong <peterwongpwhk@gmail.com>
+To:     <target-devel@vger.kernel.org>
+Message-ID: <23716568.170263.1572719249381.JavaMail.cash@211.53.128.215>
+Subject: Your opportunity
 MIME-Version: 1.0
-Received: by 2002:a05:6402:1118:0:0:0:0 with HTTP; Fri, 1 Nov 2019 09:32:08
- -0700 (PDT)
-Reply-To: moneygram.1820@outlook.fr
-From:   "Mary Coster, I.M.F director-Benin" <eco.bank1204@gmail.com>
-Date:   Fri, 1 Nov 2019 17:32:08 +0100
-Message-ID: <CAOE+jAAMvXZ-cm7SLrn1SeQAzjG1KK_BAgzC3Cp9xUNt_nCyKA@mail.gmail.com>
-Subject: Contact Money Gram international service-Benin to receive your
- payment funds US$2.500,000 Million
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [217.217.179.17]
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Attn Dear,Funds Beneficiary.
-Contact Money Gram international service-Benin to receive your payment
-funds US$2.500,000 Million approved this morning through the UN
-payment settlement organization.
-Contact Person, Mr. John Dave.
-Official Director.Money Gram-Benin
-Email: moneygram.1820@outlook.fr
-Telephone +229 62619517
-Once you get intouch with Mr. John Dave, Money Gram Director, send to
-him your address including your phone numbers. He will be sending the
-transfer to you  $5000.00 USD daily until you received your complete
-payment $2.5m
-from the office.
-Note,I have paid the whole service fees for you but only small money
-you been required to send to this office is $23.00 only via Money Gram
-transfer.
-God bless
-Mary Coster, I.M.F director-Benin
-m.coster@aol.com
+Greetings,
+
+Find this mail very confidential. reply for more details
+
+Thanks.
+Peter Wong
+
+
+
+
+----------------------------------------------------
+This email was sent by the shareware version of Postman Professional.
+
