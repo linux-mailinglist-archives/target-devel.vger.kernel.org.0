@@ -2,108 +2,84 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 600FBF0D02
-	for <lists+target-devel@lfdr.de>; Wed,  6 Nov 2019 04:26:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8692EF0E2B
+	for <lists+target-devel@lfdr.de>; Wed,  6 Nov 2019 06:18:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730870AbfKFD06 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 5 Nov 2019 22:26:58 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:40785 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1730655AbfKFD06 (ORCPT
+        id S1725790AbfKFFSX (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 6 Nov 2019 00:18:23 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:56110 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725535AbfKFFSX (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 5 Nov 2019 22:26:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1573010817;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=YjvI16trGWI5S4NFsG1Cu3fc/EhZpyIvkaPDqJsoF2c=;
-        b=LzlTcbbCGapjTGKWwE1vyCW3+aZL6co3vbWlA5tG6sQcT54hWz2l3T8kMRB+J15TtKTYcu
-        IN0K/Ey+wzjlWo8+T2me8f4KsH7sVEw6Cz8gIHNlJ8piWtzDhmEbJzsLOzhQShR9fIQbvx
-        tzOIcBYtA3900RHfoV56xyGskJLyGXg=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-268-aqAwO3lKMrSyvZVFCW1l2A-1; Tue, 05 Nov 2019 22:26:55 -0500
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 64C691005500
-        for <target-devel@vger.kernel.org>; Wed,  6 Nov 2019 03:26:54 +0000 (UTC)
-Received: from localhost.localdomain (ovpn-121-146.rdu2.redhat.com [10.10.121.146])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id E55A8608AC
-        for <target-devel@vger.kernel.org>; Wed,  6 Nov 2019 03:26:53 +0000 (UTC)
-Date:   Tue, 5 Nov 2019 19:26:51 -0800
-From:   Chris Leech <cleech@redhat.com>
-To:     target-devel@vger.kernel.org
-Subject: Re: [PATCH V3 0/3] iscsi: chap: introduce support for SHA1, SHA256
- and SHA3-256
-Message-ID: <20191106032651.GA7899@localhost.localdomain>
-Mail-Followup-To: target-devel@vger.kernel.org
+        Wed, 6 Nov 2019 00:18:23 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA65EExh100558;
+        Wed, 6 Nov 2019 05:18:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2019-08-05;
+ bh=Ls2X0LDd+M4ReIrHAOjUW+QNTDnwXCXnjByQNcNDP1w=;
+ b=QbXsRUwuua4kxFpbMrAukxoqi4r/MwZSXCZDB/UX3nAySLHMDSmSnM12HwiRqnPfYH29
+ iEFPTUXmAeeu8Ou/ZJEvKVPugHSvb50aUnpB5/y9MyZl0QCuijA9UPGIwebURvqn9cwd
+ qftm6FldJIFnItilruzxRQjvarZ2gYqqZGIpnq/t3QS5qbCJQJ6E/0f7JjvYrJG1pYIU
+ k82FmlbZZBCoa/E9eHM2uSUuDTCAei7ESMMUqtWKgR44V3FFi04YSMWATpqcbgYSsu6z
+ A2/GFqIky58YkgrAWEtzl/WFHC69G0/1LHkshvq4HSYJzBkDwZYIThqIArqtPQxpJ2R9 PA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 2w12erb2mq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 06 Nov 2019 05:18:04 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA65DXVV078836;
+        Wed, 6 Nov 2019 05:16:04 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 2w2wcnrq5b-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 06 Nov 2019 05:16:03 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xA65G2S6026718;
+        Wed, 6 Nov 2019 05:16:02 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 05 Nov 2019 21:16:01 -0800
+To:     Maurizio Lombardi <mlombard@redhat.com>
+Cc:     cleech@redhat.com, mchristi@redhat.com,
+        target-devel@vger.kernel.org, hch@infradead.org,
+        martin.petersen@oracle.com
+Subject: Re: [PATCH V3 0/3] iscsi: chap: introduce support for SHA1, SHA256 and SHA3-256
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
 References: <20191028123822.5864-1-mlombard@redhat.com>
+Date:   Wed, 06 Nov 2019 00:15:59 -0500
+In-Reply-To: <20191028123822.5864-1-mlombard@redhat.com> (Maurizio Lombardi's
+        message of "Mon, 28 Oct 2019 13:38:19 +0100")
+Message-ID: <yq1pni51t68.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20191028123822.5864-1-mlombard@redhat.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-MC-Unique: aqAwO3lKMrSyvZVFCW1l2A-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9432 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=686
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1911060054
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9432 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=785 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1911060054
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Mon, Oct 28, 2019 at 01:38:19PM +0100, Maurizio Lombardi wrote:
-> iSCSI with the Challenge-Handshake Authentication Protocol is not FIPS co=
-mpliant.
-> This is due to the fact that CHAP currently uses MD5 as the only supporte=
-d
-> digest algorithm and MD5 is not allowed by FIPS.
->=20
-> When FIPS mode is enabled on the target server, the CHAP authentication
-> won't work because the target driver will be prevented from using the MD5=
- module.
->=20
+
+Maurizio,
+
 > Given that CHAP is agnostic regarding the algorithm it uses, this
-> patchset introduce support for three new alternatives: SHA1, SHA256 and S=
-HA3-256.
->=20
-> They all have their protocol identifiers assigned by IANA:
-> https://www.iana.org/assignments/ppp-numbers/ppp-numbers.xml#ppp-numbers-=
-9
->=20
-> Initiator-side code for open-iscsi has already been merged:
-> https://github.com/open-iscsi/open-iscsi/pull/170
->=20
-> V2: adds SHA256
-> V3: rebased on top of 5.5/scsi-queue
->     PATCH 3: renames initiatorchg_* variables to client_challenge_*
->=20
-> Maurizio Lombardi (3):
->   target-iscsi: CHAP: add support to SHA1, SHA256 and SHA3-256 hash
->     functions
->   target-iscsi: tie the challenge length to the hash digest size
->   target-iscsi: rename some variables to avoid confusion.
->=20
->  drivers/target/iscsi/iscsi_target_auth.c | 235 +++++++++++++++--------
->  drivers/target/iscsi/iscsi_target_auth.h |  17 +-
->  2 files changed, 163 insertions(+), 89 deletions(-)
->=20
-> --=20
+> patchset introduce support for three new alternatives: SHA1, SHA256
+> and SHA3-256.
 
-I've tested this latest version against the latest upstream Open-iSCSI
-tools and verified that all of the new digest modes negotiate and
-function for mutual CHAP authentication.
+Applied to 5.5/scsi-queue, thanks!
 
-Tested-by: Chris Leech <cleech@redhat.com>
-
-Note that configfs in 5.5/scsi-queue is currently broken and you can't
-actually configure the target subsystem with first applying the patch=20
-"configfs: calculate the depth of parent item" from Honggang Li.
-
-Also, I didn't actually put the target system into FIPS enforcing mode,
-becuase that kernel failed to boot due to a FIPS self-test failure for
-ofb(aes)
-
+-- 
+Martin K. Petersen	Oracle Linux Engineering
