@@ -2,89 +2,184 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A1904F7F85
-	for <lists+target-devel@lfdr.de>; Mon, 11 Nov 2019 20:14:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 008D8F8054
+	for <lists+target-devel@lfdr.de>; Mon, 11 Nov 2019 20:41:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726943AbfKKTM6 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 11 Nov 2019 14:12:58 -0500
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:44670 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726939AbfKKTM6 (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Mon, 11 Nov 2019 14:12:58 -0500
-Received: by mail-pf1-f196.google.com with SMTP id q26so11279607pfn.11
-        for <target-devel@vger.kernel.org>; Mon, 11 Nov 2019 11:12:58 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=GokarfKp4jvz3ND8O1HbjQ0I5VHatotOFh2cU1veQZA=;
-        b=HAejU4r8z/dhzJczVhp2pf4GKXt9Qx8WlOWmlxXK+OGQZym81uRLuy8PJPa+p9WZn7
-         56YqNaDs3N8OYobfWtgSI6BbUAPtiZSZIw7+kGr0smFciLK9Baz8Hw0xKQIG2nx/hP9S
-         AATBJa8jPVnRCvkTAkMQRbUTQ3xVr4yirqFBX1p26wVQPwf0geXN9ao8MiZTvxhwwLKm
-         xjkgTq7EWkhLSYIiAqpGp99e7obqAAbublXLNh8nuM02evOBEteKqBPYjpdc5ki1/P/k
-         XCL1c28Rbs1sCsKmn1+9w362YIwc1ZQ5NZWHt2GS3WaM7fawR7bMTEMCsOA/QVUTMN2u
-         e16w==
-X-Gm-Message-State: APjAAAXWjdmoNda+7zlbz0cR3S6NUu8ILoxATLS23+WWX0rtAVQmPaXp
-        eXqeS+yr2gbahbhalA3cWPBeBT4f
-X-Google-Smtp-Source: APXvYqxcduKPs4YByAmeZKUp/NEphj8yFh+q4h8pm5K/G9/sxfFpu9fylbFtHhCjpOoMK6p8wjx9UA==
-X-Received: by 2002:a17:90a:ff02:: with SMTP id ce2mr697622pjb.117.1573499576957;
-        Mon, 11 Nov 2019 11:12:56 -0800 (PST)
-Received: from desktop-bart.svl.corp.google.com ([2620:15c:2cd:202:4308:52a3:24b6:2c60])
-        by smtp.gmail.com with ESMTPSA id p7sm197969pjp.4.2019.11.11.11.12.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Nov 2019 11:12:56 -0800 (PST)
-Subject: Re: [PATCH 0/2] Improve SPC-2 reservation support
-To:     Roman Bolshakov <r.bolshakov@yadro.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        id S1727341AbfKKTlT (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 11 Nov 2019 14:41:19 -0500
+Received: from mta-02.yadro.com ([89.207.88.252]:47746 "EHLO mta-01.yadro.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727265AbfKKTlT (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Mon, 11 Nov 2019 14:41:19 -0500
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id 879BB411F9;
+        Mon, 11 Nov 2019 19:41:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        user-agent:in-reply-to:content-disposition:content-type
+        :content-type:mime-version:references:message-id:subject:subject
+        :from:from:date:date:received:received:received; s=mta-01; t=
+        1573501276; x=1575315677; bh=UAYK9Q4PAO8RVwAgKVKUsysnVACwDYhxCSd
+        2kobwlg0=; b=NT94RmN1gXt4+Wx05ekQ0v6QkS6aN48XbPiTKNCaKw6jBl2j0wT
+        aUEhxF6lsBd6ik0DRdrv+BdRcBaEuvUOYgGizR8ZRIb2P2m6V0eo1RoQWjKpdN8H
+        kqDXB2ciUIPmHk7c+hbNOYVewoUsqckh7s5dF/jjeP22GGwQmVt+13Ao=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id wUq381LUVPjS; Mon, 11 Nov 2019 22:41:16 +0300 (MSK)
+Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com [172.17.10.102])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mta-01.yadro.com (Postfix) with ESMTPS id 3D62C404CF;
+        Mon, 11 Nov 2019 22:41:16 +0300 (MSK)
+Received: from localhost (172.17.128.60) by T-EXCH-02.corp.yadro.com
+ (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Mon, 11
+ Nov 2019 22:41:15 +0300
+Date:   Mon, 11 Nov 2019 22:41:14 +0300
+From:   Roman Bolshakov <r.bolshakov@yadro.com>
+To:     Bart Van Assche <bvanassche@acm.org>
+CC:     "Martin K . Petersen" <martin.petersen@oracle.com>,
         Mike Christie <mchristi@redhat.com>,
-        Christoph Hellwig <hch@lst.de>, target-devel@vger.kernel.org
+        Christoph Hellwig <hch@lst.de>, <target-devel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] target/iscsi: Fix a use-after-free while closing a
+ session
+Message-ID: <20191111194114.yckp2zkraulvl7hz@SPB-NB-133.local>
 References: <20191111182944.191123-1-bvanassche@acm.org>
- <20191111185802.fedzop3t6po4mpgp@SPB-NB-133.local>
-From:   Bart Van Assche <bvanassche@acm.org>
-Message-ID: <13791d8a-6600-a388-2330-9fb2e6689104@acm.org>
-Date:   Mon, 11 Nov 2019 11:12:55 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ <20191111182944.191123-3-bvanassche@acm.org>
 MIME-Version: 1.0
-In-Reply-To: <20191111185802.fedzop3t6po4mpgp@SPB-NB-133.local>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20191111182944.191123-3-bvanassche@acm.org>
+User-Agent: NeoMutt/20180716
+X-Originating-IP: [172.17.128.60]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-02.corp.yadro.com (172.17.10.102)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 11/11/19 10:58 AM, Roman Bolshakov wrote:
-> On Mon, Nov 11, 2019 at 10:29:42AM -0800, Bart Van Assche wrote:
->> Hi Martin,
->>
->> This patch series improves support for SPC-2 reservations in the SCSI target
->> code. Please consider these patches for inclusion in the v5.5 kernel.
->>
->> Thanks,
->>
->> Bart.
->>
->> Bart Van Assche (2):
->>    target/core: Declare target_release_reservation() 'static'
->>    target/iscsi: Fix a use-after-free while closing a session
->>
->>   drivers/target/target_core_pr.c        |  2 +-
->>   drivers/target/target_core_pr.h        |  1 -
->>   drivers/target/target_core_transport.c | 11 +++++++++++
->>   3 files changed, 12 insertions(+), 2 deletions(-)
+On Mon, Nov 11, 2019 at 10:29:44AM -0800, Bart Van Assche wrote:
+> This patch fixes the following use-after-free in the code that supports
+> SPC-2 reservations:
 > 
-> I have missed the second patch, who was it send to?
+> BUG: KASAN: use-after-free in target_check_reservation+0x171/0x980 [target_core_mod]
+> Read of size 8 at addr ffff88802ecd1878 by task iscsi_trx/17200
+> 
+> CPU: 0 PID: 17200 Comm: iscsi_trx Not tainted 5.4.0-rc1-dbg+ #1
+> Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+> Call Trace:
+>  dump_stack+0x8a/0xd6
+>  print_address_description.constprop.0+0x40/0x60
+>  __kasan_report.cold+0x1b/0x34
+>  kasan_report+0x16/0x20
+>  __asan_load8+0x58/0x90
+>  target_check_reservation+0x171/0x980 [target_core_mod]
+>  __target_execute_cmd+0xb1/0xf0 [target_core_mod]
+>  target_execute_cmd+0x22d/0x4d0 [target_core_mod]
+>  transport_generic_new_cmd+0x31f/0x5b0 [target_core_mod]
+>  transport_handle_cdb_direct+0x6f/0x90 [target_core_mod]
+>  iscsit_execute_cmd+0x381/0x3f0 [iscsi_target_mod]
+>  iscsit_sequence_cmd+0x13b/0x1f0 [iscsi_target_mod]
+>  iscsit_process_scsi_cmd+0x4c/0x130 [iscsi_target_mod]
+>  iscsit_get_rx_pdu+0x8e8/0x15f0 [iscsi_target_mod]
+>  iscsi_target_rx_thread+0x105/0x1b0 [iscsi_target_mod]
+>  kthread+0x1bc/0x210
+>  ret_from_fork+0x24/0x30
+> 
+> Allocated by task 1079:
+>  save_stack+0x23/0x90
+>  __kasan_kmalloc.constprop.0+0xcf/0xe0
+>  kasan_slab_alloc+0x12/0x20
+>  kmem_cache_alloc+0xfe/0x3a0
+>  transport_alloc_session+0x29/0x80 [target_core_mod]
+>  iscsi_target_login_thread+0xceb/0x1920 [iscsi_target_mod]
+>  kthread+0x1bc/0x210
+>  ret_from_fork+0x24/0x30
+> 
+> Freed by task 17193:
+>  save_stack+0x23/0x90
+>  __kasan_slab_free+0x13a/0x190
+>  kasan_slab_free+0x12/0x20
+>  kmem_cache_free+0xc8/0x3e0
+>  transport_free_session+0x179/0x2f0 [target_core_mod]
+>  transport_deregister_session+0x121/0x170 [target_core_mod]
+>  iscsit_close_session+0x12c/0x350 [iscsi_target_mod]
+>  iscsit_logout_post_handler+0x136/0x380 [iscsi_target_mod]
+>  iscsit_response_queue+0x8fa/0xc00 [iscsi_target_mod]
+>  iscsi_target_tx_thread+0x28e/0x390 [iscsi_target_mod]
+>  kthread+0x1bc/0x210
+>  ret_from_fork+0x24/0x30
+> 
+> The buggy address belongs to the object at ffff88802ecd1860
+>  which belongs to the cache se_sess_cache of size 352
+> The buggy address is located 24 bytes inside of
+>  352-byte region [ffff88802ecd1860, ffff88802ecd19c0)
+> The buggy address belongs to the page:
+> page:ffffea0000bb3400 refcount:1 mapcount:0 mapping:ffff8880bef2ed00 index:0x0 compound_mapcount: 0
+> flags: 0x1000000000010200(slab|head)
+> raw: 1000000000010200 dead000000000100 dead000000000122 ffff8880bef2ed00
+> raw: 0000000000000000 0000000080270027 00000001ffffffff 0000000000000000
+> page dumped because: kasan: bad access detected
+> 
+> Memory state around the buggy address:
+>  ffff88802ecd1700: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>  ffff88802ecd1780: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> >ffff88802ecd1800: fb fb fb fb fc fc fc fc fc fc fc fc fb fb fb fb
+>                                                                 ^
+>  ffff88802ecd1880: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>  ffff88802ecd1900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> 
+> Cc: Mike Christie <mchristi@redhat.com>
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> ---
+>  drivers/target/target_core_transport.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
+> index ba7a01bcad7c..12bc8545f91b 100644
+> --- a/drivers/target/target_core_transport.c
+> +++ b/drivers/target/target_core_transport.c
+> @@ -584,6 +584,15 @@ void transport_free_session(struct se_session *se_sess)
+>  }
+>  EXPORT_SYMBOL(transport_free_session);
+>  
+> +static int target_release_res(struct se_device *dev, void *data)
+> +{
+> +	struct se_session *sess = data;
+> +
+> +	if (dev->reservation_holder == sess)
+> +		dev->reservation_holder = NULL;
 
-Hi Roman,
 
-That second patch has also been sent to the target-devel mailing list. 
-On the following web page I can see that it has not yet been sent out by 
-the mailing list server: https://www.spinics.net/lists/target-devel/. If 
-that second patch does not appear on the target-devel mailing list by 
-tomorrow I will resend it.
+Hi Bart,
 
-Bart.
+Does it worth to use target_release_reservation() when the session is
+reserveration holder instead of the explicit assignment? That would also
+reset reservation flags of the se_device.
+
+> +	return 0;
+> +}
+> +
+>  void transport_deregister_session(struct se_session *se_sess)
+>  {
+>  	struct se_portal_group *se_tpg = se_sess->se_tpg;
+> @@ -600,6 +609,8 @@ void transport_deregister_session(struct se_session *se_sess)
+>  	se_sess->fabric_sess_ptr = NULL;
+>  	spin_unlock_irqrestore(&se_tpg->session_lock, flags);
+>  
+> +	target_for_each_device(target_release_res, se_sess);
+> +
+>  	pr_debug("TARGET_CORE[%s]: Deregistered fabric_sess\n",
+>  		se_tpg->se_tpg_tfo->fabric_name);
+>  	/*
+> -- 
+> 2.24.0.rc1.363.gb1bccd3e3d-goog
+> 
+
+IMO the code is not specific to iscsi and the tag should be changed to
+"target/core:"
+
+
+Thanks,
+Roman
