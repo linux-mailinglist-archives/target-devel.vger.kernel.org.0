@@ -2,87 +2,68 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD58DF5D0A
-	for <lists+target-devel@lfdr.de>; Sat,  9 Nov 2019 03:39:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91CC3F7AC9
+	for <lists+target-devel@lfdr.de>; Mon, 11 Nov 2019 19:29:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726143AbfKICjh (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 8 Nov 2019 21:39:37 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:41956 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726061AbfKICjh (ORCPT
+        id S1726939AbfKKS3v (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 11 Nov 2019 13:29:51 -0500
+Received: from mail-pl1-f181.google.com ([209.85.214.181]:34247 "EHLO
+        mail-pl1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726896AbfKKS3v (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 8 Nov 2019 21:39:37 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA92cvQJ178667;
-        Sat, 9 Nov 2019 02:39:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2019-08-05;
- bh=bPdMPT+5AvQNplQLHAmC9Jg0oZ0tGgKen81HBkBH9qE=;
- b=Es3AFkTe4jxid9RipMChCroCFiQyPJqQEBY7exrRxxbAZmZPBJ+HSysKdVy2HONxgsMA
- tIlv1/zCo7KCNbRxD9vnVnA1gM1pxYije7BvUgfL7fnxHz0XBZwbPzXHf1OUjXwpi8kn
- GdN37Ilnr1FU1pFraXbn5InoHbzaZqDpEij376gB+7k8+VIpWS9zjBzWovRtOKS+FUew
- YyD/wCdoJW36XjtXNJlLTEjPB4JZsoKD94ZbSNVvNvuBd3YYn7nsgrACb7dHLBCiW8L7
- QxVQ+QomXC2Y2R1z1PVliQXbhaYlvOA8wO3ArF3HgnWqtOn2YiYcffqkMIdmRQolk4TE bg== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 2w5hgv8ckx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 09 Nov 2019 02:39:27 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA92dPwf175073;
-        Sat, 9 Nov 2019 02:39:27 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 2w5jkcsb03-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 09 Nov 2019 02:39:26 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xA92csJ2028678;
-        Sat, 9 Nov 2019 02:38:54 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 08 Nov 2019 18:38:54 -0800
-To:     Damien Le Moal <Damien.LeMoal@wdc.com>
-Cc:     Bart Van Assche <bvanassche@acm.org>,
-        "linux-scsi\@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        "target-devel\@vger.kernel.org" <target-devel@vger.kernel.org>,
-        Mike Christie <mchristi@redhat.com>
-Subject: Re: [PATCH v2] target: core: Prevent memory reclaim recursion
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20191108082901.417950-1-damien.lemoal@wdc.com>
-        <cefdcca4-e839-829e-54aa-b95e77825d1d@acm.org>
-        <BYAPR04MB5816047492FC58019387A33CE77A0@BYAPR04MB5816.namprd04.prod.outlook.com>
-Date:   Fri, 08 Nov 2019 21:38:52 -0500
-In-Reply-To: <BYAPR04MB5816047492FC58019387A33CE77A0@BYAPR04MB5816.namprd04.prod.outlook.com>
-        (Damien Le Moal's message of "Sat, 9 Nov 2019 02:18:43 +0000")
-Message-ID: <yq1y2wpu62r.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+        Mon, 11 Nov 2019 13:29:51 -0500
+Received: by mail-pl1-f181.google.com with SMTP id h13so2756324plr.1
+        for <target-devel@vger.kernel.org>; Mon, 11 Nov 2019 10:29:51 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=J+Qjal23FBOXqsq+/Z95oUKH7OpCgzauSdM0pWBHhDc=;
+        b=EvZeKaiqaskMCXDC463EtwcGa6t0YSKpvnOHjgF4f5xO+P42FLwu8jZiuPiVQQuM/R
+         cWCrOcJ+4rkR8VE7YVGkg7jUs4yOx7zxwkSQcWjTsZvzn36BFLYJhKx4c78hk0HBQzm8
+         fb51oBEHcw5XiqbhlpfuWu2hd/AEJyCBy/gat8awkFqYPyVQ+xsq4ACuRC4XqPQ5maIa
+         TUBKu0YhTIXlFTgJAJnDlxOk8mEjDgiUnRPZAxOPNKJ5YNkOpdcl8mcKG6Ob+LsbWDHf
+         UUT6uQBEER0n2ivm6ufC2VCQPHq6YGrGS3lPp8TW0tVtsiw+pFxo7b26Kf7KzrnHIFzX
+         YYfQ==
+X-Gm-Message-State: APjAAAVT+ffFMP7N7khf9x3fVNcXTRHux/YRa0XD+b2HZ6fsddo5kjMO
+        0JgalX4aNA8SBsABZ0anF/A=
+X-Google-Smtp-Source: APXvYqzYVqSi5DQA7lDxSCHtmlMj2BRfz7tqH9z7JwTWI/C7jghv4j89XNFMsixtHAR8Ki+EuIGsGA==
+X-Received: by 2002:a17:902:a987:: with SMTP id bh7mr26513737plb.181.1573496990620;
+        Mon, 11 Nov 2019 10:29:50 -0800 (PST)
+Received: from desktop-bart.svl.corp.google.com ([2620:15c:2cd:202:4308:52a3:24b6:2c60])
+        by smtp.gmail.com with ESMTPSA id z62sm20635925pfz.135.2019.11.11.10.29.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Nov 2019 10:29:49 -0800 (PST)
+From:   Bart Van Assche <bvanassche@acm.org>
+To:     "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc:     Mike Christie <mchristi@redhat.com>,
+        Christoph Hellwig <hch@lst.de>, target-devel@vger.kernel.org,
+        Bart Van Assche <bvanassche@acm.org>
+Subject: [PATCH 0/2] Improve SPC-2 reservation support
+Date:   Mon, 11 Nov 2019 10:29:42 -0800
+Message-Id: <20191111182944.191123-1-bvanassche@acm.org>
+X-Mailer: git-send-email 2.24.0.rc1.363.gb1bccd3e3d-goog
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9435 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=742
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1910280000 definitions=main-1911090025
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9435 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=828 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1910280000
- definitions=main-1911090025
+Content-Transfer-Encoding: 8bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+Hi Martin,
 
-Damien,
+This patch series improves support for SPC-2 reservations in the SCSI target
+code. Please consider these patches for inclusion in the v5.5 kernel.
 
-> Please let me know if you want me to resend with a fixed header (and
-> what that header should be).
+Thanks,
 
-I fixed it up. Applied to 5.5/scsi-queue. Thanks!
+Bart.
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Bart Van Assche (2):
+  target/core: Declare target_release_reservation() 'static'
+  target/iscsi: Fix a use-after-free while closing a session
+
+ drivers/target/target_core_pr.c        |  2 +-
+ drivers/target/target_core_pr.h        |  1 -
+ drivers/target/target_core_transport.c | 11 +++++++++++
+ 3 files changed, 12 insertions(+), 2 deletions(-)
