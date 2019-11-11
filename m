@@ -2,76 +2,83 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1770DF7D5C
-	for <lists+target-devel@lfdr.de>; Mon, 11 Nov 2019 19:56:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09F04F7D90
+	for <lists+target-devel@lfdr.de>; Mon, 11 Nov 2019 19:58:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729095AbfKKS4B (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 11 Nov 2019 13:56:01 -0500
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:40502 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729966AbfKKSzz (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Mon, 11 Nov 2019 13:55:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1573498554;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=vV3wkbSPwMyDDvkOTJ54r/QQVDxVteKGm1nEtOp1owA=;
-        b=VADvBSmzdvgbhCyhgeGH3lppIljr1SotLmegs1hEbSikYc7fedV55d6p3Z7m2j41ywpGIa
-        VpKoJsH4jAK+j4GThYKMZlaVNx2slcNqzVnrAaj/zXSYJYl3F56PMEz030/8wmAPlE3cDG
-        Mj0eZgecVYdcg96P7PLylAWe5hLvSG4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-259-4XYBaZ5VMmWoRAsg3neyqg-1; Mon, 11 Nov 2019 13:55:49 -0500
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1730355AbfKKS6H (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 11 Nov 2019 13:58:07 -0500
+Received: from mta-02.yadro.com ([89.207.88.252]:46908 "EHLO mta-01.yadro.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730919AbfKKS6G (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Mon, 11 Nov 2019 13:58:06 -0500
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id 5A73D411F9;
+        Mon, 11 Nov 2019 18:58:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        user-agent:in-reply-to:content-disposition:content-type
+        :content-type:mime-version:references:message-id:subject:subject
+        :from:from:date:date:received:received:received; s=mta-01; t=
+        1573498684; x=1575313085; bh=ir37MglRiYqOdrP2GJpABVGFJuDK9TZdwLJ
+        QOSl/Y7A=; b=fZv55BL850mhWmxU5OcLTgIjRyZSl5pSJPpPa2jwRyt842E5lGG
+        rl7o9FFvLGC2GX9jI5NM2OeXIqAifwUkn6jQ1lSj+shH3Dd8yRBQ6lYtZsLMREEV
+        yxJkux6VaG2Og854aTE2i2f24eH79m+6FeMumD0+Zr2dMUoATg8imMsQ=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id rZyanrctT-7K; Mon, 11 Nov 2019 21:58:04 +0300 (MSK)
+Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com [172.17.10.102])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DFFC710E2630;
-        Mon, 11 Nov 2019 18:55:47 +0000 (UTC)
-Received: from [10.10.123.234] (ovpn-123-234.rdu2.redhat.com [10.10.123.234])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 4D48E600CC;
-        Mon, 11 Nov 2019 18:55:47 +0000 (UTC)
+        by mta-01.yadro.com (Postfix) with ESMTPS id 3878C411D9;
+        Mon, 11 Nov 2019 21:58:04 +0300 (MSK)
+Received: from localhost (172.17.128.60) by T-EXCH-02.corp.yadro.com
+ (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Mon, 11
+ Nov 2019 21:58:03 +0300
+Date:   Mon, 11 Nov 2019 21:58:02 +0300
+From:   Roman Bolshakov <r.bolshakov@yadro.com>
+To:     Bart Van Assche <bvanassche@acm.org>
+CC:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Mike Christie <mchristi@redhat.com>,
+        Christoph Hellwig <hch@lst.de>, <target-devel@vger.kernel.org>
 Subject: Re: [PATCH 0/2] Improve SPC-2 reservation support
-To:     Bart Van Assche <bvanassche@acm.org>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>
+Message-ID: <20191111185802.fedzop3t6po4mpgp@SPB-NB-133.local>
 References: <20191111182944.191123-1-bvanassche@acm.org>
-Cc:     Christoph Hellwig <hch@lst.de>, target-devel@vger.kernel.org
-From:   Mike Christie <mchristi@redhat.com>
-Message-ID: <5DC9AEB2.4050202@redhat.com>
-Date:   Mon, 11 Nov 2019 12:55:46 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.6.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
 In-Reply-To: <20191111182944.191123-1-bvanassche@acm.org>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-MC-Unique: 4XYBaZ5VMmWoRAsg3neyqg-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+User-Agent: NeoMutt/20180716
+X-Originating-IP: [172.17.128.60]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-02.corp.yadro.com (172.17.10.102)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 11/11/2019 12:29 PM, Bart Van Assche wrote:
+On Mon, Nov 11, 2019 at 10:29:42AM -0800, Bart Van Assche wrote:
 > Hi Martin,
->=20
-> This patch series improves support for SPC-2 reservations in the SCSI tar=
-get
+> 
+> This patch series improves support for SPC-2 reservations in the SCSI target
 > code. Please consider these patches for inclusion in the v5.5 kernel.
->=20
+> 
 > Thanks,
->=20
+> 
 > Bart.
->=20
+> 
 > Bart Van Assche (2):
 >   target/core: Declare target_release_reservation() 'static'
 >   target/iscsi: Fix a use-after-free while closing a session
->=20
+> 
+>  drivers/target/target_core_pr.c        |  2 +-
+>  drivers/target/target_core_pr.h        |  1 -
+>  drivers/target/target_core_transport.c | 11 +++++++++++
+>  3 files changed, 12 insertions(+), 2 deletions(-)
 
-Patches look and tested ok for me.
+Hi Bart,
 
-Reviewed-by: Mike Christie <mchristi@redhat.com>
+I have missed the second patch, who was it send to?
 
+Thanks,
+Roman
