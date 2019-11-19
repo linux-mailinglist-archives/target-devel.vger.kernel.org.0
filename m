@@ -2,72 +2,69 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2450710143E
-	for <lists+target-devel@lfdr.de>; Tue, 19 Nov 2019 06:32:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C5A4110145D
+	for <lists+target-devel@lfdr.de>; Tue, 19 Nov 2019 06:33:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729311AbfKSFbt (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 19 Nov 2019 00:31:49 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:46638 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728523AbfKSFbt (ORCPT
+        id S1729498AbfKSFdJ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 19 Nov 2019 00:33:09 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:54404 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729491AbfKSFdJ (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 19 Nov 2019 00:31:49 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAJ5TFZl122524;
-        Tue, 19 Nov 2019 05:31:34 GMT
+        Tue, 19 Nov 2019 00:33:09 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAJ5TEh2109141;
+        Tue, 19 Nov 2019 05:33:01 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
  from : references : date : in-reply-to : message-id : mime-version :
  content-type; s=corp-2019-08-05;
- bh=D5fU9HkdoEcaDjDg9smBCNNL6bXBXBJHKivLNV8WmQ8=;
- b=cjuMf9mO/zUzEBEe9lMabnnPXbfSL5DrckJXiseur7r3TvFB/JoNFZkjEYcLLsE89L3Q
- pEnNSUN+DeQ6OFu/BW4/5uvt+Wn5DwE7VonsuB1Va6+nxQDizTXfJM1HGyKoASrWaejU
- HLxAdakPZagDvN62yPTCSgyX2vU0/yP2VMCq+J2DCY+ssijIY0UYfVtDpOBfMyjzLXHS
- 0A7AH62mj8U0aca6kabTo1Gv/db0NL1EwJNsaf5pe4/PIT2jXHe3FwUijxkZn6YljVYK
- AhSJe4eBYq1Nyy/hvUsgEJvUVkJn87KuGtnWhaKcMARwVsKxZf2h5VIA3zcrOxoW1ZIt EA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 2wa92pmgj6-1
+ bh=pHx3xMppjxpg1z8WMJA8WR+oGxLeAGxwOjDcOiBftwU=;
+ b=io9JdYuUbE8UVYJ3Ej24lTU1QvLz4tVkG68sRuxDDX8fVPUeDcR97m1aNtz1jocGM9J/
+ LglYN/NjrKpGUF3x+gsdr2s2xxZriAJRf3jAoRdc5FtwK6C4VoeS5kwwpZlEulPMlr67
+ HF6iScry3qBBhljnbSIFuj6SnfXEThsqGE/pB2XBfxWlHO9NUEokJf070uBvHsnWaBzJ
+ QOt8rfLGkVr4rn0PEaxvcozfph23yGMxrSOeqv0d7VzLvKPQ3PO7o82LchCKcuDx4Mn5
+ aUmBK9eV8eKDWTgTkLxPbuofIrmaymuvi1VnFCjFAWPrwZuLccYjvwGGzYttJHFW+ovN 5g== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 2wa9rqcf98-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 19 Nov 2019 05:31:34 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAJ5TMFx109476;
-        Tue, 19 Nov 2019 05:29:33 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 2wc09ws3gw-1
+        Tue, 19 Nov 2019 05:33:01 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAJ5TEJW135109;
+        Tue, 19 Nov 2019 05:33:01 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 2wc0afrsj4-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 19 Nov 2019 05:29:33 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xAJ5T4Y4010844;
-        Tue, 19 Nov 2019 05:29:05 GMT
+        Tue, 19 Nov 2019 05:33:01 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xAJ5X0CB006123;
+        Tue, 19 Nov 2019 05:33:00 GMT
 Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 18 Nov 2019 21:29:04 -0800
+        with ESMTP ; Mon, 18 Nov 2019 21:32:59 -0800
 To:     Bart Van Assche <bvanassche@acm.org>
 Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
         Mike Christie <mchristie@redhat.com>,
-        Christoph Hellwig <hch@lst.de>, target-devel@vger.kernel.org,
-        Mike Christie <mchristi@redhat.com>,
-        Hannes Reinecke <hare@suse.de>,
-        Nicholas Bellinger <nab@linux-iscsi.org>
-Subject: Re: [PATCH] target/core: Document target_cmd_size_check()
+        Christoph Hellwig <hch@lst.de>, target-devel@vger.kernel.org
+Subject: Re: [PATCH] target: Fix a pr_debug() argument
 From:   "Martin K. Petersen" <martin.petersen@oracle.com>
 Organization: Oracle Corporation
-References: <20191107215458.64242-1-bvanassche@acm.org>
-Date:   Tue, 19 Nov 2019 00:29:02 -0500
-In-Reply-To: <20191107215458.64242-1-bvanassche@acm.org> (Bart Van Assche's
-        message of "Thu, 7 Nov 2019 13:54:58 -0800")
-Message-ID: <yq1ftikigdd.fsf@oracle.com>
+References: <20191107215525.64415-1-bvanassche@acm.org>
+Date:   Tue, 19 Nov 2019 00:32:57 -0500
+In-Reply-To: <20191107215525.64415-1-bvanassche@acm.org> (Bart Van Assche's
+        message of "Thu, 7 Nov 2019 13:55:25 -0800")
+Message-ID: <yq1blt8ig6u.fsf@oracle.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9445 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=872
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.0.1-1911140001 definitions=main-1911190050
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9445 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=957 adultscore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
  definitions=main-1911190050
 Sender: target-devel-owner@vger.kernel.org
@@ -76,12 +73,32 @@ List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
 
-Bart,
+Hi Bart!
 
-> Since it is nontrivial to derive the meaning of the size argument from
-> the code, add a documentation header above target_cmd_size_check().
+> Print the string for which conversion failed instead of printing the
+> function name twice.
 
-Applied to 5.5/scsi-queue. Thanks!
+What do you mean wrt. printing the function name twice?
+
+> Cc: Christoph Hellwig <hch@lst.de>
+> Fixes: 2650d71e244f ("target: move transport ID handling to the core")
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> ---
+>  drivers/target/target_core_fabric_lib.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/target/target_core_fabric_lib.c b/drivers/target/target_core_fabric_lib.c
+> index 3c79411c4cd0..6b4b354c88aa 100644
+> --- a/drivers/target/target_core_fabric_lib.c
+> +++ b/drivers/target/target_core_fabric_lib.c
+> @@ -118,7 +118,7 @@ static int srp_get_pr_transport_id(
+>  	memset(buf + 8, 0, leading_zero_bytes);
+>  	rc = hex2bin(buf + 8 + leading_zero_bytes, p, count);
+>  	if (rc < 0) {
+> -		pr_debug("hex2bin failed for %s: %d\n", __func__, rc);
+> +		pr_debug("hex2bin failed for %s: %d\n", p, rc);
+>  		return rc;
+>  	}
 
 -- 
 Martin K. Petersen	Oracle Linux Engineering
