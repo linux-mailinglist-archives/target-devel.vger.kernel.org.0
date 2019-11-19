@@ -2,87 +2,86 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B80A4FE267
-	for <lists+target-devel@lfdr.de>; Fri, 15 Nov 2019 17:12:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2450710143E
+	for <lists+target-devel@lfdr.de>; Tue, 19 Nov 2019 06:32:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727625AbfKOQMm (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 15 Nov 2019 11:12:42 -0500
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:42891 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727543AbfKOQMm (ORCPT
+        id S1729311AbfKSFbt (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 19 Nov 2019 00:31:49 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:46638 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728523AbfKSFbt (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 15 Nov 2019 11:12:42 -0500
-Received: by mail-ed1-f67.google.com with SMTP id m13so7730351edv.9
-        for <target-devel@vger.kernel.org>; Fri, 15 Nov 2019 08:12:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=y2ARf6pJxGhgpmPLlFvjzE8ZMjA3hEhatIYkvEw5wII=;
-        b=CqwHHiRpA9yr/vGEiaRSLktHyIYTnEVKUgw9FQyHhqbqsXF8RxcF3/pPLWKGaUE34p
-         jWeIgzSAnJrafQecCaie67ivQ0iJpkZL/5dSREC/M2tzSOHuHkQ9CDfl582gxSKJ7d9v
-         23kQQEEMff1IZE/G9MdYkmsq7Hpw6ybWKXZjk1LTiApZTM0uYjEYjUt6Yjq6xonNYJrp
-         Hwn6Q6bobIKDZnv21URSary0C5V0TZefjYPJiTk96KZsjqdSotUiU/z/EX0pwciLff0s
-         oIUkimka9Ze2uMFvDT7HSoeZ4Dikwv7vkTdhuJjg5G4f1CZkTdOpKQ4Y4RjaHPq5GFOL
-         aHnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=y2ARf6pJxGhgpmPLlFvjzE8ZMjA3hEhatIYkvEw5wII=;
-        b=VjsLQcAawZi45Nr9+2Cti71JochaYVHEXd8iUR+XTloO9+hL5kYZtGfyAsVtuQ1GzR
-         E2Dw0IpRf2uOeUhmwvn4htiOtzuDR+4f0pJ9yw5I+zFdEZN9ItWB6cTrb3PdoTfoL1GL
-         lCkOEmjmpmuN7tJQrSsBKl3j0TqumLzsrsvVQTCsXMDSB7sEKecL/2yGSO1soFRfN1Y+
-         Ss2HSqWO46cBPn6g/uMCIv4F4MgQNDZgx5o5c3KHF+fJVGdXFPu0CrYCWwcNqQiO59xl
-         wttzTSnvwUUwbUCcvot/SPRlPZqMirj20hIcciN9GBOhu2FIASpjJtAFC3wo51cNEOw7
-         0gqw==
-X-Gm-Message-State: APjAAAV20HyNtnaqZ3dEULxjPITpfG41DH5BiEMBoMLe4Kkeq5QYV2x7
-        9amET3e1rNPkvU9XVVp5eupop7X8ZkDh3uH4ZNc=
-X-Google-Smtp-Source: APXvYqyen4bh7t2DbbE6HkFAEmM8MMDeCwgEvsczzzOf0aEtaRgqfmjryfe5FgN/BhWo4j9cf4r3YrTEghmdhSOcsDM=
-X-Received: by 2002:a17:906:bce5:: with SMTP id op5mr1900729ejb.325.1573834358832;
- Fri, 15 Nov 2019 08:12:38 -0800 (PST)
+        Tue, 19 Nov 2019 00:31:49 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAJ5TFZl122524;
+        Tue, 19 Nov 2019 05:31:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2019-08-05;
+ bh=D5fU9HkdoEcaDjDg9smBCNNL6bXBXBJHKivLNV8WmQ8=;
+ b=cjuMf9mO/zUzEBEe9lMabnnPXbfSL5DrckJXiseur7r3TvFB/JoNFZkjEYcLLsE89L3Q
+ pEnNSUN+DeQ6OFu/BW4/5uvt+Wn5DwE7VonsuB1Va6+nxQDizTXfJM1HGyKoASrWaejU
+ HLxAdakPZagDvN62yPTCSgyX2vU0/yP2VMCq+J2DCY+ssijIY0UYfVtDpOBfMyjzLXHS
+ 0A7AH62mj8U0aca6kabTo1Gv/db0NL1EwJNsaf5pe4/PIT2jXHe3FwUijxkZn6YljVYK
+ AhSJe4eBYq1Nyy/hvUsgEJvUVkJn87KuGtnWhaKcMARwVsKxZf2h5VIA3zcrOxoW1ZIt EA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 2wa92pmgj6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 19 Nov 2019 05:31:34 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAJ5TMFx109476;
+        Tue, 19 Nov 2019 05:29:33 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 2wc09ws3gw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 19 Nov 2019 05:29:33 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xAJ5T4Y4010844;
+        Tue, 19 Nov 2019 05:29:05 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 18 Nov 2019 21:29:04 -0800
+To:     Bart Van Assche <bvanassche@acm.org>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Mike Christie <mchristie@redhat.com>,
+        Christoph Hellwig <hch@lst.de>, target-devel@vger.kernel.org,
+        Mike Christie <mchristi@redhat.com>,
+        Hannes Reinecke <hare@suse.de>,
+        Nicholas Bellinger <nab@linux-iscsi.org>
+Subject: Re: [PATCH] target/core: Document target_cmd_size_check()
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <20191107215458.64242-1-bvanassche@acm.org>
+Date:   Tue, 19 Nov 2019 00:29:02 -0500
+In-Reply-To: <20191107215458.64242-1-bvanassche@acm.org> (Bart Van Assche's
+        message of "Thu, 7 Nov 2019 13:54:58 -0800")
+Message-ID: <yq1ftikigdd.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-Received: by 2002:a17:906:b84f:0:0:0:0 with HTTP; Fri, 15 Nov 2019 08:12:38
- -0800 (PST)
-Reply-To: moneygram.1820@outlook.fr
-From:   "Ms.Mary Coster" <currency1000000@gmail.com>
-Date:   Fri, 15 Nov 2019 17:12:38 +0100
-Message-ID: <CAPqfnSH+aaVjaAXyhepP++MnJ77kB9vSe8dpkZ0ZBCF_xHoZXA@mail.gmail.com>
-Subject: Goodnews, I have sent you $5000.00 this morning by Money Gram out of
- your payment funds total amount US$4.8million Dollars.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9445 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=872
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1911190050
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9445 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=957 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1911190050
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Attn, Dear
-Goodnews, I have sent you $5000.00 this morning by Money Gram out of
-your payment funds total amount US$4.8million Dollars.
-Contact Mr. John Dave Director, Money Gram International
-Remittance-Benin to give you the pick up information for your first
-payment transfer $5000.00 today.
-Contact Person; Mr. John Dave Director, Money Gram
-Email; moneygram.1820@outlook.fr
-Telephone; +229 62619517
 
-Please re-confirm your address to him once again such as listed below.
-Your Full Name____________
-Address___________
-Country____________
-Sex____________
-Occupation_____________
-Copy of your ID_____________
+Bart,
 
-This is to avoid sending your funds to wrong person.
-He is waiting to hear from you urgent today.
-Let me know once you pick up your transfer $5000.00 today.
-Finally, Note I have paid for the service fees, but only money will
-send to him is $90.00 transfer fee before you can pick up the transfer
-today.
-Ask, Mr. John Dave Director, Money Gram to give you direction where to
-send the fee to Him Immediately today.
+> Since it is nontrivial to derive the meaning of the size argument from
+> the code, add a documentation header above target_cmd_size_check().
 
-Thanks for undrstanding.
-Mary Coster
-m.coster@aol.com
+Applied to 5.5/scsi-queue. Thanks!
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
