@@ -2,88 +2,117 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ABC2D1031D9
-	for <lists+target-devel@lfdr.de>; Wed, 20 Nov 2019 04:02:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC01F104675
+	for <lists+target-devel@lfdr.de>; Wed, 20 Nov 2019 23:27:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727389AbfKTDCp (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 19 Nov 2019 22:02:45 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:34550 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727378AbfKTDCp (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Tue, 19 Nov 2019 22:02:45 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAK2xLgD009167;
-        Wed, 20 Nov 2019 03:02:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2019-08-05;
- bh=zXtVuaco0uWZR42rEY3RPDY+ZTdxw5TaBiW1PSHChz8=;
- b=VIi7hq55xJAxAZMdPC/SaIVvuvXcmW2JoHFY92nB0o9NcYa3RpmE2MBgfrTFHhETISAO
- cCW7umzMTGs6QIhKin9Qsj7WT4hhecqXlnzeT41kgDysSKVadpK6ygADBfbhsEi9WyBJ
- N/Bz0kqfQ23zjgGxfJZA7hTnMUaYbWT35Oxl3e5vPRwf67G3JhI78PUcDGwFznUS5CGP
- gXQC6biKD88npkCWSbhy4fyYeqbR5L+gNX/4DQNV3AkFXm5eMMP/j6ipYHO4L9j/ufXp
- 9tjDZtcdWfzpT5VEm5epWtk7dDLcrn8/pe1zHRnwY/oUsHL2gH9VqrgwxysNHX6NiEDM IQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 2wa92ptsg4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 20 Nov 2019 03:02:24 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAK2xDPH171239;
-        Wed, 20 Nov 2019 03:02:24 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 2wcemcx325-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 20 Nov 2019 03:02:24 +0000
-Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xAK32Nkk017013;
-        Wed, 20 Nov 2019 03:02:23 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 19 Nov 2019 19:02:23 -0800
-To:     Bart Van Assche <bvanassche@acm.org>
-Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Mike Christie <mchristie@redhat.com>,
-        Christoph Hellwig <hch@lst.de>, target-devel@vger.kernel.org
-Subject: Re: [PATCH] target: Fix a pr_debug() argument
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20191107215525.64415-1-bvanassche@acm.org>
-        <yq1blt8ig6u.fsf@oracle.com>
-        <adc67030-d7fd-ba31-3f7a-063650b43f10@acm.org>
-Date:   Tue, 19 Nov 2019 22:02:21 -0500
-In-Reply-To: <adc67030-d7fd-ba31-3f7a-063650b43f10@acm.org> (Bart Van Assche's
-        message of "Tue, 19 Nov 2019 08:30:47 -0800")
-Message-ID: <yq1lfsbfdxe.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+        id S1726620AbfKTW1k (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 20 Nov 2019 17:27:40 -0500
+Received: from mta-02.yadro.com ([89.207.88.252]:51248 "EHLO mta-01.yadro.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725819AbfKTW1j (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Wed, 20 Nov 2019 17:27:39 -0500
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id E654F43D12;
+        Wed, 20 Nov 2019 22:27:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        content-type:content-type:content-transfer-encoding:mime-version
+        :x-mailer:message-id:date:date:subject:subject:from:from
+        :received:received:received; s=mta-01; t=1574288851; x=
+        1576103252; bh=BUOgcCgUHGsp/FBw6h0eudYzsLfCg4Zgq+WxQ+kKXqo=; b=q
+        cUAZ4C0EZ+rvGfRrk+HN0XVLP9EayZp+pETHp6VegRPvOH+tDqP5KIYeeYjsLpAk
+        wS5N2KSUl78x4iUBSfyDx+kmL3HOAVxva4fhGSIvBgQxSeP4z2KxC30DdOinht8f
+        MxdNoP2JjZWaJy4flMpGZxZNVT4S6mYwvRZ5oNbYuU=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id zLuLj2aVMzsi; Thu, 21 Nov 2019 01:27:31 +0300 (MSK)
+Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com [172.17.10.102])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mta-01.yadro.com (Postfix) with ESMTPS id 7713842004;
+        Thu, 21 Nov 2019 01:27:31 +0300 (MSK)
+Received: from localhost (172.17.128.60) by T-EXCH-02.corp.yadro.com
+ (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Thu, 21
+ Nov 2019 01:27:31 +0300
+From:   Roman Bolshakov <r.bolshakov@yadro.com>
+To:     <linux-scsi@vger.kernel.org>, <target-devel@vger.kernel.org>
+CC:     <linux@yadro.com>, Roman Bolshakov <r.bolshakov@yadro.com>
+Subject: [PATCH v2 00/15] scsi: qla2xxx: Bug fixes
+Date:   Thu, 21 Nov 2019 01:27:08 +0300
+Message-ID: <20191120222723.27779-1-r.bolshakov@yadro.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9446 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=859
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-1911200026
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9446 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=945 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-1911200026
+X-Originating-IP: [172.17.128.60]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-02.corp.yadro.com (172.17.10.102)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
 
-Bart,
+Hi Martin,
 
-> With CONFIG_DYNAMIC_DEBUG=y, the output of pr_debug() statements is
-> controlled by the settings in
-> /sys/kernel/debug/dynamic_debug/control.
+The patch series contains fixes for qla2xxx and solves two visible
+issues:
+  - Target port in N2N topology doesn't perform login if it has higher
+    WWPN than initiator
+  - ABORT TASK TMF leads to crash if it's received shortly after ACL of
+    an initiator is deleted and there's active I/O from the initiator
 
-OK.
+It also contains reliability improvements and cleanups.
 
-Applied to 5.5/scsi-queue, thanks.
+Unfortunately, there's still an issue the latest patch. The discard
+works but ELS IOCB for LOGO is likely built incorrectly by
+qla24xx_els_dcmd_iocb(). The issue can also be exposed when "1" is
+written to fc_host/hostN/device/issue_logo file with logging turned on.
+
+Changes since v1 (https://patchwork.kernel.org/cover/11141979/):
+- Fixes target port in N2N mode were added (patches 5-11);
+- Target port makes explicit LOGO on session teardown in the patch made
+  by Quinn. Together with patch 1, it helps to immediately turn
+  fc_remote_port to the Blocked stated on client side and avoids visibly
+  stuck session;
+- The last three patches address violation of FCP specification with
+  regards to handling of ABTS-LS from ports that are not currently
+  logged in.
+
+Thank you,
+Roman
+
+Quinn Tran (1):
+  scsi: qla2xxx: Use explicit LOGO in target mode
+
+Roman Bolshakov (14):
+  scsi: qla2xxx: Ignore NULL pointer in tcm_qla2xxx_free_mcmd
+  scsi: qla2xxx: Initialize free_work before flushing it
+  scsi: qla2xxx: Drop superfluous INIT_WORK of del_work
+  scsi: qla2xxx: Change discovery state before PLOGI
+  scsi: qla2xxx: Allow PLOGI in target mode
+  scsi: qla2xxx: Don't call qlt_async_event twice
+  scsi: qla2xxx: Fix PLOGI payload and ELS IOCB dump length
+  scsi: qla2xxx: Configure local loop for N2N target
+  scsi: qla2xxx: Send Notify ACK after N2N PLOGI
+  scsi: qla2xxx: Don't defer relogin unconditonally
+  scsi: qla2xxx: Ignore PORT UPDATE after N2N PLOGI
+  scsi: qla2xxx: Add async mode for qla24xx_els_dcmd_iocb
+  scsi: qla2xxx: Add debug dump of LOGO payload and ELS IOCB
+  scsi: qla2xxx: Handle ABTS according to FCP spec for logged out ports
+
+ drivers/scsi/qla2xxx/qla_attr.c    |  2 +-
+ drivers/scsi/qla2xxx/qla_def.h     |  1 +
+ drivers/scsi/qla2xxx/qla_gbl.h     |  2 +-
+ drivers/scsi/qla2xxx/qla_init.c    | 21 ++++++---------
+ drivers/scsi/qla2xxx/qla_iocb.c    | 42 ++++++++++++++++++++++++------
+ drivers/scsi/qla2xxx/qla_isr.c     |  4 ---
+ drivers/scsi/qla2xxx/qla_mbx.c     |  3 ++-
+ drivers/scsi/qla2xxx/qla_target.c  | 34 ++++++++++++++++--------
+ drivers/scsi/qla2xxx/tcm_qla2xxx.c |  3 +++
+ 9 files changed, 73 insertions(+), 39 deletions(-)
 
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+2.24.0
+
