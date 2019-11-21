@@ -2,142 +2,231 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6F26105741
-	for <lists+target-devel@lfdr.de>; Thu, 21 Nov 2019 17:40:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90D21105CDE
+	for <lists+target-devel@lfdr.de>; Thu, 21 Nov 2019 23:51:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726546AbfKUQkj (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 21 Nov 2019 11:40:39 -0500
-Received: from mx0b-0016f401.pphosted.com ([67.231.156.173]:2232 "EHLO
-        mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726279AbfKUQkj (ORCPT
+        id S1726548AbfKUWvC (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 21 Nov 2019 17:51:02 -0500
+Received: from mx0a-0016f401.pphosted.com ([67.231.148.174]:44120 "EHLO
+        mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726351AbfKUWvC (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 21 Nov 2019 11:40:39 -0500
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-        by mx0b-0016f401.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xALGdtVk000499;
-        Thu, 21 Nov 2019 08:40:37 -0800
+        Thu, 21 Nov 2019 17:51:02 -0500
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+        by mx0a-0016f401.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xALMoOYO008606;
+        Thu, 21 Nov 2019 14:51:01 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=from : to : cc :
  subject : date : message-id : references : in-reply-to : content-type :
- content-id : content-transfer-encoding : mime-version; s=pfpt0818;
- bh=S4zd1xvEdYgbYzYUCSei82q2XKMMZV6PlctQKpgBgdM=;
- b=He5w6PpJ1hQtKrLkGZU491axoPKR/DFo3741gRbZLDaHB400DBbuwxsZy0heOpcmRrYR
- ht8aeb/VLohq85btJ7gR790al4ayI2ZoSMfJ7ejbKvcBvYiuBpUIFb5BGu81kspfzBRo
- bfWVfZ052wetgpnqexIfbCM7e6OIlCOd4yR7Yz2YVXYN4vmR4/h6u1eXgr0HvEP8nKcU
- adjG/5zLrViRaoZqTwWXb3Wb6bLYFNqBiQ5002jD9gIfLUkmslwZWZuoM1jAli0BZkiy
- 9/9appP1siLMvawKD8LdvaeGhGTZJC2FuTci3QkhVL5bkKm0AQFnmAhXmUGIkRXz8tI3 Kg== 
-Received: from sc-exch04.marvell.com ([199.233.58.184])
-        by mx0b-0016f401.pphosted.com with ESMTP id 2wd090yvgg-1
+ content-transfer-encoding : mime-version; s=pfpt0818;
+ bh=QOTs5Len0w8YPy2wjeqGqioOcpQmLtaSxcj4kBhDKN0=;
+ b=PHLgzlse1mDMAbjGVgztSac26WLXvdHkpdvbq1PvhrBElN6SKclJvkaSMqWc4r7si+ID
+ eVP/R/Fl8PuMqlz26UId2eMN0X8q3FlHavoRGeOh0tsRNkD3tItr98eQUV9PJx7LK0NL
+ rFln5dS0FRsG8Ok6bkG8MeifQNfron3G5lIr4edE8J1sbpEniV0TggzLuiym8IMGWnjL
+ 4+T8C9+bWxi4TDc82VbELEwK/jf7HFstIZs0wIe44hxEuwjMQJxM2qUIvYhHawGW9lhZ
+ G54G5VdQHuIa5I8zPgN8l3q0otYMG5GPNW4roCNu1l9PUCdNaQQfHiqK2nfdNpCri/3B Xg== 
+Received: from sc-exch02.marvell.com ([199.233.58.182])
+        by mx0a-0016f401.pphosted.com with ESMTP id 2wc842g5m3-2
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Thu, 21 Nov 2019 08:40:36 -0800
-Received: from SC-EXCH02.marvell.com (10.93.176.82) by SC-EXCH04.marvell.com
- (10.93.176.84) with Microsoft SMTP Server (TLS) id 15.0.1367.3; Thu, 21 Nov
- 2019 08:40:34 -0800
-Received: from NAM03-CO1-obe.outbound.protection.outlook.com (104.47.40.59) by
+        Thu, 21 Nov 2019 14:51:01 -0800
+Received: from SC-EXCH02.marvell.com (10.93.176.82) by SC-EXCH02.marvell.com
+ (10.93.176.82) with Microsoft SMTP Server (TLS) id 15.0.1367.3; Thu, 21 Nov
+ 2019 14:50:59 -0800
+Received: from NAM05-CO1-obe.outbound.protection.outlook.com (104.47.48.58) by
  SC-EXCH02.marvell.com (10.93.176.82) with Microsoft SMTP Server (TLS) id
- 15.0.1367.3 via Frontend Transport; Thu, 21 Nov 2019 08:40:34 -0800
+ 15.0.1367.3 via Frontend Transport; Thu, 21 Nov 2019 14:50:59 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aQM8ty7bnQ02ZHtZnZeuWjqWjHmkMnnZaJEVB7XW23+wH8GsP6xgboihGG/rtqPFsv+M0sif8C2QplKuPJ7vlN1UHqWUmYgjEJXIyA5U4FAksxFN7dsTBcQwEYAQkK+Q8RJCUIfnG8smYVdZhu+qFiHDb7w+gbeh/Mvz7nSEOKIeVY3nB0q0F329VONGI0VxX0Kd+seW7SASL4yZh8k+fx1OurYNXzz93q38VWeXnPCJ987J2xczJOWHaYKMUjjhzoC/cg5wIJqm9eLmLC6iWZ7rkOtMac254wWVhcqvRSs51EDzRGIU3vT/aa9BLUq3glLhzq1akLOXqJOMp6+MWA==
+ b=LTD2/8+XgN1msbiE/tkEfhh5BGZ7jpNfB6uUvdTRz991muPuVAQFEaKHe9CauvNvgy9S0vfzk7UzksX1IxO60WE9Ln66uaKckcVQnzZkp/NDVywb50X++Fg21JBiqRB8F3BPTPhjdGUZ07o766m8wG7nzCRWqLmCk1xp+PERC3vgACEAwEO7+zXV8N32QpLVG91m8lLOq16v0Mk1PPWl8xMGCQChZZhYt88QCZJe4vC9OtNvqLOZ/ByQ0y1oTF4Xn1iiUyTTUWmZ2rHWNxQCkG7d1pVRna5dtXmXYRPu2ArxFqi6ZqY3oJXcEGFqMTYDlarZCiPV/Iz0n3jnnboYPQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S4zd1xvEdYgbYzYUCSei82q2XKMMZV6PlctQKpgBgdM=;
- b=Hq/OqMwYN8hA+6K2qVAeKjiI4frxcoTMctuZTb+57MLIOP9oHNm4rUIbzBMSpRuWM0pIuh4Jb5mPGVhXTdfsY2wiogAJH+DJ+sqLGj/ZlzNMdLPDe3d42tz/btEYvz0/qiMzLTydbPExkHkxeD78m5HrlazJBi/kzHKEkCW0COdIcla5EAQciZRryn5SCWC8yuw4G4erJ7PucdP4TBMkcbSMG61chFHJcnEhSdulJv94UTwMBTrwka5JW4BmNQEO7OvwsJV6F0q0p1kFUh2YQ6ZDH/PBa7jtAI1xG+rsxxp7Ie1+lHFRqA73qR8LwOYCjUa+WslpJKdVW1b5uRjdwQ==
+ bh=QOTs5Len0w8YPy2wjeqGqioOcpQmLtaSxcj4kBhDKN0=;
+ b=CFuHRDx4PV48p6Su31L5pYV3mbmhh56BPlQGWgHCFXuc14D58NFXjZENnI4U8iswxrhFYuAr6e/J38qiFowcGPPwddZJrziU+ScbOJEOVOMDBix0ehs33fIalwlQ1/gzkA5wKbQmQHhGMg5ormbv0ghSJK0D7p9JAdhm5fWF1H6Vz8m83QchO1yN0cAbsJo3HFnV76NjulwNF87xDWO5HWoFBN+EDSJ+SYgWD5aYPxXT2+J05urzCeAd0+XJGuiPoEBeMpGxGvcms2RwOaHa14PnIJN9ArwDdWYJOjzOIv7UIeviraJc4z5Pw7PQpM++JntUWDrlbLVwN8YoCQ57Ag==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
  dkim=pass header.d=marvell.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=marvell.onmicrosoft.com; s=selector1-marvell-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S4zd1xvEdYgbYzYUCSei82q2XKMMZV6PlctQKpgBgdM=;
- b=Uos1YjC1QAOG4OV/nL3iQPfEOArn2OiNutobxOVsJZOAsMsfJPh50La7+hfxA4xp2FsABdXwxtjOMzGQSGjKC2knAElL3S7WqkanIVTQgubT9fqDVGVrI2PvRvAsfhSv8WJ7bzI8sL6basM8qBkd+MTpUwL+LfGYBe9+MUgvM2s=
-Received: from MN2PR18MB2719.namprd18.prod.outlook.com (20.178.255.156) by
- MN2PR18MB2989.namprd18.prod.outlook.com (20.179.23.97) with Microsoft SMTP
+ bh=QOTs5Len0w8YPy2wjeqGqioOcpQmLtaSxcj4kBhDKN0=;
+ b=c12VNdr4xIBjzQaDAppBAE7DGPdinCC0HLDtYeUJcBwOnTHgaR0dXtzNFDJNTP9/DdkIChgZQ6s6xFP6WIbzWB2yAeCZh3DQwtYk2y6wt0/zdQXnQ/hnBIHFULAn/dynAmgZs6Ttk3VEgvo3Ivl83lzYS6JXWGqADjvyaF2R5rM=
+Received: from BYAPR18MB2759.namprd18.prod.outlook.com (20.179.58.88) by
+ BYAPR18MB2855.namprd18.prod.outlook.com (20.179.58.81) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2451.27; Thu, 21 Nov 2019 16:40:33 +0000
-Received: from MN2PR18MB2719.namprd18.prod.outlook.com
- ([fe80::1435:34ad:dbff:5089]) by MN2PR18MB2719.namprd18.prod.outlook.com
- ([fe80::1435:34ad:dbff:5089%7]) with mapi id 15.20.2451.031; Thu, 21 Nov 2019
- 16:40:33 +0000
-From:   Himanshu Madhani <hmadhani@marvell.com>
+ 15.20.2474.19; Thu, 21 Nov 2019 22:50:58 +0000
+Received: from BYAPR18MB2759.namprd18.prod.outlook.com
+ ([fe80::5907:fd6e:ff93:426b]) by BYAPR18MB2759.namprd18.prod.outlook.com
+ ([fe80::5907:fd6e:ff93:426b%7]) with mapi id 15.20.2451.031; Thu, 21 Nov 2019
+ 22:50:58 +0000
+From:   Quinn Tran <qutran@marvell.com>
 To:     Roman Bolshakov <r.bolshakov@yadro.com>,
         "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
         "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>
-CC:     "linux@yadro.com" <linux@yadro.com>,
-        Quinn Tran <qutran@marvell.com>,
-        Krishna Kant <krishna.kant@purestorage.com>,
-        Alexei Potashnik <alexei@purestorage.com>
-Subject: Re: [EXT] [PATCH v2 09/15] scsi: qla2xxx: Send Notify ACK after N2N
- PLOGI
-Thread-Topic: [EXT] [PATCH v2 09/15] scsi: qla2xxx: Send Notify ACK after N2N
- PLOGI
-Thread-Index: AQHVn/HAxV3ncctqIU2TmTP051abXqeVcE8A
-Date:   Thu, 21 Nov 2019 16:40:33 +0000
-Message-ID: <BB852933-3398-4CB2-8F59-96680F6A5E87@marvell.com>
+CC:     "linux@yadro.com" <linux@yadro.com>
+Subject: RE: [EXT] [PATCH v2 13/15] scsi: qla2xxx: Add async mode for
+ qla24xx_els_dcmd_iocb
+Thread-Topic: [EXT] [PATCH v2 13/15] scsi: qla2xxx: Add async mode for
+ qla24xx_els_dcmd_iocb
+Thread-Index: AQHVn/HNnHFaS7vbK06G1KxyqGbBA6eWPDug
+Date:   Thu, 21 Nov 2019 22:50:58 +0000
+Message-ID: <BYAPR18MB2759E4C4CDDA0D5447D7A5BDD54E0@BYAPR18MB2759.namprd18.prod.outlook.com>
 References: <20191120222723.27779-1-r.bolshakov@yadro.com>
- <20191120222723.27779-10-r.bolshakov@yadro.com>
-In-Reply-To: <20191120222723.27779-10-r.bolshakov@yadro.com>
+ <20191120222723.27779-14-r.bolshakov@yadro.com>
+In-Reply-To: <20191120222723.27779-14-r.bolshakov@yadro.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-user-agent: Microsoft-MacOutlook/10.1f.0.191110
-x-originating-ip: [2600:1700:211:eb30:e5e4:c939:a3a3:4c5b]
+x-originating-ip: [198.186.1.5]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 5324a0c8-30e5-4ee0-8a06-08d76ea18727
-x-ms-traffictypediagnostic: MN2PR18MB2989:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <MN2PR18MB2989DE6808000B2AE4613507D64E0@MN2PR18MB2989.namprd18.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:3173;
+x-ms-office365-filtering-correlation-id: 2da7d900-07cc-4b6b-4599-08d76ed5465c
+x-ms-traffictypediagnostic: BYAPR18MB2855:
+x-microsoft-antispam-prvs: <BYAPR18MB2855B0FC33B1B696D2198775D54E0@BYAPR18MB2855.namprd18.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:3826;
 x-forefront-prvs: 0228DDDDD7
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(396003)(366004)(136003)(39860400002)(346002)(376002)(189003)(199004)(91956017)(5660300002)(6436002)(186003)(76116006)(305945005)(2501003)(33656002)(7736002)(71200400001)(71190400001)(6486002)(86362001)(8936002)(14444005)(6512007)(256004)(2616005)(102836004)(6116002)(58126008)(36756003)(6506007)(508600001)(2906002)(54906003)(25786009)(99286004)(8676002)(76176011)(46003)(14454004)(110136005)(2201001)(229853002)(4326008)(81166006)(66446008)(66556008)(6246003)(446003)(66946007)(316002)(66476007)(11346002)(81156014)(64756008);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR18MB2989;H:MN2PR18MB2719.namprd18.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(366004)(346002)(376002)(396003)(136003)(39850400004)(199004)(189003)(13464003)(6246003)(2906002)(186003)(26005)(6116002)(3846002)(2201001)(66476007)(229853002)(86362001)(102836004)(4326008)(66446008)(66946007)(76116006)(66556008)(64756008)(14454004)(33656002)(446003)(25786009)(11346002)(76176011)(6506007)(53546011)(478600001)(316002)(7696005)(71200400001)(71190400001)(110136005)(52536014)(81156014)(81166006)(8936002)(8676002)(9686003)(2501003)(7736002)(99286004)(6436002)(305945005)(74316002)(256004)(14444005)(5660300002)(55016002)(66066001);DIR:OUT;SFP:1101;SCL:1;SRVR:BYAPR18MB2855;H:BYAPR18MB2759.namprd18.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: marvell.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: t+uR8teZiyhUspgd7Pywo8YcvRS5SamJpGGckMCJEZDkTGbakuJjA9eeVDUlvYuD18Y/4O2f+6vu2iIMyM6VRPqtAx9xfYGDc7MNuj8B5FwMYe6k2CVjb44ZTCiHzn5bavyQXfnqnu9BZ8rAtSc2riQXZ2zVZMYzXzUzIrT+16nSnJcYeQ/xoshaGyLiUbcgMTXNC+GWfHqU3FfuCLD1q604bJo2f4MPfCL7f4Ee+qqRzeW5sqp4SjXsDRdks9Zp6lQ1MYQFkHxYFIdf3zySE1fvxV/uCNF+P8vH+wBHqpL1ApOsuMfXKbaf5m4ny5LnV//jKXIIe3TydYZzvLrAJ1fnsBZ5hK+nSKnx0Bt8qujHmrEhZgx96BzFDAVjPqLJaklLe+7xLe2R5WJutlreea0ITszgNFJBf3puDERFtoZ86JfO6p08phMyIKZFEimD
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <A9FC11598770F844AE49AC8B5B155888@namprd18.prod.outlook.com>
-Content-Transfer-Encoding: base64
+x-microsoft-antispam-message-info: 87Ncs/v0gP5YYulO+Yvgf+Gfov3myPBwwZOaaxkagKrow0QFyejYoubxtKu/bUUbFL9e8NB4hPP5Gt2f0iY4XHEsjzFaevSXeOKWtvWzY0wG6fBEFUiMq8Sfurr3nZtVjeBVXfZK5t6ysh4TTsAGcSkVkVaztZrPE7WCKLRH4DUyZyR7Nf2LQcgGeaafntThez7eLNIiRdX/7MQT7BsKnEFu5GAafjvKpsK1P5aBCWbWeLs2HyN4RGci3R+KgqmYoKBlOG0gdH54fgcssm3bU5vA9N8Xtw4sIkUziRzM8Hd5Hfotvl0wxCi3sc4pqPB3T8IVwi7PuzIVS/4jOzo1xQVVUEmcjTQf5+KH8uBx1ac6PnHFIWpLYi740dvzI1ZKxMA6a51jXvCwLubBB2HX/I5s1m6ipkJvzNgDiDr3mKQw0ijsIeFzjCn/XKCaNyEv
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5324a0c8-30e5-4ee0-8a06-08d76ea18727
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Nov 2019 16:40:33.0481
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2da7d900-07cc-4b6b-4599-08d76ed5465c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Nov 2019 22:50:58.2197
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: zHIQMF42/ubwHwPrTyr0BC98PqKfGYbfF1HpIbtjFCvSidVcjdjGqjOjdinM14lKgKRuOyuuVyVbc8vhsBf+qw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR18MB2989
+X-MS-Exchange-CrossTenant-userprincipalname: UE5W4TkXwHcgnyUZMEmbgwgaXvb/AZ1aX9kn8yCUKU91Q3P2bIANMtsclaIS9yBc1RgjyzntZIYisIyKWfwl6w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR18MB2855
 X-OriginatorOrg: marvell.com
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-11-21_04:2019-11-21,2019-11-21 signatures=0
+ definitions=2019-11-21_06:2019-11-21,2019-11-21 signatures=0
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-DQoNCu+7v09uIDExLzIwLzE5LCA0OjI3IFBNLCAiUm9tYW4gQm9sc2hha292IiA8ci5ib2xzaGFr
-b3ZAeWFkcm8uY29tPiB3cm90ZToNCg0KICAgIEV4dGVybmFsIEVtYWlsDQogICAgDQogICAgLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLQ0KICAgIHFsdF9oYW5kbGVfbG9naW4gc2NoZWR1bGVzIHNlc3Npb24gZm9yIGRl
-bGV0aW9uIGV2ZW4gaWYgYSBsb2dpbiBpcyBpbg0KICAgIHByb2dyZXNzLiBUaGF0IGNhdXNlcyBs
-b2dpbiBib3VuY2luZywgaS5lLiBhIGZldyBsb2dpbnMgYXJlIG1hZGUgYmVmb3JlDQogICAgaXQg
-c2V0dGxlcyBkb3duLg0KICAgIA0KICAgIENvbXBsZXRlIHRoZSBmaXJzdCBsb2dpbiBieSBzZW5k
-aW5nIE5vdGlmeSBBY2tub3dsZWRnZSBJT0NCIHZpYQ0KICAgIHFsdF9wbG9naV9hY2tfdW5yZWYg
-aWYgdGhlIHNlc3Npb24gaXMgcGVuZGluZyBsb2dpbiBjb21wbGV0aW9uLg0KICAgIA0KICAgIEZp
-eGVzOiA5Y2Q4ODNmMDdhNTQgKCJzY3NpOiBxbGEyeHh4OiBGaXggc2Vzc2lvbiBjbGVhbnVwIGZv
-ciBOMk4iKQ0KICAgIENjOiBRdWlubiBUcmFuIDxxdXRyYW5AbWFydmVsbC5jb20+DQogICAgQ2M6
-IEhpbWFuc2h1IE1hZGhhbmkgPGhtYWRoYW5pQG1hcnZlbGwuY29tPg0KICAgIENjOiBLcmlzaG5h
-IEthbnQgPGtyaXNobmEua2FudEBwdXJlc3RvcmFnZS5jb20+DQogICAgQ2M6IEFsZXhlaSBQb3Rh
-c2huaWsgPGFsZXhlaUBwdXJlc3RvcmFnZS5jb20+DQogICAgU2lnbmVkLW9mZi1ieTogUm9tYW4g
-Qm9sc2hha292IDxyLmJvbHNoYWtvdkB5YWRyby5jb20+DQogICAgLS0tDQogICAgIGRyaXZlcnMv
-c2NzaS9xbGEyeHh4L3FsYV90YXJnZXQuYyB8IDEgKw0KICAgICAxIGZpbGUgY2hhbmdlZCwgMSBp
-bnNlcnRpb24oKykNCiAgICANCiAgICBkaWZmIC0tZ2l0IGEvZHJpdmVycy9zY3NpL3FsYTJ4eHgv
-cWxhX3RhcmdldC5jIGIvZHJpdmVycy9zY3NpL3FsYTJ4eHgvcWxhX3RhcmdldC5jDQogICAgaW5k
-ZXggYWI2MmZjYmE4YWIzLi44NTNmYTE4N2Q4MjcgMTAwNjQ0DQogICAgLS0tIGEvZHJpdmVycy9z
-Y3NpL3FsYTJ4eHgvcWxhX3RhcmdldC5jDQogICAgKysrIGIvZHJpdmVycy9zY3NpL3FsYTJ4eHgv
-cWxhX3RhcmdldC5jDQogICAgQEAgLTQ4MDIsNiArNDgwMiw3IEBAIHN0YXRpYyBpbnQgcWx0X2hh
-bmRsZV9sb2dpbihzdHJ1Y3Qgc2NzaV9xbGFfaG9zdCAqdmhhLA0KICAgICANCiAgICAgCXN3aXRj
-aCAoc2Vzcy0+ZGlzY19zdGF0ZSkgew0KICAgICAJY2FzZSBEU0NfREVMRVRFRDoNCiAgICArCWNh
-c2UgRFNDX0xPR0lOX1BFTkQ6DQogICAgIAkJcWx0X3Bsb2dpX2Fja191bnJlZih2aGEsIHBsYSk7
-DQogICAgIAkJYnJlYWs7DQogICAgIA0KICAgIC0tIA0KICAgIDIuMjQuMA0KICAgIA0KICAgIA0K
-TG9va3MgR29vZC4gDQoNCkFja2VkLWJ5OiBIaW1hbnNodSBNYWRoYW5pIDxobWFkaGFuaUBtYXJ2
-ZWxsLmNvbT4NCg0K
+Looks good.
+
+Acked-by: Quinn Tran <qutran@marvell.com>
+
+
+Regards,
+Quinn Tran
+
+-----Original Message-----
+From: Roman Bolshakov <r.bolshakov@yadro.com>=20
+Sent: Wednesday, November 20, 2019 2:27 PM
+To: linux-scsi@vger.kernel.org; target-devel@vger.kernel.org
+Cc: linux@yadro.com; Roman Bolshakov <r.bolshakov@yadro.com>; Quinn Tran <q=
+utran@marvell.com>
+Subject: [EXT] [PATCH v2 13/15] scsi: qla2xxx: Add async mode for qla24xx_e=
+ls_dcmd_iocb
+
+External Email
+
+----------------------------------------------------------------------
+qla24xx_els_dcmd_iocb() performs LOGO and might be invoked in contexts wher=
+e it is prohibited to sleep. The new wait parameter provides a way to use t=
+he function in such context, similarly to qla24xx_els_dcmd2_iocb().
+
+Cc: Quinn Tran <qutran@marvell.com>
+Cc: Himanshu Madhani <hmadhani@marvell.com
+Signed-off-by: Roman Bolshakov <r.bolshakov@yadro.com>
+---
+ drivers/scsi/qla2xxx/qla_attr.c   |  2 +-
+ drivers/scsi/qla2xxx/qla_gbl.h    |  2 +-
+ drivers/scsi/qla2xxx/qla_iocb.c   | 11 +++++++++--
+ drivers/scsi/qla2xxx/qla_target.c |  2 +-
+ 4 files changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/scsi/qla2xxx/qla_attr.c b/drivers/scsi/qla2xxx/qla_att=
+r.c index 481c05dbea06..35c703ec59ad 100644
+--- a/drivers/scsi/qla2xxx/qla_attr.c
++++ b/drivers/scsi/qla2xxx/qla_attr.c
+@@ -828,7 +828,7 @@ qla2x00_issue_logo(struct file *filp, struct kobject *k=
+obj,
+=20
+ 	ql_log(ql_log_info, vha, 0x70e4, "%s: %d\n", __func__, type);
+=20
+-	qla24xx_els_dcmd_iocb(vha, ELS_DCMD_LOGO, did);
++	qla24xx_els_dcmd_iocb(vha, ELS_DCMD_LOGO, did, true);
+ 	return count;
+ }
+=20
+diff --git a/drivers/scsi/qla2xxx/qla_gbl.h b/drivers/scsi/qla2xxx/qla_gbl.=
+h index 5b163ad85c34..df0f3421e3bb 100644
+--- a/drivers/scsi/qla2xxx/qla_gbl.h
++++ b/drivers/scsi/qla2xxx/qla_gbl.h
+@@ -43,7 +43,7 @@ extern void qla2x00_clear_loop_id(fc_port_t *fcport);  ex=
+tern int qla2x00_fabric_login(scsi_qla_host_t *, fc_port_t *, uint16_t *); =
+ extern int qla2x00_local_device_login(scsi_qla_host_t *, fc_port_t *);
+=20
+-extern int qla24xx_els_dcmd_iocb(scsi_qla_host_t *, int, port_id_t);
++extern int qla24xx_els_dcmd_iocb(scsi_qla_host_t *, int, port_id_t,=20
++bool);
+ extern int qla24xx_els_dcmd2_iocb(scsi_qla_host_t *, int, fc_port_t *, boo=
+l);  extern void qla2x00_els_dcmd2_free(scsi_qla_host_t *vha,
+ 				   struct els_plogi *els_plogi);
+diff --git a/drivers/scsi/qla2xxx/qla_iocb.c b/drivers/scsi/qla2xxx/qla_ioc=
+b.c index 53ccbd6b71ed..12b37b711ae8 100644
+--- a/drivers/scsi/qla2xxx/qla_iocb.c
++++ b/drivers/scsi/qla2xxx/qla_iocb.c
+@@ -2562,7 +2562,7 @@ static void qla2x00_els_dcmd_sp_done(srb_t *sp, int r=
+es)
+=20
+ int
+ qla24xx_els_dcmd_iocb(scsi_qla_host_t *vha, int els_opcode,
+-    port_id_t remote_did)
++    port_id_t remote_did, bool wait)
+ {
+ 	srb_t *sp;
+ 	fc_port_t *fcport =3D NULL;
+@@ -2601,6 +2601,8 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *vha, int els_o=
+pcode,
+ 	elsio->timeout =3D qla2x00_els_dcmd_iocb_timeout;
+ 	qla2x00_init_timer(sp, ELS_DCMD_TIMEOUT);
+ 	init_completion(&sp->u.iocb_cmd.u.els_logo.comp);
++	if (wait)
++		sp->flags =3D SRB_WAKEUP_ON_COMP;
+ 	sp->done =3D qla2x00_els_dcmd_sp_done;
+ 	sp->free =3D qla2x00_els_dcmd_sp_free;
+=20
+@@ -2637,9 +2639,14 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *vha, int els_=
+opcode,
+ 	    sp->name, sp->handle, fcport->loop_id, fcport->d_id.b.domain,
+ 	    fcport->d_id.b.area, fcport->d_id.b.al_pa);
+=20
+-	wait_for_completion(&elsio->u.els_logo.comp);
++	if (wait) {
++		wait_for_completion(&elsio->u.els_logo.comp);
++	} else {
++		goto done;
++	}
+=20
+ 	sp->free(sp);
++done:
+ 	return rval;
+ }
+=20
+diff --git a/drivers/scsi/qla2xxx/qla_target.c b/drivers/scsi/qla2xxx/qla_t=
+arget.c
+index 68c14143e50e..0f2bc4cd562f 100644
+--- a/drivers/scsi/qla2xxx/qla_target.c
++++ b/drivers/scsi/qla2xxx/qla_target.c
+@@ -932,7 +932,7 @@ qlt_send_first_logo(struct scsi_qla_host *vha, qlt_port=
+_logo_t *logo)
+=20
+ 	mutex_unlock(&vha->vha_tgt.tgt_mutex);
+=20
+-	res =3D qla24xx_els_dcmd_iocb(vha, ELS_DCMD_LOGO, logo->id);
++	res =3D qla24xx_els_dcmd_iocb(vha, ELS_DCMD_LOGO, logo->id, true);
+=20
+ 	mutex_lock(&vha->vha_tgt.tgt_mutex);
+ 	list_del(&logo->list);
+--
+2.24.0
+
