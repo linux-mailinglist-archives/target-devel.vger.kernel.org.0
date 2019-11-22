@@ -2,27 +2,27 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 423D0105FD1
-	for <lists+target-devel@lfdr.de>; Fri, 22 Nov 2019 06:28:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5031D105FE1
+	for <lists+target-devel@lfdr.de>; Fri, 22 Nov 2019 06:28:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726529AbfKVF1o (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 22 Nov 2019 00:27:44 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46030 "EHLO mail.kernel.org"
+        id S1726546AbfKVF2k (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 22 Nov 2019 00:28:40 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46630 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726018AbfKVF1o (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Fri, 22 Nov 2019 00:27:44 -0500
+        id S1726417AbfKVF2k (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Fri, 22 Nov 2019 00:28:40 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 739F120707;
-        Fri, 22 Nov 2019 05:27:42 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 82B7820707;
+        Fri, 22 Nov 2019 05:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574400463;
+        s=default; t=1574400519;
         bh=4UX+CxSvf6A7dtQ3cbPv4or4ULQtD3+cNrsIJxvQDp8=;
         h=From:To:Cc:Subject:Date:From;
-        b=UBJX3dUm/OaLPvv9GWUAR/fJe4aqN0awv/iKhrHVlLTnNZafj7piw7DBm50ZKmVMb
-         pSfo6I7XGyIWXLqBs4hynBOheZM1BykLRyX9clu7YiuwUxiMK69g1pnIWBzRCQOfme
-         ivH0lFHpMQRUvGBqUCUOZxAZ4CvcafWgWYC47VBo=
+        b=vr2+MJ2b+zb3jgLdybeaBVVH/ztoImh8lzh6d3FrSqYIg8BiZ9GaW/Hpoi3N+LelI
+         3Uf6dqGb4HMgNFhvJufoVV7oRCvy3E+OWO5405jNRo0OJhqfH+Blu4zJHDu1NNAsN2
+         8hw5+6l/6vwRlusOMB9bCDUyEP2wS1sAZlcF2bqY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Bart Van Assche <bvanassche@acm.org>,
@@ -34,8 +34,8 @@ Cc:     Bart Van Assche <bvanassche@acm.org>,
         Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
         target-devel@vger.kernel.org
 Subject: [PATCH AUTOSEL 4.19 001/219] scsi: target/tcmu: Fix queue_cmd_ring() declaration
-Date:   Fri, 22 Nov 2019 00:24:03 -0500
-Message-Id: <20191122052741.32499-1-sashal@kernel.org>
+Date:   Fri, 22 Nov 2019 00:24:59 -0500
+Message-Id: <20191122052837.357-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 X-stable: review
