@@ -2,93 +2,165 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D055C10B483
-	for <lists+target-devel@lfdr.de>; Wed, 27 Nov 2019 18:34:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2CCF10C207
+	for <lists+target-devel@lfdr.de>; Thu, 28 Nov 2019 02:58:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726510AbfK0Ree (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 27 Nov 2019 12:34:34 -0500
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:33981 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726655AbfK0Ree (ORCPT
+        id S1728401AbfK1B6F (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 27 Nov 2019 20:58:05 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:21463 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728393AbfK1B6F (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 27 Nov 2019 12:34:34 -0500
-Received: by mail-pf1-f194.google.com with SMTP id n13so11376970pff.1;
-        Wed, 27 Nov 2019 09:34:33 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=lYbQXx2Q7vU4bWeO+6Aod/O84LeoB/V0z58WhrtpaIQ=;
-        b=q44IOwfR+LLd8UruF6AMFVnBIR2BD+nRhp8meB0tTl+37klkpjErIqf0WpMeQVSZ7Y
-         9qDLIdC17PMkoDKPVcF3DeQaZPqdrcfAVMoKedH/ii5rDsYEIqWkYWWTpcqXSfjs0umD
-         TaD3zlfo/5MuWv1VxJD45Xc08RipE3TU8DntuQSRnC2PpbPkduP9+d1LeIOMmRzP+Vvy
-         jRUZVRwqjtHv4lc/+5OHVqBzNGmE9aorYhzSwEM/lg7A5tc7rWM/fB0pmlbJu5DAiQGH
-         dOQLkgwz3dfjrzFgyOWUy64+QIVYv72PA0osn60sR7DB4gq/Q5WAwNkj0uBxycBXalK7
-         pzQA==
-X-Gm-Message-State: APjAAAWMyCYnZmS7ytXdc9Nh7fNCHc97gUVZlegEbTNP+UGcokGMUUKy
-        RonezUp0NgconepJIMWJM7c=
-X-Google-Smtp-Source: APXvYqxsM3mozkLbHky4xv9oqwU+j1zl9iy5Obs/yG29rzSvxcPxD5AE058ZK3CjPGIOwRO1FKf3qw==
-X-Received: by 2002:a62:5216:: with SMTP id g22mr46872242pfb.78.1574876073414;
-        Wed, 27 Nov 2019 09:34:33 -0800 (PST)
-Received: from desktop-bart.svl.corp.google.com ([2620:15c:2cd:202:4308:52a3:24b6:2c60])
-        by smtp.gmail.com with ESMTPSA id o8sm2913355pjo.7.2019.11.27.09.34.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Nov 2019 09:34:32 -0800 (PST)
-Subject: Re: [PATCH v3 00/13] scsi: qla2xxx: Bug fixes
-To:     Roman Bolshakov <r.bolshakov@yadro.com>
-Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux@yadro.com
-References: <20191125165702.1013-1-r.bolshakov@yadro.com>
- <347fd571-89d7-2b7e-fd88-1711002c3fb9@acm.org>
- <20191127172427.jpqfopou7y6kyrev@SPB-NB-133.local>
-From:   Bart Van Assche <bvanassche@acm.org>
-Message-ID: <d9366987-ab6a-9124-39e1-d70887c88757@acm.org>
-Date:   Wed, 27 Nov 2019 09:34:31 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        Wed, 27 Nov 2019 20:58:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1574906283;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=LUPnElubbjlD82TJXHwII0/MHT1qGprga5eaeNVe8gs=;
+        b=BgpEr0Z9uXJUG80L7JyNOqg1XcNSzraCWmw14t9t4qj0Wr++yOldIiuS+8idN7WpSNTIqf
+        ClG1+DX39tY8phSCSHhr8OuAkF3olNvv9IN9wMFtpcMUwISI7xig/VEZHblqPxyWsNZsHv
+        Elf9vjPImHgskwdLEhgJxdfAjqwLwyg=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-337-VuG1VY16PqKZA6xGxTG0wQ-1; Wed, 27 Nov 2019 20:58:02 -0500
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6983F800D41;
+        Thu, 28 Nov 2019 01:58:00 +0000 (UTC)
+Received: from ming.t460p (ovpn-8-21.pek2.redhat.com [10.72.8.21])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 3E80E10018FF;
+        Thu, 28 Nov 2019 01:57:52 +0000 (UTC)
+Date:   Thu, 28 Nov 2019 09:57:48 +0800
+From:   Ming Lei <ming.lei@redhat.com>
+To:     Stephen Rust <srust@blockbridge.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+        linux-block@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        martin.petersen@oracle.com
+Subject: Re: Data corruption in kernel 5.1+ with iSER attached ramdisk
+Message-ID: <20191128015748.GA3277@ming.t460p>
+References: <CAAFE1bd9wuuobpe4VK7Ty175j7mWT+kRmHCNhVD+6R8MWEAqmw@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20191127172427.jpqfopou7y6kyrev@SPB-NB-133.local>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <CAAFE1bd9wuuobpe4VK7Ty175j7mWT+kRmHCNhVD+6R8MWEAqmw@mail.gmail.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-MC-Unique: VuG1VY16PqKZA6xGxTG0wQ-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 11/27/19 9:24 AM, Roman Bolshakov wrote:
-> On Tue, Nov 26, 2019 at 12:56:51PM -0800, Bart Van Assche wrote:
->> On 11/25/19 8:56 AM, Roman Bolshakov wrote:
->>> The patch series contains fixes for qla2xxx and solves two visible
->>> issues: [ ... ]
->>
->> As explained in Documentation/process/2.Process.rst, please post patches
->> outside the merge window.
-> 
-> Thank you for the reference. Could you please assess if my understanding
-> of the document is correct:
-> 	The fixes might go into 5.5-rc2 after the release of rc1 which
-> 	closes the merge window.
-> 
-> 	No patches except critical for -rc1 should be posted when the
-> 	merge window is opened.
+Hello,
 
-Hi Roman,
+On Wed, Nov 27, 2019 at 02:38:42PM -0500, Stephen Rust wrote:
+> Hi,
+>=20
+> We recently began testing 5.4 in preparation for migration from 4.14. One
+> of our tests found reproducible data corruption in 5.x kernels. The test
+> consists of a few basic single-issue writes to an iSER attached ramdisk.
+> The writes are subsequently verified with single-issue reads. We tracked
+> the corruption down using git bisect. The issue appears to have started i=
+n
+> 5.1 with the following commit:
+>=20
+> 3d75ca0adef4280650c6690a0c4702a74a6f3c95 block: introduce multi-page bvec
+> helpers
+>=20
+> We wanted to bring this to your attention. A reproducer and the git bisec=
+t
+> data follows below.
+>=20
+> Our setup consists of two systems: A ramdisk exported in a LIO target fro=
+m
+> host A, iSCSI attached with iSER / RDMA from host B. Specific writes to t=
+he
 
-During the merge window many maintainers and core contributors are busy 
-with identifying and addressing regressions introduced during the merge 
-window. I think that is why the merge window is not the best time to 
-post patches and why that text was added to the kernel documentation.
+Could you explain a bit what is iSCSI attached with iSER / RDMA? Is the
+actual transport TCP over RDMA? What is related target driver involved?
 
-What happens with patches posted during the merge window depends on the 
-maintainer (Martin Petersen). Sometimes patches posted during the merge 
-window are ignored. Sometimes such patches are queued after the merge 
-window has closed. Sometimes contributors are asked after the merge 
-window has closed to rebase their patch series, to retest it and to 
-repost it. The latter makes sense because the changes accepted during 
-the merge window (e.g. core kernel API changes) may require matching 
-changes in a patch series. You may want to ask Martin directly which 
-approach he prefers after the merge window has closed.
+> very end of the attached disk on B result in incorrect data being written
+> to the remote disk. The writes appear to complete successfully on the
+> client. We=E2=80=99ve also verified that the correct data is being sent o=
+ver the
+> network by tracing the RDMA flow. For reference, the tests were conducted
+> on x86_64 Intel Skylake systems with Mellanox ConnectX5 NICs.
 
-Bart.
+If I understand correctly, LIO ramdisk doesn't generate any IO to block
+stack, see rd_execute_rw(), and the ramdisk should be one big/long
+pre-allocated sgl, see rd_build_device_space().
+
+Seems very strange, given no bvec/bio is involved in this code
+path from iscsi_target_rx_thread to rd_execute_rw. So far I have no idea
+how commit 3d75ca0adef428065 causes this issue, because that patch
+only changes bvec/bio related code.
+
+>=20
+> The issue appears to lie on the target host side. The initiator kernel
+> version does not appear to play a role. The target host exhibits the issu=
+e
+> when running kernel version 5.1+.
+>=20
+> To reproduce, given attached sda on client host B, write data at the end =
+of
+> the device:
+>=20
+>=20
+> SIZE=3D$(blockdev --getsize64 /dev/sda)
+>=20
+> SEEK=3D$((( $SIZE - 512 )))
+>=20
+> # initialize device and seed data
+>=20
+> dd if=3D/dev/zero of=3D/dev/sda bs=3D512 count=3D1 seek=3D$SEEK oflag=3Ds=
+eek_bytes
+> oflag=3Ddirect
+>=20
+> dd if=3D/dev/urandom of=3D/tmp/random bs=3D512 count=3D1 oflag=3Ddirect
+>=20
+>=20
+> # write the random data (note: not direct)
+>=20
+> dd if=3D/tmp/random of=3D/dev/sda bs=3D512 count=3D1 seek=3D$SEEK oflag=
+=3Dseek_bytes
+>=20
+>=20
+> # verify the data was written
+>=20
+> dd if=3D/dev/sda of=3D/tmp/verify bs=3D512 count=3D1 skip=3D$SEEK iflag=
+=3Dskip_bytes
+> iflag=3Ddirect
+>=20
+> hexdump -xv /tmp/random > /tmp/random.hex
+>=20
+> hexdump -xv /tmp/verify > /tmp/verify.hex
+>=20
+> diff -u /tmp/random.hex /tmp/verify.hex
+
+I just setup one LIO for exporting ramdisk(2G) via iscsi, and run the
+above test via iscsi HBA, still can't reproduce the issue.
+
+> # first bad commit: [3d75ca0adef4280650c6690a0c4702a74a6f3c95] block:
+> introduce multi-page bvec helpers
+>=20
+>=20
+> Please advise. We have cycles and systems to help track down the issue. L=
+et
+> me know how best to assist.
+
+Could you install bcc and start to collect the following trace on target si=
+de
+before you run the above test in host side?
+
+/usr/share/bcc/tools/stackcount -K rd_execute_rw
+
+
+Thanks,
+Ming
+
