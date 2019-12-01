@@ -2,95 +2,89 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A19310C882
-	for <lists+target-devel@lfdr.de>; Thu, 28 Nov 2019 13:18:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8754B10E31B
+	for <lists+target-devel@lfdr.de>; Sun,  1 Dec 2019 19:28:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726650AbfK1MSs (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 28 Nov 2019 07:18:48 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:58346 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726252AbfK1MSs (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Thu, 28 Nov 2019 07:18:48 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xASCETNu045604;
-        Thu, 28 Nov 2019 12:18:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2019-08-05;
- bh=A4+gfrkGLehQEJ8iiAgk5al4WroGNymL2XXB++ZaMZQ=;
- b=K2bY8ZVFkntAPcUK2KN+icNnPt6jTR7PMi+CehbeuG+JEA5Az7O4M+HCdR892f+/wY3s
- VibzJHoGUxGd/PSupdI/DgUBo/2hGDmEoSwUU0pk5tmNANBhfubR+ZpPUfwt2fH3riou
- A6ajJBbvu5k0st3tZaJSzk3Jpy+AmQV34z7bhKZAiNw3vm8UjdRnwC4lz+hVJdehvLiE
- fc6W/Y6UyHHVubditfDzZCstT7oQui9gwPDgJbclpDYaG3J9uCjxQVFKka4PLTnzIVzz
- GTXNDf0ZhhzqmvWn1SsQYUrWQ2TWcsdwwOaQxMCGMwRc+YODfyY45m9PlrOgQy3kjr5M bg== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 2wev6ukbt2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 28 Nov 2019 12:18:44 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xASCEMXe100603;
-        Thu, 28 Nov 2019 12:18:44 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 2why49yrcn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 28 Nov 2019 12:18:44 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xASCIh7o011962;
-        Thu, 28 Nov 2019 12:18:43 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 28 Nov 2019 04:18:42 -0800
-To:     Bart Van Assche <bvanassche@acm.org>
-Cc:     Roman Bolshakov <r.bolshakov@yadro.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux@yadro.com
-Subject: Re: [PATCH v3 00/13] scsi: qla2xxx: Bug fixes
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20191125165702.1013-1-r.bolshakov@yadro.com>
-        <347fd571-89d7-2b7e-fd88-1711002c3fb9@acm.org>
-        <20191127172427.jpqfopou7y6kyrev@SPB-NB-133.local>
-        <d9366987-ab6a-9124-39e1-d70887c88757@acm.org>
-Date:   Thu, 28 Nov 2019 07:18:40 -0500
-In-Reply-To: <d9366987-ab6a-9124-39e1-d70887c88757@acm.org> (Bart Van Assche's
-        message of "Wed, 27 Nov 2019 09:34:31 -0800")
-Message-ID: <yq1r21s6vof.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+        id S1727169AbfLAS2R (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 1 Dec 2019 13:28:17 -0500
+Received: from mtax.cdmx.gob.mx ([187.141.35.197]:12185 "EHLO mtax.cdmx.gob.mx"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727297AbfLAS2R (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Sun, 1 Dec 2019 13:28:17 -0500
+X-Greylist: delayed 7011 seconds by postgrey-1.27 at vger.kernel.org; Sun, 01 Dec 2019 13:28:16 EST
+X-NAI-Header: Modified by McAfee Email Gateway (4500)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cdmx.gob.mx; s=72359050-3965-11E6-920A-0192F7A2F08E;
+        t=1575217644; h=DKIM-Filter:X-Virus-Scanned:
+         Content-Type:MIME-Version:Content-Transfer-Encoding:
+         Content-Description:Subject:To:From:Date:Message-Id:
+         X-AnalysisOut:X-AnalysisOut:X-AnalysisOut:
+         X-AnalysisOut:X-AnalysisOut:X-SAAS-TrackingID:
+         X-NAI-Spam-Flag:X-NAI-Spam-Threshold:X-NAI-Spam-Score:
+         X-NAI-Spam-Rules:X-NAI-Spam-Version; bh=M
+        8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs4
+        8=; b=NuLV1R+DKp7cyAfrKzgFAfK+cuKoYQx+v6LdXdt6zlK2
+        UxerK5+Pwh2xzZTN+fZypOLcZMkesvHPfdM1VxgpkjIG5/0snv
+        ceX8bxUtg1u3mjM17dNIRS0RxrXGInjFOaB+OSsDG2ZpLrswIj
+        wa6MBPNUJsbM+qCwL6yVrfAhWLA=
+Received: from cdmx.gob.mx (correo.cdmx.gob.mx [10.250.108.150]) by mtax.cdmx.gob.mx with smtp
+        (TLS: TLSv1/SSLv3,256bits,ECDHE-RSA-AES256-GCM-SHA384)
+         id 217f_6487_d1a7b301_b1da_4a06_b920_aaaee2ea2be1;
+        Sun, 01 Dec 2019 10:27:23 -0600
+Received: from localhost (localhost [127.0.0.1])
+        by cdmx.gob.mx (Postfix) with ESMTP id BCEF71E2F32;
+        Sun,  1 Dec 2019 10:18:51 -0600 (CST)
+Received: from cdmx.gob.mx ([127.0.0.1])
+        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id YNypYpt6Eb4E; Sun,  1 Dec 2019 10:18:51 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by cdmx.gob.mx (Postfix) with ESMTP id 808031E2FE1;
+        Sun,  1 Dec 2019 10:14:19 -0600 (CST)
+DKIM-Filter: OpenDKIM Filter v2.9.2 cdmx.gob.mx 808031E2FE1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cdmx.gob.mx;
+        s=72359050-3965-11E6-920A-0192F7A2F08E; t=1575216859;
+        bh=M8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs48=;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:To:
+         From:Date:Message-Id;
+        b=yXb0zFp7lZBSvcTUJOEHyMpnxk0wi3OBcGg/vV8Zc7TOmiZWtWl0SOb0wfVuPQGN0
+         I7B1lxENz8dCsiIFsYeIS3U+AJAD+cD0j6FKDqs6WxWlQnZXn3rErnjIXu3RggwWbp
+         mcQw9qkVNsf2WWZXyH0lGGs5lSWzsbotgmrnbgKk=
+X-Virus-Scanned: amavisd-new at cdmx.gob.mx
+Received: from cdmx.gob.mx ([127.0.0.1])
+        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id pXsmpI-DZfwz; Sun,  1 Dec 2019 10:14:19 -0600 (CST)
+Received: from [192.168.0.104] (unknown [188.125.168.160])
+        by cdmx.gob.mx (Postfix) with ESMTPSA id 812071E287B;
+        Sun,  1 Dec 2019 10:05:29 -0600 (CST)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9454 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-1911280108
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9454 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-1911280108
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Congratulations
+To:     Recipients <aac-styfe@cdmx.gob.mx>
+From:   "Bishop Johnr" <aac-styfe@cdmx.gob.mx>
+Date:   Sun, 01 Dec 2019 17:05:21 +0100
+Message-Id: <20191201160529.812071E287B@cdmx.gob.mx>
+X-AnalysisOut: [v=2.2 cv=KNAqNBNo c=1 sm=1 tr=0 p=6K-Ig8iNAUou4E5wYCEA:9 p]
+X-AnalysisOut: [=zRI05YRXt28A:10 a=T6zFoIZ12MK39YzkfxrL7A==:117 a=9152RP8M]
+X-AnalysisOut: [6GQqDhC/mI/QXQ==:17 a=8nJEP1OIZ-IA:10 a=pxVhFHJ0LMsA:10 a=]
+X-AnalysisOut: [pGLkceISAAAA:8 a=wPNLvfGTeEIA:10 a=M8O0W8wq6qAA:10 a=Ygvjr]
+X-AnalysisOut: [iKHvHXA2FhpO6d-:22]
+X-SAAS-TrackingID: ae9e3ed5.0.105110663.00-2398.176722611.s12p02m006.mxlogic.net
+X-NAI-Spam-Flag: NO
+X-NAI-Spam-Threshold: 3
+X-NAI-Spam-Score: -5000
+X-NAI-Spam-Rules: 1 Rules triggered
+        WHITELISTED=-5000
+X-NAI-Spam-Version: 2.3.0.9418 : core <6686> : inlines <7165> : streams
+ <1840193> : uri <2949750>
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+Money was donated to you by Mr and Mrs Allen and Violet Large, just contact=
+ them with this email for more information =
 
-Bart,
 
-> What happens with patches posted during the merge window depends on
-> the maintainer (Martin Petersen). Sometimes patches posted during the
-> merge window are ignored. Sometimes such patches are queued after the
-> merge window has closed. Sometimes contributors are asked after the
-> merge window has closed to rebase their patch series, to retest it and
-> to repost it.
-
-Bug fixes are OK at any time, as far as I'm concerned. Although this
-series is a bit big to deal with given that we're now in the merge
-window.
-
-As a rule of thumb, I won't look closely at anything resembling new
-feature series until -rc1 is out.
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+EMail: allenandvioletlargeaward@gmail.com
