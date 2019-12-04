@@ -2,111 +2,119 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A602112BA8
-	for <lists+target-devel@lfdr.de>; Wed,  4 Dec 2019 13:42:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AFA31130B8
+	for <lists+target-devel@lfdr.de>; Wed,  4 Dec 2019 18:23:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727635AbfLDMmn (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 4 Dec 2019 07:42:43 -0500
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:45150 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726010AbfLDMmn (ORCPT
+        id S1727033AbfLDRXm (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 4 Dec 2019 12:23:42 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:40469 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728056AbfLDRXm (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 4 Dec 2019 07:42:43 -0500
-Received: by mail-qt1-f195.google.com with SMTP id p5so7507165qtq.12
-        for <target-devel@vger.kernel.org>; Wed, 04 Dec 2019 04:42:42 -0800 (PST)
+        Wed, 4 Dec 2019 12:23:42 -0500
+Received: by mail-ot1-f66.google.com with SMTP id i15so7034684oto.7
+        for <target-devel@vger.kernel.org>; Wed, 04 Dec 2019 09:23:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=SWzs3svZdfoJNhQZue5B0UPApGf3QNVhTsPQAsjB3v0=;
-        b=ZA2LkWMGn0iMJzcxsrZZl0MRWiS8X74Yh/oPy2rnK3Y/Fh1Y0stLe4KP6UBdBzWzrj
-         Cmbghn7hUNwBtxHYPqceG0cyv2NKMD0pHekjy1F6KXeDy/ImXbzDmUUhuQTnWrzYy5fD
-         TZjt2GMUqpQfIr9c+zQOIXgzyjwye3Sjg1x3l75YIdNSn1W53wTRIw3dcT5bhvdVn39Y
-         fx5azSiRLOzZTVdoINIlOVt2ZJIHEGtVcrT86kWJiPnHDKP8Tad5SAsiUO8Y3i+H7FF9
-         AVhELy2a249G8aPtThIrX6C9Kj2gox6dWIrGFddulw4sCCAn3XC2mPFlV6bKih6clvgB
-         hesQ==
+        d=blockbridge-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=OsCzQi8E+i59OetclexFEuGwaInTqcScwjzkGJ7Iw3Y=;
+        b=fT1/3V8zo6Ho8bQmHchM2zRNQciwQJZW83Ik+qPSTDEnFA/ysUxVKKsXA+WmPkadC5
+         objdZHiPkRjebVmcem9kDUUetJIQ0/Fm3ubn8hT/aQ5BWtsffjrNgistyM4scWf1nYjl
+         j5z4c0FvG281u+UrCXrHaBAovfyUU6iYXwS6TNeBlQLAZ8fycGYxNtygb6FaMHMNQ+dY
+         1EuFdzdUtyCHKpUi2eNzpgGIwWgRT7fBO9iNty7repmudXsrhLYmjw+t9TU+X2OaW/hC
+         whhkGZmNOMBjwL7fb3w6lO3AJ1E1+JCnXLvucw3l8HwMOChWwtyNefnvtvnJ5OSIUCw+
+         ksvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=SWzs3svZdfoJNhQZue5B0UPApGf3QNVhTsPQAsjB3v0=;
-        b=qmrPmK53oeIcEIUc6o+Uy4/npauMmdPWPB1xrowdP9BE7wr6D+aDSds9Lviv2V5Ixj
-         eFS8J7/55zomuouqEN8L7NnL924g4GHGBgjnVHC27dHx9gcPvtMbh4YYIYa4IJGxSnJx
-         Vhn+1CpVXjRkTHF6mCX/v0w3ojX4SfEr67GuV41FCKq/Tl7D2Nbu6ZzR9+/MaLyuXxtQ
-         HVgSDu7gkoify2sbAlBPQBnKWOh0FVaSqt+uh+l3RfaGEYcC6O6BDx0MKPUGUbjv75+L
-         NOh1l5jKBALoIQQDvvxHc96JBrfYYTpGtoGhq/MuEiiHQ4/v6DjLg1AQnN8tJEh3dmzV
-         +ucA==
-X-Gm-Message-State: APjAAAWFbCEYzmwbsr/Oa8j/HOttmaAdSNzviKrdqC6ROcOGnNf3eTPY
-        25dHONNAdNpNiR/sHMuAOD2ioQUQx89c/xydmB8=
-X-Google-Smtp-Source: APXvYqyjsG1xU61BN2k1iW59TU2RkhMSrGFHrF2PmOxg8nRNOZQ4r/3XgckFrgnTrIx7kdrpnxksPANGO5X0WmgXnEI=
-X-Received: by 2002:ac8:488f:: with SMTP id i15mr1092436qtq.382.1575463362222;
- Wed, 04 Dec 2019 04:42:42 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=OsCzQi8E+i59OetclexFEuGwaInTqcScwjzkGJ7Iw3Y=;
+        b=b2XCzgnTCDXweV0zpnsIw3lV8+BwYsT9T43547BhywISwZUoOi52S3HeamezRmKPOg
+         gt+5UqhYjOXKYlZYRCQ4Vj34tEar2rtOKsa+c6OOrMCTjmkKNquYOBXxyz1kymP9H0+6
+         PMdvtFgREX1M+H8Yux66BSqZEyTxGFjMNNUGtayzYPOIAtDp5OWPwRXeKaTejSRAwuaa
+         gs57rqmzy95eyfbak5sQikWPp24DBS0GhVf6PRlettmWh9X89LOdA4pj36tnBzB98ZKU
+         uB8dZfp5CWWgXWcJ9B6ulHqi/pHLWbhR7/FMlq8YS8yl/kT1vFGPuZ14QDiW+9oVlR59
+         27ZA==
+X-Gm-Message-State: APjAAAUs1uATXJPCv/dUJ+c2QyJWqwXJfTbQG5FO0tpWwDtdk5BzqCmM
+        ZRtP94sP/U2l2mzPckBpgXY1Tmie6FUyzAxatHGkTQ==
+X-Google-Smtp-Source: APXvYqxDzeT0lRIVPfz0OUxh4T5CV12SKPG3ZsGFxNj7PMyfRcQk4TUX55GUPPYWTmDJouOQEO7uecQGcSnynq4egtY=
+X-Received: by 2002:a05:6830:58:: with SMTP id d24mr3349473otp.356.1575480221331;
+ Wed, 04 Dec 2019 09:23:41 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:ac8:2f0c:0:0:0:0:0 with HTTP; Wed, 4 Dec 2019 04:42:41 -0800 (PST)
-Reply-To: moneygram.1820@outlook.fr
-From:   "Rev.Dr Emmanuel Okoye CEO Ecobank-benin" 
-        <westernunion.benin982@gmail.com>
-Date:   Wed, 4 Dec 2019 13:42:41 +0100
-Message-ID: <CAP=nHBKRM2hQAkD7DR51SEtBsUWr3WiGZTkymyw7gm3VKPey_w@mail.gmail.com>
-Subject: God has remembered your prayers I have already sent you Money Gram
- payment of $5000.00 today, MG 1029-8096
-To:     undisclosed-recipients:;
+References: <CAAFE1bfsXsKGyw7SU_z4NanT+wmtuJT=XejBYbHHMCDQwm73sw@mail.gmail.com>
+ <20191128091210.GC15549@ming.t460p> <CAAFE1beMkvyRctGqpffd3o_QtDH0CrmQSb=fV4GzqMUXWzPyOw@mail.gmail.com>
+ <20191203005849.GB25002@ming.t460p> <CAAFE1bcG8c1Q3iwh-LUjruBMAuFTJ4qWxNGsnhfKvGWHNLAeEQ@mail.gmail.com>
+ <20191203031444.GB6245@ming.t460p> <CAAFE1besnb=HV4C_buORYpWbkXecmtybwX8d_Ka2NsKmiym53w@mail.gmail.com>
+ <CAAFE1bfpUWCZrtR8v3S++0-+gi8DJ79X3e0XqDe93i8nuGTnNg@mail.gmail.com>
+ <20191203124558.GA22805@ming.t460p> <CAAFE1bfB2Km+e=T0ahwq0r9BQrBMnSguQQ+y=yzYi3tursS+TQ@mail.gmail.com>
+ <20191204010529.GA3910@ming.t460p>
+In-Reply-To: <20191204010529.GA3910@ming.t460p>
+From:   Stephen Rust <srust@blockbridge.com>
+Date:   Wed, 4 Dec 2019 12:23:39 -0500
+Message-ID: <CAAFE1bcJmRP5OSu=5asNTpvkF=kjEZu=GafaS9h52776tVgpPA@mail.gmail.com>
+Subject: Re: Data corruption in kernel 5.1+ with iSER attached ramdisk
+To:     Ming Lei <ming.lei@redhat.com>
+Cc:     Rob Townley <rob.townley@gmail.com>,
+        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+        linux-block@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
+        target-devel@vger.kernel.org, Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>
 Content-Type: text/plain; charset="UTF-8"
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Attn, dear Beneficiary.
+Hi Ming,
 
-God has remembered your prayers
-I have already sent you Money Gram payment of $5000.00 today, MG 1029-8096
-This is because we have finally concluded to effect your transfer
-funds of $4.8,000.000usd
-through MONEY GRAM International Fund transfer Service
-Each payment will be sending to you by $5000.00 daily until the
-($4.8,000.000usd) is completely transferred
-we have this morning sent  MONEY GRAM payment of $5,000.00 in your name today
-So contact the MONEY GRAM Agent to pick up this first payment of $5000 now
+I have tried your latest "workaround" patch in brd including the fix
+for large offsets, and it does appear to work. I tried the same tests
+and the data was written correctly for all offsets I tried. Thanks!
 
-Contact person Mrs. Alan Ude
-Dir. MONEY GRAM Service,Benin
-Phone number: +229 98856728
-E-mail: moneygram.1820@outlook.fr
+I include the updated additional bpftrace below.
 
-Ask him to give you the complete mtcn, sender name, question and
-answer to enable you
-pick up the $5000.00 sent today,
-Also you are instructed to re-confirm your information's
-to Mrs.Alan Ude as listed below to avoid wrong transactions.
+> So firstly, I'd suggest to investigate from RDMA driver side to see why
+> un-aligned buffer is passed to block layer.
+>
+> According to previous discussion, 512 aligned buffer should be provided
+> to block layer.
+>
+> So looks the driver needs to be fixed.
 
-(1Your Full name:............................................
-(2 Phone number.....................................................
-(3 Contact address:.....................................
-(4 Age:..................................................................
-(5 Country..............................................
-(6) Sex .................................................................
-(7) your occupation...........................................
+If it does appear to be an RDMA driver issue, do you know who we
+should follow up with directly from the RDMA driver side of the world?
 
-(8)Passport/By Attach or Drivers License Number:
-Contact Mrs. Alan Ude for your MONEY GRAM payment of $4.8,000.000usd
-Note please: I have paid service fees for you but the only money you
-are required
-to send to Mrs. Alan Ude is $90.00 only Transfer fee before you can
-pick up your transfer today.
+Presumably non-brd devices, ie: real scsi devices work for these test
+cases because they accept un-aligned buffers?
 
-Send it to via Money Gram
-Receiver's Name-----Alan Ude
-Country----------Benin
-Address-----------Cotonou
-Quest--------Honest
-Ans-----------Trust
+> The patch might not cover the big offset case, could you collect bpftrace
+> via the following script when you reproduce the issue with >4096 offset?
 
-I done all my best for you to receive your transfer now ok.
-We need your urgent reply
-Best Regards
-Rev.Dr Emmanuel Okoye
-CEO Ecobank-benin
+Here is the updated bpftrace output for an offset of 8192:
 
-If we did not receive it urgent from you today,
-I will go ahead and release you funds to Mrs. Lyndia Ppaulson as your
-representative.
+8192 76
+4020 76 1 131056
+4096 0 1 131063
+76 0 1 131071
+4096 0
+4096 0 0 0
+4096 0
+4096 0 0 8
+4096 0
+4096 0 0 130944
+8192 76
+4020 76 1 131056
+4096 0 1 131063
+76 0 1 131071
+4096 0
+4096 0 0 130808
+4096 0
+4096 0
+4096 0 0 131056
+4096 0 0 131064
+[snip]
+
+Thanks,
+Steve
