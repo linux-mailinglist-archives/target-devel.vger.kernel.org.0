@@ -2,121 +2,164 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8973D11058F
-	for <lists+target-devel@lfdr.de>; Tue,  3 Dec 2019 20:56:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3F1A1120DB
+	for <lists+target-devel@lfdr.de>; Wed,  4 Dec 2019 02:05:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726877AbfLCT4V (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 3 Dec 2019 14:56:21 -0500
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:41532 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727009AbfLCT4V (ORCPT
+        id S1726605AbfLDBFz (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 3 Dec 2019 20:05:55 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:38885 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726060AbfLDBFz (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 3 Dec 2019 14:56:21 -0500
-Received: by mail-ot1-f67.google.com with SMTP id r27so4072616otc.8
-        for <target-devel@vger.kernel.org>; Tue, 03 Dec 2019 11:56:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blockbridge-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=c2eSaP9cJhqPHyzDC8w3CbFx7JCZ6KKxOyraLwR9PhA=;
-        b=wLTIGZ++NbsJM2gFEzkW3jFKZShTPG1f0lsuIQOltlAXcRb5EdTwEBJEbZqvi56cYV
-         PxGHzJBqm2IUSJUdsJnmk+JX0dumKWOVdZo56piubBOVXekQKPppFIt64Nd1w467qyEE
-         RIcaiqRojms1cvrkcuLcWooyxWpal0suWcPT3OTSqHS3RpJzFukQBKDAkIWaUFG3fEHn
-         uWRLqYak21px3vZvwIXwHiydJOe6Uj1/z4PDOQxlJgF9+vZxpVVMPsb3OUBPAJy6FgFX
-         aCFMxshhUvyvHYW6naiBXQQ6k8gmWf/cJg/Ce+oSdkMWYIm9IPawU2/E2H564UQnyidg
-         MXqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=c2eSaP9cJhqPHyzDC8w3CbFx7JCZ6KKxOyraLwR9PhA=;
-        b=J9quHnchpjVdVruSK5DiSmFRqgqthHFfR9ogWCD6fa7WVh/EicszDFERHNRQM1ieVX
-         8SKHlLU4F9nXc7YEKCTkT8iTUwCvcNrSSZUWXFWOAEX4PL26A5I+QCIONShWgni5A1vl
-         6JNJX6lY48JAWWjRoueHfsw0kfKWoGbN/vBHfP9uWk04ZMBLLWHb+JL9aOdfl/IcgG6q
-         oc+TF2558Ket1HzEU+5yyUwQVOKu+BG8pVF0x7lvcxLuqz7AnLFeRX9dmIhTn0AGx6lD
-         5vI4glqBTr8L7iaGL6vGO6hL/GQEi1R4fkTa7y2aFuL+lpy7JaZI5p1ZcNKS2EJRIvvP
-         Y76Q==
-X-Gm-Message-State: APjAAAWT1a+J60BoVu7HGCV2TIyp5jFeFLOJjrSIpRLBs3VI/iaLoWTg
-        iXxKiLbDeDyYQyj+ulbJLAxKEfCzPYVsVqVPWtLyx8w9Ua7BPv+/
-X-Google-Smtp-Source: APXvYqwe49MzVy71zFCSDiZoF+VH7cE8Gtkn2FX6bQOskDctJh/Gw/DbDHrh82SW4A7nARSNeWI6ROO1GDn0hqM3dG4=
-X-Received: by 2002:a05:6830:58:: with SMTP id d24mr4555139otp.356.1575402979934;
- Tue, 03 Dec 2019 11:56:19 -0800 (PST)
-MIME-Version: 1.0
-References: <CA+VdTb_-CGaPjKUQteKVFSGqDz-5o-tuRRkJYqt8B9iOQypiwQ@mail.gmail.com>
- <20191128025822.GC3277@ming.t460p> <CAAFE1bfsXsKGyw7SU_z4NanT+wmtuJT=XejBYbHHMCDQwm73sw@mail.gmail.com>
- <20191128091210.GC15549@ming.t460p> <CAAFE1beMkvyRctGqpffd3o_QtDH0CrmQSb=fV4GzqMUXWzPyOw@mail.gmail.com>
- <20191203005849.GB25002@ming.t460p> <CAAFE1bcG8c1Q3iwh-LUjruBMAuFTJ4qWxNGsnhfKvGWHNLAeEQ@mail.gmail.com>
- <20191203031444.GB6245@ming.t460p> <CAAFE1besnb=HV4C_buORYpWbkXecmtybwX8d_Ka2NsKmiym53w@mail.gmail.com>
- <CAAFE1bfpUWCZrtR8v3S++0-+gi8DJ79X3e0XqDe93i8nuGTnNg@mail.gmail.com> <20191203124558.GA22805@ming.t460p>
-In-Reply-To: <20191203124558.GA22805@ming.t460p>
-From:   Stephen Rust <srust@blockbridge.com>
-Date:   Tue, 3 Dec 2019 14:56:08 -0500
-Message-ID: <CAAFE1bfB2Km+e=T0ahwq0r9BQrBMnSguQQ+y=yzYi3tursS+TQ@mail.gmail.com>
-Subject: Re: Data corruption in kernel 5.1+ with iSER attached ramdisk
-To:     Ming Lei <ming.lei@redhat.com>
+        Tue, 3 Dec 2019 20:05:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1575421554;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=mb2uA8H8LkeFlI3MZDn+f+z590eg/6oojJfUikjRY5I=;
+        b=iEN/Izj3DsrL34qziqj7Fgw+OA0WcimyH4s8NkYWnFHhMoJfhydTZst7Zk8sjD23eIizw+
+        waMrwvRk1uoh5VyHC6EWGsbSy7T5lWLS5CyzbgJgHw6usNa6pmeH98/qLsxD9nkg7ychdw
+        N58rP4SeaFp7yMzSfUcR1mVUVYFUcMc=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-233-oxdtObirPLa0FlLmaJrW7g-1; Tue, 03 Dec 2019 20:05:50 -0500
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4AD3218557C2;
+        Wed,  4 Dec 2019 01:05:42 +0000 (UTC)
+Received: from ming.t460p (ovpn-8-17.pek2.redhat.com [10.72.8.17])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 6EEEF100194E;
+        Wed,  4 Dec 2019 01:05:34 +0000 (UTC)
+Date:   Wed, 4 Dec 2019 09:05:29 +0800
+From:   Ming Lei <ming.lei@redhat.com>
+To:     Stephen Rust <srust@blockbridge.com>
 Cc:     Rob Townley <rob.townley@gmail.com>,
         Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
         linux-block@vger.kernel.org, linux-rdma@vger.kernel.org,
         linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
         target-devel@vger.kernel.org, Doug Ledford <dledford@redhat.com>,
         Jason Gunthorpe <jgg@ziepe.ca>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: Data corruption in kernel 5.1+ with iSER attached ramdisk
+Message-ID: <20191204010529.GA3910@ming.t460p>
+References: <CAAFE1bfsXsKGyw7SU_z4NanT+wmtuJT=XejBYbHHMCDQwm73sw@mail.gmail.com>
+ <20191128091210.GC15549@ming.t460p>
+ <CAAFE1beMkvyRctGqpffd3o_QtDH0CrmQSb=fV4GzqMUXWzPyOw@mail.gmail.com>
+ <20191203005849.GB25002@ming.t460p>
+ <CAAFE1bcG8c1Q3iwh-LUjruBMAuFTJ4qWxNGsnhfKvGWHNLAeEQ@mail.gmail.com>
+ <20191203031444.GB6245@ming.t460p>
+ <CAAFE1besnb=HV4C_buORYpWbkXecmtybwX8d_Ka2NsKmiym53w@mail.gmail.com>
+ <CAAFE1bfpUWCZrtR8v3S++0-+gi8DJ79X3e0XqDe93i8nuGTnNg@mail.gmail.com>
+ <20191203124558.GA22805@ming.t460p>
+ <CAAFE1bfB2Km+e=T0ahwq0r9BQrBMnSguQQ+y=yzYi3tursS+TQ@mail.gmail.com>
+MIME-Version: 1.0
+In-Reply-To: <CAAFE1bfB2Km+e=T0ahwq0r9BQrBMnSguQQ+y=yzYi3tursS+TQ@mail.gmail.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-MC-Unique: oxdtObirPLa0FlLmaJrW7g-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hi Ming,
+On Tue, Dec 03, 2019 at 02:56:08PM -0500, Stephen Rust wrote:
+> Hi Ming,
+>=20
+> Thanks very much for the patch.
+>=20
+> > BTW, you may try the attached test patch. If the issue can be fixed by
+> > this patch, that means it is really caused by un-aligned buffer, and
+> > the iser driver needs to be fixed.
+>=20
+> I have tried the patch, and re-run the test. Results are mixed.
+>=20
+> To recap, our test writes the last bytes of an iser attached iscsi
+> device. The target device is a LIO iblock, backed by a brd ramdisk.
+> The client does a simple `dd`, doing a seek to "size - offset" of the
+> device, and writing a buffer of "length" which is equivalent to the
+> offset.
+>=20
+> For example, to test a write at a 512 offset, seek to device "size -
+> 512", and write a length of data 512 bytes.
+>=20
+> WITHOUT the patch, writing data at the following offsets from the end
+> of the device failed to write all the correct data (rather, the write
+> succeeded, but reading the data back it was invalid):
+>=20
+> - failed: 512,1024, 2048, 4096, 8192
+>=20
+> Anything larger worked fine.
+>=20
+> WITH the patch applied, writing data up to an offset of 4096 all now
+> worked and verified correctly. However, offsets between 4096 and 8192
+> all still failed. I started at 512, and incremented by 512 all the way
+> up to 16384. The following offsets all failed to verify the write:
+>=20
+> - failed: 4608, 5120, 5632, 6144, 6656, 7168, 7680, 8192
+>=20
+> Anything larger continues to work fine with the patch.
+>=20
+> As an example, for the failed 8192 case, the `bpftrace lio.bt` trace show=
+s:
+>=20
+> 8192 76
+> 4096 0
+> 4096 0
+> 8192 76
+> 4096 0
+> 4096 0
+> ...
+> [snip]
+>=20
+> What do you think are appropriate next steps?
 
-Thanks very much for the patch.
+OK, my guess should be correct, and the issue is related with un-aligned
+bvec->bv_offset.
 
-> BTW, you may try the attached test patch. If the issue can be fixed by
-> this patch, that means it is really caused by un-aligned buffer, and
-> the iser driver needs to be fixed.
+So firstly, I'd suggest to investigate from RDMA driver side to see why
+un-aligned buffer is passed to block layer.
 
-I have tried the patch, and re-run the test. Results are mixed.
+According to previous discussion, 512 aligned buffer should be provided
+to block layer.
 
-To recap, our test writes the last bytes of an iser attached iscsi
-device. The target device is a LIO iblock, backed by a brd ramdisk.
-The client does a simple `dd`, doing a seek to "size - offset" of the
-device, and writing a buffer of "length" which is equivalent to the
-offset.
+So looks the driver needs to be fixed.
 
-For example, to test a write at a 512 offset, seek to device "size -
-512", and write a length of data 512 bytes.
+> Do you think you have an
+> idea on why the specific "multi-page bvec helpers" commit could have
+> exposed this particular latent issue? Please let me know what else I
+> can try, or additional data I can provide for you.
+=20
+The patch might not cover the big offset case, could you collect bpftrace
+via the following script when you reproduce the issue with >4096 offset?
 
-WITHOUT the patch, writing data at the following offsets from the end
-of the device failed to write all the correct data (rather, the write
-succeeded, but reading the data back it was invalid):
+kprobe:iblock_execute_rw
+{
+    @start[tid]=3D1;
+}
 
-- failed: 512,1024, 2048, 4096, 8192
+kretprobe:iblock_execute_rw
+{
+    @start[tid]=3D0;
+}
 
-Anything larger worked fine.
+kprobe:bio_add_page
+/@start[tid]/
+{
+  printf("%d %d\n", arg2, arg3);
+}
 
-WITH the patch applied, writing data up to an offset of 4096 all now
-worked and verified correctly. However, offsets between 4096 and 8192
-all still failed. I started at 512, and incremented by 512 all the way
-up to 16384. The following offsets all failed to verify the write:
+kprobe:brd_do_bvec
+{
+  printf("%d %d %d %d\n", arg2, arg3, arg4, arg5);
+}
 
-- failed: 4608, 5120, 5632, 6144, 6656, 7168, 7680, 8192
-
-Anything larger continues to work fine with the patch.
-
-As an example, for the failed 8192 case, the `bpftrace lio.bt` trace shows:
-
-8192 76
-4096 0
-4096 0
-8192 76
-4096 0
-4096 0
-...
-[snip]
-
-What do you think are appropriate next steps? Do you think you have an
-idea on why the specific "multi-page bvec helpers" commit could have
-exposed this particular latent issue? Please let me know what else I
-can try, or additional data I can provide for you.
 
 Thanks,
-Steve
+Ming
+
