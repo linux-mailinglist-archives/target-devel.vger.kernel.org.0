@@ -2,119 +2,103 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AFA31130B8
-	for <lists+target-devel@lfdr.de>; Wed,  4 Dec 2019 18:23:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE2581137F6
+	for <lists+target-devel@lfdr.de>; Thu,  5 Dec 2019 00:02:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727033AbfLDRXm (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 4 Dec 2019 12:23:42 -0500
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:40469 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728056AbfLDRXm (ORCPT
+        id S1728440AbfLDXCq (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 4 Dec 2019 18:02:46 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:24101 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728132AbfLDXCq (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 4 Dec 2019 12:23:42 -0500
-Received: by mail-ot1-f66.google.com with SMTP id i15so7034684oto.7
-        for <target-devel@vger.kernel.org>; Wed, 04 Dec 2019 09:23:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blockbridge-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=OsCzQi8E+i59OetclexFEuGwaInTqcScwjzkGJ7Iw3Y=;
-        b=fT1/3V8zo6Ho8bQmHchM2zRNQciwQJZW83Ik+qPSTDEnFA/ysUxVKKsXA+WmPkadC5
-         objdZHiPkRjebVmcem9kDUUetJIQ0/Fm3ubn8hT/aQ5BWtsffjrNgistyM4scWf1nYjl
-         j5z4c0FvG281u+UrCXrHaBAovfyUU6iYXwS6TNeBlQLAZ8fycGYxNtygb6FaMHMNQ+dY
-         1EuFdzdUtyCHKpUi2eNzpgGIwWgRT7fBO9iNty7repmudXsrhLYmjw+t9TU+X2OaW/hC
-         whhkGZmNOMBjwL7fb3w6lO3AJ1E1+JCnXLvucw3l8HwMOChWwtyNefnvtvnJ5OSIUCw+
-         ksvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=OsCzQi8E+i59OetclexFEuGwaInTqcScwjzkGJ7Iw3Y=;
-        b=b2XCzgnTCDXweV0zpnsIw3lV8+BwYsT9T43547BhywISwZUoOi52S3HeamezRmKPOg
-         gt+5UqhYjOXKYlZYRCQ4Vj34tEar2rtOKsa+c6OOrMCTjmkKNquYOBXxyz1kymP9H0+6
-         PMdvtFgREX1M+H8Yux66BSqZEyTxGFjMNNUGtayzYPOIAtDp5OWPwRXeKaTejSRAwuaa
-         gs57rqmzy95eyfbak5sQikWPp24DBS0GhVf6PRlettmWh9X89LOdA4pj36tnBzB98ZKU
-         uB8dZfp5CWWgXWcJ9B6ulHqi/pHLWbhR7/FMlq8YS8yl/kT1vFGPuZ14QDiW+9oVlR59
-         27ZA==
-X-Gm-Message-State: APjAAAUs1uATXJPCv/dUJ+c2QyJWqwXJfTbQG5FO0tpWwDtdk5BzqCmM
-        ZRtP94sP/U2l2mzPckBpgXY1Tmie6FUyzAxatHGkTQ==
-X-Google-Smtp-Source: APXvYqxDzeT0lRIVPfz0OUxh4T5CV12SKPG3ZsGFxNj7PMyfRcQk4TUX55GUPPYWTmDJouOQEO7uecQGcSnynq4egtY=
-X-Received: by 2002:a05:6830:58:: with SMTP id d24mr3349473otp.356.1575480221331;
- Wed, 04 Dec 2019 09:23:41 -0800 (PST)
-MIME-Version: 1.0
-References: <CAAFE1bfsXsKGyw7SU_z4NanT+wmtuJT=XejBYbHHMCDQwm73sw@mail.gmail.com>
- <20191128091210.GC15549@ming.t460p> <CAAFE1beMkvyRctGqpffd3o_QtDH0CrmQSb=fV4GzqMUXWzPyOw@mail.gmail.com>
- <20191203005849.GB25002@ming.t460p> <CAAFE1bcG8c1Q3iwh-LUjruBMAuFTJ4qWxNGsnhfKvGWHNLAeEQ@mail.gmail.com>
- <20191203031444.GB6245@ming.t460p> <CAAFE1besnb=HV4C_buORYpWbkXecmtybwX8d_Ka2NsKmiym53w@mail.gmail.com>
- <CAAFE1bfpUWCZrtR8v3S++0-+gi8DJ79X3e0XqDe93i8nuGTnNg@mail.gmail.com>
- <20191203124558.GA22805@ming.t460p> <CAAFE1bfB2Km+e=T0ahwq0r9BQrBMnSguQQ+y=yzYi3tursS+TQ@mail.gmail.com>
- <20191204010529.GA3910@ming.t460p>
-In-Reply-To: <20191204010529.GA3910@ming.t460p>
-From:   Stephen Rust <srust@blockbridge.com>
-Date:   Wed, 4 Dec 2019 12:23:39 -0500
-Message-ID: <CAAFE1bcJmRP5OSu=5asNTpvkF=kjEZu=GafaS9h52776tVgpPA@mail.gmail.com>
-Subject: Re: Data corruption in kernel 5.1+ with iSER attached ramdisk
-To:     Ming Lei <ming.lei@redhat.com>
+        Wed, 4 Dec 2019 18:02:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1575500565;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=XZ22V+LeKTL9G9FnuhA8dKqo40g1wb7UNh59Umr7gyQ=;
+        b=XJy/60+9q7ElTCPCs1hT9jrK8Y5S5mHTF3L3Ddi2lSSGd3MRRQNwAqlMVaqVJbgKV+j+9y
+        bPovq5zvsj8tHmPdlHE6Xq2Dvr3LxiXZEPJW2xb7hzJDxeWpyWSjdw46YUBRhu1u2TN6KX
+        wIoe3ycdpDijJktVvAwXcxghBs4Qu8A=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-61-Q7h8s4WqOmWuL4vDXNMIeA-1; Wed, 04 Dec 2019 18:02:42 -0500
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7BEB3107ACC4;
+        Wed,  4 Dec 2019 23:02:40 +0000 (UTC)
+Received: from ming.t460p (ovpn-8-23.pek2.redhat.com [10.72.8.23])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 96ABE19C6A;
+        Wed,  4 Dec 2019 23:02:30 +0000 (UTC)
+Date:   Thu, 5 Dec 2019 07:02:25 +0800
+From:   Ming Lei <ming.lei@redhat.com>
+To:     Stephen Rust <srust@blockbridge.com>
 Cc:     Rob Townley <rob.townley@gmail.com>,
         Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
         linux-block@vger.kernel.org, linux-rdma@vger.kernel.org,
         linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
         target-devel@vger.kernel.org, Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>
-Content-Type: text/plain; charset="UTF-8"
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Max Gurtovoy <maxg@mellanox.com>
+Subject: Re: Data corruption in kernel 5.1+ with iSER attached ramdisk
+Message-ID: <20191204230225.GA26189@ming.t460p>
+References: <CAAFE1beMkvyRctGqpffd3o_QtDH0CrmQSb=fV4GzqMUXWzPyOw@mail.gmail.com>
+ <20191203005849.GB25002@ming.t460p>
+ <CAAFE1bcG8c1Q3iwh-LUjruBMAuFTJ4qWxNGsnhfKvGWHNLAeEQ@mail.gmail.com>
+ <20191203031444.GB6245@ming.t460p>
+ <CAAFE1besnb=HV4C_buORYpWbkXecmtybwX8d_Ka2NsKmiym53w@mail.gmail.com>
+ <CAAFE1bfpUWCZrtR8v3S++0-+gi8DJ79X3e0XqDe93i8nuGTnNg@mail.gmail.com>
+ <20191203124558.GA22805@ming.t460p>
+ <CAAFE1bfB2Km+e=T0ahwq0r9BQrBMnSguQQ+y=yzYi3tursS+TQ@mail.gmail.com>
+ <20191204010529.GA3910@ming.t460p>
+ <CAAFE1bcJmRP5OSu=5asNTpvkF=kjEZu=GafaS9h52776tVgpPA@mail.gmail.com>
+MIME-Version: 1.0
+In-Reply-To: <CAAFE1bcJmRP5OSu=5asNTpvkF=kjEZu=GafaS9h52776tVgpPA@mail.gmail.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-MC-Unique: Q7h8s4WqOmWuL4vDXNMIeA-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hi Ming,
+On Wed, Dec 04, 2019 at 12:23:39PM -0500, Stephen Rust wrote:
+> Hi Ming,
+>=20
+> I have tried your latest "workaround" patch in brd including the fix
+> for large offsets, and it does appear to work. I tried the same tests
+> and the data was written correctly for all offsets I tried. Thanks!
+>=20
+> I include the updated additional bpftrace below.
+>=20
+> > So firstly, I'd suggest to investigate from RDMA driver side to see why
+> > un-aligned buffer is passed to block layer.
+> >
+> > According to previous discussion, 512 aligned buffer should be provided
+> > to block layer.
+> >
+> > So looks the driver needs to be fixed.
+>=20
+> If it does appear to be an RDMA driver issue, do you know who we
+> should follow up with directly from the RDMA driver side of the world?
+>=20
+> Presumably non-brd devices, ie: real scsi devices work for these test
+> cases because they accept un-aligned buffers?
 
-I have tried your latest "workaround" patch in brd including the fix
-for large offsets, and it does appear to work. I tried the same tests
-and the data was written correctly for all offsets I tried. Thanks!
+Right, not every driver supports such un-aligned buffer.
 
-I include the updated additional bpftrace below.
+I am not familiar with RDMA, but from the trace we have done so far,
+it is highly related with iser driver.=20
 
-> So firstly, I'd suggest to investigate from RDMA driver side to see why
-> un-aligned buffer is passed to block layer.
->
-> According to previous discussion, 512 aligned buffer should be provided
-> to block layer.
->
-> So looks the driver needs to be fixed.
-
-If it does appear to be an RDMA driver issue, do you know who we
-should follow up with directly from the RDMA driver side of the world?
-
-Presumably non-brd devices, ie: real scsi devices work for these test
-cases because they accept un-aligned buffers?
-
-> The patch might not cover the big offset case, could you collect bpftrace
-> via the following script when you reproduce the issue with >4096 offset?
-
-Here is the updated bpftrace output for an offset of 8192:
-
-8192 76
-4020 76 1 131056
-4096 0 1 131063
-76 0 1 131071
-4096 0
-4096 0 0 0
-4096 0
-4096 0 0 8
-4096 0
-4096 0 0 130944
-8192 76
-4020 76 1 131056
-4096 0 1 131063
-76 0 1 131071
-4096 0
-4096 0 0 130808
-4096 0
-4096 0
-4096 0 0 131056
-4096 0 0 131064
-[snip]
 
 Thanks,
-Steve
+Ming
+
