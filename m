@@ -2,86 +2,89 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 22B4411602D
-	for <lists+target-devel@lfdr.de>; Sun,  8 Dec 2019 03:57:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B40C5117B8C
+	for <lists+target-devel@lfdr.de>; Tue, 10 Dec 2019 00:36:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726418AbfLHCwX (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 7 Dec 2019 21:52:23 -0500
-Received: from avgw.kite.kerala.gov.in ([103.251.43.21]:58206 "EHLO
-        avgw.kite.kerala.gov.in" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725865AbfLHCwX (ORCPT
+        id S1727111AbfLIXgu (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 9 Dec 2019 18:36:50 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:40396 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726592AbfLIXgu (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sat, 7 Dec 2019 21:52:23 -0500
-X-Greylist: delayed 5058 seconds by postgrey-1.27 at vger.kernel.org; Sat, 07 Dec 2019 21:52:22 EST
-Received: from avgw.kite.kerala.gov.in (localhost.localdomain [127.0.0.1])
-        by avgw.kite.kerala.gov.in (Proxmox) with ESMTP id 1A3567E214C;
-        Sun,  8 Dec 2019 05:52:08 +0530 (IST)
-Received: from kite.kerala.gov.in (unknown [10.1.14.155])
-        by avgw.kite.kerala.gov.in (Proxmox) with ESMTPS id ED7C07E1DAA;
-        Sun,  8 Dec 2019 05:52:07 +0530 (IST)
-Received: from localhost (mail.kite.kerala.gov.in [127.0.0.1])
-        by kite.kerala.gov.in (Postfix) with ESMTP id DDAE2F003B0;
-        Sun,  8 Dec 2019 05:44:44 +0530 (IST)
-Received: from kite.kerala.gov.in ([127.0.0.1])
-        by localhost (mail.kite.kerala.gov.in [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id Vt7yLMXU4AB0; Sun,  8 Dec 2019 05:44:44 +0530 (IST)
-Received: from localhost (mail.kite.kerala.gov.in [127.0.0.1])
-        by kite.kerala.gov.in (Postfix) with ESMTP id 4EE63F003DD;
-        Sun,  8 Dec 2019 05:44:39 +0530 (IST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 kite.kerala.gov.in 4EE63F003DD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kite.kerala.gov.in;
-        s=4DDB9C16-1548-11E8-B0E3-8CFC090FAE39; t=1575764079;
-        bh=/Zsrril2yXAyHqumvlPwqgxU44K4tEAwPxMrZQMmU0I=;
-        h=Date:From:Message-ID:MIME-Version;
-        b=PvBk9nMAOWHYSpNdNr94vSAi93MZW5DP1ZzgtlH8XrdrTJOJ+S8hcXDIZueWEYULo
-         mBGVwDp0vQZ/QEGyYkeHL2K/WkEZf86Hjlv0MB/XWLuEvtKeztna38KKhXny4c8F6T
-         l/KhUZmeQCHrrsu8NI+xD6nvlM2ZeRfbCwvvCSro=
-X-Virus-Scanned: amavisd-new at mail.kite.kerala.gov.in
-Received: from kite.kerala.gov.in ([127.0.0.1])
-        by localhost (mail.kite.kerala.gov.in [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id bC0ZH63emL2Q; Sun,  8 Dec 2019 05:44:38 +0530 (IST)
-Received: from mail.kite.kerala.gov.in (mail.kite.kerala.gov.in [127.0.0.1])
-        by kite.kerala.gov.in (Postfix) with ESMTP id B77B2F003D0;
-        Sun,  8 Dec 2019 05:44:27 +0530 (IST)
-Date:   Sun, 8 Dec 2019 05:44:27 +0530 (IST)
-From:   Suvarnan PP <ksd.suvarnan@kite.kerala.gov.in>
-Reply-To: annie.martinez121@gmail.com
-Message-ID: <919999883.248219.1575764067610.JavaMail.zimbra@kite.kerala.gov.in>
-Subject: Proposition!
+        Mon, 9 Dec 2019 18:36:50 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xB9NYp6V007385;
+        Mon, 9 Dec 2019 23:36:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2019-08-05;
+ bh=FUn4+wZ8MwQoBN3dQA79Zd6mGKRVxIG1T9ICxuIa8wg=;
+ b=dzICqf1+DGGr8iku4xHjNIFUmgfBNwjxvu8gqbh/CIJpciKWsNQQOVDYU39soEvIObBr
+ HZCAl4bPkt+ZfIWklDjpHVfiyCtyS7uvwb2id8W+9KJjgWfSUm3M6TM8Rk3dw+09PEJ7
+ cgHUYhaL/FXIZfXjClOlQVsfpOZaBr4yKwQapGoQxaRYuwuF1dbVaiY7/NI2XHQUtsXG
+ FJkMVoC+RccMAgPLFaRro0wG8/2E++7WqZ7HonEc9uMG4cOzm4A38LlVIpsGCJ6XPSGQ
+ xEHksgGArvQnRnZGKzj9LXgVKyqJSN6p3KWp10aUFtYmnEKc1YQP8MG2uxAZ6/E+1B8v CA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2wr4qraqcf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 09 Dec 2019 23:36:48 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xB9NTBVv186443;
+        Mon, 9 Dec 2019 23:36:48 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 2wsru82q6n-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 09 Dec 2019 23:36:47 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xB9NakGg019362;
+        Mon, 9 Dec 2019 23:36:46 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 09 Dec 2019 15:36:46 -0800
+To:     Roman Bolshakov <r.bolshakov@yadro.com>
+Cc:     <linux-scsi@vger.kernel.org>, <target-devel@vger.kernel.org>,
+        <linux@yadro.com>
+Subject: Re: [PATCH v3 00/13] scsi: qla2xxx: Bug fixes
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <20191125165702.1013-1-r.bolshakov@yadro.com>
+Date:   Mon, 09 Dec 2019 18:36:44 -0500
+In-Reply-To: <20191125165702.1013-1-r.bolshakov@yadro.com> (Roman Bolshakov's
+        message of "Mon, 25 Nov 2019 19:56:49 +0300")
+Message-ID: <yq1blshqdf7.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [207.244.113.71]
-X-Mailer: Zimbra 8.8.9_GA_3019 (zclient/8.8.9_GA_3019)
-Thread-Index: RP0g97eRo2jKE6t5B7fiW6aWibjkFw==
-Thread-Topic: Proposition!
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9466 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=736
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1912090185
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9466 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=801 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1912090186
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Bonjour,
-Je soussign=C3=A9e ANNIE MARTINEZ de nationalit=C3=A9 fran=C3=A7aise. Je vo=
-us envoie ce pr=C3=A9sent message afin de solliciter votre accord pour la r=
-=C3=A9alisation d'un projet de donation. Ayant perdu mon =C3=A9poux et mon =
-enfant de 8 ans au cours d'un accident tragique et mortel Il y a quelques a=
-nn=C3=A9es, je n'ai ni famille ni enfant qui pourra b=C3=A9n=C3=A9ficier de=
- ma fortune.
 
-Actuellement hospitalis=C3=A9e aux USA pour un cancer en phase terminale, j=
-e d=C3=A9cide de faire don de ma fortune afin que vous puissiez r=C3=A9alis=
-er les =C5=93uvres de charit=C3=A9 de votre choix.
+Roman,
 
-Pour cela je vous l=C3=A8gue =C3=A0 titre de don une somme de un million ci=
-nq cent mille dollars am=C3=A9ricain en banque en Afrique de l=E2=80=99oues=
-t o=C3=B9 je m=E2=80=99=C3=A9tais install=C3=A9e apr=C3=A8s la mort de mon =
-mari et mon enfant.
+> The patch series contains fixes for qla2xxx and solves two visible
+> issues:
+>   - Target port in N2N topology doesn't perform login if it has higher
+>     WWPN than initiator
+>   - ABORT TASK TMF leads to crash if it's received shortly after ACL of
+>     an initiator is deleted and there's active I/O from the initiator
 
-=C2=AB N=E2=80=99h=C3=A9sitez pas =C3=A0 me r=C3=A9pondre pour me parl=C3=
-=A9 directement  pour plus de d=C3=A9tails=C2=BB
+I was concerned about the churn in this series but the actual code
+changes are mostly simple and to the point.
 
-Sinc=C3=A8rement
-Mme ANNIE MARTINEZ
-E-mail: annie.martinez121@gmail.com
+Applied to 5.5/scsi-fixes with a couple of checkpatch tweaks. Thanks!
 
+-- 
+Martin K. Petersen	Oracle Linux Engineering
