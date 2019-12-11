@@ -2,89 +2,171 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B40C5117B8C
-	for <lists+target-devel@lfdr.de>; Tue, 10 Dec 2019 00:36:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C05D11AF74
+	for <lists+target-devel@lfdr.de>; Wed, 11 Dec 2019 16:13:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727111AbfLIXgu (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 9 Dec 2019 18:36:50 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:40396 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726592AbfLIXgu (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Mon, 9 Dec 2019 18:36:50 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xB9NYp6V007385;
-        Mon, 9 Dec 2019 23:36:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2019-08-05;
- bh=FUn4+wZ8MwQoBN3dQA79Zd6mGKRVxIG1T9ICxuIa8wg=;
- b=dzICqf1+DGGr8iku4xHjNIFUmgfBNwjxvu8gqbh/CIJpciKWsNQQOVDYU39soEvIObBr
- HZCAl4bPkt+ZfIWklDjpHVfiyCtyS7uvwb2id8W+9KJjgWfSUm3M6TM8Rk3dw+09PEJ7
- cgHUYhaL/FXIZfXjClOlQVsfpOZaBr4yKwQapGoQxaRYuwuF1dbVaiY7/NI2XHQUtsXG
- FJkMVoC+RccMAgPLFaRro0wG8/2E++7WqZ7HonEc9uMG4cOzm4A38LlVIpsGCJ6XPSGQ
- xEHksgGArvQnRnZGKzj9LXgVKyqJSN6p3KWp10aUFtYmnEKc1YQP8MG2uxAZ6/E+1B8v CA== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 2wr4qraqcf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 09 Dec 2019 23:36:48 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xB9NTBVv186443;
-        Mon, 9 Dec 2019 23:36:48 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 2wsru82q6n-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 09 Dec 2019 23:36:47 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xB9NakGg019362;
-        Mon, 9 Dec 2019 23:36:46 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 09 Dec 2019 15:36:46 -0800
-To:     Roman Bolshakov <r.bolshakov@yadro.com>
-Cc:     <linux-scsi@vger.kernel.org>, <target-devel@vger.kernel.org>,
-        <linux@yadro.com>
-Subject: Re: [PATCH v3 00/13] scsi: qla2xxx: Bug fixes
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20191125165702.1013-1-r.bolshakov@yadro.com>
-Date:   Mon, 09 Dec 2019 18:36:44 -0500
-In-Reply-To: <20191125165702.1013-1-r.bolshakov@yadro.com> (Roman Bolshakov's
-        message of "Mon, 25 Nov 2019 19:56:49 +0300")
-Message-ID: <yq1blshqdf7.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+        id S1731451AbfLKPNf (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 11 Dec 2019 10:13:35 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37320 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731446AbfLKPNf (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Wed, 11 Dec 2019 10:13:35 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 518DE24671;
+        Wed, 11 Dec 2019 15:13:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1576077214;
+        bh=MzlIvXr9+RGOexb48ThAFvhkwgmA9P8oKt1C0+tnpHE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=AUFnv4ZkqTJ6rnFuPsFNolLSDbjwb2Q4MYf+KB7kquYNo9siCjAx5tlCtJnUg9AGZ
+         LNabxGIyNr0yGijgUkvPPlHZGWuW7XFeg7HJHDoois4hftzoAJ241heoLwbikIokid
+         D4mohKGAl4j4JlZWn3PI6+LlFBpAguu9GKPyd+Sw=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Bart Van Assche <bvanassche@acm.org>,
+        Mike Christie <mchristi@redhat.com>,
+        Roman Bolshakov <r.bolshakov@yadro.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        bcm-kernel-feedback-list@broadcom.com
+Subject: [PATCH AUTOSEL 5.4 095/134] scsi: target: core: Release SPC-2 reservations when closing a session
+Date:   Wed, 11 Dec 2019 10:11:11 -0500
+Message-Id: <20191211151150.19073-95-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191211151150.19073-1-sashal@kernel.org>
+References: <20191211151150.19073-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9466 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=736
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-1912090185
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9466 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=801 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-1912090186
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+From: Bart Van Assche <bvanassche@acm.org>
 
-Roman,
+[ Upstream commit 80647a89eaf3f2549741648f3230cd6ff68c23b4 ]
 
-> The patch series contains fixes for qla2xxx and solves two visible
-> issues:
->   - Target port in N2N topology doesn't perform login if it has higher
->     WWPN than initiator
->   - ABORT TASK TMF leads to crash if it's received shortly after ACL of
->     an initiator is deleted and there's active I/O from the initiator
+The SCSI specs require releasing SPC-2 reservations when a session is
+closed. Make sure that the target core does this.
 
-I was concerned about the churn in this series but the actual code
-changes are mostly simple and to the point.
+Running the libiscsi tests triggers the KASAN complaint shown below.  This
+patch fixes that use-after-free.
 
-Applied to 5.5/scsi-fixes with a couple of checkpatch tweaks. Thanks!
+BUG: KASAN: use-after-free in target_check_reservation+0x171/0x980 [target_core_mod]
+Read of size 8 at addr ffff88802ecd1878 by task iscsi_trx/17200
 
+CPU: 0 PID: 17200 Comm: iscsi_trx Not tainted 5.4.0-rc1-dbg+ #1
+Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+Call Trace:
+ dump_stack+0x8a/0xd6
+ print_address_description.constprop.0+0x40/0x60
+ __kasan_report.cold+0x1b/0x34
+ kasan_report+0x16/0x20
+ __asan_load8+0x58/0x90
+ target_check_reservation+0x171/0x980 [target_core_mod]
+ __target_execute_cmd+0xb1/0xf0 [target_core_mod]
+ target_execute_cmd+0x22d/0x4d0 [target_core_mod]
+ transport_generic_new_cmd+0x31f/0x5b0 [target_core_mod]
+ transport_handle_cdb_direct+0x6f/0x90 [target_core_mod]
+ iscsit_execute_cmd+0x381/0x3f0 [iscsi_target_mod]
+ iscsit_sequence_cmd+0x13b/0x1f0 [iscsi_target_mod]
+ iscsit_process_scsi_cmd+0x4c/0x130 [iscsi_target_mod]
+ iscsit_get_rx_pdu+0x8e8/0x15f0 [iscsi_target_mod]
+ iscsi_target_rx_thread+0x105/0x1b0 [iscsi_target_mod]
+ kthread+0x1bc/0x210
+ ret_from_fork+0x24/0x30
+
+Allocated by task 1079:
+ save_stack+0x23/0x90
+ __kasan_kmalloc.constprop.0+0xcf/0xe0
+ kasan_slab_alloc+0x12/0x20
+ kmem_cache_alloc+0xfe/0x3a0
+ transport_alloc_session+0x29/0x80 [target_core_mod]
+ iscsi_target_login_thread+0xceb/0x1920 [iscsi_target_mod]
+ kthread+0x1bc/0x210
+ ret_from_fork+0x24/0x30
+
+Freed by task 17193:
+ save_stack+0x23/0x90
+ __kasan_slab_free+0x13a/0x190
+ kasan_slab_free+0x12/0x20
+ kmem_cache_free+0xc8/0x3e0
+ transport_free_session+0x179/0x2f0 [target_core_mod]
+ transport_deregister_session+0x121/0x170 [target_core_mod]
+ iscsit_close_session+0x12c/0x350 [iscsi_target_mod]
+ iscsit_logout_post_handler+0x136/0x380 [iscsi_target_mod]
+ iscsit_response_queue+0x8fa/0xc00 [iscsi_target_mod]
+ iscsi_target_tx_thread+0x28e/0x390 [iscsi_target_mod]
+ kthread+0x1bc/0x210
+ ret_from_fork+0x24/0x30
+
+The buggy address belongs to the object at ffff88802ecd1860
+ which belongs to the cache se_sess_cache of size 352
+The buggy address is located 24 bytes inside of
+ 352-byte region [ffff88802ecd1860, ffff88802ecd19c0)
+The buggy address belongs to the page:
+page:ffffea0000bb3400 refcount:1 mapcount:0 mapping:ffff8880bef2ed00 index:0x0 compound_mapcount: 0
+flags: 0x1000000000010200(slab|head)
+raw: 1000000000010200 dead000000000100 dead000000000122 ffff8880bef2ed00
+raw: 0000000000000000 0000000080270027 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff88802ecd1700: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff88802ecd1780: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff88802ecd1800: fb fb fb fb fc fc fc fc fc fc fc fc fb fb fb fb
+                                                                ^
+ ffff88802ecd1880: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff88802ecd1900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+
+Cc: Mike Christie <mchristi@redhat.com>
+Link: https://lore.kernel.org/r/20191113220508.198257-2-bvanassche@acm.org
+Reviewed-by: Roman Bolshakov <r.bolshakov@yadro.com>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/target/target_core_transport.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
+index 7f06a62f8661d..eda8b4736c158 100644
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -584,6 +584,15 @@ void transport_free_session(struct se_session *se_sess)
+ }
+ EXPORT_SYMBOL(transport_free_session);
+ 
++static int target_release_res(struct se_device *dev, void *data)
++{
++	struct se_session *sess = data;
++
++	if (dev->reservation_holder == sess)
++		target_release_reservation(dev);
++	return 0;
++}
++
+ void transport_deregister_session(struct se_session *se_sess)
+ {
+ 	struct se_portal_group *se_tpg = se_sess->se_tpg;
+@@ -600,6 +609,12 @@ void transport_deregister_session(struct se_session *se_sess)
+ 	se_sess->fabric_sess_ptr = NULL;
+ 	spin_unlock_irqrestore(&se_tpg->session_lock, flags);
+ 
++	/*
++	 * Since the session is being removed, release SPC-2
++	 * reservations held by the session that is disappearing.
++	 */
++	target_for_each_device(target_release_res, se_sess);
++
+ 	pr_debug("TARGET_CORE[%s]: Deregistered fabric_sess\n",
+ 		se_tpg->se_tpg_tfo->fabric_name);
+ 	/*
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+2.20.1
+
