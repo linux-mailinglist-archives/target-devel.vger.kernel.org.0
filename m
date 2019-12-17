@@ -2,94 +2,118 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E716411B79F
-	for <lists+target-devel@lfdr.de>; Wed, 11 Dec 2019 17:09:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 163571235C0
+	for <lists+target-devel@lfdr.de>; Tue, 17 Dec 2019 20:33:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731545AbfLKQJK (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 11 Dec 2019 11:09:10 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33220 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730281AbfLKPMK (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Wed, 11 Dec 2019 10:12:10 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        id S1727231AbfLQTdj (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 17 Dec 2019 14:33:39 -0500
+Received: from mta-p5.oit.umn.edu ([134.84.196.205]:60410 "EHLO
+        mta-p5.oit.umn.edu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726742AbfLQTdj (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Tue, 17 Dec 2019 14:33:39 -0500
+X-Greylist: delayed 405 seconds by postgrey-1.27 at vger.kernel.org; Tue, 17 Dec 2019 14:33:38 EST
+Received: from localhost (unknown [127.0.0.1])
+        by mta-p5.oit.umn.edu (Postfix) with ESMTP id 47cp6j0NqFz9vhY5
+        for <target-devel@vger.kernel.org>; Tue, 17 Dec 2019 19:26:53 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at umn.edu
+Received: from mta-p5.oit.umn.edu ([127.0.0.1])
+        by localhost (mta-p5.oit.umn.edu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id j3IcVe83s5Us for <target-devel@vger.kernel.org>;
+        Tue, 17 Dec 2019 13:26:52 -0600 (CST)
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com [209.85.219.197])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B8FF32467E;
-        Wed, 11 Dec 2019 15:12:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576077129;
-        bh=VH0BMsB28T3mrEZ4A0ujM9x+cN5vLsmbHMZIRlhmU1w=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JxmM+SgU2D0+Ofq++5/etUGv7amGM7sI7Ucff8X7XC6gEL4THgDVAQa37WXkukF0n
-         Kq0/MheDG+cM5qOJ02fh7hppiifo34HKtEApckTyI7fqvN5JQQ8YsC7NwThI0c4PuR
-         Nlhkjf0P1SE3hartyIY6VsxfyVR/sapf5wIGQLtc=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     David Disseldorp <ddiss@suse.de>, Lee Duncan <lduncan@suse.com>,
-        Mike Christie <mchristi@redhat.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 017/134] scsi: target: compare full CHAP_A Algorithm strings
-Date:   Wed, 11 Dec 2019 10:09:53 -0500
-Message-Id: <20191211151150.19073-17-sashal@kernel.org>
+        by mta-p5.oit.umn.edu (Postfix) with ESMTPS id 47cp6h6QWSz9vhYF
+        for <target-devel@vger.kernel.org>; Tue, 17 Dec 2019 13:26:52 -0600 (CST)
+Received: by mail-yb1-f197.google.com with SMTP id 7so10092046ybc.5
+        for <target-devel@vger.kernel.org>; Tue, 17 Dec 2019 11:26:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=umn.edu; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RTtM8DgoTYeomLpAB4HP6QUtZc/12vcFjV+hqAPb2JA=;
+        b=JMRMfVjdaC3RYJNHwnXub+ZSawvRo+0REws/XPzbXdE15VrnCgJHhpm2yilPHn9sRu
+         zuRYmp8T+/ZKT+7RcoW0zzy+IGmNBLi9nWg/iV5w+/iyl/E/ksnxD8lQ9P9V7qoR/Pq7
+         icvO6xv3kPqaptf9FBx6+BKBpP4Sm09WGi3ongTQZdqtSbICpjK/8SP6IeCpMQFAFD9V
+         eOxs9CWJmHHKO9gfSA+0LwjLxX+E784sq+mm3cxIeA0US7GRxEHxKNsQlS/8SswVY7E8
+         uWJaHdqJDH75PWdrLMlpaNXeMb1ljZxByamn9DVUHGqIulL+D0G0XTahjxGkYurn5Cjo
+         m+tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RTtM8DgoTYeomLpAB4HP6QUtZc/12vcFjV+hqAPb2JA=;
+        b=U3NJ8qORp67ib2yWwFP0zN9wnrIKwPuCtK5buB3VcTu3aGTyXMFbt4wHeb4EhkoZRq
+         m7VNLg3Q5oIzQzDHdbUiIl+J1plYGQv6eRTB6Ju81UGyn471v/0Ifenz5EElXb614m1v
+         ZX+e5CC79oJTKzKDpDYrUcaS33UFxhZ3U4CXU0W/aGUC80atkG/OsEU0/HLzq3f7Bps8
+         eQNhtiScFnQeNV6etNiDUIia4nXysfox14CRLtlknJE5nS7OIKxvz6VpdwL2B2BPZUbO
+         jo5GuA98MkBNssU/YqexzLD/GPHaYikiuwic4k+Q3BiG3yOfOY/Ut3fIM4s0mRiOYYdG
+         Yg3Q==
+X-Gm-Message-State: APjAAAV3iBZyM1ziTJtEaPLBjwzN2v9kVZCiX3+wP4UuNnZOI3zSjnjR
+        VgWODAU+tduXTWK5isJa7DLrsbvKVRuXKLaDzcaS6fuI0B4fQVJrJ7N5fTa8kDkC+LQ6PDdBsUy
+        F5zzN6TWR5G+Gox1aK9/6v031EtEg
+X-Received: by 2002:a81:8785:: with SMTP id x127mr151812ywf.455.1576610812346;
+        Tue, 17 Dec 2019 11:26:52 -0800 (PST)
+X-Google-Smtp-Source: APXvYqzgHpky9NVFPlztSbQ7vnaNKGoWCoY5ZJfFY1EWtEFon5WLK7ZI2IrVnQNR9SnF12NFAuyBng==
+X-Received: by 2002:a81:8785:: with SMTP id x127mr151793ywf.455.1576610812101;
+        Tue, 17 Dec 2019 11:26:52 -0800 (PST)
+Received: from cs-u-syssec1.dtc.umn.edu (cs-u-syssec1.cs.umn.edu. [128.101.106.66])
+        by smtp.gmail.com with ESMTPSA id i127sm10126017ywe.65.2019.12.17.11.26.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Dec 2019 11:26:51 -0800 (PST)
+From:   Aditya Pakki <pakki001@umn.edu>
+To:     pakki001@umn.edu
+Cc:     kjlu@umn.edu, Bart Van Assche <bvanassche@acm.org>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] scsi: RDMA/srpt: Fix incorrect pointer dereference
+Date:   Tue, 17 Dec 2019 13:26:49 -0600
+Message-Id: <20191217192649.24212-1-pakki001@umn.edu>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191211151150.19073-1-sashal@kernel.org>
-References: <20191211151150.19073-1-sashal@kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-From: David Disseldorp <ddiss@suse.de>
+In srpt_queue_response(), the rdma channel ch is first
+dereferenced and then checked for NULL. This renders the
+assertion ineffective. This patch removes the assertion and
+avoids potential NULL pointer dereference.
 
-[ Upstream commit 9cef2a7955f2754257a7cddedec16edae7b587d0 ]
-
-RFC 2307 states:
-
-  For CHAP [RFC1994], in the first step, the initiator MUST send:
-
-      CHAP_A=<A1,A2...>
-
-   Where A1,A2... are proposed algorithms, in order of preference.
-...
-   For the Algorithm, as stated in [RFC1994], one value is required to
-   be implemented:
-
-       5     (CHAP with MD5)
-
-LIO currently checks for this value by only comparing a single byte in
-the tokenized Algorithm string, which means that any value starting with
-a '5' (e.g. "55") is interpreted as "CHAP with MD5". Fix this by
-comparing the entire tokenized string.
-
-Reviewed-by: Lee Duncan <lduncan@suse.com>
-Reviewed-by: Mike Christie <mchristi@redhat.com>
-Signed-off-by: David Disseldorp <ddiss@suse.de>
-Link: https://lore.kernel.org/r/20190912095547.22427-2-ddiss@suse.de
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Aditya Pakki <pakki001@umn.edu>
 ---
- drivers/target/iscsi/iscsi_target_auth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/ulp/srpt/ib_srpt.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/target/iscsi/iscsi_target_auth.c b/drivers/target/iscsi/iscsi_target_auth.c
-index 51ddca2033e0a..8fe9b12a07a4d 100644
---- a/drivers/target/iscsi/iscsi_target_auth.c
-+++ b/drivers/target/iscsi/iscsi_target_auth.c
-@@ -70,7 +70,7 @@ static int chap_check_algorithm(const char *a_str)
- 		if (!token)
- 			goto out;
+diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
+index 23c782e3d49a..bbc6729c81c0 100644
+--- a/drivers/infiniband/ulp/srpt/ib_srpt.c
++++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
+@@ -2803,15 +2803,17 @@ static void srpt_queue_response(struct se_cmd *cmd)
+ 	struct srpt_send_ioctx *ioctx =
+ 		container_of(cmd, struct srpt_send_ioctx, cmd);
+ 	struct srpt_rdma_ch *ch = ioctx->ch;
+-	struct srpt_device *sdev = ch->sport->sdev;
+ 	struct ib_send_wr send_wr, *first_wr = &send_wr;
+-	struct ib_sge sge;
+ 	enum srpt_command_state state;
++	struct srpt_device *sdev;
+ 	int resp_len, ret, i;
++	struct ib_sge sge;
+ 	u8 srp_tm_status;
  
--		if (!strncmp(token, "5", 1)) {
-+		if (!strcmp(token, "5")) {
- 			pr_debug("Selected MD5 Algorithm\n");
- 			kfree(orig);
- 			return CHAP_DIGEST_MD5;
+-	BUG_ON(!ch);
++	if (WARN_ON(!ch))
++		return;
+ 
++	sdev = ch->sport->sdev;
+ 	state = ioctx->state;
+ 	switch (state) {
+ 	case SRPT_STATE_NEW:
 -- 
 2.20.1
 
