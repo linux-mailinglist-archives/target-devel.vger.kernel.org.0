@@ -2,90 +2,107 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E78A123758
-	for <lists+target-devel@lfdr.de>; Tue, 17 Dec 2019 21:34:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B466F123898
+	for <lists+target-devel@lfdr.de>; Tue, 17 Dec 2019 22:22:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727437AbfLQUer (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 17 Dec 2019 15:34:47 -0500
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:47057 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727231AbfLQUer (ORCPT
+        id S1727727AbfLQVWU (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 17 Dec 2019 16:22:20 -0500
+Received: from mta-p6.oit.umn.edu ([134.84.196.206]:52820 "EHLO
+        mta-p6.oit.umn.edu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726874AbfLQVWU (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 17 Dec 2019 15:34:47 -0500
-Received: by mail-pf1-f195.google.com with SMTP id y14so8190454pfm.13;
-        Tue, 17 Dec 2019 12:34:47 -0800 (PST)
+        Tue, 17 Dec 2019 16:22:20 -0500
+Received: from localhost (unknown [127.0.0.1])
+        by mta-p6.oit.umn.edu (Postfix) with ESMTP id 47crgv6BRfz9vYVS
+        for <target-devel@vger.kernel.org>; Tue, 17 Dec 2019 21:22:19 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at umn.edu
+Received: from mta-p6.oit.umn.edu ([127.0.0.1])
+        by localhost (mta-p6.oit.umn.edu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 8ddfMMRybtlp for <target-devel@vger.kernel.org>;
+        Tue, 17 Dec 2019 15:22:19 -0600 (CST)
+Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com [209.85.219.198])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mta-p6.oit.umn.edu (Postfix) with ESMTPS id 47crgv4y4Pz9vYTl
+        for <target-devel@vger.kernel.org>; Tue, 17 Dec 2019 15:22:19 -0600 (CST)
+Received: by mail-yb1-f198.google.com with SMTP id j194so8533428ybg.7
+        for <target-devel@vger.kernel.org>; Tue, 17 Dec 2019 13:22:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=umn.edu; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xKSXDJGEfO6XnQrXdIqcw1t4M7GCKuGkDlvUOYzoj9E=;
+        b=FvyIhtqi2TU6dCcZtEq40XFqYCUpKactMnMWvPoLcHOE9a7z+IblwJjvMhVVwWPxew
+         m/n+MdzJ2U442WIYSPvp8Kts3/SOHeEomUEyux07PFqecBWnGNOZcbDjw1n5zWRsvxKn
+         sjcoIsj3FFfgdymVtZDdKoYDd9NnuDpymNvESEGgmpDLnWQT8ZO7+66Jr5XZayEDiEWl
+         5G5fbB53ZC81eAW+R/uip0uEIjmSjqJMPk/+HI5KhrTmkpzM2aDCgO6YZcnqmhwZz0PW
+         MhowlFaOU3sJQ7aYfmyaE8viHJfljLoKzAIGOk+JcqqmJXMNA6HWwTXV7QLCdmvnhbLq
+         n3sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=wSq9UbcGgrIcyy3/grTcN0ygIwYk8X1gs2WW24q9oC0=;
-        b=lMD0ScupWcjKNnbYN13LhCm9VscP5bWyv7WXGD6i+z065FfB1RJhNegwwViuIKtoup
-         gvhWKL5RmgvLNUtFGmK4zJi0tQxyF/m8XvP2sR8jKHUTnEznqP+BxIaNN9oQcq6ihm0p
-         c4k3Us7VrVkvoZ6YimESfmbwnT4XGejbVsFRTj7FY4grn25eJlpjZNMq3zjyBXTv3BXR
-         /eE6V0OsvsOGlCyhdGaBgorcHrsbMHHsCFUWm0R1XUN4VkRs/nxI+3+Rexws9e+ZkrlP
-         vgjP8okFGFYMckVcO0lne2myenOYUB/CL7CdtRRxEtBSEQNY3+0uas0ddzPhwQnEKciM
-         FB0Q==
-X-Gm-Message-State: APjAAAV8oPW23w0stumBM3uJEz9IEG28Mqc2HM7Rvp1FwdXyd7Tph8wa
-        7gyTlVo0Pgv/OIQSGZfxQ1aMDK/e
-X-Google-Smtp-Source: APXvYqyj04KjYuMr2anPYYyDvo+WXIBzNftZyx76p4OnHJyZYgCmLdczh5pSK40fCAxyDOkQqY/R4w==
-X-Received: by 2002:a62:3045:: with SMTP id w66mr25058374pfw.122.1576614886243;
-        Tue, 17 Dec 2019 12:34:46 -0800 (PST)
-Received: from desktop-bart.svl.corp.google.com ([2620:15c:2cd:202:4308:52a3:24b6:2c60])
-        by smtp.gmail.com with ESMTPSA id v29sm27184456pgl.88.2019.12.17.12.34.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Dec 2019 12:34:45 -0800 (PST)
-Subject: Re: [PATCH v2] scsi: RDMA/srpt: remove unnecessary assertion in
- srpt_queue_response
-To:     Aditya Pakki <pakki001@umn.edu>
-Cc:     kjlu@umn.edu, Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
-        target-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20191217194437.25568-1-pakki001@umn.edu>
-From:   Bart Van Assche <bvanassche@acm.org>
-Message-ID: <d497d620-9aff-616c-67ae-bfb93f39b926@acm.org>
-Date:   Tue, 17 Dec 2019 12:34:44 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        bh=xKSXDJGEfO6XnQrXdIqcw1t4M7GCKuGkDlvUOYzoj9E=;
+        b=oJBWbEN5bArFpQIVd4czahHD867Lz5kBqy6QphAA4T/iiEM+XEAG0JwajBjNeEkmEV
+         vq4nP8bNQRtpF+TNS4cxw20BTQ2wOxg+wrmGLpP1EbhmtPdlqnO+949WLoKyKH4T0eFT
+         WKbNUlxJdMgDXPe/khblcysqzkoGj3NXCmBQylbVLhMSCIfZt+6c823i+ifrpG0ICXki
+         1HHxg1QdwrIJBDU6TEIfKF6YlVqSgh3Gqex5QhPOxwmxdM3pFwXplQa1jyI9dyfLG5dL
+         IjZ7V9FmkbSjMPqDknBh7qFrSx8NxM5i/zhE8jhnNOmc9E/Q5CX1vE4HmWb4YjlVDr4D
+         LDpw==
+X-Gm-Message-State: APjAAAUb7JmELGxO4+pInPlTK78SP7e7fECiCrD5KjdsFPZ6wXZkMVJC
+        HYOMXJUO8LSOR3VTp86lCibpJSD9F0zjTYsgVXMVeW8aH0JaFUIxKR4bXjmyuMY3Z0k1XYyHbmU
+        JL0MuFAL3MGegGuqdobjPQ/g935yS
+X-Received: by 2002:a81:de03:: with SMTP id k3mr693553ywj.504.1576617739219;
+        Tue, 17 Dec 2019 13:22:19 -0800 (PST)
+X-Google-Smtp-Source: APXvYqy6+drdAHEBR8pRqveMcJwWGEBYCzK6y5x7+hFckUzevP2NHLT1ZNcmcUQ00ImO6UEXbJBcgw==
+X-Received: by 2002:a81:de03:: with SMTP id k3mr693534ywj.504.1576617738960;
+        Tue, 17 Dec 2019 13:22:18 -0800 (PST)
+Received: from cs-u-syssec1.dtc.umn.edu (cs-u-syssec1.cs.umn.edu. [128.101.106.66])
+        by smtp.gmail.com with ESMTPSA id m7sm22002ywh.24.2019.12.17.13.22.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Dec 2019 13:22:18 -0800 (PST)
+From:   Aditya Pakki <pakki001@umn.edu>
+To:     pakki001@umn.edu
+Cc:     kjlu@umn.edu, "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] scsi: libfc: remove unnecessary assertion on ep variable
+Date:   Tue, 17 Dec 2019 15:22:13 -0600
+Message-Id: <20191217212214.30722-1-pakki001@umn.edu>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20191217194437.25568-1-pakki001@umn.edu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 12/17/19 11:44 AM, Aditya Pakki wrote:
-> Currently, BUG_ON in srpt_queue_response, is used as an assertion for
-> empty rdma channel. However, if the channel is NULL, the call trace
-> on console is sufficient for diagnosis.
-> 
-> Signed-off-by: Aditya Pakki <pakki001@umn.edu>
-> ---
-> v1: Avoid potential NULL pointer derefernce of ch. Current fix
-> suggested by Bart Van Assche
-> ---
->   drivers/infiniband/ulp/srpt/ib_srpt.c | 2 --
->   1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-> index 23c782e3d49a..98552749d71c 100644
-> --- a/drivers/infiniband/ulp/srpt/ib_srpt.c
-> +++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-> @@ -2810,8 +2810,6 @@ static void srpt_queue_response(struct se_cmd *cmd)
->   	int resp_len, ret, i;
->   	u8 srp_tm_status;
->   
-> -	BUG_ON(!ch);
-> -
->   	state = ioctx->state;
->   	switch (state) {
->   	case SRPT_STATE_NEW:
+In ft_recv_write_data(), the pointer ep is dereferenced first and
+then asserts for NULL. The patch removes the unnecessary assertion.
 
-I think the description of this patch should also mention that this 
-patch removes a check of a pointer after it has already been 
-dereferenced. Anyway:
+Signed-off-by: Aditya Pakki <pakki001@umn.edu>
+---
+ drivers/target/tcm_fc/tfc_io.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+diff --git a/drivers/target/tcm_fc/tfc_io.c b/drivers/target/tcm_fc/tfc_io.c
+index 1354a157e9af..6a38ff936389 100644
+--- a/drivers/target/tcm_fc/tfc_io.c
++++ b/drivers/target/tcm_fc/tfc_io.c
+@@ -221,7 +221,6 @@ void ft_recv_write_data(struct ft_cmd *cmd, struct fc_frame *fp)
+ 	ep = fc_seq_exch(seq);
+ 	lport = ep->lp;
+ 	if (cmd->was_ddp_setup) {
+-		BUG_ON(!ep);
+ 		BUG_ON(!lport);
+ 		/*
+ 		 * Since DDP (Large Rx offload) was setup for this request,
+-- 
+2.20.1
+
