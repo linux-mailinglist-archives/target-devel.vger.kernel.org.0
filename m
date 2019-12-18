@@ -2,75 +2,60 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0664212456E
-	for <lists+target-devel@lfdr.de>; Wed, 18 Dec 2019 12:13:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 408AE124F52
+	for <lists+target-devel@lfdr.de>; Wed, 18 Dec 2019 18:29:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726682AbfLRLM7 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 18 Dec 2019 06:12:59 -0500
-Received: from mx2.suse.de ([195.135.220.15]:55134 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725930AbfLRLM7 (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Wed, 18 Dec 2019 06:12:59 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 274E8B1A1;
-        Wed, 18 Dec 2019 11:12:56 +0000 (UTC)
-Subject: Re: [PATCH] scsi: libfc: remove unnecessary assertion on ep variable
-To:     Aditya Pakki <pakki001@umn.edu>
-Cc:     kjlu@umn.edu, "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Allison Randal <allison@lohutok.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20191217212214.30722-1-pakki001@umn.edu>
-From:   Hannes Reinecke <hare@suse.de>
-Message-ID: <ca12f639-2ee0-55eb-c927-c1ce97208c00@suse.de>
-Date:   Wed, 18 Dec 2019 12:12:52 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
+        id S1727346AbfLRR2m (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 18 Dec 2019 12:28:42 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:38797 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727184AbfLRR2l (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Wed, 18 Dec 2019 12:28:41 -0500
+Received: by mail-ot1-f67.google.com with SMTP id h20so3390969otn.5;
+        Wed, 18 Dec 2019 09:28:41 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=nWpDQmZNg8zKVk12QskQ7NNS05C4fI/JmZBKLdKyu8Q=;
+        b=dZRMOMeNC/Q13lGDTit6eg4tCnW8gL3yVs3ofur+1d69N9Jte5Hz50eLnMEu73SVwk
+         bWzuopI7VqsYWhVqX6ffW0IFARYuox02pceF2slWjaZCz4bs6H/DMlxVNcolZW1hAxw/
+         y29gcmwU16IyuGHhc8ckd6K9YnOcohQn3uFrgFDANTa44XUuwpBreNscZjY4o3LIJf1T
+         3UOOKuDLy91sJDRRPAyqAhHQ1KAjpiGrKH+VrDfg67H0pnXavYyyXOXvhFjRkN8LSUkl
+         8ARXPYu6Rcs1w+vfnekP6np22XfzZ5sJHx+0BQ0tAXuKDvBaXzpa+MsBKI0Dgz98t7bL
+         56Xw==
+X-Gm-Message-State: APjAAAVy6w9/eHivqXPiW0gWkxZpQpDk0SWJc31iAMOsOZrARQpgcrau
+        FqOTqLkf1HdSwLXPEz9LbXYulUPp
+X-Google-Smtp-Source: APXvYqwhO/YiuZqs+xO2NHkyoOldc28Kz+sBRmtSa/p35vQFTsCzm9COIsi+E45pkGXSZnXiADpwAA==
+X-Received: by 2002:a9d:6481:: with SMTP id g1mr3875467otl.180.1576690121236;
+        Wed, 18 Dec 2019 09:28:41 -0800 (PST)
+Received: from ?IPv6:2600:1700:65a0:78e0:514:7862:1503:8e4d? ([2600:1700:65a0:78e0:514:7862:1503:8e4d])
+        by smtp.gmail.com with ESMTPSA id m11sm994380oie.20.2019.12.18.09.28.39
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 18 Dec 2019 09:28:40 -0800 (PST)
+Subject: Re: [PATCH] scsi: target/iblock: Fix protection error with sectors
+ greater than 512B
+To:     Israel Rukshin <israelr@mellanox.com>,
+        Target-devel <target-devel@vger.kernel.org>,
+        Linux-scsi <linux-scsi@vger.kernel.org>
+Cc:     Max Gurtovoy <maxg@mellanox.com>, Christoph Hellwig <hch@lst.de>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+References: <1576078562-15240-1-git-send-email-israelr@mellanox.com>
+From:   Sagi Grimberg <sagi@grimberg.me>
+Message-ID: <a55aa32c-4500-f0b9-f149-b8418690d015@grimberg.me>
+Date:   Wed, 18 Dec 2019 09:28:38 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20191217212214.30722-1-pakki001@umn.edu>
+In-Reply-To: <1576078562-15240-1-git-send-email-israelr@mellanox.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 12/17/19 10:22 PM, Aditya Pakki wrote:
-> In ft_recv_write_data(), the pointer ep is dereferenced first and
-> then asserts for NULL. The patch removes the unnecessary assertion.
-> 
-> Signed-off-by: Aditya Pakki <pakki001@umn.edu>
-> ---
->   drivers/target/tcm_fc/tfc_io.c | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/target/tcm_fc/tfc_io.c b/drivers/target/tcm_fc/tfc_io.c
-> index 1354a157e9af..6a38ff936389 100644
-> --- a/drivers/target/tcm_fc/tfc_io.c
-> +++ b/drivers/target/tcm_fc/tfc_io.c
-> @@ -221,7 +221,6 @@ void ft_recv_write_data(struct ft_cmd *cmd, struct fc_frame *fp)
->   	ep = fc_seq_exch(seq);
->   	lport = ep->lp;
->   	if (cmd->was_ddp_setup) {
-> -		BUG_ON(!ep);
->   		BUG_ON(!lport);
->   		/*
->   		 * Since DDP (Large Rx offload) was setup for this request,
-> 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-
-Cheers,
-
-Hannes
--- 
-Dr. Hannes Reinecke            Teamlead Storage & Networking
-hare@suse.de                               +49 911 74053 688
-SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), Geschäftsführer: Felix Imendörffer
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
