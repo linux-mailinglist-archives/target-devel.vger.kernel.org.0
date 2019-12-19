@@ -2,60 +2,89 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 408AE124F52
-	for <lists+target-devel@lfdr.de>; Wed, 18 Dec 2019 18:29:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C1321271BD
+	for <lists+target-devel@lfdr.de>; Fri, 20 Dec 2019 00:45:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727346AbfLRR2m (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 18 Dec 2019 12:28:42 -0500
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:38797 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727184AbfLRR2l (ORCPT
+        id S1726964AbfLSXp6 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 19 Dec 2019 18:45:58 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:60740 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726963AbfLSXp6 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 18 Dec 2019 12:28:41 -0500
-Received: by mail-ot1-f67.google.com with SMTP id h20so3390969otn.5;
-        Wed, 18 Dec 2019 09:28:41 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=nWpDQmZNg8zKVk12QskQ7NNS05C4fI/JmZBKLdKyu8Q=;
-        b=dZRMOMeNC/Q13lGDTit6eg4tCnW8gL3yVs3ofur+1d69N9Jte5Hz50eLnMEu73SVwk
-         bWzuopI7VqsYWhVqX6ffW0IFARYuox02pceF2slWjaZCz4bs6H/DMlxVNcolZW1hAxw/
-         y29gcmwU16IyuGHhc8ckd6K9YnOcohQn3uFrgFDANTa44XUuwpBreNscZjY4o3LIJf1T
-         3UOOKuDLy91sJDRRPAyqAhHQ1KAjpiGrKH+VrDfg67H0pnXavYyyXOXvhFjRkN8LSUkl
-         8ARXPYu6Rcs1w+vfnekP6np22XfzZ5sJHx+0BQ0tAXuKDvBaXzpa+MsBKI0Dgz98t7bL
-         56Xw==
-X-Gm-Message-State: APjAAAVy6w9/eHivqXPiW0gWkxZpQpDk0SWJc31iAMOsOZrARQpgcrau
-        FqOTqLkf1HdSwLXPEz9LbXYulUPp
-X-Google-Smtp-Source: APXvYqwhO/YiuZqs+xO2NHkyoOldc28Kz+sBRmtSa/p35vQFTsCzm9COIsi+E45pkGXSZnXiADpwAA==
-X-Received: by 2002:a9d:6481:: with SMTP id g1mr3875467otl.180.1576690121236;
-        Wed, 18 Dec 2019 09:28:41 -0800 (PST)
-Received: from ?IPv6:2600:1700:65a0:78e0:514:7862:1503:8e4d? ([2600:1700:65a0:78e0:514:7862:1503:8e4d])
-        by smtp.gmail.com with ESMTPSA id m11sm994380oie.20.2019.12.18.09.28.39
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 18 Dec 2019 09:28:40 -0800 (PST)
-Subject: Re: [PATCH] scsi: target/iblock: Fix protection error with sectors
- greater than 512B
-To:     Israel Rukshin <israelr@mellanox.com>,
-        Target-devel <target-devel@vger.kernel.org>,
-        Linux-scsi <linux-scsi@vger.kernel.org>
-Cc:     Max Gurtovoy <maxg@mellanox.com>, Christoph Hellwig <hch@lst.de>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-References: <1576078562-15240-1-git-send-email-israelr@mellanox.com>
-From:   Sagi Grimberg <sagi@grimberg.me>
-Message-ID: <a55aa32c-4500-f0b9-f149-b8418690d015@grimberg.me>
-Date:   Wed, 18 Dec 2019 09:28:38 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        Thu, 19 Dec 2019 18:45:58 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBJNToaa096674;
+        Thu, 19 Dec 2019 23:45:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2019-08-05;
+ bh=2U0Q81xra0r1QRO24sMbZyQ0hhLt24F1WTgLmvDuYXk=;
+ b=Z26MP8aiFON5/jVYLBN9b3sexIQo6t0agbetcWGL5BfGGk8ek2oWnqCCqWMuxCStnp6S
+ +5VaNPtsj+JLzJmS7fT8xVU/M9Tl9IERGV7qphqdFORbLRSA8w8KXR6wFEQMzMzVc+Et
+ AD1vm8jm6AaJT+u5vKT36A6B/WqYh2u0tEmnTEEe4nNEKNnd23vTm8ijJUaSWvwqxWHf
+ 7S1se6BMNzls0HyUOBFHFKlBf1STx71oR2fcEon+EkjErA11AEFPm4FFvNcFIm49UbRi
+ QDwbD4JrFOhE+bk3tOy9qYGeWn/Ga7JPkXfVt+8Rhp8W/vHsdg28vdDH8me0LKW4rJ+h RQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 2x01jaduq7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 19 Dec 2019 23:45:26 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBJNYObF113883;
+        Thu, 19 Dec 2019 23:45:26 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3030.oracle.com with ESMTP id 2wyxqjf619-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 19 Dec 2019 23:45:25 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xBJNjLxk009337;
+        Thu, 19 Dec 2019 23:45:21 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 19 Dec 2019 15:45:20 -0800
+To:     Aditya Pakki <pakki001@umn.edu>
+Cc:     kjlu@umn.edu, "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Matthew Wilcox \(Oracle\)" <willy@infradead.org>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] scsi: libfc: remove unnecessary assertion on ep variable
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <20191217212214.30722-1-pakki001@umn.edu>
+Date:   Thu, 19 Dec 2019 18:45:17 -0500
+In-Reply-To: <20191217212214.30722-1-pakki001@umn.edu> (Aditya Pakki's message
+        of "Tue, 17 Dec 2019 15:22:13 -0600")
+Message-ID: <yq18sn7c22a.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <1576078562-15240-1-git-send-email-israelr@mellanox.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9476 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=818
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1912190173
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9476 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=881 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1912190173
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+
+Aditya,
+
+> In ft_recv_write_data(), the pointer ep is dereferenced first and
+> then asserts for NULL. The patch removes the unnecessary assertion.
+
+Applied to 5.6/scsi-queue, thanks!
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
