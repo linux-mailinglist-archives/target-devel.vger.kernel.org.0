@@ -2,89 +2,94 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C1321271BD
-	for <lists+target-devel@lfdr.de>; Fri, 20 Dec 2019 00:45:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7B741271D0
+	for <lists+target-devel@lfdr.de>; Fri, 20 Dec 2019 00:51:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726964AbfLSXp6 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 19 Dec 2019 18:45:58 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:60740 "EHLO
+        id S1727020AbfLSXvZ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 19 Dec 2019 18:51:25 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:37400 "EHLO
         userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726963AbfLSXp6 (ORCPT
+        with ESMTP id S1726952AbfLSXvZ (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 19 Dec 2019 18:45:58 -0500
+        Thu, 19 Dec 2019 18:51:25 -0500
 Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBJNToaa096674;
-        Thu, 19 Dec 2019 23:45:26 GMT
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBJNnLiX109170;
+        Thu, 19 Dec 2019 23:51:07 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
  from : references : date : in-reply-to : message-id : mime-version :
  content-type; s=corp-2019-08-05;
- bh=2U0Q81xra0r1QRO24sMbZyQ0hhLt24F1WTgLmvDuYXk=;
- b=Z26MP8aiFON5/jVYLBN9b3sexIQo6t0agbetcWGL5BfGGk8ek2oWnqCCqWMuxCStnp6S
- +5VaNPtsj+JLzJmS7fT8xVU/M9Tl9IERGV7qphqdFORbLRSA8w8KXR6wFEQMzMzVc+Et
- AD1vm8jm6AaJT+u5vKT36A6B/WqYh2u0tEmnTEEe4nNEKNnd23vTm8ijJUaSWvwqxWHf
- 7S1se6BMNzls0HyUOBFHFKlBf1STx71oR2fcEon+EkjErA11AEFPm4FFvNcFIm49UbRi
- QDwbD4JrFOhE+bk3tOy9qYGeWn/Ga7JPkXfVt+8Rhp8W/vHsdg28vdDH8me0LKW4rJ+h RQ== 
+ bh=MBhXGEg1ncXHS1NIT2ZlhXy3anJavD7EHRHX/F7DWrI=;
+ b=A5y+FHPPQxUJHUbop87w+8ISrA9lyk8Z55g9MOwGjKAyxTAaw4Dey5iSKpHvVHm+yhxl
+ QbOj0Vc7sahRKk3GgpKD1LQtA906BzdEpJ5Ej5LP4hfzDDFlYSzOo/09vTrnoYcjtw1v
+ mJdlsT6O2qtgK/bjI7HLF1xasTjby7ukdnoV0h4k4r4lB+I7CRGl2dKSXumlmC4/6n8C
+ LV5S48FyrW8GA2PEg1ZVdwYDEISsp8ehg4iWlFVgpHapkpN7ytwDiRKzy9PTPWaK9GGk
+ kKYZIa4yLB2fM8tz/kbgwxb/ef92hxcz6SpPBrzHgE39Sjwj+kx0DfBTo2vcFxlwZrTi sg== 
 Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 2x01jaduq7-1
+        by userp2130.oracle.com with ESMTP id 2x01jadv6k-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 19 Dec 2019 23:45:26 +0000
+        Thu, 19 Dec 2019 23:51:07 +0000
 Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBJNYObF113883;
-        Thu, 19 Dec 2019 23:45:26 GMT
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBJNncQe143672;
+        Thu, 19 Dec 2019 23:51:07 GMT
 Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 2wyxqjf619-1
+        by userp3030.oracle.com with ESMTP id 2wyxqjfc40-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 19 Dec 2019 23:45:25 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xBJNjLxk009337;
-        Thu, 19 Dec 2019 23:45:21 GMT
+        Thu, 19 Dec 2019 23:51:06 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xBJNp5Mt013380;
+        Thu, 19 Dec 2019 23:51:05 GMT
 Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 19 Dec 2019 15:45:20 -0800
-To:     Aditya Pakki <pakki001@umn.edu>
-Cc:     kjlu@umn.edu, "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Allison Randal <allison@lohutok.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Matthew Wilcox \(Oracle\)" <willy@infradead.org>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] scsi: libfc: remove unnecessary assertion on ep variable
+        with ESMTP ; Thu, 19 Dec 2019 15:51:05 -0800
+To:     Israel Rukshin <israelr@mellanox.com>
+Cc:     Target-devel <target-devel@vger.kernel.org>,
+        Linux-scsi <linux-scsi@vger.kernel.org>,
+        Max Gurtovoy <maxg@mellanox.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Christoph Hellwig <hch@lst.de>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: Re: [PATCH] scsi: target/iblock: Fix protection error with sectors greater than 512B
 From:   "Martin K. Petersen" <martin.petersen@oracle.com>
 Organization: Oracle Corporation
-References: <20191217212214.30722-1-pakki001@umn.edu>
-Date:   Thu, 19 Dec 2019 18:45:17 -0500
-In-Reply-To: <20191217212214.30722-1-pakki001@umn.edu> (Aditya Pakki's message
-        of "Tue, 17 Dec 2019 15:22:13 -0600")
-Message-ID: <yq18sn7c22a.fsf@oracle.com>
+References: <1576078562-15240-1-git-send-email-israelr@mellanox.com>
+Date:   Thu, 19 Dec 2019 18:51:02 -0500
+In-Reply-To: <1576078562-15240-1-git-send-email-israelr@mellanox.com> (Israel
+        Rukshin's message of "Wed, 11 Dec 2019 17:36:02 +0200")
+Message-ID: <yq1r20zan89.fsf@oracle.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9476 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=818
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=771
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-1912190173
+ engine=8.0.1-1911140001 definitions=main-1912190174
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9476 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=881 adultscore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=832 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-1912190173
+ definitions=main-1912190174
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
 
-Aditya,
+Israel,
 
-> In ft_recv_write_data(), the pointer ep is dereferenced first and
-> then asserts for NULL. The patch removes the unnecessary assertion.
+> The sector size of the block layer is 512 bytes, but integrity
+> interval size might be different (in case of 4K block size of the
+> media). At the initiator side the virtual start sector is the one that
+> was originally submitted by the block layer (512 bytes) for the Reftag
+> usage. The initiator converts the Reftag to integrity interval units
+> and sends it to the target. So the target virtual start sector should
+> be calculated at integrity interval units. prepare_fn() and
+> complete_fn() don't remap correctly the Reftag when using incorrect
+> units of the virtual start sector, which leads to the following
+> protection error at the device:
 
-Applied to 5.6/scsi-queue, thanks!
+Applied to 5.5/scsi-fixes, thanks!
 
 -- 
 Martin K. Petersen	Oracle Linux Engineering
