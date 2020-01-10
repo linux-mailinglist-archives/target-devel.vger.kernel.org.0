@@ -2,49 +2,49 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BAF8F136D45
-	for <lists+target-devel@lfdr.de>; Fri, 10 Jan 2020 13:45:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F8D813745F
+	for <lists+target-devel@lfdr.de>; Fri, 10 Jan 2020 18:06:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727753AbgAJMpW (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 10 Jan 2020 07:45:22 -0500
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:46642 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728254AbgAJMpW (ORCPT
+        id S1727242AbgAJRGt (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 10 Jan 2020 12:06:49 -0500
+Received: from mail-pj1-f67.google.com ([209.85.216.67]:50288 "EHLO
+        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726636AbgAJRGs (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 10 Jan 2020 07:45:22 -0500
-Received: by mail-pf1-f195.google.com with SMTP id n9so1081001pff.13;
-        Fri, 10 Jan 2020 04:45:21 -0800 (PST)
+        Fri, 10 Jan 2020 12:06:48 -0500
+Received: by mail-pj1-f67.google.com with SMTP id r67so1215350pjb.0;
+        Fri, 10 Jan 2020 09:06:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=kIXyMxyHb52Dqb3xzKBUlHwhFwf+AsnzOx4pqWqWlWY=;
-        b=MSGy+ABEyjJHqfkpma0mmsRX+Uc9gPbqiEVJYZR0c24iUoUTjVte/QICQT5sU9I4w+
-         DGzNNWyxHTi2QSD86mJ2nW26ainZZG+8VCaCx4ZiHMaESa44V7ievBtxPfIwbfG25vbd
-         j9hUsK65W/rw4T3+4CmHr5BgpkmftWP91D/6S3Ce/cbwBO87Aq2oalpuPrPO8xw82aTw
-         5XzmUEf1IZfc8Rv3qgg1YsgfPCRPrUtLC4zB3zSvx2y55MgRKTE99hNgVGvkfejHi1JP
-         pCGJv5MFK2eN14Gh7he9aieLiX78y2uCsJSzbyeDHIA1GYGUj/ZqRSj1K9Ex5zbz+/f/
-         d9Wg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=IHv1uXIjZrBkPDtqd3SWrlnhplYEAEov1hk0+vF++bc=;
+        b=D6QloqUyjA7aqfAZzs4kwh2nt3pyT0OymgieI8yxI4wPm1p2eXG8sII04YqS24v3Is
+         Mo9L8DH3TiCYa2CFdFIdJWheaCXhp0wrRGwZpAOCsJpAu26FAib968ZTs6vm42clut9M
+         p6qjzCkQIQPH81lr1dru0y8guNmELSU+zDHiKywJAkrtvhhNBZA9NbnrwTGFiMgh6I3D
+         mohLOtEeTr+b4nzZYfezm+dJDJ/qq6ekCPbh1/hhyf9B3KQap/n+mMjR5VINvjlIU+Fz
+         QfeUjoR19XnQKOrIiYlcSYG/EbcMtuT8r9QWpSXAMCuXvwmNdq3GSa9mP+6P9SbblM1K
+         kfwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=kIXyMxyHb52Dqb3xzKBUlHwhFwf+AsnzOx4pqWqWlWY=;
-        b=Uxv9TxX41udFQi2WDmsACq4nR1xNiO0XLP+3wYSykuj2FbktIkxClYiaPoWV/tsSaC
-         65nu4HCRb8uNhN4RtQwQbTVV3IZuJwVNX3IK3aM5+tobn3yct3foZAqgknzzZfU8cQCZ
-         Xs7b7+IgDGyEnHfwfVpeDfD+iSwGrasj4P7MJG1JdLir0X/mFA4e+xlZ3aFfKyJDBOHp
-         OlyTKCs/nmnxIQJY3YXNnfHZM2EMpuYyaKrqylgl9fnm0kbGgmVMwE1JTCktNE121lO1
-         lzOdIIViaiE5ObrrpWbDthfDShdp+cwhSaZAlWiABKJp0jxmWkG90hLDYBspK6jbHNs8
-         9m+w==
-X-Gm-Message-State: APjAAAXUW89kDUDKEfttUvsIT3WOGK3SWd947O47hTOCoOS1gtzGpmEz
-        b2ZsTARdU8YqVIByClS575A=
-X-Google-Smtp-Source: APXvYqxsIaCvT7AXhc5HwdvbwnGjpRwaKBcXZvcvLZoaWm6p426Edsi9yrJobhbKmJFqnsUmEQ66aw==
-X-Received: by 2002:a63:4d1b:: with SMTP id a27mr4092403pgb.352.1578660320827;
-        Fri, 10 Jan 2020 04:45:20 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=IHv1uXIjZrBkPDtqd3SWrlnhplYEAEov1hk0+vF++bc=;
+        b=g/JBv7fY7ic5lxEpE9W7xd5hC8eNnzWHHi0IkeBxZcY8U91cXqrKQ+5P+Rt1rCuMQT
+         tRsu+DKjKvCzOoh8moafwQsAPunUiSdnQ0nUqEpiqpyW+9kZT31aKQk0FUkqWsI/Xt2Y
+         gKZs6tbGsuXVuXNdBEDaxeGMFslI0/IpaJMy35tU5ocnmNZ4stScfQvdqSo6apL0ak3v
+         zwvpJnpyusE+EQik0InL3tidLGcPcI7MllX062b0qHw3ZIWlAXkkaQHAYvRS9ioNLAlf
+         8iGfTj8EGLkHnXCVNTbr+lLIBHnqb2JosnY2Ys72E3A3H5TsDgASxhWFZLR4y32D+Lhk
+         +jcg==
+X-Gm-Message-State: APjAAAXzEEiLYXOsoHqBS7CVvC9WKutdsgQ259LU3qRc3N24xovsb5Tr
+        qtKoGzy01PPQWb5yh9agfPg=
+X-Google-Smtp-Source: APXvYqx3gqGSFiAwvC6krHLnqHoT6cxVpd3wtWFIYmQO3dWFbHKJ4+9cRs/OmdPPAAfpMhC+suke+A==
+X-Received: by 2002:a17:902:9885:: with SMTP id s5mr5464097plp.217.1578676007973;
+        Fri, 10 Jan 2020 09:06:47 -0800 (PST)
 Received: from localhost.localdomain ([103.211.17.220])
-        by smtp.googlemail.com with ESMTPSA id d3sm2764724pfn.113.2020.01.10.04.45.17
+        by smtp.googlemail.com with ESMTPSA id x4sm3613268pff.143.2020.01.10.09.06.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jan 2020 04:45:20 -0800 (PST)
+        Fri, 10 Jan 2020 09:06:47 -0800 (PST)
 From:   Amol Grover <frextrite@gmail.com>
 To:     "Martin K. Petersen" <martin.petersen@oracle.com>
 Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
@@ -54,12 +54,10 @@ Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
         Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>,
         "Paul E . McKenney" <paulmck@kernel.org>,
         Amol Grover <frextrite@gmail.com>
-Subject: [PATCH 3/3] drivers: target: tcm_fc: tfc_sess: Pass lockdep expression to RCU lists
-Date:   Fri, 10 Jan 2020 18:14:06 +0530
-Message-Id: <20200110124403.27882-3-frextrite@gmail.com>
+Subject: [PATCH v2 1/3] drivers: target: target_core_device: Pass lockdep expression to RCU lists
+Date:   Fri, 10 Jan 2020 22:35:57 +0530
+Message-Id: <20200110170558.23466-1-frextrite@gmail.com>
 X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200110124403.27882-1-frextrite@gmail.com>
-References: <20200110124403.27882-1-frextrite@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: target-devel-owner@vger.kernel.org
@@ -67,9 +65,9 @@ Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-head is traversed with hlist_for_each_entry_rcu
+nacl->lun_entry_hlist is traversed with hlist_for_each_entry_rcu
 outside an RCU read-side critical section but under the
-protection of ft_lport_lock.
+protection of nacl->lun_entry_mutex.
 
 Hence, add the corresponding lockdep expression to the list traversal
 primitive to silence false-positive lockdep warnings, and
@@ -80,77 +78,72 @@ clean and concise.
 
 Signed-off-by: Amol Grover <frextrite@gmail.com>
 ---
- drivers/target/tcm_fc/tfc_sess.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+v2:
+- Fix sparse error
+  CHECK: Alignment should match open parenthesis
 
-diff --git a/drivers/target/tcm_fc/tfc_sess.c b/drivers/target/tcm_fc/tfc_sess.c
-index 4fd6a1de947c..8e9598010fb9 100644
---- a/drivers/target/tcm_fc/tfc_sess.c
-+++ b/drivers/target/tcm_fc/tfc_sess.c
-@@ -32,6 +32,9 @@
- 		 (lport)->host->host_no,	   \
- 		 (lport)->port_id, ##args )
+ drivers/target/target_core_device.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
+index 2d19f0e332b0..7627583e2509 100644
+--- a/drivers/target/target_core_device.c
++++ b/drivers/target/target_core_device.c
+@@ -36,6 +36,9 @@
+ #include "target_core_pr.h"
+ #include "target_core_ua.h"
  
-+#define ft_lport_lock_held() \
-+	lockdep_is_held(&ft_lport_lock)
++#define lun_entry_mutex_held() \
++	lockdep_is_held(&nacl->lun_entry_mutex)
 +
- static void ft_sess_delete_all(struct ft_tport *);
+ static DEFINE_MUTEX(device_mutex);
+ static LIST_HEAD(device_list);
+ static DEFINE_IDR(devices_idr);
+@@ -247,9 +250,10 @@ void core_free_device_list_for_node(
+ 	struct se_dev_entry *deve;
  
- /*
-@@ -45,7 +48,7 @@ static struct ft_tport *ft_tport_get(struct fc_lport *lport)
- 	int i;
- 
- 	tport = rcu_dereference_protected(lport->prov[FC_TYPE_FCP],
--					  lockdep_is_held(&ft_lport_lock));
-+							ft_lport_lock_held());
- 	if (tport && tport->tpg)
- 		return tport;
- 
-@@ -170,7 +173,7 @@ static struct ft_sess *ft_sess_get(struct fc_lport *lport, u32 port_id)
+ 	mutex_lock(&nacl->lun_entry_mutex);
+-	hlist_for_each_entry_rcu(deve, &nacl->lun_entry_hlist, link) {
++	hlist_for_each_entry_rcu(deve, &nacl->lun_entry_hlist, link,
++				 lun_entry_mutex_held()) {
+ 		struct se_lun *lun = rcu_dereference_check(deve->se_lun,
+-					lockdep_is_held(&nacl->lun_entry_mutex));
++							lun_entry_mutex_held());
+ 		core_disable_device_list_for_node(lun, deve, nacl, tpg);
  	}
+ 	mutex_unlock(&nacl->lun_entry_mutex);
+@@ -276,7 +280,8 @@ struct se_dev_entry *target_nacl_find_deve(struct se_node_acl *nacl, u64 mapped_
+ {
+ 	struct se_dev_entry *deve;
  
- 	head = &tport->hash[ft_sess_hash(port_id)];
--	hlist_for_each_entry_rcu(sess, head, hash) {
-+	hlist_for_each_entry_rcu(sess, head, hash, ft_lport_lock_held()) {
- 		if (sess->port_id == port_id) {
- 			kref_get(&sess->kref);
- 			rcu_read_unlock();
-@@ -215,7 +218,7 @@ static struct ft_sess *ft_sess_create(struct ft_tport *tport, u32 port_id,
- 	ft_format_wwn(&initiatorname[0], TRANSPORT_IQN_LEN, rdata->ids.port_name);
+-	hlist_for_each_entry_rcu(deve, &nacl->lun_entry_hlist, link)
++	hlist_for_each_entry_rcu(deve, &nacl->lun_entry_hlist, link,
++				 rcu_read_lock_held() || lun_entry_mutex_held())
+ 		if (deve->mapped_lun == mapped_lun)
+ 			return deve;
  
- 	head = &tport->hash[ft_sess_hash(port_id)];
--	hlist_for_each_entry_rcu(sess, head, hash)
-+	hlist_for_each_entry_rcu(sess, head, hash, ft_lport_lock_held())
- 		if (sess->port_id == port_id)
- 			return sess;
+@@ -339,7 +344,7 @@ int core_enable_device_list_for_node(
+ 	orig = target_nacl_find_deve(nacl, mapped_lun);
+ 	if (orig && orig->se_lun) {
+ 		struct se_lun *orig_lun = rcu_dereference_check(orig->se_lun,
+-					lockdep_is_held(&nacl->lun_entry_mutex));
++							lun_entry_mutex_held());
  
-@@ -264,7 +267,7 @@ static struct ft_sess *ft_sess_delete(struct ft_tport *tport, u32 port_id)
- 	struct ft_sess *sess;
+ 		if (orig_lun != lun) {
+ 			pr_err("Existing orig->se_lun doesn't match new lun"
+@@ -460,9 +465,10 @@ void core_clear_lun_from_tpg(struct se_lun *lun, struct se_portal_group *tpg)
+ 	list_for_each_entry(nacl, &tpg->acl_node_list, acl_list) {
  
- 	head = &tport->hash[ft_sess_hash(port_id)];
--	hlist_for_each_entry_rcu(sess, head, hash) {
-+	hlist_for_each_entry_rcu(sess, head, hash, ft_lport_lock_held()) {
- 		if (sess->port_id == port_id) {
- 			ft_sess_unhash(sess);
- 			return sess;
-@@ -291,7 +294,7 @@ static void ft_sess_delete_all(struct ft_tport *tport)
+ 		mutex_lock(&nacl->lun_entry_mutex);
+-		hlist_for_each_entry_rcu(deve, &nacl->lun_entry_hlist, link) {
++		hlist_for_each_entry_rcu(deve, &nacl->lun_entry_hlist, link,
++					 lun_entry_mutex_held()) {
+ 			struct se_lun *tmp_lun = rcu_dereference_check(deve->se_lun,
+-					lockdep_is_held(&nacl->lun_entry_mutex));
++							lun_entry_mutex_held());
  
- 	for (head = tport->hash;
- 	     head < &tport->hash[FT_SESS_HASH_SIZE]; head++) {
--		hlist_for_each_entry_rcu(sess, head, hash) {
-+		hlist_for_each_entry_rcu(sess, head, hash, ft_lport_lock_held()) {
- 			ft_sess_unhash(sess);
- 			ft_close_sess(sess);	/* release from table */
- 		}
-@@ -454,7 +457,7 @@ static void ft_prlo(struct fc_rport_priv *rdata)
- 
- 	mutex_lock(&ft_lport_lock);
- 	tport = rcu_dereference_protected(rdata->local_port->prov[FC_TYPE_FCP],
--					  lockdep_is_held(&ft_lport_lock));
-+							ft_lport_lock_held());
- 
- 	if (!tport) {
- 		mutex_unlock(&ft_lport_lock);
+ 			if (lun != tmp_lun)
+ 				continue;
 -- 
 2.24.1
 
