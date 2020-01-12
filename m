@@ -2,155 +2,86 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B274137467
-	for <lists+target-devel@lfdr.de>; Fri, 10 Jan 2020 18:07:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 225F81389A4
+	for <lists+target-devel@lfdr.de>; Mon, 13 Jan 2020 04:16:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727767AbgAJRG6 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 10 Jan 2020 12:06:58 -0500
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:37202 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726131AbgAJRG6 (ORCPT
+        id S1732970AbgAMDQA (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 12 Jan 2020 22:16:00 -0500
+Received: from mail02.vodafone.es ([217.130.24.81]:32441 "EHLO
+        mail02.vodafone.es" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732961AbgAMDQA (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 10 Jan 2020 12:06:58 -0500
-Received: by mail-pg1-f195.google.com with SMTP id q127so1280325pga.4;
-        Fri, 10 Jan 2020 09:06:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=kIXyMxyHb52Dqb3xzKBUlHwhFwf+AsnzOx4pqWqWlWY=;
-        b=Qq/eSddVaNrHi4aFsdIW47GKoMp5/AouAcANV8I9EI/aUy0FYixHPk3LViqJkSvjq3
-         MfYGuA+R3Nl7y4cxOBJ/grgL+QF0Otmarxdzx2nDg0/J6Az3VA3Vvwiq1jaJpXGaROLC
-         nxMK6xmFicvJ/4LYtB0+WZ7kd1EeNxydqiQoHB9fIwBMPWpzD1gQbgDQF2twLFHxiokD
-         wno1xRcPl8aeQQ9a7/OWDqfTw+jWp3AqGLIhWZnQzuh2pkgCQVuCUjjnWGzT39X9sc6m
-         G2VGSavSYYCXhNuW0gc1g4HGhlDCDmpnRvQ7BrHJzpC4/g8vCIUdNcgl830i3mr6Gjc/
-         SArg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=kIXyMxyHb52Dqb3xzKBUlHwhFwf+AsnzOx4pqWqWlWY=;
-        b=uMaDF7o7vSzrFVPL3bVNMhWDb6kVRJ3s72dPiFi10+m5qUNxgOtAqMuzgvbNeJQ9oW
-         aqUVxI+svsKbxeIVZ+Rdxcm8xUrzA60jFft3qm6IFRbZy+TNbzL8QD+aoXS2vXKTeUxM
-         21WPmXEBvLB3ZO0BZmsrNWFs6k2Kcl8Pc1/CxXoJ+RcVgLU5VEVU4drOCfrnwt8JvnWE
-         3QON7PQgZt+h9ECTqBfgooDJfoUAl6gGW/NpvDvHv5jWcFwZwaaiCClV1YKnaSUO+PKO
-         YwUt/IvWDZ5V87rLRPps19NFd2Kd6+ExoMTEWCZS6rb8sNeMlO0nJ0m8pdDW293kRu+Q
-         u9fQ==
-X-Gm-Message-State: APjAAAVCkCSIRmXXVNVrmNOS6O+hSNO1zwUahbbRp86bo2XPtPqqnY3v
-        V2YL8B2DxXZWC+tEvuwwubg=
-X-Google-Smtp-Source: APXvYqx1bOJJ1EYx+JdDvHs8uo8AXTRyG4cSwLpVeu4x3iHlpshx7fU4qmCEoHVe+Y77WlnkQkEjOg==
-X-Received: by 2002:a65:52ca:: with SMTP id z10mr5668585pgp.47.1578676017609;
-        Fri, 10 Jan 2020 09:06:57 -0800 (PST)
-Received: from localhost.localdomain ([103.211.17.220])
-        by smtp.googlemail.com with ESMTPSA id x4sm3613268pff.143.2020.01.10.09.06.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jan 2020 09:06:57 -0800 (PST)
-From:   Amol Grover <frextrite@gmail.com>
-To:     "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Amol Grover <frextrite@gmail.com>
-Subject: [PATCH v2 3/3] drivers: target: tcm_fc: tfc_sess: Pass lockdep expression to RCU lists
-Date:   Fri, 10 Jan 2020 22:35:59 +0530
-Message-Id: <20200110170558.23466-3-frextrite@gmail.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200110170558.23466-1-frextrite@gmail.com>
-References: <20200110170558.23466-1-frextrite@gmail.com>
+        Sun, 12 Jan 2020 22:16:00 -0500
+IronPort-SDR: xPklVg+QDD4P94MdGq4ciCis47qVnnL1G+4iJ27l+RRpt2DFRwHsbHVMq/zt9d8S4DhaVicr5U
+ 2Mt7+ChYWy5A==
+IronPort-PHdr: =?us-ascii?q?9a23=3AL/Bx7hYM9H8aHvW5yyQKIHz/LSx+4OfEezUN45?=
+ =?us-ascii?q?9isYplN5qZr8W8bnLW6fgltlLVR4KTs6sC17ON9fq+CCddvt6oizMrSNR0TR?=
+ =?us-ascii?q?gLiMEbzUQLIfWuLgnFFsPsdDEwB89YVVVorDmROElRH9viNRWJ+iXhpTEdFQ?=
+ =?us-ascii?q?/iOgVrO+/7BpDdj9it1+C15pbffxhEiCCybL9vIhi6txvdu8gSjIdtKqs8yA?=
+ =?us-ascii?q?bCr2dVdehR2W5mP0+YkQzm5se38p5j8iBQtOwk+sVdT6j0fLk2QKJBAjg+PG?=
+ =?us-ascii?q?87+MPktR/YTQuS/XQcSXkZkgBJAwfe8h73WIr6vzbguep83CmaOtD2TawxVD?=
+ =?us-ascii?q?+/4apnVAPkhSEaPDI/923Zl9B/g7heoBOhvhBy3YnUYJuNNPp5ZKPSZ88aSn?=
+ =?us-ascii?q?RYUslPUSxNG5+xb5cTD+UbIelYr5fyp14Qohu4GQmgHf3gyjlRinHx2q061f?=
+ =?us-ascii?q?ouEAHf0AM+GdIFrXDYodvpOKsOVOy4yrTDwzfeYPNMwTrz5ojGcgo/r/+PQL?=
+ =?us-ascii?q?x/ftbex0Y0GgPZjFiftZDpMy+J2ugTtWWQ8upuVfioi24iswx/uCagxtsyhY?=
+ =?us-ascii?q?nTm4kaylfE9SN2wI0oItC4UFB0YcK6H5tKuSCaMI12Qsw5TmFooyY10aEJtY?=
+ =?us-ascii?q?SncygNzZQr3R7fa/+efoWO/xntV/6RLC9miH54er+znQu+/Ea8xuHmSMW530?=
+ =?us-ascii?q?xGoyRFn9TKq3sDzQbc6tKdRft45kqh3DGP2B3N5excOkA0kLbbK4Ymwr4tip?=
+ =?us-ascii?q?ofqUTDETHymEXxlKKWc18r+ums6+T9fLrmooOQOoBuhgHgNaQhh9awAeo/Mg?=
+ =?us-ascii?q?gIQWeX4/qz1Kb78U34RrVFkOE2n7HHvJzHJ8kXvLO1DgFJ3oo59RqyAC2q3d?=
+ =?us-ascii?q?oYkHUfKVJKYhOHj4znO1HUJ/D4CO+yg0yynzd32f/GJLPgApLLLnjMi7rhfa?=
+ =?us-ascii?q?195FVAxwYp0d9f4JdUBqsBIPLwQkPxrsDXDgclMwyoxObqEMl92ZkEWWKAHK?=
+ =?us-ascii?q?CZLLrevkKW6eIxPeaMYJQYuCjyK/c7/f7il3w5lkEHfamvw5QXbGq0HvN8I0?=
+ =?us-ascii?q?WWMjLQhYIdGH0FsxZ7QOH0hVmqTzFefTCxUrg66zV9D5ipXr3OXoS8vLvU5C?=
+ =?us-ascii?q?qnE4ceWWdABRjYCXr0ep+bXPEDaCGSOcVqujMBXLmlDYQm0Ef9mhX9zu9fI/?=
+ =?us-ascii?q?bZ4GUnspTsnIxt6vHejw418zNcD9+X2CeGSGQynmBeFGx+57x2vUEokwTL6q?=
+ =?us-ascii?q?N/mfENToQL6g=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2GbIwDU3xtemCMYgtlNGBoBAQEBAQE?=
+ =?us-ascii?q?BAQEDAQEBAREBAQECAgEBAQGBewIBGAEBgS6BTVIgEpNQgU0fg0OLY4EAgx4?=
+ =?us-ascii?q?VhggTDIFbDQEBAQEBNQIBAYRATgEXgQ8kOgQNAgMNAQEFAQEBAQEFBAEBAhA?=
+ =?us-ascii?q?BAQEBAQYNCwYphUqCHQweAQQBAQEBAwMDAQEMAYNdBxkPOUoMQAEOAVODBIJ?=
+ =?us-ascii?q?LAQEznG8BjQQNDQKFHYJKBAqBCYEaI4E2AYwYGoFBP4EjIYIrCAGCAYJ/ARI?=
+ =?us-ascii?q?BbIJIglkEjUISIYEHiCmYF4JBBHaJTIwCgjcBD4gBhDEDEIJFD4EJiAOEToF?=
+ =?us-ascii?q?9ozdXgQwNenEzGoImGoEgTxgNiBuOLUCBFhACT4kugjIBAQ?=
+X-IPAS-Result: =?us-ascii?q?A2GbIwDU3xtemCMYgtlNGBoBAQEBAQEBAQEDAQEBAREBA?=
+ =?us-ascii?q?QECAgEBAQGBewIBGAEBgS6BTVIgEpNQgU0fg0OLY4EAgx4VhggTDIFbDQEBA?=
+ =?us-ascii?q?QEBNQIBAYRATgEXgQ8kOgQNAgMNAQEFAQEBAQEFBAEBAhABAQEBAQYNCwYph?=
+ =?us-ascii?q?UqCHQweAQQBAQEBAwMDAQEMAYNdBxkPOUoMQAEOAVODBIJLAQEznG8BjQQND?=
+ =?us-ascii?q?QKFHYJKBAqBCYEaI4E2AYwYGoFBP4EjIYIrCAGCAYJ/ARIBbIJIglkEjUISI?=
+ =?us-ascii?q?YEHiCmYF4JBBHaJTIwCgjcBD4gBhDEDEIJFD4EJiAOEToF9ozdXgQwNenEzG?=
+ =?us-ascii?q?oImGoEgTxgNiBuOLUCBFhACT4kugjIBAQ?=
+X-IronPort-AV: E=Sophos;i="5.69,427,1571695200"; 
+   d="scan'208";a="323716353"
+Received: from mailrel04.vodafone.es ([217.130.24.35])
+  by mail02.vodafone.es with ESMTP; 13 Jan 2020 04:15:58 +0100
+Received: (qmail 31649 invoked from network); 12 Jan 2020 04:02:00 -0000
+Received: from unknown (HELO 192.168.1.3) (quesosbelda@[217.217.179.17])
+          (envelope-sender <peterwong@hsbc.com.hk>)
+          by mailrel04.vodafone.es (qmail-ldap-1.03) with SMTP
+          for <target-devel@vger.kernel.org>; 12 Jan 2020 04:02:00 -0000
+Date:   Sun, 12 Jan 2020 05:01:56 +0100 (CET)
+From:   Peter Wong <peterwong@hsbc.com.hk>
+Reply-To: Peter Wong <peterwonghkhsbc@gmail.com>
+To:     target-devel@vger.kernel.org
+Message-ID: <440365.279272.1578801720239.JavaMail.cash@217.130.24.55>
+Subject: Investment opportunity
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-head is traversed with hlist_for_each_entry_rcu
-outside an RCU read-side critical section but under the
-protection of ft_lport_lock.
+Greetings,
+Please read the attached investment proposal and reply for more details.
+Are you interested in loan?
+Sincerely: Peter Wong
 
-Hence, add the corresponding lockdep expression to the list traversal
-primitive to silence false-positive lockdep warnings, and
-harden RCU lists.
 
-Add macro for the corresponding lockdep expression to make the code
-clean and concise.
 
-Signed-off-by: Amol Grover <frextrite@gmail.com>
----
- drivers/target/tcm_fc/tfc_sess.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/target/tcm_fc/tfc_sess.c b/drivers/target/tcm_fc/tfc_sess.c
-index 4fd6a1de947c..8e9598010fb9 100644
---- a/drivers/target/tcm_fc/tfc_sess.c
-+++ b/drivers/target/tcm_fc/tfc_sess.c
-@@ -32,6 +32,9 @@
- 		 (lport)->host->host_no,	   \
- 		 (lport)->port_id, ##args )
- 
-+#define ft_lport_lock_held() \
-+	lockdep_is_held(&ft_lport_lock)
-+
- static void ft_sess_delete_all(struct ft_tport *);
- 
- /*
-@@ -45,7 +48,7 @@ static struct ft_tport *ft_tport_get(struct fc_lport *lport)
- 	int i;
- 
- 	tport = rcu_dereference_protected(lport->prov[FC_TYPE_FCP],
--					  lockdep_is_held(&ft_lport_lock));
-+							ft_lport_lock_held());
- 	if (tport && tport->tpg)
- 		return tport;
- 
-@@ -170,7 +173,7 @@ static struct ft_sess *ft_sess_get(struct fc_lport *lport, u32 port_id)
- 	}
- 
- 	head = &tport->hash[ft_sess_hash(port_id)];
--	hlist_for_each_entry_rcu(sess, head, hash) {
-+	hlist_for_each_entry_rcu(sess, head, hash, ft_lport_lock_held()) {
- 		if (sess->port_id == port_id) {
- 			kref_get(&sess->kref);
- 			rcu_read_unlock();
-@@ -215,7 +218,7 @@ static struct ft_sess *ft_sess_create(struct ft_tport *tport, u32 port_id,
- 	ft_format_wwn(&initiatorname[0], TRANSPORT_IQN_LEN, rdata->ids.port_name);
- 
- 	head = &tport->hash[ft_sess_hash(port_id)];
--	hlist_for_each_entry_rcu(sess, head, hash)
-+	hlist_for_each_entry_rcu(sess, head, hash, ft_lport_lock_held())
- 		if (sess->port_id == port_id)
- 			return sess;
- 
-@@ -264,7 +267,7 @@ static struct ft_sess *ft_sess_delete(struct ft_tport *tport, u32 port_id)
- 	struct ft_sess *sess;
- 
- 	head = &tport->hash[ft_sess_hash(port_id)];
--	hlist_for_each_entry_rcu(sess, head, hash) {
-+	hlist_for_each_entry_rcu(sess, head, hash, ft_lport_lock_held()) {
- 		if (sess->port_id == port_id) {
- 			ft_sess_unhash(sess);
- 			return sess;
-@@ -291,7 +294,7 @@ static void ft_sess_delete_all(struct ft_tport *tport)
- 
- 	for (head = tport->hash;
- 	     head < &tport->hash[FT_SESS_HASH_SIZE]; head++) {
--		hlist_for_each_entry_rcu(sess, head, hash) {
-+		hlist_for_each_entry_rcu(sess, head, hash, ft_lport_lock_held()) {
- 			ft_sess_unhash(sess);
- 			ft_close_sess(sess);	/* release from table */
- 		}
-@@ -454,7 +457,7 @@ static void ft_prlo(struct fc_rport_priv *rdata)
- 
- 	mutex_lock(&ft_lport_lock);
- 	tport = rcu_dereference_protected(rdata->local_port->prov[FC_TYPE_FCP],
--					  lockdep_is_held(&ft_lport_lock));
-+							ft_lport_lock_held());
- 
- 	if (!tport) {
- 		mutex_unlock(&ft_lport_lock);
--- 
-2.24.1
+----------------------------------------------------
+This email was sent by the shareware version of Postman Professional.
 
