@@ -2,111 +2,93 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 68AD013BCEB
-	for <lists+target-devel@lfdr.de>; Wed, 15 Jan 2020 10:57:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B951813D26D
+	for <lists+target-devel@lfdr.de>; Thu, 16 Jan 2020 04:04:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729590AbgAOJ52 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 15 Jan 2020 04:57:28 -0500
-Received: from mx2.suse.de ([195.135.220.15]:39088 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729531AbgAOJ51 (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Wed, 15 Jan 2020 04:57:27 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 22502AC88;
-        Wed, 15 Jan 2020 09:57:25 +0000 (UTC)
-Date:   Wed, 15 Jan 2020 10:57:24 +0100
-From:   Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To:     Zhu Lingshan <lingshan.zhu@linux.intel.com>
-Cc:     Hannes Reinecke <hare@suse.de>, target-devel@vger.kernel.org
-Subject: Re: Cannot log in from BIOS to linux target
-Message-ID: <20200115095724.GL4113@kitsune.suse.cz>
-References: <20200113165128.GC4113@kitsune.suse.cz>
- <b8c09533-3d1e-bebf-6bb3-74f3a1aa6a75@linux.intel.com>
- <9c1d4e16-4cb6-5c78-46b1-f3f88158037d@suse.de>
- <bc2b330a-9624-9e21-6a41-7ad7675b1f63@linux.intel.com>
+        id S1729829AbgAPDEK (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 15 Jan 2020 22:04:10 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:40992 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729130AbgAPDEK (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Wed, 15 Jan 2020 22:04:10 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00G33ej1088733;
+        Thu, 16 Jan 2020 03:03:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2019-08-05;
+ bh=KeXhpD9A8ap0jnWZbGMJQKNJ2OG+7iix8vPQW43fGuY=;
+ b=XzLerU3dluQsrbC/jr1XbcjBeDN/ZijRnvcDHPKyUISJkkybcQUctRrkHUgJGRG4GrCY
+ 3qsjHbcrYF8EgzQHggYH26kjEHVznlLrT0lwabIqQQn2LmZMNx1g0skD2pyInA/O4fhT
+ SjwQiJIRJeTFsJTB3lyBYVkWT3RHN45ajPHp5xyEXplBdMTKGa5POvZV2X/WLIfCqBNd
+ 2dXQ4mhW9hjHPlS5zqObUh4w+bTnxt8MT6HhB0vkBfOi05RA+/THNEKBsAAvRYEfP2N9
+ OqlvPlZiypcXJLRDyT+v7xMHr994FCuqPVf7RjBrtSfnkVN51Xf/uKlq7ybJIlHa3aD4 PQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2xf73yqwan-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 16 Jan 2020 03:03:57 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00G33iEc089128;
+        Thu, 16 Jan 2020 03:03:56 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 2xj61ksyxm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 16 Jan 2020 03:03:56 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00G33YRv004698;
+        Thu, 16 Jan 2020 03:03:34 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 15 Jan 2020 19:03:33 -0800
+To:     Bart Van Assche <bvanassche@acm.org>
+Cc:     Rahul Kundu <rahul.kundu@chelsio.com>,
+        "linux-scsi\@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "target-devel\@vger.kernel.org" <target-devel@vger.kernel.org>,
+        Potnuri Bharat Teja <bharat@chelsio.com>,
+        Nirranjan Kirubaharan <nirranjan@chelsio.com>,
+        Sagi Grimberg <sagi@grimberg.me>
+Subject: Re: Trace seen on target during iSER login
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <BYAPR12MB3080466CC0D6B968D3525F5BEF270@BYAPR12MB3080.namprd12.prod.outlook.com>
+        <53ca2c5e-25e1-9762-9a8e-0036c02fdb3b@acm.org>
+        <BYAPR12MB3080FE52C175C69092D8428EEF3F0@BYAPR12MB3080.namprd12.prod.outlook.com>
+Date:   Wed, 15 Jan 2020 22:03:29 -0500
+In-Reply-To: <BYAPR12MB3080FE52C175C69092D8428EEF3F0@BYAPR12MB3080.namprd12.prod.outlook.com>
+        (Rahul Kundu's message of "Tue, 7 Jan 2020 07:53:58 +0000")
+Message-ID: <yq1blr4p0fy.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <bc2b330a-9624-9e21-6a41-7ad7675b1f63@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9501 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=800
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2001160024
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9501 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=852 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2001160024
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Wed, Jan 15, 2020 at 05:26:35PM +0800, Zhu Lingshan wrote:
-> Hi Michal,
-> 
-> Why not give a try on Yast2 iscsi target module? It would be easy to config
-> your target with it.
 
-Presumably it's easy with targetcli as well, and should work on any
-distribution. I don't think changing the tool will change the fact that
-authentication is required when it is disabled.
+Hi Bart!
 
-Thanks
+> The reported trace is not observed with the patch and Patch is tested
+> good.  Thanks Bart.
 
-Michal
-> 
-> Thanks,
-> BR
-> Zhu Lingshan
-> 
-> On 1/15/2020 3:07 PM, Hannes Reinecke wrote:
-> > On 1/15/20 6:15 AM, Zhu Lingshan wrote:
-> > > Hi Michal,
-> > > 
-> > > try demo mode for a experiment? Here is a guide
-> > > http://www.linux-iscsi.org/wiki/ISCSI#Demo_mode
-> > > you can also find how to config username /password there.
-> > > 
-> > > Thanks,
-> > > Zhu Lingshan
-> > > On 1/14/2020 12:51 AM, Michal Suchánek wrote:
-> > > > Hello,
-> > > > 
-> > > > my system BIOS support booting from iSCSI.
-> > > > 
-> > > > I set up readonly target with no authentication:
-> > > > 
-> > > > targetcli shell version 2.1.fb49
-> > > > 
-> > > > grub
-> > > > ..................................................................
-> > > > [/scratch/ISO/GRUB (1.8MiB) write-back activated]
-> > > >     | |   o- alua
-> > > > .................................................................................................
-> > > > [ALUA Groups: 1]
-> > > >     | |     o- default_tg_pt_gp
-> > > > .....................................................................
-> > > > [ALUA state: Active/optimized]
-> > > > 
-> > > >    | | o- tpg1
-> > > > ................................................................................................
-> > > > [gen-acls, no-auth]
-> > > >     | |   |   o- mapped_lun0
-> > > > ...............................................................................
-> > > > [lun0 fileio/grub (rw)]
-> > > > The readonly flag does not seem to be
-> > > > honored
-> > > > ^^^
-> > > > 
-> > > > Anyway, the initiator cannot log in:
-> > > > 
-> > > > 3,1360,2329588663878,-;Initiator sent zero length security payload,
-> > > > login failed
-> > > > 3,1361,2329588663897,-;iSCSI Login negotiation failed.
-> > > > 
-> > > > How can I export a LUN without a password?
-> > > > 
-> > > > Thanks
-> > > > 
-> > > > Michal
-> > It's actually not the password that's missing, it's the ACL.
-> > You have registered your iSCSI initiatorname with the target, right?
-> > 
-> > Cheers,
-> > 
-> > Hannes
+> From f25182525499b52db6be00b34dbfd3662d29e403 Mon Sep 17 00:00:00 2001
+> From: Bart Van Assche <bvanassche@acm.org>
+> Date: Mon, 30 Dec 2019 07:48:20 -0800
+> Subject: [PATCH] RDMA/isert: Fix a recently introduced regression related to  logout
+
+Are you going to submit this?
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
