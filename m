@@ -2,94 +2,79 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4CD913D345
-	for <lists+target-devel@lfdr.de>; Thu, 16 Jan 2020 05:48:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BA7A13E559
+	for <lists+target-devel@lfdr.de>; Thu, 16 Jan 2020 18:14:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729476AbgAPEsP (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 15 Jan 2020 23:48:15 -0500
-Received: from mail-pg1-f173.google.com ([209.85.215.173]:37636 "EHLO
-        mail-pg1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729138AbgAPEsP (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Wed, 15 Jan 2020 23:48:15 -0500
-Received: by mail-pg1-f173.google.com with SMTP id q127so9261527pga.4;
-        Wed, 15 Jan 2020 20:48:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=0S2+3hSKtOJ2JYJcki1xzbAcKnDvkCEIcUnVNQdS+OA=;
-        b=mgfUblGwQAMybJ2y0xJei9EQkXtzNPT5KHMTu6Tesw+vgti21Z1Ih/aAgIh8zp5Jp0
-         lTH204YqziKHOUWJ8TNZxHTKzB+ZCOit+xWs8G6FMJDaGWSZ9WFfsN+USdrZyMqej3gk
-         aLNsJgNpqqLvWRrBYdmtBL/TePirqsgYVwliK7D7c6LhXg66GOq/LTFmEzOrpZNf7NjM
-         zbMUh4vC0ynX0bD4I8Ey77aFznxi8S0ReW9rtJjp0CGPjET5R8nQr6Pd0UJXrNHH2ktN
-         WfTW9FVCGLTx1I9hEIoFq7k9ZizezunaIkJxm2p//OXAvUSeoyHQubIhUpTcVsQLcDoH
-         ng2w==
-X-Gm-Message-State: APjAAAXvQyWUuXrp31+Zhcn1tIgR7UgWebDIITJqj9KfGvsLMI6dU5hp
-        0eI/KQelckZ3AY7xEYeX6to=
-X-Google-Smtp-Source: APXvYqx7bBCwV7+brXVYjNoMySI8WfZCVZQyQhmv9WIyZn8RyaDM+SItw/1VaqGYKUOlbuchiciR5Q==
-X-Received: by 2002:a63:a350:: with SMTP id v16mr35428345pgn.87.1579150094362;
-        Wed, 15 Jan 2020 20:48:14 -0800 (PST)
-Received: from ?IPv6:2601:647:4000:d7:e955:e36b:c3d8:ecb2? ([2601:647:4000:d7:e955:e36b:c3d8:ecb2])
-        by smtp.gmail.com with ESMTPSA id t187sm23991267pfd.21.2020.01.15.20.48.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Jan 2020 20:48:13 -0800 (PST)
-Subject: Re: Trace seen on target during iSER login
-To:     "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc:     Rahul Kundu <rahul.kundu@chelsio.com>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>,
-        Potnuri Bharat Teja <bharat@chelsio.com>,
-        Nirranjan Kirubaharan <nirranjan@chelsio.com>,
-        Sagi Grimberg <sagi@grimberg.me>
-References: <BYAPR12MB3080466CC0D6B968D3525F5BEF270@BYAPR12MB3080.namprd12.prod.outlook.com>
- <53ca2c5e-25e1-9762-9a8e-0036c02fdb3b@acm.org>
- <BYAPR12MB3080FE52C175C69092D8428EEF3F0@BYAPR12MB3080.namprd12.prod.outlook.com>
- <yq1blr4p0fy.fsf@oracle.com>
-From:   Bart Van Assche <bvanassche@acm.org>
-Autocrypt: addr=bvanassche@acm.org; prefer-encrypt=mutual; keydata=
- mQENBFSOu4oBCADcRWxVUvkkvRmmwTwIjIJvZOu6wNm+dz5AF4z0FHW2KNZL3oheO3P8UZWr
- LQOrCfRcK8e/sIs2Y2D3Lg/SL7qqbMehGEYcJptu6mKkywBfoYbtBkVoJ/jQsi2H0vBiiCOy
- fmxMHIPcYxaJdXxrOG2UO4B60Y/BzE6OrPDT44w4cZA9DH5xialliWU447Bts8TJNa3lZKS1
- AvW1ZklbvJfAJJAwzDih35LxU2fcWbmhPa7EO2DCv/LM1B10GBB/oQB5kvlq4aA2PSIWkqz4
- 3SI5kCPSsygD6wKnbRsvNn2mIACva6VHdm62A7xel5dJRfpQjXj2snd1F/YNoNc66UUTABEB
- AAG0JEJhcnQgVmFuIEFzc2NoZSA8YnZhbmFzc2NoZUBhY20ub3JnPokBOQQTAQIAIwUCVI67
- igIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEHFcPTXFzhAJ8QkH/1AdXblKL65M
- Y1Zk1bYKnkAb4a98LxCPm/pJBilvci6boefwlBDZ2NZuuYWYgyrehMB5H+q+Kq4P0IBbTqTa
- jTPAANn62A6jwJ0FnCn6YaM9TZQjM1F7LoDX3v+oAkaoXuq0dQ4hnxQNu792bi6QyVdZUvKc
- macVFVgfK9n04mL7RzjO3f+X4midKt/s+G+IPr4DGlrq+WH27eDbpUR3aYRk8EgbgGKvQFdD
- CEBFJi+5ZKOArmJVBSk21RHDpqyz6Vit3rjep7c1SN8s7NhVi9cjkKmMDM7KYhXkWc10lKx2
- RTkFI30rkDm4U+JpdAd2+tP3tjGf9AyGGinpzE2XY1K5AQ0EVI67igEIAKiSyd0nECrgz+H5
- PcFDGYQpGDMTl8MOPCKw/F3diXPuj2eql4xSbAdbUCJzk2ETif5s3twT2ER8cUTEVOaCEUY3
- eOiaFgQ+nGLx4BXqqGewikPJCe+UBjFnH1m2/IFn4T9jPZkV8xlkKmDUqMK5EV9n3eQLkn5g
- lco+FepTtmbkSCCjd91EfThVbNYpVQ5ZjdBCXN66CKyJDMJ85HVr5rmXG/nqriTh6cv1l1Js
- T7AFvvPjUPknS6d+BETMhTkbGzoyS+sywEsQAgA+BMCxBH4LvUmHYhpS+W6CiZ3ZMxjO8Hgc
- ++w1mLeRUvda3i4/U8wDT3SWuHcB3DWlcppECLkAEQEAAYkBHwQYAQIACQUCVI67igIbDAAK
- CRBxXD01xc4QCZ4dB/0QrnEasxjM0PGeXK5hcZMT9Eo998alUfn5XU0RQDYdwp6/kMEXMdmT
- oH0F0xB3SQ8WVSXA9rrc4EBvZruWQ+5/zjVrhhfUAx12CzL4oQ9Ro2k45daYaonKTANYG22y
- //x8dLe2Fv1By4SKGhmzwH87uXxbTJAUxiWIi1np0z3/RDnoVyfmfbbL1DY7zf2hYXLLzsJR
- mSsED/1nlJ9Oq5fALdNEPgDyPUerqHxcmIub+pF0AzJoYHK5punqpqfGmqPbjxrJLPJfHVKy
- goMj5DlBMoYqEgpbwdUYkH6QdizJJCur4icy8GUNbisFYABeoJ91pnD4IGei3MTdvINSZI5e
-Message-ID: <ecdfc240-e0d7-789c-ff81-3ce88c1a9d12@acm.org>
-Date:   Wed, 15 Jan 2020 20:48:12 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
+        id S2390965AbgAPROU (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 16 Jan 2020 12:14:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33138 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2390962AbgAPROU (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Thu, 16 Jan 2020 12:14:20 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9D677246AF;
+        Thu, 16 Jan 2020 17:14:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1579194859;
+        bh=/2xFaNxLa7K50Z785BV0wVYEyuwasJCRGTuj3dfdc2s=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=T7w8pQeJmlq+dr+hcya24HDCQoaa4itAaZ1885nbHGQXIniSmfPI9+3qp6RChugo9
+         AsPIorMJA0H8734JpgmcfSkIEjz32Z7umDxNvwuiSNv2bgvFJ+fnXW0+attPC1+k3U
+         wdUQ9b6Oi2JJyeiF/LyXc0wkWrqqFdRPE1EXJjLs=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Bart Van Assche <bvanassche@acm.org>,
+        Christoph Hellwig <hch@lst.de>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 654/671] scsi: target: core: Fix a pr_debug() argument
+Date:   Thu, 16 Jan 2020 12:04:52 -0500
+Message-Id: <20200116170509.12787-391-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200116170509.12787-1-sashal@kernel.org>
+References: <20200116170509.12787-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <yq1blr4p0fy.fsf@oracle.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 2020-01-15 19:03, Martin K. Petersen wrote:
-> Are you going to submit this?
+From: Bart Van Assche <bvanassche@acm.org>
 
-Yes, I just did that. Thanks for the reminder.
+[ Upstream commit c941e0d172605731de9b4628bd4146d35cf2e7d6 ]
 
-Bart.
+Print the string for which conversion failed instead of printing the
+function name twice.
 
+Fixes: 2650d71e244f ("target: move transport ID handling to the core")
+Cc: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20191107215525.64415-1-bvanassche@acm.org
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/target/target_core_fabric_lib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/target/target_core_fabric_lib.c b/drivers/target/target_core_fabric_lib.c
+index 71a80257a052..10fae26b44ad 100644
+--- a/drivers/target/target_core_fabric_lib.c
++++ b/drivers/target/target_core_fabric_lib.c
+@@ -131,7 +131,7 @@ static int srp_get_pr_transport_id(
+ 	memset(buf + 8, 0, leading_zero_bytes);
+ 	rc = hex2bin(buf + 8 + leading_zero_bytes, p, count);
+ 	if (rc < 0) {
+-		pr_debug("hex2bin failed for %s: %d\n", __func__, rc);
++		pr_debug("hex2bin failed for %s: %d\n", p, rc);
+ 		return rc;
+ 	}
+ 
+-- 
+2.20.1
 
