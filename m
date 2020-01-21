@@ -2,61 +2,86 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B517142442
-	for <lists+target-devel@lfdr.de>; Mon, 20 Jan 2020 08:30:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0564E1436BD
+	for <lists+target-devel@lfdr.de>; Tue, 21 Jan 2020 06:33:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726816AbgATHav (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 20 Jan 2020 02:30:51 -0500
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:40699 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726282AbgATHav (ORCPT
+        id S1725890AbgAUFdF (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 21 Jan 2020 00:33:05 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:34008 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725789AbgAUFdC (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 20 Jan 2020 02:30:51 -0500
-Received: by mail-pl1-f193.google.com with SMTP id s21so12801278plr.7;
-        Sun, 19 Jan 2020 23:30:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Tytd2xIi4rDm4xTJXT7PgUqxrt5vtfpID7x35/XLvLQ=;
-        b=qgJoM5PzvBD4WIudxgVJpR0JpUL95t3+RV2VQF5DIC6J15eoPbPTxFy2SunYRCwuB6
-         dLn/dcoPQSlzf3jEp9KeplHiElAI4h4Nf//fAp9u4rg+46Ve6S5jkuwwa55g7fdkXMUI
-         rJTqpcBX7zkqM//iuzN/+IWClnMYYjzHAUPF7R2yOy+FAhzjVd4uTW4Q5O9xBzrDRYDO
-         0YrOao7j3EhBZbQxfeXiGrem96y62PcR/xXWc4DBcwJJTpL0MhYyYmGp7Lc1+G+eOfDU
-         18y5STnhQCkf3ImefRtd2h6x9DEtWibON0wWHHVILcVJqadj7xnDNjyi1o1cd2ZzzSOO
-         qfww==
-X-Gm-Message-State: APjAAAXjvLZE3ORpGd8K2UJAZWxXKv6RV83zlatiPpWX48dnfb3BzugK
-        RdCaM6+rjWeIP9Dt7A/+aQOme3de
-X-Google-Smtp-Source: APXvYqzDK6wx4LEDEg9emD5TiFnDsSjzz0adG10VLaUd3gMoKhJUt8CEO0Kge+r5ZYSORCoBtC5Rpw==
-X-Received: by 2002:a17:902:9b90:: with SMTP id y16mr10637863plp.217.1579505450351;
-        Sun, 19 Jan 2020 23:30:50 -0800 (PST)
-Received: from ?IPv6:2601:647:4802:9070:fd41:47a6:c3c9:b0ce? ([2601:647:4802:9070:fd41:47a6:c3c9:b0ce])
-        by smtp.gmail.com with ESMTPSA id w5sm35781930pgb.78.2020.01.19.23.30.49
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 19 Jan 2020 23:30:49 -0800 (PST)
-Subject: Re: [PATCH] RDMA/isert: Fix a recently introduced regression related
- to logout
-To:     Bart Van Assche <bvanassche@acm.org>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>
-Cc:     target-devel@vger.kernel.org, linux-rdma@vger.kernel.org,
+        Tue, 21 Jan 2020 00:33:02 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00L5VkQt091493;
+        Tue, 21 Jan 2020 05:32:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2019-08-05;
+ bh=4mz38snHU/i0JPkzXMl1PdkExdfPdTaJ/iDVmnNO2dk=;
+ b=nvjJWaoORLz+6GEfxvlvTjnBAG8vqCJEfi1H/pYgnb1Ll/c2SDK1OyVow3pvKu5SuZq5
+ ha9dRGR242RccD8nkYL1KBHyd0bzvqliU1cbOkEFh/4pMwdnRewvp+2O2LllPEa7y/Zp
+ U3hEEFfqbrseIHR/BYzIZKaDfqnVXv5kINop6NXcYM+sSmwC3gOHEYoAcCc0Rh0aT0vD
+ nGunJ5krwthTt1gsRHcpT8DYw0BslYZbxeiE54ew82M5iBzhY1zB0k9JwHUEkCHV0GzZ
+ QGO4XIaEZ4M4FWJKJAcoyS+AoSTzzmtxMTypdtVN7qxQ8WgNeUGJnKqtcxzN0BhOeW7s Xg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 2xksyq2jg2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 21 Jan 2020 05:32:59 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00L5OAvJ101956;
+        Tue, 21 Jan 2020 05:30:59 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 2xnpfnak4p-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 21 Jan 2020 05:30:59 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 00L5Utqb016146;
+        Tue, 21 Jan 2020 05:30:56 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 20 Jan 2020 21:30:55 -0800
+To:     Bart Van Assche <bvanassche@acm.org>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        target-devel@vger.kernel.org, linux-rdma@vger.kernel.org,
         Rahul Kundu <rahul.kundu@chelsio.com>
+Subject: Re: [PATCH] RDMA/isert: Fix a recently introduced regression related to logout
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
 References: <20200116044737.19507-1-bvanassche@acm.org>
-From:   Sagi Grimberg <sagi@grimberg.me>
-Message-ID: <97430396-5916-7913-d62f-b70cf174d465@grimberg.me>
-Date:   Sun, 19 Jan 2020 23:30:48 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+Date:   Tue, 21 Jan 2020 00:30:53 -0500
+In-Reply-To: <20200116044737.19507-1-bvanassche@acm.org> (Bart Van Assche's
+        message of "Wed, 15 Jan 2020 20:47:37 -0800")
+Message-ID: <yq1d0bdidf6.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20200116044737.19507-1-bvanassche@acm.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9506 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=842
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2001210047
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9506 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=920 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2001210048
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+
 Bart,
 
-Acked-by: Sagi Grimberg <sagi@grimberg.me>
+> iscsit_close_connection() calls isert_wait_conn(). Due to commit
+> e9d3009cb936 both functions call target_wait_for_sess_cmds() although
+> that last function should be called only once. Fix this by removing
+> the target_wait_for_sess_cmds() call from isert_wait_conn() and by
+> only calling isert_wait_conn() after target_wait_for_sess_cmds().
+
+Applied to 5.5/scsi-fixes, thanks!
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
