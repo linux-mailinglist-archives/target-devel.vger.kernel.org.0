@@ -2,87 +2,73 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB51B14AE51
-	for <lists+target-devel@lfdr.de>; Tue, 28 Jan 2020 04:11:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 00EDF15459D
+	for <lists+target-devel@lfdr.de>; Thu,  6 Feb 2020 14:59:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726338AbgA1DL4 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 27 Jan 2020 22:11:56 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:56424 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726080AbgA1DLz (ORCPT
+        id S1727361AbgBFN71 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 6 Feb 2020 08:59:27 -0500
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:35681 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727773AbgBFN71 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 27 Jan 2020 22:11:55 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00S33a8M146205;
-        Tue, 28 Jan 2020 03:11:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2019-08-05;
- bh=bO24n4La2Efk2NtJKHbFaqjslhUP7TElegEw6X1mz9g=;
- b=GpekiONr8+znG6ljeCcCV9aAfltVphTUrxB7lj4BA0UzIkNsbKEG2suqZiObI3EQs/2a
- v+YDbe4nJJGpAV6KKyhBHKAcqmjzQTT74g0SaLLPlttlpnx1WXCqfCWH2XXlvYdn5nc1
- UFY+r73/t01pe9IIlfMzPg/n/dmeYL8gGaetjqKVCirq2G4JYIJUB9pmR83veO7KXUXe
- kMaRhr7JP/+pbq1UObRvH52AM3RybCt/icPJReroYpWGInQnm0lL5VU00ohsaAnJdtFl
- HZe0he7O3ACmS5Udtn5rk1cAPAXYhl57Wtebr8DeiBz/433vfNjcDqyEhWb0PPSU1P8E IQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 2xrdmqbbdh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 28 Jan 2020 03:11:48 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00S33Txl159805;
-        Tue, 28 Jan 2020 03:09:47 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 2xry4vnyf7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 28 Jan 2020 03:09:47 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 00S39hfF030734;
-        Tue, 28 Jan 2020 03:09:43 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 27 Jan 2020 19:09:43 -0800
-To:     Bart Van Assche <bvanassche@acm.org>
-Cc:     Himanshu Madhani <hmadhani@marvell.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Mike Christie <mchristi@redhat.com>,
-        "target-devel\@vger.kernel.org" <target-devel@vger.kernel.org>
-Subject: Re: [EXT] [PATCH] tcm_qla2xxx: Make qlt_alloc_qfull_cmd() set cmd->se_cmd.map_tag
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20200103192719.205158-1-bvanassche@acm.org>
-        <b21b981b-bbb3-2362-63a6-39cb0e7ddfbb@acm.org>
-        <ADC40ECE-EEC9-4BFC-9866-65F51B7635CE@marvell.com>
-Date:   Mon, 27 Jan 2020 22:09:41 -0500
-In-Reply-To: <ADC40ECE-EEC9-4BFC-9866-65F51B7635CE@marvell.com> (Himanshu
-        Madhani's message of "Mon, 27 Jan 2020 13:25:27 +0000")
-Message-ID: <yq1tv4gb7ka.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+        Thu, 6 Feb 2020 08:59:27 -0500
+Received: by mail-qt1-f196.google.com with SMTP id n17so4534546qtv.2
+        for <target-devel@vger.kernel.org>; Thu, 06 Feb 2020 05:59:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=ksZ9yvJQLEPos9sVNg0k5UIVDrjEW5mJFI3LUcUgjiE=;
+        b=Pk3A9CBl52sVuqzVRp0abKF3wkMmowKW2I/9EAmcxHD6/lVJZCmbwumXtjnjseIBeC
+         l0HsCKvJd6FEFDFeFKAbd/RJVtjo2gNGaK5PKWPad6uoaTiTHIr4LJf5v3c3iGGFa+qo
+         P1tWmboX07vZMoqejFUjc3GLZkwhKzyETI83wZpD72Ktnb9w9ln9kCNIwGo7NVg0r5Vt
+         j6hFX9LPdMBJ0ZYbSwlXn5Tcnc57LfNY3E7N2XOJfUm+OrJn7s7DAkDZO0yl94wUgNIb
+         3GLeOOSucxd+8poDYFS97QpvnykAckRE9pjJ/rrYTSla8j8fxMo6m4XCh591E+uszeKH
+         411A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=ksZ9yvJQLEPos9sVNg0k5UIVDrjEW5mJFI3LUcUgjiE=;
+        b=tITzK6osayMakBi+8pJ1pGQal+dIXldLwHLPx0lJM7qftkg/KA53bLaxh4tgY6xfXf
+         Vbit+3n3Eac7ppqQ5+ACFiFU6fmWm4UYtSVvjWV2yBRWIQGqKu7Nu4t+6jVSu/La9fXg
+         nXiRMnCi2iv4jJKRB6ekDgCG4UuONiQl5jkhsGxjt+Y56oLkAT0Ri3PI5qmqzIha3iYR
+         cXUPvSXaCowusTnCiltdcx0r9ZJ3n/SY05kaux8cmWZgCqBfO56mLk9IrzadL784zO75
+         Y2nnq361mGn/IX54xFx/izoJbVoQtjd7R0CNBmEDiPlBCp/JWYSQnrzaOwl79L62zOO4
+         94/w==
+X-Gm-Message-State: APjAAAXnTj+eDYm5PPW1S0pq20Wd/nq+xKkNGyBrJc1+XgxoYUg7mFCO
+        1gC5diAwqwHwoBivG9mYZtjmS+kSXby6cXT5418=
+X-Google-Smtp-Source: APXvYqy2/PwS+XPe/O2LnynQccbHzzkQSeFRww4IRiwtnr4midvrdfIiX+mSKpGmPn883ddXSkAmn9/IVxk3wwNunb0=
+X-Received: by 2002:ac8:2ffa:: with SMTP id m55mr2660214qta.189.1580997566422;
+ Thu, 06 Feb 2020 05:59:26 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9513 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=639
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2001280024
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9513 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=703 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001280024
+Received: by 2002:ac8:670e:0:0:0:0:0 with HTTP; Thu, 6 Feb 2020 05:59:26 -0800 (PST)
+Reply-To: jpmorganchasebanknyusa@gmail.com
+From:   "MS. MARYANNA B. THOMASON" <westernunion.benin982@gmail.com>
+Date:   Thu, 6 Feb 2020 14:59:26 +0100
+Message-ID: <CAP=nHBK0nO3C-jA3kRcC_AgUBSNV3kuXhFQBdgvBNUguoX1mSg@mail.gmail.com>
+Subject: Contact Federal Reserve Bank New York to receive your inheritance
+ contract payment (US$12.8M)
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-
-> Reduce code duplication by introducing the tcm_qla2xxx_{get,rel}_cmd()
-> functions. Introduce these functions in the tcm_qla2xxx.c source files
-> such that the qla_target.c source file becomes independent of the SCSI
-> target core header files. This patch fixes a bug, namely by ensuring that
-> qlt_alloc_qfull_cmd() sets cmd->se_cmd.map_tag.
-
-Applied to 5.7/scsi-queue. Thanks!
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Attention Fund Beneficiary,
+Contact Federal Reserve Bank New York to receive your inheritance
+contract payment  (US$12.8M)
+Payment Release Instruction from US department of Homeland Security New York.
+Contact Federal Reserve Bank New York to receive your inheritance
+contract payment  (US$12.8M) deposited this morning in your favor.
+Contact Person, Dr. Jerome H. Powell.
+CEO Director, Federal Reserve Bank New York
+Email: reservebank.ny93@gmail.com
+Telephone- (917) 983-4846)
+Note.I have paid the deposit and insurance fee for you,but only money
+you are required to send to the bank is $US25.00,your processing funds
+transfer fee only to enable them release your funds to you today.
+Thank you for your anticipated co-operation.
+TREAT AS URGENT.
+Mr.Richard Longhair
+DIRECTOR OF FUNDS CLEARANCE UNIT
