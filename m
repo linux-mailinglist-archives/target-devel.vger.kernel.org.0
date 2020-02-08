@@ -2,72 +2,100 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 904D915603E
-	for <lists+target-devel@lfdr.de>; Fri,  7 Feb 2020 21:56:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 153261562C7
+	for <lists+target-devel@lfdr.de>; Sat,  8 Feb 2020 04:12:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727005AbgBGU41 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 7 Feb 2020 15:56:27 -0500
-Received: from mail-il1-f193.google.com ([209.85.166.193]:43531 "EHLO
-        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726947AbgBGU41 (ORCPT
+        id S1727113AbgBHDMK (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 7 Feb 2020 22:12:10 -0500
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:33582 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726995AbgBHDMK (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 7 Feb 2020 15:56:27 -0500
-Received: by mail-il1-f193.google.com with SMTP id o13so699393ilg.10
-        for <target-devel@vger.kernel.org>; Fri, 07 Feb 2020 12:56:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
-        b=Win9kmbp2g+jXf7qQkOdtXtzT3xkRMCSfu8l1Mf8Aouy28cwEMOh865Z35kA1U2xHj
-         8XLRj6WA4BTwxYEovxWNuwWbUbl8xD/sy5wOERB+DAVbtlI6kLAk5vQ51yA+VE7s9wLt
-         V6f+838qjaIQDtfWPVwjZRvy+edGbZ/0secjyh5CRsuGUxjNgZw94Ht77e30HoNszkEJ
-         3YL2r5AAiHDjYWJsfVouvopB2sLQng1eiqYroLORzb92F6ZG6bpymZ3oW8egokaI71ug
-         s0of4QDRghei3sATQwA8syL5lpYv+Ey02xy3drqtMyNa95AMB+HzZDboMXkhRuOsM4RD
-         iYHQ==
+        Fri, 7 Feb 2020 22:12:10 -0500
+Received: by mail-pg1-f196.google.com with SMTP id 6so802840pgk.0;
+        Fri, 07 Feb 2020 19:12:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
-        b=IG3adcuuE6FXe1QsTj/WXhdvRHchpyrqkMvy2BdvHjIZ2n2p2SnxiXK/C+AwywRbV4
-         5mZKeewkvLXXeeYgOjvuxNIYfBbNXQeUaicC25wvb3tJTnIfgUkabhAFpF8D6b/jwxT0
-         tTQflGki37/qm64HCZKvyRu2yZLUuWjdMO7Amus+kh1bWvKnRrivSLMErqOlWSvh2isF
-         6fKPPH0f3+g8bdJEe7zwyjoXUxqHw9gm5Nheqn+A1EN1VGW2iXZGYS/Lc4Z9rs+5V8zf
-         22mqoa20RVrQyNeRaFrRrwIZO039DI4WM2BteK9EdEPkaud9ge1teGxDeYqj+vnnWzy9
-         sb+A==
-X-Gm-Message-State: APjAAAUQUmaRUtIktnKA7HjomIbqIs8CsavPdhZjjKNZQQqiAo8y5D2J
-        KOIf+NR0mgoNdU1eBC3JojWKNWYQgT0jp7b5kOc=
-X-Google-Smtp-Source: APXvYqxKagEZBCwvx4JKDWA41xv2O+VU2zwuxgO8SPJVq7MM2Y0xJ/YQZIwlSN0netMwVcQgWia3aG4YESMoDL/XXiE=
-X-Received: by 2002:a92:d781:: with SMTP id d1mr1355319iln.30.1581108986883;
- Fri, 07 Feb 2020 12:56:26 -0800 (PST)
+        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=LHjE4aw0geMA8WyiTQM05zFr0hQYO2SelPCxCuQgepg=;
+        b=e9n/Yzds49DveJbJcMLJxZKsO0CN42S/bR9JhhwEa99nYxXXUyGRgXEt0RzeQ42CP5
+         o1uiVMgmrQTKC6+6H7c1LEKwr3sBuTtKN7qlw127S0vlXdbWtO9gnkYYbMPfF7sz/FwT
+         4io8P43UYf6b0Eg1SZvqen3fPcamw0xMfO71QGwaDpXAb9UeQWZF9BFCl2EUOab9472X
+         nabhDF14O8WUnKpHCRiWF8ufpsc0R+pzPp4yOYEdjqj0eBb596fgwBPKzN7+Q4WMnbzB
+         NQXMNjPhoSu7FYX6eIp1mw57etcc0yF60GfXtX9q9UGBCWM+QcipztEz+t0sewvHuPx5
+         2ttg==
+X-Gm-Message-State: APjAAAX+XsKBa2jtcO1CbhyfaBGfSEgLwK34brB8BX6Sk5866ZhGEPi3
+        VhLEa0hZw2Yc30QO7httdz3jXx1gb1Q=
+X-Google-Smtp-Source: APXvYqxSQXVjq8PdH9GA01Rd88i5qBTTXRYUs729DU+bD7YELr7saX5utp5rtYa7HODz8u8pLNhKEg==
+X-Received: by 2002:a63:ba05:: with SMTP id k5mr2409915pgf.158.1581131528931;
+        Fri, 07 Feb 2020 19:12:08 -0800 (PST)
+Received: from ?IPv6:2601:647:4000:d7:81e7:2f8f:8d7f:e4b7? ([2601:647:4000:d7:81e7:2f8f:8d7f:e4b7])
+        by smtp.gmail.com with ESMTPSA id v8sm4190556pff.151.2020.02.07.19.12.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Feb 2020 19:12:08 -0800 (PST)
+Subject: Re: [LIO-target] BUG: Deleting a LUN hangs in transport_clear_lun_ref
+To:     Pavel Zakharov <pavel.zakharov@delphix.com>,
+        martin.petersen@oracle.com
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <9A92D656-A796-4858-85CD-3750BDACFA28@delphix.com>
+From:   Bart Van Assche <bvanassche@acm.org>
+Autocrypt: addr=bvanassche@acm.org; prefer-encrypt=mutual; keydata=
+ mQENBFSOu4oBCADcRWxVUvkkvRmmwTwIjIJvZOu6wNm+dz5AF4z0FHW2KNZL3oheO3P8UZWr
+ LQOrCfRcK8e/sIs2Y2D3Lg/SL7qqbMehGEYcJptu6mKkywBfoYbtBkVoJ/jQsi2H0vBiiCOy
+ fmxMHIPcYxaJdXxrOG2UO4B60Y/BzE6OrPDT44w4cZA9DH5xialliWU447Bts8TJNa3lZKS1
+ AvW1ZklbvJfAJJAwzDih35LxU2fcWbmhPa7EO2DCv/LM1B10GBB/oQB5kvlq4aA2PSIWkqz4
+ 3SI5kCPSsygD6wKnbRsvNn2mIACva6VHdm62A7xel5dJRfpQjXj2snd1F/YNoNc66UUTABEB
+ AAG0JEJhcnQgVmFuIEFzc2NoZSA8YnZhbmFzc2NoZUBhY20ub3JnPokBOQQTAQIAIwUCVI67
+ igIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEHFcPTXFzhAJ8QkH/1AdXblKL65M
+ Y1Zk1bYKnkAb4a98LxCPm/pJBilvci6boefwlBDZ2NZuuYWYgyrehMB5H+q+Kq4P0IBbTqTa
+ jTPAANn62A6jwJ0FnCn6YaM9TZQjM1F7LoDX3v+oAkaoXuq0dQ4hnxQNu792bi6QyVdZUvKc
+ macVFVgfK9n04mL7RzjO3f+X4midKt/s+G+IPr4DGlrq+WH27eDbpUR3aYRk8EgbgGKvQFdD
+ CEBFJi+5ZKOArmJVBSk21RHDpqyz6Vit3rjep7c1SN8s7NhVi9cjkKmMDM7KYhXkWc10lKx2
+ RTkFI30rkDm4U+JpdAd2+tP3tjGf9AyGGinpzE2XY1K5AQ0EVI67igEIAKiSyd0nECrgz+H5
+ PcFDGYQpGDMTl8MOPCKw/F3diXPuj2eql4xSbAdbUCJzk2ETif5s3twT2ER8cUTEVOaCEUY3
+ eOiaFgQ+nGLx4BXqqGewikPJCe+UBjFnH1m2/IFn4T9jPZkV8xlkKmDUqMK5EV9n3eQLkn5g
+ lco+FepTtmbkSCCjd91EfThVbNYpVQ5ZjdBCXN66CKyJDMJ85HVr5rmXG/nqriTh6cv1l1Js
+ T7AFvvPjUPknS6d+BETMhTkbGzoyS+sywEsQAgA+BMCxBH4LvUmHYhpS+W6CiZ3ZMxjO8Hgc
+ ++w1mLeRUvda3i4/U8wDT3SWuHcB3DWlcppECLkAEQEAAYkBHwQYAQIACQUCVI67igIbDAAK
+ CRBxXD01xc4QCZ4dB/0QrnEasxjM0PGeXK5hcZMT9Eo998alUfn5XU0RQDYdwp6/kMEXMdmT
+ oH0F0xB3SQ8WVSXA9rrc4EBvZruWQ+5/zjVrhhfUAx12CzL4oQ9Ro2k45daYaonKTANYG22y
+ //x8dLe2Fv1By4SKGhmzwH87uXxbTJAUxiWIi1np0z3/RDnoVyfmfbbL1DY7zf2hYXLLzsJR
+ mSsED/1nlJ9Oq5fALdNEPgDyPUerqHxcmIub+pF0AzJoYHK5punqpqfGmqPbjxrJLPJfHVKy
+ goMj5DlBMoYqEgpbwdUYkH6QdizJJCur4icy8GUNbisFYABeoJ91pnD4IGei3MTdvINSZI5e
+Message-ID: <a1291c13-628f-edf3-3778-56b25f02edaf@acm.org>
+Date:   Fri, 7 Feb 2020 19:12:06 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Received: by 2002:a92:8f4b:0:0:0:0:0 with HTTP; Fri, 7 Feb 2020 12:56:26 -0800 (PST)
-Reply-To: auch197722@gmail.com
-From:   "Mr. Theophilus Odadudu" <siramsarmull@gmail.com>
-Date:   Fri, 7 Feb 2020 15:56:26 -0500
-Message-ID: <CAB==GxxDGxy_LJN7UcCDf7B+MjjUHUDU_mu5fA-sekJUXUz=jA@mail.gmail.com>
-Subject: LETTER OF INQUIRY
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <9A92D656-A796-4858-85CD-3750BDACFA28@delphix.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Good Day,
+On 2020-02-07 10:48, Pavel Zakharov wrote:
+> I haven’t yet tried rebuilding the kernel with the patch reverted,> but that is the next step I’m planning to try once I figure out how
+> to do it.
 
-I work as a clerk in a Bank here in Nigeria, I have a very
-confidential Business Proposition for you. There is a said amount of
-money floating in the bank unclaimed, belonging to the bank Foreign
-customer who die with his family in the Ethiopian Airline crash of
-March 11, 2019.
+Hi Pavel,
 
-I seek your good collaboration to move the fund for our benefit. we
-have agreed that 40% be yours once you help claim.
+How about verifying as follows whether that patch is the root cause:
 
-Do get back to with 1) Your Full Name: (2) Residential Address: (3)
-Phone, Mobile  (4) Scan Copy of Your ID. to apply for claims of the
-funds.
+git clone
+git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+linux-kernel &&
+cd linux-kernel &&
+git revert 83f85b8ec305
 
-Regards
-Theophilus Odadudu
+and next configure, build and install the kernel, reboot and rerun your
+test.
+
+Thanks,
+
+Bart.
