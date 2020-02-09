@@ -2,73 +2,102 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5616E15638D
-	for <lists+target-devel@lfdr.de>; Sat,  8 Feb 2020 10:12:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92CDA15686E
+	for <lists+target-devel@lfdr.de>; Sun,  9 Feb 2020 03:43:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726714AbgBHJMy (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 8 Feb 2020 04:12:54 -0500
-Received: from sonic308-1.consmr.mail.bf2.yahoo.com ([74.6.130.40]:43204 "EHLO
-        sonic308-1.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726555AbgBHJMy (ORCPT
+        id S1727577AbgBICnf (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 8 Feb 2020 21:43:35 -0500
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:43796 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727532AbgBICnf (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sat, 8 Feb 2020 04:12:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1581153173; bh=ntCsvVlsVYNXsouoo59ZH21v1wHZ5nZJzCG4NsnkusM=; h=Date:From:Reply-To:Subject:References:From:Subject; b=JhkrsvDCUYYRMRmnldIPYSheuSbOVlR2MF/MnPe2uwRKOAu7hKFENUCKNWRdY97JQ5Qnl0aUQr92RSj3EZMkkWr9G1Vw5TOtoiEUwkCNcye3DDvN8t8j/obdS3++IPsmRNNMPfMJDCZvUyNqqEwm7vDuQGtLKVxxkjvCFebjPJ7paOnb5e8v9j7ZFFl75luNBF39jkS9L95YiSXDx1A8ZiWbImgjPE1kkowiE0hLznzAUrkJdVXtbL+yCcTRbDzf1B2k6rxu1eUSg8Gv7KQCebwBhiL79IY3v78+SVTTOtVRk94vTjolcsXReqJXKw1AiEhozXPFUAK4oklX3PsM2w==
-X-YMail-OSG: z9s8j3wVM1msONqS.ff4gQXQCiPVEFpilgJxnGCKLsha3nqF.0Db2DuOuhwDs.I
- KM3p.UuI8YmAzXIJbuR0655gkJ8SQskahsjMEC.Sc9pYkr.ZZZQzrwjBeOQkEO0dM6I5dTHn8vQL
- 3c5O1A3nAvNYquFNYYh5CNTOTicy1M105wPWH9ZZNaY3K4OAtvnEpkrcmYWRLE3CsOY4DQQSNx7F
- AFRpbCvgFcJ7rPsyQAf0YFPlzhmI3Jdvu6DRcrkfuAGAooqEkbGPArbzVckdTeVnci0bfMgRWwcn
- 06XY7xAR5ybSzsKbLl_yXcw2eh0gtqGZ6XRi_MlOQAzTAryg0M4DKePzoh705TEmXBJOlFFvU_7S
- wcLr5fvJ8V1cW42LWhtB_7RL7LqWkJwQXw1h90.f7ExRLReui7MxNyVvvl985b.lcpG4HfNJCSV2
- HNVQuRZdD8W3N5SACIQIRqyXcE3TjbV2eBb9AW8QSDdN4khMN9mOKSp_eL4RlmD8lgoxLsBgYKm7
- gY4OJ_riNPK5tBQohrXmpKpNh6kJ0za9aeuT0OTr2zFfQRJlPdfHAPGHVcmXa43ozw.I82Q7LGbT
- _B8y2Tl_dYI0OCVzn6PBog_7KdryzRBYGlBdKN5blFvsHvPcFc2KCGVVao7WLD69rcWFibjNNGiK
- e4vX1nH5fb.PXn7UMVnWT.ah.cTnsEfTfb1QlRC_rqOGi1wEpYyLkeH1dIw5s2wyQd2tc5OUy4Av
- konUb4rIVvH45xq7rvhhQ0RBn1Ibc9zewCaiuV..85cIxcgheuqv2eACAPnFxVRstFr3brTZc0RJ
- jewovTKmrpif0Zm_ZJ16UgGSCjGgMOXsv_2eu0WtgQBMomvdB4kb0.N.nhwz9FYxAyIs7mUQ50Lv
- 8Bn8mUMG1S0UAiznv0eUT9bDhJDYTPlgkoCn5uEGSeFv6ncNTmSEjB9LAFD2kYFMPPHW1cugiSKV
- 4kVhnIyraynW9_XB9a8A5TmYpU7lWEvUWNMoMoHGpFnaFpMgn.XPhXn4.MZCJol2CXxFiSYTUdM0
- 6RYL2kyc8kIW6YZsr7u0vbjrzy54AjdY8apGCSPLOCdwMnE90baChWGqs.i.b11xBNwK3ax.MyR2
- LZyUatobV4.UtCxP8KrKp0IoR18ZiPRHzBTzMVv0kCMPtf4OBLuzxyq90ihgQxpJD4CP.92lri3k
- h5MXr0O6rINiABFpeME9oQCrN8Z39XsvYxWE1kt00uyjBEQKCeQkke0Io_IMidbr2BijY0esl1Qr
- 8ugL1yS1xr7fPRUQzAc1Krle1Y87lqcNVIfwl06yvgsAZdn9z90n7p0tVER_zb7g69PEaqfMK83i
- f2Mw-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.bf2.yahoo.com with HTTP; Sat, 8 Feb 2020 09:12:53 +0000
-Date:   Sat, 8 Feb 2020 09:12:49 +0000 (UTC)
-From:   "Mrs. Aminatou Zainab" <jackson.jacksonn556@gmail.com>
-Reply-To: miss.aminatouzainab@gmail.com
-Message-ID: <1287904492.69191.1581153169570@mail.yahoo.com>
-Subject: WITH DUE RESPECT YOUR ATTENTION IS VERY VERY NEEDED URGENT.
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <1287904492.69191.1581153169570.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15199 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:72.0) Gecko/20100101 Firefox/72.0
-To:     unlisted-recipients:; (no To-header on input)
+        Sat, 8 Feb 2020 21:43:35 -0500
+Received: by mail-pf1-f196.google.com with SMTP id s1so1835369pfh.10
+        for <target-devel@vger.kernel.org>; Sat, 08 Feb 2020 18:43:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=delphix.com; s=google;
+        h=mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=XEEwa/pWXRm3ZY8rR9l7Teo2iEIQpbgXcL5RFbSunQ8=;
+        b=Gfi8920h58Ne42KuYCxGbS8/vk5woV33CD3oOrsjoZhF+aGs3ZdqAEkwMSwgHtUoU5
+         ip2q32MQnvGTnt3iTNryF4FskK4scVslxKmMAjRUPeQZ0QW0QahXxm3RemWthQckF4Zm
+         YF4te/JeZEWeF26vvYq0CjuJjqQ4ES+D86M7c=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=XEEwa/pWXRm3ZY8rR9l7Teo2iEIQpbgXcL5RFbSunQ8=;
+        b=G7GNathEPkJedcoWdSbYzM+EXZ/Ahbaq9NMQzeSxolruJhQrOSmBX6NVEIRLr7t2xd
+         1lBZnKm5/+ISxOcz16RTTv8GB24SABvJSBHrWyWqtTXkWVW4jGzjzaRgoJ9BjaLclLeJ
+         Uw+lA9BTs7wXqVDBHMxXX13HkdEiR/tgCsvwXyXhoDnutJxgmY4ez0O9UQ/yJnLpWwS+
+         uy7rYIYDc49aFm3HBVum4la7yyxQWvat7tssyYzwg2lA4OFF2DJCD96TwPCCuDw6vRsa
+         9awRPNLsNMd1YKgh1+PrCmX9ofr1OBwyDfqlbp1bJuq5FB28fN+KngWnSi0FJSFwzKRq
+         m5Hw==
+X-Gm-Message-State: APjAAAVweEQnZ7TsOcjVs6mHLcfIAETmTUesDYQCxCL0qTamIV8u3e4E
+        lbFPvkrh4dqJB0il8HjQFMU7zQ==
+X-Google-Smtp-Source: APXvYqwAaFHdq3+dqVZCYp0ga29jAsUqxx88E/AKVRppoccuP3qsE7pUXWdBt3Lf6jkuBBb+YrTUBg==
+X-Received: by 2002:a63:2010:: with SMTP id g16mr7675385pgg.314.1581216214911;
+        Sat, 08 Feb 2020 18:43:34 -0800 (PST)
+Received: from [192.168.0.103] (modemcable127.167-81-70.mc.videotron.ca. [70.81.167.127])
+        by smtp.gmail.com with ESMTPSA id l12sm7495512pgj.16.2020.02.08.18.43.33
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 08 Feb 2020 18:43:34 -0800 (PST)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
+Subject: Re: [LIO-target] BUG: Deleting a LUN hangs in transport_clear_lun_ref
+From:   Pavel Zakharov <pavel.zakharov@delphix.com>
+In-Reply-To: <a1291c13-628f-edf3-3778-56b25f02edaf@acm.org>
+Date:   Sat, 8 Feb 2020 21:43:32 -0500
+Cc:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <2B6C1870-457C-4754-8E1A-ECBBDFD07083@delphix.com>
+References: <9A92D656-A796-4858-85CD-3750BDACFA28@delphix.com>
+ <a1291c13-628f-edf3-3778-56b25f02edaf@acm.org>
+To:     Bart Van Assche <bvanassche@acm.org>
+X-Mailer: Apple Mail (2.3445.104.11)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+Hi Bart,
 
+I=E2=80=99ve built linux-stable, commit =
+f757165705e92db62f85a1ad287e9251d1f2cd82 and could easily reproduce the =
+issue.
+I=E2=80=99ve rebuilt the kernel with patch =
+83f85b8ec305be9d65284de2921d8eeb6c7fcf12 reverted and that seems to fix =
+the issue.
 
+Regards,
+Pavel
 
+> On Feb 7, 2020, at 10:12 PM, Bart Van Assche <bvanassche@acm.org> =
+wrote:
+>=20
+> On 2020-02-07 10:48, Pavel Zakharov wrote:
+>> I haven=E2=80=99t yet tried rebuilding the kernel with the patch =
+reverted,> but that is the next step I=E2=80=99m planning to try once I =
+figure out how
+>> to do it.
+>=20
+> Hi Pavel,
+>=20
+> How about verifying as follows whether that patch is the root cause:
+>=20
+> git clone
+> git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+> linux-kernel &&
+> cd linux-kernel &&
+> git revert 83f85b8ec305
+>=20
+> and next configure, build and install the kernel, reboot and rerun =
+your
+> test.
+>=20
+> Thanks,
+>=20
+> Bart.
 
-ATTENTION: DEAR BENEFICIARY CONGRATULATIONS TO YOU,
-
-I RECEIVE YOUR CONTENT OF YOUR EMAIL FROM FEDEX ATM CARD OFFICES YOUR FUNDS SUM OF $10.500,000, 000. MILLION DOLLARS, HAS DISCOVER HERE AFTER THE BOARD OF DIRECTORS MEETINGS, THE UNITED NATIONS GOVERNMENT HAVE DECIDED TO ISSUE YOU YOUR (ATM CARD) VALUED @ TEN MILLION FIVE HUNDRED THOUSAND DOLLARS ($) COMPENSATION FUND THROUGH THIS (ATM) CARD.
-
-THIS IS TO BRING TO YOUR NOTICE THAT YOUR VALUED SUM OF 10.5 MILLION DOLLARS HAS BEING CREDITED IN YOUR NAME AS BENEFICIARY TO THIS (ATM CARD), AND HAS BEEN HANDLE TO THE FOREIGN REMITTANCE DEPARTMENT TO SEND IT TO YOU IN YOUR FAVOR IMMEDIATELY WITHOUT ANY DELAY,
-
-YOU HAVE ACCESS TO MAKE DAILY WITHDRAWALS OF ($5,500) UNITED STATE DOLLARS DAILY.
-
-WE RECEIVE YOUR INFORMATIONS AND YOUR HOME ADDRESS OF YOUR COUNTRY AND WE WILL SEND TO YOU YOUR (ATM CARD), WE HAVE ALSO RECEIVED A SIGNAL FROM THE SWISS WORLD BANK TO TRANSFER YOUR BELONGING (ATM) TO YOU WITHIN ONE WEEK, WITHOUT ANY DELAY AS WE RECORD.
-
-WE HAVE JUST FINISHED OUR ANNUAL GENERAL MEETING WITH BANK OF AMERICA (BOA).
-
-FOR MORE INFORMATION PLEASE GET BACK TO ME AS SOON AS POSSIBLE.
-
-YOURS
-SINCERELY.
-
-DIRECTOR FEDEX SERVICE (USA).
-MRS. AMINATOU. Z. MAKEL.
