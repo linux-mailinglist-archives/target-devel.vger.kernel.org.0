@@ -2,216 +2,188 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF36B156BD1
-	for <lists+target-devel@lfdr.de>; Sun,  9 Feb 2020 18:29:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3E28156E96
+	for <lists+target-devel@lfdr.de>; Mon, 10 Feb 2020 06:12:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727407AbgBIR3j (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sun, 9 Feb 2020 12:29:39 -0500
-Received: from mail-pj1-f66.google.com ([209.85.216.66]:50787 "EHLO
-        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727406AbgBIR3j (ORCPT
+        id S1726103AbgBJFML (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 10 Feb 2020 00:12:11 -0500
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:39138 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726061AbgBJFML (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sun, 9 Feb 2020 12:29:39 -0500
-Received: by mail-pj1-f66.google.com with SMTP id r67so3136336pjb.0
-        for <target-devel@vger.kernel.org>; Sun, 09 Feb 2020 09:29:39 -0800 (PST)
+        Mon, 10 Feb 2020 00:12:11 -0500
+Received: by mail-pf1-f193.google.com with SMTP id 84so3107311pfy.6;
+        Sun, 09 Feb 2020 21:12:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language;
-        bh=4N4J/tEhIAyXzy38EnBonNLDJQFCA559SGF8PgxZrjI=;
-        b=JM1jRpQWn09VBMQSYNKRhhjMsJEWukl9F+i2MUkAHQasllO4A0yO/2ktu14ax+omSD
-         N2oZD3pSYmBmtIcHJ0s+JonRFNWee68T3eTEi7p31WXkH7ukWRQOtXo9H1T6dD00OvAf
-         nhGOI4I09zP6TiRkLjIGwSFg0Hj7neP5ZgQ86GIuto8KM0A7415ndSYbcal9uYqrMQto
-         W+yl4veuRlrwvtW5VBo8LEAjiucsMq5qdZnInqBXXY3agBJqx8aKTCLuONHtSU093xZY
-         TC7ND3s2uFv/ddl7oezfww89eD/g6V02qKpZLH3KTMzVBzgUHr54cNG06aMFeNK6eiok
-         LlQg==
-X-Gm-Message-State: APjAAAVYTlMZTFwrUVnR68tYPeMbPmRj0B7rdBqG/qTKdai+6lUvb4dL
-        EYIoCH3SxEE0EQeVySEot90=
-X-Google-Smtp-Source: APXvYqwYQlPbSiODqrwn3EkGfmaM4IchVNuNFzw+CiN7h9lAln3Tz5giOghuixC2Q80HXhRzFhCKMg==
-X-Received: by 2002:a17:90a:a385:: with SMTP id x5mr16410005pjp.102.1581269378708;
-        Sun, 09 Feb 2020 09:29:38 -0800 (PST)
-Received: from ?IPv6:2601:647:4000:d7:b43a:c72e:d61c:15d6? ([2601:647:4000:d7:b43a:c72e:d61c:15d6])
-        by smtp.gmail.com with ESMTPSA id b1sm9625904pfp.44.2020.02.09.09.29.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Feb 2020 09:29:37 -0800 (PST)
-Subject: Re: IOZONE fails intermittently while toggling the interface
-To:     Dakshaja Uppalapati <dakshaja@chelsio.com>,
-        "martin.petersen@oracle.com" <martin.petersen@oracle.com>,
-        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>
-Cc:     Nirranjan Kirubaharan <nirranjan@chelsio.com>,
-        Potnuri Bharat Teja <bharat@chelsio.com>
-References: <CH2PR12MB4005D671F3D274C4D5FA0BAEDD1C0@CH2PR12MB4005.namprd12.prod.outlook.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=q20S8hhWKqJkPa0Qq9MX1fLi2t6ZznP3v1plpMhprv0=;
+        b=NjO6YtOEvmVclqsng9dQGX1fF81vTy8tSxzQChmO5COorNDsZZJNk2wZSE0N1+PwGw
+         UGPUFY/pdWK06/CoMbv/kOQge96j1cYc6xmmSIuXhg6v09DSsqRB74D2gslpLgMdwP07
+         gJbrZpGW0ANn3a3VmT18/daMEgTVVltvixATl3smPPMSyXlgv0ullWtrZI7bAXhgFfMp
+         I3ZHyYjsfldIcIOECL6kxSrYYHfNWPcNkoQmJzNVlmKSQgSyZfJJfmuUHX5XmO9gjgEu
+         KoYNbfTBNDY7c8qyhE9+Nhpts7Dq00ylLwlqS18k2lOUGMqyI3iClDdyMDkTtpcUdCfS
+         a+Vw==
+X-Gm-Message-State: APjAAAUeQA8UlnwvaEoaOHmsIIAuZMuUNLXJlDoG8C/fpYbs2r8MnNoS
+        2WbORP5nzhyELYXc8uIN+B8=
+X-Google-Smtp-Source: APXvYqxqnXDtiIGW7AQNFE8oI4CnIv6UYAnt7UT7An+4GugjhqEit5krPf2LbEDyx+EWfTur5I3+Ng==
+X-Received: by 2002:a63:64c5:: with SMTP id y188mr12232919pgb.10.1581311530399;
+        Sun, 09 Feb 2020 21:12:10 -0800 (PST)
+Received: from asus.hsd1.ca.comcast.net ([2601:647:4000:d7:20b3:5fd0:4962:3980])
+        by smtp.gmail.com with ESMTPSA id v7sm10625384pfn.61.2020.02.09.21.12.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Feb 2020 21:12:09 -0800 (PST)
 From:   Bart Van Assche <bvanassche@acm.org>
-Autocrypt: addr=bvanassche@acm.org; prefer-encrypt=mutual; keydata=
- mQENBFSOu4oBCADcRWxVUvkkvRmmwTwIjIJvZOu6wNm+dz5AF4z0FHW2KNZL3oheO3P8UZWr
- LQOrCfRcK8e/sIs2Y2D3Lg/SL7qqbMehGEYcJptu6mKkywBfoYbtBkVoJ/jQsi2H0vBiiCOy
- fmxMHIPcYxaJdXxrOG2UO4B60Y/BzE6OrPDT44w4cZA9DH5xialliWU447Bts8TJNa3lZKS1
- AvW1ZklbvJfAJJAwzDih35LxU2fcWbmhPa7EO2DCv/LM1B10GBB/oQB5kvlq4aA2PSIWkqz4
- 3SI5kCPSsygD6wKnbRsvNn2mIACva6VHdm62A7xel5dJRfpQjXj2snd1F/YNoNc66UUTABEB
- AAG0JEJhcnQgVmFuIEFzc2NoZSA8YnZhbmFzc2NoZUBhY20ub3JnPokBOQQTAQIAIwUCVI67
- igIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEHFcPTXFzhAJ8QkH/1AdXblKL65M
- Y1Zk1bYKnkAb4a98LxCPm/pJBilvci6boefwlBDZ2NZuuYWYgyrehMB5H+q+Kq4P0IBbTqTa
- jTPAANn62A6jwJ0FnCn6YaM9TZQjM1F7LoDX3v+oAkaoXuq0dQ4hnxQNu792bi6QyVdZUvKc
- macVFVgfK9n04mL7RzjO3f+X4midKt/s+G+IPr4DGlrq+WH27eDbpUR3aYRk8EgbgGKvQFdD
- CEBFJi+5ZKOArmJVBSk21RHDpqyz6Vit3rjep7c1SN8s7NhVi9cjkKmMDM7KYhXkWc10lKx2
- RTkFI30rkDm4U+JpdAd2+tP3tjGf9AyGGinpzE2XY1K5AQ0EVI67igEIAKiSyd0nECrgz+H5
- PcFDGYQpGDMTl8MOPCKw/F3diXPuj2eql4xSbAdbUCJzk2ETif5s3twT2ER8cUTEVOaCEUY3
- eOiaFgQ+nGLx4BXqqGewikPJCe+UBjFnH1m2/IFn4T9jPZkV8xlkKmDUqMK5EV9n3eQLkn5g
- lco+FepTtmbkSCCjd91EfThVbNYpVQ5ZjdBCXN66CKyJDMJ85HVr5rmXG/nqriTh6cv1l1Js
- T7AFvvPjUPknS6d+BETMhTkbGzoyS+sywEsQAgA+BMCxBH4LvUmHYhpS+W6CiZ3ZMxjO8Hgc
- ++w1mLeRUvda3i4/U8wDT3SWuHcB3DWlcppECLkAEQEAAYkBHwQYAQIACQUCVI67igIbDAAK
- CRBxXD01xc4QCZ4dB/0QrnEasxjM0PGeXK5hcZMT9Eo998alUfn5XU0RQDYdwp6/kMEXMdmT
- oH0F0xB3SQ8WVSXA9rrc4EBvZruWQ+5/zjVrhhfUAx12CzL4oQ9Ro2k45daYaonKTANYG22y
- //x8dLe2Fv1By4SKGhmzwH87uXxbTJAUxiWIi1np0z3/RDnoVyfmfbbL1DY7zf2hYXLLzsJR
- mSsED/1nlJ9Oq5fALdNEPgDyPUerqHxcmIub+pF0AzJoYHK5punqpqfGmqPbjxrJLPJfHVKy
- goMj5DlBMoYqEgpbwdUYkH6QdizJJCur4icy8GUNbisFYABeoJ91pnD4IGei3MTdvINSZI5e
-Message-ID: <d397e15d-ab3b-5446-a1e8-c06a1f6c66e8@acm.org>
-Date:   Sun, 9 Feb 2020 09:29:36 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+To:     "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc:     target-devel@vger.kernel.org, Bart Van Assche <bvanassche@acm.org>,
+        Pavel Zakharov <pavel.zakharov@delphix.com>,
+        Mike Christie <mchristi@redhat.com>, stable@vger.kernel.org
+Subject: [PATCH] Revert "target/core: Inline transport_lun_remove_cmd()"
+Date:   Sun,  9 Feb 2020 21:12:02 -0800
+Message-Id: <20200210051202.12934-1-bvanassche@acm.org>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-In-Reply-To: <CH2PR12MB4005D671F3D274C4D5FA0BAEDD1C0@CH2PR12MB4005.namprd12.prod.outlook.com>
-Content-Type: multipart/mixed;
- boundary="------------DE860A0EB28FA851911169E4"
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------DE860A0EB28FA851911169E4
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
+Commit 83f85b8ec305 postponed the percpu_ref_put(&se_cmd->se_lun->lun_ref)
+call from command completion to the time when the final command reference
+is dropped. That approach is not compatible with the iSCSI target driver
+because the iSCSI target driver keeps the command with the highest stat_sn
+after it has completed until the next command is received (see also
+iscsit_ack_from_expstatsn()). Fix this regression by reverting commit
+83f85b8ec305.
 
-On 2020-02-07 06:00, Dakshaja Uppalapati wrote:
-> While testing iser with kernel 5.5, I see attached soft lockups.
-> Logged in and ran iozone on mounted disks. While the traffic is running, toggled the initiators interface down to up for 13 secs.
-> I see the attached hung task warnings in the target dmesg. 
-> # iozone -a -I -+d -g 32m
-> 
-> The same test with kernel-5.4 runs fine. I have suspected the following three commits which are all correlated, so removed these commits from 5.5 kernel, rebuilt the kernel and ran the same test then no issue is seen. Iozone is running successfully.
-> 
-> 80647a89eaf3f2: scsi: target: core: Release SPC-2 reservations when closing a session
-> e9d3009cb936b: scsi: target: iscsi: Wait for all commands to finish before freeing a session
-> 04060db41178c: scsi: RDMA/isert: Fix a recently introduced regression related to logout
-> 
-> I am trying to root cause the issue. Please do suggest me if you want me to  check some thing specific.
-
-Does the attached patch help?
-
-Thanks,
-
-Bart.
-
---------------DE860A0EB28FA851911169E4
-Content-Type: text/x-patch; charset=UTF-8;
- name="0001-RDMA-isert-Really-fix-logout.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
- filename="0001-RDMA-isert-Really-fix-logout.patch"
-
-From 855af6a1c94f8319867ac944d2e0d97c2c06742c Mon Sep 17 00:00:00 2001
-From: Bart Van Assche <bvanassche@acm.org>
-Date: Fri, 7 Feb 2020 19:57:35 -0800
-Subject: [PATCH] RDMA/isert: Really fix logout
-
-Commit 04060db41178 moved the isert_put_unsol_pending_cmds() call from
-before target_wait_for_sess_cmds() to after that call. However, a comment
-above isert_put_unsol_pending_cmds() is as follows: "We might still have
-commands that are waiting for unsolicited dataouts messages. We must put
-the extra reference on those before blocking on the
-target_wait_for_session_cmds()". Make sure that
-isert_put_unsol_pending_cmds() is again called before
-target_wait_for_sess_cmds().
-
-Cc: Sagi Grimberg <sagi@grimberg.me>
-Cc: Rahul Kundu <rahul.kundu@chelsio.com>
-Cc: Mike Marciniszyn <mike.marciniszyn@intel.com>
-Reported-by: Dakshaja Uppalapati <dakshaja@chelsio.com>
-Fixes: 04060db41178 ("scsi: RDMA/isert: Fix a recently introduced regression related to logout")
+Reported-by: Pavel Zakharov <pavel.zakharov@delphix.com>
+Cc: Pavel Zakharov <pavel.zakharov@delphix.com>
+Cc: Mike Christie <mchristi@redhat.com>
+Cc: <stable@vger.kernel.org>
+Fixes: 83f85b8ec305 ("scsi: target/core: Inline transport_lun_remove_cmd()")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
 ---
- drivers/infiniband/ulp/isert/ib_isert.c | 15 ++++++++++++---
- drivers/target/iscsi/iscsi_target.c     |  3 +++
- include/target/iscsi/iscsi_transport.h  |  1 +
- 3 files changed, 16 insertions(+), 3 deletions(-)
+ drivers/target/target_core_transport.c | 31 +++++++++++++++++++++++---
+ 1 file changed, 28 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
-index b273e421e910..65111025cd87 100644
---- a/drivers/infiniband/ulp/isert/ib_isert.c
-+++ b/drivers/infiniband/ulp/isert/ib_isert.c
-@@ -2582,7 +2582,7 @@ isert_wait4logout(struct isert_conn *isert_conn)
-  *
-  * We might still have commands that are waiting for unsolicited
-  * dataouts messages. We must put the extra reference on those
-- * before blocking on the target_wait_for_session_cmds
-+ * before blocking on the target_wait_for_sess_cmds().
-  */
- static void
- isert_put_unsol_pending_cmds(struct iscsi_conn *conn)
-@@ -2610,11 +2610,11 @@ isert_put_unsol_pending_cmds(struct iscsi_conn *conn)
- 	}
+diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
+index ea482d4b1f00..0ae9e60fc4d5 100644
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -666,6 +666,11 @@ static int transport_cmd_check_stop_to_fabric(struct se_cmd *cmd)
+ 
+ 	target_remove_from_state_list(cmd);
+ 
++	/*
++	 * Clear struct se_cmd->se_lun before the handoff to FE.
++	 */
++	cmd->se_lun = NULL;
++
+ 	spin_lock_irqsave(&cmd->t_state_lock, flags);
+ 	/*
+ 	 * Determine if frontend context caller is requesting the stopping of
+@@ -693,6 +698,17 @@ static int transport_cmd_check_stop_to_fabric(struct se_cmd *cmd)
+ 	return cmd->se_tfo->check_stop_free(cmd);
  }
  
--static void isert_wait_conn(struct iscsi_conn *conn)
-+static void isert_close_conn(struct iscsi_conn *conn)
- {
- 	struct isert_conn *isert_conn = conn->context;
- 
--	isert_info("Starting conn %p\n", isert_conn);
-+	isert_info("Closing conn %p\n", isert_conn);
- 
- 	mutex_lock(&isert_conn->mutex);
- 	isert_conn_terminate(isert_conn);
-@@ -2622,6 +2622,14 @@ static void isert_wait_conn(struct iscsi_conn *conn)
- 
- 	ib_drain_qp(isert_conn->qp);
- 	isert_put_unsol_pending_cmds(conn);
++static void transport_lun_remove_cmd(struct se_cmd *cmd)
++{
++	struct se_lun *lun = cmd->se_lun;
++
++	if (!lun)
++		return;
++
++	if (cmpxchg(&cmd->lun_ref_active, true, false))
++		percpu_ref_put(&lun->lun_ref);
 +}
 +
-+static void isert_wait_conn(struct iscsi_conn *conn)
-+{
-+	struct isert_conn *isert_conn = conn->context;
-+
-+	isert_info("Waiting for logout on conn %p\n", isert_conn);
-+
- 	isert_wait4logout(isert_conn);
+ static void target_complete_failure_work(struct work_struct *work)
+ {
+ 	struct se_cmd *cmd = container_of(work, struct se_cmd, work);
+@@ -783,6 +799,8 @@ static void target_handle_abort(struct se_cmd *cmd)
  
- 	queue_work(isert_release_wq, &isert_conn->release_work);
-@@ -2653,6 +2661,7 @@ static struct iscsit_transport iser_target_transport = {
- 	.iscsit_setup_np	= isert_setup_np,
- 	.iscsit_accept_np	= isert_accept_np,
- 	.iscsit_free_np		= isert_free_np,
-+	.iscsit_close_conn	= isert_close_conn,
- 	.iscsit_wait_conn	= isert_wait_conn,
- 	.iscsit_free_conn	= isert_free_conn,
- 	.iscsit_get_login_rx	= isert_get_login_rx,
-diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
-index b94ed4e30770..0e6449c87924 100644
---- a/drivers/target/iscsi/iscsi_target.c
-+++ b/drivers/target/iscsi/iscsi_target.c
-@@ -4226,6 +4226,9 @@ int iscsit_close_connection(
- 	atomic_set(&conn->connection_reinstatement, 1);
- 	spin_unlock_bh(&conn->state_lock);
+ 	WARN_ON_ONCE(kref_read(&cmd->cmd_kref) == 0);
  
-+	if (conn->conn_transport->iscsit_close_conn)
-+		conn->conn_transport->iscsit_close_conn(conn);
++	transport_lun_remove_cmd(cmd);
 +
- 	/*
- 	 * If any other processes are accessing this connection pointer we
- 	 * must wait until they have completed.
-diff --git a/include/target/iscsi/iscsi_transport.h b/include/target/iscsi/iscsi_transport.h
-index 75bee29fd7dd..f5a370b9e5b3 100644
---- a/include/target/iscsi/iscsi_transport.h
-+++ b/include/target/iscsi/iscsi_transport.h
-@@ -14,6 +14,7 @@ struct iscsit_transport {
- 	int (*iscsit_setup_np)(struct iscsi_np *, struct sockaddr_storage *);
- 	int (*iscsit_accept_np)(struct iscsi_np *, struct iscsi_conn *);
- 	void (*iscsit_free_np)(struct iscsi_np *);
-+	void (*iscsit_close_conn)(struct iscsi_conn *);
- 	void (*iscsit_wait_conn)(struct iscsi_conn *);
- 	void (*iscsit_free_conn)(struct iscsi_conn *);
- 	int (*iscsit_get_login_rx)(struct iscsi_conn *, struct iscsi_login *);
-
---------------DE860A0EB28FA851911169E4--
+ 	transport_cmd_check_stop_to_fabric(cmd);
+ }
+ 
+@@ -1708,6 +1726,7 @@ static void target_complete_tmr_failure(struct work_struct *work)
+ 	se_cmd->se_tmr_req->response = TMR_LUN_DOES_NOT_EXIST;
+ 	se_cmd->se_tfo->queue_tm_rsp(se_cmd);
+ 
++	transport_lun_remove_cmd(se_cmd);
+ 	transport_cmd_check_stop_to_fabric(se_cmd);
+ }
+ 
+@@ -1898,6 +1917,7 @@ void transport_generic_request_failure(struct se_cmd *cmd,
+ 		goto queue_full;
+ 
+ check_stop:
++	transport_lun_remove_cmd(cmd);
+ 	transport_cmd_check_stop_to_fabric(cmd);
+ 	return;
+ 
+@@ -2195,6 +2215,7 @@ static void transport_complete_qf(struct se_cmd *cmd)
+ 		transport_handle_queue_full(cmd, cmd->se_dev, ret, false);
+ 		return;
+ 	}
++	transport_lun_remove_cmd(cmd);
+ 	transport_cmd_check_stop_to_fabric(cmd);
+ }
+ 
+@@ -2289,6 +2310,7 @@ static void target_complete_ok_work(struct work_struct *work)
+ 		if (ret)
+ 			goto queue_full;
+ 
++		transport_lun_remove_cmd(cmd);
+ 		transport_cmd_check_stop_to_fabric(cmd);
+ 		return;
+ 	}
+@@ -2314,6 +2336,7 @@ static void target_complete_ok_work(struct work_struct *work)
+ 			if (ret)
+ 				goto queue_full;
+ 
++			transport_lun_remove_cmd(cmd);
+ 			transport_cmd_check_stop_to_fabric(cmd);
+ 			return;
+ 		}
+@@ -2349,6 +2372,7 @@ static void target_complete_ok_work(struct work_struct *work)
+ 			if (ret)
+ 				goto queue_full;
+ 
++			transport_lun_remove_cmd(cmd);
+ 			transport_cmd_check_stop_to_fabric(cmd);
+ 			return;
+ 		}
+@@ -2384,6 +2408,7 @@ static void target_complete_ok_work(struct work_struct *work)
+ 		break;
+ 	}
+ 
++	transport_lun_remove_cmd(cmd);
+ 	transport_cmd_check_stop_to_fabric(cmd);
+ 	return;
+ 
+@@ -2710,6 +2735,9 @@ int transport_generic_free_cmd(struct se_cmd *cmd, int wait_for_tasks)
+ 		 */
+ 		if (cmd->state_active)
+ 			target_remove_from_state_list(cmd);
++
++		if (cmd->se_lun)
++			transport_lun_remove_cmd(cmd);
+ 	}
+ 	if (aborted)
+ 		cmd->free_compl = &compl;
+@@ -2781,9 +2809,6 @@ static void target_release_cmd_kref(struct kref *kref)
+ 	struct completion *abrt_compl = se_cmd->abrt_compl;
+ 	unsigned long flags;
+ 
+-	if (se_cmd->lun_ref_active)
+-		percpu_ref_put(&se_cmd->se_lun->lun_ref);
+-
+ 	if (se_sess) {
+ 		spin_lock_irqsave(&se_sess->sess_cmd_lock, flags);
+ 		list_del_init(&se_cmd->se_cmd_list);
