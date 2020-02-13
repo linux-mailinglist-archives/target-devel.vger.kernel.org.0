@@ -2,89 +2,122 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 737E315B53B
-	for <lists+target-devel@lfdr.de>; Thu, 13 Feb 2020 00:51:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9C9915B8CB
+	for <lists+target-devel@lfdr.de>; Thu, 13 Feb 2020 06:09:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729190AbgBLXvj (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 12 Feb 2020 18:51:39 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:58540 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727117AbgBLXvj (ORCPT
+        id S1726144AbgBMFJJ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 13 Feb 2020 00:09:09 -0500
+Received: from mail-pj1-f66.google.com ([209.85.216.66]:50408 "EHLO
+        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725446AbgBMFJJ (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 12 Feb 2020 18:51:39 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01CNmW7R168540;
-        Wed, 12 Feb 2020 23:51:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2020-01-29;
- bh=QLhh8UmAV7YRTHOjwX6Fb5zdFuR2cSV8o26nu2Xmi7s=;
- b=pJFCj0FmICfKzzXVAXeGrxr7T/8L7UU/9gixU/xp2hSLltPc1O22GArkjbCBgtiOK71s
- s9+ABE3NB1GnhUJ6LM14+pCQAEQlDQhkIxwzC6/fzBh++jW1wKAiKM/gfaFXZgtjMXwN
- dy+bihur8SxaAcxRGmM/u5ZsOJLkUGscJosH8MzXWfiDSdtXfvx79qcYOkgp0ro8ednx
- /mfFgm3N1VEVPr6BVi6aVvtF4BstzYl7gJN1/O0dTR+Jn9d9xi+DjQ6sp5vOmrjgS0GS
- D07G04j+omgBzaOTonh60yjQxapcu5r+TJ/TzOxhcOtFws3YRCKaGfCQMWnoEoczh2Q5 ZQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 2y2k88ec1w-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 12 Feb 2020 23:51:28 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01CNl6o8027945;
-        Wed, 12 Feb 2020 23:51:28 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 2y4kah5ddt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 12 Feb 2020 23:51:28 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 01CNpQuB012262;
-        Wed, 12 Feb 2020 23:51:26 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 12 Feb 2020 15:51:26 -0800
-To:     Bart Van Assche <bvanassche@acm.org>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        target-devel@vger.kernel.org,
-        Pavel Zakharov <pavel.zakharov@delphix.com>,
-        Mike Christie <mchristi@redhat.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] Revert "target/core: Inline transport_lun_remove_cmd()"
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20200210051202.12934-1-bvanassche@acm.org>
-Date:   Wed, 12 Feb 2020 18:51:24 -0500
-In-Reply-To: <20200210051202.12934-1-bvanassche@acm.org> (Bart Van Assche's
-        message of "Sun, 9 Feb 2020 21:12:02 -0800")
-Message-ID: <yq1wo8rs6tf.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+        Thu, 13 Feb 2020 00:09:09 -0500
+Received: by mail-pj1-f66.google.com with SMTP id r67so1848291pjb.0
+        for <target-devel@vger.kernel.org>; Wed, 12 Feb 2020 21:09:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=jbHafbCA5zTo4T6UNbio+bK6idFQUDAk25CROjCMSvw=;
+        b=LIYysUYY+f+qrtD670uz9hyvTq+6ZBAzFd8pL+7UODci9uOuI3jSXQ7ncX8zbZe8Fm
+         joAxYLBqeGx0KKI7wnM9x09peQGvGoMrJGqsMcI3tEcxXaXdA8pQTBDSb66V+MDeifWl
+         7T/4q0w9x0PFr1pSNbJjT1prnIFzfXDW+VGXM4HwF2Qy2tUZZx4AzyJZtvemelhlS8zU
+         8IKIu2NPg/LLZ1YlMQnT5/o6ZIDnqGZa0hCh8WACHOAmvbqQxbrcdqLe9nV/SkdPZtNW
+         mK3whMSaHHlSkn2sMPb3A8BNURlm4Xpwf9MEcEjZinJ1B0cTL3yjB85WRup/ToHMjQIi
+         XU0A==
+X-Gm-Message-State: APjAAAWq06sGMegBJjquEHaNOAc99QrgQ4ChDEHZQ8RtYYFo5JRkpBmC
+        d5p1iTbc3oNLYj4zJk4k52Q=
+X-Google-Smtp-Source: APXvYqzJce63MzV1cq04rgN8xLfpXZyTgc2A6DGbz7gSlcREsAtqI9LEvbBosHR/F7w1WLBZPUEqoQ==
+X-Received: by 2002:a17:90a:f013:: with SMTP id bt19mr3000787pjb.47.1581570547075;
+        Wed, 12 Feb 2020 21:09:07 -0800 (PST)
+Received: from asus.hsd1.ca.comcast.net ([2601:647:4000:d7:a815:f3bb:71b5:79fa])
+        by smtp.gmail.com with ESMTPSA id i2sm821994pjs.21.2020.02.12.21.09.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Feb 2020 21:09:05 -0800 (PST)
+From:   Bart Van Assche <bvanassche@acm.org>
+To:     "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc:     target-devel@vger.kernel.org,
+        Dakshaja Uppalapati <dakshaja@chelsio.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Mike Marciniszyn <mike.marciniszyn@intel.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Rahul Kundu <rahul.kundu@chelsio.com>
+Subject: [PATCH 1/2] Revert "RDMA/isert: Fix a recently introduced regression related to logout"
+Date:   Wed, 12 Feb 2020 21:08:59 -0800
+Message-Id: <20200213050900.19094-1-bvanassche@acm.org>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9529 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 bulkscore=0
- suspectscore=0 mlxscore=0 malwarescore=0 adultscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002120165
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9529 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 lowpriorityscore=0
- suspectscore=0 bulkscore=0 phishscore=0 mlxlogscore=999 mlxscore=0
- malwarescore=0 impostorscore=0 clxscore=1011 spamscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002120165
+Content-Transfer-Encoding: 8bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+Since commit 04060db41178 introduces soft lockups when toggling network
+interfaces, revert it.
 
-Bart,
+Cc: Rahul Kundu <rahul.kundu@chelsio.com>
+Cc: Mike Marciniszyn <mike.marciniszyn@intel.com>
+Cc: Sagi Grimberg <sagi@grimberg.me>
+Reported-by: Dakshaja Uppalapati <dakshaja@chelsio.com>
+Fixes: 04060db41178 ("scsi: RDMA/isert: Fix a recently introduced regression related to logout")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+---
+ drivers/infiniband/ulp/isert/ib_isert.c | 12 ++++++++++++
+ drivers/target/iscsi/iscsi_target.c     |  6 +++---
+ 2 files changed, 15 insertions(+), 3 deletions(-)
 
-> Commit 83f85b8ec305 postponed the percpu_ref_put(&se_cmd->se_lun->lun_ref)
-> call from command completion to the time when the final command reference is
-> dropped. That approach is not compatible with the iSCSI target driver
-> because the iSCSI target driver keeps the command with the highest stat_sn
-> after it has completed until the next command is received (see also
-> iscsit_ack_from_expstatsn()). Fix this regression by reverting commit
-> 83f85b8ec305.
-
-Applied to 5.6/scsi-fixes, thanks!
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
+index b273e421e910..a1a035270cab 100644
+--- a/drivers/infiniband/ulp/isert/ib_isert.c
++++ b/drivers/infiniband/ulp/isert/ib_isert.c
+@@ -2575,6 +2575,17 @@ isert_wait4logout(struct isert_conn *isert_conn)
+ 	}
+ }
+ 
++static void
++isert_wait4cmds(struct iscsi_conn *conn)
++{
++	isert_info("iscsi_conn %p\n", conn);
++
++	if (conn->sess) {
++		target_sess_cmd_list_set_waiting(conn->sess->se_sess);
++		target_wait_for_sess_cmds(conn->sess->se_sess);
++	}
++}
++
+ /**
+  * isert_put_unsol_pending_cmds() - Drop commands waiting for
+  *     unsolicitate dataout
+@@ -2622,6 +2633,7 @@ static void isert_wait_conn(struct iscsi_conn *conn)
+ 
+ 	ib_drain_qp(isert_conn->qp);
+ 	isert_put_unsol_pending_cmds(conn);
++	isert_wait4cmds(conn);
+ 	isert_wait4logout(isert_conn);
+ 
+ 	queue_work(isert_release_wq, &isert_conn->release_work);
+diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
+index b94ed4e30770..7251a87bb576 100644
+--- a/drivers/target/iscsi/iscsi_target.c
++++ b/drivers/target/iscsi/iscsi_target.c
+@@ -4149,6 +4149,9 @@ int iscsit_close_connection(
+ 	iscsit_stop_nopin_response_timer(conn);
+ 	iscsit_stop_nopin_timer(conn);
+ 
++	if (conn->conn_transport->iscsit_wait_conn)
++		conn->conn_transport->iscsit_wait_conn(conn);
++
+ 	/*
+ 	 * During Connection recovery drop unacknowledged out of order
+ 	 * commands for this connection, and prepare the other commands
+@@ -4234,9 +4237,6 @@ int iscsit_close_connection(
+ 	target_sess_cmd_list_set_waiting(sess->se_sess);
+ 	target_wait_for_sess_cmds(sess->se_sess);
+ 
+-	if (conn->conn_transport->iscsit_wait_conn)
+-		conn->conn_transport->iscsit_wait_conn(conn);
+-
+ 	ahash_request_free(conn->conn_tx_hash);
+ 	if (conn->conn_rx_hash) {
+ 		struct crypto_ahash *tfm;
