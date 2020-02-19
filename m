@@ -2,52 +2,52 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ED7E164BF2
-	for <lists+target-devel@lfdr.de>; Wed, 19 Feb 2020 18:32:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5A16164C12
+	for <lists+target-devel@lfdr.de>; Wed, 19 Feb 2020 18:37:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726582AbgBSRcU (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 19 Feb 2020 12:32:20 -0500
-Received: from mail-pj1-f66.google.com ([209.85.216.66]:35559 "EHLO
-        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726551AbgBSRcU (ORCPT
+        id S1726593AbgBSRhv (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 19 Feb 2020 12:37:51 -0500
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:46491 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726518AbgBSRhv (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 19 Feb 2020 12:32:20 -0500
-Received: by mail-pj1-f66.google.com with SMTP id q39so360443pjc.0
-        for <target-devel@vger.kernel.org>; Wed, 19 Feb 2020 09:32:19 -0800 (PST)
+        Wed, 19 Feb 2020 12:37:51 -0500
+Received: by mail-pf1-f195.google.com with SMTP id k29so391097pfp.13
+        for <target-devel@vger.kernel.org>; Wed, 19 Feb 2020 09:37:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=YAeTLbUkG04U2sTHtfn3yDn6PVvfLK819G1YWg+WRXU=;
-        b=pT2TRw061WCcCTGFHtKhx4pvXvA1mJiZXg38jnokowUDD9AD+CLppzfmQm2jYkbwA4
-         Vb+ubnA8jJTfluGe+ViZf6rGC8gLsfdvBFeQe5M80BiVCuKU2UPnOEncD3tKgmc6ojLn
-         6itmCyiMu5tCar58iPt2JoLMGZ7XJDxQOxlDpmIwPE1QTNLYuevmG53MWeDoTGBmIwdK
-         JsZfX6WDIF/sKaOvdHYhKn8hOm1kHwz6ZS2qXk4hJ7M1ViuHDJcPjKB0syH5CDqMwjaM
-         1bvSpRA+duVeXtXb62OFVClmgKsjQEfUX1vAoIBjMbvuurYAvNmGYODPWXb/6/r3+X4m
-         u1Wg==
-X-Gm-Message-State: APjAAAVQ5NPxgnJ5gXlCPbNyyd7bKNa3o3PGrgURqxDJgcIQzTCF7QzZ
-        Z6oGCHLrOqxltBuZceABPZs=
-X-Google-Smtp-Source: APXvYqzsSfA0zdewZTZ89cNgyWoYUo86cu5YUjN02MmJkcQLTblylP0rZ6ETI0eC8mxvOyr4LMFfwg==
-X-Received: by 2002:a17:90a:fe02:: with SMTP id ck2mr9962762pjb.10.1582133539288;
-        Wed, 19 Feb 2020 09:32:19 -0800 (PST)
+        bh=eSztaqz47cQI+rfuq/VGek2utew7Q+dUjOwQVQ2olJc=;
+        b=FpuCMyxbaEcH5zsJ3V8EF7Wy3s/BszXuE2oWs0LxmpwsnbxmVAz8UKgUF/4XGlxlL/
+         CUB5wBeIdwHfrt1ed5PR7Y6/T3oENy5SH3CLPeDD0kQGTpUQEei3xDJsROFDT+XCK4SA
+         Hc2R2PQFJ14obvpWxPCbBgz55bvUTty/T42w9uEtbbj+aIVLy88X6wsKWCuNVd7CZ4t5
+         vjJccQCvKid/k5vYvOfGG+ilc0hGGxnAESnedOohVekNwOw5fXydAgDh5oBmUCjHGhaa
+         5SdV9u1V25ER8QNciGEJsxCWbUajzbYDra/A/nPXPOWcyENjzJVBjViuv2EUZiTkx18M
+         sF/Q==
+X-Gm-Message-State: APjAAAV35sCqNYmf80OBeH25HUN2vR398arJvd97sKUK3KHSpGJTSkYM
+        QzudCE8ihFfyUNt4sEE16uE=
+X-Google-Smtp-Source: APXvYqwI9o41qdSNjJk+X//7KVmokxoGzscvnZHNdXvKuj8cHkoMCi3tBdc1kps5MMHLquFpDmcfrg==
+X-Received: by 2002:a62:b604:: with SMTP id j4mr9372530pff.93.1582133870250;
+        Wed, 19 Feb 2020 09:37:50 -0800 (PST)
 Received: from ?IPv6:2620:15c:2d1:206:bfe1:be9c:5072:1789? ([2620:15c:2d1:206:bfe1:be9c:5072:1789])
-        by smtp.gmail.com with ESMTPSA id q187sm202829pfq.185.2020.02.19.09.32.17
+        by smtp.gmail.com with ESMTPSA id o29sm221082pfp.124.2020.02.19.09.37.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Feb 2020 09:32:18 -0800 (PST)
-Subject: Re: [PATCH v2 1/2] scsi: target: fix unmap_zeroes_data boolean
- initialisation
+        Wed, 19 Feb 2020 09:37:49 -0800 (PST)
+Subject: Re: [PATCH v2 2/2] scsi: target: convert boolean se_dev_attrib types
+ to bool
 To:     David Disseldorp <ddiss@suse.de>, target-devel@vger.kernel.org
 Cc:     martin.petersen@oracle.com, mchristi@redhat.com
 References: <20200219130136.18946-1-ddiss@suse.de>
- <20200219130136.18946-2-ddiss@suse.de>
+ <20200219130136.18946-3-ddiss@suse.de>
 From:   Bart Van Assche <bvanassche@acm.org>
-Message-ID: <3b7e0f30-3d75-779b-9c8e-67f227cedc96@acm.org>
-Date:   Wed, 19 Feb 2020 09:32:16 -0800
+Message-ID: <b68f71dc-a0df-dfdf-2790-6e4d3ced075a@acm.org>
+Date:   Wed, 19 Feb 2020 09:37:48 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.4.1
 MIME-Version: 1.0
-In-Reply-To: <20200219130136.18946-2-ddiss@suse.de>
+In-Reply-To: <20200219130136.18946-3-ddiss@suse.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -57,50 +57,46 @@ List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
 On 2/19/20 5:01 AM, David Disseldorp wrote:
-> The LIO unmap_zeroes_data device attribute is mapped to the LBPRZ flag
-> in the READ CAPACITY (16) and Thin Provisioning VPD INQUIRY responses.
-> 
-> The unmap_zeroes_data attribute is exposed via configfs, where any write
-> value is correctly validated via strtobool(). However, when initialised
-> via target_configure_unmap_from_queue() it takes the value of the
-> device's max_write_zeroes_sectors queue limit, which is non-boolean.
-> 
-> A non-boolean value can be read from configfs, but attempting to write
-> the same value back results in -EINVAL, causing problems for configuration
-> utilities such as targetcli.
-> 
-> Fixes: 2237498f0b5c ("target/iblock: Convert WRITE_SAME to blkdev_issue_zeroout")
-> Signed-off-by: David Disseldorp <ddiss@suse.de>
-> ---
->   drivers/target/target_core_device.c | 2 +-
->   include/target/target_core_base.h   | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
-> index 2d19f0e332b0..2c7ba2f7e13c 100644
-> --- a/drivers/target/target_core_device.c
-> +++ b/drivers/target/target_core_device.c
-> @@ -829,7 +829,7 @@ bool target_configure_unmap_from_queue(struct se_dev_attrib *attrib,
->   	attrib->unmap_granularity = q->limits.discard_granularity / block_size;
->   	attrib->unmap_granularity_alignment = q->limits.discard_alignment /
->   								block_size;
-> -	attrib->unmap_zeroes_data = (q->limits.max_write_zeroes_sectors);
-> +	attrib->unmap_zeroes_data = !!(q->limits.max_write_zeroes_sectors);
->   	return true;
->   }
->   EXPORT_SYMBOL(target_configure_unmap_from_queue);
-> diff --git a/include/target/target_core_base.h b/include/target/target_core_base.h
-> index 1728e883b7b2..35188e64239e 100644
-> --- a/include/target/target_core_base.h
-> +++ b/include/target/target_core_base.h
-> @@ -682,7 +682,7 @@ struct se_dev_attrib {
->   	int		force_pr_aptpl;
->   	int		is_nonrot;
->   	int		emulate_rest_reord;
-> -	int		unmap_zeroes_data;
-> +	bool		unmap_zeroes_data;
+>   struct se_dev_attrib {
+> -	int		emulate_model_alias;
+> -	int		emulate_dpo;
+> -	int		emulate_fua_write;
+> -	int		emulate_fua_read;
+> -	int		emulate_write_cache;
+> +	bool		emulate_model_alias;
+> +	bool		emulate_dpo;		/* deprecated */
+> +	bool		emulate_fua_write;
+> +	bool		emulate_fua_read;	/* deprecated */
+> +	bool		emulate_write_cache;
+>   	int		emulate_ua_intlck_ctrl;
+> -	int		emulate_tas;
+> -	int		emulate_tpu;
+> -	int		emulate_tpws;
+> -	int		emulate_caw;
+> -	int		emulate_3pc;
+> -	int		emulate_pr;
+> +	bool		emulate_tas;
+> +	bool		emulate_tpu;
+> +	bool		emulate_tpws;
+> +	bool		emulate_caw;
+> +	bool		emulate_3pc;
+> +	bool		emulate_pr;
+>   	enum target_prot_type pi_prot_type;
+>   	enum target_prot_type hw_pi_prot_type;
+> -	int		pi_prot_verify;
+> -	int		enforce_pr_isids;
+> -	int		force_pr_aptpl;
+> -	int		is_nonrot;
+> -	int		emulate_rest_reord;
+> +	bool		pi_prot_verify;
+> +	bool		enforce_pr_isids;
+> +	bool		force_pr_aptpl;
+> +	bool		is_nonrot;
+> +	bool		emulate_rest_reord;
+>   	bool		unmap_zeroes_data;
 >   	u32		hw_block_size;
 >   	u32		block_size;
->   	u32		hw_max_sectors;
+
+How about introducing an enum type for emulate_ua_intlck_ctrl? Anyway:
 
 Reviewed-by: Bart Van Assche <bvanassche@acm.org>
