@@ -2,44 +2,47 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C3EF8184C19
-	for <lists+target-devel@lfdr.de>; Fri, 13 Mar 2020 17:13:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 696B7184C1B
+	for <lists+target-devel@lfdr.de>; Fri, 13 Mar 2020 17:13:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726557AbgCMQNB (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 13 Mar 2020 12:13:01 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:35275 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726446AbgCMQNB (ORCPT
+        id S1726859AbgCMQNF (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 13 Mar 2020 12:13:05 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:47981 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726446AbgCMQNF (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 13 Mar 2020 12:13:01 -0400
+        Fri, 13 Mar 2020 12:13:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584115980;
+        s=mimecast20190719; t=1584115983;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=C09/kK1JKf6yKpRHFjnUjEmRt4toB3/ooSemF6QDK28=;
-        b=P+q6JFMAyfoDLDZxyl84vSBMGSfjTugHGGlXq4HdTsHpABT3DuU3hf3qDpXQDsJmFtkdyr
-        HmkVgZoNKBYumhVMYEvvInXcpOv7Vxyavm3EutB1WMma2EMjQTy5z13scpz89QSExxZkPP
-        qCpw40tGG6YXvWG6VFksC3bAJxA7zYs=
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dXmOBN3bY/s/4oig2u5w63YuRiyUC6cSPUrcJcU8V2Q=;
+        b=QH3M4tO7/XD+ObbfjXQh6vaFJJXDv2Vv9DrN1LsqMbs5WSKM9+mJ1Dq9NDW162CDem6eeF
+        fkGPArI0C9DxlOrHWoKi3WNPxwfRKU1EgwxEwUMCpSeMD/fTvqfjCyUW+7l2uUm0LX1MG5
+        Wo4SB2EUwvoKCooZh1f5JTp48xd0Mak=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-419-RvhPlTaHO4ivg62wBDGfOw-1; Fri, 13 Mar 2020 12:12:58 -0400
-X-MC-Unique: RvhPlTaHO4ivg62wBDGfOw-1
+ us-mta-9-s2K7dPO1NKmm_nKOwD-j5Q-1; Fri, 13 Mar 2020 12:13:01 -0400
+X-MC-Unique: s2K7dPO1NKmm_nKOwD-j5Q-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8B26918A72AD;
-        Fri, 13 Mar 2020 16:12:57 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BC18313F6;
+        Fri, 13 Mar 2020 16:12:59 +0000 (UTC)
 Received: from localhost.localdomain.com (ovpn-206-24.brq.redhat.com [10.40.206.24])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id AEEFA100164D;
-        Fri, 13 Mar 2020 16:12:55 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 06F45100164D;
+        Fri, 13 Mar 2020 16:12:57 +0000 (UTC)
 From:   Maurizio Lombardi <mlombard@redhat.com>
 To:     target-devel@vger.kernel.org
 Cc:     martin.petersen@oracle.com, bvanassche@acm.org, ddiss@suse.de,
         mcoleman@datto.com
-Subject: [PATCH 0/3] Fix a race condition in the target driver
-Date:   Fri, 13 Mar 2020 17:12:50 +0100
-Message-Id: <20200313161253.5507-1-mlombard@redhat.com>
+Subject: [PATCH 1/3] target: remove boilerplate code
+Date:   Fri, 13 Mar 2020 17:12:51 +0100
+Message-Id: <20200313161253.5507-2-mlombard@redhat.com>
+In-Reply-To: <20200313161253.5507-1-mlombard@redhat.com>
+References: <20200313161253.5507-1-mlombard@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Content-Transfer-Encoding: quoted-printable
@@ -48,29 +51,96 @@ Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Multiple threads may try to destroy the same iscsi session
-structure by calling iscsit_close_session() and then end
-up hanging.
+iscsit_free_session() is equivalent to iscsit_stop_session()
+followed by a call to iscsit_close_session()
 
-This patchset modifies the driver so the session
-structure is destroyed by iscsit_close_connection() when
-the last connection gets closed, thus preventing
-the race condition.
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+---
+ drivers/target/iscsi/iscsi_target.c | 46 ++---------------------------
+ drivers/target/iscsi/iscsi_target.h |  1 -
+ 2 files changed, 2 insertions(+), 45 deletions(-)
 
-Maurizio Lombardi (3):
-  target: remove boilerplate code
-  target: fix target hang when multiple threads try to destroy the same
-    iscsi session.
-  iscsi target: calling iscsit_stop_session() inside
-    iscsit_close_session() has no effect
-
- drivers/target/iscsi/iscsi_target.c          | 82 ++++++--------------
- drivers/target/iscsi/iscsi_target.h          |  1 -
- drivers/target/iscsi/iscsi_target_configfs.c |  5 +-
- drivers/target/iscsi/iscsi_target_login.c    |  5 +-
- include/target/iscsi/iscsi_target_core.h     |  2 +-
- 5 files changed, 32 insertions(+), 63 deletions(-)
-
+diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/i=
+scsi_target.c
+index 59d32453b891..a955ab73eaae 100644
+--- a/drivers/target/iscsi/iscsi_target.c
++++ b/drivers/target/iscsi/iscsi_target.c
+@@ -4577,49 +4577,6 @@ void iscsit_fail_session(struct iscsi_session *ses=
+s)
+ 	sess->session_state =3D TARG_SESS_STATE_FAILED;
+ }
+=20
+-int iscsit_free_session(struct iscsi_session *sess)
+-{
+-	u16 conn_count =3D atomic_read(&sess->nconn);
+-	struct iscsi_conn *conn, *conn_tmp =3D NULL;
+-	int is_last;
+-
+-	spin_lock_bh(&sess->conn_lock);
+-	atomic_set(&sess->sleep_on_sess_wait_comp, 1);
+-
+-	list_for_each_entry_safe(conn, conn_tmp, &sess->sess_conn_list,
+-			conn_list) {
+-		if (conn_count =3D=3D 0)
+-			break;
+-
+-		if (list_is_last(&conn->conn_list, &sess->sess_conn_list)) {
+-			is_last =3D 1;
+-		} else {
+-			iscsit_inc_conn_usage_count(conn_tmp);
+-			is_last =3D 0;
+-		}
+-		iscsit_inc_conn_usage_count(conn);
+-
+-		spin_unlock_bh(&sess->conn_lock);
+-		iscsit_cause_connection_reinstatement(conn, 1);
+-		spin_lock_bh(&sess->conn_lock);
+-
+-		iscsit_dec_conn_usage_count(conn);
+-		if (is_last =3D=3D 0)
+-			iscsit_dec_conn_usage_count(conn_tmp);
+-
+-		conn_count--;
+-	}
+-
+-	if (atomic_read(&sess->nconn)) {
+-		spin_unlock_bh(&sess->conn_lock);
+-		wait_for_completion(&sess->session_wait_comp);
+-	} else
+-		spin_unlock_bh(&sess->conn_lock);
+-
+-	iscsit_close_session(sess);
+-	return 0;
+-}
+-
+ void iscsit_stop_session(
+ 	struct iscsi_session *sess,
+ 	int session_sleep,
+@@ -4704,7 +4661,8 @@ int iscsit_release_sessions_for_tpg(struct iscsi_po=
+rtal_group *tpg, int force)
+ 	list_for_each_entry_safe(se_sess, se_sess_tmp, &free_list, sess_list) {
+ 		sess =3D (struct iscsi_session *)se_sess->fabric_sess_ptr;
+=20
+-		iscsit_free_session(sess);
++		iscsit_stop_session(sess, 1, 1);
++		iscsit_close_session(sess);
+ 		session_count++;
+ 	}
+=20
+diff --git a/drivers/target/iscsi/iscsi_target.h b/drivers/target/iscsi/i=
+scsi_target.h
+index c95f56a3ce31..7409ce2a6607 100644
+--- a/drivers/target/iscsi/iscsi_target.h
++++ b/drivers/target/iscsi/iscsi_target.h
+@@ -43,7 +43,6 @@ extern int iscsi_target_rx_thread(void *);
+ extern int iscsit_close_connection(struct iscsi_conn *);
+ extern int iscsit_close_session(struct iscsi_session *);
+ extern void iscsit_fail_session(struct iscsi_session *);
+-extern int iscsit_free_session(struct iscsi_session *);
+ extern void iscsit_stop_session(struct iscsi_session *, int, int);
+ extern int iscsit_release_sessions_for_tpg(struct iscsi_portal_group *, =
+int);
+=20
 --=20
 2.21.0
 
