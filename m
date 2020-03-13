@@ -2,86 +2,92 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BCCC184D40
-	for <lists+target-devel@lfdr.de>; Fri, 13 Mar 2020 18:07:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B32FD184DC6
+	for <lists+target-devel@lfdr.de>; Fri, 13 Mar 2020 18:39:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726414AbgCMRHM (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 13 Mar 2020 13:07:12 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:59476 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726691AbgCMRHL (ORCPT
+        id S1726550AbgCMRjd (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 13 Mar 2020 13:39:33 -0400
+Received: from mail-pj1-f66.google.com ([209.85.216.66]:51629 "EHLO
+        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726461AbgCMRjd (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 13 Mar 2020 13:07:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584119230;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=dCRu2uO7JRNFqZuuAU7FJwrFZSO6JRc5fYwy5NacvU4=;
-        b=P/mie6n12uFF+ntDQAIhsTV81xKmxSeR58P1o+4htD5HZaNeCxy4MFWmDKwB2EOk5YaOue
-        eyqdvPhK96ScataOefA3L+hwfcBRDTVcW9WIIkJdpBQaTCo79chLD3YeMrptLdvFexzpLY
-        G2tiMGFE810aKv2FZRne5BwCnkK6C4c=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-394-LgOQQK2YNkek2L5utI8Ujg-1; Fri, 13 Mar 2020 13:07:09 -0400
-X-MC-Unique: LgOQQK2YNkek2L5utI8Ujg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 174E78017CC;
-        Fri, 13 Mar 2020 17:07:08 +0000 (UTC)
-Received: from localhost.localdomain.com (ovpn-206-24.brq.redhat.com [10.40.206.24])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 1CB0873862;
-        Fri, 13 Mar 2020 17:07:05 +0000 (UTC)
-From:   Maurizio Lombardi <mlombard@redhat.com>
-To:     target-devel@vger.kernel.org
-Cc:     martin.petersen@oracle.com, bvanassche@acm.org, ddiss@suse.de,
-        mcoleman@datto.com, linux-scsi@vger.kernel.org
-Subject: [PATCH RESEND 3/3] iscsi target: calling iscsit_stop_session() inside iscsit_close_session() has no effect
-Date:   Fri, 13 Mar 2020 18:06:56 +0100
-Message-Id: <20200313170656.9716-4-mlombard@redhat.com>
-In-Reply-To: <20200313170656.9716-1-mlombard@redhat.com>
-References: <20200313170656.9716-1-mlombard@redhat.com>
+        Fri, 13 Mar 2020 13:39:33 -0400
+Received: by mail-pj1-f66.google.com with SMTP id hg10so557921pjb.1
+        for <target-devel@vger.kernel.org>; Fri, 13 Mar 2020 10:39:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Tbc1EI7lEPXWGGWeEn14ZO9JQmfUzUArY59WqUMfG50=;
+        b=IDRh3Y9hgbWTlzN6g7NvibMt/iuExx/s301uTa8kBkHSHgLjl/Qpp2PsW+Ml8Hwt2p
+         oNqkmp1mONS3amscWWLsRLnYIxgXxfRPIqbDi8xEvuPtbxV8/5JcKIX1ghHctpKUTcp8
+         VDNXbLrds6eALjpz61R2TJfd2Vh1nuSJw+zy39XrqmtknSgXrpgZYyJGkeD+yJaDdsjR
+         3g0fG3kYKNYPIkc+9N8ZS+mL3jYhFUG/1Bhc0QJx7hKmupBpnnKpYDCjUbrncECoxHw7
+         0vSSVgb/6lqNo8Rpd+e6En+ezy/4Pz/Y+SK4rvVgi4HLtR/M82khl3S4KNXBLv+f4Sby
+         9u6g==
+X-Gm-Message-State: ANhLgQ1WXUVVt+AqyPHH8mNOB7hsSdMvYYmrFCB2wV7r+bcMFnSvWc1v
+        Bow4QlSViudvvohnmQU1Xec=
+X-Google-Smtp-Source: ADFU+vtpvBLCNjQnDOx27xyIeG6AgSQE1QEaBten6QgKnJ7dDyHGy06R8UdcytlJCQVaHlB01z0D+g==
+X-Received: by 2002:a17:90b:94a:: with SMTP id dw10mr10949426pjb.89.1584121171042;
+        Fri, 13 Mar 2020 10:39:31 -0700 (PDT)
+Received: from ?IPv6:2601:647:4000:d7:af99:b4cf:6b17:1075? ([2601:647:4000:d7:af99:b4cf:6b17:1075])
+        by smtp.gmail.com with ESMTPSA id i3sm10208525pfa.34.2020.03.13.10.39.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Mar 2020 10:39:30 -0700 (PDT)
+Subject: Re: [PATCH 0/3] Fix a race condition in the target driver
+To:     Maurizio Lombardi <mlombard@redhat.com>,
+        target-devel@vger.kernel.org
+Cc:     martin.petersen@oracle.com, ddiss@suse.de, mcoleman@datto.com,
+        Varun Prakash <varun@chelsio.com>,
+        Rahul Kundu <rahul.kundu@chelsio.com>,
+        Mike Marciniszyn <mike.marciniszyn@intel.com>
+References: <20200313161253.5507-1-mlombard@redhat.com>
+From:   Bart Van Assche <bvanassche@acm.org>
+Message-ID: <650e95a9-c055-304c-6f91-4b9f7c046bb4@acm.org>
+Date:   Fri, 13 Mar 2020 10:39:28 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200313161253.5507-1-mlombard@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-iscsit_close_session() can only be called when nconn is zero (otherwise
-a kernel panic is triggered); if nconn is zero then
-iscsit_stop_session() does nothing and exits, so calling it
-makes no sense.
+On 3/13/20 9:12 AM, Maurizio Lombardi wrote:
+> Multiple threads may try to destroy the same iscsi session
+> structure by calling iscsit_close_session() and then end
+> up hanging.
+> 
+> This patchset modifies the driver so the session
+> structure is destroyed by iscsit_close_connection() when
+> the last connection gets closed, thus preventing
+> the race condition.
+> 
+> Maurizio Lombardi (3):
+>    target: remove boilerplate code
+>    target: fix target hang when multiple threads try to destroy the same
+>      iscsi session.
+>    iscsi target: calling iscsit_stop_session() inside
+>      iscsit_close_session() has no effect
+> 
+>   drivers/target/iscsi/iscsi_target.c          | 82 ++++++--------------
+>   drivers/target/iscsi/iscsi_target.h          |  1 -
+>   drivers/target/iscsi/iscsi_target_configfs.c |  5 +-
+>   drivers/target/iscsi/iscsi_target_login.c    |  5 +-
+>   include/target/iscsi/iscsi_target_core.h     |  2 +-
+>   5 files changed, 32 insertions(+), 63 deletions(-)
+> 
 
-We still need to call iscsit_check_session_usage_count() because
-this function will sleep if the session's refcount is not zero and
-we don't want to destroy the session structure if
-it's still being referenced.
+Hi Mike, Varun and Rahul,
 
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
----
- drivers/target/iscsi/iscsi_target.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+This patch series may affect the iSER target driver so you may want to 
+verify this patch series on your test setups.
 
-diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/i=
-scsi_target.c
-index 9e90edc875f1..14f4842e3517 100644
---- a/drivers/target/iscsi/iscsi_target.c
-+++ b/drivers/target/iscsi/iscsi_target.c
-@@ -4385,8 +4385,7 @@ int iscsit_close_session(struct iscsi_session *sess=
-)
- 	 * restart the timer and exit.
- 	 */
- 	if (!in_interrupt()) {
--		if (iscsit_check_session_usage_count(sess) =3D=3D 1)
--			iscsit_stop_session(sess, 1, 1);
-+		iscsit_check_session_usage_count(sess);
- 	} else {
- 		if (iscsit_check_session_usage_count(sess) =3D=3D 2) {
- 			atomic_set(&sess->session_logout, 0);
---=20
-2.21.0
+Thanks,
 
+Bart.
