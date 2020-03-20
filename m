@@ -2,79 +2,123 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 73BD718CC94
-	for <lists+target-devel@lfdr.de>; Fri, 20 Mar 2020 12:20:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D48B18D283
+	for <lists+target-devel@lfdr.de>; Fri, 20 Mar 2020 16:11:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726843AbgCTLUF (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 20 Mar 2020 07:20:05 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:41311 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726896AbgCTLUE (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Fri, 20 Mar 2020 07:20:04 -0400
-Received: by mail-oi1-f193.google.com with SMTP id b17so6049883oic.8
-        for <target-devel@vger.kernel.org>; Fri, 20 Mar 2020 04:20:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=6w+aFSJ+2vZ3lBtg9xVXLOFVqSNoMPd625E7FNYobb8=;
-        b=duuFC854Gg8oOx5l5AYN6iP68xZYeqHzpGZtEnTw/ik/EKtzQMEuZ3BqqeKwq61QgD
-         +vY/mY91SwpGkG1yK3rSBJKN+4xC494DwxJaYTx8uHaIi/Aa30XompFIP48WGIeqIwiF
-         lmKQtbTHvPkRMldiDL8Xktb6KouFkMBKZhVNhcdHBawiSSbmxmQCVzCOp1bGB5SNU2G7
-         eNeZoUuI6xIuD9d2fckvamAvbBb0B/IfFeWLMb4GjUFeF6ecwLlRpq8rnEb+5s/PPieP
-         UzptDDKRf8YaSwtim/MmRx/0JCu8xcty8AV+ycTNTc9AJ0fMS3zo1D8dhCWOyVkHN9rv
-         Y/gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=6w+aFSJ+2vZ3lBtg9xVXLOFVqSNoMPd625E7FNYobb8=;
-        b=mVGYEMo27dMT+11SyGZMTerqECAg+RH2ThY+0ZSN2N1GPEaH5Gopvs8XRJaN02Pmph
-         z0ERxsX3CsPDOeR5DDqlIRu/tM9F8JQEiPo90ML5MnjLsM3HX69r0IbapTitIfVGk8M2
-         ue7VNIDvAroLvQuBsDCeQYsrwc+Kf+zYUEaQkPmD1IpaMG779v1OgmbuBIJdkZwQNuQg
-         Rg2Gs7KSo888CxQ58lyn5yTEsTr2PJvngXISjitGn3j3u5ZE4a6BE9fTUlsKZQWv/OpU
-         WePXQH332JamWXe3Ny/yyegfJrtw/kDcvmf4ieElfvs2bKF50BDfHgC9/y64DSImp7OS
-         5cEA==
-X-Gm-Message-State: ANhLgQ0gfUwKMqlspuvDX56lyyL/0wLnf9YCwzq6hWmq/S1kWtmF6buR
-        HF/RmWVBP13q9K1TGvsSRdWPnLHhPMj7zuphyAo=
-X-Google-Smtp-Source: ADFU+vvR/mGZ0F8IfP8rajl/KXQB0WzRsQQFR7vAUhwy8MWQCvfNv+SkrV92lNJ1CcznVLp5pjBwJcU6pW16BlfCV4o=
-X-Received: by 2002:aca:210c:: with SMTP id 12mr5676182oiz.0.1584703202252;
- Fri, 20 Mar 2020 04:20:02 -0700 (PDT)
+        id S1727526AbgCTPLY (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 20 Mar 2020 11:11:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56044 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727400AbgCTPLH (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Fri, 20 Mar 2020 11:11:07 -0400
+Received: from mail.kernel.org (ip5f5ad4e9.dynamic.kabel-deutschland.de [95.90.212.233])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A35162072D;
+        Fri, 20 Mar 2020 15:11:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1584717066;
+        bh=qz6nxjt+oHRdtFK5DtUf8W3pt7MtXBjKeLpdYT+SXj4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=jMVdDgVTlPr9q4qgOQX+s+/uNPsSTDhfGiESnAjI2AGmzXCyl3PkU1dSvU2b2I1Vu
+         CGQA+Ezuq0o70vsmAIKPEauiCmAHHE0cYxQfeWLwYuups0vVmKNTcxChn7S4KXSOvq
+         4g6dIhGnq0ArXroR/CxDRUgHb/DLqWbXrZyQEEaQ=
+Received: from mchehab by mail.kernel.org with local (Exim 4.92.3)
+        (envelope-from <mchehab@kernel.org>)
+        id 1jFJIe-000ukc-Gx; Fri, 20 Mar 2020 16:11:04 +0100
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Ricardo Ribalda Delgado <ribalda@kernel.org>,
+        Luca Ceresoli <luca@lucaceresoli.net>,
+        dmaengine@vger.kernel.org, Matthias Maennich <maennich@google.com>,
+        Harry Wei <harryxiyou@gmail.com>, x86@kernel.org,
+        ecryptfs@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+        target-devel@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        Tyler Hicks <code@tyhicks.com>, Vinod Koul <vkoul@kernel.org>,
+        Alex Shi <alex.shi@linux.alibaba.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, linux-scsi@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>, netdev@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linuxppc-dev@lists.ozlabs.org, Borislav Petkov <bp@alien8.de>
+Subject: [PATCH v2 0/2] Don't generate thousands of new warnings when building docs
+Date:   Fri, 20 Mar 2020 16:11:01 +0100
+Message-Id: <cover.1584716446.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Received: by 2002:a05:6838:40c6:0:0:0:0 with HTTP; Fri, 20 Mar 2020 04:20:01
- -0700 (PDT)
-From:   ECOWAS COMMITEE <ecowasmonitoringcommitteeabj@gmail.com>
-Date:   Fri, 20 Mar 2020 11:20:01 +0000
-Message-ID: <CAHHubrZRrohCzE4mAJroy4ozKitfTgF-wH6yi7zkLdQu26eLpA@mail.gmail.com>
-Subject: HAPPY SURVIVAL OF CORONAVIRUS
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Dear Sir/Madam
+This small series address a regression caused by a new patch at
+docs-next (and at linux-next).
 
-HAPPY SURVIVAL OF CORONAVIRUS
+Before this patch, when a cross-reference to a chapter within the
+documentation is needed, we had to add a markup like:
 
-We the West African Monitoring Committee of the West African Economic
-Community(ECOWAS)are contacting you for a business transaction which
-we feel will be of great interest to you.
+	.. _foo:
 
-Our duty is to see to the coming in and out of funds into this sub
-region.There is a fund which we confiscated worth of $12.5 million
-dollars.We will like you to receive this fund on your name in your
-account and as well helping us in the investment.
+	foo
+	===
 
-You are advised to contact us as soon as you get this message for
-details of the transaction if you find it interesting.
+This behavor is now different after this patch:
 
-Best Regards,
+	58ad30cf91f0 ("docs: fix reference to core-api/namespaces.rst")
 
-Mr John Aka
+As a Sphinx extension now creates automatically a reference
+like the above, without requiring any extra markup.
 
-Chairman
-ECOWAS
-West African Monitoring Committee
-Tel 00225 6716 6756
-Abidjan Cote D'Ivoire
+That, however, comes with a price: it is not possible anymore to have
+two sections with the same name within the entire Kernel docs!
+
+This causes thousands of warnings, as we have sections named
+"introduction" on lots of places.
+
+This series solve this regression by doing two changes:
+
+1) The references are now prefixed by the document name. So,
+   a file named "bar" would have the "foo" reference as "bar:foo".
+
+2) It will only use the first two levels. The first one is (usually) the
+   name of the document, and the second one the chapter name.
+
+This solves almost all problems we have. Still, there are a few places
+where we have two chapters at the same document with the
+same name. The first patch addresses this problem.
+
+The second patch limits the escope of the autosectionlabel.
+
+Mauro Carvalho Chehab (2):
+  docs: prevent warnings due to autosectionlabel
+  docs: conf.py: avoid thousands of duplicate label warning on Sphinx
+
+ Documentation/conf.py                                 |  4 ++++
+ Documentation/driver-api/80211/mac80211-advanced.rst  |  8 ++++----
+ Documentation/driver-api/dmaengine/index.rst          |  4 ++--
+ Documentation/filesystems/ecryptfs.rst                | 11 +++++------
+ Documentation/kernel-hacking/hacking.rst              |  4 ++--
+ Documentation/media/kapi/v4l2-controls.rst            |  8 ++++----
+ Documentation/networking/snmp_counter.rst             |  4 ++--
+ Documentation/powerpc/ultravisor.rst                  |  4 ++--
+ Documentation/security/siphash.rst                    |  8 ++++----
+ Documentation/target/tcmu-design.rst                  |  6 +++---
+ .../translations/zh_CN/process/5.Posting.rst          |  2 +-
+ Documentation/x86/intel-iommu.rst                     |  3 ++-
+ 12 files changed, 35 insertions(+), 31 deletions(-)
+
+-- 
+2.24.1
+
+
