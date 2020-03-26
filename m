@@ -2,59 +2,57 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A3DEF194A68
-	for <lists+target-devel@lfdr.de>; Thu, 26 Mar 2020 22:20:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE6BF194B5A
+	for <lists+target-devel@lfdr.de>; Thu, 26 Mar 2020 23:15:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727606AbgCZVUs (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 26 Mar 2020 17:20:48 -0400
-Received: from mx2.suse.de ([195.135.220.15]:44720 "EHLO mx2.suse.de"
+        id S1726954AbgCZWPM (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 26 Mar 2020 18:15:12 -0400
+Received: from mx2.suse.de ([195.135.220.15]:56040 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726034AbgCZVUs (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 26 Mar 2020 17:20:48 -0400
+        id S1726296AbgCZWPM (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Thu, 26 Mar 2020 18:15:12 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 5C991B03D;
-        Thu, 26 Mar 2020 21:20:46 +0000 (UTC)
-Date:   Thu, 26 Mar 2020 22:20:44 +0100
+        by mx2.suse.de (Postfix) with ESMTP id 8BD91ABBD;
+        Thu, 26 Mar 2020 22:15:10 +0000 (UTC)
 From:   David Disseldorp <ddiss@suse.de>
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
-        martin.petersen@oracle.com, bvanassche@acm.org
-Subject: Re: [RFC PATCH 5/5] scsi: target: avoid XCOPY per-loop read/write
- cmd allocations
-Message-ID: <20200326222044.06e3d5c9@suse.de>
-In-Reply-To: <20200324092323.GE18399@infradead.org>
-References: <20200323165410.24423-1-ddiss@suse.de>
-        <20200323165410.24423-6-ddiss@suse.de>
-        <20200324092323.GE18399@infradead.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+To:     target-devel@vger.kernel.org
+Cc:     linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
+        bvanassche@acm.org
+Subject: [PATCH v2 0/5] scsi: target: 
+Date:   Thu, 26 Mar 2020 23:15:00 +0100
+Message-Id: <20200326221505.5303-1-ddiss@suse.de>
+X-Mailer: git-send-email 2.16.4
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hi Christoph,
+These changes remove unnecessary heap allocations in the XCOPY
+READ/WRITE dispatch loop.
 
-Thanks for the feedback...
+Synthetic benchmarks on my laptop using the libiscsi iscsi-dd utility
+(--xcopy --max 1 --blocks 65535 src=dst) against a target backed by an
+8G zram (DEBUG_KMEMLEAK=y) iblock backstore (avg across four runs) show:
+before: 5.30845G/s
+after:  5.99056G/s (approx. +12.8%)
 
-On Tue, 24 Mar 2020 02:23:23 -0700, Christoph Hellwig wrote:
+Changes since v1:
+- drop RFC
+- rework 3/5 and 5/5 following Christoph's feedback
 
-> On Mon, Mar 23, 2020 at 05:54:10PM +0100, David Disseldorp wrote:
-> > Reads and writes in the XCOPY loop are synchronous, so needn't be
-> > allocated / freed with each loop.  
-> 
-> That is true, but I think with your previous cleanups we can easily
-> go one step further and just allocate a single command and sense buffer
-> directly in struct xcopy_op, and just have local completions on the
-> stack.
-
-I'm probably missing something, but having the (stack) completion
-separate to the se_cmd and sense buffer would mean that it's no longer a
-straightforward container_of() in the .check_stop_free() callback.
-
-I've reworked this patch to put the entire xcopy_pt_cmd on the stack and
-will send it out with v2.
+Feedback appreciated.
 
 Cheers, David
+
+----------------------------------------------------------------
+David Disseldorp (5):
+      scsi: target: use #def for xcopy descriptor len
+      scsi: target: drop xcopy DISK BLOCK LENGTH debug
+      scsi: target: avoid per-loop XCOPY buffer allocations
+      scsi: target: increase XCOPY I/O size
+      scsi: target: use the stack for XCOPY passthrough cmds
+
+ drivers/target/target_core_xcopy.c | 160 ++++++++++-------------------
+ drivers/target/target_core_xcopy.h |   9 +-
+ 2 files changed, 55 insertions(+), 114 deletions(-)
