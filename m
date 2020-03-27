@@ -2,228 +2,88 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 967A51958D8
-	for <lists+target-devel@lfdr.de>; Fri, 27 Mar 2020 15:20:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ABAF4195D24
+	for <lists+target-devel@lfdr.de>; Fri, 27 Mar 2020 18:50:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727335AbgC0OUS (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 27 Mar 2020 10:20:18 -0400
-Received: from mx2.suse.de ([195.135.220.15]:55330 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727287AbgC0OUS (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Fri, 27 Mar 2020 10:20:18 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 13C9EB217;
-        Fri, 27 Mar 2020 14:20:15 +0000 (UTC)
-From:   David Disseldorp <ddiss@suse.de>
-To:     target-devel@vger.kernel.org
-Cc:     linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
-        bvanassche@acm.org, David Disseldorp <ddiss@suse.de>
-Subject: [PATCH v3 5/5] scsi: target: use the stack for XCOPY passthrough cmds
-Date:   Fri, 27 Mar 2020 15:19:54 +0100
-Message-Id: <20200327141954.955-6-ddiss@suse.de>
-X-Mailer: git-send-email 2.16.4
-In-Reply-To: <20200327141954.955-1-ddiss@suse.de>
+        id S1727185AbgC0RuL (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 27 Mar 2020 13:50:11 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:58016 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726275AbgC0RuL (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Fri, 27 Mar 2020 13:50:11 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02RHnEMe180416;
+        Fri, 27 Mar 2020 17:50:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2020-01-29;
+ bh=0xKthIknca1Pah4jZh51Dfw//I07AtrP1166tmQeLpU=;
+ b=Wou5EVI1yK3LYYNSVvNPPkgPJCc/EMCcvCTPhDK2UAUhr+ihzydXN8hzc6cvdQzWalWc
+ MwOQPFdZ9Bb+EFu50yXAUj/cXSi3vWcCYI+FZzShz2tQwWSXEAYHh4BSvizf4+7rzCw7
+ Pzy3tLdLx1FIVW6/TlXXuQDIjGtXoPEYEMrjXveK+zXZeggwVToGb2JDWm3ZVOk7Q608
+ w4E/ZEVC1bsdp0zX/oOiQoaC9f5O1zkAMp+4TW/FViMxzwH4nlhWtcAmw69xQ3g3lQcR
+ 8HypyqWoWMtvGPL0+cpYh3ztXwyUlUWlmFh50qBULHYwMbDqEQYhY8vM2ffm8kJLvtxe QA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 301m49gqp8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 27 Mar 2020 17:50:05 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02RHo5ZH065319;
+        Fri, 27 Mar 2020 17:50:05 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 3006rap5nd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 27 Mar 2020 17:50:05 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 02RHnuOn001779;
+        Fri, 27 Mar 2020 17:49:56 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 27 Mar 2020 10:49:55 -0700
+To:     David Disseldorp <ddiss@suse.de>
+Cc:     target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        martin.petersen@oracle.com, bvanassche@acm.org
+Subject: Re: [PATCH v3 0/5] scsi: target: XCOPY performance
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
 References: <20200327141954.955-1-ddiss@suse.de>
+Date:   Fri, 27 Mar 2020 13:49:52 -0400
+In-Reply-To: <20200327141954.955-1-ddiss@suse.de> (David Disseldorp's message
+        of "Fri, 27 Mar 2020 15:19:49 +0100")
+Message-ID: <yq11rpdbscf.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9573 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0 suspectscore=0
+ phishscore=0 spamscore=0 mlxscore=0 mlxlogscore=999 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2003270149
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9573 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 clxscore=1015 bulkscore=0
+ impostorscore=0 suspectscore=0 spamscore=0 adultscore=0 phishscore=0
+ malwarescore=0 mlxlogscore=999 lowpriorityscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2003270149
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Reads and writes in the XCOPY loop are synchronous, so needn't be
-heap allocated / freed with each loop.
 
-Signed-off-by: David Disseldorp <ddiss@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
----
- drivers/target/target_core_xcopy.c | 84 ++++++++++++++------------------------
- drivers/target/target_core_xcopy.h |  5 ---
- 2 files changed, 31 insertions(+), 58 deletions(-)
+David,
 
-diff --git a/drivers/target/target_core_xcopy.c b/drivers/target/target_core_xcopy.c
-index d61c41f33f81..bd3ed6ce7571 100644
---- a/drivers/target/target_core_xcopy.c
-+++ b/drivers/target/target_core_xcopy.c
-@@ -410,7 +410,8 @@ static void xcopy_pt_release_cmd(struct se_cmd *se_cmd)
- 	struct xcopy_pt_cmd *xpt_cmd = container_of(se_cmd,
- 				struct xcopy_pt_cmd, se_cmd);
- 
--	kfree(xpt_cmd);
-+	/* xpt_cmd is on the stack, nothing to free here */
-+	pr_debug("xpt_cmd done: %p\n", xpt_cmd);
- }
- 
- static int xcopy_pt_check_stop_free(struct se_cmd *se_cmd)
-@@ -566,20 +567,15 @@ static int target_xcopy_read_source(
- 	sector_t src_lba,
- 	u32 src_sectors)
- {
--	struct xcopy_pt_cmd *xpt_cmd;
--	struct se_cmd *se_cmd;
-+	struct xcopy_pt_cmd xpt_cmd;
-+	struct se_cmd *se_cmd = &xpt_cmd.se_cmd;
- 	u32 length = (src_sectors * src_dev->dev_attrib.block_size);
- 	int rc;
- 	unsigned char cdb[16];
- 	bool remote_port = (xop->op_origin == XCOL_DEST_RECV_OP);
- 
--	xpt_cmd = kzalloc(sizeof(struct xcopy_pt_cmd), GFP_KERNEL);
--	if (!xpt_cmd) {
--		pr_err("Unable to allocate xcopy_pt_cmd\n");
--		return -ENOMEM;
--	}
--	init_completion(&xpt_cmd->xpt_passthrough_sem);
--	se_cmd = &xpt_cmd->se_cmd;
-+	memset(&xpt_cmd, 0, sizeof(xpt_cmd));
-+	init_completion(&xpt_cmd.xpt_passthrough_sem);
- 
- 	memset(&cdb[0], 0, 16);
- 	cdb[0] = READ_16;
-@@ -589,28 +585,24 @@ static int target_xcopy_read_source(
- 		(unsigned long long)src_lba, src_sectors, length);
- 
- 	transport_init_se_cmd(se_cmd, &xcopy_pt_tfo, &xcopy_pt_sess, length,
--			      DMA_FROM_DEVICE, 0, &xpt_cmd->sense_buffer[0]);
--	xop->src_pt_cmd = xpt_cmd;
-+			      DMA_FROM_DEVICE, 0, &xpt_cmd.sense_buffer[0]);
- 
--	rc = target_xcopy_setup_pt_cmd(xpt_cmd, xop, src_dev, &cdb[0],
-+	rc = target_xcopy_setup_pt_cmd(&xpt_cmd, xop, src_dev, &cdb[0],
- 				remote_port);
- 	if (rc < 0) {
--		ec_cmd->scsi_status = xpt_cmd->se_cmd.scsi_status;
--		transport_generic_free_cmd(se_cmd, 0);
--		return rc;
-+		ec_cmd->scsi_status = se_cmd->scsi_status;
-+		goto out;
- 	}
- 
- 	pr_debug("XCOPY-READ: Saved xop->xop_data_sg: %p, num: %u for READ"
- 		" memory\n", xop->xop_data_sg, xop->xop_data_nents);
- 
--	rc = target_xcopy_issue_pt_cmd(xpt_cmd);
--	if (rc < 0) {
--		ec_cmd->scsi_status = xpt_cmd->se_cmd.scsi_status;
--		transport_generic_free_cmd(se_cmd, 0);
--		return rc;
--	}
--
--	return 0;
-+	rc = target_xcopy_issue_pt_cmd(&xpt_cmd);
-+	if (rc < 0)
-+		ec_cmd->scsi_status = se_cmd->scsi_status;
-+out:
-+	transport_generic_free_cmd(se_cmd, 0);
-+	return rc;
- }
- 
- static int target_xcopy_write_destination(
-@@ -620,20 +612,15 @@ static int target_xcopy_write_destination(
- 	sector_t dst_lba,
- 	u32 dst_sectors)
- {
--	struct xcopy_pt_cmd *xpt_cmd;
--	struct se_cmd *se_cmd;
-+	struct xcopy_pt_cmd xpt_cmd;
-+	struct se_cmd *se_cmd = &xpt_cmd.se_cmd;
- 	u32 length = (dst_sectors * dst_dev->dev_attrib.block_size);
- 	int rc;
- 	unsigned char cdb[16];
- 	bool remote_port = (xop->op_origin == XCOL_SOURCE_RECV_OP);
- 
--	xpt_cmd = kzalloc(sizeof(struct xcopy_pt_cmd), GFP_KERNEL);
--	if (!xpt_cmd) {
--		pr_err("Unable to allocate xcopy_pt_cmd\n");
--		return -ENOMEM;
--	}
--	init_completion(&xpt_cmd->xpt_passthrough_sem);
--	se_cmd = &xpt_cmd->se_cmd;
-+	memset(&xpt_cmd, 0, sizeof(xpt_cmd));
-+	init_completion(&xpt_cmd.xpt_passthrough_sem);
- 
- 	memset(&cdb[0], 0, 16);
- 	cdb[0] = WRITE_16;
-@@ -643,25 +630,21 @@ static int target_xcopy_write_destination(
- 		(unsigned long long)dst_lba, dst_sectors, length);
- 
- 	transport_init_se_cmd(se_cmd, &xcopy_pt_tfo, &xcopy_pt_sess, length,
--			      DMA_TO_DEVICE, 0, &xpt_cmd->sense_buffer[0]);
--	xop->dst_pt_cmd = xpt_cmd;
-+			      DMA_TO_DEVICE, 0, &xpt_cmd.sense_buffer[0]);
- 
--	rc = target_xcopy_setup_pt_cmd(xpt_cmd, xop, dst_dev, &cdb[0],
-+	rc = target_xcopy_setup_pt_cmd(&xpt_cmd, xop, dst_dev, &cdb[0],
- 				remote_port);
- 	if (rc < 0) {
--		ec_cmd->scsi_status = xpt_cmd->se_cmd.scsi_status;
--		transport_generic_free_cmd(se_cmd, 0);
--		return rc;
--	}
--
--	rc = target_xcopy_issue_pt_cmd(xpt_cmd);
--	if (rc < 0) {
--		ec_cmd->scsi_status = xpt_cmd->se_cmd.scsi_status;
--		transport_generic_free_cmd(se_cmd, 0);
--		return rc;
-+		ec_cmd->scsi_status = se_cmd->scsi_status;
-+		goto out;
- 	}
- 
--	return 0;
-+	rc = target_xcopy_issue_pt_cmd(&xpt_cmd);
-+	if (rc < 0)
-+		ec_cmd->scsi_status = se_cmd->scsi_status;
-+out:
-+	transport_generic_free_cmd(se_cmd, 0);
-+	return rc;
- }
- 
- static void target_xcopy_do_work(struct work_struct *work)
-@@ -736,10 +719,8 @@ static void target_xcopy_do_work(struct work_struct *work)
- 
- 		rc = target_xcopy_write_destination(ec_cmd, xop, dst_dev,
- 						dst_lba, cur_nolb);
--		if (rc < 0) {
--			transport_generic_free_cmd(&xop->src_pt_cmd->se_cmd, 0);
-+		if (rc < 0)
- 			goto out;
--		}
- 
- 		dst_lba += cur_nolb;
- 		pr_debug("target_xcopy_do_work: Incremented WRITE dst_lba to %llu\n",
-@@ -747,9 +728,6 @@ static void target_xcopy_do_work(struct work_struct *work)
- 
- 		copied_nolb += cur_nolb;
- 		nolb -= cur_nolb;
--
--		transport_generic_free_cmd(&xop->src_pt_cmd->se_cmd, 0);
--		transport_generic_free_cmd(&xop->dst_pt_cmd->se_cmd, 0);
- 	}
- 
- 	xcopy_pt_undepend_remotedev(xop);
-diff --git a/drivers/target/target_core_xcopy.h b/drivers/target/target_core_xcopy.h
-index f1aaf7140798..c56a1bde9417 100644
---- a/drivers/target/target_core_xcopy.h
-+++ b/drivers/target/target_core_xcopy.h
-@@ -18,8 +18,6 @@ enum xcopy_origin_list {
- 	XCOL_DEST_RECV_OP = 0x02,
- };
- 
--struct xcopy_pt_cmd;
--
- struct xcopy_op {
- 	int op_origin;
- 
-@@ -36,9 +34,6 @@ struct xcopy_op {
- 	unsigned short dtdi;
- 	unsigned short nolb;
- 
--	struct xcopy_pt_cmd *src_pt_cmd;
--	struct xcopy_pt_cmd *dst_pt_cmd;
--
- 	u32 xop_data_bytes;
- 	u32 xop_data_nents;
- 	struct scatterlist *xop_data_sg;
+> These changes remove unnecessary heap allocations in the XCOPY
+> READ/WRITE dispatch loop.
+>
+> Synthetic benchmarks on my laptop using the libiscsi iscsi-dd utility
+> (--xcopy --max 1 --blocks 65535 src=dst) against a target backed by an
+> 8G zram (DEBUG_KMEMLEAK=y) iblock backstore (avg across four runs) show:
+> before: 5.30845G/s
+> after:  5.99056G/s (approx. +12.8%)
+
+Applied to 5.7/scsi-queue, thanks!
+
 -- 
-2.16.4
-
+Martin K. Petersen	Oracle Linux Engineering
