@@ -2,87 +2,56 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F7DE194F1E
-	for <lists+target-devel@lfdr.de>; Fri, 27 Mar 2020 03:35:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C6F711953E7
+	for <lists+target-devel@lfdr.de>; Fri, 27 Mar 2020 10:24:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727685AbgC0Cfv (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 26 Mar 2020 22:35:51 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:42784 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726496AbgC0Cfv (ORCPT
+        id S1726096AbgC0JYm (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 27 Mar 2020 05:24:42 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:48062 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725946AbgC0JYl (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 26 Mar 2020 22:35:51 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02R2XGRc014848;
-        Fri, 27 Mar 2020 02:35:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2020-01-29;
- bh=TcflEB1nn4JpAkOJpFTM6eXidFcVUIfenxu8Wace94A=;
- b=Px22ismm/MyUZ4zFD3Mi/CoiPGjH5X5aGlQxQW47EYFvf/qfDJ1zhaBoRHYOcXnpCxfl
- LR7uZX2o28f/yEOlTdamNDszXX7cROmw++q841PhzJQRXlUroXnxoDW+xjE8XaxXkXmL
- JP9ERhCMGSrqVv8pang86CZSRsOIRbJgSyLZVKZ9WRqdg65sEBqbfXe9OR6FFDuXAfww
- welEq7t5YWZJKRUGw2BmYAaCbbcWeqtEn/7EhHrXmBWAz9TkCH/9H8UPUGCYispHtvYW
- dTJzPL2jwqnuL5/bGUkPVhMS8M9SeQa7d4ZfWekcDaR8SFiNXouyFo+xPGfClSzveOJf QA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 3014598q28-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 27 Mar 2020 02:35:41 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02R2XDm9092331;
-        Fri, 27 Mar 2020 02:33:40 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 30073f7g5s-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 27 Mar 2020 02:33:40 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 02R2XcDH027607;
-        Fri, 27 Mar 2020 02:33:38 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 26 Mar 2020 19:33:38 -0700
-To:     Maurizio Lombardi <mlombard@redhat.com>
-Cc:     target-devel@vger.kernel.org, martin.petersen@oracle.com,
-        bvanassche@acm.org, ddiss@suse.de, mcoleman@datto.com,
-        linux-scsi@vger.kernel.org
-Subject: Re: [PATCH RESEND 0/3] Fix a race condition in the target driver
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20200313170656.9716-1-mlombard@redhat.com>
-Date:   Thu, 26 Mar 2020 22:33:36 -0400
-In-Reply-To: <20200313170656.9716-1-mlombard@redhat.com> (Maurizio Lombardi's
-        message of "Fri, 13 Mar 2020 18:06:53 +0100")
-Message-ID: <yq1bloiedbz.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+        Fri, 27 Mar 2020 05:24:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=eoJVYstuGih97vsIi4nkaGvZb5n7wsiVmVMmb6gbZMs=; b=JHnR4wNgWjU4wvcGYRqpjfhrD7
+        IvtfX0LkSt47jj93Oi0xBXKOs8XbWViL90q9aljIDDaaVhZ3yKYOrGJMDdhLvtWRAKDO4UpzgDods
+        2/HH3PveGWW5QyDBt6O+/QzFuhUk/963l/d82vF6AWVvqXRz7ogz1GoinVrBAkju3YqMb11u1Ypsm
+        rCqCWAMm16W7B+silhECbyCVyvMW/JoBLuX98ihqVzWeeHo2MzyqwNjMQo8Z+dwR+zN3/tInUAfN6
+        GU21/onSJT6gRNlJbarBCsagKebIC3QQiYnscbNDvdXq9mRIrcoywBDm1uuTweQ26w7bLqDMIJrsz
+        ceL+PFaQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jHlEH-0002go-JL; Fri, 27 Mar 2020 09:24:41 +0000
+Date:   Fri, 27 Mar 2020 02:24:41 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     David Disseldorp <ddiss@suse.de>
+Cc:     target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        martin.petersen@oracle.com, bvanassche@acm.org
+Subject: Re: [PATCH v2 3/5] scsi: target: avoid per-loop XCOPY buffer
+ allocations
+Message-ID: <20200327092441.GA7952@infradead.org>
+References: <20200326221505.5303-1-ddiss@suse.de>
+ <20200326221505.5303-4-ddiss@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9572 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=782 adultscore=0
- suspectscore=0 mlxscore=0 phishscore=0 bulkscore=0 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003270019
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9572 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0
- priorityscore=1501 bulkscore=0 lowpriorityscore=0 mlxlogscore=859
- adultscore=0 suspectscore=0 impostorscore=0 mlxscore=0 spamscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003270019
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200326221505.5303-4-ddiss@suse.de>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+On Thu, Mar 26, 2020 at 11:15:03PM +0100, David Disseldorp wrote:
+> The main target_xcopy_do_work() loop unnecessarily allocates an I/O
+> buffer with each synchronous READ / WRITE pair. This commit
+> significantly reduces allocations by reusing the XCOPY I/O buffer when
+> possible.
+> 
+> Signed-off-by: David Disseldorp <ddiss@suse.de>
 
-Maurizio,
+Looks good,
 
-> Multiple threads may try to destroy the same iscsi session structure
-> by calling iscsit_close_session() and then end up hanging.
->
-> This patchset modifies the driver so the session structure is
-> destroyed by iscsit_close_connection() when the last connection gets
-> closed, thus preventing the race condition.
-
-Applied to 5.7/scsi-queue, thanks!
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Reviewed-by: Christoph Hellwig <hch@lst.de>
