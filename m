@@ -2,60 +2,41 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7575B1981EA
-	for <lists+target-devel@lfdr.de>; Mon, 30 Mar 2020 19:08:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73DE3198967
+	for <lists+target-devel@lfdr.de>; Tue, 31 Mar 2020 03:07:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730238AbgC3RIV (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 30 Mar 2020 13:08:21 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:36177 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730228AbgC3RIU (ORCPT
+        id S1729424AbgCaBHT (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 30 Mar 2020 21:07:19 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:42610 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729129AbgCaBHT (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 30 Mar 2020 13:08:20 -0400
-Received: by mail-ot1-f67.google.com with SMTP id l23so18873814otf.3
-        for <target-devel@vger.kernel.org>; Mon, 30 Mar 2020 10:08:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blockbridge-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=KzOIcpQMGry/S7KX/3i7FgRktSaDHF+E1Qb4eqLRCuI=;
-        b=Ad+nBNSpjurCoWqj//saej4OFOKjZlYLa0jKuodco+te+2JVG/IANMC0ikGvaZGOg9
-         ehwwvhE5XhgZpWyO0m9adpKNM4PYIQaxkbNUEHZf9Sy3sOzUQ88RnOSIl5hXYIu3symh
-         2Yzv1I0vyFWGAEfDUG0zNQuf98O4BdjfDYJTUE7jFws0nGCYTn19Is7qyYIL5hrqRWgt
-         rDx0G/o8YABjNrEhlFc6aY35c65jRO4QjO7+cJG871TLgXoTAxgN9C6wlTwv1MsBDXlg
-         15QEJSRz69OeHuBm6MfshBiN30xhgVlJOeAU0T4Ra+XlpoI1qPuQCkRPGdDJyx4JBLRA
-         whtg==
+        Mon, 30 Mar 2020 21:07:19 -0400
+Received: by mail-pg1-f193.google.com with SMTP id h8so9546395pgs.9;
+        Mon, 30 Mar 2020 18:07:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KzOIcpQMGry/S7KX/3i7FgRktSaDHF+E1Qb4eqLRCuI=;
-        b=hfSjY0KLyqD5AI/9YeJRwEWrzW22Rw+Xwqa+FsablzBwkgl9PZe1VOvUlRIGRMdwGe
-         AfIy7kUBn4l8EyBbOVpRk/AukAkp0SKtttlrzrBBWhXjtFpiCnvlTVFPkcKIvTU7YiZ1
-         W5SBhtDumv6uz93fIChB9C+ScC2LjrGFglLrrfNKRwW55f6gnCpyYX7UbRI3bXNvtRmT
-         tDJIAiS69ouNI0A96m8By6h7UBoX4bpcz0AstZxF8yDMCWK/xIJAA3MSFc6zSYn6b7vb
-         ubf/nNTveZLgpc0bOUdMdWrU25/0pSe0keVk4BMSi5A1KmCibttpMpDB2z7QAObdI8r8
-         3poA==
-X-Gm-Message-State: ANhLgQ3oCF6/U2XYU56nXUh9WzREwykVOwLWveW9AKitvDw3kywNLZfK
-        8D+rCfx0RP5pW42sJ+gsXQt9szCwnzGOd3dCnJaCWw==
-X-Google-Smtp-Source: ADFU+vsZduY51eDd7FS9ubS+PNYEHKDob0M//Wghi65nlZ5LqUBQIcY9bjjm+Kk1UD2LVIpEBTaw7W/SLGM8xpAsD6U=
-X-Received: by 2002:a9d:6ad8:: with SMTP id m24mr126508otq.66.1585588099575;
- Mon, 30 Mar 2020 10:08:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAAFE1beMkvyRctGqpffd3o_QtDH0CrmQSb=fV4GzqMUXWzPyOw@mail.gmail.com>
- <20191203005849.GB25002@ming.t460p> <CAAFE1bcG8c1Q3iwh-LUjruBMAuFTJ4qWxNGsnhfKvGWHNLAeEQ@mail.gmail.com>
- <20191203031444.GB6245@ming.t460p> <CAAFE1besnb=HV4C_buORYpWbkXecmtybwX8d_Ka2NsKmiym53w@mail.gmail.com>
- <CAAFE1bfpUWCZrtR8v3S++0-+gi8DJ79X3e0XqDe93i8nuGTnNg@mail.gmail.com>
- <20191203124558.GA22805@ming.t460p> <CAAFE1bfB2Km+e=T0ahwq0r9BQrBMnSguQQ+y=yzYi3tursS+TQ@mail.gmail.com>
- <20191204010529.GA3910@ming.t460p> <CAAFE1bcJmRP5OSu=5asNTpvkF=kjEZu=GafaS9h52776tVgpPA@mail.gmail.com>
- <20191204230225.GA26189@ming.t460p> <d9d39d10-d3f3-f2d8-b32e-96896ba0cdb2@grimberg.me>
- <CAAFE1beqFBQS_zVYEXFTD2qu8PAF9hBSW4j1k9ZD6MhU_gWg5Q@mail.gmail.com> <d2f633f1-57ef-4618-c3a6-c5ff0afead5b@grimberg.me>
-In-Reply-To: <d2f633f1-57ef-4618-c3a6-c5ff0afead5b@grimberg.me>
-From:   Stephen Rust <srust@blockbridge.com>
-Date:   Mon, 30 Mar 2020 13:08:37 -0400
-Message-ID: <CAAFE1bdAbKfqbf05pKBcMUj+58fijDMT-8WBSuwiKk2Bmm4v2w@mail.gmail.com>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=ZhOw+cmsFZegzfDW5fDINEwsMjwUxjfPEvGqp7eI5u4=;
+        b=bo5ZEfa9Nxm/Fx6IjrFKls3j31XopQ7j2KdR/RslF+/FzrvFKfNyoKdQt5zMTLf8wo
+         dYMt2gS1N53NJQmGFn1OskJLB62NTkqENx05UauPOkBUI+wFhGkuBnkLX0xO6CrtGwMX
+         nMX6zxzK7R5LvbIHiBKtroRnNKQGqnuEg0H6EqdKghvbBrqKAiQvbvvTsoJM1whg9bKB
+         MJx8ge9CyZtKstluw2PvYae8P/aIfbizv15JHD7Ro86XLnFZmM1KlDD6TlzgnYeo+eN3
+         VUS8MhPRxIAWX54CVUgeID43waS3G+CjT4C+YhFDrU+sbzCIfrp/w/mUFMUnjKn8Sryz
+         AXmw==
+X-Gm-Message-State: AGi0PuafC6oghmkh/9jb2828EMxgjiN0EWtbI8/3V0ZLTfp1E9aUPy4K
+        om+FW2dJ0xriC11IIHUtwhc=
+X-Google-Smtp-Source: APiQypJIdVuKuKZ7Aa3Vg7gQq1G9lVCm+lr+jCVHNNN8BOlt4XPlTODgILTRDlepSvF3t5O1Nic12A==
+X-Received: by 2002:a62:7d4e:: with SMTP id y75mr1984803pfc.32.1585616836680;
+        Mon, 30 Mar 2020 18:07:16 -0700 (PDT)
+Received: from ?IPv6:2601:647:4802:9070:b015:431e:549a:54d? ([2601:647:4802:9070:b015:431e:549a:54d])
+        by smtp.gmail.com with ESMTPSA id a3sm600490pjq.36.2020.03.30.18.07.14
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 30 Mar 2020 18:07:15 -0700 (PDT)
 Subject: Re: Data corruption in kernel 5.1+ with iSER attached ramdisk
-To:     Sagi Grimberg <sagi@grimberg.me>
+To:     Stephen Rust <srust@blockbridge.com>
 Cc:     Ming Lei <ming.lei@redhat.com>,
         Rob Townley <rob.townley@gmail.com>,
         Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
@@ -64,29 +45,55 @@ Cc:     Ming Lei <ming.lei@redhat.com>,
         target-devel@vger.kernel.org, Doug Ledford <dledford@redhat.com>,
         Jason Gunthorpe <jgg@ziepe.ca>,
         Max Gurtovoy <maxg@mellanox.com>
-Content-Type: text/plain; charset="UTF-8"
+References: <CAAFE1beMkvyRctGqpffd3o_QtDH0CrmQSb=fV4GzqMUXWzPyOw@mail.gmail.com>
+ <20191203005849.GB25002@ming.t460p>
+ <CAAFE1bcG8c1Q3iwh-LUjruBMAuFTJ4qWxNGsnhfKvGWHNLAeEQ@mail.gmail.com>
+ <20191203031444.GB6245@ming.t460p>
+ <CAAFE1besnb=HV4C_buORYpWbkXecmtybwX8d_Ka2NsKmiym53w@mail.gmail.com>
+ <CAAFE1bfpUWCZrtR8v3S++0-+gi8DJ79X3e0XqDe93i8nuGTnNg@mail.gmail.com>
+ <20191203124558.GA22805@ming.t460p>
+ <CAAFE1bfB2Km+e=T0ahwq0r9BQrBMnSguQQ+y=yzYi3tursS+TQ@mail.gmail.com>
+ <20191204010529.GA3910@ming.t460p>
+ <CAAFE1bcJmRP5OSu=5asNTpvkF=kjEZu=GafaS9h52776tVgpPA@mail.gmail.com>
+ <20191204230225.GA26189@ming.t460p>
+ <d9d39d10-d3f3-f2d8-b32e-96896ba0cdb2@grimberg.me>
+ <CAAFE1beqFBQS_zVYEXFTD2qu8PAF9hBSW4j1k9ZD6MhU_gWg5Q@mail.gmail.com>
+ <d2f633f1-57ef-4618-c3a6-c5ff0afead5b@grimberg.me>
+ <CAAFE1bdAbKfqbf05pKBcMUj+58fijDMT-8WBSuwiKk2Bmm4v2w@mail.gmail.com>
+From:   Sagi Grimberg <sagi@grimberg.me>
+Message-ID: <82bbbdf2-cf61-d523-29e0-d756b7f208f4@grimberg.me>
+Date:   Mon, 30 Mar 2020 18:07:13 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Firefox/60.0 Thunderbird/60.9.0
+MIME-Version: 1.0
+In-Reply-To: <CAAFE1bdAbKfqbf05pKBcMUj+58fijDMT-8WBSuwiKk2Bmm4v2w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Sagi,
 
-> Sorry for the late reply, lost track of this.
+>> Can you try attached patch and see if it solves your issue?
+>> WARNING: very lightly tested...
+> 
+> I have run our tests against this patch and it is working well for our
+> "basic" testing as well. The test case that previously failed, now
+> passes with this patch. So that's encouraging! Thanks for the quick
+> response and quick patch.
 
-No problem!
+Good to know..
 
-> Can you try attached patch and see if it solves your issue?
-> WARNING: very lightly tested...
+> One question we had is regarding the hard coded header length: What
+> happens if the initiator sends an extended CDB, like a WRITE32? Are
+> there any concerns with an additional header segment (AHS)?
 
-I have run our tests against this patch and it is working well for our
-"basic" testing as well. The test case that previously failed, now
-passes with this patch. So that's encouraging! Thanks for the quick
-response and quick patch.
+You are absolutely correct! t10-dif is broken with this patch as
+32 byte cdb would break into two buffers which is not expected
+by the target core...
 
-One question we had is regarding the hard coded header length: What
-happens if the initiator sends an extended CDB, like a WRITE32? Are
-there any concerns with an additional header segment (AHS)?
-
-Thanks again,
-Steve
+I take back this patch, I guess we should keep contiguous allocation but
+just make the recv wr such that the data is aligned for 16 bytes cdbs,
+and for 32-byte cdbs we never support immediate data anyways...
