@@ -2,233 +2,88 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 559B319D92A
-	for <lists+target-devel@lfdr.de>; Fri,  3 Apr 2020 16:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE95119DC8F
+	for <lists+target-devel@lfdr.de>; Fri,  3 Apr 2020 19:19:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727927AbgDCOcd (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 3 Apr 2020 10:32:33 -0400
-Received: from mail1.bemta25.messagelabs.com ([195.245.230.4]:35571 "EHLO
-        mail1.bemta25.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728224AbgDCOcd (ORCPT
+        id S1728140AbgDCRTW (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 3 Apr 2020 13:19:22 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:33193 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727998AbgDCRTW (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 3 Apr 2020 10:32:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1585924348; i=@ts.fujitsu.com;
-        bh=gkUoq9qEc52Ya/44oopFoxwEPEm0/lDBsCPfddoakkg=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        b=tyvKyUhMpwDVFpzlFmrndY6kxWmorq8Gxz34AcdGNyq8sehsKGP1F4/tWJy5ikbVX
-         JfkIwvTG3djFwX3gUxP/mLUfGO1szYZnRnb90PF9aENgqGFfV9KPCaIPJikPFEgxM3
-         nwNIsheFRX6ayXKsAip2JVCb6om3LJWFFMYYfppScpiC/jDP+oHcbqYTad63raY5hM
-         jyt5CPMwFAS8q1z7WX7Y6GnYD5Uz+XXXHvIdew58RfOLL7PQV0fWeIH1MCvismPLgu
-         YLFx8yJ9PTLUXtszThZzcr2zh+U/SadagGDvSNkimB+opclOJJlgN4HxM8ea86df6S
-         oiELq0x6f7ASg==
-Received: from [100.112.192.149] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-4.bemta.az-a.eu-west-1.aws.symcld.net id A9/36-46627-CF8478E5; Fri, 03 Apr 2020 14:32:28 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupnkeJIrShJLcpLzFFi42Kxs+GYovvHoz3
-  O4N88aYuv/6ezWKxcfZTJYvnxf0wW649sYLRoXfqWyYHVY/fNBjaPj09vsXi833eVzWPz6WqP
-  z5vkAlijWDPzkvIrElgzFl97xVwwWa9i68al7A2M99S7GLk4hAQmMUqc39POCuFMZ5R4tPYSc
-  xcjJwebgIHEikn3WUBsEQEFia2fz7GAFDELNDFK3Hq1ng0kISwQJPH+9xmwIhYBVYlbbw6A2b
-  wCdhJ/Xq4HsyUE5CU6DkwGszkF7CU+futgBbGFgGomzT7LMoGRewEjwypGi6SizPSMktzEzBx
-  dQwMDXUNDI11DSxNdIyMLvcQq3US91FLd8tTiEl1DvcTyYr3iytzknBS9vNSSTYzAcEopOPRk
-  B+Pyte/1DjFKcjApifL+tWiPE+JLyk+pzEgszogvKs1JLT7EKMPBoSTBu9AdKCdYlJqeWpGWm
-  QMMbZi0BAePkgjvYTegNG9xQWJucWY6ROoUo6KUOO8rkIQASCKjNA+uDRZPlxhlpYR5GRkYGI
-  R4ClKLcjNLUOVfMYpzMCoJ8woCo1OIJzOvBG76K6DFTECLr1Y0gywuSURISTUwzbskUjblg9z
-  Vrm0zVVnu8v6I3/rzgzd78Kp7wSmWkz/EC0a131g628Ld+h5vvs3qSxyz5ErjNZ9wL3Vj+lzQ
-  f9RA9UupVmmok/a5aIVTcrFBflbKItUzXVRb9ticimZ7m5L0u7R7v1rBsVuFRfmKNfP81Pq4r
-  624Fzztjtx3fiGGhV8n7JPOV0hJv2nY7MEQNW9O1gWnI1wLvtauF3p78+frewH+ezOn9++Z1/
-  Gw8McaHeZU7pzfz3Ouex5POrZq78pZJqLXpvQIdrP7FTXJy9dlv9kpuJUr+PSEfoG4s+ZmLd+
-  XaGxrTztwnt/Xzt6xb2GH9rk/8sv/HTDLWvB7Su2XT3satk3+s/nflo9mSizFGYmGWsxFxYkA
-  XUX4PyIDAAA=
-X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-3.tower-265.messagelabs.com!1585924348!110486!1
-X-Originating-IP: [62.60.8.148]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.50.1; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 17805 invoked from network); 3 Apr 2020 14:32:28 -0000
-Received: from unknown (HELO mailhost1.uk.fujitsu.com) (62.60.8.148)
-  by server-3.tower-265.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 3 Apr 2020 14:32:28 -0000
-Received: from x-serv01 ([172.17.38.52])
-        by mailhost1.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 033EWJiE018521;
-        Fri, 3 Apr 2020 15:32:19 +0100
-Received: from VTC.emeia.fujitsu.local (unknown [172.17.38.7])
-        by x-serv01 (Postfix) with ESMTP id 4A25220708;
-        Fri,  3 Apr 2020 16:32:19 +0200 (CEST)
-From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-To:     target-devel@vger.kernel.org
-Cc:     mchristi@redhat.com, ddiss@suse.de, hch@lst.de,
-        martin.petersen@oracle.com,
-        Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Subject: [PATCH 2/2] target: make pgr_support and alua_support attributes writable
-Date:   Fri,  3 Apr 2020 16:32:14 +0200
-Message-Id: <20200403143214.18303-3-bstroesser@ts.fujitsu.com>
-X-Mailer: git-send-email 2.12.3
-In-Reply-To: <20200403143214.18303-1-bstroesser@ts.fujitsu.com>
+        Fri, 3 Apr 2020 13:19:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1585934361;
+        h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=XMvShQKOJbjlk+Rg4s7HM+dbUOpfshX0Tx5vRiVgo8s=;
+        b=dnC0+funF8dFF9fdtT3Ah7+CU04/JZeatg3XtTHWJa9cumtijZWpsL+WiSj4oD9XYVrkYc
+        9pN4l3F8r8yaeZPdotyQGeSdZJmxeJokSGeWAxndohFMMpQ4albynGMFBn2HlNPeN8z2vl
+        sc3v+/42VhtD45e0YvfJjxzmom9ojVM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-240-SGcYiQOFP_a7wAGuM_D52g-1; Fri, 03 Apr 2020 13:19:19 -0400
+X-MC-Unique: SGcYiQOFP_a7wAGuM_D52g-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9A37219057A1;
+        Fri,  3 Apr 2020 17:19:17 +0000 (UTC)
+Received: from mchristi.msp.csb (ovpn-113-44.rdu2.redhat.com [10.10.113.44])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id B6BA626DEA;
+        Fri,  3 Apr 2020 17:19:16 +0000 (UTC)
+Reply-To: mchristi@redhat.com
+Subject: Re: [PATCH 2/2] target: make pgr_support and alua_support attributes
+ writable
+To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
+        target-devel@vger.kernel.org
+Cc:     ddiss@suse.de, hch@lst.de, martin.petersen@oracle.com
 References: <20200403143214.18303-1-bstroesser@ts.fujitsu.com>
+ <20200403143214.18303-3-bstroesser@ts.fujitsu.com>
+From:   Michael Christie <mchristi@redhat.com>
+Organization: Red Hat
+Message-ID: <ca4ab505-22f7-c46c-cbdf-7e00c5f59d0c@redhat.com>
+Date:   Fri, 3 Apr 2020 12:19:15 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.0
+MIME-Version: 1.0
+In-Reply-To: <20200403143214.18303-3-bstroesser@ts.fujitsu.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Content-Transfer-Encoding: quoted-printable
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Currently in tcmu reservation commands are handled by core's
-pr implementation (default) or completely rejected (emulate_pr
-set to 0). We additionally want to be able to do full
-reservation handling in userspace. Therefore we need a way to
-set the TRANSPORT_FLAG_PASSTHROUGH_PGR.
-The inverted flag is displayed by attribute pgr_support.
-Since we moved the flag from transport/backend to se_device in
-the previous patch, we now can make it changeable per device by
-allowing to write the attribute.
-The new field transport_flags_changeable in transport/backend
-is used to reject writing if not allowed for a backend.
+On 04/03/2020 09:32 AM, Bodo Stroesser wrote:
+>  /*
+>   * dev_attrib attributes for devices using the target core SBC/SPC
+> diff --git a/drivers/target/target_core_pscsi.c b/drivers/target/target=
+_core_pscsi.c
+> index 4e37fa9b409d..e7d92ef43ca4 100644
+> --- a/drivers/target/target_core_pscsi.c
+> +++ b/drivers/target/target_core_pscsi.c
+> @@ -1073,6 +1073,7 @@ static const struct target_backend_ops pscsi_ops =
+=3D {
+>  	.transport_flags_default =3D TRANSPORT_FLAG_PASSTHROUGH |
+>  				   TRANSPORT_FLAG_PASSTHROUGH_ALUA |
+>  				   TRANSPORT_FLAG_PASSTHROUGH_PGR,
+> +	.transport_flags_changeable =3D TRANSPORT_FLAG_PASSTHROUGH_PGR,
+>  	.attach_hba		=3D pscsi_attach_hba,
+>  	.detach_hba		=3D pscsi_detach_hba,
+>  	.pmode_enable_hba	=3D pscsi_pmode_enable_hba,
 
-I think, that it also makes sense to allow to reset
-TRANSPORT_FLAG_PASSTHROUGH_PGR in pscsi, which is set by default,
-because this enables usage of core's pr implementation in pscsi.
+Do we need more code to support this?
 
-Regarding ALUA we also want to be able to passthrough commands
-to userspace in tcmu. Therefore we want
-TRANSPORT_FLAG_PASSTHROUGH_ALUA to be changeable, because
-by setting it we can switch off all ALUA checks in core. So we
-also need to set TRANSPORT_FLAG_PASSTHROUGH_ALUA in tcmu's
-transport_flags_changeable.
-
-For pscsi, we do not allow to change / reset
-TRANSPORT_FLAG_PASSTHROUGH_ALUA, because ALUA is not implemented
-in passthrough_parse_cdb() yet.
-
-Of course, ALUA and reservation handling in userspace will work
-only, if session/nexus information is sent to userspace along with
-every command. This will be object of a following patch or patch
-series.
-
-Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
----
- drivers/target/target_core_configfs.c | 56 +++++++++++++++++++++++++++++++++--
- drivers/target/target_core_pscsi.c    |  1 +
- drivers/target/target_core_user.c     |  2 ++
- include/target/target_core_backend.h  |  1 +
- 4 files changed, 58 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
-index 074614e19f9e..337bc12c890b 100644
---- a/drivers/target/target_core_configfs.c
-+++ b/drivers/target/target_core_configfs.c
-@@ -1105,6 +1105,32 @@ static ssize_t alua_support_show(struct config_item *item, char *page)
- 			flags & TRANSPORT_FLAG_PASSTHROUGH_ALUA ? 0 : 1);
- }
- 
-+static ssize_t alua_support_store(struct config_item *item,
-+		const char *page, size_t count)
-+{
-+	struct se_dev_attrib *da = to_attrib(item);
-+	struct se_device *dev = da->da_dev;
-+	bool flag;
-+	int ret;
-+
-+	if (!(dev->transport->transport_flags_changeable &
-+	      TRANSPORT_FLAG_PASSTHROUGH_ALUA)) {
-+		pr_err("dev[%p]: Unable to change SE Device alua_support:"
-+			" alua_support has fixed value\n", dev);
-+		return -EINVAL;
-+	}
-+
-+	ret = strtobool(page, &flag);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (flag)
-+		dev->transport_flags &= ~TRANSPORT_FLAG_PASSTHROUGH_ALUA;
-+	else
-+		dev->transport_flags |= TRANSPORT_FLAG_PASSTHROUGH_ALUA;
-+	return count;
-+}
-+
- static ssize_t pgr_support_show(struct config_item *item, char *page)
- {
- 	struct se_dev_attrib *da = to_attrib(item);
-@@ -1114,6 +1140,32 @@ static ssize_t pgr_support_show(struct config_item *item, char *page)
- 			flags & TRANSPORT_FLAG_PASSTHROUGH_PGR ? 0 : 1);
- }
- 
-+static ssize_t pgr_support_store(struct config_item *item,
-+		const char *page, size_t count)
-+{
-+	struct se_dev_attrib *da = to_attrib(item);
-+	struct se_device *dev = da->da_dev;
-+	bool flag;
-+	int ret;
-+
-+	if (!(dev->transport->transport_flags_changeable &
-+	      TRANSPORT_FLAG_PASSTHROUGH_PGR)) {
-+		pr_err("dev[%p]: Unable to change SE Device pgr_support:"
-+			" pgr_support has fixed value\n", dev);
-+		return -EINVAL;
-+	}
-+
-+	ret = strtobool(page, &flag);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (flag)
-+		dev->transport_flags &= ~TRANSPORT_FLAG_PASSTHROUGH_PGR;
-+	else
-+		dev->transport_flags |= TRANSPORT_FLAG_PASSTHROUGH_PGR;
-+	return count;
-+}
-+
- CONFIGFS_ATTR(, emulate_model_alias);
- CONFIGFS_ATTR(, emulate_dpo);
- CONFIGFS_ATTR(, emulate_fua_write);
-@@ -1146,8 +1198,8 @@ CONFIGFS_ATTR(, unmap_granularity);
- CONFIGFS_ATTR(, unmap_granularity_alignment);
- CONFIGFS_ATTR(, unmap_zeroes_data);
- CONFIGFS_ATTR(, max_write_same_len);
--CONFIGFS_ATTR_RO(, alua_support);
--CONFIGFS_ATTR_RO(, pgr_support);
-+CONFIGFS_ATTR(, alua_support);
-+CONFIGFS_ATTR(, pgr_support);
- 
- /*
-  * dev_attrib attributes for devices using the target core SBC/SPC
-diff --git a/drivers/target/target_core_pscsi.c b/drivers/target/target_core_pscsi.c
-index 4e37fa9b409d..e7d92ef43ca4 100644
---- a/drivers/target/target_core_pscsi.c
-+++ b/drivers/target/target_core_pscsi.c
-@@ -1073,6 +1073,7 @@ static const struct target_backend_ops pscsi_ops = {
- 	.transport_flags_default = TRANSPORT_FLAG_PASSTHROUGH |
- 				   TRANSPORT_FLAG_PASSTHROUGH_ALUA |
- 				   TRANSPORT_FLAG_PASSTHROUGH_PGR,
-+	.transport_flags_changeable = TRANSPORT_FLAG_PASSTHROUGH_PGR,
- 	.attach_hba		= pscsi_attach_hba,
- 	.detach_hba		= pscsi_detach_hba,
- 	.pmode_enable_hba	= pscsi_pmode_enable_hba,
-diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-index 8251f0c734cc..d6ddc95a6331 100644
---- a/drivers/target/target_core_user.c
-+++ b/drivers/target/target_core_user.c
-@@ -2617,6 +2617,8 @@ static struct target_backend_ops tcmu_ops = {
- 	.name			= "user",
- 	.owner			= THIS_MODULE,
- 	.transport_flags_default = TRANSPORT_FLAG_PASSTHROUGH,
-+	.transport_flags_changeable = TRANSPORT_FLAG_PASSTHROUGH_PGR |
-+	                              TRANSPORT_FLAG_PASSTHROUGH_ALUA,
- 	.attach_hba		= tcmu_attach_hba,
- 	.detach_hba		= tcmu_detach_hba,
- 	.alloc_device		= tcmu_alloc_device,
-diff --git a/include/target/target_core_backend.h b/include/target/target_core_backend.h
-index 9d1c16d24edf..6468c5a7c9d1 100644
---- a/include/target/target_core_backend.h
-+++ b/include/target/target_core_backend.h
-@@ -24,6 +24,7 @@ struct target_backend_ops {
- 	struct module *owner;
- 
- 	u8 transport_flags_default;
-+	u8 transport_flags_changeable;
- 
- 	int (*attach_hba)(struct se_hba *, u32);
- 	void (*detach_hba)(struct se_hba *);
--- 
-2.12.3
+For example, if LIO core is now handling PRs then it uses the I_T nexus
+info from LIO core for registrations if its not provided in the PR
+command. But port/target INQUIRY info would be from the struct
+scsi_device that pscsi is using since we pass INQUIRY down to that
+device. We will end up with mismatches where a PR-in READ_FULL_STATUS
+would return different results than the INQUIRY.
 
