@@ -2,65 +2,65 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DF0A1A1017
-	for <lists+target-devel@lfdr.de>; Tue,  7 Apr 2020 17:21:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8B2E1A1015
+	for <lists+target-devel@lfdr.de>; Tue,  7 Apr 2020 17:21:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728306AbgDGPVd (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 7 Apr 2020 11:21:33 -0400
-Received: from mail1.bemta26.messagelabs.com ([85.158.142.114]:59845 "EHLO
-        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729120AbgDGPVd (ORCPT
+        id S1729103AbgDGPVb (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 7 Apr 2020 11:21:31 -0400
+Received: from mail1.bemta25.messagelabs.com ([195.245.230.2]:51334 "EHLO
+        mail1.bemta25.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728306AbgDGPVb (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 7 Apr 2020 11:21:33 -0400
+        Tue, 7 Apr 2020 11:21:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1586272890; i=@ts.fujitsu.com;
-        bh=93ZfEJS04jwBgFKo1w/rvNzIHYLnCOqCuQQV27pOb/Y=;
+        s=200619tsfj; t=1586272888; i=@ts.fujitsu.com;
+        bh=hj3KyWtrKww1tJ63UWW4tST618c2ILSBLf2oQGL2vxY=;
         h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        b=iOYud1OlgHPwoQNbgKkgXgvOz+kLerASwylKH58ITldtLh2/M42l08yVA3pMR5oBW
-         yeDIKvv2M3F3AOadfMzaPDCulLFy6/dLKnJMbOOULaD2XmpjmTJFSwh7qBIUn8qftC
-         M4p7deQytsM/EnldEjrt3p8Nvex/UuIiXOWId7Ihx9qSWQyXvLYmGR7dEtvaehd9Sb
-         W2jOtGbmFG2BsJzGifJaTeRxoXzU4xaToIy/aK+pmvSVkE0UHHR+sRmEsWLHt0Hzkz
-         zYaWk1y6tE5/2pKLbowaBaQ4hDb73QSzsMcYF+qBT1D/6xh/4oqUU8LKJyayjoZzIH
-         joQy6AhXEbnUQ==
-Received: from [100.113.5.88] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-3.bemta.az-b.eu-central-1.aws.symcld.net id F6/6A-35964-A7A9C8E5; Tue, 07 Apr 2020 15:21:30 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrDLMWRWlGSWpSXmKPExsViZ8MxRbdqVk+
-  cQcMuZovlx/8xWaw/soHRonXpWyYHZo+PT2+xeLzfd5XN4/MmuQDmKNbMvKT8igTWjOe7V7AX
-  rGKvWHJrFnMD43S2LkYuDiGBSYwSh9dNZYdwpjNKrF30irWLkZODTcBAYsWk+ywgtoiAgsTWz
-  +fAbGaBdImN69uYQWxhAVeJhmPLwOpZBFQljtxewwhi8wrYSRxtuMEGYksIyEt0HJgM1sspYC
-  +x7+0ysF4hoJrVr+6zT2DkXsDIsIrRMqkoMz2jJDcxM0fX0MBA19DQWNcUyDLXS6zSTdJLLdV
-  NTs0rKUoEyuollhfrFVfmJuek6OWllmxiBAZKSiFr9g7GrfPf6x1ilORgUhLlPVzdEyfEl5Sf
-  UpmRWJwRX1Sak1p8iFGGg0NJgtd3BlBOsCg1PbUiLTMHGLQwaQkOHiURXubpQGne4oLE3OLMd
-  IjUKUZFKXHe1JlACQGQREZpHlwbLFIuMcpKCfMyMjAwCPEUpBblZpagyr9iFOdgVBLm/QiynS
-  czrwRu+iugxUxAi68ldYMsLklESEk1MM1a+OSGSPlDl35V9fNCK2cec1HId42X13BbvbJ5Q5u
-  91zmdG89CQkuFv67fdkI3YcWczQI2b7n4PA8G59hOeue4XvSw/93nvTaHLyXsjZ/ozMWz5vb3
-  X5dUgm3v/j3222DKsq4OnqSAZr9DDj03zprLST52P2T8glVv0uVZKydMn1ocHmG2fFH446++J
-  xmkhdl/7awMtTQX6l2jZKD+Oj/e8frzOEeJpO3XnyrGR9zny5hXfDt0t23UL5sEE6H7dk8/z8
-  l7GiNpEKy7rYh19ZHjD7s2BxzhySs+76bsVyL4xvTah0cxxcGJXwtN5yk0rf070ZT95Im3Ky6
-  JqGjoy/05fYiT42u3L9vWW3HeT5VYijMSDbWYi4oTAUj3vVIPAwAA
+        b=BqcIZeeblOjzJ0ab5lkMKPlpNgF3Pmf++uW4Qruwlwxs5LFUicsP1SV8bwoKNdwtk
+         lZlFMckKmZ1Ma+G1pxFroCOYBHZJbApNCU0sQOcZSeTq8X454Ysqg/A2eHza7gRwVI
+         Tx3d7iufdHK7AXfzB4kVvuhFW0/r8hxaDMEEN5xQiz2IzLPsMofAVAcTN1lkS6ST7y
+         y5ljhZa7hfM+DXFgTb8W4R1iOlZfwWWdMyHD2tTN9iXvZUOh/Km0Fq55nBxLlSRpP1
+         zRORLijwuiY9E0PrHYpDfW7hEJyJN+B/3YED5o2btND97pu6TJHSmpaR3DjGIXD9fg
+         w0ybQ0Mx+r6Cw==
+Received: from [100.112.195.73] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-2.bemta.az-a.eu-west-1.aws.symcld.net id F1/D2-36772-87A9C8E5; Tue, 07 Apr 2020 15:21:28 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrNLMWRWlGSWpSXmKPExsViZ8MxVbd8Vk+
+  cwd1fbBbLj/9jslh/ZAOjRevSt0wOzB4fn95i8Xi/7yqbx+dNcgHMUayZeUn5FQmsGe8/XWcr
+  eMBe0dK2ka2B8TBbFyMXh5DAJEaJz0s3M0M40xklGm/2sXcxcnKwCRhIrJh0nwXEFhFQkNj6+
+  RyYzSyQLrFxfRsziC0s4CBxfe90NhCbRUBVYsG+3UwgNq+AncSHvbvBaiQE5CU6DkwG6+UUsJ
+  fY93YZWFwIqGb1q/vsExi5FzAyrGK0SCrKTM8oyU3MzNE1NDDQNTQ00jW0NNE1tDDUS6zSTdR
+  LLdUtTy0u0QVyy4v1iitzk3NS9PJSSzYxAsMkpeDQ1h2MW+a/1zvEKMnBpCTKe7i6J06ILyk/
+  pTIjsTgjvqg0J7X4EKMMB4eSBK/vDKCcYFFqempFWmYOMGRh0hIcPEoivMzTgdK8xQWJucWZ6
+  RCpU4yKUuK8qTOBEgIgiYzSPLg2WJxcYpSVEuZlZGBgEOIpSC3KzSxBlX/FKM7BqCTM+xFkO0
+  9mXgnc9FdAi5mAFl9L6gZZXJKIkJJqYOrs2y/E8yF1slq9lKLhRYEfT9hKZyl0vuHN9+c/ofC
+  CudKhMvH0HKWNXx/ZzV7XdeNE7vetPqv6pLN+u0okyEzUbLhnsXGX+jMHL012hrwzXWcL9l5U
+  /RrlpZhw7PIXv7uSMm839IYw363d+fdH35HDjw8Ya75n/fQm9Owulmy7vhva5cfPbuztT3DY8
+  li9/M/dCfdWmFyONvBaylHJWJhndfSTzf3QyvNam6dGKxmv4D810T+sct4esdA5krGZd4/Jvl
+  kVG7lB4kvbUTPb5bIauucnTLI63jDje7Th/o3/jTeanGFoUlC7/SBp+1fNjap7jr9fa/VJMrp
+  1wsH8om+MG+9vyNGwMPZxdvFbE6rEUpyRaKjFXFScCAD69dxMDgMAAA==
 X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-20.tower-248.messagelabs.com!1586272888!469871!1
-X-Originating-IP: [62.60.8.148]
+X-Msg-Ref: server-29.tower-265.messagelabs.com!1586272886!630011!1
+X-Originating-IP: [62.60.8.149]
 X-SYMC-ESS-Client-Auth: outbound-route-from=pass
 X-StarScan-Received: 
 X-StarScan-Version: 9.50.1; banners=-,-,-
 X-VirusChecked: Checked
-Received: (qmail 661 invoked from network); 7 Apr 2020 15:21:30 -0000
-Received: from unknown (HELO mailhost1.uk.fujitsu.com) (62.60.8.148)
-  by server-20.tower-248.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 7 Apr 2020 15:21:30 -0000
+Received: (qmail 12105 invoked from network); 7 Apr 2020 15:21:27 -0000
+Received: from unknown (HELO mailhost2.uk.fujitsu.com) (62.60.8.149)
+  by server-29.tower-265.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 7 Apr 2020 15:21:27 -0000
 Received: from x-serv01 ([172.17.38.52])
-        by mailhost1.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 037FLPYd016889;
-        Tue, 7 Apr 2020 16:21:25 +0100
+        by mailhost2.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 037FLQ4E032295;
+        Tue, 7 Apr 2020 16:21:26 +0100
 Received: from VTC.emeia.fujitsu.local (unknown [172.17.38.7])
-        by x-serv01 (Postfix) with ESMTP id D9F9520699;
-        Tue,  7 Apr 2020 17:21:22 +0200 (CEST)
+        by x-serv01 (Postfix) with ESMTP id 7E13E206B2;
+        Tue,  7 Apr 2020 17:21:23 +0200 (CEST)
 From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
 To:     target-devel@vger.kernel.org
 Cc:     mchristi@redhat.com, martin.petersen@oracle.com,
         Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Subject: [PATCH 1/2] target: Write NULL to *port_nexus_ptr if no ISID
-Date:   Tue,  7 Apr 2020 17:21:18 +0200
-Message-Id: <20200407152119.29042-2-bstroesser@ts.fujitsu.com>
+Subject: [PATCH 2/2] target: fix PR IN / READ FULL STATUS for FC
+Date:   Tue,  7 Apr 2020 17:21:19 +0200
+Message-Id: <20200407152119.29042-3-bstroesser@ts.fujitsu.com>
 X-Mailer: git-send-email 2.12.3
 In-Reply-To: <20200407152119.29042-1-bstroesser@ts.fujitsu.com>
 References: <20200407152119.29042-1-bstroesser@ts.fujitsu.com>
@@ -69,33 +69,31 @@ Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-This patch fixes a minor flaw that could be triggered by
-a PR OUT RESERVE on iSCSI, if TRANSPORT IDs with and without ISID
-are used in the same command.
-In case an ISCSI Transport ID has no ISID, port_nexus_ptr was not
-used to write NULL, so value from previous call might persist.
-I don't know, if that ever could happen, but with the change the
-code is cleaner, I think.
+Creation of the response to READ FULL STATUS fails for FC
+based reservations. Reason is the too high loop limit (< 24)
+in fc_get_pr_transport_id(). The string representation of FC
+WWPN is 23 chars long only ("11:22:33:44:55:66:77:88"). So
+when i is 23, the loop body is executed a last time for the
+ending '\0' of the string and thus hex2bin() reports an error.
 
 Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
 ---
- drivers/target/target_core_fabric_lib.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/target/target_core_fabric_lib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/target/target_core_fabric_lib.c b/drivers/target/target_core_fabric_lib.c
-index 6b4b354c88aa..f5f673e128ef 100644
+index f5f673e128ef..1e031d81e59e 100644
 --- a/drivers/target/target_core_fabric_lib.c
 +++ b/drivers/target/target_core_fabric_lib.c
-@@ -341,7 +341,8 @@ static char *iscsi_parse_pr_out_transport_id(
- 			*p = tolower(*p);
- 			p++;
- 		}
--	}
-+	} else
-+		*port_nexus_ptr = NULL;
- 
- 	return &buf[4];
- }
+@@ -63,7 +63,7 @@ static int fc_get_pr_transport_id(
+ 	 * encoded TransportID.
+ 	 */
+ 	ptr = &se_nacl->initiatorname[0];
+-	for (i = 0; i < 24; ) {
++	for (i = 0; i < 23; ) {
+ 		if (!strncmp(&ptr[i], ":", 1)) {
+ 			i++;
+ 			continue;
 -- 
 2.12.3
 
