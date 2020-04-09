@@ -2,98 +2,100 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96B7F1A22E4
-	for <lists+target-devel@lfdr.de>; Wed,  8 Apr 2020 15:26:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A1C81A3245
+	for <lists+target-devel@lfdr.de>; Thu,  9 Apr 2020 12:10:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729128AbgDHN02 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 8 Apr 2020 09:26:28 -0400
-Received: from mail1.bemta26.messagelabs.com ([85.158.142.116]:34813 "EHLO
-        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727928AbgDHN00 (ORCPT
+        id S1725972AbgDIKKv (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 9 Apr 2020 06:10:51 -0400
+Received: from mail1.bemta25.messagelabs.com ([195.245.230.67]:54266 "EHLO
+        mail1.bemta25.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725783AbgDIKKv (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 8 Apr 2020 09:26:26 -0400
+        Thu, 9 Apr 2020 06:10:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1586352382; i=@ts.fujitsu.com;
-        bh=hj3KyWtrKww1tJ63UWW4tST618c2ILSBLf2oQGL2vxY=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        b=cHq0hHnChdc7MauLVhuGn6Cs7oJEvWrlNBVE668DJLhXU9/m5sX1IO9cT3MySusP3
-         VkffPBrUwwGCCQWx+8qiJJQX1upaExr+YgcjVnkqyFfZHHjD3CIEaN5DnRowtnrtpL
-         M6OgXcZqTLpzVzWpuxiLN9mXD85hB0XO0aJKbIvOw8BpDPGKEissDay0B3fsFj8duv
-         NDwKofBh/nxIe/fRmCKrDVI1OcWgk0/2nI5f+hKYs6ol9ST+D1UO03XUnkrIcrPwch
-         0hH9IDw3TnjpkUUZuajIKQlN3Zvc2LtVWqpkJw64lGf+FLBiudMv10P7nFMzDr3dQL
-         dBO1MiukV8XHw==
-Received: from [100.113.5.217] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-5.bemta.az-b.eu-central-1.aws.symcld.net id 15/ED-46447-EF0DD8E5; Wed, 08 Apr 2020 13:26:22 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrPLMWRWlGSWpSXmKPExsViZ8MRovvvQm+
-  cwYcDghbd13ewWSw//o/JYv2RDYwWrUvfMjmweHx8eovF4/2+q2wenzfJBTBHsWbmJeVXJLBm
-  vP90na3gAXtFS9tGtgbGw2xdjFwcQgKTGCUOLJrIDuFMZ5R4OO84SxcjJwebgIHEikn3wWwRA
-  RuJvsNLmUBsZoF0iY3r25hBbGEBB4nre6cDTeLgYBFQlbg9PRIkzCtgJ7H86kOwEgkBeYmOA5
-  PBxnAK2Eucv/KFDcQWAqpZufwG2wRG7gWMDKsYLZKKMtMzSnITM3N0DQ0MdA0NjXVNdE0t9RK
-  rdJP0Ukt1k1PzSooSgZJ6ieXFesWVuck5KXp5qSWbGIHhklLIYr2D8fLa93qHGCU5mJREef+e
-  7I0T4kvKT6nMSCzOiC8qzUktPsQow8GhJME7ExiAQoJFqempFWmZOcDQhUlLcPAoifCKg7TyF
-  hck5hZnpkOkTjEqSonzrgHpEwBJZJTmwbXB4uUSo6yUMC8jAwODEE9BalFuZgmq/CtGcQ5GJW
-  HeE2eBpvBk5pXATX8FtJgJaPG1pG6QxSWJCCmpBibbWLPZh5/uce6tmuBzzIenMzxJwGRRzME
-  PTqv2S90LXW7k+m31sxNN6ac0bs7f4rh230PRif66Pm7975WN3894OCFj8r99V+TMtxXUH55a
-  PL/U5pkGR25/DfOCwxfz1rXOqMr20nkitdFg4oJn37RvOq29Uphgmqg5c1PXFmUeqUB5ybfvv
-  GR6r6reSTnxdtLrWxPS/wgkGD+sqpsgv2yBl5vCGj69mu4L4hYV1t8y2HKyNd+f6Iv6v8jIz2
-  CO2aO/NzJChA5/qPmwMH7lE7+URK32D8XcJxQavLZHaC/bWz3/enlU9AvpRScNC6RvvF9W+3Z
-  FcuaaFaJf6ho5BWzfduwydq14mb7uvErGixIlluKMREMt5qLiRABLy3qDEgMAAA==
+        s=200619tsfj; t=1586427048; i=@ts.fujitsu.com;
+        bh=giM/dw1dcEYrqoVlqMwf3SlT3ImkBb6GTq12Vs5Bfjo=;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        b=YR9Ity0kY4AOVexArcieauPMUX0bIoQoH036aWZEbLkmZ/craRcqpeFVkLl0IP7eE
+         N8udRwj2uVmBEM8s8dScF8x8X5Rg5KI4Hv0NT12B7LmvgX5h3jrDFufRFCbK8yLYKM
+         vFgZWYpqVfTtMt8Hsdp0fdyWOwdPETjYu3O7qozXqItwQoctyV7ybvQco/GYmMoBtB
+         1UV3E+c2ItMlYb65+BY9to/vUV5ypWAFWoSTdOri6copfTUohbpKrzkv3W5VDJJwBL
+         MtmfljrDZtVpR8CtAE4soEAK4QaVg1nhSCXG2N8xgvUAlsj/uuNAEpQDQ76/kqY9yq
+         9leVtBTrYHDFQ==
+Received: from [100.112.198.35] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-3.bemta.az-b.eu-west-1.aws.symcld.net id 33/FB-36764-8A4FE8E5; Thu, 09 Apr 2020 10:10:48 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrBLMWRWlGSWpSXmKPExsViZ8MxVXfFl74
+  4g4lTmS26r+9gs1h+/B+TxfojGxgtWpe+ZXJg8fj49BaLx/t9V9k8Pm+SC2COYs3MS8qvSGDN
+  uPB6PmPBDo6Kdfv/sjQwbmDvYuTiEBKYxChx9mAXE4QznVHi3b7dQA4nB5uAgcSKSfdZQGwRA
+  RuJvsNLweLMAukSG9e3MYPYwgJeEq/2/mIHsVkEVCXenH4KVs8rYCdx+v5sMFtCQF6i48Bklg
+  mMnAsYGVYxWiQVZaZnlOQmZuboGhoY6BoaGukaWlrqGhkZ6yVW6SbppZbqlqcWl+ga6iWWF+s
+  VV+Ym56To5aWWbGIEBkBKwfH7OxiPr32vd4hRkoNJSZR319O+OCG+pPyUyozE4oz4otKc1OJD
+  jDIcHEoSvIWfgXKCRanpqRVpmTnAYIRJS3DwKInw/v0ElOYtLkjMLc5Mh0idYlSUEuddC9InA
+  JLIKM2Da4NFwCVGWSlhXkYGBgYhnoLUotzMElT5V4ziHIxKwryHQMbzZOaVwE1/BbSYCWjxta
+  RukMUliQgpqQamLSmnBKSaeeVt2TjXuUzM3iTKd++B1ZHq+u1mTc0G+fwXi0J6xbzPbFiS9zH
+  XdpqMScbREPv8O+GXrv1bmrDr0qVpRrH6SrIVq5j3ckfwb75hwMdgtObIBNt6Rq4vzVJbplvl
+  hQvXKqx7b6fFmhO5/v6K+OtZ67vCr69S05rVUn5hwr26pdE7pu9q2K577U5v7caZi833ml84f
+  9LoTILSZe2pja0Kx77W/Ny0xmTO8cpP1+bNY69M5Znj+NuzbobB5e5bPr6zVrc7rkyorxfRqR
+  baPF/vWyzvu8Mcu0vW7d16/Jivv1zZpqcnzab1zbp6jr/ZTeJyZvXuFh7Zmffnnssx4bGvfD/
+  hcB+z7xwrJZbijERDLeai4kQAofj4o/sCAAA=
 X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-33.tower-238.messagelabs.com!1586352381!2417026!1
-X-Originating-IP: [62.60.8.84]
+X-Msg-Ref: server-27.tower-291.messagelabs.com!1586427047!1847499!1
+X-Originating-IP: [62.60.8.149]
 X-SYMC-ESS-Client-Auth: outbound-route-from=pass
 X-StarScan-Received: 
 X-StarScan-Version: 9.50.1; banners=-,-,-
 X-VirusChecked: Checked
-Received: (qmail 8387 invoked from network); 8 Apr 2020 13:26:22 -0000
-Received: from unknown (HELO mailhost3.uk.fujitsu.com) (62.60.8.84)
-  by server-33.tower-238.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 8 Apr 2020 13:26:22 -0000
+Received: (qmail 8698 invoked from network); 9 Apr 2020 10:10:48 -0000
+Received: from unknown (HELO mailhost2.uk.fujitsu.com) (62.60.8.149)
+  by server-27.tower-291.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 9 Apr 2020 10:10:48 -0000
 Received: from x-serv01 ([172.17.38.52])
-        by mailhost3.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 038DQFvf025515;
-        Wed, 8 Apr 2020 14:26:15 +0100
+        by mailhost2.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 039AAgin016480;
+        Thu, 9 Apr 2020 11:10:42 +0100
 Received: from VTC.emeia.fujitsu.local (unknown [172.17.38.7])
-        by x-serv01 (Postfix) with ESMTP id 511ED206B2;
-        Wed,  8 Apr 2020 15:26:14 +0200 (CEST)
+        by x-serv01 (Postfix) with ESMTP id E50F6204D8;
+        Thu,  9 Apr 2020 12:10:41 +0200 (CEST)
 From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
 To:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
 Cc:     mchristi@redhat.com, martin.petersen@oracle.com,
         Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Subject: [PATCH 2/2] target: fix PR IN / READ FULL STATUS for FC
-Date:   Wed,  8 Apr 2020 15:26:10 +0200
-Message-Id: <20200408132610.14623-3-bstroesser@ts.fujitsu.com>
+Subject: [PATCH] target: tcmu: reset_ring should reset TCMU_DEV_BIT_BROKEN
+Date:   Thu,  9 Apr 2020 12:10:26 +0200
+Message-Id: <20200409101026.17872-1-bstroesser@ts.fujitsu.com>
 X-Mailer: git-send-email 2.12.3
-In-Reply-To: <20200408132610.14623-1-bstroesser@ts.fujitsu.com>
-References: <20200408132610.14623-1-bstroesser@ts.fujitsu.com>
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Creation of the response to READ FULL STATUS fails for FC
-based reservations. Reason is the too high loop limit (< 24)
-in fc_get_pr_transport_id(). The string representation of FC
-WWPN is 23 chars long only ("11:22:33:44:55:66:77:88"). So
-when i is 23, the loop body is executed a last time for the
-ending '\0' of the string and thus hex2bin() reports an error.
+In case command ring buffer becomes inconsistent, tcmu
+sets device flag TCMU_DEV_BIT_BROKEN.
+If the bit is set, tcmu rejects new commands from lio core
+with TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE, and no longer
+processes completions from the ring.
+The reset_ring attribute can be used to completely clean up
+the command ring, so after reset_ring the ring no longer is
+inconsistent.
+
+Therefore reset_ring also should reset bit TCMU_DEV_BIT_BROKEN
+to allow normal processing.
 
 Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
 ---
- drivers/target/target_core_fabric_lib.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/target/target_core_user.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/target/target_core_fabric_lib.c b/drivers/target/target_core_fabric_lib.c
-index f5f673e128ef..1e031d81e59e 100644
---- a/drivers/target/target_core_fabric_lib.c
-+++ b/drivers/target/target_core_fabric_lib.c
-@@ -63,7 +63,7 @@ static int fc_get_pr_transport_id(
- 	 * encoded TransportID.
- 	 */
- 	ptr = &se_nacl->initiatorname[0];
--	for (i = 0; i < 24; ) {
-+	for (i = 0; i < 23; ) {
- 		if (!strncmp(&ptr[i], ":", 1)) {
- 			i++;
- 			continue;
+diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
+index 0b9dfa6b17bc..f769bb1e3735 100644
+--- a/drivers/target/target_core_user.c
++++ b/drivers/target/target_core_user.c
+@@ -2073,6 +2073,7 @@ static void tcmu_reset_ring(struct tcmu_dev *udev, u8 err_level)
+ 	mb->cmd_tail = 0;
+ 	mb->cmd_head = 0;
+ 	tcmu_flush_dcache_range(mb, sizeof(*mb));
++	clear_bit(TCMU_DEV_BIT_BROKEN, &udev->flags);
+ 
+ 	del_timer(&udev->cmd_timer);
+ 
 -- 
 2.12.3
 
