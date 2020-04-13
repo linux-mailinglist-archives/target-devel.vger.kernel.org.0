@@ -1,67 +1,112 @@
 Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
-Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AD091A3A85
-	for <lists+target-devel@lfdr.de>; Thu,  9 Apr 2020 21:31:41 +0200 (CEST)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.lfdr.de (Postfix) with ESMTP id B5EBF1A65E0
+	for <lists+target-devel@lfdr.de>; Mon, 13 Apr 2020 13:50:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726689AbgDITbk (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 9 Apr 2020 15:31:40 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:48224 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726647AbgDITbj (ORCPT
+        id S1729169AbgDMLuL (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 13 Apr 2020 07:50:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43760 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729067AbgDMLuC (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 9 Apr 2020 15:31:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586460699;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=flaM6tETBTRYGbY133UBzI1wawgUIMyYPEW/Dt3emeE=;
-        b=QAX57lvOdwTHVJKtd/Gvpk7AicBNNOLJdpjytEXEIBcByG9/NLfI1EUXiDByif8PV4ZW/H
-        PlqSW+Y3F+gl21Tz3FQr9D8ZykOdJ/qsfwhLJLbGD0Xh61e/A31J4KYpx15132OqWAXgIq
-        HuXTQgD91XS5RFD/g5LuiOOiz4qCIh8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-248-xZDAj8DWOo2UcDOl8ynSxA-1; Thu, 09 Apr 2020 15:31:36 -0400
-X-MC-Unique: xZDAj8DWOo2UcDOl8ynSxA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0DBE0DBA3;
-        Thu,  9 Apr 2020 19:31:35 +0000 (UTC)
-Received: from [10.10.116.40] (ovpn-116-40.rdu2.redhat.com [10.10.116.40])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 89A6299E01;
-        Thu,  9 Apr 2020 19:31:34 +0000 (UTC)
-Subject: Re: [PATCH 0/2] target: small fixes in pr
-To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-References: <20200408132610.14623-1-bstroesser@ts.fujitsu.com>
-Cc:     martin.petersen@oracle.com
-From:   Mike Christie <mchristi@redhat.com>
-Message-ID: <5E8F7816.4050103@redhat.com>
-Date:   Thu, 9 Apr 2020 14:31:34 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.6.0
+        Mon, 13 Apr 2020 07:50:02 -0400
+X-Greylist: delayed 391 seconds by postgrey-1.27 at vger.kernel.org; Mon, 13 Apr 2020 07:50:02 EDT
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1132CC03BC8F
+        for <target-devel@vger.kernel.org>; Mon, 13 Apr 2020 04:43:30 -0700 (PDT)
+Received: by mail-io1-xd2c.google.com with SMTP id b12so8992744ion.8
+        for <target-devel@vger.kernel.org>; Mon, 13 Apr 2020 04:43:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=1ds36DMGg+XEGIlwBFe9RgCHJxWIGiKsCVNzaGEJ22Y=;
+        b=gWoRs6amKNiq0mXbGR1d2sWmvYjrawWeRDe8T9ymjgaI6vhetQPFd7m91cXsc2IInt
+         DD25yEbvMpblZGmTyG6RhLmb83psqCu5ICqONsbQIPXQbReUU6jihHUtl5QiNpYzxQzX
+         q/4tSZT3qtGtMkiTsEXEOcEjXU1KK1GB+uZl76jHImPAF4jBwDWa4/7rTLNNRtXkDjwb
+         JFtXw5whxx2dRh/Dv1KpWbO41XTsWgZnF1mib6UyT132PRa7eq/LeNNFVpyP3XDnt4BG
+         3zgbE+3I9vZTjpa5LWbXozLM7JpQu2xoxzf6l6ykFCLliSrqCqIKsYkVb+5EFo/O5Zud
+         TPOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=1ds36DMGg+XEGIlwBFe9RgCHJxWIGiKsCVNzaGEJ22Y=;
+        b=Kf4NYzo4rAANLxK3LgtDp4qB4Jx+WvkPdhY9XmLV/1/rX2ZI+21pyJVoq62/RLx5Oz
+         R4NXaBadYcG1UJ7lLYLEB7EpPBwI1iPX3eXlL1diSFW3Vb8P3cOj5mH9XyKg0T2/l3ns
+         F6Ii2nM6mdrkn2IEkgj5S7T8o86DFkGRDOlASOYC3u1phr1YGxlqpyS2Pi7Kr88z1s7I
+         xpmzJkLNjSU21y7nMiBAA9XV5QadMB7vuKJQjztVQS+pNCkw5h2OsJt10gZq121bBmCL
+         0yco2jeMhaEsNf0671t/wdReelVLR93Rc8O3fP73LULybiB5jCqOquACV65XWIxtGMMx
+         8S2A==
+X-Gm-Message-State: AGi0PuZfaZJvr0F8kfhOZPc7Ox9EMyr7UjcQoDepgtmoEhtchJ+PGZY1
+        VSohFOAxK4mBZK61kO8DNRJEJDC1iID47GuC6Q==
+X-Google-Smtp-Source: APiQypKSQeTPj3lgenseMd+aSYS71+dJhCNyLOTa+zWUA7lJqrflnhIRpnmUjps3M8M0mPmhWbaz8RtDO1I6zVEsEkM=
+X-Received: by 2002:a02:6c4a:: with SMTP id w71mr8110288jab.2.1586778209258;
+ Mon, 13 Apr 2020 04:43:29 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200408132610.14623-1-bstroesser@ts.fujitsu.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Received: by 2002:a02:5e49:0:0:0:0:0 with HTTP; Mon, 13 Apr 2020 04:43:28
+ -0700 (PDT)
+Reply-To: mgbenin903@gmail.com
+From:   Barrister Robert Richter UN-Attorney at Law Court-Benin 
+        <info.zennitbankplcnigerian@gmail.com>
+Date:   Mon, 13 Apr 2020 13:43:28 +0200
+Message-ID: <CABHzvrkwD2fUnnJ0oQrWEyM9uH6JjG-H4j2cY7u_pKX6haqt-g@mail.gmail.com>
+Subject: I have already sent you first payment US$5000.00 this morning through
+ MONEY Gram service.it is available to pick up in address now.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 04/08/2020 08:26 AM, Bodo Stroesser wrote:
-> This small series is a resend of patches that already were
-> sent to target-devel only.
-> 
-> The patches fix two issues in target core pr handling.
-> 
+ATTN DEAR BENEFICIARY.
 
-Patches look ok to me and fixes FC for me too.
+GOOD NEWS.
 
-Reviewed-by: Mike Christie <mchristi@redhat.com>
+I have already sent you first payment US$5000.00 this morning through
+MONEY Gram service.
 
+So we advise you to Contact This Money Gram office to pick up your
+transfer $US5000.00 today.
+it is available to pick up in address now.
+
+Note that your compensation payment funds is total amount $US2.800,000
+Million Dollars.We have instructed the Money Gram Agent,Mr. James
+Gadner to keep sending the transfer to you daily, but the maximum
+amount you will be receiving everyday is US$5000.00. Contact Agent now
+to pick up your first payment $US5000.00 immediately.
+
+Contact Person, Mr. James Gadner, Dir. Money Gram Benin.
+Email: mgbenin903@gmail.com
+Telephone Numbers: +229 62819378/ +229 98477762
+
+HERE IS YOUR PAYMENT DETAILS FOR THE FIRST =C2=A3US5000.00 SENT TODAY.
+
+Track View Website link:
+https://secure.moneygram.com/track
+Sender=E2=80=99s First name: David
+Sender=E2=80=99s Last Name: Joiner
+Money Transfer Control Number (MTCN) (REFERENCE)# 26046856
+
+Contact the Mmoney Gram Urgent and reconfirm your address to the
+office before, they will allow you to pick up the transfer today.
+
+HERE IS WHAT REQUIRED OF YOU.
+
+YOUR FULL NAME---------
+ADDRESS--------------
+COUNTRY-----------------------------
+TELEPHONE NUMBERS-----------------
+
+Note, I paid the transfer fee for you, but only you are required to
+send to the office is $75.00 only,Been Your Payment File activation
+fee, Send once you contact the office,before you can able to pick up
+your transfer today.
+
+Let me know once you pick up first payment today.
+
+Barrister Robert Richter UN-Attorney at Law Court-Benin
