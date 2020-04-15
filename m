@@ -2,94 +2,84 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A86911A95D5
-	for <lists+target-devel@lfdr.de>; Wed, 15 Apr 2020 10:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0A3C1AAFA9
+	for <lists+target-devel@lfdr.de>; Wed, 15 Apr 2020 19:35:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2635591AbgDOIIr (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 15 Apr 2020 04:08:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36010 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2635633AbgDOIIo (ORCPT
+        id S2410995AbgDOR2L (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 15 Apr 2020 13:28:11 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:27576 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2411047AbgDOR2I (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 15 Apr 2020 04:08:44 -0400
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58998C061A41
-        for <target-devel@vger.kernel.org>; Wed, 15 Apr 2020 01:08:44 -0700 (PDT)
-Received: by mail-pj1-x1044.google.com with SMTP id b7so6460139pju.0
-        for <target-devel@vger.kernel.org>; Wed, 15 Apr 2020 01:08:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=yYNKGc07OYBmETnhmBnne+7qYMfErRLdStvSK9DZOKU=;
-        b=hll2BosaDpQ2YBILUSls0SxNhUPedGmg+z2GUiazXTZEVBjrCKFc349OXg1zamniDP
-         6gcyaWW2eKk63cCC6WIPTsJRIagWWhB1grz4erRGUhVTd3ykcTtfLxTZPfJaFlHm0Vo+
-         2WoPyQZGd6aGn0nPHJi3UQV9QdqQ5Tht/hFPuQnuEKSx2VNbYAq8VOyrmCbKA74CLWtX
-         a3mcOZbTkvC+7ipVyj0rated/TjFY2E9JWUt3879F4zyzek0mniOEivJO2pg/KKyucv8
-         T8CG0Fyj8yISf+SPGk+XlKxRxMpOFFZmR81Pl6Avl+7zPNK/CIrfufAH/a9AreMqqfIC
-         F2KQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=yYNKGc07OYBmETnhmBnne+7qYMfErRLdStvSK9DZOKU=;
-        b=pBTHRLmRWVUtWwdz3vHM0OIj5bNCvQGGdPuk3UnkOjmuFPBU1pN6/BQIkqgm1nXViq
-         M8x353TayjUCTGTvjdZLUQe9GgQ3SBR2bJ7O7hZrnL1JQ54tocqP+dfjrCGf381Msaki
-         5iNgQ7zd7E3kGjdxS5QFKH8rE0obwrDzOR57wKN9IhuCEx/p0xxOmmcN5d33CdKwUzNi
-         F0fiWtkB9TxNODrEat1XOJwk4u+zl054cTfbuKhDbZafLp5UEvhvlmG+cVDQ9978jMF2
-         /KtGRiIXJH9UIumhM61fjx/bB/DomO/kYmHr11w45wQuLcBLlRI2wpruuBP9KHxEvlyP
-         w6yg==
-X-Gm-Message-State: AGi0PuYgensJQE8UrxTcMoUtwjSaQWkrfA5ByQo25WhB7KYGs9Au8Q/t
-        gYCfPMyJDMroxF3/LGIXVvYTKg==
-X-Google-Smtp-Source: APiQypIqWjVIHBTvcz+GZPt0ZG5iTVoEaLnDbeH0s39YM2GseBFUs9fjRg1OoJ0bqqmuQCJZ0bUAyA==
-X-Received: by 2002:a17:90a:bf84:: with SMTP id d4mr4908421pjs.82.1586938123963;
-        Wed, 15 Apr 2020 01:08:43 -0700 (PDT)
-Received: from debian.bytedance.net ([61.120.150.75])
-        by smtp.gmail.com with ESMTPSA id c10sm10020576pfc.23.2020.04.15.01.08.41
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 15 Apr 2020 01:08:43 -0700 (PDT)
-From:   Pu Hou <houpu@bytedance.com>
-To:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org
-Cc:     mchristi@redhat.com, Pu Hou <houpu@bytedance.com>
-Subject: [PATCH 2/2] iscsi-target: Fix inconsistent debug message in __iscsi_target_sk_check_close
-Date:   Wed, 15 Apr 2020 04:08:19 -0400
-Message-Id: <20200415080819.27327-3-houpu@bytedance.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20200415080819.27327-1-houpu@bytedance.com>
-References: <20200415080819.27327-1-houpu@bytedance.com>
+        Wed, 15 Apr 2020 13:28:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1586971686;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=RWVMXJj0PgE0ZtJFYMbnUIjfqT+kyQnX32fIyyeczQE=;
+        b=W6jpEJUX6ZFtdej0ieZrrNZySU5ullvR75do5tfDNzaQOf9Lca5gCKARJ9yFFaFVoqNHSN
+        2wdmtruEr1enfEDdPKyybqsC6GthfZpuBEH146p1665rlwidZTLELqx4k6WGbnMSliXd47
+        7BlFQQx7CRWL+/ZfKoNohR+5kc9Yg90=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-421-lua_s9gFPNaXB666v-lTaw-1; Wed, 15 Apr 2020 13:28:05 -0400
+X-MC-Unique: lua_s9gFPNaXB666v-lTaw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B7AEA18B9FC2;
+        Wed, 15 Apr 2020 17:28:03 +0000 (UTC)
+Received: from [10.10.115.103] (ovpn-115-103.rdu2.redhat.com [10.10.115.103])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id EDF3F116D7C;
+        Wed, 15 Apr 2020 17:28:02 +0000 (UTC)
+Subject: Re: [RFC PATCH 1/5] target: add sysfs support
+To:     Bart Van Assche <bvanassche@acm.org>, jsmart2021@gmail.com,
+        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, nab@linux-iscsi.org
+References: <20200414051514.7296-1-mchristi@redhat.com>
+ <20200414051514.7296-2-mchristi@redhat.com>
+ <b6b87cff-c359-b7f6-ffd0-ff5b49dccbb8@acm.org>
+From:   Mike Christie <mchristi@redhat.com>
+Message-ID: <5E974422.2060107@redhat.com>
+Date:   Wed, 15 Apr 2020 12:28:02 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
+ Thunderbird/38.6.0
+MIME-Version: 1.0
+In-Reply-To: <b6b87cff-c359-b7f6-ffd0-ff5b49dccbb8@acm.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Following commit changed the return value of __iscsi_target_sk_check_close.
-But the pr_debug is still printing FALSE when returing TRUE which is a little
-confusing.
+On 04/14/2020 09:23 PM, Bart Van Assche wrote:
+> On 2020-04-13 22:15, Mike Christie wrote:
+>> target_core/
+>> `-- $fabric_driver
+>>     `-- target_name
+>>         |-- tpgt_1
+>>         |   `-- sessions
+>>         `-- tpgt_2
+>>             `-- sessions
+>>
+>> iscsi example:
+>> target_core/
+>> `-- iscsi
+>>     `-- iqn.1999-09.com.lio:tgt1
+>>         |-- tpgt_1
+>>         |   `-- sessions
+>>         `-- tpgt_2
+>>             `-- sessions
+> 
+> After the SCSI target core was added to the kernel tree an NVMe target
+> core was added. How about using the name "scsi_target" for the top-level
+> directory instead of "target_core" to prevent confusion with the NVMe
+> target?
+> 
 
-commit 25cdda95fda78d22d44157da15aa7ea34be3c804
-Author: Nicholas Bellinger <nab@linux-iscsi.org>
-Date:   Wed May 24 21:47:09 2017 -0700
-
-    iscsi-target: Fix initial login PDU asynchronous socket close OOPs
-
-Signed-off-by: Pu Hou <houpu@bytedance.com>
----
- drivers/target/iscsi/iscsi_target_nego.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/target/iscsi/iscsi_target_nego.c b/drivers/target/iscsi/iscsi_target_nego.c
-index 950339655778..56686e880d23 100644
---- a/drivers/target/iscsi/iscsi_target_nego.c
-+++ b/drivers/target/iscsi/iscsi_target_nego.c
-@@ -481,7 +481,7 @@ static bool __iscsi_target_sk_check_close(struct sock *sk)
- {
- 	if (sk->sk_state == TCP_CLOSE_WAIT || sk->sk_state == TCP_CLOSE) {
- 		pr_debug("__iscsi_target_sk_check_close: TCP_CLOSE_WAIT|TCP_CLOSE,"
--			"returning FALSE\n");
-+			"returning TRUE\n");
- 		return true;
- 	}
- 	return false;
--- 
-2.11.0
+Will do.
 
