@@ -2,125 +2,97 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D183D1AB001
-	for <lists+target-devel@lfdr.de>; Wed, 15 Apr 2020 19:47:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DB9F1ABD8A
+	for <lists+target-devel@lfdr.de>; Thu, 16 Apr 2020 12:06:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2411465AbgDORqn (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 15 Apr 2020 13:46:43 -0400
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:37362 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2411453AbgDORqk (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Wed, 15 Apr 2020 13:46:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586972798;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=32mKiSh5mH/6u+5qEZsD6TGN1ldNSd/bRgNUizrHtCQ=;
-        b=R6r5u4fEDUqsO3YmEYh64jZczG6tLLEPHAkK67iaPIyVZteHHMpnRnt6XiFA3IzbN+7ZSC
-        ToAxi5lvG4Yv3hLRouQb3WLiphynVUaStlkhvOO/wHcwM3Gs4tk6D6wD/LX6YuBPkXE4n0
-        AChXjeVFT+bXNsn2ldLnqHWNMoN43zU=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-401-y1Bc6XuaPZGPjW7ECV34NA-1; Wed, 15 Apr 2020 13:46:36 -0400
-X-MC-Unique: y1Bc6XuaPZGPjW7ECV34NA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 29F0E107ACC4;
-        Wed, 15 Apr 2020 17:46:35 +0000 (UTC)
-Received: from [10.10.115.103] (ovpn-115-103.rdu2.redhat.com [10.10.115.103])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 48F22116D7C;
-        Wed, 15 Apr 2020 17:46:34 +0000 (UTC)
-Subject: Re: [RFC PATCH 2/5] target: add sysfs session helper functions
-To:     Bart Van Assche <bvanassche@acm.org>, jsmart2021@gmail.com,
-        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, nab@linux-iscsi.org
-References: <20200414051514.7296-1-mchristi@redhat.com>
- <20200414051514.7296-3-mchristi@redhat.com>
- <20ecaf0e-698c-fb9c-26fd-a1f2dc79392e@acm.org> <5E9745DD.2060009@redhat.com>
-From:   Mike Christie <mchristi@redhat.com>
-Message-ID: <5E974879.5000407@redhat.com>
-Date:   Wed, 15 Apr 2020 12:46:33 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.6.0
+        id S2504676AbgDPKGC (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 16 Apr 2020 06:06:02 -0400
+Received: from mga02.intel.com ([134.134.136.20]:38870 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2504378AbgDPKFy (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Thu, 16 Apr 2020 06:05:54 -0400
+IronPort-SDR: bzu0HXqmTP3+zqUhauTmrfsa9nt1lFXliZt+g1E3dCLfiV+ZCxJSjA1epdpmxEtxuxmnwjidTC
+ +xbK+Vpcje3w==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2020 03:05:53 -0700
+IronPort-SDR: RjBv+uX+qdBSawkGTFreimgV4amAPsx7yEe1IJ3aQIXgdP4x219JR8hl3o9eqO/hwoAVeQq9M9
+ UXTLT5nwMsgA==
+X-IronPort-AV: E=Sophos;i="5.72,390,1580803200"; 
+   d="scan'208";a="427781153"
+Received: from ellenfax-mobl2.ger.corp.intel.com (HELO localhost) ([10.249.44.122])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2020 03:05:42 -0700
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     Jonathan Corbet <corbet@lwn.net>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel@vger.kernel.org,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Ricardo Ribalda Delgado <ribalda@kernel.org>,
+        Luca Ceresoli <luca@lucaceresoli.net>,
+        dmaengine@vger.kernel.org, Matthias Maennich <maennich@google.com>,
+        Harry Wei <harryxiyou@gmail.com>, x86@kernel.org,
+        ecryptfs@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+        target-devel@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        Tyler Hicks <code@tyhicks.com>, Vinod Koul <vkoul@kernel.org>,
+        Alex Shi <alex.shi@linux.alibaba.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, linux-scsi@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>, netdev@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linuxppc-dev@lists.ozlabs.org, Borislav Petkov <bp@alien8.de>
+Subject: Re: [PATCH v2 0/2] Don't generate thousands of new warnings when building docs
+In-Reply-To: <20200320171020.78f045c5@lwn.net>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <cover.1584716446.git.mchehab+huawei@kernel.org> <20200320171020.78f045c5@lwn.net>
+Date:   Thu, 16 Apr 2020 13:05:39 +0300
+Message-ID: <87a73b4ufg.fsf@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <5E9745DD.2060009@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Content-Type: text/plain
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 04/15/2020 12:35 PM, Mike Christie wrote:
-> On 04/14/2020 09:30 PM, Bart Van Assche wrote:
->> On 2020-04-13 22:15, Mike Christie wrote:
->>> @@ -537,8 +538,15 @@ void transport_deregister_session_configfs(struct se_session *se_sess)
->>>  }
->>>  EXPORT_SYMBOL(transport_deregister_session_configfs);
->>>  
->>> +
->>
->> A single blank line is probably sufficient here?
->>
-> 
-> Yes. That was a cut and paste mistake when I was separating the code
-> into patches. Will fix.
-> 
-> 
->>>  void transport_free_session(struct se_session *se_sess)
->>>  {
->>> +	kobject_put(&se_sess->kobj);
->>> +}
->>> +EXPORT_SYMBOL(transport_free_session);
->>> +
->>> +void __target_free_session(struct se_session *se_sess)
->>> +{
->>>  	struct se_node_acl *se_nacl = se_sess->se_node_acl;
->>>  
->>>  	/*
->>> @@ -582,7 +590,6 @@ void transport_free_session(struct se_session *se_sess)
->>>  	percpu_ref_exit(&se_sess->cmd_count);
->>>  	kmem_cache_free(se_sess_cache, se_sess);
->>>  }
->>> -EXPORT_SYMBOL(transport_free_session);
->>
->> Does this patch defer execution of the code inside
->> transport_free_session() from when transport_free_session() is called to
->> when the last reference to a session is dropped? Can that have
-> 
-> Yes.
-> 
->> unintended side effects? How about keeping most of the code that occurs
-> 
-> Yes. For example, we drop the refcount on the ACL in
-> __target_free_session so that is now not done until the last session
-> rerfcount is done. I did this because we reference the acl in a sysfs file.
-> 
-> 
->> in transport_free_session() in that function and only freeing the memory
->> associated with the session if the last reference is dropped?
->>
-> 
-> I tried to minimize it already.
-> 
-> That is why I have the new session->fabric_free_cb in the next patch.
-> That way we do not need refcounts on structs like the tpg and can detach
-> that like normal in
-> transport_deregister_session/transport_deregister_session_configfs.
-> 
+On Fri, 20 Mar 2020, Jonathan Corbet <corbet@lwn.net> wrote:
+> On Fri, 20 Mar 2020 16:11:01 +0100
+> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+>
+>> This small series address a regression caused by a new patch at
+>> docs-next (and at linux-next).
+>
+> I don't know how I missed that mess, sorry.  I plead distracting times or
+> something like that.  Heck, I think I'll blame everything on the plague
+> for at least the next few weeks.
+>
+> Anyway, I've applied this, thanks for cleaning it up.
 
-Oh yeah, James and Bart, while investigating Bart's comment I noticed
-there is a bug where in the session->fabric_free_cb the fabric module
-needs the fabric_sess_ptr but that will already have been cleared in
-transport_deregister_session.
+There's still more fallout from the autosectionlabel extension
+introduced in 58ad30cf91f0 ("docs: fix reference to
+core-api/namespaces.rst"), e.g. in i915.rst.
 
-So James, you will hit a bug in there if you try to adapt elx to these
-patches right now.
+The biggest trouble is, if you have headings in kernel-doc comments,
+Sphinx is unable pinpoint where the dupes are. For example:
 
-I will resend with that fixed and Bart's comments handled.
+ Documentation/gpu/i915.rst:610: WARNING: duplicate label gpu/i915:layout, other instance in
+ Documentation/gpu/i915.rst
 
+However there is no "layout" label in i915.rst. The one being warned
+about I can dig into based on the line number, but not the second
+one. You have to resort to grepping the source. And avoiding duplicate
+subsection headings in completely isolated places is a minefield.
+
+BR,
+Jani.
+
+
+-- 
+Jani Nikula, Intel Open Source Graphics Center
