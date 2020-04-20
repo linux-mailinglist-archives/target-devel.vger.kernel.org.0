@@ -2,95 +2,96 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D14C1B1361
-	for <lists+target-devel@lfdr.de>; Mon, 20 Apr 2020 19:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 701421B1593
+	for <lists+target-devel@lfdr.de>; Mon, 20 Apr 2020 21:14:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726067AbgDTRna (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 20 Apr 2020 13:43:30 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:25883 "EHLO
+        id S1727936AbgDTTOi (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 20 Apr 2020 15:14:38 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:22015 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726013AbgDTRna (ORCPT
+        with ESMTP id S1725896AbgDTTOi (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 20 Apr 2020 13:43:30 -0400
+        Mon, 20 Apr 2020 15:14:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1587404608;
+        s=mimecast20190719; t=1587410077;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Criq6qil6H1tZf/WS5dREIUW0DXvPGTUw1WFAbdrW4g=;
-        b=VWpb5FflvaRI0q5tM+KojJk/pveqqiQebbK19KdabobEDH6VViPRgAm5KrfahhUMi9EpQR
-        wuGjltok1jk6/xZZiarh6QgiE1kHO1au8QkSZGYA2IgDPJ63ZFc2njwTvlF8SvfhvIrX6a
-        jj4KXuk6W0k5JUssFzixCy4FKfidNZM=
+         to:to:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=AWPQPemEiXAldj4riWWQN4HHZ1o7zuh/QiWWkjzHWX8=;
+        b=EggJ7WeHnVLC1C330xxegg797grVDZiMakG2Kd9lhdEvJyYAbdvxYBAWayo5MgjvdrCUh4
+        ZYv1T+xYfglkxsABGNwn3V5jO5vEfdFgVlSTTpPgiPF2vGdFTGYKXntF4WMmuPWTT5sKwa
+        GKOrRHzJ2rgyDcPqPZ8sMJ7sIekMVIE=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-413-yEvN6wAcObqd27Bsnfqlaw-1; Mon, 20 Apr 2020 13:43:27 -0400
-X-MC-Unique: yEvN6wAcObqd27Bsnfqlaw-1
+ us-mta-84-O32jnMDDPvSD0EBdrea1SA-1; Mon, 20 Apr 2020 15:14:31 -0400
+X-MC-Unique: O32jnMDDPvSD0EBdrea1SA-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 41F6118C8C24;
-        Mon, 20 Apr 2020 17:43:20 +0000 (UTC)
-Received: from [10.10.118.198] (ovpn-118-198.rdu2.redhat.com [10.10.118.198])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 8CEF4A103F;
-        Mon, 20 Apr 2020 17:43:19 +0000 (UTC)
-Subject: Re: [RFC PATCH 2/5] target: add sysfs session helper functions
-To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>, jsmart2021@gmail.com,
-        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, nab@linux-iscsi.org
-References: <20200414051514.7296-1-mchristi@redhat.com>
- <20200414051514.7296-3-mchristi@redhat.com>
- <4416ba8f-5eae-9dfd-7e39-0f91d37d62e3@ts.fujitsu.com>
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 323A11084430;
+        Mon, 20 Apr 2020 19:14:30 +0000 (UTC)
+Received: from rh2.redhat.com (ovpn-118-198.rdu2.redhat.com [10.10.118.198])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 4FE9FA18B7;
+        Mon, 20 Apr 2020 19:14:29 +0000 (UTC)
 From:   Mike Christie <mchristi@redhat.com>
-Message-ID: <5E9DDF37.2020102@redhat.com>
-Date:   Mon, 20 Apr 2020 12:43:19 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.6.0
+To:     jsmart2021@gmail.com, bvanassche@acm.org,
+        bstroesser@ts.fujitsu.com, martin.petersen@oracle.com,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+Subject: RFC PATCH 00/12] target: add sysfs support
+Date:   Mon, 20 Apr 2020 14:14:14 -0500
+Message-Id: <20200420191426.17055-1-mchristi@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <4416ba8f-5eae-9dfd-7e39-0f91d37d62e3@ts.fujitsu.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Content-Transfer-Encoding: quoted-printable
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 04/20/2020 12:39 PM, Bodo Stroesser wrote:
-> 
-> 
-> On 04/14/20 07:15, Mike Christie wrote:
->> +static ssize_t session_acl_show(struct se_session *se_sess, char *page)
->> +{
->> +    struct se_node_acl *acl;
->> +    ssize_t len;
->> +
->> +    acl = se_sess->se_node_acl;
->> +    if (!acl)
->> +        return -ENOTCONN;
->> +
->> +    if (acl->dynamic_node_acl) {
->> +        page[0] = '\0';
->> +        len = 0;
->> +    } else {
->> +        len = snprintf(page, PAGE_SIZE, "%s\n", acl->initiatorname);
->> +    }
->> +
->> +    return len;
->> +}
-> 
-> Would it be a good idea to provide more info about initiators using
-> dynamic acl?
-> 
-> For example the file could be named "initiatorname" instead of "acl" and
+The following patches made over Linus's current tree allow lio to
+export info about structs that the kernel initiates creation of
+via events like initiator login where there is no user interaction
+like a mkdir. These patches specificially focus on the
+I_T_nexus/session but could be used for other objects if we want.
 
-I added this info in another dir/file. I was just about to post a update.
+Why sysfs when we have configfs?
 
-The acl is just a way to reference the configfs dir the info would be
-located in since you can symlink.
+I started with configfs and hit bugs like:
 
-> always provide the initiatorname, while a boolean file "acl" could
-> return "Y" or "1" for explicit acls, but "N" or "0" for dynamic acls.
+commit cc57c07343bd071cdf1915a91a24ab7d40c9b590
+Author: Mike Christie <mchristi@redhat.com>
+Date:   Sun Jul 15 18:16:17 2018 -0500
 
-I was trying to not duplicate what is already in configfs.
+    configfs: fix registered group removal
+
+but it turns out that bug was not really a bug and was just how
+configfs was meant to work. It seems it was not meant to be used
+where the kernel initiates creation of dirs/files as a result of
+some internal action. It's more geared to the user initiating
+the creation, and my patch just lead to other bugs and was
+reverted:
+
+commit f19e4ed1e1edbfa3c9ccb9fed17759b7d6db24c6
+Author: Al Viro <viro@zeniv.linux.org.uk>
+Date:   Thu Aug 29 23:13:30 2019 -0400
+
+    configfs_register_group() shouldn't be (and isn't) called in
+rmdirable parts
+
+So to export the session info we have debugfs, sysfs, ioctl,
+netlink, etc. sysfs just seemed like a decent fit since one of the
+primary users is rtslib and it already has lots of file/dir
+handling code.
+
+V2:
+- rename top level dir to scsi_target
+- Fix extra newline
+- Copy data that's exported to sysfs so we do not have to worry about
+configfs and sysfs refcounts.
+- Export session info needed for tracking sessions in userspace and
+handling commands like PGRs there (still needs a way to notify userspace
+when sessions are added/deleted, but that will be a different set since
+the focus is different).
+
+
 
