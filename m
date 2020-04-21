@@ -2,71 +2,70 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50BC11B2A8D
-	for <lists+target-devel@lfdr.de>; Tue, 21 Apr 2020 16:59:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22CDA1B2B8C
+	for <lists+target-devel@lfdr.de>; Tue, 21 Apr 2020 17:49:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728712AbgDUO7j (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 21 Apr 2020 10:59:39 -0400
-Received: from mail1.bemta26.messagelabs.com ([85.158.142.112]:42376 "EHLO
-        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728676AbgDUO7i (ORCPT
+        id S1725960AbgDUPtU (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 21 Apr 2020 11:49:20 -0400
+Received: from mail1.bemta25.messagelabs.com ([195.245.230.3]:36438 "EHLO
+        mail1.bemta25.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725613AbgDUPtU (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 21 Apr 2020 10:59:38 -0400
+        Tue, 21 Apr 2020 11:49:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1587481176; i=@ts.fujitsu.com;
-        bh=s1QordmBGN62hiqd69tB3FP9yhyhlyPezd/i2GKz6ks=;
+        s=200619tsfj; t=1587484155; i=@ts.fujitsu.com;
+        bh=Wa8U1yDFGo6vbxGxWauMIO8XtCPHynwfDCaeGBWhM5A=;
         h=Subject:To:References:From:Message-ID:Date:MIME-Version:
          In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        b=r4SZPjnS+DLTC6vXVJtnmdlLLPcAKnUVwm/kHOR6JpAkRj6Wo2JzgYe8Z7UejHrLK
-         rejLZmL8PYHcMVrXgNX7SNBsIilbOotCVR0EDAkwb0u4U2oZ7lgYIU8uW3GmLAVeiR
-         PQHIQrDtNp78pWccrD7OYaKR5egvcDMhBDHl5f8+UUgjo3HGCniC1TFgpT0UzlJVcK
-         h0FnXNiI5nRNZO6n42ebeW+KlvWjGGDjLjrOz197EYOQxwr1nO3p2tddnpdU5MFWvg
-         SrJrLowBegQWk9ARd0lG6zn12sAGB5f0qmt6ni1ZHUGD6bH6b0HPBWAqE5hzoGTY1x
-         PDNPqM4xOcHOA==
-Received: from [100.113.6.250] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-1.bemta.az-b.eu-central-1.aws.symcld.net id 23/52-32019-75A0F9E5; Tue, 21 Apr 2020 14:59:35 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrDIsWRWlGSWpSXmKPExsViZ8MxVTeca36
-  cwZJ2JYtpH34yW6xY8J7Rovv6DjaL5cf/MVmsP7KB0aJ16VsmBzaPy1e8PXbOusvu8fHpLRaP
-  9/uusnl83iQXwBrFmpmXlF+RwJox7fdMtoKJ3BXPbp5nb2DczNnFyMUhJDCLUWLqnVksXYycH
-  MICoRJ9v28ygiREBLYzSvxdvI8VJCEkkCbxcV4TO4jNJmAgsWLSfbAGXgFHiZlXvjGC2CwCqh
-  ITz7aB1YsKhEu82PKHFaJGUOLkzCdg9ZwClhLLl35mBrGZBcwk5m1+CGWLS9x6Mp8JwpaX2P5
-  2DvMERt5ZSNpnIWmZhaRlFpKWBYwsqxgtk4oy0zNKchMzc3QNDQx0DQ2NdU11DY0t9RKrdJP0
-  Ukt1k1PzSooSgbJ6ieXFesWVuck5KXp5qSWbGIGBnlLI2r2D8dPa93qHGCU5mJREeavOz4sT4
-  kvKT6nMSCzOiC8qzUktPsQow8GhJMH7k3V+nJBgUWp6akVaZg4w6mDSEhw8SiK8LJxAad7igs
-  Tc4sx0iNQpRkUpcd5HHEAJAZBERmkeXBss0i8xykoJ8zIyMDAI8RSkFuVmlqDKv2IU52BUEuY
-  NApnCk5lXAjf9FdBiJqDF+aazQRaXJCKkpBqYHIK+OX+P2fr+n5HphcuWmm2vNjDbr3soMIWd
-  pzUjqq79Wti+TuMNF/d/275ALjJ9o/a2o+U6T1a8TnHPmfphx86u76Yf/mwTZy1cPU/+8PYlL
-  CHXi35MtZho0sZ99TanucScOXKm17xfRfatb1314+K2dTw86peuN/uU5k+aL5X6XMb5SN4GRT
-  2FHbejJRP/xNWeKQmeJC54/87POwpitkKiWdcCOS7M3ei+8PbtU3Hmas+lBRWVW7+tnTvz44a
-  bUxUkv34/+WL2GUeNL4VsKeozvVKzVvzk/XmiTmju268abK9q7p7Z8iBi2iGjKlvd01zRiYGR
-  10K6WI1meh9f8lglfnqRwKFlQq9mGdycWq7EUpyRaKjFXFScCAASs/HGbwMAAA==
+        b=UUy4YUKuuFtIA1Qc+JHwtuuWA420JAD0advv5BWR1zZ1jDorlBsS59i37MHgpaOXY
+         Sqd/ie6QA3LDxAgc+DHLLW2jiA7MAKpoqtoLM8xYctTdDu4QDXiZUJ/YdNsB0O4LR0
+         fAXJHyvzrl0zqGKDfR5twW0LqD8KTZ8mQmugXTaJsG6Whw0LZDDMgKzqKdmM6GEti0
+         llvWFXQ5UGsoJ9HH1/WkzpJiYYv3cmV129tJqoAElN/i8adV9v1IEb+MdU3L8/JJY4
+         ACZwhDPaaQIPEPP2qCl5KxjmtZNz6dgszn+PW5wpU7wRaUnBC+PUWXYcmix50y9aa7
+         dgpE+H9owDABw==
+Received: from [100.112.195.143] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-3.bemta.az-a.eu-west-1.aws.symcld.net id AA/E3-36773-BF51F9E5; Tue, 21 Apr 2020 15:49:15 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrJIsWRWlGSWpSXmKPExsViZ8MxVfeX6Pw
+  4gz+XbSymffjJbLFiwXtGi+7rO9gslh//x2Sx/sgGRovWpW+ZHNg8Ll/x9tg56y67x8ent1g8
+  3u+7yubxeZNcAGsUa2ZeUn5FAmvG9409TAXzhCpW7ZrK1MDYwNfFyMUhJDCLUaLj8m+WLkYOD
+  mEBC4kJDWYgcRGB7YwSfxfvY+1i5AQqSpM49GUJI4jNJmAgsWLSfRYQm1fAUWLHr+tgvSwCqh
+  IPFwWAhEUFwiVebPnDClEiKHFy5hOwck4BS4mJM3exgdjMAmYS8zY/ZIawxSVuPZnPBGHLS2x
+  /O4d5AiPvLCTts5C0zELSMgtJywJGllWMFklFmekZJbmJmTm6hgYGuoaGRrqGlia6hhaGeolV
+  uol6qaW65anFJbpAbnmxXnFlbnJOil5easkmRmCIpxQc2rqDccv893qHGCU5mJREeavOz4sT4
+  kvKT6nMSCzOiC8qzUktPsQow8GhJMEbIzw/TkiwKDU9tSItMwcYbzBpCQ4eJRHeFyJAad7igs
+  Tc4sx0iNQpRkUpcd65IAkBkERGaR5cGyzGLzHKSgnzMjIwMAjxFKQW5WaWoMq/YhTnYFQS5s0
+  HmcKTmVcCN/0V0GImoMX5prNBFpckIqSkGpgY/nU+/7c78uGhF9Nm1980zLSy0ErY83zTNJ8d
+  6v9nOOqvWPOk6vpmz2UnmzPuPpOINnZ/uvFIuVT3nanB+Xkvizgcb1gkKUiIpqztSZc1d5wod
+  qjrFucCmZN79FdXXznsXtmRb1h1psrs54vdixbOVVCXkZ2733tSSOP9uLXmh78lPn09k0MzaG
+  IN+46Yt5JeNx7Y1vLMcdcK+nPx4cHQn7v/LjsxiWfl+033j1TK58zwbSwLC5TalLPMLS+g4Xq
+  ZjxHr/eCchc0GCvOYX0841Z7bW1DdNmXnkohd4XFyKseuJWuzqP6WuMXKZblmsfPfJOcHy7w2
+  bFUs/FAx9/RvqaoVvyK4kzznGZ5vu2CixFKckWioxVxUnAgAzoVRuGwDAAA=
 X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-2.tower-238.messagelabs.com!1587481175!799734!1
+X-Msg-Ref: server-31.tower-265.messagelabs.com!1587484154!437504!1
 X-Originating-IP: [62.60.8.149]
 X-SYMC-ESS-Client-Auth: outbound-route-from=pass
 X-StarScan-Received: 
 X-StarScan-Version: 9.50.1; banners=-,-,-
 X-VirusChecked: Checked
-Received: (qmail 28977 invoked from network); 21 Apr 2020 14:59:35 -0000
+Received: (qmail 1052 invoked from network); 21 Apr 2020 15:49:14 -0000
 Received: from unknown (HELO mailhost2.uk.fujitsu.com) (62.60.8.149)
-  by server-2.tower-238.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 21 Apr 2020 14:59:35 -0000
+  by server-31.tower-265.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 21 Apr 2020 15:49:14 -0000
 Received: from [172.17.80.59] ([172.17.80.59])
-        by mailhost2.uk.fujitsu.com (8.14.5/8.14.5) with ESMTP id 03LEwhbl019952;
-        Tue, 21 Apr 2020 15:58:55 +0100
-Subject: Re: [RFC PATCH 04/12] target: use tpid in
- target_stat_iport_port_ident_show
+        by mailhost2.uk.fujitsu.com (8.14.5/8.14.5) with ESMTP id 03LFmO5u013516;
+        Tue, 21 Apr 2020 16:48:33 +0100
+Subject: Re: [RFC PATCH 07/12] target: add sysfs support
 To:     Mike Christie <mchristi@redhat.com>, jsmart2021@gmail.com,
         bvanassche@acm.org, martin.petersen@oracle.com,
         linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
 References: <20200420191426.17055-1-mchristi@redhat.com>
- <20200420191426.17055-5-mchristi@redhat.com>
+ <20200420191426.17055-8-mchristi@redhat.com>
 From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Message-ID: <be44ad27-76fe-156f-6f48-11d522212db1@ts.fujitsu.com>
-Date:   Tue, 21 Apr 2020 16:58:38 +0200
+Message-ID: <c34ed5c7-a5a3-666c-c52a-352c19ddaf98@ts.fujitsu.com>
+Date:   Tue, 21 Apr 2020 17:48:16 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.1.0
 MIME-Version: 1.0
-In-Reply-To: <20200420191426.17055-5-mchristi@redhat.com>
+In-Reply-To: <20200420191426.17055-8-mchristi@redhat.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -76,39 +75,70 @@ List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
 On 04/20/20 21:14, Mike Christie wrote:
-> diff --git a/drivers/target/target_core_stat.c b/drivers/target/target_core_stat.c
-> index 237309d..cc9c966 100644
-> --- a/drivers/target/target_core_stat.c
-> +++ b/drivers/target/target_core_stat.c
-> @@ -1309,8 +1309,8 @@ static ssize_t target_stat_iport_port_ident_show(struct config_item *item,
->   	struct se_node_acl *nacl = lacl->se_lun_nacl;
->   	struct se_session *se_sess;
->   	struct se_portal_group *tpg;
-> +	char *session_id = NULL;
->   	ssize_t ret;
-> -	unsigned char buf[64];
->   
->   	spin_lock_irq(&nacl->nacl_sess_lock);
->   	se_sess = nacl->nacl_sess;
-> @@ -1319,13 +1319,13 @@ static ssize_t target_stat_iport_port_ident_show(struct config_item *item,
->   		return -ENODEV;
->   	}
->   
-> +	session_id = transport_id_get_sid(se_sess->tpid);
-> +	if (!session_id)
-> +		session_id = "";
->   	tpg = nacl->se_tpg;
->   	/* scsiAttIntrPortName+scsiAttIntrPortIdentifier */
-> -	memset(buf, 0, 64);
-> -	if (tpg->se_tpg_tfo->sess_get_initiator_sid != NULL)
-> -		tpg->se_tpg_tfo->sess_get_initiator_sid(se_sess, buf, 64);
-> -
-> -	ret = snprintf(page, PAGE_SIZE, "%s+i+%s\n", nacl->initiatorname, buf);
-> +	ret = snprintf(page, PAGE_SIZE, "%s+i+%s\n", nacl->initiatorname,
-> +		       session_id);
->   	spin_unlock_irq(&nacl->nacl_sess_lock);
->   	return ret;
->   }
+> configfs does not work well when the kernel is initiating the creation
+> of an object we want to export info for and the objects above/below it
+> are created by the user. There are races/bugs like seen with this patch
+> and the issue the original bug was trying to fix:
 > 
-AFAICS, after the change "struct se_portal_group tpg" is no longer
-necessary and can be removed completely.
+> commit f19e4ed1e1edbfa3c9ccb9fed17759b7d6db24c6
+> Author: Al Viro <viro@zeniv.linux.org.uk>
+> Date:   Thu Aug 29 23:13:30 2019 -0400
+> 
+>      configfs_register_group() shouldn't be (and isn't) called in
+> rmdirable parts
+> 
+> The problem is that for many drivers like qla2xxx, iscsi, etc, session
+> creation is done by the kernel when there is a login initiated by an
+> initiator, but we need a common way to export the systems sessions so
+> tools like targetcli can report basic info like what initaitors are
+> logged in and daemons like tcmu-runner can track sessions for load
+> balancing and PGRs.
+> 
+> This patch begins to add a sysfs interface that will initially be used
+> to export LIO's sessions. The general layout will mirror the lio
+> configfs tree:
+> 
+> scsi_target /
+> `-- $fabric_driver
+>      `-- target_name
+>          |-- tpgt_1
+>          |   `-- sessions
+>          `-- tpgt_2
+>              `-- sessions
+> 
+> iscsi example:
+> scsi_target /
+> `-- iscsi
+>      `-- iqn.1999-09.com.lio:tgt1
+>          |-- tpgt_1
+>          |   `-- sessions
+>          `-- tpgt_2
+>              `-- sessions
+> 
+
+Depending on future implementation of session info passthrough in tcmu,
+it might be helpful to have an additional folder "sessions" directly
+in scsi_target. This folder should contain one link for each session in
+the lower "sessions" folders. The name of the link should be the same as
+used for the session and the link should point to the session.
+
+Example:
+
+scsi_target
+|- sessions
+|  |- session-1 -> ../iscsi/iqn.1999-09.com.lio:tgt1/tpgt_2/session-1
+|  `- session-2 -> ../iscsi/iqn.1999-09.com.lio:tgt1/tpgt_1/session-2
+`- iscsi
+    `- iqn.1999-09.com.lio:tgt1
+       |- tpgt_1
+       |  `- sessions
+       |     `- session-2
+       `- tpgt_2
+          `- sessions
+             `- session-1
+
+The link can help to easily find the session for a given session_id and
+also provides the wwn/tpg info for a session which together with the
+info exposed by the session attributes completes the nexus info.
+
+
