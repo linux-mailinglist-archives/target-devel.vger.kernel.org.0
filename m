@@ -2,126 +2,105 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29BFE1B1B31
-	for <lists+target-devel@lfdr.de>; Tue, 21 Apr 2020 03:21:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBEED1B28B8
+	for <lists+target-devel@lfdr.de>; Tue, 21 Apr 2020 15:58:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726039AbgDUBVN (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 20 Apr 2020 21:21:13 -0400
-Received: from mx2.suse.de ([195.135.220.15]:36846 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725897AbgDUBVN (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Mon, 20 Apr 2020 21:21:13 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 85D4EAEBE;
-        Tue, 21 Apr 2020 01:21:09 +0000 (UTC)
-From:   NeilBrown <neilb@suse.de>
-To:     Alan Stern <stern@rowland.harvard.edu>,
-        Matthew Wilcox <willy@infradead.org>
-Date:   Tue, 21 Apr 2020 11:20:53 +1000
-Cc:     Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
+        id S1729086AbgDUN6H (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 21 Apr 2020 09:58:07 -0400
+Received: from netrider.rowland.org ([192.131.102.5]:47801 "HELO
+        netrider.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with SMTP id S1729099AbgDUN6E (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Tue, 21 Apr 2020 09:58:04 -0400
+Received: (qmail 21373 invoked by uid 500); 21 Apr 2020 09:58:02 -0400
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 21 Apr 2020 09:58:02 -0400
+Date:   Tue, 21 Apr 2020 09:58:02 -0400 (EDT)
+From:   Alan Stern <stern@rowland.harvard.edu>
+X-X-Sender: stern@netrider.rowland.org
+To:     NeilBrown <neilb@suse.de>
+cc:     Matthew Wilcox <willy@infradead.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        <linux-kernel@vger.kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Alexander Viro <viro@zeniv.linux.org.uk>,
-        linux-fsdevel@vger.kernel.org,
+        <linux-fsdevel@vger.kernel.org>,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-input@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        <linux-input@vger.kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, <alsa-devel@alsa-project.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org,
+        <linux-usb@vger.kernel.org>,
         "J. Bruce Fields" <bfields@fieldses.org>,
         Chuck Lever <chuck.lever@oracle.com>,
-        linux-nfs@vger.kernel.org,
+        <linux-nfs@vger.kernel.org>,
         Johannes Berg <johannes@sipsolutions.net>,
         Dan Williams <dan.j.williams@intel.com>,
         Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>, linux-nvdimm@lists.01.org,
+        Dave Jiang <dave.jiang@intel.com>, <linux-nvdimm@lists.01.org>,
         "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        <linux-scsi@vger.kernel.org>, <target-devel@vger.kernel.org>,
         Zzy Wysm <zzy@zzywysm.com>
 Subject: Re: [PATCH 5/9] usb: fix empty-body warning in sysfs.c
-In-Reply-To: <Pine.LNX.4.44L0.2004181549020.8036-100000@netrider.rowland.org>
-References: <Pine.LNX.4.44L0.2004181549020.8036-100000@netrider.rowland.org>
-Message-ID: <87368xskga.fsf@notabene.neil.brown.name>
+In-Reply-To: <87368xskga.fsf@notabene.neil.brown.name>
+Message-ID: <Pine.LNX.4.44L0.2004210956590.20254-100000@netrider.rowland.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+On Tue, 21 Apr 2020, NeilBrown wrote:
 
-On Sat, Apr 18 2020, Alan Stern wrote:
+> On Sat, Apr 18 2020, Alan Stern wrote:
+> 
+> > On Sat, 18 Apr 2020, Matthew Wilcox wrote:
+> >
+> >> On Sat, Apr 18, 2020 at 11:41:07AM -0700, Randy Dunlap wrote:
+> >> > +++ linux-next-20200327/drivers/usb/core/sysfs.c
+> >> > @@ -1263,7 +1263,7 @@ void usb_create_sysfs_intf_files(struct
+> >> >  	if (!alt->string && !(udev->quirks & USB_QUIRK_CONFIG_INTF_STRINGS))
+> >> >  		alt->string = usb_cache_string(udev, alt->desc.iInterface);
+> >> >  	if (alt->string && device_create_file(&intf->dev, &dev_attr_interface))
+> >> > -		;	/* We don't actually care if the function fails. */
+> >> > +		do_empty(); /* We don't actually care if the function fails. */
+> >> >  	intf->sysfs_files_created = 1;
+> >> >  }
+> >> 
+> >> Why not just?
+> >> 
+> >> +	if (alt->string)
+> >> +		device_create_file(&intf->dev, &dev_attr_interface);
+> >
+> > This is another __must_check function call.
+> >
+> > The reason we don't care if the call fails is because the file
+> > being created holds the USB interface string descriptor, something
+> > which is purely informational and hardly ever gets set (and no doubt
+> > gets used even less often).
+> >
+> > Is this another situation where the comment should be expanded and the 
+> > code modified to include a useless test and cast-to-void?
+> >
+> > Or should device_create_file() not be __must_check after all?
+> 
+> One approach to dealing with __must_check function that you don't want
+> to check is to cause failure to call
+>    pr_debug("usb: interface descriptor file not created");
+> or similar.  It silences the compiler, serves as documentation, and
+> creates a message that is almost certainly never seen.
+> 
+> This is what I did in drivers/md/md.c...
+> 
+> 	if (mddev->kobj.sd &&
+> 	    sysfs_create_group(&mddev->kobj, &md_bitmap_group))
+> 		pr_debug("pointless warning\n");
+> 
+> (I give better warnings elsewhere - I must have run out of patience by
+>  this point).
 
-> On Sat, 18 Apr 2020, Matthew Wilcox wrote:
->
->> On Sat, Apr 18, 2020 at 11:41:07AM -0700, Randy Dunlap wrote:
->> > +++ linux-next-20200327/drivers/usb/core/sysfs.c
->> > @@ -1263,7 +1263,7 @@ void usb_create_sysfs_intf_files(struct
->> >  	if (!alt->string && !(udev->quirks & USB_QUIRK_CONFIG_INTF_STRINGS))
->> >  		alt->string =3D usb_cache_string(udev, alt->desc.iInterface);
->> >  	if (alt->string && device_create_file(&intf->dev, &dev_attr_interfac=
-e))
->> > -		;	/* We don't actually care if the function fails. */
->> > +		do_empty(); /* We don't actually care if the function fails. */
->> >  	intf->sysfs_files_created =3D 1;
->> >  }
->>=20
->> Why not just?
->>=20
->> +	if (alt->string)
->> +		device_create_file(&intf->dev, &dev_attr_interface);
->
-> This is another __must_check function call.
->
-> The reason we don't care if the call fails is because the file
-> being created holds the USB interface string descriptor, something
-> which is purely informational and hardly ever gets set (and no doubt
-> gets used even less often).
->
-> Is this another situation where the comment should be expanded and the=20
-> code modified to include a useless test and cast-to-void?
->
-> Or should device_create_file() not be __must_check after all?
+That's a decent idea.  I'll do something along those lines.
 
-One approach to dealing with __must_check function that you don't want
-to check is to cause failure to call
-   pr_debug("usb: interface descriptor file not created");
-or similar.  It silences the compiler, serves as documentation, and
-creates a message that is almost certainly never seen.
+Alan Stern
 
-This is what I did in drivers/md/md.c...
-
-	if (mddev->kobj.sd &&
-	    sysfs_create_group(&mddev->kobj, &md_bitmap_group))
-		pr_debug("pointless warning\n");
-
-(I give better warnings elsewhere - I must have run out of patience by
- this point).
-
-NeilBrown
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEG8Yp69OQ2HB7X0l6Oeye3VZigbkFAl6eSnUACgkQOeye3VZi
-gbn4EQ//WLEH1OYjzYF3ZAV16KgjXghaIeaNMOhGWUi79iqI/c9Zfe7VUDBPE5ip
-xTdZh+pKAubrzHjja6sbwXCEpY1XaGBeyKxl8lc/w8bsG6yMdN0n3eP7jgMucCtN
-U7DuAjjSjFvMLYDUBs6jhPbko+Qse3InDgyZH0gTueYI1QMmSag7EZs0xdvv6dAz
-NgtTQbJ7MBv3CQTg3Y+O6pMvRQbwSYuUb118jv9BH5ktkRmfJ5lP0LGfDD1d/AeR
-Z9oH8asOZK2ZprUXg6cuI/lf1kxFCNDGwXI9x0eDWpyt8akceeXLsxhg7Jw2KlZA
-Ry4UOB//Ehxq5ZtqxQAcHNzbfXJM1JaZjbyk+Im8F3q0/i2aE2/9pGvREe91rX3u
-gq2UO+5djv+TxKg1nZcFIHV/ycfdw4HWT6jKnYwOTahceJxkcswrRYqWBDePNqws
-oeWTPfUxQIIMUAYl0Zsf8EXLCqKvOmVqRI3cY2jIZHOJraynmtfL+/FRsg3PNu5T
-m5nSJbLvQMzITNuBTOf8BvdeAasCfR6v4RlIJYbonBJxXtUrXL7yeX0FclVpJ98+
-noaE1F/eUxnG5t+n3Gr6C9ttT/avXsr7Gm7okuNwkY1vvZSoXbFPZG0VIW0SiLWY
-kiqSFLeEDXCaNk4yYZlcNe17qTuJiZxx4RnTkF1IykZIcQv8haE=
-=K7Ae
------END PGP SIGNATURE-----
---=-=-=--
