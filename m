@@ -2,131 +2,118 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 424421B585D
-	for <lists+target-devel@lfdr.de>; Thu, 23 Apr 2020 11:39:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 869FA1B5F45
+	for <lists+target-devel@lfdr.de>; Thu, 23 Apr 2020 17:32:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726955AbgDWJjx (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 23 Apr 2020 05:39:53 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:38596 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726956AbgDWJjx (ORCPT
+        id S1729081AbgDWPbo (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 23 Apr 2020 11:31:44 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:32992 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1729077AbgDWPbo (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 23 Apr 2020 05:39:53 -0400
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03N9WB3s057710
-        for <target-devel@vger.kernel.org>; Thu, 23 Apr 2020 05:39:53 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 30jrc5jtd6-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <target-devel@vger.kernel.org>; Thu, 23 Apr 2020 05:39:52 -0400
-Received: from localhost
-        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <target-devel@vger.kernel.org> from <ubraun@linux.ibm.com>;
-        Thu, 23 Apr 2020 10:39:01 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
-        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Thu, 23 Apr 2020 10:38:56 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 03N9ca9J64356722
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 23 Apr 2020 09:38:36 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 08E76A405B;
-        Thu, 23 Apr 2020 09:39:44 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 88239A4060;
-        Thu, 23 Apr 2020 09:39:43 +0000 (GMT)
-Received: from oc5311105230.ibm.com (unknown [9.145.18.72])
-        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Thu, 23 Apr 2020 09:39:43 +0000 (GMT)
-Subject: Re: [PATCH rdma-next] RDMA: Allow ib_client's to fail when add() is
- called
-To:     Leon Romanovsky <leon@kernel.org>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@mellanox.com>
-Cc:     Bart Van Assche <bvanassche@acm.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dennis Dalessandro <dennis.dalessandro@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Karsten Graul <kgraul@linux.ibm.com>,
-        linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
-        netdev@vger.kernel.org,
-        Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
-        rds-devel@oss.oracle.com,
-        Santosh Shilimkar <santosh.shilimkar@oracle.com>,
+        Thu, 23 Apr 2020 11:31:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1587655902;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=zNIQh0ll+orShoex0gyZ4gPW1qdjmjrr035iiXUT4Rw=;
+        b=eaJRMiMpHfY52gj+qcU+pm4YQyIzZasQw7h1Jt9S5PdsEoos5AqVnYoEZBcPBxZe+XsfyL
+        N82latIpaOeJsAbP6i/O7w1KwB6rtN+sYLeSbLG7iJHxRL+dXAOyUGkMMZbAdvfAxI9I3f
+        OhIehJvxx7v0GoX47/7uLwBorH3jckc=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-286-1fMKn55HMAWFYXHWwcoRTQ-1; Thu, 23 Apr 2020 11:31:40 -0400
+X-MC-Unique: 1fMKn55HMAWFYXHWwcoRTQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6BF9B107ACF3;
+        Thu, 23 Apr 2020 15:31:39 +0000 (UTC)
+Received: from [10.10.119.77] (ovpn-119-77.rdu2.redhat.com [10.10.119.77])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9FA2C5D714;
+        Thu, 23 Apr 2020 15:31:38 +0000 (UTC)
+Subject: Re: [External] Re: [PATCH 1/2] iscsi-target: fix login error when
+ receiving is too fast
+To:     Hou Pu <houpu@bytedance.com>
+Cc:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
         target-devel@vger.kernel.org
-References: <20200421172440.387069-1-leon@kernel.org>
-From:   Ursula Braun <ubraun@linux.ibm.com>
-Date:   Thu, 23 Apr 2020 11:39:43 +0200
+References: <20200415080819.27327-1-houpu@bytedance.com>
+ <20200415080819.27327-2-houpu@bytedance.com>
+ <54e574b1-10b4-4385-11fb-773ef152fc2c@redhat.com>
+ <CAO9YExv2kWp=x+mMaWeOrYmu4c6gTu0PeBSkOwHgr7ZW9MywSg@mail.gmail.com>
+From:   Mike Christie <mchristi@redhat.com>
+Message-ID: <53fa9766-21ea-72ad-818c-61e895e919ae@redhat.com>
+Date:   Thu, 23 Apr 2020 10:31:38 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <20200421172440.387069-1-leon@kernel.org>
+In-Reply-To: <CAO9YExv2kWp=x+mMaWeOrYmu4c6gTu0PeBSkOwHgr7ZW9MywSg@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20042309-0016-0000-0000-00000309C8DA
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20042309-0017-0000-0000-0000336DE989
-Message-Id: <8ee742d7-952b-b521-d05c-17de601f6e32@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
- definitions=2020-04-23_07:2020-04-22,2020-04-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
- mlxlogscore=999 lowpriorityscore=0 spamscore=0 impostorscore=0
- clxscore=1011 adultscore=0 phishscore=0 mlxscore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004230070
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+On 4/22/20 11:24 PM, Hou Pu wrote:
+>>> +     /*
+>>> +      * LOGIN_FLAGS_READ_ACTIVE is cleared so that sk_data_ready
+>>> +      * could be trigger again after this.
+>>> +      *
+>>> +      * LOGIN_FLAGS_WRITE_ACTIVE is cleared after we successfully
+>>> +      * processing a login pdu. So that sk_state_chage could do login
+>>
+>> I think we need to drop "ing" from processing and do:
+>>
+>> process a login pdu, so that sk_state_chage could do login
+>>
+> Sure. Thanks for helping me with my language. ^-^
+> Will change this in v2.
+>>
+> 
+>>> diff --git a/include/target/iscsi/iscsi_target_core.h b/include/target/iscsi/iscsi_target_core.h
+>>> index 591cd9e4692c..0c2dfc81bf8b 100644
+>>> --- a/include/target/iscsi/iscsi_target_core.h
+>>> +++ b/include/target/iscsi/iscsi_target_core.h
+>>> @@ -570,6 +570,7 @@ struct iscsi_conn {
+>>>  #define LOGIN_FLAGS_CLOSED           2
+>>>  #define LOGIN_FLAGS_READY            4
+>>>  #define LOGIN_FLAGS_INITIAL_PDU              8
+>>> +#define LOGIN_FLAGS_WRITE_ACTIVE     12
+>>
+>> 12 works but seems odd. The current code uses test/set/clear_bit, so we
+>> want these to be:
+>>
+>> #define LOGIN_FLAGS_CLOSED 0
+>> #define LOGIN_FLAGS_READY 1
+>> #define LOGIN_FLAGS_INITIAL_PDU 2
+>> #define LOGIN_FLAGS_WRITE_ACTIVE 3
+>>
+>> right?
+>>
+> Yes, it is a little odd. What about this? I also changed the order of them
+> to be in sequence that happened.
+> 
+> --- a/include/target/iscsi/iscsi_target_core.h
+> +++ b/include/target/iscsi/iscsi_target_core.h
+> @@ -566,10 +566,11 @@ struct iscsi_conn {
+>         struct socket           *sock;
+>         void                    (*orig_data_ready)(struct sock *);
+>         void                    (*orig_state_change)(struct sock *);
+> -#define LOGIN_FLAGS_READ_ACTIVE                1
+> -#define LOGIN_FLAGS_CLOSED             2
+> -#define LOGIN_FLAGS_READY              4
+> -#define LOGIN_FLAGS_INITIAL_PDU                8
+> +#define LOGIN_FLAGS_READY              0
+> +#define LOGIN_FLAGS_INITIAL_PDU                1
+> +#define LOGIN_FLAGS_READ_ACTIVE                2
+> +#define LOGIN_FLAGS_WRITE_ACTIVE       3
+> +#define LOGIN_FLAGS_CLOSED             4
+> 
 
-
-On 4/21/20 7:24 PM, Leon Romanovsky wrote:
-> From: Jason Gunthorpe <jgg@mellanox.com>
-> 
-> When a client is added it isn't allowed to fail, but all the client's have
-> various failure paths within their add routines.
-> 
-> This creates the very fringe condition where the client was added, failed
-> during add and didn't set the client_data. The core code will then still
-> call other client_data centric ops like remove(), rename(), get_nl_info(),
-> and get_net_dev_by_params() with NULL client_data - which is confusing and
-> unexpected.
-> 
-> If the add() callback fails, then do not call any more client ops for the
-> device, even remove.
-> 
-> Remove all the now redundant checks for NULL client_data in ops callbacks.
-> 
-> Update all the add() callbacks to return error codes
-> appropriately. EOPNOTSUPP is used for cases where the ULP does not support
-> the ib_device - eg because it only works with IB.
-> 
-> Signed-off-by: Jason Gunthorpe <jgg@mellanox.com>
-> Signed-off-by: Leon Romanovsky <leonro@mellanox.com>
-> ---
->  drivers/infiniband/core/cm.c                  | 24 ++++++++++--------
->  drivers/infiniband/core/cma.c                 | 23 +++++++++--------
->  drivers/infiniband/core/device.c              | 16 ++++++++++--
->  drivers/infiniband/core/mad.c                 | 17 ++++++++++---
->  drivers/infiniband/core/multicast.c           | 12 ++++-----
->  drivers/infiniband/core/sa_query.c            | 22 ++++++++--------
->  drivers/infiniband/core/user_mad.c            | 22 ++++++++--------
->  drivers/infiniband/core/uverbs_main.c         | 24 +++++++++---------
->  drivers/infiniband/ulp/ipoib/ipoib_main.c     | 15 ++++-------
->  .../infiniband/ulp/opa_vnic/opa_vnic_vema.c   | 12 ++++-----
->  drivers/infiniband/ulp/srp/ib_srp.c           | 21 ++++++++--------
->  drivers/infiniband/ulp/srpt/ib_srpt.c         | 25 ++++++++-----------
->  include/rdma/ib_verbs.h                       |  2 +-
->  net/rds/ib.c                                  | 21 ++++++++++------
->  net/smc/smc_ib.c                              | 10 +++-----
->  15 files changed, 142 insertions(+), 124 deletions(-)
-> 
-
-For the net/smc part:
-Acked-by: Ursula Braun <ubraun@linux.ibm.com>
+Looks ok to me.
 
