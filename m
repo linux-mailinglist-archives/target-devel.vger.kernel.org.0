@@ -2,84 +2,140 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E76801B6D2C
-	for <lists+target-devel@lfdr.de>; Fri, 24 Apr 2020 07:25:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF2541B7348
+	for <lists+target-devel@lfdr.de>; Fri, 24 Apr 2020 13:39:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726028AbgDXFZV (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 24 Apr 2020 01:25:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42292 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725769AbgDXFZU (ORCPT
+        id S1726798AbgDXLjV (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 24 Apr 2020 07:39:21 -0400
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:46559 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726247AbgDXLjV (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 24 Apr 2020 01:25:20 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96B4BC09B045
-        for <target-devel@vger.kernel.org>; Thu, 23 Apr 2020 22:25:20 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id d15so7595336wrx.3
-        for <target-devel@vger.kernel.org>; Thu, 23 Apr 2020 22:25:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=s3xlhYgS/zLqigYSC49t4/AriSS2ZjycNOlqxwfYVsk=;
-        b=Bz8AYVwWyABZPDn+Tvm7H7x613yeA324uXHkMcDaqBqprAuMlh+t9Ouz934pUlerqe
-         n1E2a9ulEdqITvo6HwecBknJ9BX9V/73WrKYCSd0ZlalXJq4XkgBUEK2Ub4xKbNGLM9P
-         1/D/TQA5FlmUWvua0j6YXVeLRzPENcgLkde2O43FW4lYhanDXDxR5EL3+CDxDPBza+d+
-         RtmYeDgmmogFgEWmnvqfT23Ot4g2o8+zn7u7ZJmcX8mS8NTqLDK6LG7LcISU0OrC5J0P
-         0ny125Bc/2gInL7Lr+7RTW8ypQC19DlTAfGGbTcWT5PIe7QYhBEgOnrv+B3e80AphlKs
-         Ht9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=s3xlhYgS/zLqigYSC49t4/AriSS2ZjycNOlqxwfYVsk=;
-        b=ijMWM0CwGwBPsdcbXiJtth/5kudvy0oqOGIB4bX1XPjgLXPfLNNNIbaQJ5ZK8l+PRc
-         3/K2J+m3eyvJAdNWDQVRz83BeK/fY/g8fksQtqNdPgMdXZY2ALx83rRWza4xQ6/9wh08
-         3rdvco9n1e/WMRndpw6FdMRjv9d6DJc+NLbFQGEfzWWa/am1q/66Rj8Owxx8gQVcfNBZ
-         E1fAlQbmL6TdMF+2ZTNX/Pm7DyU6CRu5mNTE1FJjNE/pkIx3sKIP0CvI5fZsun4/5g8Q
-         QIgFoi5iUzpMVHH0VHvWm5tS5/faMTgqb+UDcVMX+jVPnrXDtZkh8Jqq0BjHTQVKUrR9
-         YcGQ==
-X-Gm-Message-State: AGi0Pub7+ZK8ml1rrouB81itmf/sCq6+bdwUF2F+5PZ/6kUVVezLEqQL
-        5naMbx2LltRPtoOCGa4DjbOcaE2o8KZ0jEaNq2dH4A==
-X-Google-Smtp-Source: APiQypJkodcSlQExGqyQ0SRDtm4MoJrCEMgXxWF7r2P5IyrMTrnqwzbRvItPW5KmrilVbf+Rs1aU81saFKgpjh5PDcc=
-X-Received: by 2002:adf:aa8e:: with SMTP id h14mr9598857wrc.371.1587705918162;
- Thu, 23 Apr 2020 22:25:18 -0700 (PDT)
+        Fri, 24 Apr 2020 07:39:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1587728360;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=xxxLi1TfzeYigzHm669zYEJS2CbEA2mBx6261qZIdqE=;
+        b=VN6P31Z7XiGgGPDY7FkvtzDUub+YvwXTKvwju81gmFnbLefsO26TUUpInXeB3q59Wg7Ako
+        TR5ljJj2O0EsA42y8Cde83G8WoE0E2/+ThO4+v+Sl5dZ1H21uE7clEikL+A7Xa9wpdlwNs
+        nDQyzgJUj9zsYc+15raccYcxtEizHlk=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-10-0lCv8dA9MfeVZnUkf7QdLw-1; Fri, 24 Apr 2020 07:39:16 -0400
+X-MC-Unique: 0lCv8dA9MfeVZnUkf7QdLw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9BC8C100AA23;
+        Fri, 24 Apr 2020 11:39:15 +0000 (UTC)
+Received: from nangaparbat.redhat.com (unknown [10.40.194.154])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 31E3E605CF;
+        Fri, 24 Apr 2020 11:39:13 +0000 (UTC)
+From:   Maurizio Lombardi <mlombard@redhat.com>
+To:     martin.petersen@oracle.com
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+Subject: [PATCH] target: iscsi: remove the iscsi_data_count structure
+Date:   Fri, 24 Apr 2020 13:39:13 +0200
+Message-Id: <20200424113913.17237-1-mlombard@redhat.com>
 MIME-Version: 1.0
-References: <20200424035843.5914-1-houpu@bytedance.com> <20200424035843.5914-3-houpu@bytedance.com>
- <DM6PR04MB4972B3BE33D83FE7BA78570986D00@DM6PR04MB4972.namprd04.prod.outlook.com>
-In-Reply-To: <DM6PR04MB4972B3BE33D83FE7BA78570986D00@DM6PR04MB4972.namprd04.prod.outlook.com>
-From:   Hou Pu <houpu@bytedance.com>
-Date:   Fri, 24 Apr 2020 13:25:07 +0800
-Message-ID: <CAO9YExvkEAYstXxmE=MR5aXGYZSO6pmZHC+zwfiURi1yH3-JMQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] iscsi-target: Fix inconsistent debug message in __iscsi_target_sk_check_close
-To:     Chaitanya Kulkarni <Chaitanya.Kulkarni@wdc.com>
-Cc:     "martin.petersen@oracle.com" <martin.petersen@oracle.com>,
-        "mchristi@redhat.com" <mchristi@redhat.com>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Transfer-Encoding: quoted-printable
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Fri, Apr 24, 2020 at 12:16 PM Chaitanya Kulkarni
-<Chaitanya.Kulkarni@wdc.com> wrote:
->
-> Ho
->
-> On 04/23/2020 08:59 PM, Hou Pu wrote:
-> > commit 25cdda95fda78d22d44157da15aa7ea34be3c804
-> > Author: Nicholas Bellinger<nab@linux-iscsi.org>
-> > Date:   Wed May 24 21:47:09 2017 -0700
-> >
-> >      iscsi-target: Fix initial login PDU asynchronous socket close OOPs
->
-> Thanks for the patch.
->
-> Did you get a chance to run checkpatch.pl on this patch ?
+This patch removes the iscsi_data_count structure and the
+iscsit_do_rx_data() function because they are used only by rx_data()
 
-Will fix it. Sorry for the stupid format error.
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+---
+ drivers/target/iscsi/iscsi_target_util.c | 30 +++++-------------------
+ include/target/iscsi/iscsi_target_core.h | 10 --------
+ 2 files changed, 6 insertions(+), 34 deletions(-)
 
-Thanks,
-Hou
+diff --git a/drivers/target/iscsi/iscsi_target_util.c b/drivers/target/is=
+csi/iscsi_target_util.c
+index fae85bfd790e..25677e2865be 100644
+--- a/drivers/target/iscsi/iscsi_target_util.c
++++ b/drivers/target/iscsi/iscsi_target_util.c
+@@ -1236,18 +1236,20 @@ void iscsit_print_session_params(struct iscsi_ses=
+sion *sess)
+ 	iscsi_dump_sess_ops(sess->sess_ops);
+ }
+=20
+-static int iscsit_do_rx_data(
++int rx_data(
+ 	struct iscsi_conn *conn,
+-	struct iscsi_data_count *count)
++	struct kvec *iov,
++	int iov_count,
++	int data)
+ {
+-	int data =3D count->data_length, rx_loop =3D 0, total_rx =3D 0;
++	int rx_loop =3D 0, total_rx =3D 0;
+ 	struct msghdr msg;
+=20
+ 	if (!conn || !conn->sock || !conn->conn_ops)
+ 		return -1;
+=20
+ 	memset(&msg, 0, sizeof(struct msghdr));
+-	iov_iter_kvec(&msg.msg_iter, READ, count->iov, count->iov_count, data);
++	iov_iter_kvec(&msg.msg_iter, READ, iov, iov_count, data);
+=20
+ 	while (msg_data_left(&msg)) {
+ 		rx_loop =3D sock_recvmsg(conn->sock, &msg, MSG_WAITALL);
+@@ -1264,26 +1266,6 @@ static int iscsit_do_rx_data(
+ 	return total_rx;
+ }
+=20
+-int rx_data(
+-	struct iscsi_conn *conn,
+-	struct kvec *iov,
+-	int iov_count,
+-	int data)
+-{
+-	struct iscsi_data_count c;
+-
+-	if (!conn || !conn->sock || !conn->conn_ops)
+-		return -1;
+-
+-	memset(&c, 0, sizeof(struct iscsi_data_count));
+-	c.iov =3D iov;
+-	c.iov_count =3D iov_count;
+-	c.data_length =3D data;
+-	c.type =3D ISCSI_RX_DATA;
+-
+-	return iscsit_do_rx_data(conn, &c);
+-}
+-
+ int tx_data(
+ 	struct iscsi_conn *conn,
+ 	struct kvec *iov,
+diff --git a/include/target/iscsi/iscsi_target_core.h b/include/target/is=
+csi/iscsi_target_core.h
+index a49d37140a64..c2de9274c57a 100644
+--- a/include/target/iscsi/iscsi_target_core.h
++++ b/include/target/iscsi/iscsi_target_core.h
+@@ -301,16 +301,6 @@ struct iscsi_queue_req {
+ 	struct list_head	qr_list;
+ };
+=20
+-struct iscsi_data_count {
+-	int			data_length;
+-	int			sync_and_steering;
+-	enum data_count_type	type;
+-	u32			iov_count;
+-	u32			ss_iov_count;
+-	u32			ss_marker_count;
+-	struct kvec		*iov;
+-};
+-
+ struct iscsi_param_list {
+ 	bool			iser;
+ 	struct list_head	param_list;
+--=20
+2.25.3
+
