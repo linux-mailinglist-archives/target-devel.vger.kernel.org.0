@@ -2,27 +2,27 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 212E21B74A4
-	for <lists+target-devel@lfdr.de>; Fri, 24 Apr 2020 14:28:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9B001B746F
+	for <lists+target-devel@lfdr.de>; Fri, 24 Apr 2020 14:26:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728422AbgDXMY2 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 24 Apr 2020 08:24:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55030 "EHLO mail.kernel.org"
+        id S1728058AbgDXM0W (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 24 Apr 2020 08:26:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55812 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728411AbgDXMY0 (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Fri, 24 Apr 2020 08:24:26 -0400
+        id S1727039AbgDXMYw (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Fri, 24 Apr 2020 08:24:52 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 91BD72168B;
-        Fri, 24 Apr 2020 12:24:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2FDC520776;
+        Fri, 24 Apr 2020 12:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587731066;
-        bh=O2TyYFxh3MUYpgMEMCMs5+7mz4YEVwlq/xM/fCquLs4=;
+        s=default; t=1587731092;
+        bh=oN4xXc//JXVyLYe37q429CpdJ1zd5XafytMl0uRgsEU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RuQoynFwHbNXdDkR7N63Gmtgt6RuoYa7cinfg4iIimC6gqIwlnN7BMCB5aVin9VVv
-         0ISqU8HOlhDBa37t45SXMZYfVnZ2NSMvmjhWf1MtsyHEAXVQPviNU2nlap1tFLGSd3
-         XlVf3fH3h/nPOED55B8ikM2tCWJFdExKBDnfwHyw=
+        b=WnZwOAlRuuxN39Yiz1xiGq7RA50BQKboAFMqGdNM+TXZD3dZKBmkw7Ym3Mvkl5Wrv
+         A5w8ILUK8agsV7TSnBkNEbdwQ8wgoOS9OOIfIJ6fdY52Hsya1dQhxnXaCQRPuXBowL
+         OP/zYDeKD1/LblCorSyzbf1xDodZY5AeP6ebCIXc=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
@@ -30,12 +30,12 @@ Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
         target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 05/21] scsi: target: fix PR IN / READ FULL STATUS for FC
-Date:   Fri, 24 Apr 2020 08:24:03 -0400
-Message-Id: <20200424122419.10648-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 04/13] scsi: target: fix PR IN / READ FULL STATUS for FC
+Date:   Fri, 24 Apr 2020 08:24:37 -0400
+Message-Id: <20200424122447.10882-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200424122419.10648-1-sashal@kernel.org>
-References: <20200424122419.10648-1-sashal@kernel.org>
+In-Reply-To: <20200424122447.10882-1-sashal@kernel.org>
+References: <20200424122447.10882-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -66,10 +66,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/target/target_core_fabric_lib.c b/drivers/target/target_core_fabric_lib.c
-index 95aa47ac4dcd2..f8621fe673767 100644
+index 6e75095af6818..2ecb2f7042a13 100644
 --- a/drivers/target/target_core_fabric_lib.c
 +++ b/drivers/target/target_core_fabric_lib.c
-@@ -76,7 +76,7 @@ static int fc_get_pr_transport_id(
+@@ -75,7 +75,7 @@ static int fc_get_pr_transport_id(
  	 * encoded TransportID.
  	 */
  	ptr = &se_nacl->initiatorname[0];
