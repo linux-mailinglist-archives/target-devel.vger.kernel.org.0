@@ -2,146 +2,82 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AD511B7C9A
-	for <lists+target-devel@lfdr.de>; Fri, 24 Apr 2020 19:23:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B7201B7DAA
+	for <lists+target-devel@lfdr.de>; Fri, 24 Apr 2020 20:16:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726753AbgDXRXo (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 24 Apr 2020 13:23:44 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:40424 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726698AbgDXRXn (ORCPT
+        id S1726920AbgDXSQA (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 24 Apr 2020 14:16:00 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:35724 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726793AbgDXSQA (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 24 Apr 2020 13:23:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1587749022;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Eto8bBOwPEFUS6RXOzvDJP1PcQd24OPhNFrNG1QCDdM=;
-        b=RHTPCNNniLNCSvIIe9cZGbNom5UXUWeTzgNXD6axrOXgBuDlV3Ww2/dMsf2SI1ZafReon8
-        PRSkR8lVNQdUbhJ6NfPpuN2hUU2Petzmv8dJW9qz3Fbib9WVxXIPYbkIJbSVNQtAROhZRz
-        EiW/DV7J+Ygf5d6MQmkl1KpEt3AhW8I=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-512-kShV457eOau1SNr1kZWgCw-1; Fri, 24 Apr 2020 13:23:40 -0400
-X-MC-Unique: kShV457eOau1SNr1kZWgCw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7B1DE45F;
-        Fri, 24 Apr 2020 17:23:39 +0000 (UTC)
-Received: from [10.10.117.115] (ovpn-117-115.rdu2.redhat.com [10.10.117.115])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 3A38827CCD;
-        Fri, 24 Apr 2020 17:23:35 +0000 (UTC)
+        Fri, 24 Apr 2020 14:16:00 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03OIBOPw076720;
+        Fri, 24 Apr 2020 18:15:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2020-01-29;
+ bh=BDfJYxzuKdGQR1Psy/5NXzR9n80TxBIH1ba2DbHkGpg=;
+ b=bJSSulaba2yJdgFgh7RN1kGeOJu44tktXBOAg5G+d0cxJ67f8NdAauRuwG9yVaXS/EwL
+ PiD9aIlt1zzr/iOswtGCpuJyhP44xzyMJKWS6kVHfkrMCib44CTabBiLFnrY9Hd0G6O3
+ nyBfPiOjiyDJlqYl4U93yFoGZPGOWTpB4dCXGWzJXLQtN9XPN9+LOIUPmdRh2t7M/jd4
+ ms7alXnEF7fNSA1tFfNspZagWlLk2omQy7mCVuqSlsl4x6YjCtX5kjb9EZ+70z1kzsM2
+ K1eNVq2RAnFC4inXiIIMui3he3R4ElcBLadCRc7WZ3jOWwh7GUM86iYg0bqo4kEpS0ZD Ew== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 30k7qe8ap1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 24 Apr 2020 18:15:57 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03OICiTu185606;
+        Fri, 24 Apr 2020 18:15:56 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 30gbbqty50-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 24 Apr 2020 18:15:56 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03OIFtk8014708;
+        Fri, 24 Apr 2020 18:15:55 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 24 Apr 2020 11:15:55 -0700
+To:     Maurizio Lombardi <mlombard@redhat.com>
+Cc:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
 Subject: Re: [PATCH] target: iscsi: remove the iscsi_data_count structure
-To:     Maurizio Lombardi <mlombard@redhat.com>, martin.petersen@oracle.com
-Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
 References: <20200424113913.17237-1-mlombard@redhat.com>
-From:   Mike Christie <mchristi@redhat.com>
-Message-ID: <844cc331-22a2-ed33-d9cd-fffe543a9b64@redhat.com>
-Date:   Fri, 24 Apr 2020 12:23:34 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+Date:   Fri, 24 Apr 2020 14:15:53 -0400
+In-Reply-To: <20200424113913.17237-1-mlombard@redhat.com> (Maurizio Lombardi's
+        message of "Fri, 24 Apr 2020 13:39:13 +0200")
+Message-ID: <yq1imhoda1y.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20200424113913.17237-1-mlombard@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9601 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0
+ suspectscore=0 mlxlogscore=999 adultscore=0 mlxscore=0 phishscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004240140
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9601 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 lowpriorityscore=0
+ priorityscore=1501 suspectscore=0 mlxlogscore=999 phishscore=0
+ impostorscore=0 mlxscore=0 clxscore=1011 malwarescore=0 adultscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004240139
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 4/24/20 6:39 AM, Maurizio Lombardi wrote:
+
+Maurizio,
+
 > This patch removes the iscsi_data_count structure and the
 > iscsit_do_rx_data() function because they are used only by rx_data()
-> 
-> Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-> ---
->  drivers/target/iscsi/iscsi_target_util.c | 30 +++++-------------------
->  include/target/iscsi/iscsi_target_core.h | 10 --------
->  2 files changed, 6 insertions(+), 34 deletions(-)
-> 
-> diff --git a/drivers/target/iscsi/iscsi_target_util.c b/drivers/target/iscsi/iscsi_target_util.c
-> index fae85bfd790e..25677e2865be 100644
-> --- a/drivers/target/iscsi/iscsi_target_util.c
-> +++ b/drivers/target/iscsi/iscsi_target_util.c
-> @@ -1236,18 +1236,20 @@ void iscsit_print_session_params(struct iscsi_session *sess)
->  	iscsi_dump_sess_ops(sess->sess_ops);
->  }
->  
-> -static int iscsit_do_rx_data(
-> +int rx_data(
->  	struct iscsi_conn *conn,
-> -	struct iscsi_data_count *count)
-> +	struct kvec *iov,
-> +	int iov_count,
-> +	int data)
->  {
-> -	int data = count->data_length, rx_loop = 0, total_rx = 0;
-> +	int rx_loop = 0, total_rx = 0;
->  	struct msghdr msg;
->  
->  	if (!conn || !conn->sock || !conn->conn_ops)
->  		return -1;
->  
->  	memset(&msg, 0, sizeof(struct msghdr));
-> -	iov_iter_kvec(&msg.msg_iter, READ, count->iov, count->iov_count, data);
-> +	iov_iter_kvec(&msg.msg_iter, READ, iov, iov_count, data);
->  
->  	while (msg_data_left(&msg)) {
->  		rx_loop = sock_recvmsg(conn->sock, &msg, MSG_WAITALL);
-> @@ -1264,26 +1266,6 @@ static int iscsit_do_rx_data(
->  	return total_rx;
->  }
->  
-> -int rx_data(
-> -	struct iscsi_conn *conn,
-> -	struct kvec *iov,
-> -	int iov_count,
-> -	int data)
-> -{
-> -	struct iscsi_data_count c;
-> -
-> -	if (!conn || !conn->sock || !conn->conn_ops)
-> -		return -1;
-> -
-> -	memset(&c, 0, sizeof(struct iscsi_data_count));
-> -	c.iov = iov;
-> -	c.iov_count = iov_count;
-> -	c.data_length = data;
-> -	c.type = ISCSI_RX_DATA;
-> -
-> -	return iscsit_do_rx_data(conn, &c);
-> -}
-> -
->  int tx_data(
->  	struct iscsi_conn *conn,
->  	struct kvec *iov,
-> diff --git a/include/target/iscsi/iscsi_target_core.h b/include/target/iscsi/iscsi_target_core.h
-> index a49d37140a64..c2de9274c57a 100644
-> --- a/include/target/iscsi/iscsi_target_core.h
-> +++ b/include/target/iscsi/iscsi_target_core.h
-> @@ -301,16 +301,6 @@ struct iscsi_queue_req {
->  	struct list_head	qr_list;
->  };
->  
-> -struct iscsi_data_count {
-> -	int			data_length;
-> -	int			sync_and_steering;
-> -	enum data_count_type	type;
-> -	u32			iov_count;
-> -	u32			ss_iov_count;
-> -	u32			ss_marker_count;
-> -	struct kvec		*iov;
-> -};
-> -
->  struct iscsi_param_list {
->  	bool			iser;
->  	struct list_head	param_list;
-> 
 
-Reviewed-by: Mike Christie <mchristi@redhat.com>
+Applied to 5.8/scsi-queue, thanks!
 
+-- 
+Martin K. Petersen	Oracle Linux Engineering
