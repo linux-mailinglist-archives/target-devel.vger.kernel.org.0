@@ -2,118 +2,85 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 869FA1B5F45
-	for <lists+target-devel@lfdr.de>; Thu, 23 Apr 2020 17:32:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D226B1B6C56
+	for <lists+target-devel@lfdr.de>; Fri, 24 Apr 2020 05:59:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729081AbgDWPbo (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 23 Apr 2020 11:31:44 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:32992 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729077AbgDWPbo (ORCPT
+        id S1726436AbgDXD7M (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 23 Apr 2020 23:59:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57180 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726152AbgDXD7M (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 23 Apr 2020 11:31:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1587655902;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=zNIQh0ll+orShoex0gyZ4gPW1qdjmjrr035iiXUT4Rw=;
-        b=eaJRMiMpHfY52gj+qcU+pm4YQyIzZasQw7h1Jt9S5PdsEoos5AqVnYoEZBcPBxZe+XsfyL
-        N82latIpaOeJsAbP6i/O7w1KwB6rtN+sYLeSbLG7iJHxRL+dXAOyUGkMMZbAdvfAxI9I3f
-        OhIehJvxx7v0GoX47/7uLwBorH3jckc=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-286-1fMKn55HMAWFYXHWwcoRTQ-1; Thu, 23 Apr 2020 11:31:40 -0400
-X-MC-Unique: 1fMKn55HMAWFYXHWwcoRTQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6BF9B107ACF3;
-        Thu, 23 Apr 2020 15:31:39 +0000 (UTC)
-Received: from [10.10.119.77] (ovpn-119-77.rdu2.redhat.com [10.10.119.77])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9FA2C5D714;
-        Thu, 23 Apr 2020 15:31:38 +0000 (UTC)
-Subject: Re: [External] Re: [PATCH 1/2] iscsi-target: fix login error when
- receiving is too fast
-To:     Hou Pu <houpu@bytedance.com>
-Cc:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org
-References: <20200415080819.27327-1-houpu@bytedance.com>
- <20200415080819.27327-2-houpu@bytedance.com>
- <54e574b1-10b4-4385-11fb-773ef152fc2c@redhat.com>
- <CAO9YExv2kWp=x+mMaWeOrYmu4c6gTu0PeBSkOwHgr7ZW9MywSg@mail.gmail.com>
-From:   Mike Christie <mchristi@redhat.com>
-Message-ID: <53fa9766-21ea-72ad-818c-61e895e919ae@redhat.com>
-Date:   Thu, 23 Apr 2020 10:31:38 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-MIME-Version: 1.0
-In-Reply-To: <CAO9YExv2kWp=x+mMaWeOrYmu4c6gTu0PeBSkOwHgr7ZW9MywSg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+        Thu, 23 Apr 2020 23:59:12 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B307EC09B046
+        for <target-devel@vger.kernel.org>; Thu, 23 Apr 2020 20:59:10 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id x2so445015pfx.7
+        for <target-devel@vger.kernel.org>; Thu, 23 Apr 2020 20:59:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id;
+        bh=aKsqWMMF7XAjoR4qcP662Fe48hXXc7Lfc4rPTQqKh9o=;
+        b=j5/WDfoRPCLBn1WQ1c0L6jqcy6WQKwUgIPItCEj01VYZseeyqXJPqHsKczRUkrrm5/
+         5xqKigrsIQ/xiEudgVB3vcLyvmFMiloSYZsOb9gLtOJEbPQcsgjWpKrdiGX/Vrs6gUzv
+         3BLBcg6NnxizxZuvBFGCtS+jKkq1bJW2t7EbQxtTQ/9v241gNCGko1mKHjkYkgWrmmUt
+         4QeuYo0nHVzjyq67PWKGTzD4ubtvwDzxChO/LgXTLbpONFe1sUv/h4tKBTiyFVbQrP2Z
+         pp20yse0r33YK7eQSQMp1bhZ1Bm48xQM++/MYbNuURnm5s1IrfuMtYQ8QnWyRfRAGqav
+         PDsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=aKsqWMMF7XAjoR4qcP662Fe48hXXc7Lfc4rPTQqKh9o=;
+        b=I9dR1lRESyzk4qFSN6pOIojFig8NgR8z0SojdduZRDKFh+XKZbuYV1TJRiMcXAsxMj
+         yT7fcSusV+mTINAqQLn2p5z8HX4dK2CKMgFAXxTuLKRSaC+0D2l4TuyEVD2oaLKik/ug
+         HrK+vJOwyWQOsNe0tbqht0gka0uYhm4lVBm1bOtfGxsLet5teXutz5ykFGrNIL6s4Bjv
+         07SltmI5GxkKpOkOqQMqPiA98mKoRFaAIqkJK9B6hGJSt1mlHvd8GhO5xDO+JqNxi2nk
+         tNZCgVSABrxueuxeP7LxeEj2wUrR87uvLnBqShWamIWAzwKg5AP55DGfJwdp7J8tMHNW
+         mP5A==
+X-Gm-Message-State: AGi0PuYBtsH3HH/mIP6AIZWeRaGdPrnDW8FQY9elhG0is8kotBE7p7Yh
+        gr8+5G28+KIF15/WgFosm60Sgg==
+X-Google-Smtp-Source: APiQypKWZLh/0XqqNuuWKjfHAZlWJhkXUX+e2woAMrVxhdNM1AcpFWit0BuA/jGbd3dZQrxSG++WkQ==
+X-Received: by 2002:a63:f48:: with SMTP id 8mr7400137pgp.184.1587700750199;
+        Thu, 23 Apr 2020 20:59:10 -0700 (PDT)
+Received: from debian.bytedance.net ([61.120.150.75])
+        by smtp.gmail.com with ESMTPSA id h14sm3624577pjc.46.2020.04.23.20.59.07
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 23 Apr 2020 20:59:09 -0700 (PDT)
+From:   Hou Pu <houpu@bytedance.com>
+To:     martin.petersen@oracle.com, mchristi@redhat.com
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        Hou Pu <houpu@bytedance.com>
+Subject: [PATCH v2 0/2] iscsi-target: fix login error when receiving is too fast
+Date:   Thu, 23 Apr 2020 23:58:41 -0400
+Message-Id: <20200424035843.5914-1-houpu@bytedance.com>
+X-Mailer: git-send-email 2.11.0
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 4/22/20 11:24 PM, Hou Pu wrote:
->>> +     /*
->>> +      * LOGIN_FLAGS_READ_ACTIVE is cleared so that sk_data_ready
->>> +      * could be trigger again after this.
->>> +      *
->>> +      * LOGIN_FLAGS_WRITE_ACTIVE is cleared after we successfully
->>> +      * processing a login pdu. So that sk_state_chage could do login
->>
->> I think we need to drop "ing" from processing and do:
->>
->> process a login pdu, so that sk_state_chage could do login
->>
-> Sure. Thanks for helping me with my language. ^-^
-> Will change this in v2.
->>
-> 
->>> diff --git a/include/target/iscsi/iscsi_target_core.h b/include/target/iscsi/iscsi_target_core.h
->>> index 591cd9e4692c..0c2dfc81bf8b 100644
->>> --- a/include/target/iscsi/iscsi_target_core.h
->>> +++ b/include/target/iscsi/iscsi_target_core.h
->>> @@ -570,6 +570,7 @@ struct iscsi_conn {
->>>  #define LOGIN_FLAGS_CLOSED           2
->>>  #define LOGIN_FLAGS_READY            4
->>>  #define LOGIN_FLAGS_INITIAL_PDU              8
->>> +#define LOGIN_FLAGS_WRITE_ACTIVE     12
->>
->> 12 works but seems odd. The current code uses test/set/clear_bit, so we
->> want these to be:
->>
->> #define LOGIN_FLAGS_CLOSED 0
->> #define LOGIN_FLAGS_READY 1
->> #define LOGIN_FLAGS_INITIAL_PDU 2
->> #define LOGIN_FLAGS_WRITE_ACTIVE 3
->>
->> right?
->>
-> Yes, it is a little odd. What about this? I also changed the order of them
-> to be in sequence that happened.
-> 
-> --- a/include/target/iscsi/iscsi_target_core.h
-> +++ b/include/target/iscsi/iscsi_target_core.h
-> @@ -566,10 +566,11 @@ struct iscsi_conn {
->         struct socket           *sock;
->         void                    (*orig_data_ready)(struct sock *);
->         void                    (*orig_state_change)(struct sock *);
-> -#define LOGIN_FLAGS_READ_ACTIVE                1
-> -#define LOGIN_FLAGS_CLOSED             2
-> -#define LOGIN_FLAGS_READY              4
-> -#define LOGIN_FLAGS_INITIAL_PDU                8
-> +#define LOGIN_FLAGS_READY              0
-> +#define LOGIN_FLAGS_INITIAL_PDU                1
-> +#define LOGIN_FLAGS_READ_ACTIVE                2
-> +#define LOGIN_FLAGS_WRITE_ACTIVE       3
-> +#define LOGIN_FLAGS_CLOSED             4
-> 
+Hi,
+We encountered "iSCSI Login negotiation failed" several times.
+After enable debug log in iscsi_target_nego.c of iSCSI target.
+Error shows:
+  "Got LOGIN_FLAGS_READ_ACTIVE=1, conn: xxxxxxxxxx >>>>"
 
-Looks ok to me.
+Patch 1 is trying to fix this problem. Please see comment in patch 1
+for details.
+
+Changes from v2:
+* Improve comments in patch #1.
+* Change bit possition of login_flags in patch #1.
+
+Hou Pu (2):
+  iscsi-target: fix login error when receiving is too fast
+  iscsi-target: Fix inconsistent debug message in
+    __iscsi_target_sk_check_close
+
+ drivers/target/iscsi/iscsi_target_nego.c | 31 ++++++++++++++++++++++++++-----
+ include/target/iscsi/iscsi_target_core.h |  9 +++++----
+ 2 files changed, 31 insertions(+), 9 deletions(-)
+
+-- 
+2.11.0
 
