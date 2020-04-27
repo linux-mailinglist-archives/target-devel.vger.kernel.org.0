@@ -2,63 +2,78 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D91E11BA2DA
-	for <lists+target-devel@lfdr.de>; Mon, 27 Apr 2020 13:43:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 989021BA758
+	for <lists+target-devel@lfdr.de>; Mon, 27 Apr 2020 17:08:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726932AbgD0LnE (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 27 Apr 2020 07:43:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36364 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726881AbgD0LnD (ORCPT
+        id S1726539AbgD0PIj (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 27 Apr 2020 11:08:39 -0400
+Received: from mail1.bemta26.messagelabs.com ([85.158.142.114]:44634 "EHLO
+        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728151AbgD0PIj (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 27 Apr 2020 07:43:03 -0400
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E0D3C061BD3
-        for <target-devel@vger.kernel.org>; Mon, 27 Apr 2020 04:43:03 -0700 (PDT)
-Received: by mail-io1-xd43.google.com with SMTP id u11so18495975iow.4
-        for <target-devel@vger.kernel.org>; Mon, 27 Apr 2020 04:43:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=F+HbPvxQnRBlqBFKy/zn6110uxUPAWY6eSsMY6+ckPY=;
-        b=Q+W4iTaiRCbVLCOdLsvBd3TUEVy9eFeNJR4cVElhS8pedfvohX3pOIaO4/NoMJKM7c
-         qTfXKaYtjkdMAgvbBm3oKzbSeKTA/Wk92cFdwpLmz/c1agDOIVuO8GdcIsv3CxUMPkfh
-         cxd6Y1uLdleWQ2Z+4zrFk+F9w+XIF1GYDsvWjRw2iN2GSHvSY6ZWB40IHQbFI/uM778F
-         GrI7lnv9y8wEFQ/7bPqqCgWItVlB+qe7KVsruWgzxK4BZAIuZyjukc8oNaQrVuYwY+eL
-         WZt5xjopZWJvDS8/fmxfjTONB6PsQ/LYuECKdmNXBzd05zaoUZ67Q+vGr3XVKg3MhPqn
-         XJSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=F+HbPvxQnRBlqBFKy/zn6110uxUPAWY6eSsMY6+ckPY=;
-        b=dk+65UmPS6kaquux+5wHuxVvUTVuUhXi95myk5v9foNp39P4e9KwQxZ4girw2ZZ2xO
-         /6+LVHM2RS69G+uXkOYHgaNLVLzQamFB+1Xg6q6YQxdZ5MhzDeNELViKTWVUCnmgOYNR
-         p+indGZBcHpS5+ytWcemMstT+IPuu8iVjGvVt2Q8xSaThMnPvACDtkMortqQ/lMUdG0D
-         5wG/kjgutwhn/vTO3aNw7kNoifqoV+p4bq9L4PtLiWj+DWd/os57HgqkncXmLemyoYht
-         bEiVUOZPyb5pPbILWbRJIYvRF3yM068eEBgnPS82azNK+FGjZMePLA/okxyPyVXQIaHZ
-         hhrw==
-X-Gm-Message-State: AGi0PuZSF5qGJkGTDnW2H6E+tnnMOrKrkx0Ig447xoy/R9fv3PusyhCd
-        VstTKaaAvSPNupGUJApiFgj5ymrtn3+uxRUGCjg=
-X-Google-Smtp-Source: APiQypIIkBoCxAOe53k9Bkf/HUZrSH8JlbuUXzd/2+8vl7tJ1kQlnn3W7alPkL3BZmDi/tq+9o+zmAgIW6ZVAAITDUQ=
-X-Received: by 2002:a5d:858f:: with SMTP id f15mr20469275ioj.113.1587987782829;
- Mon, 27 Apr 2020 04:43:02 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a5d:8f89:0:0:0:0:0 with HTTP; Mon, 27 Apr 2020 04:43:02
- -0700 (PDT)
-Reply-To: convy0090@gmail.com
-From:   Ruben CONVY <andrewboccc@gmail.com>
-Date:   Mon, 27 Apr 2020 12:43:02 +0100
-Message-ID: <CAHVC0+DoC414FmXis5try6XkOm7Xqog1VEkQT3VBV4AxF3h-Eg@mail.gmail.com>
-Subject: Why continued silence 2
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        Mon, 27 Apr 2020 11:08:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
+        s=200619tsfj; t=1588000115; i=@ts.fujitsu.com;
+        bh=mot6rwa2pu6rYR87VBC76TS1KVdEXCdzKIm7GxDPoGA=;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        b=rT0996qBBkR5YKqGQtjItC45dBikCsFp1rVna6+Ax0RgWIO5586uWEZrOxYIUEgFE
+         TLngLaNYzaj18wNIHntGoSxfySEJdM0xCxltod2QFuc9RmvbLr1Q2CuMPuaKnBnJH3
+         856T+NrEsHAfBIwYCwdxd/KnjqgZiBL21YDm3Xsfc5AmlQywR033CXNyCdiQFhLpMh
+         BKJJmYBjjU1gJjdGkWvUu8Kr5Q50tqx8FKk389oH+JBNrxYCrK8Z7oP2O7R2OC7Yw9
+         1UDFtT1oi0qfpIDFHbAJLNKHmZxPWG4xLTkmS4qdqaru2S0X1uBC7NOhSgcxac53tV
+         JK9EbN0SNmgyw==
+Received: from [100.113.6.103] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-3.bemta.az-b.eu-central-1.aws.symcld.net id 01/80-40390-375F6AE5; Mon, 27 Apr 2020 15:08:35 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrNLMWRWlGSWpSXmKPExsViZ8MRqlv8dVm
+  cwZc2JYuv/6ezWKxcfZTJovv6DjaL5cf/MVmsP7KB0aJ16VsmBzaP3Tcb2Dw+Pr3F4vF+31U2
+  j82nqz0+b5ILYI1izcxLyq9IYM3YefoUe8ENpoqFZw+wNTDOZupi5OIQEpjMKNG/6iIjhDOdU
+  WLusyfMXYycHGwCBhIrJt1nAbFFBGwk+g4vZQKxmQX8JNZ9OQZWIyzgJvFswQowm0VAVaLn/B
+  w2EJtXwE7i1cmVjCC2hIC8RMeBySwTGDkXMDKsYrRIKspMzyjJTczM0TU0MNA1NDTWNdG1MNd
+  LrNJN0kst1U1OzSspSgRK6iWWF+sVV+Ym56To5aWWbGIEhklKIUv4Dsady9/rHWKU5GBSEuU9
+  uXpZnBBfUn5KZUZicUZ8UWlOavEhRhkODiUJ3qmfgXKCRanpqRVpmTnAkIVJS3DwKInwJnwBS
+  vMWFyTmFmemQ6ROMSpKifPagSQEQBIZpXlwbbA4ucQoKyXMy8jAwCDEU5BalJtZgir/ilGcg1
+  FJmHcWyHaezLwSuOmvgBYzAS2ukl8MsrgkESEl1cB0alfWgiN2CyafS/jQ++3HBAOTvhOdZxP
+  YzNOuTAw8vujlNG7jHRfVqhXyvN1u+HFv3tH+ImDxsetO8zrDao+q14ba2W50Prwyr7lgNlub
+  zqVyHsa/fo/nyC30Z2XJEJ3d/S337/yqmNgNOxVnWj8OceU8nORy7aFM3vbEPf+qcrvj7L4p6
+  /rNmNMlt79WymL/+++sMw5Gb/hw0JhHKLrIUYTBMCpI6OyWQ0JS/Ay/591Jyl+9nnVGq/6L9x
+  yGb7Ycr/08Y0pcquCufL8fjfIrli6/wP5Bcvq1ZR7rU3XbypRYc9/r3/7nsUb51ZqZuy6//9F
+  fKfDm16ZLXLovlh2f2Gx86tT6NXuYWu60cbqtUWIpzkg01GIuKk4EAMhXGcgOAwAA
+X-Env-Sender: bstroesser@ts.fujitsu.com
+X-Msg-Ref: server-28.tower-238.messagelabs.com!1588000115!62995!1
+X-Originating-IP: [62.60.8.85]
+X-SYMC-ESS-Client-Auth: outbound-route-from=pass
+X-StarScan-Received: 
+X-StarScan-Version: 9.50.1; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 5286 invoked from network); 27 Apr 2020 15:08:35 -0000
+Received: from unknown (HELO mailhost4.uk.fujitsu.com) (62.60.8.85)
+  by server-28.tower-238.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 27 Apr 2020 15:08:35 -0000
+Received: from x-serv01 ([172.17.38.52])
+        by mailhost4.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 03RF8XVF025008;
+        Mon, 27 Apr 2020 16:08:33 +0100
+Received: from VTC.emeia.fujitsu.local (unknown [172.17.38.7])
+        by x-serv01 (Postfix) with ESMTP id DAB6120665;
+        Mon, 27 Apr 2020 17:08:25 +0200 (CEST)
+From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
+To:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+Cc:     mchristi@redhat.com, ddiss@suse.de, hch@lst.de,
+        martin.petersen@oracle.com
+Subject: [PATCH 0/4] target: tcmu: allow flexible pr and alua handling
+Date:   Mon, 27 Apr 2020 17:08:19 +0200
+Message-Id: <20200427150823.15350-1-bstroesser@ts.fujitsu.com>
+X-Mailer: git-send-email 2.12.3
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Did you receive my previous email regarding your family inheritance?
-Reply strictly through: convy0090@gmail.com
-Best Regards,
-Ruben CONVY
+These patches already were sent to target-devel only. So I'm resending
+them now, slightly modified according to review comments from
+target-devel.
+
+The goal of the patches is to add more flexibility to tcmu regarding
+PGR handling.
+
+Since the attribute emulate_pr is missing for pscsi in the same way as
+for tcmu, I'm adding it to pscsi also. 
+
