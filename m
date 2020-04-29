@@ -2,255 +2,256 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB2F41BD53E
-	for <lists+target-devel@lfdr.de>; Wed, 29 Apr 2020 08:59:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA87D1BD890
+	for <lists+target-devel@lfdr.de>; Wed, 29 Apr 2020 11:45:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726472AbgD2G7T (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 29 Apr 2020 02:59:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47384 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726501AbgD2G7T (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Wed, 29 Apr 2020 02:59:19 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ED50C03C1AE
-        for <target-devel@vger.kernel.org>; Tue, 28 Apr 2020 23:59:18 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id f8so511418plt.2
-        for <target-devel@vger.kernel.org>; Tue, 28 Apr 2020 23:59:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=JzJdKWCCeu6/SAjK8bbpobyYaX5bHaH5XgqKXROnyBo=;
-        b=Bnuz/SV4Fu2GX8u0xqcGZpgSM/WusNHTFDhUhsZ77hRdeyQqD0WF+op/4oYmLLEe/e
-         9j/bj/dmMOEikkfP0TYf9WZ/DTsyQ858S1ZUGBrytad5ixZac1COD8m5ykiDo5HiR3py
-         zp+QmlNVwA0bPVDJIbPrIy0yCIFa3iRUxlclkdbSw7LBp14cRruus3LGgABqIy/hxWH9
-         UN0GbT9uNh2tuVChHI3O/ccVlq4/xPmgABSNlulnV+Uh4Jq3OC/5LofBdBvj0HoctJoN
-         8inzMsAT4oB87o2U25bf61LKUVdICTL1g3gH1yZgyS+QO8eZvzxpr7IZj7LZFiSU48Xd
-         YIlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=JzJdKWCCeu6/SAjK8bbpobyYaX5bHaH5XgqKXROnyBo=;
-        b=QWmUR4CIk4LuxqCpfPwTbDH71obRSm3/pqwWykoVvObnxgBXhF6B5Y66XwwY5b2ppa
-         7lA9QwaSiKBmhJTGGPk/O2qjPCEPcvm+ToZoYpoKsBqFA0Uxj9Sh6aY+G+YwyjCR1f0q
-         s1AtxrTzQXop/w2Q5nd9vH345t7WyNPankDkDi7tcENvVsF3YhrCBzhD4+7nB+jCZfYt
-         sNI9/WmORI4ilfL6tZ6e6VpMUJ+DJzbboE/O8PpaDElGSFxvVhG5vSGQdMRBm4UcSvXv
-         LE0R79BDiA9pMmQIwirbF59N+qJpObr9FiF9ohAVoRLhoW/exBnB/UN5WPpqObyrBxSp
-         neiQ==
-X-Gm-Message-State: AGi0PuYnTtXx2p3RuW7LCB4mLyBWzY9ZgabQQvj30p6sbhyeveF4fPxO
-        vNGD45E7gRHepOD4Ap0Nrte/bgQQtZxuqg==
-X-Google-Smtp-Source: APiQypLIkAPUF0WjH7LGHJsIXc3WhOhrAKd95ZDqSRRoV5YqF1ZOMaGIA8h2m4Op6F3KO5ngxbHewg==
-X-Received: by 2002:a17:90a:2170:: with SMTP id a103mr1435201pje.181.1588143557174;
-        Tue, 28 Apr 2020 23:59:17 -0700 (PDT)
-Received: from houpudeMacBook-Pro.local ([103.136.220.73])
-        by smtp.gmail.com with ESMTPSA id m18sm1384786pjl.14.2020.04.28.23.59.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Apr 2020 23:59:16 -0700 (PDT)
-Subject: Re: [PATCH v3 1/2] iscsi-target: fix login error when receiving is
- too fast
-To:     Mike Christie <mchristi@redhat.com>, martin.petersen@oracle.com,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-References: <20200424123528.17627-1-houpu@bytedance.com>
- <20200424123528.17627-2-houpu@bytedance.com>
- <cee3c624-4d43-fd4c-1436-cfc0c08a4321@redhat.com>
- <8f3b123e-1dc3-54ba-ae6d-90e76e5702b5@redhat.com>
- <44a02338-0923-5b57-ed26-8528bf9cde70@bytedance.com>
- <ef4dce23-dca8-c75a-0e18-c4bb49fe503a@bytedance.com>
- <f8e06fd6-d2d5-b237-7d32-86ee3277e85f@redhat.com>
-From:   Hou Pu <houpu@bytedance.com>
-Message-ID: <bdaaa620-ff31-baee-9a3e-d6eeccc160a9@bytedance.com>
-Date:   Wed, 29 Apr 2020 14:59:10 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
- Gecko/20100101 Thunderbird/68.7.0
+        id S1726558AbgD2Jpa (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 29 Apr 2020 05:45:30 -0400
+Received: from mta-02.yadro.com ([89.207.88.252]:39806 "EHLO mta-01.yadro.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726423AbgD2Jpa (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Wed, 29 Apr 2020 05:45:30 -0400
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id 382474C84E;
+        Wed, 29 Apr 2020 09:45:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        content-type:content-type:content-transfer-encoding:mime-version
+        :x-mailer:message-id:date:date:subject:subject:from:from
+        :received:received:received; s=mta-01; t=1588153524; x=
+        1589967925; bh=tpHwbdchc/BmpiOiPqhUCuFZ9ZHCRNBiogkefIBF0wI=; b=o
+        8mFc37Rv5u+N4Jp29nzrNNR5gLaat5dltf85y2rj6XiRkEdUETXQOK6X4usrAcrk
+        ufDmtEosvPNgy27/K5jnzIPHqCt6LGudDXk/sZNSlvI2Yl+Q8WBjftnTz7N+ob0H
+        TlK2lSPqcckEhxsyroTqFdyE4q0Z4FJ3ZpR6IbKieg=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id BBlG4nWm82GJ; Wed, 29 Apr 2020 12:45:24 +0300 (MSK)
+Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com [172.17.10.102])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mta-01.yadro.com (Postfix) with ESMTPS id 7761E4C84A;
+        Wed, 29 Apr 2020 12:45:24 +0300 (MSK)
+Received: from localhost (172.17.204.212) by T-EXCH-02.corp.yadro.com
+ (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Wed, 29
+ Apr 2020 12:45:25 +0300
+From:   Roman Bolshakov <r.bolshakov@yadro.com>
+To:     <target-devel@vger.kernel.org>,
+        Mike Christie <mchristi@redhat.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        David Disseldorp <ddiss@suse.de>
+CC:     <linux-scsi@vger.kernel.org>, <linux@yadro.com>,
+        Roman Bolshakov <r.bolshakov@yadro.com>
+Subject: [RFC PATCH 00/11] scsi: target/core: Improve ALUA configuration for multi-node TCM
+Date:   Wed, 29 Apr 2020 12:44:33 +0300
+Message-ID: <20200429094443.43937-1-r.bolshakov@yadro.com>
+X-Mailer: git-send-email 2.26.1
 MIME-Version: 1.0
-In-Reply-To: <f8e06fd6-d2d5-b237-7d32-86ee3277e85f@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [172.17.204.212]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-02.corp.yadro.com (172.17.10.102)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+Dear SCSI target developers,
 
+The patch series is a backwards-compatible attempt to add flexibility and
+consistency in ALUA configuration for multi-node TCM setups with multiple
+target ports on each node. The series is based off 5.8/scsi-queue.
 
-On 2020/4/29 1:50 上午, Mike Christie wrote:
-> On 4/26/20 1:09 AM, Hou Pu wrote:
->>
->>>>>> +     */
->>>>>> +    if (conn->sock) {
->>>>>> +        struct sock *sk = conn->sock->sk;
->>>>>> +
->>>>>> +        write_lock_bh(&sk->sk_callback_lock);
->>>>>> +        clear_bit(LOGIN_FLAGS_READ_ACTIVE, &conn->login_flags);
->>>>>> +        set_bit(LOGIN_FLAGS_WRITE_ACTIVE, &conn->login_flags);
->>>>>> +        write_unlock_bh(&sk->sk_callback_lock);
->>>>>> +    }
->>>>>> +
->>>>> Hey,
->>>>>
->>>>> I had one more question.
->>>>>
->>>>> With the above code, I think we have a race where if we clear the bit
->>>>> above early and iscsi_target_sk_data_ready runs while
->>>>> iscsi_target_do_login_rx is still running then we could queue the work
->>>>> an extra time and get stuck. Because the bit is now not set, if
->>>>> iscsi_target_sk_data_ready runs it will end up calling
->>>>> schedule_delayed_work which will queue up the work again since the work
->>>>> is running and not pending.
->>>
->>> Yes. I was trying to allow queuing the delayed work early.
->>>
->>>>>
->>>>> If that is correct and we hit the race what happens if this was the
->>>>> last
->>>>> login pdu, and we are supposed to go to full feature phase next? For
->>>>> example if iscsi_target_do_login_rx runs an extra time, will we end up
->>>>> stuck waiting in iscsi_target_do_login_rx's call to:
->>>>>
->>>>> rc = conn->conn_transport->iscsit_get_login_rx(conn, login);
->>>>>
->>>>> ?
->>>
->>> For the last login pdu, we may have race as you said. thanks for
->>> pointing it out.
->>>
->>> I was trying to image a case where we can hit the race, normally it is
->>> case a).
->>>
->>> a). initiator send last login pdu -> target received -> target replied
->>>
->>> b). initiator send last login pdu -> target received -> initiator send
->>> something -> target replied
->>>
->>> in case b). we will queue another delayed work which we should not.
->>> After the target replied
->>>
->>> the last login pdu, conn->conn_login is freed. we might visited it in
->>> the delayed wo>>
->>>
->>>> Just answering my own question. It looks like we do not get stuck. But
->>>> we either get nothing on the session so the login timeout fires and we
->>>> drop the session. Or, we get a PDU and the login thread reads it in
->>>> before the normal rx thread does, but it assumes it is a login related
->>>> and we most likely drop the session due to invalid fields.
->>>>
->>>> I think in iscsi_target_restore_sock_callbacks we want to do a:
->>>>
->>>> cancel_delayed_work(&conn->login_work)
->>>>
->>>> after we reset the callbacks and drop the sk_callback_lock lock.
->>>
->>> I am not very sure if we could or if it is good to cancel_delayed_work
->>> from the work itself.
->>>
->>> If it is ok then i am ok with it. Or in another way, I think we could
->>> just clear
->>>
->>> LOGIN_FLAGS_READ_ACTIVE and set LOGIN_FLAGS_WRITE_ACTIVE
->>>
->>> after iscsi_target_restore_sock_callbacks when finish process last
->>> login pdu.
->>
->> That would look like (in iscsi_target_do_tx_login_io):
->>
->> diff --git a/drivers/target/iscsi/iscsi_target_nego.c
->> b/drivers/target/iscsi/iscsi_target_nego.c
->> index 685d771b51d4..4d0658731382 100644
->> --- a/drivers/target/iscsi/iscsi_target_nego.c
->> +++ b/drivers/target/iscsi/iscsi_target_nego.c
->> @@ -328,6 +328,28 @@ static int iscsi_target_do_tx_login_io(struct
->> iscsi_conn *conn, struct iscsi_log
->>          u32 padding = 0;
->>          struct iscsi_login_rsp *login_rsp;
->>
->> +       /*
->> +        * LOGIN_FLAGS_READ_ACTIVE is cleared so that sk_data_ready
->> +        * could be trigger again after this.
->> +        *
->> +        * LOGIN_FLAGS_WRITE_ACTIVE is cleared after we successfully
->> +        * process a login pdu, so that sk_state_chage could do login
->> +        * cleanup as needed if the socket is closed. If a delayed work is
->> +        * ongoing (LOGIN_FLAGS_WRITE_ACTIVE or LOGIN_FLAGS_READ_ACTIVE),
->> +        * sk_state_change will leave the cleanup to the delayed work or
->> +        * it will schedule a delayed work to do cleanup.
->> +        */
->> +       if (conn->sock) {
->> +               struct sock *sk = conn->sock->sk;
->> +
->> +               write_lock_bh(&sk->sk_callback_lock);
->> +               if (!test_bit(LOGIN_FLAGS_INITIAL_PDU,
->> &conn->login_flags)) {
->> +                       clear_bit(LOGIN_FLAGS_READ_ACTIVE,
->> &conn->login_flags);
->> +                       set_bit(LOGIN_FLAGS_WRITE_ACTIVE,
->> &conn->login_flags);
->> +               }
->> +               write_unlock_bh(&sk->sk_callback_lock);
->> +       }
-> 
-> You lost me. I didn't understand this part. Would you still be doing the
-> above bit manipulation in iscsi_target_do_login_rx too?
+Patch 1 adds a way to hide default_tg_pt_gp. It is always returned in REPORT
+TARGET PORT GROUP response in the current implementation even if there is no
+need to report its presence.
 
-By moving this chunk here(from iscsi_target_do_login_rx to 
-iscsi_target_do_tx_login_io), we have already
-restore sock callbacks(like below in iscsi_target_do_login),
-So clearing READ_ACTIVE would not cause another delayed
-work being scheduled.
+Consider a backstore with non-default node1 that has target port group id 1.
+If the group is assigned as a primary target port group to a LUN,
+REPORT TARGET PORT GROUPS is going to return two groups:
 
-So I think we would not have the race you pointed out
-for last login pdu.
+T # echo node1 > $TARGET/tpgt_1/lun/lun_0/alua_tg_pt_gp
+I # sg_rtpg /dev/sda
+Report target port groups:
+  target port group id : 0x0 , Pref=0, Rtpg_fmt=0
+    target port group asymmetric access state : 0x00
+    T_SUP : 1, O_SUP : 1, LBD_SUP : 0, U_SUP : 1, S_SUP : 1, AN_SUP : 1, AO_SUP : 1
+    status code : 0x00
+    vendor unique status : 0x00
+    target port count : 00
+  target port group id : 0x1 , Pref=0, Rtpg_fmt=0
+    target port group asymmetric access state : 0x00
+    T_SUP : 1, O_SUP : 1, LBD_SUP : 0, U_SUP : 1, S_SUP : 1, AN_SUP : 1, AO_SUP : 1
+    status code : 0x00
+    vendor unique status : 0x00
+    target port count : 01
+    Relative target port ids:
+      0x01
 
-[code snippet
+The patch adds a way to show only non-empty target port groups:
 
-iscsi_target_do_login()
-...
-login->login_complete = 1;
-iscsi_target_restore_sock_callbacks(conn);
-if (iscsi_target_do_tx_login_io(conn,
-                           login) < 0)
+T # echo 1 > $BACKSTORE/alua/default_tg_pt_gp/hidden
+I # sg_rtpg /dev/sda
+Report target port groups:
+  target port group id : 0x1 , Pref=0, Rtpg_fmt=0
+    target port group asymmetric access state : 0x00
+    T_SUP : 1, O_SUP : 1, LBD_SUP : 0, U_SUP : 1, S_SUP : 1, AN_SUP : 1, AO_SUP : 1
+    status code : 0x00
+    vendor unique status : 0x00
+    target port count : 01
+    Relative target port ids:
+      0x01
 
-...
-]
+Patch 2 is a fix that improves SCSI conformance and sets MULTIP bit in the
+standard inquiry data if a backstore is exported on multiple ports.
 
+Patches 3 through 6 change RTPI allocation. They're aimed to tackle the
+following misbehaviour.
 
+SAM-5 4.6.5.2 (Relative Port Identifier attribute) defines the attribute
+as unique across SCSI target ports.
 
-> 
-> Is the above code then to handle when
-> iscsi_target_start_negotiation->iscsi_target_do_login->iscsi_target_do_tx_login_io
-> runs?
-> 
-> I was thinking when you mentioned the final login PDU you were going to
-> do something when you detect login->login_complete is true.
-> 
+The Relative Port Identifier attribute identifies a SCSI target port or
+a SCSI initiator port relative to other SCSI ports in a SCSI target
+device and any SCSI initiator devices contained within that SCSI target
+device. A SCSI target device may assign relative port identifiers to its
+SCSI target ports and any SCSI initiator ports. If relative port
+identifiers are assigned, the SCSI target device shall assign each of
+its SCSI target ports and any SCSI initiator ports a unique relative
+port identifier from 1 to 65 535. SCSI target ports and SCSI initiator
+ports share the same number space.
 
-Even if we move above chunk here, I realize that we
-could still theoretically have problem.
+Examples of relative port identifiers usage are described in the
+Device Identification VPD page, SCSI Ports VPD page and Reservations.
+Relative port identifiers are not required to be contiguous.
+Relative port identifier for a SCSI port shall not change once assigned unless
+reconfiguration of the SCSI target device occurs.
 
-For login pdus which is not initial or last login pdus,
-after enable scheduling delayed work by clearing READ_ACTIVE.
-It is possible to queue a delayed work. (i.e. a out of order
-initiator could send pdus at any time).
-In case we received such out of order pdu, we need
-to cancel them when we have an error and later
-doing the clean up.
+In the current TCM implementation, auto-incremented lun_rtpi doesn't
+follow the model outlined by SAM-5 and SPC-4. In case of multiple SCSI
+target ports (se_portal_group's), which is common to scenario with
+multiple HBAs or multiple iSCSI/FC targets, it's possible to have two
+backstores (se_device's) with different values of lun_rtpi on the same
+SCSI target port.
 
-I will try to solve this and resend these patches.
-Maybe it's better to cancel_delayed_work() in
-iscsi_target_do_login_rx.
+Consider we have backstores foo and bar and target ports A and B.
+If foo is exported first on A and then on B but bar is exported on B and
+then on A, we get the following:
+  RTPI of foo on A is going to be 1, RTPI of bar on A is going to be 2
+  RTPI of foo on B is going to be 2, RTPI of bar on B is going to be 1
 
-I might not express myself very clear. Please
-see next version of these patch.
+Similar issue happens during re-export. If a LUN of a backstore is
+removed from a target port and added again to the same target port, RTPI
+is incremented again and will be different from the first time.
 
+The two issues happen because each se_device increments RTPI for its own
+LUNs independently.
 
-> This code is not my expertise area, so I might just not be understanding
-> something simple about how it all works.
+The behaviour means that a SCSI application client can't reliably make any
+sense of RTPI values reported by a LUN as it's not really related to SCSI
+target ports. A conforming target implementation must ensure that RTPI field is
+unique per port. The three patches resolve the issue.
 
-Your comments make sense and are helpful for me. Thanks.
-> 
+Patches 7 and 8 add ability to set and read RTPI value for a target port after
+initial configuration using configfs:
+
+I # sg_rtpg /dev/sda
+Report target port groups:
+  target port group id : 0x1 , Pref=0, Rtpg_fmt=0
+    target port group asymmetric access state : 0x00
+    T_SUP : 1, O_SUP : 1, LBD_SUP : 0, U_SUP : 1, S_SUP : 1, AN_SUP : 1, AO_SUP : 1
+    status code : 0x00
+    vendor unique status : 0x00
+    target port count : 01
+    Relative target port ids:
+      0x01
+
+T # echo 2 > $TARGET/tpgt_1/attrib/rtpi
+I # sg_rtpg /dev/sda
+Report target port groups:
+  target port group id : 0x0 , Pref=0, Rtpg_fmt=0
+    target port group asymmetric access state : 0x00
+    T_SUP : 1, O_SUP : 1, LBD_SUP : 0, U_SUP : 1, S_SUP : 1, AN_SUP : 1, AO_SUP : 1
+    status code : 0x00
+    vendor unique status : 0x00
+    target port count : 01
+    Relative target port ids:
+      0x02
+
+INQUIRY DATA HAS CHANGED unit attention is sent after RTPI change on all I_T
+nexuses related to the port.
+
+Patches 9 through 11 is a new feature that helps to return RTPI consistently on
+all ports in a cluster running TCM. Together with previous RTPI changes, it
+allows to assign RTPI values to a target port group that resides on the other
+node and report it. Consider that node1 two primary target port groups, node1
+and node2, with target port group id 1 and 2, respectively. node1 has real port
+attached to it. node2 is a target portal group to represent state of the ports
+on node2. Then it can be filled with fake peer ports using configfs:
+
+T # mkdir $BACKSTORE/alua/node2/peers/2
+I # sg_rtpg /dev/sda
+Report target port groups:
+  target port group id : 0x1 , Pref=0, Rtpg_fmt=0
+    target port group asymmetric access state : 0x00
+    T_SUP : 1, O_SUP : 1, LBD_SUP : 0, U_SUP : 1, S_SUP : 1, AN_SUP : 1, AO_SUP : 1
+    status code : 0x00
+    vendor unique status : 0x00
+    target port count : 01
+    Relative target port ids:
+      0x01
+  target port group id : 0x2 , Pref=0, Rtpg_fmt=0
+    target port group asymmetric access state : 0x00
+    T_SUP : 1, O_SUP : 1, LBD_SUP : 0, U_SUP : 1, S_SUP : 1, AN_SUP : 1, AO_SUP : 1
+    status code : 0x00
+    vendor unique status : 0x00
+    target port count : 01
+    Relative target port ids:
+      0x02
+
+And it's possible to have a similar config on node2 to report port groups
+consistently regardless of where the command was received.
+
+The patches also ensure that no LUN has duplicated RTPI values between SCSI
+target ports and peer ports. Unfortunately, a global RTPI mutex had to be
+introduced for that.
+
+There are a few checkpatch.pl checks/warnings I had to keep to avoid breaking
+80 char limit:
+CHECK: Lines should not end with a '('
+WARNING: quoted string split across lines
 
 Thanks,
-Hou
+Roman
+
+Roman Bolshakov (11):
+  scsi: target/core: Add a way to hide a port group
+  scsi: target/core: Set MULTIP bit for se_device with multiple ports
+  scsi: target/core: Add cleanup sequence in core_tpg_register()
+  scsi: target/core: Add RTPI field to target port
+  scsi: target/core: Use RTPI from target port
+  scsi: target/core: Drop device-based RTPI
+  scsi: target/core: Add common port attributes
+  scsi: target/core: Add RTPI attribute for target port
+  scsi: target/core: Populate configfs for peer ports
+  scsi: target/core: Prevent RTPI conflicts
+  scsi: target/core: Show peer ports in RTPG response
+
+ drivers/target/target_core_alua.c            |  44 +++-
+ drivers/target/target_core_alua.h            |   1 +
+ drivers/target/target_core_configfs.c        | 164 ++++++++++++-
+ drivers/target/target_core_device.c          |  62 ++---
+ drivers/target/target_core_fabric_configfs.c |  41 +++-
+ drivers/target/target_core_internal.h        |   4 +-
+ drivers/target/target_core_pr.c              |   8 +-
+ drivers/target/target_core_spc.c             |  19 +-
+ drivers/target/target_core_stat.c            |   6 +-
+ drivers/target/target_core_tpg.c             | 246 +++++++++++++++++--
+ drivers/target/target_core_transport.c       |  15 +-
+ include/target/target_core_base.h            |  17 +-
+ 12 files changed, 549 insertions(+), 78 deletions(-)
+
+-- 
+2.26.1
+
