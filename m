@@ -2,161 +2,255 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A6E71BCBE9
-	for <lists+target-devel@lfdr.de>; Tue, 28 Apr 2020 21:01:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB2F41BD53E
+	for <lists+target-devel@lfdr.de>; Wed, 29 Apr 2020 08:59:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728806AbgD1S0n (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 28 Apr 2020 14:26:43 -0400
-Received: from mail1.bemta25.messagelabs.com ([195.245.230.68]:45659 "EHLO
-        mail1.bemta25.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728547AbgD1S0m (ORCPT
+        id S1726472AbgD2G7T (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 29 Apr 2020 02:59:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47384 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726501AbgD2G7T (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 28 Apr 2020 14:26:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1588098396; i=@ts.fujitsu.com;
-        bh=h35Z7tldSI0c2t/f6ALJrBSQPirsm+vLrDuxe2SGGk0=;
-        h=From:To:Cc:Subject:Date:Message-Id;
-        b=Qt0YN4cR9E+IGri3SSQUOuiihX+NqnKW9I0D36QLme+63+nKHr8lt7hvMkMknsp2c
-         OrM2vO8ndzYB5YeBJNyda7lu2gomMqanpL4lc3mhN8LcwiLSnGygT1xCXz9HFbmYkn
-         kSGcLz0dITNFCsyyP2w7xUyUOX4ZTBnWOwA+MggpitMsDKUGP2CQLEnNYKQvIN4UIZ
-         mVuIr3DxFyTejYhb5ULWek1WlbRF4rbFI35H0UwFh9j8N4ifV4U26wQIhqKwB1ncmL
-         QeTucyNTN4p3v+NWxz8G7D+olQPLPsmV5AXcN4wHds+QKCIQCkB73F3hG7cZ2H1k9i
-         sLaYmCC4dfpeg==
-Received: from [100.112.198.136] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-4.bemta.az-b.eu-west-1.aws.symcld.net id 2D/62-51957-C5578AE5; Tue, 28 Apr 2020 18:26:36 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrOLMWRWlGSWpSXmKPExsViZ8MxRTe6dEW
-  cwf8uQ4vu6zvYLJYf/8dk0bb6DKNF69K3TA4sHve3H2Hy+Pj0FovH501yAcxRrJl5SfkVCawZ
-  j/uXshYcl6iY+GQ+WwNjs2gXIxeHkMBkRonuf6tYIZzpjBJTPxxl6mLk5GATMJBYMek+C4gtI
-  lAq8fDYT2YQm1lAT2Lav3XsILawgIvEvvnHgZo5OFgEVCVOLTAFCfMK2El8+7mTDcSWEJCX6D
-  gwmWUCI+cCRoZVjBZJRZnpGSW5iZk5uoYGBrqGhka6hpZmukYmlnqJVbpJeqmluuWpxSW6hnq
-  J5cV6xZW5yTkpenmpJZsYgf5PKTjycwfjjLXv9Q4xSnIwKYnyvn+zPE6ILyk/pTIjsTgjvqg0
-  J7X4EKMMB4eSBG9lyYo4IcGi1PTUirTMHGAowqQlOHiURHjLQdK8xQWJucWZ6RCpU4yKUuK8/
-  4qBEgIgiYzSPLg2WPhfYpSVEuZlZGBgEOIpSC3KzSxBlX/FKM7BqCTM2wYyniczrwRu+iugxU
-  xAi7OFl4MsLklESEk1MIUfMnrVc6TdNI9ndcCuJYe33TU7llP+TTlElfNkq1TDwsp9jPnyDkE
-  zvMVWC12LTTvN9cuuMixX7qSsvY3E8865jsltbfHBnlJpNd7n1v8JyJY/ZsF9fVran1IZwby3
-  cw7V8Hk22BSnPl3V0CXe3PvFoGmHaYDFytCV+v81DO1vmuiv9bU68sT54T6zqbyBVYK+Zm9LO
-  TP5lRrEC567VD+yWHLJ3UzDZPLELzcmRjhr6Nu46cXOvzR/SjGf1BFRxYVBXrp3loUZu+5M5v
-  zAHfMguud1AG/6vQXBRyqKd75bWGiZeT106RGFV/Yr2LNKpsa+Y7lX9Hhd4yofRs2/cWe4e+/
-  yMZ/9v4Q9f4ESS3FGoqEWc1FxIgCs2gf4+gIAAA==
-X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-9.tower-291.messagelabs.com!1588098395!299900!1
-X-Originating-IP: [62.60.8.148]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.50.1; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 29160 invoked from network); 28 Apr 2020 18:26:35 -0000
-Received: from unknown (HELO mailhost1.uk.fujitsu.com) (62.60.8.148)
-  by server-9.tower-291.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 28 Apr 2020 18:26:35 -0000
-Received: from x-serv01 ([172.17.38.52])
-        by mailhost1.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 03SIQJ98023285;
-        Tue, 28 Apr 2020 19:26:26 +0100
-Received: from VTC.emeia.fujitsu.local (unknown [172.17.38.7])
-        by x-serv01 (Postfix) with ESMTP id E24D720521;
-        Tue, 28 Apr 2020 20:26:18 +0200 (CEST)
-From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-To:     martin.petersen@oracle.com, nab@linux-iscsi.org,
+        Wed, 29 Apr 2020 02:59:19 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ED50C03C1AE
+        for <target-devel@vger.kernel.org>; Tue, 28 Apr 2020 23:59:18 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id f8so511418plt.2
+        for <target-devel@vger.kernel.org>; Tue, 28 Apr 2020 23:59:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=JzJdKWCCeu6/SAjK8bbpobyYaX5bHaH5XgqKXROnyBo=;
+        b=Bnuz/SV4Fu2GX8u0xqcGZpgSM/WusNHTFDhUhsZ77hRdeyQqD0WF+op/4oYmLLEe/e
+         9j/bj/dmMOEikkfP0TYf9WZ/DTsyQ858S1ZUGBrytad5ixZac1COD8m5ykiDo5HiR3py
+         zp+QmlNVwA0bPVDJIbPrIy0yCIFa3iRUxlclkdbSw7LBp14cRruus3LGgABqIy/hxWH9
+         UN0GbT9uNh2tuVChHI3O/ccVlq4/xPmgABSNlulnV+Uh4Jq3OC/5LofBdBvj0HoctJoN
+         8inzMsAT4oB87o2U25bf61LKUVdICTL1g3gH1yZgyS+QO8eZvzxpr7IZj7LZFiSU48Xd
+         YIlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=JzJdKWCCeu6/SAjK8bbpobyYaX5bHaH5XgqKXROnyBo=;
+        b=QWmUR4CIk4LuxqCpfPwTbDH71obRSm3/pqwWykoVvObnxgBXhF6B5Y66XwwY5b2ppa
+         7lA9QwaSiKBmhJTGGPk/O2qjPCEPcvm+ToZoYpoKsBqFA0Uxj9Sh6aY+G+YwyjCR1f0q
+         s1AtxrTzQXop/w2Q5nd9vH345t7WyNPankDkDi7tcENvVsF3YhrCBzhD4+7nB+jCZfYt
+         sNI9/WmORI4ilfL6tZ6e6VpMUJ+DJzbboE/O8PpaDElGSFxvVhG5vSGQdMRBm4UcSvXv
+         LE0R79BDiA9pMmQIwirbF59N+qJpObr9FiF9ohAVoRLhoW/exBnB/UN5WPpqObyrBxSp
+         neiQ==
+X-Gm-Message-State: AGi0PuYnTtXx2p3RuW7LCB4mLyBWzY9ZgabQQvj30p6sbhyeveF4fPxO
+        vNGD45E7gRHepOD4Ap0Nrte/bgQQtZxuqg==
+X-Google-Smtp-Source: APiQypLIkAPUF0WjH7LGHJsIXc3WhOhrAKd95ZDqSRRoV5YqF1ZOMaGIA8h2m4Op6F3KO5ngxbHewg==
+X-Received: by 2002:a17:90a:2170:: with SMTP id a103mr1435201pje.181.1588143557174;
+        Tue, 28 Apr 2020 23:59:17 -0700 (PDT)
+Received: from houpudeMacBook-Pro.local ([103.136.220.73])
+        by smtp.gmail.com with ESMTPSA id m18sm1384786pjl.14.2020.04.28.23.59.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Apr 2020 23:59:16 -0700 (PDT)
+Subject: Re: [PATCH v3 1/2] iscsi-target: fix login error when receiving is
+ too fast
+To:     Mike Christie <mchristi@redhat.com>, martin.petersen@oracle.com,
         linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Subject: [PATCH] target: loopback: fix READ with data and sensebytes
-Date:   Tue, 28 Apr 2020 20:26:17 +0200
-Message-Id: <20200428182617.32726-1-bstroesser@ts.fujitsu.com>
-X-Mailer: git-send-email 2.12.3
+References: <20200424123528.17627-1-houpu@bytedance.com>
+ <20200424123528.17627-2-houpu@bytedance.com>
+ <cee3c624-4d43-fd4c-1436-cfc0c08a4321@redhat.com>
+ <8f3b123e-1dc3-54ba-ae6d-90e76e5702b5@redhat.com>
+ <44a02338-0923-5b57-ed26-8528bf9cde70@bytedance.com>
+ <ef4dce23-dca8-c75a-0e18-c4bb49fe503a@bytedance.com>
+ <f8e06fd6-d2d5-b237-7d32-86ee3277e85f@redhat.com>
+From:   Hou Pu <houpu@bytedance.com>
+Message-ID: <bdaaa620-ff31-baee-9a3e-d6eeccc160a9@bytedance.com>
+Date:   Wed, 29 Apr 2020 14:59:10 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
+ Gecko/20100101 Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <f8e06fd6-d2d5-b237-7d32-86ee3277e85f@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-We use tcm_loop with tape emulations running on tcmu.
-In case application reads a short tape block with a longer READ,
-or a long tape block with a short READ, according to SCC spec
-data has to be tranferred _and_ sensebytes with ILI set and
-information field containing the residual count.
-Similar problem also exists when using fixed block size in READ.
 
-Up to now tcm_loop is not prepared to handle sensebytes if input
-data is provided, as in tcm_loop_queue_data_in() it only sets
-SAM_STAT_GOOD and if necessary the residual count.
 
-To fix the bug, the same handling for sensebytes as present in
-tcm_loop_queue_status() must be done in tcm_loop_queue_data_in()
-also.
+On 2020/4/29 1:50 上午, Mike Christie wrote:
+> On 4/26/20 1:09 AM, Hou Pu wrote:
+>>
+>>>>>> +     */
+>>>>>> +    if (conn->sock) {
+>>>>>> +        struct sock *sk = conn->sock->sk;
+>>>>>> +
+>>>>>> +        write_lock_bh(&sk->sk_callback_lock);
+>>>>>> +        clear_bit(LOGIN_FLAGS_READ_ACTIVE, &conn->login_flags);
+>>>>>> +        set_bit(LOGIN_FLAGS_WRITE_ACTIVE, &conn->login_flags);
+>>>>>> +        write_unlock_bh(&sk->sk_callback_lock);
+>>>>>> +    }
+>>>>>> +
+>>>>> Hey,
+>>>>>
+>>>>> I had one more question.
+>>>>>
+>>>>> With the above code, I think we have a race where if we clear the bit
+>>>>> above early and iscsi_target_sk_data_ready runs while
+>>>>> iscsi_target_do_login_rx is still running then we could queue the work
+>>>>> an extra time and get stuck. Because the bit is now not set, if
+>>>>> iscsi_target_sk_data_ready runs it will end up calling
+>>>>> schedule_delayed_work which will queue up the work again since the work
+>>>>> is running and not pending.
+>>>
+>>> Yes. I was trying to allow queuing the delayed work early.
+>>>
+>>>>>
+>>>>> If that is correct and we hit the race what happens if this was the
+>>>>> last
+>>>>> login pdu, and we are supposed to go to full feature phase next? For
+>>>>> example if iscsi_target_do_login_rx runs an extra time, will we end up
+>>>>> stuck waiting in iscsi_target_do_login_rx's call to:
+>>>>>
+>>>>> rc = conn->conn_transport->iscsit_get_login_rx(conn, login);
+>>>>>
+>>>>> ?
+>>>
+>>> For the last login pdu, we may have race as you said. thanks for
+>>> pointing it out.
+>>>
+>>> I was trying to image a case where we can hit the race, normally it is
+>>> case a).
+>>>
+>>> a). initiator send last login pdu -> target received -> target replied
+>>>
+>>> b). initiator send last login pdu -> target received -> initiator send
+>>> something -> target replied
+>>>
+>>> in case b). we will queue another delayed work which we should not.
+>>> After the target replied
+>>>
+>>> the last login pdu, conn->conn_login is freed. we might visited it in
+>>> the delayed wo>>
+>>>
+>>>> Just answering my own question. It looks like we do not get stuck. But
+>>>> we either get nothing on the session so the login timeout fires and we
+>>>> drop the session. Or, we get a PDU and the login thread reads it in
+>>>> before the normal rx thread does, but it assumes it is a login related
+>>>> and we most likely drop the session due to invalid fields.
+>>>>
+>>>> I think in iscsi_target_restore_sock_callbacks we want to do a:
+>>>>
+>>>> cancel_delayed_work(&conn->login_work)
+>>>>
+>>>> after we reset the callbacks and drop the sk_callback_lock lock.
+>>>
+>>> I am not very sure if we could or if it is good to cancel_delayed_work
+>>> from the work itself.
+>>>
+>>> If it is ok then i am ok with it. Or in another way, I think we could
+>>> just clear
+>>>
+>>> LOGIN_FLAGS_READ_ACTIVE and set LOGIN_FLAGS_WRITE_ACTIVE
+>>>
+>>> after iscsi_target_restore_sock_callbacks when finish process last
+>>> login pdu.
+>>
+>> That would look like (in iscsi_target_do_tx_login_io):
+>>
+>> diff --git a/drivers/target/iscsi/iscsi_target_nego.c
+>> b/drivers/target/iscsi/iscsi_target_nego.c
+>> index 685d771b51d4..4d0658731382 100644
+>> --- a/drivers/target/iscsi/iscsi_target_nego.c
+>> +++ b/drivers/target/iscsi/iscsi_target_nego.c
+>> @@ -328,6 +328,28 @@ static int iscsi_target_do_tx_login_io(struct
+>> iscsi_conn *conn, struct iscsi_log
+>>          u32 padding = 0;
+>>          struct iscsi_login_rsp *login_rsp;
+>>
+>> +       /*
+>> +        * LOGIN_FLAGS_READ_ACTIVE is cleared so that sk_data_ready
+>> +        * could be trigger again after this.
+>> +        *
+>> +        * LOGIN_FLAGS_WRITE_ACTIVE is cleared after we successfully
+>> +        * process a login pdu, so that sk_state_chage could do login
+>> +        * cleanup as needed if the socket is closed. If a delayed work is
+>> +        * ongoing (LOGIN_FLAGS_WRITE_ACTIVE or LOGIN_FLAGS_READ_ACTIVE),
+>> +        * sk_state_change will leave the cleanup to the delayed work or
+>> +        * it will schedule a delayed work to do cleanup.
+>> +        */
+>> +       if (conn->sock) {
+>> +               struct sock *sk = conn->sock->sk;
+>> +
+>> +               write_lock_bh(&sk->sk_callback_lock);
+>> +               if (!test_bit(LOGIN_FLAGS_INITIAL_PDU,
+>> &conn->login_flags)) {
+>> +                       clear_bit(LOGIN_FLAGS_READ_ACTIVE,
+>> &conn->login_flags);
+>> +                       set_bit(LOGIN_FLAGS_WRITE_ACTIVE,
+>> &conn->login_flags);
+>> +               }
+>> +               write_unlock_bh(&sk->sk_callback_lock);
+>> +       }
+> 
+> You lost me. I didn't understand this part. Would you still be doing the
+> above bit manipulation in iscsi_target_do_login_rx too?
 
-After adding this handling, the two function now are nearly
-identical, so I created a single function with two wrappers.
+By moving this chunk here(from iscsi_target_do_login_rx to 
+iscsi_target_do_tx_login_io), we have already
+restore sock callbacks(like below in iscsi_target_do_login),
+So clearing READ_ACTIVE would not cause another delayed
+work being scheduled.
 
-Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
----
- drivers/target/loopback/tcm_loop.c | 36 +++++++++++++++---------------------
- 1 file changed, 15 insertions(+), 21 deletions(-)
+So I think we would not have the race you pointed out
+for last login pdu.
 
-diff --git a/drivers/target/loopback/tcm_loop.c b/drivers/target/loopback/tcm_loop.c
-index 3305b47fdf53..16d5a4e117a2 100644
---- a/drivers/target/loopback/tcm_loop.c
-+++ b/drivers/target/loopback/tcm_loop.c
-@@ -545,32 +545,15 @@ static int tcm_loop_write_pending(struct se_cmd *se_cmd)
- 	return 0;
- }
- 
--static int tcm_loop_queue_data_in(struct se_cmd *se_cmd)
-+static int tcm_loop_queue_data_or_status(const char *func,
-+		struct se_cmd *se_cmd, u8 scsi_status)
- {
- 	struct tcm_loop_cmd *tl_cmd = container_of(se_cmd,
- 				struct tcm_loop_cmd, tl_se_cmd);
- 	struct scsi_cmnd *sc = tl_cmd->sc;
- 
- 	pr_debug("%s() called for scsi_cmnd: %p cdb: 0x%02x\n",
--		 __func__, sc, sc->cmnd[0]);
--
--	sc->result = SAM_STAT_GOOD;
--	set_host_byte(sc, DID_OK);
--	if ((se_cmd->se_cmd_flags & SCF_OVERFLOW_BIT) ||
--	    (se_cmd->se_cmd_flags & SCF_UNDERFLOW_BIT))
--		scsi_set_resid(sc, se_cmd->residual_count);
--	sc->scsi_done(sc);
--	return 0;
--}
--
--static int tcm_loop_queue_status(struct se_cmd *se_cmd)
--{
--	struct tcm_loop_cmd *tl_cmd = container_of(se_cmd,
--				struct tcm_loop_cmd, tl_se_cmd);
--	struct scsi_cmnd *sc = tl_cmd->sc;
--
--	pr_debug("%s() called for scsi_cmnd: %p cdb: 0x%02x\n",
--		 __func__, sc, sc->cmnd[0]);
-+		 func, sc, sc->cmnd[0]);
- 
- 	if (se_cmd->sense_buffer &&
- 	   ((se_cmd->se_cmd_flags & SCF_TRANSPORT_TASK_SENSE) ||
-@@ -581,7 +564,7 @@ static int tcm_loop_queue_status(struct se_cmd *se_cmd)
- 		sc->result = SAM_STAT_CHECK_CONDITION;
- 		set_driver_byte(sc, DRIVER_SENSE);
- 	} else
--		sc->result = se_cmd->scsi_status;
-+		sc->result = scsi_status;
- 
- 	set_host_byte(sc, DID_OK);
- 	if ((se_cmd->se_cmd_flags & SCF_OVERFLOW_BIT) ||
-@@ -591,6 +574,17 @@ static int tcm_loop_queue_status(struct se_cmd *se_cmd)
- 	return 0;
- }
- 
-+static int tcm_loop_queue_data_in(struct se_cmd *se_cmd)
-+{
-+	return tcm_loop_queue_data_or_status(__func__, se_cmd, SAM_STAT_GOOD);
-+}
-+
-+static int tcm_loop_queue_status(struct se_cmd *se_cmd)
-+{
-+	return tcm_loop_queue_data_or_status(__func__,
-+					     se_cmd, se_cmd->scsi_status);
-+}
-+
- static void tcm_loop_queue_tm_rsp(struct se_cmd *se_cmd)
- {
- 	struct tcm_loop_cmd *tl_cmd = container_of(se_cmd,
--- 
-2.12.3
+[code snippet
 
+iscsi_target_do_login()
+...
+login->login_complete = 1;
+iscsi_target_restore_sock_callbacks(conn);
+if (iscsi_target_do_tx_login_io(conn,
+                           login) < 0)
+
+...
+]
+
+
+
+> 
+> Is the above code then to handle when
+> iscsi_target_start_negotiation->iscsi_target_do_login->iscsi_target_do_tx_login_io
+> runs?
+> 
+> I was thinking when you mentioned the final login PDU you were going to
+> do something when you detect login->login_complete is true.
+> 
+
+Even if we move above chunk here, I realize that we
+could still theoretically have problem.
+
+For login pdus which is not initial or last login pdus,
+after enable scheduling delayed work by clearing READ_ACTIVE.
+It is possible to queue a delayed work. (i.e. a out of order
+initiator could send pdus at any time).
+In case we received such out of order pdu, we need
+to cancel them when we have an error and later
+doing the clean up.
+
+I will try to solve this and resend these patches.
+Maybe it's better to cancel_delayed_work() in
+iscsi_target_do_login_rx.
+
+I might not express myself very clear. Please
+see next version of these patch.
+
+
+> This code is not my expertise area, so I might just not be understanding
+> something simple about how it all works.
+
+Your comments make sense and are helpful for me. Thanks.
+> 
+
+Thanks,
+Hou
