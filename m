@@ -2,172 +2,127 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8627A1BD89C
-	for <lists+target-devel@lfdr.de>; Wed, 29 Apr 2020 11:45:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEF461BFFC4
+	for <lists+target-devel@lfdr.de>; Thu, 30 Apr 2020 17:11:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726760AbgD2Jph (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 29 Apr 2020 05:45:37 -0400
-Received: from mta-02.yadro.com ([89.207.88.252]:39854 "EHLO mta-01.yadro.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726739AbgD2Jpg (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Wed, 29 Apr 2020 05:45:36 -0400
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 374544C84F;
-        Wed, 29 Apr 2020 09:45:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        content-type:content-type:content-transfer-encoding:mime-version
-        :references:in-reply-to:x-mailer:message-id:date:date:subject
-        :subject:from:from:received:received:received; s=mta-01; t=
-        1588153531; x=1589967932; bh=MHpALc/oNT9f7nhuCJ8vAm7IcIHgJW50szm
-        IjnL6rQU=; b=K7B5tHIhuoDcGZg+G2XcQ3vUXyrRwgGH3g/4Y+FsBVq3necLJY8
-        08uJLN+5ccc2k4RrbIlGAJl/O2n2zuCgDoe6aex0rnSBwAao6sNjiIsq079qH9+a
-        2PS08OpM5dpUC+7xbHwafuoWR4DmtyS7cXgXGGwb5WNhK1Z5G8c0sM5c=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id hnCe3u5gWA9B; Wed, 29 Apr 2020 12:45:31 +0300 (MSK)
-Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com [172.17.10.102])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id D81464C855;
-        Wed, 29 Apr 2020 12:45:29 +0300 (MSK)
-Received: from localhost (172.17.204.212) by T-EXCH-02.corp.yadro.com
- (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Wed, 29
- Apr 2020 12:45:31 +0300
-From:   Roman Bolshakov <r.bolshakov@yadro.com>
-To:     <target-devel@vger.kernel.org>,
-        Mike Christie <mchristi@redhat.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        David Disseldorp <ddiss@suse.de>
-CC:     <linux-scsi@vger.kernel.org>, <linux@yadro.com>,
-        Roman Bolshakov <r.bolshakov@yadro.com>
-Subject: [RFC PATCH 11/11] scsi: target/core: Show peer ports in RTPG response
-Date:   Wed, 29 Apr 2020 12:44:44 +0300
-Message-ID: <20200429094443.43937-12-r.bolshakov@yadro.com>
-X-Mailer: git-send-email 2.26.1
-In-Reply-To: <20200429094443.43937-1-r.bolshakov@yadro.com>
-References: <20200429094443.43937-1-r.bolshakov@yadro.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [172.17.204.212]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-02.corp.yadro.com (172.17.10.102)
+        id S1726840AbgD3PLp (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 30 Apr 2020 11:11:45 -0400
+Received: from mail1.bemta26.messagelabs.com ([85.158.142.2]:45176 "EHLO
+        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726396AbgD3PLo (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Thu, 30 Apr 2020 11:11:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
+        s=200619tsfj; t=1588259500; i=@ts.fujitsu.com;
+        bh=K9cTsEHWtQZINMgB3ZmbIs4Bnsa61dJE7uzpXz56pLU=;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        b=GMpisSoeSgluPb6kFFacHkGnI4xfDa5n/MCqvOc1Hmf4VoErZpEbFpo/ZSQJRuMQe
+         3LmsiGJHfByuV8SkPwUIciUbT1ThnNLWAdkns1VELQtNjSOu7y9VqjkH4FdNSl/pYT
+         jcZ1LkVcVZEk5g3+zPGoXvIMABE+2b/qPVy1nVENf1ne5YirDtdnZB3iJ1iHR8g8WB
+         XSofPcg8Z4auuk0X9zD8pSEXpyCVA0SGlKy46fWOziNNsOaCbKrhja9zE7QkR4k3V2
+         7uBbT04IWwnE0T6/7Pl0CJHpxBn5cI/+zvCfkBFdomg6l+gW/hyisgoW6JAEOfr9D2
+         n+okCkoo9k+BA==
+Received: from [100.113.3.197] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-2.bemta.az-a.eu-central-1.aws.symcld.net id 60/B0-40520-CAAEAAE5; Thu, 30 Apr 2020 15:11:40 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrPLMWRWlGSWpSXmKPExsViZ8MxVXf1q1V
+  xBjMarS2WH//HZLH+yAZGi9alb5kcmD0+Pr3F4vF+31U2j8+b5AKYo1gz85LyKxJYM16cXs9Y
+  cEmg4v6yLqYGxj+8XYxcHEICkxkl9m85xQLhTGeUePDnDZDDycEmYCCxYtJ9IJuDQ0QgUqL1p
+  S9ImFlAT2Lav3XsILawgIPEvpk9YOUsAqoS7y82soHYvAJ2EvNftLGC2BIC8hIdByazTGDkXM
+  DIsIrRMqkoMz2jJDcxM0fX0MBA19DQWBdImlroJVbpJuqlluomp+aVFCUCZfUSy4v1iitzk3N
+  S9PJSSzYxAv2eUsgwbwfj7LXv9Q4xSnIwKYnyGlxYFSfEl5SfUpmRWJwRX1Sak1p8iFGGg0NJ
+  grftJVBOsCg1PbUiLTMHGIIwaQkOHiURXmWQNG9xQWJucWY6ROoUoy7HyVVLFjELseTl56VKi
+  fOagxQJgBRllObBjYDFwyVGWSlhXkYGBgYhnoLUotzMElT5V4ziHIxKwrx6wOgS4snMK4Hb9A
+  roCCagI7KFl4McUZKIkJJqYGoK+vPsfe40Acur/284Bd5hNTdLWGE978ZFvr0n7y2+bLO/u0h
+  niXD1galaH9wvBx/ZI3x6U+gt5+ez3jsblC30FXN6YHnfV+TvFW8O3Rm86Ue5lh/V4807MIFz
+  Z8YFV+vs3GNZwWX6vYlHFu82e8cZ+NNm2eItd0vWHb1q3XNQ5ceElFsRIk3fhWI9ghcFPzLMF
+  Hqw/sn8V9MfFU/5cFkyyjtDcJKVD0uD7JSCN4cFNH/fWe23Rnp22DYOs0/O1+fYNk6cWc5j6f
+  537v4VC49+meiiY+9yckrPgsaevE2GWc6qLl2C1wvbV1kuSryT+G6Or05Dwa3PvNM3lJsWTpy
+  odWOv5D+2h/onX8k6vrBWYinOSDTUYi4qTgQAkBllEQIDAAA=
+X-Env-Sender: bstroesser@ts.fujitsu.com
+X-Msg-Ref: server-29.tower-228.messagelabs.com!1588259499!757126!1
+X-Originating-IP: [62.60.8.149]
+X-SYMC-ESS-Client-Auth: outbound-route-from=pass
+X-StarScan-Received: 
+X-StarScan-Version: 9.50.1; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 9739 invoked from network); 30 Apr 2020 15:11:39 -0000
+Received: from unknown (HELO mailhost2.uk.fujitsu.com) (62.60.8.149)
+  by server-29.tower-228.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 30 Apr 2020 15:11:39 -0000
+Received: from x-serv01 ([172.17.38.52])
+        by mailhost2.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 03UFBXYN004245;
+        Thu, 30 Apr 2020 16:11:33 +0100
+Received: from VTC.emeia.fujitsu.local (unknown [172.17.38.7])
+        by x-serv01 (Postfix) with ESMTP id 6EE2D20347;
+        Thu, 30 Apr 2020 17:11:33 +0200 (CEST)
+From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
+To:     mchristi@redhat.com, martin.petersen@oracle.com,
+        target-devel@vger.kernel.org
+Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Subject: [RFC] tcmu: wrong input from userspace can confuse tcmu
+Date:   Thu, 30 Apr 2020 17:10:41 +0200
+Message-Id: <20200430151041.31053-1-bstroesser@ts.fujitsu.com>
+X-Mailer: git-send-email 2.12.3
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-The change makes peer ports visible in the response to REPORT TARGET
-PORT GROUPS command. RTPI values of real SCSI target ports and peer
-ports for each target port descriptor list are sorted in ascending
-order.
+Hi,
 
-Signed-off-by: Roman Bolshakov <r.bolshakov@yadro.com>
----
- drivers/target/target_core_alua.c     | 32 +++++++++++++++++++++++----
- drivers/target/target_core_configfs.c |  2 ++
- 2 files changed, 30 insertions(+), 4 deletions(-)
+When tcmu queues a new command - no matter whether in command
+ring or in qfull_queue - a cmd_id from IDR udev->commands is
+assigned to the command.
 
-diff --git a/drivers/target/target_core_alua.c b/drivers/target/target_core_alua.c
-index 81ed79500376..f7d88181d683 100644
---- a/drivers/target/target_core_alua.c
-+++ b/drivers/target/target_core_alua.c
-@@ -18,6 +18,7 @@
- #include <linux/fcntl.h>
- #include <linux/file.h>
- #include <linux/fs.h>
-+#include <linux/sort.h>
- #include <scsi/scsi_proto.h>
- #include <asm/unaligned.h>
- 
-@@ -127,6 +128,11 @@ target_emulate_report_referrals(struct se_cmd *cmd)
- 	return 0;
- }
- 
-+static int cmp_rtpi(const void *a, const void *b)
-+{
-+	return *(u16 *)a - *(u16 *)b;
-+}
-+
- /*
-  * REPORT_TARGET_PORT_GROUPS
-  *
-@@ -138,7 +144,11 @@ target_emulate_report_target_port_groups(struct se_cmd *cmd)
- 	struct se_device *dev = cmd->se_dev;
- 	struct t10_alua_tg_pt_gp *tg_pt_gp;
- 	struct se_lun *lun;
-+	struct t10_alua_tg_pt_gp_peer *peer;
- 	unsigned char *buf;
-+	u8 port_cnt;
-+	u16 *ports = NULL;
-+	int i = 0;
- 	u32 rd_len = 0, off;
- 	int ext_hdr = (cmd->t_task_cdb[1] & 0x20);
- 
-@@ -209,12 +219,24 @@ target_emulate_report_target_port_groups(struct se_cmd *cmd)
- 		/*
- 		 * TARGET PORT COUNT
- 		 */
--		buf[off++] = (tg_pt_gp->tg_pt_gp_members & 0xff);
-+		spin_lock(&tg_pt_gp->tg_pt_gp_lock);
-+		port_cnt = (tg_pt_gp->tg_pt_gp_members & 0xff);
-+		buf[off++] = port_cnt;
- 		rd_len += 8;
-+		ports = kcalloc(tg_pt_gp->tg_pt_gp_members, sizeof(u16),
-+				GFP_ATOMIC);
- 
--		spin_lock(&tg_pt_gp->tg_pt_gp_lock);
-+		i = 0;
- 		list_for_each_entry(lun, &tg_pt_gp->tg_pt_gp_lun_list,
--				lun_tg_pt_gp_link) {
-+				    lun_tg_pt_gp_link)
-+			ports[i++] = lun->lun_tpg->tpg_rtpi;
-+
-+		list_for_each_entry(peer, &tg_pt_gp->tg_pt_gp_peer_list,
-+				    tg_pt_gp_peer_list)
-+			ports[i++] = peer->tg_pt_gp_peer_rtpi;
-+
-+		sort(ports, port_cnt, sizeof(*ports), cmp_rtpi, NULL);
-+		for (i = 0; i < port_cnt; i++) {
- 			/*
- 			 * Start Target Port descriptor format
- 			 *
-@@ -224,10 +246,12 @@ target_emulate_report_target_port_groups(struct se_cmd *cmd)
- 			/*
- 			 * Set RELATIVE TARGET PORT IDENTIFIER
- 			 */
--			put_unaligned_be16(lun->lun_tpg->tpg_rtpi, &buf[off]);
-+			put_unaligned_be16(ports[i], &buf[off]);
- 			off += 2;
- 			rd_len += 4;
+If userspaces sends a wrong command completion containing the
+cmd_id of a command on the qfull_queue, tcmu_handle_completions()
+finds the command in the IDR and calls tcmu_handle_completion()
+for it. This might do some nasty things, because commands in
+qfull_queue do not have a valid dbi list.
+
+Of course this is easy to fix. E.g.:
+
+
+--- a/drivers/target/target_core_user.c	2020-04-30 14:15:36.177184668 +0200
++++ b/drivers/target/target_core_user.c	2020-04-30 14:29:43.331882066 +0200
+@@ -1242,13 +1242,14 @@ static unsigned int tcmu_handle_completi
  		}
-+		kfree(ports);
-+		ports = NULL;
- 		spin_unlock(&tg_pt_gp->tg_pt_gp_lock);
- 	}
- 	spin_unlock(&dev->t10_alua.tg_pt_gps_lock);
-diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
-index c43f244f8bd6..4026debe30ca 100644
---- a/drivers/target/target_core_configfs.c
-+++ b/drivers/target/target_core_configfs.c
-@@ -3161,6 +3161,7 @@ target_core_alua_tg_pt_gp_peers_make(struct config_group *group,
- 	spin_lock(&tg_pt_gp->tg_pt_gp_lock);
- 	list_add_tail(&peer_port->tg_pt_gp_peer_list,
- 		      &tg_pt_gp->tg_pt_gp_peer_list);
-+	tg_pt_gp->tg_pt_gp_members++;
- 	spin_unlock(&tg_pt_gp->tg_pt_gp_lock);
- 	mutex_unlock(&g_rtpi_mutex);
+ 		WARN_ON(tcmu_hdr_get_op(entry->hdr.len_op) != TCMU_OP_CMD);
  
-@@ -3181,6 +3182,7 @@ static void target_core_alua_tg_pt_gp_peers_drop(struct config_group *group,
- 	struct t10_alua_tg_pt_gp *tg_pt_gp = container_of(group,
- 			struct t10_alua_tg_pt_gp, tg_pt_gp_peers_group);
- 	spin_lock(&tg_pt_gp->tg_pt_gp_lock);
-+	tg_pt_gp->tg_pt_gp_members--;
- 	list_del(&peer_port->tg_pt_gp_peer_list);
- 	spin_unlock(&tg_pt_gp->tg_pt_gp_lock);
+-		cmd = idr_remove(&udev->commands, entry->hdr.cmd_id);
+-		if (!cmd) {
++		cmd = idr_find(&udev->commands, entry->hdr.cmd_id);
++		if (!cmd || !test_bit(TCMU_CMD_BIT_INFLIGHT, &cmd->flags)) {
+ 			pr_err("cmd_id %u not found, ring is broken\n",
+ 			       entry->hdr.cmd_id);
+ 			set_bit(TCMU_DEV_BIT_BROKEN, &udev->flags);
+ 			break;
+ 		}
++		idr_remove(&udev->commands, entry->hdr.cmd_id);
  
--- 
-2.26.1
+ 		tcmu_handle_completion(cmd, entry);
+ 
 
+To avoid the second idr_*() call in main data path, it would also
+be possible to not replace the idr_remove() by idr_find(), but
+in case cmd was found without TCMU_CMD_BIT_INFLIGHT being set,
+during error handling re-add the cmd to the idr with the same id
+as before by calling idr_alloc(...,cmd_id, crmdd_id+1, ...).
+
+
+OTOH, I'm wondering whether the better solution would be to
+remove idr_alloc() from tcmu_setup_cmd_timer() and add it
+to queue_cmd_ring() immediately before or after it calls
+tcmu_setup_cmd_timer().
+Doing so would mean that commands in qfull_queue no longer have
+a cmd_id (which is not necessary AFAICS) and therefore the problem
+cannot happen, because tcmu_handle_completions() cannot find them
+in the IDR.
+
+Of course, this change would cause a number of further small
+changes in target_core_user.c, but the effort is not too high,
+it seems.
+
+What do you think is the best solution?
+
+Thank you,
+Bodo
