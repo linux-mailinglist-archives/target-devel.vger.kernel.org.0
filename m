@@ -2,72 +2,126 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D4C21C1F1F
-	for <lists+target-devel@lfdr.de>; Fri,  1 May 2020 23:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDD701C75B3
+	for <lists+target-devel@lfdr.de>; Wed,  6 May 2020 18:05:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726702AbgEAU4e (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 1 May 2020 16:56:34 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:45772 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726318AbgEAU4d (ORCPT
+        id S1729853AbgEFQFz (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 6 May 2020 12:05:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36984 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729431AbgEFQFz (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 1 May 2020 16:56:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1588366592;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=feZvcvjvjuwjs6NSAyIML+aY3mjtHkgI8MsqkvYUe3U=;
-        b=U4cVREuYLrYgKTMEk9HvGNVrVK5DA0iv4fBwa9gaoQUU88MYYFUMp67TG+SrwiRtHJsfUl
-        ebjeJRHcC+A0ZqSaIHcjgbqak2Iswx5Rj9+HO0ISIIYE5EW/ys0U+Hp0ioPAnZtZpxTdO1
-        Mn4+yNgpwzYz+Icq/kcSUE1CGwxkT/Y=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-513-tJNGTaEMMfirhEM2XG47ww-1; Fri, 01 May 2020 16:56:31 -0400
-X-MC-Unique: tJNGTaEMMfirhEM2XG47ww-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B7B7245F;
-        Fri,  1 May 2020 20:56:29 +0000 (UTC)
-Received: from [10.10.113.244] (ovpn-113-244.rdu2.redhat.com [10.10.113.244])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0C7D15EE10;
-        Fri,  1 May 2020 20:56:28 +0000 (UTC)
-Subject: Re: [PATCH 0/4] target: tcmu: allow flexible pr and alua handling
-To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Cc:     ddiss@suse.de, hch@lst.de, martin.petersen@oracle.com
-References: <20200427150823.15350-1-bstroesser@ts.fujitsu.com>
-From:   Mike Christie <mchristi@redhat.com>
-Message-ID: <a82906f3-c671-22fd-7722-1df5eb02b1f8@redhat.com>
-Date:   Fri, 1 May 2020 15:56:28 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        Wed, 6 May 2020 12:05:55 -0400
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA99CC061A10
+        for <target-devel@vger.kernel.org>; Wed,  6 May 2020 09:05:54 -0700 (PDT)
+Received: by mail-qk1-x743.google.com with SMTP id b188so2473932qkd.9
+        for <target-devel@vger.kernel.org>; Wed, 06 May 2020 09:05:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=nrpp2T2sh7pMsL3PvoDrM5y2fqkhAxlK1sJUOu9QA9o=;
+        b=Tr83kb/F9G2VBLcHu7x37pNyprDcqbHUZZYB0zOv2RBd+1BHPvHEVKPvXuZIqMslJt
+         WRxGZOJikpMi5eBYxtKo6yrCLuOJLq7J+DscjOjKTQnnrd1h3WeKKt2DEqB7XbQZtVAL
+         HjYOHAHRL+9QCK2KRb/fFvNSoqI3wQyv9hUkPCYhePvKjEIK1pVf4JsL1DBCueLXJJOL
+         n3UuzknRW57RSsLv47vAxS4EZIkUvB4yn9aPp6niVhcBLpY/PAfsvJL15u7Cnwdkb1Dd
+         2SzCfTuoD4Kp2AXjh5L2+oXey2AyrWZ8VC4q2ZxpUBuGIddwsFS8rNWnuZ5sOm5uYuVr
+         5Zbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=nrpp2T2sh7pMsL3PvoDrM5y2fqkhAxlK1sJUOu9QA9o=;
+        b=sq1iYATEMQD5ChX/9ogDs6dcpTHDp91D5opqPn+UTgDQShB5fJw125PbRdIrdAz1a4
+         bE1ou2Z8JKS6FgQs7x56O1P0EC/ygXTuAIwmaOns3QMoVbZVAyyOx/leBxkuWP3cZXG+
+         cUx+J0JS0LN2yeY6hqFf7xNTT+TM0KcPIcrkVcHqDkrVRYA+LJ3k+3LFCo0yUQDLL/ks
+         P4xGVnFtr0ZkAHZh77rGA8M4JsS0z/tylKgmfpaIcqrCuTw9o22qKmFmx8LcEp9XqEhW
+         Yt+OJil0LTrMUpQej4OO/bAXl5hY2lDPSUEcyIt6n+aQZviqk7RXPKFq4TYKR+RJRXrl
+         zCXg==
+X-Gm-Message-State: AGi0PuZl0PMJq2xJ414BxAra9x5/09nHHPpfIZeM4EC6vSsA+xAANkwt
+        2KMaLH6Q8tkQP7VGgaKpKNNS5g==
+X-Google-Smtp-Source: APiQypLzPtnV2MpsE+MV+xNWnkm78v9QYjriPWAQthkfamFRT+pYJFignvWriiKBLQ0XkQ6F6UKvgw==
+X-Received: by 2002:a05:620a:219a:: with SMTP id g26mr9661209qka.228.1588781153930;
+        Wed, 06 May 2020 09:05:53 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-68-57-212.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.57.212])
+        by smtp.gmail.com with ESMTPSA id q9sm1879221qkm.130.2020.05.06.09.05.53
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 06 May 2020 09:05:53 -0700 (PDT)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1jWMYS-0002c7-Qa; Wed, 06 May 2020 13:05:52 -0300
+Date:   Wed, 6 May 2020 13:05:52 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Leon Romanovsky <leon@kernel.org>
+Cc:     Doug Ledford <dledford@redhat.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dennis Dalessandro <dennis.dalessandro@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Karsten Graul <kgraul@linux.ibm.com>,
+        linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+        netdev@vger.kernel.org,
+        Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
+        rds-devel@oss.oracle.com,
+        Santosh Shilimkar <santosh.shilimkar@oracle.com>,
+        target-devel@vger.kernel.org, Ursula Braun <ubraun@linux.ibm.com>
+Subject: Re: [PATCH rdma-next] RDMA: Allow ib_client's to fail when add() is
+ called
+Message-ID: <20200506160552.GA9993@ziepe.ca>
+References: <20200421172440.387069-1-leon@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20200427150823.15350-1-bstroesser@ts.fujitsu.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200421172440.387069-1-leon@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 4/27/20 10:08 AM, Bodo Stroesser wrote:
-> These patches already were sent to target-devel only. So I'm resending
-> them now, slightly modified according to review comments from
-> target-devel.
+On Tue, Apr 21, 2020 at 08:24:40PM +0300, Leon Romanovsky wrote:
+> From: Jason Gunthorpe <jgg@mellanox.com>
 > 
-> The goal of the patches is to add more flexibility to tcmu regarding
-> PGR handling.
+> When a client is added it isn't allowed to fail, but all the client's have
+> various failure paths within their add routines.
 > 
-> Since the attribute emulate_pr is missing for pscsi in the same way as
-> for tcmu, I'm adding it to pscsi also. 
->
+> This creates the very fringe condition where the client was added, failed
+> during add and didn't set the client_data. The core code will then still
+> call other client_data centric ops like remove(), rename(), get_nl_info(),
+> and get_net_dev_by_params() with NULL client_data - which is confusing and
+> unexpected.
+> 
+> If the add() callback fails, then do not call any more client ops for the
+> device, even remove.
+> 
+> Remove all the now redundant checks for NULL client_data in ops callbacks.
+> 
+> Update all the add() callbacks to return error codes
+> appropriately. EOPNOTSUPP is used for cases where the ULP does not support
+> the ib_device - eg because it only works with IB.
+> 
+> Signed-off-by: Jason Gunthorpe <jgg@mellanox.com>
+> Signed-off-by: Leon Romanovsky <leonro@mellanox.com>
+> Acked-by: Ursula Braun <ubraun@linux.ibm.com>
+> ---
+>  drivers/infiniband/core/cm.c                  | 24 ++++++++++--------
+>  drivers/infiniband/core/cma.c                 | 23 +++++++++--------
+>  drivers/infiniband/core/device.c              | 16 ++++++++++--
+>  drivers/infiniband/core/mad.c                 | 17 ++++++++++---
+>  drivers/infiniband/core/multicast.c           | 12 ++++-----
+>  drivers/infiniband/core/sa_query.c            | 22 ++++++++--------
+>  drivers/infiniband/core/user_mad.c            | 22 ++++++++--------
+>  drivers/infiniband/core/uverbs_main.c         | 24 +++++++++---------
+>  drivers/infiniband/ulp/ipoib/ipoib_main.c     | 15 ++++-------
+>  .../infiniband/ulp/opa_vnic/opa_vnic_vema.c   | 12 ++++-----
+>  drivers/infiniband/ulp/srp/ib_srp.c           | 21 ++++++++--------
+>  drivers/infiniband/ulp/srpt/ib_srpt.c         | 25 ++++++++-----------
+>  include/rdma/ib_verbs.h                       |  2 +-
+>  net/rds/ib.c                                  | 21 ++++++++++------
+>  net/smc/smc_ib.c                              | 10 +++-----
+>  15 files changed, 142 insertions(+), 124 deletions(-)
 
-It looks ok to me.
+Applied to for-next
 
-Reviewed-by: Mike Christie <mchristi@redhat.com>
-
+Jason
