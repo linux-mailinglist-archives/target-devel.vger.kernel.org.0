@@ -2,89 +2,124 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E59611C8F24
-	for <lists+target-devel@lfdr.de>; Thu,  7 May 2020 16:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86D5D1C9521
+	for <lists+target-devel@lfdr.de>; Thu,  7 May 2020 17:34:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728678AbgEGO3t (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 7 May 2020 10:29:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58004 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728670AbgEGO3t (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 7 May 2020 10:29:49 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CA9AA208D6;
-        Thu,  7 May 2020 14:29:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588861788;
-        bh=06ndIgCZI4ggrsVfN2LGTIb2q7MnraO4TFqut1b1ySg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bdkgS+74VBvwOCfa5Ya4QTsI8rIdcLXhaWhSjzfoaiatCScGzu5uWxRMiyS60Tdb6
-         wrw1W0nFhZJ6bl3jjX2QPyKMQDj7GguqYGhm82YO72YZ29wSn4b7owW78ARAVxZRNN
-         gWlrmnlo6SSJgiIEGrJ3O2aU22d1a8tkrMtIOyoo=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     David Disseldorp <ddiss@suse.de>,
-        Bart Van Assche <bvanassche@acm.org>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 04/16] scsi: target/iblock: fix WRITE SAME zeroing
-Date:   Thu,  7 May 2020 10:29:31 -0400
-Message-Id: <20200507142943.26848-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200507142943.26848-1-sashal@kernel.org>
-References: <20200507142943.26848-1-sashal@kernel.org>
+        id S1726531AbgEGPeZ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 7 May 2020 11:34:25 -0400
+Received: from mail1.bemta25.messagelabs.com ([195.245.230.69]:37015 "EHLO
+        mail1.bemta25.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725985AbgEGPeY (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Thu, 7 May 2020 11:34:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
+        s=200619tsfj; t=1588865662; i=@ts.fujitsu.com;
+        bh=9jLCyMS+NJA1/GiB9td/8msyydEVwXvXDjLxZRIXzbs=;
+        h=From:Subject:To:Message-ID:Date:MIME-Version:Content-Type:
+         Content-Transfer-Encoding;
+        b=GiD+KHE8lmVqclsviNCrRGoLJXZWbqoACOFZ1+jip16gd5jODmFvXIqPEUPVSS8YT
+         HYTF/M1yO8qQFNZyV/HsvxPmHpKNGBvKKBZqnyn8zeT6dPqN+cU7XC2sxJBOTpEHEp
+         7gKU4ZnTi84flNMnqFBEIo34xkcIqtuj48Tqsc+EFK8YCmSSVecTQcf4BXmId3Erpb
+         smIc5slyJjMacch74ACJ1qCz4Z+h2wq6N+M5E01pFPS4S9Pt5U5nCJzFEq2pTDiBdr
+         wxtOkF4KksSihoqmsXd30sTN2lm8LicviyJChVXl2q6YDYm7XyZgmVbtT3CpR4gyQ1
+         J0R5H2XT1x/xA==
+Received: from [100.112.198.209] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-5.bemta.az-b.eu-west-1.aws.symcld.net id 09/B2-40486-D7A24BE5; Thu, 07 May 2020 15:34:21 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrCIsWRWlGSWpSXmKPExsViZ8MRolurtSX
+  OYNs8TYtpH34yW3Rf38Fmsfz4PyaL9Uc2MFq0Ln3L5MDqcfmKt8fHp7dYPN7vu8rm8XmTXABL
+  FGtmXlJ+RQJrxqIbJ9kL/vJWvPn4g62B8Q93FyMXh5DATEaJW++fMnUxcnKwCRhIrJh0nwXEF
+  hYIlLgxbQobSJGIwFVGicPXloAleAUcJaYtXcLYxcjBwSKgItHwkRUkLCoQLvFiyx9WiBJBiZ
+  Mzn4CVMwuYSczb/JAZwhaXuPVkPhOELS+x/e0c5gmM3LOQtMxC0jILScssJC0LGFlWMVokFWW
+  mZ5TkJmbm6BoaGOgaGhrpGlpa6hqamOolVukm6aWW6panFpfoGuollhfrFVfmJuek6OWllmxi
+  BAZoSsHxiTsY16x9r3eIUZKDSUmUd8nnzXFCfEn5KZUZicUZ8UWlOanFhxhlODiUJHi/KW6JE
+  xIsSk1PrUjLzAFGC0xagoNHSYSXXQkozVtckJhbnJkOkTrFqMux8+i8RcxCLHn5ealS4rxfFI
+  CKBECKMkrz4EbAIvcSo6yUMC8jAwODEE9BalFuZgmq/CtGcQ5GJWHeHpBLeDLzSuA2vQI6ggn
+  oiM+fNoEcUZKIkJJqYOrdve+V29qQ6GaL3S93+sU/v1Wdmh/3Q97nDtPkNPMNFcnK/yxWBa1e
+  pnhw5cN9T5VWz797MYP59kIR/7Kz9pLdE35NeZo869nWj1tjj7Za7dioVnpULDP9yrXLN6wDn
+  bi/xE2M+KuZf3ZhavPJ+vZVKf1Pvh7Y7/1xzcL/MWU/Dly0SE9KOdz+bbKgrHHe1EO7E5f/2u
+  MuyMDwcM1MXvHz6751nbqy9lb7zjuZ5w1Vr7+uKK8pPLXIeX/T+Q3r52yz17936GpS4vyG325
+  JH7dnMDC3HF/h+yxUJU1tztuKNfpui3vvu8l3zHK5o7lsZr1N0ceDLBN5k+6vr/4r08a44XHu
+  UsPUuK4T678a1y6VVWIpzkg01GIuKk4EAEQxJn1XAwAA
+X-Env-Sender: bstroesser@ts.fujitsu.com
+X-Msg-Ref: server-16.tower-287.messagelabs.com!1588865660!1134!1
+X-Originating-IP: [62.60.8.84]
+X-SYMC-ESS-Client-Auth: outbound-route-from=pass
+X-StarScan-Received: 
+X-StarScan-Version: 9.50.1; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 30158 invoked from network); 7 May 2020 15:34:21 -0000
+Received: from unknown (HELO mailhost3.uk.fujitsu.com) (62.60.8.84)
+  by server-16.tower-287.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 7 May 2020 15:34:21 -0000
+Received: from [172.17.80.59] ([172.17.80.59])
+        by mailhost3.uk.fujitsu.com (8.14.5/8.14.5) with ESMTP id 047FXTTo007067;
+        Thu, 7 May 2020 16:33:47 +0100
+From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Subject: Lun unlink from configFS for Loopback after TMR execution hangs
+ forever
+To:     Bart Van Assche <bvanassche@acm.org>,
+        Mike Christie <mchristi@redhat.com>,
+        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>
+Message-ID: <ffee233a-fe6d-e1c9-7071-9fb463453b0c@ts.fujitsu.com>
+Date:   Thu, 7 May 2020 17:33:20 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-From: David Disseldorp <ddiss@suse.de>
+Hi,
 
-[ Upstream commit 1d2ff149b263c9325875726a7804a0c75ef7112e ]
+I am testing with Loopback and found, that after a
+Loopback LUN has executed a TMR, I can no longer unlink
+the LUN.
 
-SBC4 specifies that WRITE SAME requests with the UNMAP bit set to zero
-"shall perform the specified write operation to each LBA specified by the
-command".  Commit 2237498f0b5c ("target/iblock: Convert WRITE_SAME to
-blkdev_issue_zeroout") modified the iblock backend to call
-blkdev_issue_zeroout() when handling WRITE SAME requests with UNMAP=0 and a
-zero data segment.
+The rm command hangs in transport_clear_lun_ref() at
+wait_for_completion(&lun->lun_shutdown_comp)
 
-The iblock blkdev_issue_zeroout() call incorrectly provides a flags
-parameter of 0 (bool false), instead of BLKDEV_ZERO_NOUNMAP.  The bool
-false parameter reflects the blkdev_issue_zeroout() API prior to commit
-ee472d835c26 ("block: add a flags argument to (__)blkdev_issue_zeroout")
-which was merged shortly before 2237498f0b5c.
+The reason is, that transport_lun_remove_cmd() is not
+called at the end of target_tmr_work().
 
-Link: https://lore.kernel.org/r/20200419163109.11689-1-ddiss@suse.de
-Fixes: 2237498f0b5c ("target/iblock: Convert WRITE_SAME to blkdev_issue_zeroout")
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: David Disseldorp <ddiss@suse.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/target/target_core_iblock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+It seems, that in other fabrics this call happens implicitly
+when the fabric driver calls transport_generic_free_cmd()
+during its ->queue_tm_rsp().
 
-diff --git a/drivers/target/target_core_iblock.c b/drivers/target/target_core_iblock.c
-index 60429011292a2..2a9e023f54291 100644
---- a/drivers/target/target_core_iblock.c
-+++ b/drivers/target/target_core_iblock.c
-@@ -447,7 +447,7 @@ iblock_execute_zero_out(struct block_device *bdev, struct se_cmd *cmd)
- 				target_to_linux_sector(dev, cmd->t_task_lba),
- 				target_to_linux_sector(dev,
- 					sbc_get_write_same_sectors(cmd)),
--				GFP_KERNEL, false);
-+				GFP_KERNEL, BLKDEV_ZERO_NOUNMAP);
- 	if (ret)
- 		return TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE;
- 
--- 
-2.20.1
+Unfortunately the Loopback seems to not comply to the common
+way of calling transport_generic_free_cmd() from ->queue_*(),
+but calls it from its ->check_stop_free() only.
 
+But the ->check_stop_free() is called by
+transport_cmd_check_stop_to_fabric() after it has reset the
+se_cmd->se_lun pointer.
+Therefore the following transport_generic_free_cmd() skips the
+transport_lun_remove_cmd().
+
+So it seems, that Loopback driver is doing wrong.
+
+OTOH, target_tmr_work() seems to be the only place, where
+transport_cmd_check_stop_to_fabric() is called without
+calling transport_lun_remove_cmd() before.
+
+Now I'm wondering, how to fix the problem:
+1) Just (re-)add a call to transport_lun_remove_cmd() before
+    calling transport_cmd_check_stop_to_fabric() in
+    target_tmr_work()
+2) Change Loopback driver to comply with the usual way
+    of using transport_generic_free_cmd()
+
+I think I'd prefer 1 and already tested it, works fine for
+Loopback. Currently I'm not able to test other fabrics, but
+AFAICS the change should not harm other fabric drivers,
+because transport_lun_remove_cmd() uses a bit to make safe,
+that lun_ref is dropped only once.
+Additionally, before commit 2c9fa49e100f "scsi: target/core:
+  Make ABORT and LUN RESET handling synchronous" the code
+contained the transport_lun_remove_cmd() call.
+
+Regards,
+Bodo
