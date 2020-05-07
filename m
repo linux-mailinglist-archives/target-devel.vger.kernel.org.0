@@ -2,126 +2,89 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDD701C75B3
-	for <lists+target-devel@lfdr.de>; Wed,  6 May 2020 18:05:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B82BA1C904C
+	for <lists+target-devel@lfdr.de>; Thu,  7 May 2020 16:44:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729853AbgEFQFz (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 6 May 2020 12:05:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36984 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729431AbgEFQFz (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Wed, 6 May 2020 12:05:55 -0400
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA99CC061A10
-        for <target-devel@vger.kernel.org>; Wed,  6 May 2020 09:05:54 -0700 (PDT)
-Received: by mail-qk1-x743.google.com with SMTP id b188so2473932qkd.9
-        for <target-devel@vger.kernel.org>; Wed, 06 May 2020 09:05:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=nrpp2T2sh7pMsL3PvoDrM5y2fqkhAxlK1sJUOu9QA9o=;
-        b=Tr83kb/F9G2VBLcHu7x37pNyprDcqbHUZZYB0zOv2RBd+1BHPvHEVKPvXuZIqMslJt
-         WRxGZOJikpMi5eBYxtKo6yrCLuOJLq7J+DscjOjKTQnnrd1h3WeKKt2DEqB7XbQZtVAL
-         HjYOHAHRL+9QCK2KRb/fFvNSoqI3wQyv9hUkPCYhePvKjEIK1pVf4JsL1DBCueLXJJOL
-         n3UuzknRW57RSsLv47vAxS4EZIkUvB4yn9aPp6niVhcBLpY/PAfsvJL15u7Cnwdkb1Dd
-         2SzCfTuoD4Kp2AXjh5L2+oXey2AyrWZ8VC4q2ZxpUBuGIddwsFS8rNWnuZ5sOm5uYuVr
-         5Zbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=nrpp2T2sh7pMsL3PvoDrM5y2fqkhAxlK1sJUOu9QA9o=;
-        b=sq1iYATEMQD5ChX/9ogDs6dcpTHDp91D5opqPn+UTgDQShB5fJw125PbRdIrdAz1a4
-         bE1ou2Z8JKS6FgQs7x56O1P0EC/ygXTuAIwmaOns3QMoVbZVAyyOx/leBxkuWP3cZXG+
-         cUx+J0JS0LN2yeY6hqFf7xNTT+TM0KcPIcrkVcHqDkrVRYA+LJ3k+3LFCo0yUQDLL/ks
-         P4xGVnFtr0ZkAHZh77rGA8M4JsS0z/tylKgmfpaIcqrCuTw9o22qKmFmx8LcEp9XqEhW
-         Yt+OJil0LTrMUpQej4OO/bAXl5hY2lDPSUEcyIt6n+aQZviqk7RXPKFq4TYKR+RJRXrl
-         zCXg==
-X-Gm-Message-State: AGi0PuZl0PMJq2xJ414BxAra9x5/09nHHPpfIZeM4EC6vSsA+xAANkwt
-        2KMaLH6Q8tkQP7VGgaKpKNNS5g==
-X-Google-Smtp-Source: APiQypLzPtnV2MpsE+MV+xNWnkm78v9QYjriPWAQthkfamFRT+pYJFignvWriiKBLQ0XkQ6F6UKvgw==
-X-Received: by 2002:a05:620a:219a:: with SMTP id g26mr9661209qka.228.1588781153930;
-        Wed, 06 May 2020 09:05:53 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-68-57-212.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.57.212])
-        by smtp.gmail.com with ESMTPSA id q9sm1879221qkm.130.2020.05.06.09.05.53
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 06 May 2020 09:05:53 -0700 (PDT)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1jWMYS-0002c7-Qa; Wed, 06 May 2020 13:05:52 -0300
-Date:   Wed, 6 May 2020 13:05:52 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Leon Romanovsky <leon@kernel.org>
-Cc:     Doug Ledford <dledford@redhat.com>,
+        id S1728304AbgEGOiX (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 7 May 2020 10:38:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53514 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726774AbgEGO1m (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Thu, 7 May 2020 10:27:42 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6061E20870;
+        Thu,  7 May 2020 14:27:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588861661;
+        bh=AbF2uNFJWRWl/L5czMYiTGS/1WgEFm5qePayN96IG0s=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=MteUrxW8vja2negiTpGhTzftXr1O5QxoahaHMBFkhujKt0kb0kVhFGPYxyfbCuBl1
+         Gqmr1K/IqI6GW9TCuI8M8Niqup9JGQ50irbE6OnHEeVDWbJCpAFC/6mtznT3WYIvhY
+         fqZu2ANglPMOZe+6O6XfdiOMMIzZ7FmJYDqE8T5c=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     David Disseldorp <ddiss@suse.de>,
         Bart Van Assche <bvanassche@acm.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dennis Dalessandro <dennis.dalessandro@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Karsten Graul <kgraul@linux.ibm.com>,
-        linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
-        netdev@vger.kernel.org,
-        Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
-        rds-devel@oss.oracle.com,
-        Santosh Shilimkar <santosh.shilimkar@oracle.com>,
-        target-devel@vger.kernel.org, Ursula Braun <ubraun@linux.ibm.com>
-Subject: Re: [PATCH rdma-next] RDMA: Allow ib_client's to fail when add() is
- called
-Message-ID: <20200506160552.GA9993@ziepe.ca>
-References: <20200421172440.387069-1-leon@kernel.org>
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.6 11/50] scsi: target/iblock: fix WRITE SAME zeroing
+Date:   Thu,  7 May 2020 10:26:47 -0400
+Message-Id: <20200507142726.25751-11-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200507142726.25751-1-sashal@kernel.org>
+References: <20200507142726.25751-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200421172440.387069-1-leon@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Tue, Apr 21, 2020 at 08:24:40PM +0300, Leon Romanovsky wrote:
-> From: Jason Gunthorpe <jgg@mellanox.com>
-> 
-> When a client is added it isn't allowed to fail, but all the client's have
-> various failure paths within their add routines.
-> 
-> This creates the very fringe condition where the client was added, failed
-> during add and didn't set the client_data. The core code will then still
-> call other client_data centric ops like remove(), rename(), get_nl_info(),
-> and get_net_dev_by_params() with NULL client_data - which is confusing and
-> unexpected.
-> 
-> If the add() callback fails, then do not call any more client ops for the
-> device, even remove.
-> 
-> Remove all the now redundant checks for NULL client_data in ops callbacks.
-> 
-> Update all the add() callbacks to return error codes
-> appropriately. EOPNOTSUPP is used for cases where the ULP does not support
-> the ib_device - eg because it only works with IB.
-> 
-> Signed-off-by: Jason Gunthorpe <jgg@mellanox.com>
-> Signed-off-by: Leon Romanovsky <leonro@mellanox.com>
-> Acked-by: Ursula Braun <ubraun@linux.ibm.com>
-> ---
->  drivers/infiniband/core/cm.c                  | 24 ++++++++++--------
->  drivers/infiniband/core/cma.c                 | 23 +++++++++--------
->  drivers/infiniband/core/device.c              | 16 ++++++++++--
->  drivers/infiniband/core/mad.c                 | 17 ++++++++++---
->  drivers/infiniband/core/multicast.c           | 12 ++++-----
->  drivers/infiniband/core/sa_query.c            | 22 ++++++++--------
->  drivers/infiniband/core/user_mad.c            | 22 ++++++++--------
->  drivers/infiniband/core/uverbs_main.c         | 24 +++++++++---------
->  drivers/infiniband/ulp/ipoib/ipoib_main.c     | 15 ++++-------
->  .../infiniband/ulp/opa_vnic/opa_vnic_vema.c   | 12 ++++-----
->  drivers/infiniband/ulp/srp/ib_srp.c           | 21 ++++++++--------
->  drivers/infiniband/ulp/srpt/ib_srpt.c         | 25 ++++++++-----------
->  include/rdma/ib_verbs.h                       |  2 +-
->  net/rds/ib.c                                  | 21 ++++++++++------
->  net/smc/smc_ib.c                              | 10 +++-----
->  15 files changed, 142 insertions(+), 124 deletions(-)
+From: David Disseldorp <ddiss@suse.de>
 
-Applied to for-next
+[ Upstream commit 1d2ff149b263c9325875726a7804a0c75ef7112e ]
 
-Jason
+SBC4 specifies that WRITE SAME requests with the UNMAP bit set to zero
+"shall perform the specified write operation to each LBA specified by the
+command".  Commit 2237498f0b5c ("target/iblock: Convert WRITE_SAME to
+blkdev_issue_zeroout") modified the iblock backend to call
+blkdev_issue_zeroout() when handling WRITE SAME requests with UNMAP=0 and a
+zero data segment.
+
+The iblock blkdev_issue_zeroout() call incorrectly provides a flags
+parameter of 0 (bool false), instead of BLKDEV_ZERO_NOUNMAP.  The bool
+false parameter reflects the blkdev_issue_zeroout() API prior to commit
+ee472d835c26 ("block: add a flags argument to (__)blkdev_issue_zeroout")
+which was merged shortly before 2237498f0b5c.
+
+Link: https://lore.kernel.org/r/20200419163109.11689-1-ddiss@suse.de
+Fixes: 2237498f0b5c ("target/iblock: Convert WRITE_SAME to blkdev_issue_zeroout")
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: David Disseldorp <ddiss@suse.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/target/target_core_iblock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/target/target_core_iblock.c b/drivers/target/target_core_iblock.c
+index 51ffd5c002dee..1c181d31f4c87 100644
+--- a/drivers/target/target_core_iblock.c
++++ b/drivers/target/target_core_iblock.c
+@@ -432,7 +432,7 @@ iblock_execute_zero_out(struct block_device *bdev, struct se_cmd *cmd)
+ 				target_to_linux_sector(dev, cmd->t_task_lba),
+ 				target_to_linux_sector(dev,
+ 					sbc_get_write_same_sectors(cmd)),
+-				GFP_KERNEL, false);
++				GFP_KERNEL, BLKDEV_ZERO_NOUNMAP);
+ 	if (ret)
+ 		return TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE;
+ 
+-- 
+2.20.1
+
