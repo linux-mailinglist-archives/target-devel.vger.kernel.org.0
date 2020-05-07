@@ -2,27 +2,27 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B82BA1C904C
-	for <lists+target-devel@lfdr.de>; Thu,  7 May 2020 16:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3BDD1C8EFC
+	for <lists+target-devel@lfdr.de>; Thu,  7 May 2020 16:35:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728304AbgEGOiX (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 7 May 2020 10:38:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53514 "EHLO mail.kernel.org"
+        id S1728240AbgEGO2m (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 7 May 2020 10:28:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55538 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726774AbgEGO1m (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 7 May 2020 10:27:42 -0400
+        id S1728227AbgEGO2m (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Thu, 7 May 2020 10:28:42 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6061E20870;
-        Thu,  7 May 2020 14:27:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7BB7820870;
+        Thu,  7 May 2020 14:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588861661;
+        s=default; t=1588861721;
         bh=AbF2uNFJWRWl/L5czMYiTGS/1WgEFm5qePayN96IG0s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MteUrxW8vja2negiTpGhTzftXr1O5QxoahaHMBFkhujKt0kb0kVhFGPYxyfbCuBl1
-         Gqmr1K/IqI6GW9TCuI8M8Niqup9JGQ50irbE6OnHEeVDWbJCpAFC/6mtznT3WYIvhY
-         fqZu2ANglPMOZe+6O6XfdiOMMIzZ7FmJYDqE8T5c=
+        b=2NPkos4l10kNgO7io05XDPcA/MbZEQHUpao6/yVyNlc6WzLDozpMNutdC6vA1cjf0
+         qmc1EesX0YyjV/IGXWAxTK48btIX17XDK8d0vkns7hFdM4KohXErxPAIvL80mf409a
+         bIRQUVKM6srWG8fZGJAZ3hH7PRXiUG+k80Q7zzps=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     David Disseldorp <ddiss@suse.de>,
@@ -30,12 +30,12 @@ Cc:     David Disseldorp <ddiss@suse.de>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
         target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.6 11/50] scsi: target/iblock: fix WRITE SAME zeroing
-Date:   Thu,  7 May 2020 10:26:47 -0400
-Message-Id: <20200507142726.25751-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 08/35] scsi: target/iblock: fix WRITE SAME zeroing
+Date:   Thu,  7 May 2020 10:28:02 -0400
+Message-Id: <20200507142830.26239-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200507142726.25751-1-sashal@kernel.org>
-References: <20200507142726.25751-1-sashal@kernel.org>
+In-Reply-To: <20200507142830.26239-1-sashal@kernel.org>
+References: <20200507142830.26239-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
