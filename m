@@ -2,27 +2,27 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F3BDD1C8EFC
-	for <lists+target-devel@lfdr.de>; Thu,  7 May 2020 16:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A3A21C8EC8
+	for <lists+target-devel@lfdr.de>; Thu,  7 May 2020 16:29:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728240AbgEGO2m (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 7 May 2020 10:28:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55538 "EHLO mail.kernel.org"
+        id S1728546AbgEGO31 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 7 May 2020 10:29:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57102 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728227AbgEGO2m (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 7 May 2020 10:28:42 -0400
+        id S1728540AbgEGO30 (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Thu, 7 May 2020 10:29:26 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7BB7820870;
-        Thu,  7 May 2020 14:28:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B1D742083B;
+        Thu,  7 May 2020 14:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588861721;
-        bh=AbF2uNFJWRWl/L5czMYiTGS/1WgEFm5qePayN96IG0s=;
+        s=default; t=1588861765;
+        bh=ZfiDHdEWc5i37C86ooZPCz3v4KBAAVaiq6/gYNMCDtk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2NPkos4l10kNgO7io05XDPcA/MbZEQHUpao6/yVyNlc6WzLDozpMNutdC6vA1cjf0
-         qmc1EesX0YyjV/IGXWAxTK48btIX17XDK8d0vkns7hFdM4KohXErxPAIvL80mf409a
-         bIRQUVKM6srWG8fZGJAZ3hH7PRXiUG+k80Q7zzps=
+        b=R/VWRSv1YqINTob+xWDed1NHIto4UP1+K1WrTELMgyWqQQJI2yz53coSi4WvkzN/D
+         W04tdP4TbfDvEi/SjGgcQjroP74F0G6eO+Zl7+Ebu8g2ZqiyD8ZmndzOWtawKaGZ98
+         m98+GlLi0i0pTfqhUzAbyyKn1eT+s6B5u+pTzqZ4=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     David Disseldorp <ddiss@suse.de>,
@@ -30,12 +30,12 @@ Cc:     David Disseldorp <ddiss@suse.de>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
         target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 08/35] scsi: target/iblock: fix WRITE SAME zeroing
-Date:   Thu,  7 May 2020 10:28:02 -0400
-Message-Id: <20200507142830.26239-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 06/20] scsi: target/iblock: fix WRITE SAME zeroing
+Date:   Thu,  7 May 2020 10:29:02 -0400
+Message-Id: <20200507142917.26612-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200507142830.26239-1-sashal@kernel.org>
-References: <20200507142830.26239-1-sashal@kernel.org>
+In-Reply-To: <20200507142917.26612-1-sashal@kernel.org>
+References: <20200507142917.26612-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -73,10 +73,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/target/target_core_iblock.c b/drivers/target/target_core_iblock.c
-index 51ffd5c002dee..1c181d31f4c87 100644
+index 854b2bcca7c1a..5668d02de10b0 100644
 --- a/drivers/target/target_core_iblock.c
 +++ b/drivers/target/target_core_iblock.c
-@@ -432,7 +432,7 @@ iblock_execute_zero_out(struct block_device *bdev, struct se_cmd *cmd)
+@@ -445,7 +445,7 @@ iblock_execute_zero_out(struct block_device *bdev, struct se_cmd *cmd)
  				target_to_linux_sector(dev, cmd->t_task_lba),
  				target_to_linux_sector(dev,
  					sbc_get_write_same_sectors(cmd)),
