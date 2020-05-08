@@ -2,124 +2,94 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86D5D1C9521
-	for <lists+target-devel@lfdr.de>; Thu,  7 May 2020 17:34:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D614D1CA13B
+	for <lists+target-devel@lfdr.de>; Fri,  8 May 2020 04:57:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726531AbgEGPeZ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 7 May 2020 11:34:25 -0400
-Received: from mail1.bemta25.messagelabs.com ([195.245.230.69]:37015 "EHLO
-        mail1.bemta25.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725985AbgEGPeY (ORCPT
+        id S1726641AbgEHC5d (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 7 May 2020 22:57:33 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:35586 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726612AbgEHC5c (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 7 May 2020 11:34:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1588865662; i=@ts.fujitsu.com;
-        bh=9jLCyMS+NJA1/GiB9td/8msyydEVwXvXDjLxZRIXzbs=;
-        h=From:Subject:To:Message-ID:Date:MIME-Version:Content-Type:
-         Content-Transfer-Encoding;
-        b=GiD+KHE8lmVqclsviNCrRGoLJXZWbqoACOFZ1+jip16gd5jODmFvXIqPEUPVSS8YT
-         HYTF/M1yO8qQFNZyV/HsvxPmHpKNGBvKKBZqnyn8zeT6dPqN+cU7XC2sxJBOTpEHEp
-         7gKU4ZnTi84flNMnqFBEIo34xkcIqtuj48Tqsc+EFK8YCmSSVecTQcf4BXmId3Erpb
-         smIc5slyJjMacch74ACJ1qCz4Z+h2wq6N+M5E01pFPS4S9Pt5U5nCJzFEq2pTDiBdr
-         wxtOkF4KksSihoqmsXd30sTN2lm8LicviyJChVXl2q6YDYm7XyZgmVbtT3CpR4gyQ1
-         J0R5H2XT1x/xA==
-Received: from [100.112.198.209] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-5.bemta.az-b.eu-west-1.aws.symcld.net id 09/B2-40486-D7A24BE5; Thu, 07 May 2020 15:34:21 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrCIsWRWlGSWpSXmKPExsViZ8MRolurtSX
-  OYNs8TYtpH34yW3Rf38Fmsfz4PyaL9Uc2MFq0Ln3L5MDqcfmKt8fHp7dYPN7vu8rm8XmTXABL
-  FGtmXlJ+RQJrxqIbJ9kL/vJWvPn4g62B8Q93FyMXh5DATEaJW++fMnUxcnKwCRhIrJh0nwXEF
-  hYIlLgxbQobSJGIwFVGicPXloAleAUcJaYtXcLYxcjBwSKgItHwkRUkLCoQLvFiyx9WiBJBiZ
-  Mzn4CVMwuYSczb/JAZwhaXuPVkPhOELS+x/e0c5gmM3LOQtMxC0jILScssJC0LGFlWMVokFWW
-  mZ5TkJmbm6BoaGOgaGhrpGlpa6hqamOolVukm6aWW6panFpfoGuollhfrFVfmJuek6OWllmxi
-  BAZoSsHxiTsY16x9r3eIUZKDSUmUd8nnzXFCfEn5KZUZicUZ8UWlOanFhxhlODiUJHi/KW6JE
-  xIsSk1PrUjLzAFGC0xagoNHSYSXXQkozVtckJhbnJkOkTrFqMux8+i8RcxCLHn5ealS4rxfFI
-  CKBECKMkrz4EbAIvcSo6yUMC8jAwODEE9BalFuZgmq/CtGcQ5GJWHeHpBLeDLzSuA2vQI6ggn
-  oiM+fNoEcUZKIkJJqYOrdve+V29qQ6GaL3S93+sU/v1Wdmh/3Q97nDtPkNPMNFcnK/yxWBa1e
-  pnhw5cN9T5VWz797MYP59kIR/7Kz9pLdE35NeZo869nWj1tjj7Za7dioVnpULDP9yrXLN6wDn
-  bi/xE2M+KuZf3ZhavPJ+vZVKf1Pvh7Y7/1xzcL/MWU/Dly0SE9KOdz+bbKgrHHe1EO7E5f/2u
-  MuyMDwcM1MXvHz6751nbqy9lb7zjuZ5w1Vr7+uKK8pPLXIeX/T+Q3r52yz17936GpS4vyG325
-  JH7dnMDC3HF/h+yxUJU1tztuKNfpui3vvu8l3zHK5o7lsZr1N0ceDLBN5k+6vr/4r08a44XHu
-  UsPUuK4T678a1y6VVWIpzkg01GIuKk4EAEQxJn1XAwAA
-X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-16.tower-287.messagelabs.com!1588865660!1134!1
-X-Originating-IP: [62.60.8.84]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.50.1; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 30158 invoked from network); 7 May 2020 15:34:21 -0000
-Received: from unknown (HELO mailhost3.uk.fujitsu.com) (62.60.8.84)
-  by server-16.tower-287.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 7 May 2020 15:34:21 -0000
-Received: from [172.17.80.59] ([172.17.80.59])
-        by mailhost3.uk.fujitsu.com (8.14.5/8.14.5) with ESMTP id 047FXTTo007067;
-        Thu, 7 May 2020 16:33:47 +0100
-From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Subject: Lun unlink from configFS for Loopback after TMR execution hangs
- forever
-To:     Bart Van Assche <bvanassche@acm.org>,
-        Mike Christie <mchristi@redhat.com>,
-        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>
-Message-ID: <ffee233a-fe6d-e1c9-7071-9fb463453b0c@ts.fujitsu.com>
-Date:   Thu, 7 May 2020 17:33:20 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.0
+        Thu, 7 May 2020 22:57:32 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0482sArN097588;
+        Fri, 8 May 2020 02:56:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=ge3yTxVTWD6Ulqohma0oOPgLaKnN61HkcXTwKutreBM=;
+ b=KYhoTGbcS634BgckHevrinbFO5KrEshbGt2KFZDQrDZO+8U4be/P7EU0wcF7pc/jbUvx
+ LloQKxl6nvNYKsOsQ1lcsZavn2nULSJkPQl7j2JFj9PlVzy/yagQfSbK6cPUY+ZEaWnL
+ ybhoj1M40DdyPSIceF2v6d3XS5pI/AwX9KSzKQOBLWI8OPlLY2stJG6hI4n6zRhQT7P+
+ OAAHIXIvxr5SBoyDGn16At6JP5eZ6vYTaeAqgIzJWSFHng6VMcIcNCYS5yjd3jRkwc+0
+ CdZH/R1EUIqvXuYNZgcn8wHDce4wd7/pMjqlGyh1sBtmqa34CtZ0ra4AFIGRVs95RdB9 nQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 30vtexrrs2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 08 May 2020 02:56:41 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0482ppaZ138389;
+        Fri, 8 May 2020 02:54:40 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3030.oracle.com with ESMTP id 30vtebgpan-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 08 May 2020 02:54:40 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0482sbXs027756;
+        Fri, 8 May 2020 02:54:38 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 07 May 2020 19:54:37 -0700
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        mchristi@redhat.com, ddiss@suse.de, hch@lst.de
+Subject: Re: [PATCH 1/4] target: add missing emulate_pr attribute to passthrough backends
+Date:   Thu,  7 May 2020 22:54:23 -0400
+Message-Id: <158890633246.6466.3989954217345857639.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200427150823.15350-2-bstroesser@ts.fujitsu.com>
+References: <20200427150823.15350-1-bstroesser@ts.fujitsu.com> <20200427150823.15350-2-bstroesser@ts.fujitsu.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9614 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0
+ mlxlogscore=892 phishscore=0 mlxscore=0 adultscore=0 suspectscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005080022
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9614 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 adultscore=0
+ spamscore=0 suspectscore=0 bulkscore=0 priorityscore=1501 malwarescore=0
+ phishscore=0 impostorscore=0 mlxscore=0 mlxlogscore=941 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005080022
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hi,
+On Mon, 27 Apr 2020 17:08:20 +0200, Bodo Stroesser wrote:
 
-I am testing with Loopback and found, that after a
-Loopback LUN has executed a TMR, I can no longer unlink
-the LUN.
+> In commit b49d6f7885306ee636d5c1af52170f3069ccf5f7 the new attribute
+> emulate_pr was added.
+> passthrough_parse_cdb() uses the attribute's value to distinguish,
+> whether reservation commands should be rejected or not.
+> But the new attribute was not added to passthrough_attrib_attrs, so in
+> pscsi and tcmu - the users of passthrough_parse_cdb() - the attribute
+> is not available to change parser's behavior.
 
-The rm command hangs in transport_clear_lun_ref() at
-wait_for_completion(&lun->lun_shutdown_comp)
+Applied to 5.8/scsi-queue, thanks!
 
-The reason is, that transport_lun_remove_cmd() is not
-called at the end of target_tmr_work().
+[1/4] scsi: target: Add missing emulate_pr attribute to passthrough backends
+      https://git.kernel.org/mkp/scsi/c/9299941716a3
+[2/4] scsi: target: tcmu: Add attributes enforce_pr_isids and force_pr_aptpl
+      https://git.kernel.org/mkp/scsi/c/4703b6252b33
+[3/4] scsi: target: Make transport_flags per device
+      https://git.kernel.org/mkp/scsi/c/69088a049488
+[4/4] scsi: target: tcmu: Make pgr_support and alua_support attributes writable
+      https://git.kernel.org/mkp/scsi/c/356ba2a8bc8d
 
-It seems, that in other fabrics this call happens implicitly
-when the fabric driver calls transport_generic_free_cmd()
-during its ->queue_tm_rsp().
-
-Unfortunately the Loopback seems to not comply to the common
-way of calling transport_generic_free_cmd() from ->queue_*(),
-but calls it from its ->check_stop_free() only.
-
-But the ->check_stop_free() is called by
-transport_cmd_check_stop_to_fabric() after it has reset the
-se_cmd->se_lun pointer.
-Therefore the following transport_generic_free_cmd() skips the
-transport_lun_remove_cmd().
-
-So it seems, that Loopback driver is doing wrong.
-
-OTOH, target_tmr_work() seems to be the only place, where
-transport_cmd_check_stop_to_fabric() is called without
-calling transport_lun_remove_cmd() before.
-
-Now I'm wondering, how to fix the problem:
-1) Just (re-)add a call to transport_lun_remove_cmd() before
-    calling transport_cmd_check_stop_to_fabric() in
-    target_tmr_work()
-2) Change Loopback driver to comply with the usual way
-    of using transport_generic_free_cmd()
-
-I think I'd prefer 1 and already tested it, works fine for
-Loopback. Currently I'm not able to test other fabrics, but
-AFAICS the change should not harm other fabric drivers,
-because transport_lun_remove_cmd() uses a bit to make safe,
-that lun_ref is dropped only once.
-Additionally, before commit 2c9fa49e100f "scsi: target/core:
-  Make ABORT and LUN RESET handling synchronous" the code
-contained the transport_lun_remove_cmd() call.
-
-Regards,
-Bodo
+-- 
+Martin K. Petersen	Oracle Linux Engineering
