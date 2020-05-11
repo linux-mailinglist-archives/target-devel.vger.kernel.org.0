@@ -2,76 +2,71 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16F021CE282
-	for <lists+target-devel@lfdr.de>; Mon, 11 May 2020 20:24:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C03E51CE2ED
+	for <lists+target-devel@lfdr.de>; Mon, 11 May 2020 20:40:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729713AbgEKSYB (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 11 May 2020 14:24:01 -0400
-Received: from mail1.bemta26.messagelabs.com ([85.158.142.114]:29506 "EHLO
-        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729673AbgEKSYB (ORCPT
+        id S1729962AbgEKSkX (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 11 May 2020 14:40:23 -0400
+Received: from mail1.bemta25.messagelabs.com ([195.245.230.67]:23768 "EHLO
+        mail1.bemta25.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729768AbgEKSkW (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 11 May 2020 14:24:01 -0400
+        Mon, 11 May 2020 14:40:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1589221438; i=@ts.fujitsu.com;
-        bh=mCZ03AYdPA8KQ8psz6W86daHCBigtHLM/IyTOmJ+kv8=;
+        s=200619tsfj; t=1589222419; i=@ts.fujitsu.com;
+        bh=WnJVErCFN3qUdYpRLqLJN/kf6RynwdAgactAl9+ftj0=;
         h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
          In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        b=QV6sua0thVNvrp83/ZO958VNSkCZvOHORqeEW3s06yr9IHFAjyopAzMi0inqtK5rz
-         3hOlj/KTCRbXsglnyPwzrhtd8Zcx34n55fFYy0hIiNns536/jGnOjvGmdgMp5Kkd/E
-         EBZP1mNwc/Atst94oOm4LFpuxAGZTByNdPUiv24E47sV3GwGoX1p9ohUaWdaV7MgLn
-         dF16qFnzZe+0oEbPMMG0ZQzGAamkF/sQg2B1j0V6QmxnbX95iWNhRjJjJhX7ylNbI2
-         YRSFmqx16vEEWQNW71qqSVHY8DaUPjIKBhG0GNSV6IbQogyzT43mX3sp0Z5hPOCBH9
-         fDMYvBn00XbrA==
-Received: from [100.113.4.151] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-3.bemta.az-b.eu-central-1.aws.symcld.net id 67/D7-40390-D3899BE5; Mon, 11 May 2020 18:23:57 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrJIsWRWlGSWpSXmKPExsViZ8MxVdd2xs4
-  4g8PrJCymffjJbLHs0mcmizk3jSy6r+9gs1h+/B+TxfojGxgt/v96xWqxf9s/VovXk/6zWrQu
-  fcvkwOVx+Yq3x8ent1g83u+7yuaxfstVFo/Pm+QCWKNYM/OS8isSWDMWr1rPWtCkXHF/2hWWB
-  sbLMl2MnBxCArMYJabs0eli5OAQFvCV+NTK2MXIxSEisJBR4vKOU8wgDrPASUaJk1dPs0A0pE
-  ksWfaGGcRmEzCQWDHpPlicV8BRYtaq34wgNouAqsTq76vA4qIC4RIvtvxhhagRlDg58wlYnFP
-  AUuL55ONgcWYBM4l5mx8yQ9jiEreezGeCsOUltr+dwzyBkW8WkvZZSFpmIWmZhaRlASPLKkaL
-  pKLM9IyS3MTMHF1DAwNdQ0NjXRNdIyO9xCrdJL3UUt3k1LySokSgpF5iebFecWVuck6KXl5qy
-  SZGYIykFLKI7WCctfa93iFGSQ4mJVFevak744T4kvJTKjMSizPii0pzUosPMcpwcChJ8D4DyQ
-  kWpaanVqRl5gDjFSYtwcGjJMK7ZDpQmre4IDG3ODMdInWKUVFKnPfwNKCEAEgiozQPrg2WIi4
-  xykoJ8zIyMDAI8RSkFuVmlqDKv2IU52BUEubNBRnPk5lXAjf9FdBiJqDFD59vA1lckoiQkmpg
-  ilFZ89n0d9jH+1f37uLxmuy3nZPlaGnDDt7rN7rZv6UFz28I6YthZtRZtt8xMPfA6QdOd/49n
-  bnPhfGgcaaB949ADp2grkczLyeVF/DOfyDSp/nmwfGK6Lur83axfeK4UF3ErV7+5MtM4xPCKp
-  vbb+REvuFV411UMCnJUO+Kv6ZI7pLzfL+0Gaa02IkufD+n61qzMPfyitcMHNysWepPmDPr438
-  rycZU3rzJJray8kPU1iufJ9nvvmziwqN1I5ojIWCt6DntvOsXHx+ZcuflTsfeopb/4boSbDVd
-  cZPLFt04/1s34kvMpxlL2WubJl34cdz+w9Nzp2YnNL/e/OBN5reEjhPeEnF1lm6b+69PVGIpz
-  kg01GIuKk4EAHyPu6qMAwAA
+        b=tdXVjhDiO0DnYeVV6vCgoIk8n8FifOXvAqAhhJjW1kJkomKw1V83zAcQxN5edcU2D
+         IFjKd9mMQGUP8kfVcBjDpXgnAOwd3nG3fccHpV7oXnvFKffvBRGdJTp/cAqSTt72GG
+         2EaQkH5g9FF8m2sr8YrSWe78+3DBQAL7gvpYpqArrKsQsI2bazbnMCOXmc3UCStt89
+         dBorJqg2QquG/PfySxdgvryfqY7gDxJS/8ZAYgMkIL0FLQEiCPMRzRu1YAJQEVLKgO
+         TfNyMzqM0YiozjmCf5Tb/pI/U7UXtIrchmq80zrIN5yW8BzFtIezOrCylCdPxub+mU
+         dLMG/ftXr6DJA==
+Received: from [100.112.199.17] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-3.bemta.az-b.eu-west-1.aws.symcld.net id 40/02-40520-21C99BE5; Mon, 11 May 2020 18:40:18 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrOIsWRWlGSWpSXmKPExsViZ8MxVVdozs4
+  4gwkz2C2mffjJbNG8eD2bRff1HWwWy4//Y7JYf2QDo0Xr0rdMDmwel694e+yfu4bd4+PTWywe
+  7/ddZfP4vEkugDWKNTMvKb8igTVj9raTrAVNJhU7Zu9jbGC8rd3FyMUhJDCLUeLTuUb2LkZOD
+  mEBV4n7686xgiREBBYySlzecYoZJMEsYCxxpv0AI4gtJJAusffqJbAGNgEDiRWT7rOA2LwCjh
+  Kb/71mA7FZBFQl5q1oAKsXFQiXeLHlDytEjaDEyZlPwOo5BawkzjZsYYSYbyYxb/NDqF3iEre
+  ezGeCsOUltr+dwzyBkW8WkvZZSFpmIWmZhaRlASPLKkaLpKLM9IyS3MTMHF1DAwNdQ0MjXUNL
+  S11DE1O9xCrdJL3UUt3y1OISXUO9xPJiveLK3OScFL281JJNjMDwTyk4PnEH45q17/UOMUpyM
+  CmJ8upN3RknxJeUn1KZkVicEV9UmpNafIhRhoNDSYJ320ygnGBRanpqRVpmDjAWYdISHDxKIr
+  z2s4DSvMUFibnFmekQqVOMilLivDtBEgIgiYzSPLg2WPxfYpSVEuZlZGBgEOIpSC3KzSxBlX/
+  FKM7BqARUATKFJzOvBG76K6DFTECLHz7fBrK4JBEhJdXAxJ3GFF31Y8fhI2abZDZHanFbh5hd
+  SzxcmXTVyZhhzceT2/kaSuY///lb7eW8urA31WdN09YuvLRm6QV77f3rhE/fchNRWLDxWun8s
+  ndMEyplvrSmN6SdZg2/7y5tvF8/cqrn0zXPlz3Lcpc7llz39ofI6+8t2T1619coO+4NtTl6W1
+  x+vnVy1Rlr379Rt5uPqTTp3NwgzO7z/fDVzd5qzIYLz12bZNleOl9WXMb26eMFG/gerBLxnTT
+  v+/nYSodFdR9f+SfPETO+9/9zQf53Jt7/+dr31tR/P/6/M3bdzSvcNhJvvNpLYyofC/5wFNwT
+  cnD10+41t1ez7l9lPF9qe5OgctOdT7W/izYaWa1a3qfEUpyRaKjFXFScCAAVuI2gegMAAA==
 X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-7.tower-245.messagelabs.com!1589221436!1328578!1
+X-Msg-Ref: server-17.tower-287.messagelabs.com!1589222415!287191!1
 X-Originating-IP: [62.60.8.149]
 X-SYMC-ESS-Client-Auth: outbound-route-from=pass
 X-StarScan-Received: 
 X-StarScan-Version: 9.50.1; banners=-,-,-
 X-VirusChecked: Checked
-Received: (qmail 19562 invoked from network); 11 May 2020 18:23:57 -0000
+Received: (qmail 18371 invoked from network); 11 May 2020 18:40:17 -0000
 Received: from unknown (HELO mailhost2.uk.fujitsu.com) (62.60.8.149)
-  by server-7.tower-245.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 11 May 2020 18:23:57 -0000
+  by server-17.tower-287.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 11 May 2020 18:40:17 -0000
 Received: from [172.17.80.59] ([172.17.80.59])
-        by mailhost2.uk.fujitsu.com (8.14.5/8.14.5) with ESMTP id 04BIN0ed007288;
-        Mon, 11 May 2020 19:23:08 +0100
-Subject: Re: [PATCH 03/15] target: add helper to parse acl and transport name
+        by mailhost2.uk.fujitsu.com (8.14.5/8.14.5) with ESMTP id 04BIdPB9018567;
+        Mon, 11 May 2020 19:39:43 +0100
+Subject: Re: [PATCH 12/15] target: add sysfs session helper functions
 To:     Mike Christie <mchristi@redhat.com>, bvanassche@acm.org,
         martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
         target-devel@vger.kernel.org
-Cc:     "Michael S . Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Stefan Hajnoczi <stefanha@redhat.com>,
-        Juergen Gross <jgross@suse.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 References: <20200510215744.21999-1-mchristi@redhat.com>
- <20200510215744.21999-4-mchristi@redhat.com>
+ <20200510215744.21999-13-mchristi@redhat.com>
 From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Message-ID: <20302416-6b4a-e9eb-695b-c4dcf50d02dd@ts.fujitsu.com>
-Date:   Mon, 11 May 2020 20:22:50 +0200
+Message-ID: <66e9bbf8-fdb2-d819-a496-75a1dea779cf@ts.fujitsu.com>
+Date:   Mon, 11 May 2020 20:39:20 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.1.0
 MIME-Version: 1.0
-In-Reply-To: <20200510215744.21999-4-mchristi@redhat.com>
+In-Reply-To: <20200510215744.21999-13-mchristi@redhat.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -81,131 +76,213 @@ List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
 On 05/10/20 23:57, Mike Christie wrote:
-> The drivers that emulate the initiator port id (loop, scsi vhost, xen scsiback)
-> do almost the extact same parsing when making their I_T_nexus. This adds a
-> helper that parses out the acl name and port name from the user buffer, so
-> these types of drivers drop prefixes like "naa." when they need to for the
-> SCSI SPC4 TransportID SAS address, but then keep it for the LIO ACL name.
+> This patch adds helpers to add/remove a dir per session. There is only 2
+> files/dirs initially.
 > 
-> The next patches will then convert those drivers.
-> 
-> Cc: Michael S. Tsirkin <mst@redhat.com>
-> Cc: Jason Wang <jasowang@redhat.com>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: Stefan Hajnoczi <stefanha@redhat.com>
-> Cc: Juergen Gross <jgross@suse.com>
-> Signed-off-by: Mike Christie <mchristi@redhat.com>
-> ---
->   drivers/target/target_core_fabric_lib.c | 73 +++++++++++++++++++++++++++++++++
->   include/target/target_core_fabric.h     |  2 +
->   2 files changed, 75 insertions(+)
-> 
-> diff --git a/drivers/target/target_core_fabric_lib.c b/drivers/target/target_core_fabric_lib.c
-> index e89b3d8..81ed7d5 100644
-> --- a/drivers/target/target_core_fabric_lib.c
-> +++ b/drivers/target/target_core_fabric_lib.c
-> @@ -423,6 +423,79 @@ const char *target_parse_pr_out_transport_id(struct se_portal_group *tpg,
->   	return buf + offset;
->   }
->   
-> +/**
-> + * target_parse_emulated_name - parse TransportID and acl name from user buffer
-> + * @proto_id: SCSI protocol identifier
-> + * @user_buf: buffer with emualted name to extract acl and TransportID from
-> + * @acl_name: buffer to store se_node_acl name in
-> + * @max_name_len: len of acl_name buffer
-> + * @tpt_id_name: Pointer to the TransportID name will be stored here.
-> + */
-> +int target_parse_emulated_name(u8 proto_id, const char *user_buf,
-> +			       unsigned char *acl_name, int max_name_len,
-> +			       unsigned char **tpt_id_name)
+
+...
+
+> +
+> +int target_sysfs_add_session(struct se_portal_group *se_tpg,
+> +			     struct se_session *se_sess)
 > +{
-> +	int user_len = strlen(user_buf);
-> +	char *proto_prefix, *name_start;
+> +	int ret;
 > +
-> +	if (user_len >= max_name_len) {
-> +		pr_err("Emulated name: %s, exceeds max: %d\n", user_buf,
-> +		       max_name_len);
-> +		return -EINVAL;
+> +	/*
+> +	 * Copy ACL name so we don't have to worry about mixing configfs
+> +	 * and sysfs refcounts.
+> +	 */
+> +	if (!se_sess->se_node_acl->dynamic_node_acl) {
+> +		se_sess->acl_name = kstrdup(se_sess->se_node_acl->initiatorname,
+> +					    GFP_KERNEL);
+> +		if (!se_sess->acl_name)
+> +			return -ENOMEM;
 > +	}
 > +
-> +	switch (proto_id) {
-> +	case SCSI_PROTOCOL_SAS:
-> +		proto_prefix = "naa.";
-> +		break;
-> +	case SCSI_PROTOCOL_FCP:
-> +		proto_prefix = "fc.";
-> +		break;
-> +	case SCSI_PROTOCOL_ISCSI:
-> +		proto_prefix = "iqn.";
-> +		break;
-> +	default:
-> +		pr_err("Unsupported proto_id: 0x%02x\n", proto_id);
-> +		return -EINVAL;
+> +	ret = kobject_add(&se_sess->kobj, se_tpg->sessions_kobj, "%s-%d",
+> +			  se_sess->tpt_id->name, se_sess->sid);
+> +	if (ret) {
+> +		pr_err("Could not add session%d to sysfs. Error %d.\n",
+> +		       se_sess->sid, ret);
+> +		goto free_acl_name;
 > +	}
 > +
-> +	name_start = strstr(user_buf, proto_prefix);
-> +	if (!name_start) {
-> +		pr_err("Invalid emulated name %s. Must start with %s\n",
-> +		       user_buf, proto_prefix);
-> +		return -EINVAL;
+> +	ret = add_transport_id_attrs(se_sess);
+> +	if (ret)
+> +		goto del_kobj;
+> +
+> +	if (se_sess->tfo->session_attrs) {
+> +		ret = sysfs_create_group(&se_sess->kobj,
+> +					 se_sess->tfo->session_attrs);
+> +		if (ret)
+> +			goto rm_tpt_id_grps;
 > +	}
 > +
-> +	switch (proto_id) {
-> +	case SCSI_PROTOCOL_SAS:
-> +		sprintf(acl_name, name_start);
-> +		break;
-> +	case SCSI_PROTOCOL_FCP:
-> +		sprintf(acl_name, &name_start[3]); /* Skip over "fc." */
-> +		break;
+> +	ret = sysfs_create_link(tcm_core_sessions_kobj, &se_sess->kobj,
+> +				se_sess->kobj.name);
 
-Would it make sense to check acl_name for SAS and FCP according to
-the assumptions made in (sas|fc)_get_pr_transport_id() how the
-string should look like?
+I would prefer to have links named "session-%d" or "%d" only, of course
+with se_sess->sid as the value for '%d'.
 
-- SAS: 8 hex digits
-- FC: 8 pairs of 2 hex digits separated by 7 colons
+If userspace knows the session-id only, such names make it easier to
+find the corresponding link.
 
-For compatibility reasons 16 hex digits could be allowed alternatively
-for FC, if fc_get_pr_transport_id() is enhanced accordingly.
-
-> +	case SCSI_PROTOCOL_ISCSI:
-> +		sprintf(acl_name, name_start);
-> +		break;
-> +	}
+> +	if (ret)
+> +		goto rm_fabric_grps;
 > +
-> +	if (acl_name[user_len - 1] == '\n')
-> +		acl_name[user_len - 1] = '\0';
-> +
-> +	if (proto_id == SCSI_PROTOCOL_SAS) {
-> +		/*
-> +		 * target_setup_session will want the naa. prefix to match
-> +		 * the ACL name, but the t10 transport id only wants the
-> +		 * address.
-> +		 */
-> +		*tpt_id_name = acl_name + 4;
-> +	} else {
-> +		*tpt_id_name = acl_name;
-> +	}
-> +
+> +	se_sess->sysfs_added = true;
 > +	return 0;
-> +}
-> +EXPORT_SYMBOL(target_parse_emulated_name);
 > +
->   struct t10_transport_id *target_create_transport_id(u8 proto, const char *name,
->   						    const char *session_id)
+> +rm_fabric_grps:
+> +	if (se_sess->tfo->session_attrs)
+> +		sysfs_remove_group(&se_sess->kobj, se_sess->tfo->session_attrs);
+> +rm_tpt_id_grps:
+> +	remove_transport_id_attrs(se_sess);
+> +del_kobj:
+> +	kobject_del(&se_sess->kobj);
+> +free_acl_name:
+> +	kfree(se_sess->acl_name);
+> +	se_sess->acl_name = NULL;
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL(target_sysfs_add_session);
+> +
+> +void target_sysfs_remove_session(struct se_session *se_sess)
+> +{
+> +	/* discovery sessions are normally not added to sysfs */
+> +	if (!se_sess->sysfs_added)
+> +		return;
+> +
+> +	sysfs_remove_link(tcm_core_sessions_kobj, se_sess->kobj.name);
+> +	if (se_sess->tfo->session_attrs)
+> +		sysfs_remove_group(&se_sess->kobj, se_sess->tfo->session_attrs);
+> +	remove_transport_id_attrs(se_sess);
+> +	kobject_del(&se_sess->kobj);
+> +}
+> +EXPORT_SYMBOL(target_sysfs_remove_session);
+> diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
+> index fdf84db..04cb042 100644
+> --- a/drivers/target/target_core_transport.c
+> +++ b/drivers/target/target_core_transport.c
+> @@ -42,6 +42,7 @@
+>   
+>   static struct workqueue_struct *target_completion_wq;
+>   static struct kmem_cache *se_sess_cache;
+> +static DEFINE_IDA(se_sess_ida);
+>   struct kmem_cache *se_ua_cache;
+>   struct kmem_cache *t10_pr_reg_cache;
+>   struct kmem_cache *t10_alua_lu_gp_cache;
+> @@ -251,14 +252,27 @@ struct se_session *transport_alloc_session(enum target_prot_op sup_prot_ops)
+>   				" se_sess_cache\n");
+>   		return ERR_PTR(-ENOMEM);
+>   	}
+> -	ret = transport_init_session(se_sess);
+> +
+> +	ret = ida_simple_get(&se_sess_ida, 1, 0, GFP_KERNEL);
+>   	if (ret < 0) {
+> -		kmem_cache_free(se_sess_cache, se_sess);
+> -		return ERR_PTR(ret);
+> +		pr_err("Unable to allocate session index.\n");
+> +		goto free_sess;
+>   	}
+> -	se_sess->sup_prot_ops = sup_prot_ops;
+> +	se_sess->sid = ret;
+> +
+> +	ret = transport_init_session(se_sess);
+> +	if (ret < 0)
+> +		goto free_sid;
+>   
+> +	se_sess->sup_prot_ops = sup_prot_ops;
+> +	target_sysfs_init_session(se_sess);
+>   	return se_sess;
+> +
+> +free_sid:
+> +	ida_simple_remove(&se_sess_ida, se_sess->sid);
+> +free_sess:
+> +	kmem_cache_free(se_sess_cache, se_sess);
+> +	return ERR_PTR(ret);
+>   }
+>   EXPORT_SYMBOL(transport_alloc_session);
+>   
+> @@ -597,12 +611,21 @@ void transport_free_session(struct se_session *se_sess)
+>   		sbitmap_queue_free(&se_sess->sess_tag_pool);
+>   		kvfree(se_sess->sess_cmd_map);
+>   	}
+> -	target_free_transport_id(se_sess->tpt_id);
+>   	percpu_ref_exit(&se_sess->cmd_count);
+> -	kmem_cache_free(se_sess_cache, se_sess);
+> +	kobject_put(&se_sess->kobj);
+>   }
+>   EXPORT_SYMBOL(transport_free_session);
+>   
+> +void __target_free_session(struct se_session *se_sess)
+> +{
+> +	kfree(se_sess->acl_name);
+> +	target_free_transport_id(se_sess->tpt_id);
+> +
+> +	ida_simple_remove(&se_sess_ida, se_sess->sid);
+> +
+> +	kmem_cache_free(se_sess_cache, se_sess);
+> +}
+> +
+>   static int target_release_res(struct se_device *dev, void *data)
 >   {
+>   	struct se_session *sess = data;
+> diff --git a/include/target/target_core_base.h b/include/target/target_core_base.h
+> index b7f7e02..34d89cb 100644
+> --- a/include/target/target_core_base.h
+> +++ b/include/target/target_core_base.h
+> @@ -9,6 +9,7 @@
+>   #include <linux/semaphore.h>     /* struct semaphore */
+>   #include <linux/completion.h>
+>   #include <linux/kobject.h>
+> +#include <linux/idr.h>
+>   
+>   #define TARGET_CORE_VERSION		"v5.0"
+>   
+> @@ -626,6 +627,7 @@ struct se_session {
+>   	enum target_prot_op	sup_prot_ops;
+>   	enum target_prot_type	sess_prot_type;
+>   	struct se_node_acl	*se_node_acl;
+> +	char			*acl_name;
+>   	struct se_portal_group *se_tpg;
+>   	void			*fabric_sess_ptr;
+>   	struct percpu_ref	cmd_count;
+> @@ -636,6 +638,10 @@ struct se_session {
+>   	wait_queue_head_t	cmd_list_wq;
+>   	void			*sess_cmd_map;
+>   	struct sbitmap_queue	sess_tag_pool;
+> +	struct kobject		kobj;
+> +	int			sid;
+> +	bool			sysfs_added;
+> +	const struct target_core_fabric_ops *tfo;
+>   };
+>   
+>   struct se_device;
 > diff --git a/include/target/target_core_fabric.h b/include/target/target_core_fabric.h
-> index af1dd81..0113e1c 100644
+> index ced377f..f876a05 100644
 > --- a/include/target/target_core_fabric.h
 > +++ b/include/target/target_core_fabric.h
-> @@ -125,6 +125,8 @@ struct target_core_fabric_ops {
->   int target_depend_item(struct config_item *item);
->   void target_undepend_item(struct config_item *item);
+> @@ -74,6 +74,10 @@ struct target_core_fabric_ops {
+>   	int (*queue_status)(struct se_cmd *);
+>   	void (*queue_tm_rsp)(struct se_cmd *);
+>   	void (*aborted_task)(struct se_cmd *);
+> +
+> +	/* Optional session management and sysfs callouts */
+> +	const struct attribute_group *session_attrs;
+> +
+>   	/*
+>   	 * fabric module calls for target_core_fabric_configfs.c
+>   	 */
+> @@ -145,7 +149,9 @@ void	transport_register_session(struct se_portal_group *,
+>   void	target_put_nacl(struct se_node_acl *);
+>   void	transport_deregister_session_configfs(struct se_session *);
+>   void	transport_deregister_session(struct se_session *);
+> -
+> +void	target_sysfs_remove_session(struct se_session *se_sess);
+> +int	target_sysfs_add_session(struct se_portal_group *se_tpg,
+> +				 struct se_session *se_sess);
 >   
-> +int target_parse_emulated_name(u8, const char *, unsigned char *, int,
-> +			       unsigned char **);
->   struct t10_transport_id *target_create_transport_id(u8, const char *,
->   						    const char *);
->   void target_free_transport_id(struct t10_transport_id *);
+>   void	transport_init_se_cmd(struct se_cmd *,
+>   		const struct target_core_fabric_ops *,
 > 
