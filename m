@@ -2,89 +2,147 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D760A1CEB6D
-	for <lists+target-devel@lfdr.de>; Tue, 12 May 2020 05:29:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 777A41CEF1D
+	for <lists+target-devel@lfdr.de>; Tue, 12 May 2020 10:28:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728829AbgELD3U (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 11 May 2020 23:29:20 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:41102 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728820AbgELD3S (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Mon, 11 May 2020 23:29:18 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04C3N1eQ130551;
-        Tue, 12 May 2020 03:29:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=mime-version :
- message-id : date : from : to : cc : subject : references : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=Dh8mcI1FRbOqvThp8JBTTIWPo7UnuPp94mhHgvE9ml4=;
- b=AXlgQxqho9s76F2hV/dhN50fd8nbl07sqQQgYbjjC39V3hnlwU722G1ai8Kf2GYFtOtM
- iF1IDrNxnNmXt0WL6gZwjzB/PAODNkYis9X1sNhuKbuoNldcdM1G7K7BAhPgLIs8ooOM
- My2gmz/iYBsGBNvWFVynocQKmBLqCm1DHNees0h+QTlY/Qoov0KAIW6BL+jRdgC3Bn7w
- qrND9EbYawfWzu/XbCO2KBgV0QywevsAtkTCM5EfzuwoGm0WP+CPt5I8oADYOtDecCDQ
- 756wfeVYeECAteR19ViJ+Y7UH7a1lNKWrGLjb3eEhtguZaU/vnOFNUB1d20VL5mWVfDK Eg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 30x3gsggpx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 12 May 2020 03:29:12 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04C3MUdf015978;
-        Tue, 12 May 2020 03:29:12 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 30xbggtnjq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 12 May 2020 03:29:12 +0000
-Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04C3TAdD007328;
-        Tue, 12 May 2020 03:29:11 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201) by default (Oracle
- Beehive Gateway v4.0) with ESMTP ; Mon, 11 May 2020 20:28:40 -0700
+        id S1729206AbgELI2u (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 12 May 2020 04:28:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57256 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725987AbgELI2u (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Tue, 12 May 2020 04:28:50 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DF7E5206A3;
+        Tue, 12 May 2020 08:28:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589272129;
+        bh=xic9Wa4tqu8MQopJT18weegGL8B8WOphD+KWExBuHy4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Thw2OguQ0Roa5JQgz17PW9AC4NeRdMJaeQKNU47bRqCeeMWOAHVzbwtpfTCQ+2LTE
+         h8nyzVDOoQIjIExpo+8oPNg4rCjJOCSLUH/JFTJPRe3LLgAfP75JSvBEOQbWDSNMCd
+         pegQ4oNR5bYrjNJoJvu/pMSWzoZV2Fg4yTbflL6s=
+Date:   Tue, 12 May 2020 07:54:42 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Mike Christie <mchristi@redhat.com>
+Cc:     bvanassche@acm.org, bstroesser@ts.fujitsu.com,
+        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, Hannes Reinecke <hare@suse.de>
+Subject: Re: [PATCH 11/15] target: add sysfs support
+Message-ID: <20200512055442.GA3505885@kroah.com>
+References: <20200510215744.21999-1-mchristi@redhat.com>
+ <20200510215744.21999-12-mchristi@redhat.com>
+ <20200511063002.GA1260895@kroah.com>
+ <aad8269e-f9ee-ebc7-6e54-aa4b5b6021b8@redhat.com>
 MIME-Version: 1.0
-Message-ID: <158925392373.17325.9006412341355835743.b4-ty@oracle.com>
-Date:   Tue, 12 May 2020 03:28:27 +0000 (UTC)
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     nab@linux-iscsi.org, target-devel@vger.kernel.org,
-        linux-scsi@vger.kernel.org,
-        Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>
-Subject: Re: [PATCH] target: loopback: fix READ with data and sensebytes
-References: <20200428182617.32726-1-bstroesser@ts.fujitsu.com>
-In-Reply-To: <20200428182617.32726-1-bstroesser@ts.fujitsu.com>
-X-Mailer: git-send-email 2.26.2
-Content-Type: text/plain; charset=ascii
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9618 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
- spamscore=0 suspectscore=0 phishscore=0 bulkscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2005120029
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9618 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
- malwarescore=0 adultscore=0 mlxscore=0 priorityscore=1501
- lowpriorityscore=0 impostorscore=0 clxscore=1011 bulkscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2005120029
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aad8269e-f9ee-ebc7-6e54-aa4b5b6021b8@redhat.com>
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Tue, 28 Apr 2020 20:26:17 +0200, Bodo Stroesser wrote:
-
-> We use tcm_loop with tape emulations running on tcmu.
-> In case application reads a short tape block with a longer READ,
-> or a long tape block with a short READ, according to SCC spec
-> data has to be tranferred _and_ sensebytes with ILI set and
-> information field containing the residual count.
-> Similar problem also exists when using fixed block size in READ.
+On Mon, May 11, 2020 at 12:15:12PM -0500, Mike Christie wrote:
+> On 5/11/20 1:30 AM, Greg Kroah-Hartman wrote:
+> > On Sun, May 10, 2020 at 04:57:40PM -0500, Mike Christie wrote:
+> >> These next two patches add a sysfs interface that reports the target
+> >> layer's I_T nexuses/sessions. For the non-SCSI people cc'd, this just means
+> >> we are reporting a server's connections to remote clients.
+> >>
+> >> This patch adds the upper level dirs which shows/organizes our local port
+> >> (tpgts below) and the connection (session below). The next patch will then
+> >> add the dirs/files for each connection/session which exports info like
+> >> ACL/permissions and SCSI port values.
+> >>
+> >> Here is the general layout:
+> >>
+> >> [sys]# tree scsi_target/
+> >> scsi_target/
+> >> |-- fabric/target module
+> >> |   `-- target name
+> >> |       `-- tpgt_$target_port_group_number
+> >> |           `-- sessions
+> >> |               `-- initiator name - session ID number
+> >> |                   |-- acl
+> >> |                   `-- transport_id
+> >> |                       |-- name
+> >> |                       |-- proto
+> >> |                       `-- session_id
+> >>
+> >> Here is an example with the scsi target layer's iSCSI driver:
+> >>
+> >> scsi_target/
+> >> |-- iscsi
+> >> |   `-- iqn.1999-09.com.tcmu:minna
+> >> |       `-- tpgt_1
+> >> |           `-- sessions
+> >> |               `-- iqn.2005-03.com.ceph:ini1-1
+> >> |                   |-- acl
+> >> |                   `-- transport_id
+> >> |                       |-- name
+> >> |                       |-- proto
+> >> |                       `-- session_id
+> >> |-- fc
+> >> |-- loopback
+> >> |-- qla2xxx_tcm
+> >>
+> >>
+> >> Note/Question for Greg:
+> >>
+> >> We are not exporting info in the upper level dirs like "fabric/target
+> >> module", "target name", tpgt, etc and just need those dirs to be able to
+> >> organize/view the endpoints of the session. So, in this patch I made a new
+> >> top level dir scsi_target and made the other dirs with
+> >> kobject_create_and_add. It looks like we could also add device structs in
+> >> the target related structs, use classes, and build the tree/hierarchy that
+> >> way too. It was not clear to me when to use one or the other.
+> > 
+> > Never use kobject calls in a driver subsystem like you have here, as
+> > those objects will not be seen by userspace tools that get uevents.
+> > Just use real 'struct devices' if you really really need a deep
+> > directory tree.
+> > 
+> > But I would push back here, why do you feel you want such a deep tree?
+> > What are you getting from this?  Why do you need that "sessions"
+> > directory at all?
 > 
-> [...]
+> I do not need the sessions under the tpgt dir and will drop it. The
+> target subsystem does not have a bus or use device structs at all right
+> now.
 
-Applied to 5.8/scsi-queue, thanks!
+Then fix that and everything shows up automatically "for free".
 
-[1/1] scsi: target: loopback: Fix READ with data and sensebytes
-      https://git.kernel.org/mkp/scsi/c/c68a56736c12
+> And, I saw how other code that does not have a bus like btrfs/ext4
+> use kobject_create_and_add() to group/organize objects and went wild
+> with dirs :)
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+file systems are not devices with busses and drivers :)
+
+> And, I can move the code to device structs, but had a question about the
+> deep tree question.
+
+Don't do it.
+
+> A common operation will be that userspace knows the names of the objects
+> above the session in the tree already. Apps then want to read in a
+> specific session or scan the specific sessions in a target or a tpgt.
+> The deep tree makes it easy to build the sysfs path and scan/read the
+> specific object/objects.
+
+Again, a "deep tree" with raw kobjects will be invisible to the normal
+userspace tools that monitor changes in sysfs for devices because they
+will not notice them at all.
+
+> I wanted to avoid the issue where apps have with the flat layout where
+> they have to scan every session when they just want something specific.
+
+There should not be any difference in "speed" for something like that,
+it's an in-ram filesystem with no i/o times.
+
+> Will a deep tree be ok for this type of reason?
+
+Nope :(
+
+greg k-h
