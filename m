@@ -2,145 +2,122 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDE271CF9E7
-	for <lists+target-devel@lfdr.de>; Tue, 12 May 2020 17:55:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B1881CFA5F
+	for <lists+target-devel@lfdr.de>; Tue, 12 May 2020 18:18:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727099AbgELPz4 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 12 May 2020 11:55:56 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:58188 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727840AbgELPzy (ORCPT
+        id S1726707AbgELQSR (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 12 May 2020 12:18:17 -0400
+Received: from mail1.bemta26.messagelabs.com ([85.158.142.4]:51314 "EHLO
+        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726287AbgELQSR (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 12 May 2020 11:55:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1589298952;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=tMCjU33qYGO6AVBY72d2cbej+vdzOEEkt+eE3OkviF4=;
-        b=Gi4kfU6EXu88UCHTLSYnirI5Y/oMqaHfYUUV+ClK/x6TiXWGgLx9UfxQfvkUNCS60ovwy4
-        sebWR4vLHaSPD6fgkXq3ZkEnp0mlP6wlidivGkXoAQlX6UjK5AxRuv9Wvt7Ot7QmjevhYs
-        SWApJ/DkmE9xtOmTW4IB1qMwLgFhgN8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-423-DnJUG0hxO-WZ08XVvLB5Fw-1; Tue, 12 May 2020 11:55:36 -0400
-X-MC-Unique: DnJUG0hxO-WZ08XVvLB5Fw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D75FC18FF669;
-        Tue, 12 May 2020 15:55:34 +0000 (UTC)
-Received: from [10.10.113.28] (ovpn-113-28.rdu2.redhat.com [10.10.113.28])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9A2BA7D8EC;
-        Tue, 12 May 2020 15:55:33 +0000 (UTC)
-Subject: Re: [PATCH 12/15] target: add sysfs session helper functions
-To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hannes Reinecke <hare@suse.de>
-References: <20200510215744.21999-1-mchristi@redhat.com>
- <20200510215744.21999-13-mchristi@redhat.com>
- <66e9bbf8-fdb2-d819-a496-75a1dea779cf@ts.fujitsu.com>
- <a3686299-8fab-3cf7-0641-5e7c98a7292d@acm.org>
- <5234c678-92e6-0689-1eca-aa0c252adf58@redhat.com>
- <a1ca0d10-9011-52a6-f40b-dc5086d9e273@ts.fujitsu.com>
-From:   Mike Christie <mchristi@redhat.com>
-Message-ID: <52a13df8-3d36-2ebc-a288-88d4dbfe9cd1@redhat.com>
-Date:   Tue, 12 May 2020 10:55:33 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-MIME-Version: 1.0
-In-Reply-To: <a1ca0d10-9011-52a6-f40b-dc5086d9e273@ts.fujitsu.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+        Tue, 12 May 2020 12:18:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
+        s=200619tsfj; t=1589300294; i=@ts.fujitsu.com;
+        bh=KhpI/oTYPBwCSd5HBuPq6OYDwPV+G6NOvvgcPbitnik=;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        b=iybkzUEtWGHRmN9d017HqfGltqS07475UxX2hq6HOVNetaZ6jOhXqzIqGM41ANn/c
+         OMc+ModBbDFe7xvziZqrW5nEAKbAcy+sSj9Whggw3hGQCW3HYIT2QLbBfH/CSjdykS
+         A+iNMY6Q6bnNoaXubVitGmN5RwNHhGnNuCZwQGlk9Ra29gKfwebjWrPFtlcF8DzJm0
+         pZhslS0IrER04DQb4kEOT39mhhovRnD89YQwenlcvq/rzHbXtPEwSp5OrliMI3LYXz
+         tK9pBvX89GRm5XHkVABUdn1eBc9WJZpc3vovnUFZiJcMaQ2IgRFYO9T41ehiwocOMe
+         G9IbaXtgCkZmA==
+Received: from [100.113.3.197] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-4.bemta.az-a.eu-central-1.aws.symcld.net id C0/AE-37389-04CCABE5; Tue, 12 May 2020 16:18:08 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrLLMWRWlGSWpSXmKPExsViZ8MxRdf+zK4
+  4g53ntC12Xv/IZDHtw09mi+7rO9gslh//x2TxddNGNovWpW+ZHNg8Ll/x9vj/bwqzx8ent1g8
+  bp++wOTxeZNcAGsUa2ZeUn5FAmvG3peHGAum8FfcW32esYFxPW8XIxeHkMBkRokfLe1MEM50R
+  ok9X1vYuhg5OdgEDCRWTLrPApIQEVjLKPHi4UMmkASzgJ7EtH/r2EFsYQFnic/n/oE1sAioSq
+  zonQRm8wrYSTyaNR2sXkJAXqLjwGSWCYycCxgZVjFaJhVlpmeU5CZm5ugaGhjoGhoa6xoDWSZ
+  6iVW6iXqppbrJqXklRYlAWb3E8mK94src5JwUvbzUkk2MwFBJKWTO2MF4de17vUOMkhxMSqK8
+  LRN2xQnxJeWnVGYkFmfEF5XmpBYfYpTh4FCS4A07DZQTLEpNT61Iy8wBhi1MWoKDR0mE1+YUU
+  Jq3uCAxtzgzHSJ1ilFRSpx3P0hCACSRUZoH1waLlUuMslLCvIwMDAxCPAWpRbmZJajyrxjFOR
+  iVhHlngUzhycwrgZv+CmgxE9Dih8+3gSwuSURISTUwhVq6vNQtOaItZhsTyj+jdZ/Dtl7Wy6o
+  S4a9PCSjb/v7kdCMpRcqk0vEb/+V/WrandyptcgkpXsa7036/n36DbIZt1bEclRjbTpEepe2q
+  j6fHHWJet2j/1k/tqZPTCpS3i8wJuqK+3CNxTeqyuTtWhErGu9+JCm2Jr/7uu/zg2cvnn+XMr
+  PZK/LZmT+iCzn8rnMVWvjrFIGl+aHNujpXaZY+FVVkKS/8+M53frdJZv19bXPXypfDCOdbV7I
+  +yJI86pEimh9lOm7d+zx+5oEix56F//zdYfOV3+tVTJS81JWpLhuNasScLxEq4Ovff9vEp5eV
+  9K/R8scmExdxxzNqrFvyWPNdZoDKDf7bRhjtKLMUZiYZazEXFiQDWLVuCEAMAAA==
+X-Env-Sender: bstroesser@ts.fujitsu.com
+X-Msg-Ref: server-15.tower-226.messagelabs.com!1589300286!894377!1
+X-Originating-IP: [62.60.8.148]
+X-SYMC-ESS-Client-Auth: outbound-route-from=pass
+X-StarScan-Received: 
+X-StarScan-Version: 9.50.1; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 5712 invoked from network); 12 May 2020 16:18:07 -0000
+Received: from unknown (HELO mailhost1.uk.fujitsu.com) (62.60.8.148)
+  by server-15.tower-226.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 12 May 2020 16:18:07 -0000
+Received: from x-serv01 ([172.17.38.52])
+        by mailhost1.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 04CGI6p2006160;
+        Tue, 12 May 2020 17:18:06 +0100
+Received: from VTC.emeia.fujitsu.local (unknown [172.17.38.7])
+        by x-serv01 (Postfix) with ESMTP id 3AC9420708;
+        Tue, 12 May 2020 18:18:03 +0200 (CEST)
+From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
+To:     martin.petersen@oracle.com, bvanassche@acm.org,
+        mchristi@readhat.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, bly@catalogicsoftware.com
+Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Subject: [PATCH] scsi: target: put lun_ref at end of tmr processing
+Date:   Tue, 12 May 2020 18:17:53 +0200
+Message-Id: <20200512161753.10625-1-bstroesser@ts.fujitsu.com>
+X-Mailer: git-send-email 2.12.3
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 5/12/20 6:19 AM, Bodo Stroesser wrote:
-> On 05/11/20 22:16, Mike Christie wrote:
->> On 5/11/20 2:21 PM, Bart Van Assche wrote:
->>> On 2020-05-11 11:39, Bodo Stroesser wrote:
->>>> On 05/10/20 23:57, Mike Christie wrote:
->>>>> This patch adds helpers to add/remove a dir per session. There is
->>>>> only 2
->>>>> files/dirs initially.
->>>>>
->>>>
->>>> ...
->>>>
->>>>> +
->>>>> +int target_sysfs_add_session(struct se_portal_group *se_tpg,
->>>>> +                 struct se_session *se_sess)
->>>>> +{
->>>>> +    int ret;
->>>>> +
->>>>> +    /*
->>>>> +     * Copy ACL name so we don't have to worry about mixing configfs
->>>>> +     * and sysfs refcounts.
->>>>> +     */
->>>>> +    if (!se_sess->se_node_acl->dynamic_node_acl) {
->>>>> +        se_sess->acl_name =
->>>>> kstrdup(se_sess->se_node_acl->initiatorname,
->>>>> +                        GFP_KERNEL);
->>>>> +        if (!se_sess->acl_name)
->>>>> +            return -ENOMEM;
->>>>> +    }
->>>>> +
->>>>> +    ret = kobject_add(&se_sess->kobj, se_tpg->sessions_kobj, "%s-%d",
->>>>> +              se_sess->tpt_id->name, se_sess->sid);
->>>>> +    if (ret) {
->>>>> +        pr_err("Could not add session%d to sysfs. Error %d.\n",
->>>>> +               se_sess->sid, ret);
->>>>> +        goto free_acl_name;
->>>>> +    }
->>>>> +
->>>>> +    ret = add_transport_id_attrs(se_sess);
->>>>> +    if (ret)
->>>>> +        goto del_kobj;
->>>>> +
->>>>> +    if (se_sess->tfo->session_attrs) {
->>>>> +        ret = sysfs_create_group(&se_sess->kobj,
->>>>> +                     se_sess->tfo->session_attrs);
->>>>> +        if (ret)
->>>>> +            goto rm_tpt_id_grps;
->>>>> +    }
->>>>> +
->>>>> +    ret = sysfs_create_link(tcm_core_sessions_kobj, &se_sess->kobj,
->>>>> +                se_sess->kobj.name);
->>>>
->>>> I would prefer to have links named "session-%d" or "%d" only, of course
->>>> with se_sess->sid as the value for '%d'.
->>
->> Yeah for the part of your comment that got chopped I can see your point.
->> For the dynamic acl case (userspace did not create an ACL so the kernel
->> made a tmp one), then doing session-$id will be easier for userspace to
->> lookup a specific session since it does not know the initiator name and
->> only knows the session id.
-> 
-> Yes, I meant, that "session-%d" or even "%d" only would be fine for the
-> links in scsi_target/sessions. When looking for a session if session-id
-> is known only, then this is easy to use.
-> 
-> Regarding the session folders in the tpgt_X folder, I think the "%s-%d"
-> format with acl or initiator name followed by the session-id would be
-> fine for both cases, with acl and with dynamic acl. Again the above
-> links can be used for dynamic acl lookup.
->
-I don't think that's possible.
+Testing with Loopback I found, that after a Loopback LUN
+has executed a TMR, I can no longer unlink the LUN.
+The rm command hangs in transport_clear_lun_ref() at
+wait_for_completion(&lun->lun_shutdown_comp)
+The reason is, that transport_lun_remove_cmd() is not
+called at the end of target_tmr_work().
 
-To handle Greg's comment we will use device structs instead of kobjects
-directly. It's going to end up looking like
-drivers/scsi_transport_iscsi.c where that initiator side session has a
-device struct in it. You have a scsi_target_session class and device
-structs show up in /sys/class/scsi_target_session. In this case, you do
-not have control over the symlink name from
-/sys/class/scsi_target_session to /sys/devices/. The dir name and
-symlink name are going to be the device structs name.
+It seems, that in other fabrics this call happens implicitly
+when the fabric drivers call transport_generic_free_cmd()
+during their ->queue_tm_rsp().
+
+Unfortunately Loopback seems to not comply to the common way
+of calling transport_generic_free_cmd() from ->queue_*().
+Instead it calls transport_generic_free_cmd() from its
+  ->check_stop_free() only.
+
+But the ->check_stop_free() is called by
+transport_cmd_check_stop_to_fabric() after it has reset the
+se_cmd->se_lun pointer.
+Therefore the following transport_generic_free_cmd() skips the
+transport_lun_remove_cmd().
+
+So this patch re-adds the transport_lun_remove_cmd() at the end
+of target_tmr_work(), which was removed during commit
+2c9fa49e100f962af988f1c0529231bf14905cda
+"scsi: target/core: Make ABORT and LUN RESET handling synchronous"
+
+For fabrics using transport_generic_free_cmd() in the usual way
+the double call to transport_lun_remove_cmd() doesn't harm, as
+transport_lun_remove_cmd() checks for this situation and does
+not release lun_ref twice.
+
+Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Tested-by: Bryant G. Ly <bryangly@gmail.com>
+---
+ drivers/target/target_core_transport.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
+index 594b724bbf79..264a822c0bfa 100644
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -3350,6 +3350,7 @@ static void target_tmr_work(struct work_struct *work)
+ 
+ 	cmd->se_tfo->queue_tm_rsp(cmd);
+ 
++	transport_lun_remove_cmd(cmd);
+ 	transport_cmd_check_stop_to_fabric(cmd);
+ 	return;
+ 
+-- 
+2.12.3
 
