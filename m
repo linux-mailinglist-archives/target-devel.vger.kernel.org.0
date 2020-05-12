@@ -2,122 +2,119 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B1881CFA5F
-	for <lists+target-devel@lfdr.de>; Tue, 12 May 2020 18:18:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0851D1D02D3
+	for <lists+target-devel@lfdr.de>; Wed, 13 May 2020 01:05:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726707AbgELQSR (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 12 May 2020 12:18:17 -0400
-Received: from mail1.bemta26.messagelabs.com ([85.158.142.4]:51314 "EHLO
-        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726287AbgELQSR (ORCPT
+        id S1731570AbgELXFo (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 12 May 2020 19:05:44 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:36080 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727104AbgELXFn (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 12 May 2020 12:18:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1589300294; i=@ts.fujitsu.com;
-        bh=KhpI/oTYPBwCSd5HBuPq6OYDwPV+G6NOvvgcPbitnik=;
-        h=From:To:Cc:Subject:Date:Message-Id;
-        b=iybkzUEtWGHRmN9d017HqfGltqS07475UxX2hq6HOVNetaZ6jOhXqzIqGM41ANn/c
-         OMc+ModBbDFe7xvziZqrW5nEAKbAcy+sSj9Whggw3hGQCW3HYIT2QLbBfH/CSjdykS
-         A+iNMY6Q6bnNoaXubVitGmN5RwNHhGnNuCZwQGlk9Ra29gKfwebjWrPFtlcF8DzJm0
-         pZhslS0IrER04DQb4kEOT39mhhovRnD89YQwenlcvq/rzHbXtPEwSp5OrliMI3LYXz
-         tK9pBvX89GRm5XHkVABUdn1eBc9WJZpc3vovnUFZiJcMaQ2IgRFYO9T41ehiwocOMe
-         G9IbaXtgCkZmA==
-Received: from [100.113.3.197] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-4.bemta.az-a.eu-central-1.aws.symcld.net id C0/AE-37389-04CCABE5; Tue, 12 May 2020 16:18:08 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrLLMWRWlGSWpSXmKPExsViZ8MxRdf+zK4
-  4g53ntC12Xv/IZDHtw09mi+7rO9gslh//x2TxddNGNovWpW+ZHNg8Ll/x9vj/bwqzx8ent1g8
-  bp++wOTxeZNcAGsUa2ZeUn5FAmvG3peHGAum8FfcW32esYFxPW8XIxeHkMBkRokfLe1MEM50R
-  ok9X1vYuhg5OdgEDCRWTLrPApIQEVjLKPHi4UMmkASzgJ7EtH/r2EFsYQFnic/n/oE1sAioSq
-  zonQRm8wrYSTyaNR2sXkJAXqLjwGSWCYycCxgZVjFaJhVlpmeU5CZm5ugaGhjoGhoa6xoDWSZ
-  6iVW6iXqppbrJqXklRYlAWb3E8mK94src5JwUvbzUkk2MwFBJKWTO2MF4de17vUOMkhxMSqK8
-  LRN2xQnxJeWnVGYkFmfEF5XmpBYfYpTh4FCS4A07DZQTLEpNT61Iy8wBhi1MWoKDR0mE1+YUU
-  Jq3uCAxtzgzHSJ1ilFRSpx3P0hCACSRUZoH1waLlUuMslLCvIwMDAxCPAWpRbmZJajyrxjFOR
-  iVhHlngUzhycwrgZv+CmgxE9Dih8+3gSwuSURISTUwhVq6vNQtOaItZhsTyj+jdZ/Dtl7Wy6o
-  S4a9PCSjb/v7kdCMpRcqk0vEb/+V/WrandyptcgkpXsa7036/n36DbIZt1bEclRjbTpEepe2q
-  j6fHHWJet2j/1k/tqZPTCpS3i8wJuqK+3CNxTeqyuTtWhErGu9+JCm2Jr/7uu/zg2cvnn+XMr
-  PZK/LZmT+iCzn8rnMVWvjrFIGl+aHNujpXaZY+FVVkKS/8+M53frdJZv19bXPXypfDCOdbV7I
-  +yJI86pEimh9lOm7d+zx+5oEix56F//zdYfOV3+tVTJS81JWpLhuNasScLxEq4Ovff9vEp5eV
-  9K/R8scmExdxxzNqrFvyWPNdZoDKDf7bRhjtKLMUZiYZazEXFiQDWLVuCEAMAAA==
-X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-15.tower-226.messagelabs.com!1589300286!894377!1
-X-Originating-IP: [62.60.8.148]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.50.1; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 5712 invoked from network); 12 May 2020 16:18:07 -0000
-Received: from unknown (HELO mailhost1.uk.fujitsu.com) (62.60.8.148)
-  by server-15.tower-226.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 12 May 2020 16:18:07 -0000
-Received: from x-serv01 ([172.17.38.52])
-        by mailhost1.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 04CGI6p2006160;
-        Tue, 12 May 2020 17:18:06 +0100
-Received: from VTC.emeia.fujitsu.local (unknown [172.17.38.7])
-        by x-serv01 (Postfix) with ESMTP id 3AC9420708;
-        Tue, 12 May 2020 18:18:03 +0200 (CEST)
-From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-To:     martin.petersen@oracle.com, bvanassche@acm.org,
-        mchristi@readhat.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, bly@catalogicsoftware.com
-Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Subject: [PATCH] scsi: target: put lun_ref at end of tmr processing
-Date:   Tue, 12 May 2020 18:17:53 +0200
-Message-Id: <20200512161753.10625-1-bstroesser@ts.fujitsu.com>
-X-Mailer: git-send-email 2.12.3
+        Tue, 12 May 2020 19:05:43 -0400
+Received: by mail-pl1-f193.google.com with SMTP id f15so6050670plr.3;
+        Tue, 12 May 2020 16:05:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:from:autocrypt:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=0w3GRC8jItu9FjcP/PaDffrBCgmRis5/MkyhSMcrbBo=;
+        b=JpOtdQlYzhp6EiqL/VesrteqUxO910yQXjedZ0rHoVDjWyzQ8BzEVk5KIBhTD1zDdZ
+         fup4ilmp+9dcC3Is3lXytrR7WvBUKXwq+IDYyPe0Uq5cZP6w9GY6tnregRidSXzFuRUG
+         CRJ+uX/j3Iasvr92enFrwBKaTra5xUrXvzWrhZfvZl7bZihMFerWEyx1lK8WYcxTEOoR
+         cnH12nwevdfqS+avCruc89ywWu3C57I03b9CMG6UiTgMpMwbuYbpNMGkeaRuZCWrDTMo
+         MS8KL2qYgvU7er59mGHeOWl0z5hDpsFWuzn7DEzXcyLdXTo2XRk9CA6ePqB2hzTXyrtt
+         IUYg==
+X-Gm-Message-State: AGi0PuZXYWxYD1pFt9jv+aYtCFbUhkijfACEVKQhYHeZS1AuKFSdiavp
+        d9wVkl1fPTIqwITmV21q0zk=
+X-Google-Smtp-Source: APiQypKfpgQIXQnrn/tEEgOPwlQNx73DZziIz22CPK4RPqgSZPhHhbUogpjN0qdEjl+VY1cEpZplbA==
+X-Received: by 2002:a17:90b:93:: with SMTP id bb19mr28473353pjb.134.1589324742657;
+        Tue, 12 May 2020 16:05:42 -0700 (PDT)
+Received: from ?IPv6:2601:647:4000:d7:d1a1:34bc:ea5:fadd? ([2601:647:4000:d7:d1a1:34bc:ea5:fadd])
+        by smtp.gmail.com with ESMTPSA id 207sm11182475pgh.34.2020.05.12.16.05.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 May 2020 16:05:41 -0700 (PDT)
+Subject: Re: [PATCH] scsi: target: put lun_ref at end of tmr processing
+To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
+        martin.petersen@oracle.com, mchristi@readhat.com,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        bly@catalogicsoftware.com
+References: <20200512161753.10625-1-bstroesser@ts.fujitsu.com>
+From:   Bart Van Assche <bvanassche@acm.org>
+Autocrypt: addr=bvanassche@acm.org; prefer-encrypt=mutual; keydata=
+ mQENBFSOu4oBCADcRWxVUvkkvRmmwTwIjIJvZOu6wNm+dz5AF4z0FHW2KNZL3oheO3P8UZWr
+ LQOrCfRcK8e/sIs2Y2D3Lg/SL7qqbMehGEYcJptu6mKkywBfoYbtBkVoJ/jQsi2H0vBiiCOy
+ fmxMHIPcYxaJdXxrOG2UO4B60Y/BzE6OrPDT44w4cZA9DH5xialliWU447Bts8TJNa3lZKS1
+ AvW1ZklbvJfAJJAwzDih35LxU2fcWbmhPa7EO2DCv/LM1B10GBB/oQB5kvlq4aA2PSIWkqz4
+ 3SI5kCPSsygD6wKnbRsvNn2mIACva6VHdm62A7xel5dJRfpQjXj2snd1F/YNoNc66UUTABEB
+ AAG0JEJhcnQgVmFuIEFzc2NoZSA8YnZhbmFzc2NoZUBhY20ub3JnPokBOQQTAQIAIwUCVI67
+ igIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEHFcPTXFzhAJ8QkH/1AdXblKL65M
+ Y1Zk1bYKnkAb4a98LxCPm/pJBilvci6boefwlBDZ2NZuuYWYgyrehMB5H+q+Kq4P0IBbTqTa
+ jTPAANn62A6jwJ0FnCn6YaM9TZQjM1F7LoDX3v+oAkaoXuq0dQ4hnxQNu792bi6QyVdZUvKc
+ macVFVgfK9n04mL7RzjO3f+X4midKt/s+G+IPr4DGlrq+WH27eDbpUR3aYRk8EgbgGKvQFdD
+ CEBFJi+5ZKOArmJVBSk21RHDpqyz6Vit3rjep7c1SN8s7NhVi9cjkKmMDM7KYhXkWc10lKx2
+ RTkFI30rkDm4U+JpdAd2+tP3tjGf9AyGGinpzE2XY1K5AQ0EVI67igEIAKiSyd0nECrgz+H5
+ PcFDGYQpGDMTl8MOPCKw/F3diXPuj2eql4xSbAdbUCJzk2ETif5s3twT2ER8cUTEVOaCEUY3
+ eOiaFgQ+nGLx4BXqqGewikPJCe+UBjFnH1m2/IFn4T9jPZkV8xlkKmDUqMK5EV9n3eQLkn5g
+ lco+FepTtmbkSCCjd91EfThVbNYpVQ5ZjdBCXN66CKyJDMJ85HVr5rmXG/nqriTh6cv1l1Js
+ T7AFvvPjUPknS6d+BETMhTkbGzoyS+sywEsQAgA+BMCxBH4LvUmHYhpS+W6CiZ3ZMxjO8Hgc
+ ++w1mLeRUvda3i4/U8wDT3SWuHcB3DWlcppECLkAEQEAAYkBHwQYAQIACQUCVI67igIbDAAK
+ CRBxXD01xc4QCZ4dB/0QrnEasxjM0PGeXK5hcZMT9Eo998alUfn5XU0RQDYdwp6/kMEXMdmT
+ oH0F0xB3SQ8WVSXA9rrc4EBvZruWQ+5/zjVrhhfUAx12CzL4oQ9Ro2k45daYaonKTANYG22y
+ //x8dLe2Fv1By4SKGhmzwH87uXxbTJAUxiWIi1np0z3/RDnoVyfmfbbL1DY7zf2hYXLLzsJR
+ mSsED/1nlJ9Oq5fALdNEPgDyPUerqHxcmIub+pF0AzJoYHK5punqpqfGmqPbjxrJLPJfHVKy
+ goMj5DlBMoYqEgpbwdUYkH6QdizJJCur4icy8GUNbisFYABeoJ91pnD4IGei3MTdvINSZI5e
+Message-ID: <b5da2b56-2924-abec-2a8c-94d53741560d@acm.org>
+Date:   Tue, 12 May 2020 16:05:40 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <20200512161753.10625-1-bstroesser@ts.fujitsu.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Testing with Loopback I found, that after a Loopback LUN
-has executed a TMR, I can no longer unlink the LUN.
-The rm command hangs in transport_clear_lun_ref() at
-wait_for_completion(&lun->lun_shutdown_comp)
-The reason is, that transport_lun_remove_cmd() is not
-called at the end of target_tmr_work().
+On 2020-05-12 09:17, Bodo Stroesser wrote:
+> Testing with Loopback I found, that after a Loopback LUN
+> has executed a TMR, I can no longer unlink the LUN.
+> The rm command hangs in transport_clear_lun_ref() at
+> wait_for_completion(&lun->lun_shutdown_comp)
+> The reason is, that transport_lun_remove_cmd() is not
+> called at the end of target_tmr_work().
+> 
+> It seems, that in other fabrics this call happens implicitly
+> when the fabric drivers call transport_generic_free_cmd()
+> during their ->queue_tm_rsp().
+> 
+> Unfortunately Loopback seems to not comply to the common way
+> of calling transport_generic_free_cmd() from ->queue_*().
+> Instead it calls transport_generic_free_cmd() from its
+>   ->check_stop_free() only.
+> 
+> But the ->check_stop_free() is called by
+> transport_cmd_check_stop_to_fabric() after it has reset the
+> se_cmd->se_lun pointer.
+> Therefore the following transport_generic_free_cmd() skips the
+> transport_lun_remove_cmd().
+> 
+> So this patch re-adds the transport_lun_remove_cmd() at the end
+> of target_tmr_work(), which was removed during commit
+> 2c9fa49e100f962af988f1c0529231bf14905cda
+> "scsi: target/core: Make ABORT and LUN RESET handling synchronous"
+> 
+> For fabrics using transport_generic_free_cmd() in the usual way
+> the double call to transport_lun_remove_cmd() doesn't harm, as
+> transport_lun_remove_cmd() checks for this situation and does
+> not release lun_ref twice.
+> 
+> Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
+> Tested-by: Bryant G. Ly <bryangly@gmail.com>
 
-It seems, that in other fabrics this call happens implicitly
-when the fabric drivers call transport_generic_free_cmd()
-during their ->queue_tm_rsp().
+Please add Fixes: ... and Cc: stable tags. Anyway:
 
-Unfortunately Loopback seems to not comply to the common way
-of calling transport_generic_free_cmd() from ->queue_*().
-Instead it calls transport_generic_free_cmd() from its
-  ->check_stop_free() only.
-
-But the ->check_stop_free() is called by
-transport_cmd_check_stop_to_fabric() after it has reset the
-se_cmd->se_lun pointer.
-Therefore the following transport_generic_free_cmd() skips the
-transport_lun_remove_cmd().
-
-So this patch re-adds the transport_lun_remove_cmd() at the end
-of target_tmr_work(), which was removed during commit
-2c9fa49e100f962af988f1c0529231bf14905cda
-"scsi: target/core: Make ABORT and LUN RESET handling synchronous"
-
-For fabrics using transport_generic_free_cmd() in the usual way
-the double call to transport_lun_remove_cmd() doesn't harm, as
-transport_lun_remove_cmd() checks for this situation and does
-not release lun_ref twice.
-
-Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Tested-by: Bryant G. Ly <bryangly@gmail.com>
----
- drivers/target/target_core_transport.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
-index 594b724bbf79..264a822c0bfa 100644
---- a/drivers/target/target_core_transport.c
-+++ b/drivers/target/target_core_transport.c
-@@ -3350,6 +3350,7 @@ static void target_tmr_work(struct work_struct *work)
- 
- 	cmd->se_tfo->queue_tm_rsp(cmd);
- 
-+	transport_lun_remove_cmd(cmd);
- 	transport_cmd_check_stop_to_fabric(cmd);
- 	return;
- 
--- 
-2.12.3
-
+Reviewed-by: Bart van Assche <bvanassche@acm.org>
