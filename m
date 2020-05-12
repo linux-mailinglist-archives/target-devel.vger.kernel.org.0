@@ -2,147 +2,179 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 777A41CEF1D
-	for <lists+target-devel@lfdr.de>; Tue, 12 May 2020 10:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 994A21CF337
+	for <lists+target-devel@lfdr.de>; Tue, 12 May 2020 13:20:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729206AbgELI2u (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 12 May 2020 04:28:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57256 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725987AbgELI2u (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Tue, 12 May 2020 04:28:50 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DF7E5206A3;
-        Tue, 12 May 2020 08:28:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589272129;
-        bh=xic9Wa4tqu8MQopJT18weegGL8B8WOphD+KWExBuHy4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Thw2OguQ0Roa5JQgz17PW9AC4NeRdMJaeQKNU47bRqCeeMWOAHVzbwtpfTCQ+2LTE
-         h8nyzVDOoQIjIExpo+8oPNg4rCjJOCSLUH/JFTJPRe3LLgAfP75JSvBEOQbWDSNMCd
-         pegQ4oNR5bYrjNJoJvu/pMSWzoZV2Fg4yTbflL6s=
-Date:   Tue, 12 May 2020 07:54:42 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Mike Christie <mchristi@redhat.com>
-Cc:     bvanassche@acm.org, bstroesser@ts.fujitsu.com,
+        id S1727783AbgELLUN (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 12 May 2020 07:20:13 -0400
+Received: from mail1.bemta26.messagelabs.com ([85.158.142.2]:48927 "EHLO
+        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726891AbgELLUN (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Tue, 12 May 2020 07:20:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
+        s=200619tsfj; t=1589282409; i=@ts.fujitsu.com;
+        bh=y4wfNvl0uueqUoC8G65ELCqPZfMFddf1x6PcnMZiGbU=;
+        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+         In-Reply-To:Content-Type:Content-Transfer-Encoding;
+        b=Z3lFjNRLwDu+t2+bZCMb4Nh0vC4qkScTiXrgxz52Hl2+HlsL/8VYsbKHfzXiuykKX
+         O+qz0qNarA1ZaFX//5ZO6jcuEBee4xQJCSWe90ErBZRwvvCy6eKCS24QXJHUoKYEtw
+         ADhmOal8ETYeJgg8iX/G2QD6RkJWz5EwvsjCePpwl0yCp7c+ArFeIgDcbgWE1rNrdT
+         d1xgI6xX3CWwfLrr2Ap3IqPeoIH0JEXxvv8xs/rSpx+p4EZSRZYDLBNqCI2AbwIf4h
+         L8yoUABBOfA58L57PDz4TFzGNpEuq4b+icyfRCAeV5U5RMBpevxYz6Ts/Rog8gQpEv
+         ba0rY08XPX3mw==
+Received: from [100.113.3.197] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-2.bemta.az-a.eu-central-1.aws.symcld.net id 5A/94-40520-8668ABE5; Tue, 12 May 2020 11:20:08 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrAIsWRWlGSWpSXmKPExsViZ8MxVTejbVe
+  cwZ2VKhbTPvxktmhevJ7NYs+iSUwW3dd3sFksP/6PyWL9kQ2MFq1L3zI5sHtcvuLtsX/uGnaP
+  j09vsXi833eVzWPz6WqPz5vkAtiiWDPzkvIrElgzNk15zlgwX7Zi+dHlTA2M98W6GLk4hARmM
+  Uo86mln7WLk5BAWcJW4v+4cK0hCRGALo8SD/4sZuxg5OJgFoiV+LxOAaGhkkrjwewkzSAObgI
+  HEikn3WUBsXgFHiWntnxhBbBYBVYnvBz6ADRUVCJd4seUPK0SNoMTJmU/A6jkF7CTmTXvEBmI
+  zC5hJzNv8kBnCFpe49WQ+E4QtL7H97RzmCYx8s5C0z0LSMgtJyywkLQsYWVYxWiQVZaZnlOQm
+  ZuboGhoY6BoaGusa6pqb6yVW6SbqpZbqJqfmlRQlAiX1EsuL9Yorc5NzUvTyUks2MQIjIqWQ0
+  XcH48W17/UOMUpyMCmJ8mo07YoT4kvKT6nMSCzOiC8qzUktPsQow8GhJMH7sBUoJ1iUmp5akZ
+  aZA4xOmLQEB4+SCO82kDRvcUFibnFmOkTqFKOilDjvoxaghABIIqM0D64NlhAuMcpKCfMyMjA
+  wCPEUpBblZpagyr9iFOdgVBLmPQMyhSczrwRu+iugxUxAix8+3wayuCQRISXVwFRr3nH1oKy1
+  pFGi8cWZchKOrMIn2dp2Gii1GHRu6Jr85PjfiPdVCtPUc7wjonccm2f8moExY4ucy4JIk67Ue
+  h5BLyf5y9dPlLP/fb8hd0NE8N7/33TnOG7/KMVhy3bHX2vN345fh+uvCrgnVsi1Hv30uDDii7
+  cMe17i34ad5s/z2a+/n3R0ypJijuCQCcyHnM+/2fjuR7mB8s3Xj7SPLD77MbX51CZmx6Q01ze
+  RJuZJl27emWF+8fKBX2uyZD9Hv+2y2TD1qIoc18bS1LvRs1wWmLHpRqzXPBH/u+BO1oITz+L8
+  AiVPh+7x8HFp4/acJpMsvSOBXbnDz6r1+M7+f+dEmTZGaHdFeE2r/xknoMRSnJFoqMVcVJwIA
+  Dv8etuDAwAA
+X-Env-Sender: bstroesser@ts.fujitsu.com
+X-Msg-Ref: server-25.tower-226.messagelabs.com!1589282407!942030!1
+X-Originating-IP: [62.60.8.149]
+X-SYMC-ESS-Client-Auth: outbound-route-from=pass
+X-StarScan-Received: 
+X-StarScan-Version: 9.50.1; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 21641 invoked from network); 12 May 2020 11:20:08 -0000
+Received: from unknown (HELO mailhost2.uk.fujitsu.com) (62.60.8.149)
+  by server-25.tower-226.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 12 May 2020 11:20:08 -0000
+Received: from [172.17.80.59] ([172.17.80.59])
+        by mailhost2.uk.fujitsu.com (8.14.5/8.14.5) with ESMTP id 04CBJDKS030821;
+        Tue, 12 May 2020 12:19:18 +0100
+Subject: Re: [PATCH 12/15] target: add sysfs session helper functions
+To:     Mike Christie <mchristi@redhat.com>,
+        Bart Van Assche <bvanassche@acm.org>,
         martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: Re: [PATCH 11/15] target: add sysfs support
-Message-ID: <20200512055442.GA3505885@kroah.com>
+        target-devel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hannes Reinecke <hare@suse.de>
 References: <20200510215744.21999-1-mchristi@redhat.com>
- <20200510215744.21999-12-mchristi@redhat.com>
- <20200511063002.GA1260895@kroah.com>
- <aad8269e-f9ee-ebc7-6e54-aa4b5b6021b8@redhat.com>
+ <20200510215744.21999-13-mchristi@redhat.com>
+ <66e9bbf8-fdb2-d819-a496-75a1dea779cf@ts.fujitsu.com>
+ <a3686299-8fab-3cf7-0641-5e7c98a7292d@acm.org>
+ <5234c678-92e6-0689-1eca-aa0c252adf58@redhat.com>
+From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Message-ID: <a1ca0d10-9011-52a6-f40b-dc5086d9e273@ts.fujitsu.com>
+Date:   Tue, 12 May 2020 13:19:04 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aad8269e-f9ee-ebc7-6e54-aa4b5b6021b8@redhat.com>
+In-Reply-To: <5234c678-92e6-0689-1eca-aa0c252adf58@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Mon, May 11, 2020 at 12:15:12PM -0500, Mike Christie wrote:
-> On 5/11/20 1:30 AM, Greg Kroah-Hartman wrote:
-> > On Sun, May 10, 2020 at 04:57:40PM -0500, Mike Christie wrote:
-> >> These next two patches add a sysfs interface that reports the target
-> >> layer's I_T nexuses/sessions. For the non-SCSI people cc'd, this just means
-> >> we are reporting a server's connections to remote clients.
-> >>
-> >> This patch adds the upper level dirs which shows/organizes our local port
-> >> (tpgts below) and the connection (session below). The next patch will then
-> >> add the dirs/files for each connection/session which exports info like
-> >> ACL/permissions and SCSI port values.
-> >>
-> >> Here is the general layout:
-> >>
-> >> [sys]# tree scsi_target/
-> >> scsi_target/
-> >> |-- fabric/target module
-> >> |   `-- target name
-> >> |       `-- tpgt_$target_port_group_number
-> >> |           `-- sessions
-> >> |               `-- initiator name - session ID number
-> >> |                   |-- acl
-> >> |                   `-- transport_id
-> >> |                       |-- name
-> >> |                       |-- proto
-> >> |                       `-- session_id
-> >>
-> >> Here is an example with the scsi target layer's iSCSI driver:
-> >>
-> >> scsi_target/
-> >> |-- iscsi
-> >> |   `-- iqn.1999-09.com.tcmu:minna
-> >> |       `-- tpgt_1
-> >> |           `-- sessions
-> >> |               `-- iqn.2005-03.com.ceph:ini1-1
-> >> |                   |-- acl
-> >> |                   `-- transport_id
-> >> |                       |-- name
-> >> |                       |-- proto
-> >> |                       `-- session_id
-> >> |-- fc
-> >> |-- loopback
-> >> |-- qla2xxx_tcm
-> >>
-> >>
-> >> Note/Question for Greg:
-> >>
-> >> We are not exporting info in the upper level dirs like "fabric/target
-> >> module", "target name", tpgt, etc and just need those dirs to be able to
-> >> organize/view the endpoints of the session. So, in this patch I made a new
-> >> top level dir scsi_target and made the other dirs with
-> >> kobject_create_and_add. It looks like we could also add device structs in
-> >> the target related structs, use classes, and build the tree/hierarchy that
-> >> way too. It was not clear to me when to use one or the other.
-> > 
-> > Never use kobject calls in a driver subsystem like you have here, as
-> > those objects will not be seen by userspace tools that get uevents.
-> > Just use real 'struct devices' if you really really need a deep
-> > directory tree.
-> > 
-> > But I would push back here, why do you feel you want such a deep tree?
-> > What are you getting from this?  Why do you need that "sessions"
-> > directory at all?
+On 05/11/20 22:16, Mike Christie wrote:
+> On 5/11/20 2:21 PM, Bart Van Assche wrote:
+>> On 2020-05-11 11:39, Bodo Stroesser wrote:
+>>> On 05/10/20 23:57, Mike Christie wrote:
+>>>> This patch adds helpers to add/remove a dir per session. There is only 2
+>>>> files/dirs initially.
+>>>>
+>>>
+>>> ...
+>>>
+>>>> +
+>>>> +int target_sysfs_add_session(struct se_portal_group *se_tpg,
+>>>> +                 struct se_session *se_sess)
+>>>> +{
+>>>> +    int ret;
+>>>> +
+>>>> +    /*
+>>>> +     * Copy ACL name so we don't have to worry about mixing configfs
+>>>> +     * and sysfs refcounts.
+>>>> +     */
+>>>> +    if (!se_sess->se_node_acl->dynamic_node_acl) {
+>>>> +        se_sess->acl_name = kstrdup(se_sess->se_node_acl->initiatorname,
+>>>> +                        GFP_KERNEL);
+>>>> +        if (!se_sess->acl_name)
+>>>> +            return -ENOMEM;
+>>>> +    }
+>>>> +
+>>>> +    ret = kobject_add(&se_sess->kobj, se_tpg->sessions_kobj, "%s-%d",
+>>>> +              se_sess->tpt_id->name, se_sess->sid);
+>>>> +    if (ret) {
+>>>> +        pr_err("Could not add session%d to sysfs. Error %d.\n",
+>>>> +               se_sess->sid, ret);
+>>>> +        goto free_acl_name;
+>>>> +    }
+>>>> +
+>>>> +    ret = add_transport_id_attrs(se_sess);
+>>>> +    if (ret)
+>>>> +        goto del_kobj;
+>>>> +
+>>>> +    if (se_sess->tfo->session_attrs) {
+>>>> +        ret = sysfs_create_group(&se_sess->kobj,
+>>>> +                     se_sess->tfo->session_attrs);
+>>>> +        if (ret)
+>>>> +            goto rm_tpt_id_grps;
+>>>> +    }
+>>>> +
+>>>> +    ret = sysfs_create_link(tcm_core_sessions_kobj, &se_sess->kobj,
+>>>> +                se_sess->kobj.name);
+>>>
+>>> I would prefer to have links named "session-%d" or "%d" only, of course
+>>> with se_sess->sid as the value for '%d'.
 > 
-> I do not need the sessions under the tpgt dir and will drop it. The
-> target subsystem does not have a bus or use device structs at all right
-> now.
+> Yeah for the part of your comment that got chopped I can see your point.
+> For the dynamic acl case (userspace did not create an ACL so the kernel
+> made a tmp one), then doing session-$id will be easier for userspace to
+> lookup a specific session since it does not know the initiator name and
+> only knows the session id.
 
-Then fix that and everything shows up automatically "for free".
+Yes, I meant, that "session-%d" or even "%d" only would be fine for the
+links in scsi_target/sessions. When looking for a session if session-id
+is known only, then this is easy to use.
 
-> And, I saw how other code that does not have a bus like btrfs/ext4
-> use kobject_create_and_add() to group/organize objects and went wild
-> with dirs :)
+Regarding the session folders in the tpgt_X folder, I think the "%s-%d"
+format with acl or initiator name followed by the session-id would be
+fine for both cases, with acl and with dynamic acl. Again the above
+links can be used for dynamic acl lookup.
 
-file systems are not devices with busses and drivers :)
-
-> And, I can move the code to device structs, but had a question about the
-> deep tree question.
-
-Don't do it.
-
-> A common operation will be that userspace knows the names of the objects
-> above the session in the tree already. Apps then want to read in a
-> specific session or scan the specific sessions in a target or a tpgt.
-> The deep tree makes it easy to build the sysfs path and scan/read the
-> specific object/objects.
-
-Again, a "deep tree" with raw kobjects will be invisible to the normal
-userspace tools that monitor changes in sysfs for devices because they
-will not notice them at all.
-
-> I wanted to avoid the issue where apps have with the flat layout where
-> they have to scan every session when they just want something specific.
-
-There should not be any difference in "speed" for something like that,
-it's an in-ram filesystem with no i/o times.
-
-> Will a deep tree be ok for this type of reason?
-
-Nope :(
-
-greg k-h
+> 
+>>
+>> Isn't se_sess->sid a property that is filled in by the iSCSI target
+>> driver only? Is se_sess->sid zero for all other target drivers than the
+>> iSCSI target driver?
+> 
+> No, in this patch in transport_alloc_session() I added a common sid
+> allocator so all sessions have a unique id across all targets.
+> 
+>>
+>>> If userspace knows the session-id only, such names make it easier to
+>>> find the corresponding link.
+>>
+>> Personally I prefer the %s-%d naming scheme. I think that naming scheme
+>> has the following advantages:
+>> 1. No need to run cat ... to retrieve the initiator name.
+>> 2. It becomes possible to derive from the 'ls' output which initiators
+>> created multiple sessions.
+>> 3. All sessions created by the same initiator appear consecutively.
+>>
+> 
+> Ccing Hannes, because he was also saying that we should use generic
+> names like target-%X, session-$d, etc. If we change all the code to use
+> generic names for the target/fabric/tpgt/session, then examples like #2
+> or similar ones like using tree to see the topology from a SCSI'ish view
+> would not work.
+> 
+> In the end, we have this issue with SCSI on the initiator side, and it's
+> a pain, but not a show stopper.
+> 
