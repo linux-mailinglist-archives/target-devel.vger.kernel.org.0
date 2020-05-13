@@ -2,119 +2,75 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0851D1D02D3
-	for <lists+target-devel@lfdr.de>; Wed, 13 May 2020 01:05:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4EBA1D07BF
+	for <lists+target-devel@lfdr.de>; Wed, 13 May 2020 08:33:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731570AbgELXFo (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 12 May 2020 19:05:44 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:36080 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727104AbgELXFn (ORCPT
+        id S1730107AbgEMG2Y (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 13 May 2020 02:28:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46056 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729992AbgEMG2T (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 12 May 2020 19:05:43 -0400
-Received: by mail-pl1-f193.google.com with SMTP id f15so6050670plr.3;
-        Tue, 12 May 2020 16:05:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:autocrypt:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=0w3GRC8jItu9FjcP/PaDffrBCgmRis5/MkyhSMcrbBo=;
-        b=JpOtdQlYzhp6EiqL/VesrteqUxO910yQXjedZ0rHoVDjWyzQ8BzEVk5KIBhTD1zDdZ
-         fup4ilmp+9dcC3Is3lXytrR7WvBUKXwq+IDYyPe0Uq5cZP6w9GY6tnregRidSXzFuRUG
-         CRJ+uX/j3Iasvr92enFrwBKaTra5xUrXvzWrhZfvZl7bZihMFerWEyx1lK8WYcxTEOoR
-         cnH12nwevdfqS+avCruc89ywWu3C57I03b9CMG6UiTgMpMwbuYbpNMGkeaRuZCWrDTMo
-         MS8KL2qYgvU7er59mGHeOWl0z5hDpsFWuzn7DEzXcyLdXTo2XRk9CA6ePqB2hzTXyrtt
-         IUYg==
-X-Gm-Message-State: AGi0PuZXYWxYD1pFt9jv+aYtCFbUhkijfACEVKQhYHeZS1AuKFSdiavp
-        d9wVkl1fPTIqwITmV21q0zk=
-X-Google-Smtp-Source: APiQypKfpgQIXQnrn/tEEgOPwlQNx73DZziIz22CPK4RPqgSZPhHhbUogpjN0qdEjl+VY1cEpZplbA==
-X-Received: by 2002:a17:90b:93:: with SMTP id bb19mr28473353pjb.134.1589324742657;
-        Tue, 12 May 2020 16:05:42 -0700 (PDT)
-Received: from ?IPv6:2601:647:4000:d7:d1a1:34bc:ea5:fadd? ([2601:647:4000:d7:d1a1:34bc:ea5:fadd])
-        by smtp.gmail.com with ESMTPSA id 207sm11182475pgh.34.2020.05.12.16.05.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 May 2020 16:05:41 -0700 (PDT)
-Subject: Re: [PATCH] scsi: target: put lun_ref at end of tmr processing
-To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
-        martin.petersen@oracle.com, mchristi@readhat.com,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        bly@catalogicsoftware.com
-References: <20200512161753.10625-1-bstroesser@ts.fujitsu.com>
-From:   Bart Van Assche <bvanassche@acm.org>
-Autocrypt: addr=bvanassche@acm.org; prefer-encrypt=mutual; keydata=
- mQENBFSOu4oBCADcRWxVUvkkvRmmwTwIjIJvZOu6wNm+dz5AF4z0FHW2KNZL3oheO3P8UZWr
- LQOrCfRcK8e/sIs2Y2D3Lg/SL7qqbMehGEYcJptu6mKkywBfoYbtBkVoJ/jQsi2H0vBiiCOy
- fmxMHIPcYxaJdXxrOG2UO4B60Y/BzE6OrPDT44w4cZA9DH5xialliWU447Bts8TJNa3lZKS1
- AvW1ZklbvJfAJJAwzDih35LxU2fcWbmhPa7EO2DCv/LM1B10GBB/oQB5kvlq4aA2PSIWkqz4
- 3SI5kCPSsygD6wKnbRsvNn2mIACva6VHdm62A7xel5dJRfpQjXj2snd1F/YNoNc66UUTABEB
- AAG0JEJhcnQgVmFuIEFzc2NoZSA8YnZhbmFzc2NoZUBhY20ub3JnPokBOQQTAQIAIwUCVI67
- igIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEHFcPTXFzhAJ8QkH/1AdXblKL65M
- Y1Zk1bYKnkAb4a98LxCPm/pJBilvci6boefwlBDZ2NZuuYWYgyrehMB5H+q+Kq4P0IBbTqTa
- jTPAANn62A6jwJ0FnCn6YaM9TZQjM1F7LoDX3v+oAkaoXuq0dQ4hnxQNu792bi6QyVdZUvKc
- macVFVgfK9n04mL7RzjO3f+X4midKt/s+G+IPr4DGlrq+WH27eDbpUR3aYRk8EgbgGKvQFdD
- CEBFJi+5ZKOArmJVBSk21RHDpqyz6Vit3rjep7c1SN8s7NhVi9cjkKmMDM7KYhXkWc10lKx2
- RTkFI30rkDm4U+JpdAd2+tP3tjGf9AyGGinpzE2XY1K5AQ0EVI67igEIAKiSyd0nECrgz+H5
- PcFDGYQpGDMTl8MOPCKw/F3diXPuj2eql4xSbAdbUCJzk2ETif5s3twT2ER8cUTEVOaCEUY3
- eOiaFgQ+nGLx4BXqqGewikPJCe+UBjFnH1m2/IFn4T9jPZkV8xlkKmDUqMK5EV9n3eQLkn5g
- lco+FepTtmbkSCCjd91EfThVbNYpVQ5ZjdBCXN66CKyJDMJ85HVr5rmXG/nqriTh6cv1l1Js
- T7AFvvPjUPknS6d+BETMhTkbGzoyS+sywEsQAgA+BMCxBH4LvUmHYhpS+W6CiZ3ZMxjO8Hgc
- ++w1mLeRUvda3i4/U8wDT3SWuHcB3DWlcppECLkAEQEAAYkBHwQYAQIACQUCVI67igIbDAAK
- CRBxXD01xc4QCZ4dB/0QrnEasxjM0PGeXK5hcZMT9Eo998alUfn5XU0RQDYdwp6/kMEXMdmT
- oH0F0xB3SQ8WVSXA9rrc4EBvZruWQ+5/zjVrhhfUAx12CzL4oQ9Ro2k45daYaonKTANYG22y
- //x8dLe2Fv1By4SKGhmzwH87uXxbTJAUxiWIi1np0z3/RDnoVyfmfbbL1DY7zf2hYXLLzsJR
- mSsED/1nlJ9Oq5fALdNEPgDyPUerqHxcmIub+pF0AzJoYHK5punqpqfGmqPbjxrJLPJfHVKy
- goMj5DlBMoYqEgpbwdUYkH6QdizJJCur4icy8GUNbisFYABeoJ91pnD4IGei3MTdvINSZI5e
-Message-ID: <b5da2b56-2924-abec-2a8c-94d53741560d@acm.org>
-Date:   Tue, 12 May 2020 16:05:40 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        Wed, 13 May 2020 02:28:19 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89577C061A0E;
+        Tue, 12 May 2020 23:28:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=AG2RtlJ7y9O44y7CM+5Y55kgsqMdi5zmGGc+3SDRxq8=; b=WCEMuVgh4ZCeigkMFy94+mId1g
+        gh0Igbk9vi9s0Nf0anxjWE8uw6ABaQK+5+LaKpNFUHA+zf0D919KpO4aJY2VWo7p1QEdzsWYbfYE1
+        ONYsiXd9fdvHslF9UXMZqp6QUOnmxAYZwP2dn34xAmDZzON/e8nSVNnr721D+sw/O5rHr7UcsK6mO
+        HSxECWTkiypKRzFQFHzArwuIE38ZopK9LEyh7+kEKbL+4aJLTGj2I5cW3gZ22+vmtXtEY9Pl73HhN
+        vcT29xWjHPMXK5XFCdsQA+ZaH+xRK6mUJGYid122hF4Ce47/IUMWYtLRChUrGSjyNKanSSQmBUX9v
+        ypmYTpGg==;
+Received: from [2001:4bb8:180:9d3f:c70:4a89:bc61:2] (helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jYkqx-0003lt-48; Wed, 13 May 2020 06:26:51 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     Eric Dumazet <edumazet@google.com>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        Vlad Yasevich <vyasevich@gmail.com>,
+        Neil Horman <nhorman@tuxdriver.com>,
+        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+        Jon Maloy <jmaloy@redhat.com>,
+        Ying Xue <ying.xue@windriver.com>, drbd-dev@lists.linbit.com,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-nvme@lists.infradead.org,
+        target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
+        linux-cifs@vger.kernel.org, cluster-devel@redhat.com,
+        ocfs2-devel@oss.oracle.com, netdev@vger.kernel.org,
+        linux-sctp@vger.kernel.org, ceph-devel@vger.kernel.org,
+        rds-devel@oss.oracle.com, linux-nfs@vger.kernel.org
+Subject: remove kernel_setsockopt and kernel_getsockopt
+Date:   Wed, 13 May 2020 08:26:15 +0200
+Message-Id: <20200513062649.2100053-1-hch@lst.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <20200512161753.10625-1-bstroesser@ts.fujitsu.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 2020-05-12 09:17, Bodo Stroesser wrote:
-> Testing with Loopback I found, that after a Loopback LUN
-> has executed a TMR, I can no longer unlink the LUN.
-> The rm command hangs in transport_clear_lun_ref() at
-> wait_for_completion(&lun->lun_shutdown_comp)
-> The reason is, that transport_lun_remove_cmd() is not
-> called at the end of target_tmr_work().
-> 
-> It seems, that in other fabrics this call happens implicitly
-> when the fabric drivers call transport_generic_free_cmd()
-> during their ->queue_tm_rsp().
-> 
-> Unfortunately Loopback seems to not comply to the common way
-> of calling transport_generic_free_cmd() from ->queue_*().
-> Instead it calls transport_generic_free_cmd() from its
->   ->check_stop_free() only.
-> 
-> But the ->check_stop_free() is called by
-> transport_cmd_check_stop_to_fabric() after it has reset the
-> se_cmd->se_lun pointer.
-> Therefore the following transport_generic_free_cmd() skips the
-> transport_lun_remove_cmd().
-> 
-> So this patch re-adds the transport_lun_remove_cmd() at the end
-> of target_tmr_work(), which was removed during commit
-> 2c9fa49e100f962af988f1c0529231bf14905cda
-> "scsi: target/core: Make ABORT and LUN RESET handling synchronous"
-> 
-> For fabrics using transport_generic_free_cmd() in the usual way
-> the double call to transport_lun_remove_cmd() doesn't harm, as
-> transport_lun_remove_cmd() checks for this situation and does
-> not release lun_ref twice.
-> 
-> Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
-> Tested-by: Bryant G. Ly <bryangly@gmail.com>
+Hi Dave,
 
-Please add Fixes: ... and Cc: stable tags. Anyway:
+this series removes the kernel_setsockopt and kernel_getsockopt
+functions, and instead switches their users to small functions that
+implement setting (or in one case getting) a sockopt directly using
+a normal kernel function call with type safety and all the other
+benefits of not having a function call.
 
-Reviewed-by: Bart van Assche <bvanassche@acm.org>
+In some cases these functions seem pretty heavy handed as they do
+a lock_sock even for just setting a single variable, but this mirrors
+the real setsockopt implementation - counter to that a few kernel
+drivers just set the fields directly already.
+
+Nevertheless the diffstat looks quite promising:
+
+ 42 files changed, 721 insertions(+), 799 deletions(-)
