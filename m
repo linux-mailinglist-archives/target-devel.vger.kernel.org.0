@@ -2,131 +2,96 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63E5D1D1986
-	for <lists+target-devel@lfdr.de>; Wed, 13 May 2020 17:35:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47C381D1C67
+	for <lists+target-devel@lfdr.de>; Wed, 13 May 2020 19:39:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729732AbgEMPf3 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 13 May 2020 11:35:29 -0400
-Received: from mail1.bemta25.messagelabs.com ([195.245.230.2]:20954 "EHLO
-        mail1.bemta25.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2389255AbgEMPf3 (ORCPT
+        id S1733008AbgEMRjH (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 13 May 2020 13:39:07 -0400
+Received: from smtprelay0150.hostedemail.com ([216.40.44.150]:54324 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1732694AbgEMRjG (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 13 May 2020 11:35:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1589384126; i=@ts.fujitsu.com;
-        bh=FXX7HR9EP9nN4Qc4Odqz55unqXGlxJCDNyqQsVOxOuc=;
-        h=From:To:Cc:Subject:Date:Message-Id;
-        b=qeIgWRTJFOaWXuQxGxqPDzue74JMgFcLZmiRilv7W2PBt8LRaZoV0d/18IZRbWJYL
-         lVgUpDD9TCVgCIqYwPuQ4YWDXNAIrkjoTfq5Wu241kymND99Bd1wbxoub+8TDR2mbX
-         +QuXdo367KMTtxXAuYnqVi+ZifX09n60rWOdEebNtH+d+h2WXLFf7Lo4/nFmYLrYVE
-         qGOxfURFzwdgCW3TZzL3TGjdjYrsfYOlYMGxZfvdkSZMUr/XYVLSQ8sETadbA+dvaN
-         Igtft9Dk6jjUtO3dY5M+cxx7WHGLJTPTBW6uBv/2AY7WV2Io7dBBQj1iBEaCk9k6vG
-         QiaAC+HKPwkpA==
-Received: from [100.112.193.214] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-2.bemta.az-a.eu-west-1.aws.symcld.net id 75/7C-40611-EB31CBE5; Wed, 13 May 2020 15:35:26 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrPLMWRWlGSWpSXmKPExsViZ8MxRXev8J4
-  4gwef1S12Xv/IZDHtw09mi+7rO9gslh//x2Sx/sgGRosFGx8xWrQufcvkwO5x+Yq3x/9/U5g9
-  Pj69xeLxft9VNo/Pm+QCWKNYM/OS8isSWDNe9VYVzBGsOPvnD1sD4wT+LkYuDiGByYwS569PY
-  4RwpjNK7F4yC8jh5GATMJBYMek+C0hCRGANo8T9ZXuYQBLMAm4S17a+ZgGxhYHsp98ms3cxcn
-  CwCKhK3D3sDRLmFbCVaJ58gRnElhCQl+g4MJllAiPnAkaGVYwWSUWZ6RkluYmZObqGBga6hoZ
-  GuoaWRrpGxiZ6iVW6iXqppbrlqcUluoZ6ieXFesWVuck5KXp5qSWbGIHhklJw4NUOxpNr3+sd
-  YpTkYFIS5fW8sTtOiC8pP6UyI7E4I76oNCe1+BCjDAeHkgRvkdCeOCHBotT01Iq0zBxg6MKkJ
-  Th4lER4DUDSvMUFibnFmekQqVOMilLivMtBEgIgiYzSPLg2WLxcYpSVEuZlZGBgEOIpSC3KzS
-  xBlX/FKM7BqCTMmwsyhSczrwRu+iugxUxAi53v7AJZXJKIkJJqYGJxcUn68GR/YfvrtyUcTyz
-  PbBX9EaJ5bKn4zFfhj2+8KdG5OyMv9E7gEzfXmwyVdyb4/gw2eTqr64a8doqy391snvpWC/br
-  WzMO10ewNXiHnNb+zuW17PO+uFSeaN3virv7PaNEb/9+/8j4b7+AycPnE965J60+8tec8dosQ
-  +e/qx08l261du1QOuT36zHD3IXWkhrGe3df6km93SV/SyxS8+vKH39i/f6Vz1n1+6GhjPuc0E
-  uLr+04N8P3p6xhSc656xrer6pkGMVsj3BbqHR/4r9T0/U/OG5q87YT3dtuvQ3w9UxSNsi6Oit
-  yEr/ElMQTX761JvGvvMgiMDHmTImky7wP6/8/DlXomH/QeKESS3FGoqEWc1FxIgAXJe/GEgMA
-  AA==
-X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-10.tower-265.messagelabs.com!1589384125!1024971!1
-X-Originating-IP: [62.60.8.148]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.50.1; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 23576 invoked from network); 13 May 2020 15:35:25 -0000
-Received: from unknown (HELO mailhost1.uk.fujitsu.com) (62.60.8.148)
-  by server-10.tower-265.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 13 May 2020 15:35:25 -0000
-Received: from x-serv01 ([172.17.38.52])
-        by mailhost1.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 04DFZ4cu022537;
-        Wed, 13 May 2020 16:35:04 +0100
-Received: from VTC.emeia.fujitsu.local (unknown [172.17.38.7])
-        by x-serv01 (Postfix) with ESMTP id 617A82070C;
-        Wed, 13 May 2020 17:35:04 +0200 (CEST)
-From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-To:     martin.petersen@oracle.com, bvanassche@acm.org,
-        mchristi@redhat.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, bly@catalogicsoftware.com
-Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>, stable@vger.kernel.org
-Subject: [PATCH v2] scsi: target: put lun_ref at end of tmr processing
-Date:   Wed, 13 May 2020 17:34:43 +0200
-Message-Id: <20200513153443.3554-1-bstroesser@ts.fujitsu.com>
-X-Mailer: git-send-email 2.12.3
+        Wed, 13 May 2020 13:39:06 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay05.hostedemail.com (Postfix) with ESMTP id 213E41802912F;
+        Wed, 13 May 2020 17:39:05 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:968:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:1801:2194:2199:2393:2559:2562:2828:3138:3139:3140:3141:3142:3353:3622:3865:3866:3867:3868:3870:3872:3874:4030:4321:4605:5007:6742:6743:7875:8603:8660:10004:10400:10848:11026:11232:11658:11914:12043:12296:12297:12679:12740:12760:12895:13019:13069:13146:13148:13156:13228:13230:13311:13357:13439:14040:14659:14721:21080:21627:30054:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: watch82_4eccc56996d20
+X-Filterd-Recvd-Size: 2964
+Received: from XPS-9350.home (unknown [47.151.136.130])
+        (Authenticated sender: joe@perches.com)
+        by omf13.hostedemail.com (Postfix) with ESMTPA;
+        Wed, 13 May 2020 17:39:01 +0000 (UTC)
+Message-ID: <ecc165c33962d964d518c80de605af632eee0474.camel@perches.com>
+Subject: Re: remove kernel_setsockopt and kernel_getsockopt
+From:   Joe Perches <joe@perches.com>
+To:     Christoph Hellwig <hch@lst.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     Eric Dumazet <edumazet@google.com>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        Vlad Yasevich <vyasevich@gmail.com>,
+        Neil Horman <nhorman@tuxdriver.com>,
+        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+        Jon Maloy <jmaloy@redhat.com>,
+        Ying Xue <ying.xue@windriver.com>, drbd-dev@lists.linbit.com,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-nvme@lists.infradead.org,
+        target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
+        linux-cifs@vger.kernel.org, cluster-devel@redhat.com,
+        ocfs2-devel@oss.oracle.com, netdev@vger.kernel.org,
+        linux-sctp@vger.kernel.org, ceph-devel@vger.kernel.org,
+        rds-devel@oss.oracle.com, linux-nfs@vger.kernel.org
+Date:   Wed, 13 May 2020 10:38:59 -0700
+In-Reply-To: <20200513062649.2100053-1-hch@lst.de>
+References: <20200513062649.2100053-1-hch@lst.de>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.1-2 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Testing with Loopback I found, that after a Loopback LUN
-has executed a TMR, I can no longer unlink the LUN.
-The rm command hangs in transport_clear_lun_ref() at
-wait_for_completion(&lun->lun_shutdown_comp)
-The reason is, that transport_lun_remove_cmd() is not
-called at the end of target_tmr_work().
+On Wed, 2020-05-13 at 08:26 +0200, Christoph Hellwig wrote:
+> this series removes the kernel_setsockopt and kernel_getsockopt
+> functions, and instead switches their users to small functions that
+> implement setting (or in one case getting) a sockopt directly using
+> a normal kernel function call with type safety and all the other
+> benefits of not having a function call.
+> 
+> In some cases these functions seem pretty heavy handed as they do
+> a lock_sock even for just setting a single variable, but this mirrors
+> the real setsockopt implementation - counter to that a few kernel
+> drivers just set the fields directly already.
+> 
+> Nevertheless the diffstat looks quite promising:
+> 
+>  42 files changed, 721 insertions(+), 799 deletions(-)
 
-It seems, that in other fabrics this call happens implicitly
-when the fabric drivers call transport_generic_free_cmd()
-during their ->queue_tm_rsp().
+trivia:
 
-Unfortunately Loopback seems to not comply to the common way
-of calling transport_generic_free_cmd() from ->queue_*().
-Instead it calls transport_generic_free_cmd() from its
-  ->check_stop_free() only.
+It might be useful to show overall object size change.
 
-But the ->check_stop_free() is called by
-transport_cmd_check_stop_to_fabric() after it has reset the
-se_cmd->se_lun pointer.
-Therefore the following transport_generic_free_cmd() skips the
-transport_lun_remove_cmd().
+More EXPORT_SYMBOL uses increase object size a little.
 
-So this patch re-adds the transport_lun_remove_cmd() at the end
-of target_tmr_work(), which was removed during commit
-2c9fa49e100f962af988f1c0529231bf14905cda
-"scsi: target/core: Make ABORT and LUN RESET handling synchronous"
+And not sure it matters much except it reduces overall object
+size, but these patches remove (unnecessary) logging on error
+and that could be mentioned in the cover letter too.
 
-For fabrics using transport_generic_free_cmd() in the usual way
-the double call to transport_lun_remove_cmd() doesn't harm, as
-transport_lun_remove_cmd() checks for this situation and does
-not release lun_ref twice.
+e.g.:
 
-Fixes: 2c9fa49e100f ("scsi: target/core: Make ABORT and LUN RESET handling synchronous")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Tested-by: Bryant G. Ly <bryangly@gmail.com>
-Reviewed-by: Bart van Assche <bvanassche@acm.org>
----
+-       ret = kernel_setsockopt(queue->sock, SOL_SOCKET, SO_LINGER,
+-                       (char *)&sol, sizeof(sol));
+-       if (ret) {
+-               dev_err(nctrl->device,
+-                       "failed to set SO_LINGER sock opt %d\n", ret);
+-               goto err_sock;
+-       }
++       sock_set_linger(queue->sock->sk, true, 0);
 
-v2:
- - Resend of the same patch with added tags "Fixes:",
-   "Cc: stable@.." and "Reviewed-by:"
 
- drivers/target/target_core_transport.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
-index 594b724bbf79..264a822c0bfa 100644
---- a/drivers/target/target_core_transport.c
-+++ b/drivers/target/target_core_transport.c
-@@ -3350,6 +3350,7 @@ static void target_tmr_work(struct work_struct *work)
- 
- 	cmd->se_tfo->queue_tm_rsp(cmd);
- 
-+	transport_lun_remove_cmd(cmd);
- 	transport_cmd_check_stop_to_fabric(cmd);
- 	return;
- 
--- 
-2.12.3
 
