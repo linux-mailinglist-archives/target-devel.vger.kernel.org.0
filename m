@@ -2,73 +2,57 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CCC71D259F
-	for <lists+target-devel@lfdr.de>; Thu, 14 May 2020 06:01:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E09BE1D27AC
+	for <lists+target-devel@lfdr.de>; Thu, 14 May 2020 08:26:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725886AbgENEBz (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 14 May 2020 00:01:55 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:28017 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725290AbgENEBz (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Thu, 14 May 2020 00:01:55 -0400
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-372-aP7_It_xNvmGipQcRGESVw-1; Thu, 14 May 2020 00:01:50 -0400
-X-MC-Unique: aP7_It_xNvmGipQcRGESVw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CDEC819200C0;
-        Thu, 14 May 2020 04:01:49 +0000 (UTC)
-Received: from ldigby.remote.csb (vpn2-54-19.bne.redhat.com [10.64.54.19])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 710CF2E169;
-        Thu, 14 May 2020 04:01:48 +0000 (UTC)
-From:   Lance Digby <lance.digby@gmail.com>
-To:     martin.petersen@oracle.com
-Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH target] target: Add initiatorname to NON_EXISTENT_LUN error
-Date:   Thu, 14 May 2020 14:01:38 +1000
-Message-Id: <cd119ce943d9ec62ef1bff237ebb49e35a337c3b.1589407872.git.lance.digby@gmail.com>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: gmail.com
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+        id S1726087AbgENG02 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 14 May 2020 02:26:28 -0400
+Received: from verein.lst.de ([213.95.11.211]:50202 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725818AbgENG01 (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Thu, 14 May 2020 02:26:27 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 8B05468B05; Thu, 14 May 2020 08:26:22 +0200 (CEST)
+Date:   Thu, 14 May 2020 08:26:22 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     David Howells <dhowells@redhat.com>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+        Eric Dumazet <edumazet@google.com>,
+        linux-nvme@lists.infradead.org, linux-sctp@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
+        drbd-dev@lists.linbit.com, linux-cifs@vger.kernel.org,
+        rds-devel@oss.oracle.com, linux-rdma@vger.kernel.org,
+        cluster-devel@redhat.com, Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        linux-block@vger.kernel.org, ceph-devel@vger.kernel.org,
+        linux-nfs@vger.kernel.org, Neil Horman <nhorman@tuxdriver.com>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        netdev@vger.kernel.org, Vlad Yasevich <vyasevich@gmail.com>,
+        linux-kernel@vger.kernel.org, Jon Maloy <jmaloy@redhat.com>,
+        Ying Xue <ying.xue@windriver.com>, ocfs2-devel@oss.oracle.com
+Subject: Re: [PATCH 21/33] ipv4: add ip_sock_set_mtu_discover
+Message-ID: <20200514062622.GA8564@lst.de>
+References: <20200513062649.2100053-22-hch@lst.de> <20200513062649.2100053-1-hch@lst.de> <3123898.1589375861@warthog.procyon.org.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3123898.1589375861@warthog.procyon.org.uk>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-The NON_EXISTENT_LUN error can be written without an error condition
- on the initiator responsible. Adding the initiatorname to this message
- will reduce the effort required to fix this when many initiators are
-supported by a target.
+On Wed, May 13, 2020 at 02:17:41PM +0100, David Howells wrote:
+> Christoph Hellwig <hch@lst.de> wrote:
+> 
+> > +		ip_sock_set_mtu_discover(conn->params.local->socket->sk,
+> > +				IP_PMTUDISC_DONT);
+> 
+> Um... The socket in question could be an AF_INET6 socket, not an AF_INET4
+> socket - I presume it will work in that case.  If so:
 
-Signed-off-by: Lance Digby <lance.digby@gmail.com>
----
- drivers/target/target_core_device.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/target/target_core_device.c b/drivers/target/target_co=
-re_device.c
-index 4cee113..604dea0 100644
---- a/drivers/target/target_core_device.c
-+++ b/drivers/target/target_core_device.c
-@@ -100,9 +100,10 @@
- =09=09 */
- =09=09if (unpacked_lun !=3D 0) {
- =09=09=09pr_err("TARGET_CORE[%s]: Detected NON_EXISTENT_LUN"
--=09=09=09=09" Access for 0x%08llx\n",
-+=09=09=09=09" Access for 0x%08llx from %s\n",
- =09=09=09=09se_cmd->se_tfo->fabric_name,
--=09=09=09=09unpacked_lun);
-+=09=09=09=09unpacked_lun,
-+=09=09=09=09se_sess->se_node_acl->initiatorname);
- =09=09=09return TCM_NON_EXISTENT_LUN;
- =09=09}
-=20
---=20
-1.8.3.1
-
+Yes, the implementation of that sockopt, including the inet_sock
+structure where these options are set is shared between ipv4 and ipv6.
