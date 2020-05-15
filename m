@@ -2,69 +2,92 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F12F1D548E
-	for <lists+target-devel@lfdr.de>; Fri, 15 May 2020 17:26:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66F871D5CE2
+	for <lists+target-devel@lfdr.de>; Sat, 16 May 2020 01:50:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727098AbgEOPZH (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 15 May 2020 11:25:07 -0400
-Received: from verein.lst.de ([213.95.11.211]:57262 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726188AbgEOPZG (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Fri, 15 May 2020 11:25:06 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id DCFD868C65; Fri, 15 May 2020 17:24:59 +0200 (CEST)
-Date:   Fri, 15 May 2020 17:24:59 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     David Howells <dhowells@redhat.com>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        linux-nvme@lists.infradead.org, linux-sctp@vger.kernel.org,
-        target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
-        drbd-dev@lists.linbit.com, linux-cifs@vger.kernel.org,
-        rds-devel@oss.oracle.com, linux-rdma@vger.kernel.org,
-        cluster-devel@redhat.com, Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-        linux-block@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        ceph-devel@vger.kernel.org, linux-nfs@vger.kernel.org,
-        Neil Horman <nhorman@tuxdriver.com>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        netdev@vger.kernel.org, Vlad Yasevich <vyasevich@gmail.com>,
-        linux-kernel@vger.kernel.org, Jon Maloy <jmaloy@redhat.com>,
-        Ying Xue <ying.xue@windriver.com>,
-        "David S. Miller" <davem@davemloft.net>, ocfs2-devel@oss.oracle.com
-Subject: Re: [PATCH 27/33] sctp: export sctp_setsockopt_bindx
-Message-ID: <20200515152459.GA28995@lst.de>
-References: <20200514062820.GC8564@lst.de> <20200513062649.2100053-1-hch@lst.de> <20200513062649.2100053-28-hch@lst.de> <20200513180058.GB2491@localhost.localdomain> <129070.1589556002@warthog.procyon.org.uk>
+        id S1726550AbgEOXuH (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 15 May 2020 19:50:07 -0400
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:48159 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726223AbgEOXuH (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Fri, 15 May 2020 19:50:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1589586606;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Hw3RkCsgcQacr6zjV1u999K3NhEH21GsqpqwnnfF7j0=;
+        b=LOE/kShLy3W8yXhbc2TAIxVMuH/Ebl05F/9u/jGl0+afA7bgUjLNPKxYE1Usr8hm9G3Acu
+        v02Cv+QF60/bQrLGCx2EhaWZ0wcztAiMXP/T5js/s7/QmxsWTvcJOt95AxVjN7j+XT6hvj
+        SJpUsn4zt7VhuHaMp+LwnCBM3fmMthE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-115-ICg31iNCP2q4ZAaE7I9IYw-1; Fri, 15 May 2020 19:50:03 -0400
+X-MC-Unique: ICg31iNCP2q4ZAaE7I9IYw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4B9CA1841958;
+        Fri, 15 May 2020 23:50:02 +0000 (UTC)
+Received: from [10.10.118.190] (ovpn-118-190.rdu2.redhat.com [10.10.118.190])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 828C51943D;
+        Fri, 15 May 2020 23:50:01 +0000 (UTC)
+Subject: Re: [PATCH target] target: Add initiatorname to NON_EXISTENT_LUN
+ error
+To:     Lance Digby <lance.digby@gmail.com>, martin.petersen@oracle.com
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <cd119ce943d9ec62ef1bff237ebb49e35a337c3b.1589407872.git.lance.digby@gmail.com>
+From:   Mike Christie <mchristi@redhat.com>
+Message-ID: <93c437ce-f881-9f54-5e39-afa8afd96141@redhat.com>
+Date:   Fri, 15 May 2020 18:50:00 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <129070.1589556002@warthog.procyon.org.uk>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <cd119ce943d9ec62ef1bff237ebb49e35a337c3b.1589407872.git.lance.digby@gmail.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Fri, May 15, 2020 at 04:20:02PM +0100, David Howells wrote:
-> Christoph Hellwig <hch@lst.de> wrote:
+On 5/13/20 11:01 PM, Lance Digby wrote:
+> The NON_EXISTENT_LUN error can be written without an error condition
+>  on the initiator responsible. Adding the initiatorname to this message
+>  will reduce the effort required to fix this when many initiators are
+> supported by a target.
 > 
-> > > The advantage on using kernel_setsockopt here is that sctp module will
-> > > only be loaded if dlm actually creates a SCTP socket.  With this
-> > > change, sctp will be loaded on setups that may not be actually using
-> > > it. It's a quite big module and might expose the system.
-> > 
-> > True.  Not that the intent is to kill kernel space callers of setsockopt,
-> > as I plan to remove the set_fs address space override used for it.
+> Signed-off-by: Lance Digby <lance.digby@gmail.com>
+> ---
+>  drivers/target/target_core_device.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 > 
-> For getsockopt, does it make sense to have the core kernel load optval/optlen
-> into a buffer before calling the protocol driver?  Then the driver need not
-> see the userspace pointer at all.
-> 
-> Similar could be done for setsockopt - allocate a buffer of the size requested
-> by the user inside the kernel and pass it into the driver, then copy the data
-> back afterwards.
+> diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
+> index 4cee113..604dea0 100644
+> --- a/drivers/target/target_core_device.c
+> +++ b/drivers/target/target_core_device.c
+> @@ -100,9 +100,10 @@
+>  		 */
+>  		if (unpacked_lun != 0) {
+>  			pr_err("TARGET_CORE[%s]: Detected NON_EXISTENT_LUN"
+> -				" Access for 0x%08llx\n",
+> +				" Access for 0x%08llx from %s\n",
+>  				se_cmd->se_tfo->fabric_name,
+> -				unpacked_lun);
+> +				unpacked_lun,
+> +				se_sess->se_node_acl->initiatorname);
 
-I did look into that initially.  The problem is that tons of sockopts
-entirely ignore optlen and just use a fixed size.  So I fear that there
-could be tons of breakage if we suddently respect it.  Otherwise that
-would be a pretty nice way to handle the situation.
+You can do nacl->initiatorname.
+
+Do you also want add the name to the tmr case? It's probably not common,
+but the error message would be consistent.
+
+>  			return TCM_NON_EXISTENT_LUN;
+>  		}
+>  
+
