@@ -2,398 +2,145 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BBFC1D7F15
-	for <lists+target-devel@lfdr.de>; Mon, 18 May 2020 18:49:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F02EE1D8755
+	for <lists+target-devel@lfdr.de>; Mon, 18 May 2020 20:33:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727040AbgERQtZ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 18 May 2020 12:49:25 -0400
-Received: from mail1.bemta26.messagelabs.com ([85.158.142.3]:27761 "EHLO
-        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726958AbgERQtY (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Mon, 18 May 2020 12:49:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1589820559; i=@ts.fujitsu.com;
-        bh=R7lEWqTVs8cUAuOrsBnZo3pHsQ02geXIfMgiWHjruXE=;
-        h=From:To:Cc:Subject:Date:Message-Id;
-        b=ob8v49YfOAFG8/nq6QJPNfRNOjKwIT4brbeR0y56bOgTN8oKVeFNMm3yfSaDZR78Q
-         ZNVqnfu02G8h6Ac3dF7LnW9xEJR2YJ5JqyRZ85/lXX07oJ1Mq0uQPsBtGyrfDvUO8N
-         0q6wcR8hDhs+HYfqCASpVOeNacVmXAD2dbiQWBdjQOzUq/hFgwapOxM+wsEz+78Icn
-         UtkRspDrqbxzzj94BVvPg+2C/F5SeGtwQTYvknT5QDFs7XTnFf16pTsR5FvTn5ANgn
-         iyMH7kw4CXCScyIk5EpPzecx/b8z6bkAm+Ol2HXYy71GeXTDgqpM91Kcx3Jih7u1ly
-         cowyhkuoZJNAg==
-Received: from [100.113.3.197] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-3.bemta.az-a.eu-central-1.aws.symcld.net id E5/0F-40432-F8CB2CE5; Mon, 18 May 2020 16:49:19 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrMLMWRWlGSWpSXmKPExsViZ8MRotu/51C
-  cwTVti+7rO9gslh//x2Sx/sgGRovWpW+ZHFg8Pj69xeLxft9VNo/Pm+QCmKNYM/OS8isSWDOO
-  Pu9gKtjjXzHn4n7GBsa7jl2MXBxCApMZJVqaW5ggnOmMEhNeTWPsYuTkYBMwkFgx6T4LiC0iU
-  Crx/PRqJhCbWUBPYtq/dewgtrBAsMS0n8+YQWwWAVWJKX/+snUxcnDwCthJ7OqxBwlLCMhLdB
-  yYzDKBkXMBI8MqRsukosz0jJLcxMwcXUMDA11DQ2NdY11DIyO9xCrdRL3UUt3k1LySokSgrF5
-  iebFecWVuck6KXl5qySZGoP9TCpmrdjBeXP5e7xCjJAeTkihveMmhOCG+pPyUyozE4oz4otKc
-  1OJDjDIcHEoSvHN2AeUEi1LTUyvSMnOAoQiTluDgURLhdQRJ8xYXJOYWZ6ZDpE4x6nKcXLVkE
-  bMQS15+XqqUOO9qkCIBkKKM0jy4EbC4uMQoKyXMy8jAwCDEU5BalJtZgir/ilGcg1FJmDcOZA
-  pPZl4J3KZXQEcwAR3henEfyBEliQgpqQamALf7XveW/L8Rptu77UJz6XHGm7kFipz6s3eECRY
-  UVm0/Fi5w98Ek9T/y78T9u983/9ATKSzljkk02Jeg2ROYFiDL48+w8Od5VcuFL2ZtaO5W9577
-  a/kH/ie9zbNernAtnvxHObP6vSUn48rk4OlThOaqVZhKt4ptK+vX/sdw2nSTm3tIeUHS4arus
-  3O+OIj4vJzFeinImP3JoUb5pM8ML/bp5xyKSFq4mmHNm9bEuk+Ziq0Le32M9nPH8yz23ngj/G
-  BG3tuDMfPqzHg9BUzZZGsWnxb7sqLi5uqWEqe8qLCqye/Edr58qC10xu7T100fA1bc7cviMLx
-  QmPD7xGqdrTyKNxQ4Sg/5TIkNy1ZiKc5INNRiLipOBADe47DpBgMAAA==
-X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-11.tower-226.messagelabs.com!1589820558!301473!1
-X-Originating-IP: [62.60.8.84]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.50.1; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 9786 invoked from network); 18 May 2020 16:49:18 -0000
-Received: from unknown (HELO mailhost3.uk.fujitsu.com) (62.60.8.84)
-  by server-11.tower-226.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 18 May 2020 16:49:18 -0000
-Received: from x-serv01 ([172.17.38.52])
-        by mailhost3.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 04IGnFHJ021289;
-        Mon, 18 May 2020 17:49:15 +0100
-Received: from VTC.emeia.fujitsu.local (unknown [172.17.38.7])
-        by x-serv01 (Postfix) with ESMTP id 0AB7D2067E;
-        Mon, 18 May 2020 18:49:15 +0200 (CEST)
-From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-To:     martin.petersen@oracle.com, mchristi@redhat.com,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Subject: [PATCH v2] scsi: target: tcmu: userspace must not complete queued commands
-Date:   Mon, 18 May 2020 18:48:33 +0200
-Message-Id: <20200518164833.12775-1-bstroesser@ts.fujitsu.com>
-X-Mailer: git-send-email 2.12.3
+        id S1728784AbgERSdN (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 18 May 2020 14:33:13 -0400
+Received: from mta-02.yadro.com ([89.207.88.252]:52756 "EHLO mta-01.yadro.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728490AbgERSdM (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Mon, 18 May 2020 14:33:12 -0400
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id DEB5E4C667;
+        Mon, 18 May 2020 18:33:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        content-type:content-type:content-transfer-encoding:mime-version
+        :x-mailer:message-id:date:date:subject:subject:from:from
+        :received:received:received; s=mta-01; t=1589826786; x=
+        1591641187; bh=5veyLmE+XwlS6sb+AeD6bFUjXEVExdI2mtSwN4PL/P0=; b=o
+        aWC7UelGUiQ5XJmzXZZjr6S/pJRGkNtROZ3e9JfhowuWzPuhIrj7+HQ+h51X3Tnh
+        sxlyo5U2OuWbsrYuglJcIUp0zTEMlMJ7o8BbqPw8BvcfwC0tpVakH23cu50yf2j6
+        KQD/EGC2cf0acgfnFN1s7AijEE4tpUAx4uzquGpvJM=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id OoTef8jXwn9X; Mon, 18 May 2020 21:33:06 +0300 (MSK)
+Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com [172.17.10.102])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mta-01.yadro.com (Postfix) with ESMTPS id A20D04128B;
+        Mon, 18 May 2020 21:33:05 +0300 (MSK)
+Received: from localhost (172.17.204.212) by T-EXCH-02.corp.yadro.com
+ (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Mon, 18
+ May 2020 21:33:07 +0300
+From:   Roman Bolshakov <r.bolshakov@yadro.com>
+To:     <linux-scsi@vger.kernel.org>
+CC:     <GR-QLogic-Storage-Upstream@marvell.com>,
+        <target-devel@vger.kernel.org>, <linux@yadro.com>,
+        Roman Bolshakov <r.bolshakov@yadro.com>,
+        Quinn Tran <qutran@marvell.com>, Arun Easi <aeasi@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Daniel Wagner <dwagner@suse.de>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        Martin Wilck <mwilck@suse.com>, <stable@vger.kernel.org>
+Subject: [PATCH] scsi: qla2xxx: Keep initiator ports after RSCN
+Date:   Mon, 18 May 2020 21:31:42 +0300
+Message-ID: <20200518183141.66621-1-r.bolshakov@yadro.com>
+X-Mailer: git-send-email 2.26.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [172.17.204.212]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-02.corp.yadro.com (172.17.10.102)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-When tcmu queues a new command - no matter whether in command
-ring or in qfull_queue - a cmd_id from IDR udev->commands is
-assigned to the command.
+The driver performs SCR (state change registration) in all modes
+including pure target mode.
 
-If userspaces sends a wrong command completion containing the
-cmd_id of a command on the qfull_queue, tcmu_handle_completions()
-finds the command in the IDR and calls tcmu_handle_completion()
-for it. This might do some nasty things, because commands in
-qfull_queue do not have a valid dbi list.
+For each RSCN, scan_needed flag is set in qla2x00_handle_rscn() for the
+port mentioned in the RSCN and fabric rescan is scheduled. During the
+rescan, GNN_FT handler, qla24xx_async_gnnft_done() deletes session of
+the port that caused the RSCN.
 
-To fix this bug, we no longer add queued commands to the idr.
-Instead the cmd_id is assign when a command is written to
-the command ring.
+In target mode, the session deletion has an impact on ATIO handler,
+qlt_24xx_atio_pkt(). Target responds with SAM STATUS BUSY to I/O
+incoming from the deleted session. qlt_handle_cmd_for_atio() and
+qlt_handle_task_mgmt() return -EFAULT if they are not able to find
+session of the command/TMF, and that results in invocation of
+qlt_send_busy():
 
-Due to this change I had to adapt the source code at several
-places where up to now an idr_for_each had been done.
+  qlt_24xx_atio_pkt_all_vps: qla_target(0): type 6 ox_id 0014
+  qla_target(0): Unable to send command to target, sending BUSY status
 
-Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Such response causes command timeout on the initiator. Error handler
+thread on the initiator will be spawned to abort the commands:
+
+  scsi 23:0:0:0: tag#0 abort scheduled
+  scsi 23:0:0:0: tag#0 aborting command
+  qla2xxx [0000:af:00.0]-188c:23: Entered qla24xx_abort_command.
+  qla2xxx [0000:af:00.0]-801c:23: Abort command issued nexus=23:0:0 -- 0 2003.
+
+Command abort is rejected by target and fails (2003), error handler then
+tries to perform DEVICE RESET and TARGET RESET but they're also doomed
+to fail because TMFs are ignored for the deleted sessions.
+
+Then initiator makes BUS RESET that resets the link via
+qla2x00_full_login_lip(). BUS RESET succeeds and brings initiator port
+up, SAN switch detects that and sends RSCN to the target port and it
+fails again the same way as described above. It never goes out of the
+loop.
+
+The change breaks the RSCN loop by keeping initiator sessions mentioned
+in RSCN payload in all modes, including dual and pure target mode.
+
+Fixes: 2037ce49d30a ("scsi: qla2xxx: Fix stale session")
+Cc: Quinn Tran <qutran@marvell.com>
+Cc: Arun Easi <aeasi@marvell.com>
+Cc: Nilesh Javali <njavali@marvell.com>
+Cc: Bart Van Assche <bvanassche@acm.org>
+Cc: Daniel Wagner <dwagner@suse.de>
+Cc: Himanshu Madhani <himanshu.madhani@oracle.com>
+Cc: Martin Wilck <mwilck@suse.com>
+Cc: stable@vger.kernel.org # v5.4+
+Signed-off-by: Roman Bolshakov <r.bolshakov@yadro.com>
 ---
+ drivers/scsi/qla2xxx/qla_gs.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-V2:
- - Changed name of new variable in
-   check_timedout_devices() from "ucmd" to "cmd"
+Hi Martin,
 
- drivers/target/target_core_user.c | 154 ++++++++++++++++++--------------------
- 1 file changed, 71 insertions(+), 83 deletions(-)
+Please apply the patch to scsi-fixes/5.7 at your earliest convenience.
 
-diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-index f769bb1e3735..985b9b68ffd3 100644
---- a/drivers/target/target_core_user.c
-+++ b/drivers/target/target_core_user.c
-@@ -882,41 +882,24 @@ static inline size_t tcmu_cmd_get_cmd_size(struct tcmu_cmd *tcmu_cmd,
- 	return command_size;
- }
- 
--static int tcmu_setup_cmd_timer(struct tcmu_cmd *tcmu_cmd, unsigned int tmo,
--				struct timer_list *timer)
-+static void tcmu_setup_cmd_timer(struct tcmu_cmd *tcmu_cmd, unsigned int tmo,
-+				 struct timer_list *timer)
- {
--	struct tcmu_dev *udev = tcmu_cmd->tcmu_dev;
--	int cmd_id;
--
--	if (tcmu_cmd->cmd_id)
--		goto setup_timer;
--
--	cmd_id = idr_alloc(&udev->commands, tcmu_cmd, 1, USHRT_MAX, GFP_NOWAIT);
--	if (cmd_id < 0) {
--		pr_err("tcmu: Could not allocate cmd id.\n");
--		return cmd_id;
--	}
--	tcmu_cmd->cmd_id = cmd_id;
--
--	pr_debug("allocated cmd %u for dev %s tmo %lu\n", tcmu_cmd->cmd_id,
--		 udev->name, tmo / MSEC_PER_SEC);
--
--setup_timer:
- 	if (!tmo)
--		return 0;
-+		return;
- 
- 	tcmu_cmd->deadline = round_jiffies_up(jiffies + msecs_to_jiffies(tmo));
- 	if (!timer_pending(timer))
- 		mod_timer(timer, tcmu_cmd->deadline);
- 
--	return 0;
-+	pr_debug("Timeout set up for cmd %p, dev = %s, tmo = %lu\n", tcmu_cmd,
-+		 tcmu_cmd->tcmu_dev->name, tmo / MSEC_PER_SEC);
- }
- 
- static int add_to_qfull_queue(struct tcmu_cmd *tcmu_cmd)
- {
- 	struct tcmu_dev *udev = tcmu_cmd->tcmu_dev;
- 	unsigned int tmo;
--	int ret;
- 
- 	/*
- 	 * For backwards compat if qfull_time_out is not set use
-@@ -931,13 +914,11 @@ static int add_to_qfull_queue(struct tcmu_cmd *tcmu_cmd)
- 	else
- 		tmo = TCMU_TIME_OUT;
- 
--	ret = tcmu_setup_cmd_timer(tcmu_cmd, tmo, &udev->qfull_timer);
--	if (ret)
--		return ret;
-+	tcmu_setup_cmd_timer(tcmu_cmd, tmo, &udev->qfull_timer);
- 
- 	list_add_tail(&tcmu_cmd->queue_entry, &udev->qfull_queue);
--	pr_debug("adding cmd %u on dev %s to ring space wait queue\n",
--		 tcmu_cmd->cmd_id, udev->name);
-+	pr_debug("adding cmd %p on dev %s to ring space wait queue\n",
-+		 tcmu_cmd, udev->name);
- 	return 0;
- }
- 
-@@ -959,7 +940,7 @@ static int queue_cmd_ring(struct tcmu_cmd *tcmu_cmd, sense_reason_t *scsi_err)
- 	struct tcmu_mailbox *mb;
- 	struct tcmu_cmd_entry *entry;
- 	struct iovec *iov;
--	int iov_cnt, ret;
-+	int iov_cnt, cmd_id;
- 	uint32_t cmd_head;
- 	uint64_t cdb_off;
- 	bool copy_to_data_area;
-@@ -1060,14 +1041,21 @@ static int queue_cmd_ring(struct tcmu_cmd *tcmu_cmd, sense_reason_t *scsi_err)
- 	}
- 	entry->req.iov_bidi_cnt = iov_cnt;
- 
--	ret = tcmu_setup_cmd_timer(tcmu_cmd, udev->cmd_time_out,
--				   &udev->cmd_timer);
--	if (ret) {
--		tcmu_cmd_free_data(tcmu_cmd, tcmu_cmd->dbi_cnt);
-+	cmd_id = idr_alloc(&udev->commands, tcmu_cmd, 1, USHRT_MAX, GFP_NOWAIT);
-+	if (cmd_id < 0) {
-+		pr_err("tcmu: Could not allocate cmd id.\n");
- 
-+		tcmu_cmd_free_data(tcmu_cmd, tcmu_cmd->dbi_cnt);
- 		*scsi_err = TCM_OUT_OF_RESOURCES;
- 		return -1;
- 	}
-+	tcmu_cmd->cmd_id = cmd_id;
-+
-+	pr_debug("allocated cmd id %u for cmd %p dev %s\n", tcmu_cmd->cmd_id,
-+		 tcmu_cmd, udev->name);
-+
-+	tcmu_setup_cmd_timer(tcmu_cmd, udev->cmd_time_out, &udev->cmd_timer);
-+
- 	entry->hdr.cmd_id = tcmu_cmd->cmd_id;
- 
- 	/*
-@@ -1279,50 +1267,39 @@ static unsigned int tcmu_handle_completions(struct tcmu_dev *udev)
- 	return handled;
- }
- 
--static int tcmu_check_expired_cmd(int id, void *p, void *data)
-+static void tcmu_check_expired_ring_cmd(struct tcmu_cmd *cmd)
- {
--	struct tcmu_cmd *cmd = p;
--	struct tcmu_dev *udev = cmd->tcmu_dev;
--	u8 scsi_status;
- 	struct se_cmd *se_cmd;
--	bool is_running;
--
--	if (test_bit(TCMU_CMD_BIT_EXPIRED, &cmd->flags))
--		return 0;
- 
- 	if (!time_after(jiffies, cmd->deadline))
--		return 0;
-+		return;
- 
--	is_running = test_bit(TCMU_CMD_BIT_INFLIGHT, &cmd->flags);
-+	set_bit(TCMU_CMD_BIT_EXPIRED, &cmd->flags);
-+	list_del_init(&cmd->queue_entry);
- 	se_cmd = cmd->se_cmd;
-+	cmd->se_cmd = NULL;
- 
--	if (is_running) {
--		/*
--		 * If cmd_time_out is disabled but qfull is set deadline
--		 * will only reflect the qfull timeout. Ignore it.
--		 */
--		if (!udev->cmd_time_out)
--			return 0;
-+	pr_debug("Timing out inflight cmd %u on dev %s.\n",
-+		 cmd->cmd_id, cmd->tcmu_dev->name);
- 
--		set_bit(TCMU_CMD_BIT_EXPIRED, &cmd->flags);
--		/*
--		 * target_complete_cmd will translate this to LUN COMM FAILURE
--		 */
--		scsi_status = SAM_STAT_CHECK_CONDITION;
--		list_del_init(&cmd->queue_entry);
--		cmd->se_cmd = NULL;
--	} else {
--		list_del_init(&cmd->queue_entry);
--		idr_remove(&udev->commands, id);
--		tcmu_free_cmd(cmd);
--		scsi_status = SAM_STAT_TASK_SET_FULL;
--	}
-+	target_complete_cmd(se_cmd, SAM_STAT_CHECK_CONDITION);
-+}
- 
--	pr_debug("Timing out cmd %u on dev %s that is %s.\n",
--		 id, udev->name, is_running ? "inflight" : "queued");
-+static void tcmu_check_expired_queue_cmd(struct tcmu_cmd *cmd)
-+{
-+	struct se_cmd *se_cmd;
- 
--	target_complete_cmd(se_cmd, scsi_status);
--	return 0;
-+	if (!time_after(jiffies, cmd->deadline))
-+		return;
-+
-+	list_del_init(&cmd->queue_entry);
-+	se_cmd = cmd->se_cmd;
-+	tcmu_free_cmd(cmd);
-+
-+	pr_debug("Timing out queued cmd %p on dev %s.\n",
-+		  cmd, cmd->tcmu_dev->name);
-+
-+	target_complete_cmd(se_cmd, SAM_STAT_TASK_SET_FULL);
- }
- 
- static void tcmu_device_timedout(struct tcmu_dev *udev)
-@@ -1407,16 +1384,15 @@ static struct se_device *tcmu_alloc_device(struct se_hba *hba, const char *name)
- 	return &udev->se_dev;
- }
- 
--static bool run_qfull_queue(struct tcmu_dev *udev, bool fail)
-+static void run_qfull_queue(struct tcmu_dev *udev, bool fail)
- {
- 	struct tcmu_cmd *tcmu_cmd, *tmp_cmd;
- 	LIST_HEAD(cmds);
--	bool drained = true;
- 	sense_reason_t scsi_ret;
- 	int ret;
- 
- 	if (list_empty(&udev->qfull_queue))
--		return true;
-+		return;
- 
- 	pr_debug("running %s's cmdr queue forcefail %d\n", udev->name, fail);
- 
-@@ -1425,11 +1401,10 @@ static bool run_qfull_queue(struct tcmu_dev *udev, bool fail)
- 	list_for_each_entry_safe(tcmu_cmd, tmp_cmd, &cmds, queue_entry) {
- 		list_del_init(&tcmu_cmd->queue_entry);
- 
--	        pr_debug("removing cmd %u on dev %s from queue\n",
--		         tcmu_cmd->cmd_id, udev->name);
-+	        pr_debug("removing cmd %p on dev %s from queue\n",
-+		         tcmu_cmd, udev->name);
- 
- 		if (fail) {
--			idr_remove(&udev->commands, tcmu_cmd->cmd_id);
- 			/*
- 			 * We were not able to even start the command, so
- 			 * fail with busy to allow a retry in case runner
-@@ -1444,10 +1419,8 @@ static bool run_qfull_queue(struct tcmu_dev *udev, bool fail)
- 
- 		ret = queue_cmd_ring(tcmu_cmd, &scsi_ret);
- 		if (ret < 0) {
--		        pr_debug("cmd %u on dev %s failed with %u\n",
--			         tcmu_cmd->cmd_id, udev->name, scsi_ret);
--
--			idr_remove(&udev->commands, tcmu_cmd->cmd_id);
-+		        pr_debug("cmd %p on dev %s failed with %u\n",
-+			         tcmu_cmd, udev->name, scsi_ret);
- 			/*
- 			 * Ignore scsi_ret for now. target_complete_cmd
- 			 * drops it.
-@@ -1462,13 +1435,11 @@ static bool run_qfull_queue(struct tcmu_dev *udev, bool fail)
- 			 * the queue
- 			 */
- 			list_splice_tail(&cmds, &udev->qfull_queue);
--			drained = false;
- 			break;
- 		}
- 	}
- 
- 	tcmu_set_next_deadline(&udev->qfull_queue, &udev->qfull_timer);
--	return drained;
- }
- 
- static int tcmu_irqcontrol(struct uio_info *info, s32 irq_on)
-@@ -1652,6 +1623,8 @@ static void tcmu_dev_kref_release(struct kref *kref)
- 		if (tcmu_check_and_free_pending_cmd(cmd) != 0)
- 			all_expired = false;
- 	}
-+	if (!list_empty(&udev->qfull_queue))
-+		all_expired = false;
- 	idr_destroy(&udev->commands);
- 	WARN_ON(!all_expired);
- 
-@@ -2037,9 +2010,6 @@ static void tcmu_reset_ring(struct tcmu_dev *udev, u8 err_level)
- 	mutex_lock(&udev->cmdr_lock);
- 
- 	idr_for_each_entry(&udev->commands, cmd, i) {
--		if (!test_bit(TCMU_CMD_BIT_INFLIGHT, &cmd->flags))
--			continue;
--
- 		pr_debug("removing cmd %u on dev %s from ring (is expired %d)\n",
- 			  cmd->cmd_id, udev->name,
- 			  test_bit(TCMU_CMD_BIT_EXPIRED, &cmd->flags));
-@@ -2077,6 +2047,8 @@ static void tcmu_reset_ring(struct tcmu_dev *udev, u8 err_level)
- 
- 	del_timer(&udev->cmd_timer);
- 
-+	run_qfull_queue(udev, false);
-+
- 	mutex_unlock(&udev->cmdr_lock);
- }
- 
-@@ -2698,6 +2670,7 @@ static void find_free_blocks(void)
- static void check_timedout_devices(void)
- {
- 	struct tcmu_dev *udev, *tmp_dev;
-+	struct tcmu_cmd *cmd, *tmp_cmd;
- 	LIST_HEAD(devs);
- 
- 	spin_lock_bh(&timed_out_udevs_lock);
-@@ -2708,9 +2681,24 @@ static void check_timedout_devices(void)
- 		spin_unlock_bh(&timed_out_udevs_lock);
- 
- 		mutex_lock(&udev->cmdr_lock);
--		idr_for_each(&udev->commands, tcmu_check_expired_cmd, NULL);
- 
--		tcmu_set_next_deadline(&udev->inflight_queue, &udev->cmd_timer);
-+		/*
-+		 * If cmd_time_out is disabled but qfull is set deadline
-+		 * will only reflect the qfull timeout. Ignore it.
-+		 */
-+		if (udev->cmd_time_out) {
-+			list_for_each_entry_safe(cmd, tmp_cmd,
-+			                         &udev->inflight_queue,
-+			                         queue_entry) {
-+				tcmu_check_expired_ring_cmd(cmd);
-+			}
-+			tcmu_set_next_deadline(&udev->inflight_queue,
-+			                       &udev->cmd_timer);
-+		}
-+		list_for_each_entry_safe(cmd, tmp_cmd, &udev->qfull_queue,
-+			                 queue_entry) {
-+			tcmu_check_expired_queue_cmd(cmd);
-+		}
- 		tcmu_set_next_deadline(&udev->qfull_queue, &udev->qfull_timer);
- 
- 		mutex_unlock(&udev->cmdr_lock);
+qla2xxx in target and, likely, dual mode is unusable in some SAN fabrics
+due to the bug.
+
+Thanks,
+Roman
+
+diff --git a/drivers/scsi/qla2xxx/qla_gs.c b/drivers/scsi/qla2xxx/qla_gs.c
+index 42c3ad27f1cb..b9955af5cffe 100644
+--- a/drivers/scsi/qla2xxx/qla_gs.c
++++ b/drivers/scsi/qla2xxx/qla_gs.c
+@@ -3495,8 +3495,10 @@ void qla24xx_async_gnnft_done(scsi_qla_host_t *vha, srb_t *sp)
+ 			if ((fcport->flags & FCF_FABRIC_DEVICE) == 0) {
+ 				qla2x00_clear_loop_id(fcport);
+ 				fcport->flags |= FCF_FABRIC_DEVICE;
+-			} else if (fcport->d_id.b24 != rp->id.b24 ||
+-				fcport->scan_needed) {
++			} else if ((fcport->d_id.b24 != rp->id.b24 ||
++				    fcport->scan_needed) &&
++				   (fcport->port_type != FCT_INITIATOR &&
++				    fcport->port_type != FCT_NVME_INITIATOR)) {
+ 				qlt_schedule_sess_for_deletion(fcport);
+ 			}
+ 			fcport->d_id.b24 = rp->id.b24;
 -- 
-2.12.3
+2.26.1
 
