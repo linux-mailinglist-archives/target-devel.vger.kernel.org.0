@@ -2,69 +2,169 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E651F1D8857
-	for <lists+target-devel@lfdr.de>; Mon, 18 May 2020 21:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B307A1D8B18
+	for <lists+target-devel@lfdr.de>; Tue, 19 May 2020 00:41:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728344AbgERTk1 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 18 May 2020 15:40:27 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:48527 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728334AbgERTk1 (ORCPT
+        id S1728243AbgERWlT (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 18 May 2020 18:41:19 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:58954 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726359AbgERWlT (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 18 May 2020 15:40:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1589830826;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=tG4NW0XrpKeglSu1M3LhtqURiiCPd6FFbzkD+elHvV4=;
-        b=hgKqhTbe8oJUr8lG6xaOpKDqS5ubTWgo5iPHkqUXu6haE/drB72AdYwlk27tAJQ4AVlzup
-        xRRE2CrW6rGpwo2zb8nSiSp4scy66KvOmTxakE3pFkcYQphXr3Z+9XyDMTmiCF/Y6x6nuw
-        9K6LfuA79In2ZHzhzUWuYBZdde1PKIo=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-396-U05quBLcPiW7lZDGRiusAg-1; Mon, 18 May 2020 15:40:24 -0400
-X-MC-Unique: U05quBLcPiW7lZDGRiusAg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 90C0E835B40;
-        Mon, 18 May 2020 19:40:23 +0000 (UTC)
-Received: from [10.10.118.151] (ovpn-118-151.rdu2.redhat.com [10.10.118.151])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id E9ED919634;
-        Mon, 18 May 2020 19:40:22 +0000 (UTC)
-Subject: Re: [PATCH v1 target] target: Add initiatorname to NON_EXISTENT_LUN
- error
-To:     Lance Digby <lance.digby@gmail.com>, martin.petersen@oracle.com
-Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <9b13bb2e1f52f1792cd81850ee95bf3781bb5363.1589759816.git.lance.digby@gmail.com>
-From:   Mike Christie <mchristi@redhat.com>
-Message-ID: <cc4c1a62-ec8d-e0f4-f0ac-8584ec1d1885@redhat.com>
-Date:   Mon, 18 May 2020 14:40:22 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        Mon, 18 May 2020 18:41:19 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04IMbd63186943;
+        Mon, 18 May 2020 22:41:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=wfqzLoaxxp4lVJqPw3YFi9A16uL/yoQRMCgjuuIIKA4=;
+ b=K5u3wqcOEeuqDuqzTRLVdUswKm0ySp6xLFvhCA85l1Q67h2UDSIJW9Y85rzinCLUfuR7
+ SEvQWOmom4eN7cv3JP8sRKrtuKRqpGVqkINeKX0NxddmI9MDeWpGktI/mUOGlE4c6Dvf
+ ZgmrDENqjAEfQNclYOm/YJyQbkfcSZVZaklqkJb2WL5TMiPVvWWapdrAWURDj2CM6OPI
+ raKLqCq9e1XZ+UT/2aEgClwlQdzvtCDYHf4q79soEyMo14PVoyHzslTSCCU+3EN1JeM7
+ w9Ctenxi9MnarrJvByF8Kh6eounEBXJycvcp/UA6SMVl5mxvINgsj32HFcfIj1OW+gR6 7A== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 3128tn9se7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 18 May 2020 22:41:03 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04IMYQUk152989;
+        Mon, 18 May 2020 22:41:02 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 312t3wm6k2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 18 May 2020 22:41:02 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04IMf1Rp019137;
+        Mon, 18 May 2020 22:41:01 GMT
+Received: from [192.168.1.35] (/70.114.128.235)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 18 May 2020 15:41:01 -0700
+Subject: Re: [PATCH] scsi: qla2xxx: Keep initiator ports after RSCN
+To:     Roman Bolshakov <r.bolshakov@yadro.com>, linux-scsi@vger.kernel.org
+Cc:     GR-QLogic-Storage-Upstream@marvell.com,
+        target-devel@vger.kernel.org, linux@yadro.com,
+        Quinn Tran <qutran@marvell.com>, Arun Easi <aeasi@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Daniel Wagner <dwagner@suse.de>,
+        Martin Wilck <mwilck@suse.com>, stable@vger.kernel.org
+References: <20200518183141.66621-1-r.bolshakov@yadro.com>
+From:   Himanshu Madhani <himanshu.madhani@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <59107930-dfae-35be-9fb7-cef729e55412@oracle.com>
+Date:   Mon, 18 May 2020 17:40:58 -0500
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <9b13bb2e1f52f1792cd81850ee95bf3781bb5363.1589759816.git.lance.digby@gmail.com>
-Content-Type: text/plain; charset=windows-1252
+In-Reply-To: <20200518183141.66621-1-r.bolshakov@yadro.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9625 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 adultscore=0
+ phishscore=0 bulkscore=0 suspectscore=0 mlxscore=0 spamscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2005180191
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9625 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 cotscore=-2147483648 suspectscore=0 lowpriorityscore=0
+ adultscore=0 phishscore=0 mlxlogscore=999 mlxscore=0 priorityscore=1501
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2005180191
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 5/17/20 8:02 PM, Lance Digby wrote:
-> The NON_EXISTENT_LUN error can be written without an error condition
-> on the initiator responsible. Adding the initiatorname to this message
-> will reduce the effort required to fix this when many initiators are
-> supported by a target.
-> 
-> This version ensures the initiator name is also printed on the same
-> message in transport_lookup_tmr_lun for consistency.
-> 
 
-Reviewed-by: Mike Christie <mchristi@redhat.com>
 
+On 5/18/20 1:31 PM, Roman Bolshakov wrote:
+> The driver performs SCR (state change registration) in all modes
+> including pure target mode.
+> 
+> For each RSCN, scan_needed flag is set in qla2x00_handle_rscn() for the
+> port mentioned in the RSCN and fabric rescan is scheduled. During the
+> rescan, GNN_FT handler, qla24xx_async_gnnft_done() deletes session of
+> the port that caused the RSCN.
+> 
+> In target mode, the session deletion has an impact on ATIO handler,
+> qlt_24xx_atio_pkt(). Target responds with SAM STATUS BUSY to I/O
+> incoming from the deleted session. qlt_handle_cmd_for_atio() and
+> qlt_handle_task_mgmt() return -EFAULT if they are not able to find
+> session of the command/TMF, and that results in invocation of
+> qlt_send_busy():
+> 
+>    qlt_24xx_atio_pkt_all_vps: qla_target(0): type 6 ox_id 0014
+>    qla_target(0): Unable to send command to target, sending BUSY status
+> 
+> Such response causes command timeout on the initiator. Error handler
+> thread on the initiator will be spawned to abort the commands:
+> 
+>    scsi 23:0:0:0: tag#0 abort scheduled
+>    scsi 23:0:0:0: tag#0 aborting command
+>    qla2xxx [0000:af:00.0]-188c:23: Entered qla24xx_abort_command.
+>    qla2xxx [0000:af:00.0]-801c:23: Abort command issued nexus=23:0:0 -- 0 2003.
+> 
+> Command abort is rejected by target and fails (2003), error handler then
+> tries to perform DEVICE RESET and TARGET RESET but they're also doomed
+> to fail because TMFs are ignored for the deleted sessions.
+> 
+> Then initiator makes BUS RESET that resets the link via
+> qla2x00_full_login_lip(). BUS RESET succeeds and brings initiator port
+> up, SAN switch detects that and sends RSCN to the target port and it
+> fails again the same way as described above. It never goes out of the
+> loop.
+> 
+> The change breaks the RSCN loop by keeping initiator sessions mentioned
+> in RSCN payload in all modes, including dual and pure target mode.
+> 
+> Fixes: 2037ce49d30a ("scsi: qla2xxx: Fix stale session")
+> Cc: Quinn Tran <qutran@marvell.com>
+> Cc: Arun Easi <aeasi@marvell.com>
+> Cc: Nilesh Javali <njavali@marvell.com>
+> Cc: Bart Van Assche <bvanassche@acm.org>
+> Cc: Daniel Wagner <dwagner@suse.de>
+> Cc: Himanshu Madhani <himanshu.madhani@oracle.com>
+> Cc: Martin Wilck <mwilck@suse.com>
+> Cc: stable@vger.kernel.org # v5.4+
+> Signed-off-by: Roman Bolshakov <r.bolshakov@yadro.com>
+> ---
+>   drivers/scsi/qla2xxx/qla_gs.c | 6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> Hi Martin,
+> 
+> Please apply the patch to scsi-fixes/5.7 at your earliest convenience.
+> 
+> qla2xxx in target and, likely, dual mode is unusable in some SAN fabrics
+> due to the bug.
+> 
+> Thanks,
+> Roman
+> 
+> diff --git a/drivers/scsi/qla2xxx/qla_gs.c b/drivers/scsi/qla2xxx/qla_gs.c
+> index 42c3ad27f1cb..b9955af5cffe 100644
+> --- a/drivers/scsi/qla2xxx/qla_gs.c
+> +++ b/drivers/scsi/qla2xxx/qla_gs.c
+> @@ -3495,8 +3495,10 @@ void qla24xx_async_gnnft_done(scsi_qla_host_t *vha, srb_t *sp)
+>   			if ((fcport->flags & FCF_FABRIC_DEVICE) == 0) {
+>   				qla2x00_clear_loop_id(fcport);
+>   				fcport->flags |= FCF_FABRIC_DEVICE;
+> -			} else if (fcport->d_id.b24 != rp->id.b24 ||
+> -				fcport->scan_needed) {
+> +			} else if ((fcport->d_id.b24 != rp->id.b24 ||
+> +				    fcport->scan_needed) &&
+> +				   (fcport->port_type != FCT_INITIATOR &&
+> +				    fcport->port_type != FCT_NVME_INITIATOR)) {
+>   				qlt_schedule_sess_for_deletion(fcport);
+>   			}
+>   			fcport->d_id.b24 = rp->id.b24;
+> 
+Looks okay.
+
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+
+-- 
+Himanshu Madhani                     Oracle Linux Engineering
