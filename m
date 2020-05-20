@@ -2,88 +2,58 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ECCA91DA803
-	for <lists+target-devel@lfdr.de>; Wed, 20 May 2020 04:30:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CDBC1DB614
+	for <lists+target-devel@lfdr.de>; Wed, 20 May 2020 16:18:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728315AbgETCa1 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 19 May 2020 22:30:27 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:57998 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728415AbgETCa1 (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Tue, 19 May 2020 22:30:27 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04K2RBHE084678;
-        Wed, 20 May 2020 02:30:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=x7lJWCOox4jkdsPlPXMyrL9vU0HyFBMasClnr6W3zDs=;
- b=dmBboRb/1L5IYKmX2ps+rQshKhXLhogBJMvtthSdW+sD8gkKYz32Tyogrde4FkFYNeVN
- 4U730/OHth/ziCNHe+5ol0Tmu127NBYVlHn2yzvDFEU0mCfSq334EUfkf3I8NftN6kL9
- OHC1V22F/Tts6xspwG1qsfJ/P7DRexmmGJBG6tS5hPTZJ0qXuzD9p3XyzHBC6jsDt7yt
- VHw0ZU5PKfbeo6oLC3H+3hWO5iKGhNdQ/88iSOgBGnIlMsOmrG8eqwvjWiFbZHh1cksO
- P9GOzHwR+teL3Lk44xN2FlezC4OfeK+CbgLMl5oO0gsI8l+LEueb5BGhT0GRu1hppXCL NQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 3127kr8n9q-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 20 May 2020 02:30:21 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04K2SPDT001293;
-        Wed, 20 May 2020 02:30:21 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3030.oracle.com with ESMTP id 314gm65d7g-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 20 May 2020 02:30:21 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04K2UKba011815;
-        Wed, 20 May 2020 02:30:20 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 19 May 2020 19:30:19 -0700
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     mchristi@redhat.com, Lance Digby <lance.digby@gmail.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 target] target: Add initiatorname to NON_EXISTENT_LUN error
-Date:   Tue, 19 May 2020 22:30:07 -0400
-Message-Id: <158994171818.20861.13529776753176885593.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <9b13bb2e1f52f1792cd81850ee95bf3781bb5363.1589759816.git.lance.digby@gmail.com>
-References: <9b13bb2e1f52f1792cd81850ee95bf3781bb5363.1589759816.git.lance.digby@gmail.com>
+        id S1726650AbgETOSg (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 20 May 2020 10:18:36 -0400
+Received: from verein.lst.de ([213.95.11.211]:50062 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726436AbgETOSf (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Wed, 20 May 2020 10:18:35 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 9508368C4E; Wed, 20 May 2020 16:18:30 +0200 (CEST)
+Date:   Wed, 20 May 2020 16:18:30 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Joe Perches <joe@perches.com>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        Vlad Yasevich <vyasevich@gmail.com>,
+        Neil Horman <nhorman@tuxdriver.com>,
+        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+        Jon Maloy <jmaloy@redhat.com>,
+        Ying Xue <ying.xue@windriver.com>, drbd-dev@lists.linbit.com,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-nvme@lists.infradead.org,
+        target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
+        linux-cifs@vger.kernel.org, cluster-devel@redhat.com,
+        ocfs2-devel@oss.oracle.com, netdev@vger.kernel.org,
+        linux-sctp@vger.kernel.org, ceph-devel@vger.kernel.org,
+        rds-devel@oss.oracle.com, linux-nfs@vger.kernel.org
+Subject: Re: [PATCH 20/33] ipv4: add ip_sock_set_recverr
+Message-ID: <20200520141830.GA28867@lst.de>
+References: <20200513062649.2100053-1-hch@lst.de> <20200513062649.2100053-21-hch@lst.de> <0ee5acfaca4cf32d4efad162046b858981a4dae3.camel@perches.com> <20200514103025.GB12680@lst.de> <9992a1fe768a0b1e9bb9470d2728ba25dbe042db.camel@perches.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=937
- adultscore=0 phishscore=0 mlxscore=0 spamscore=0 suspectscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005200018
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9626 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
- bulkscore=0 clxscore=1011 priorityscore=1501 mlxscore=0 impostorscore=0
- suspectscore=0 mlxlogscore=969 malwarescore=0 cotscore=-2147483648
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005200018
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9992a1fe768a0b1e9bb9470d2728ba25dbe042db.camel@perches.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Mon, 18 May 2020 11:02:16 +1000, Lance Digby wrote:
-
-> The NON_EXISTENT_LUN error can be written without an error condition
-> on the initiator responsible. Adding the initiatorname to this message
-> will reduce the effort required to fix this when many initiators are
-> supported by a target.
+On Thu, May 14, 2020 at 04:51:26AM -0700, Joe Perches wrote:
+> > Mostly to keep it symmetric with the sockopt.  I could probably remove
+> > a few arguments in the series if we want to be strict.
 > 
-> This version ensures the initiator name is also printed on the same
-> message in transport_lookup_tmr_lun for consistency.
+> My preference would use strict and add
+> arguments only when necessary.
 
-Applied to 5.8/scsi-queue, thanks!
-
-[1/1] scsi: target: core: Add initiatorname to NON_EXISTENT_LUN error
-      https://git.kernel.org/mkp/scsi/c/5482d56bfedf
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+In a few cases that would create confusion as the arguments are rather
+overloaded.  But for a lot of the cases where it doesn't and there isn't
+really much use for other arguments I've done that now.
