@@ -2,99 +2,64 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D6C21DEDAE
-	for <lists+target-devel@lfdr.de>; Fri, 22 May 2020 18:52:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 044E91DF57E
+	for <lists+target-devel@lfdr.de>; Sat, 23 May 2020 09:23:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730469AbgEVQwU (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 22 May 2020 12:52:20 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:45150 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730445AbgEVQwT (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Fri, 22 May 2020 12:52:19 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04MGmCoF127891;
-        Fri, 22 May 2020 16:52:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id; s=corp-2020-01-29;
- bh=NbkzrpzfdMkZVyNkKF8d10u9zQwPbuOBwaLGLqxsGlc=;
- b=0BZ66Vr9tCjCVqTO1oRYWQpOQaMnH7o5lUXe+8GiR4ioflvWsi3BvTbqYBV2qzpPk9ZV
- lxk5L/Xtm7GNzHLsWchywj1u1VWxz0Ss6hY3dBJrBkpLkPdncFzb8I/ExOfIafQku8of
- ejlTXeWtegRWXCbUqekoWQOwblMXiCXrSzjhsnRJJrPiv2ub4VR9rHLHMAcXAkKNu4WC
- NAjmgPQVLEQZe8uiJop6N2MuaUIJ4TNaLh4Ph+xo2E2w7Xuz4cNsKJylAAfsZ7M2qqc5
- 6QMSrtUNUnI0Suk3T7kMAv8swQyUjW4WPV4cw8h/42uNOJBQvH8RQgl9febvY6/pc/dD nw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 3127krpthm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 22 May 2020 16:52:15 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04MGmk3G109572;
-        Fri, 22 May 2020 16:52:14 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 313gj7sacb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 22 May 2020 16:52:14 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04MGqDIs013279;
-        Fri, 22 May 2020 16:52:13 GMT
-Received: from supannee-devvm-ol7.osdevelopmeniad.oraclevcn.com (/100.100.231.179)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 22 May 2020 09:52:13 -0700
-From:   Sudhakar Panneerselvam <sudhakar.panneerselvam@oracle.com>
-To:     martin.petersen@oracle.com, target-devel@vger.kernel.org,
-        linux-scsi@vger.kernel.org
-Cc:     mst@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
-        stefanha@redhat.com, shirley.ma@oracle.com
-Subject: [PATCH 1/1] vhost: scsi: notify TCM about the maximum sg entries supported per command.
-Date:   Fri, 22 May 2020 16:51:57 +0000
-Message-Id: <1590166317-953-1-git-send-email-sudhakar.panneerselvam@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9629 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 malwarescore=0
- mlxscore=0 adultscore=0 bulkscore=0 suspectscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005220136
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9629 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
- bulkscore=0 clxscore=1015 priorityscore=1501 mlxscore=0 impostorscore=0
- suspectscore=0 mlxlogscore=999 malwarescore=0 cotscore=-2147483648
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005220136
+        id S2387690AbgEWHXW (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 23 May 2020 03:23:22 -0400
+Received: from verein.lst.de ([213.95.11.211]:34128 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387622AbgEWHXV (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Sat, 23 May 2020 03:23:21 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id EB36D68BEB; Sat, 23 May 2020 09:23:16 +0200 (CEST)
+Date:   Sat, 23 May 2020 09:23:16 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+        Eric Dumazet <edumazet@google.com>,
+        linux-nvme@lists.infradead.org, linux-sctp@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
+        drbd-dev@lists.linbit.com, linux-cifs@vger.kernel.org,
+        rds-devel@oss.oracle.com, linux-rdma@vger.kernel.org,
+        cluster-devel@redhat.com, Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        ceph-devel@vger.kernel.org, linux-nfs@vger.kernel.org,
+        Neil Horman <nhorman@tuxdriver.com>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        netdev@vger.kernel.org, Vlad Yasevich <vyasevich@gmail.com>,
+        linux-kernel@vger.kernel.org, Jon Maloy <jmaloy@redhat.com>,
+        Ying Xue <ying.xue@windriver.com>, ocfs2-devel@oss.oracle.com
+Subject: Re: remove kernel_setsockopt and kernel_getsockopt v2
+Message-ID: <20200523072316.GA10575@lst.de>
+References: <20200520195509.2215098-1-hch@lst.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200520195509.2215098-1-hch@lst.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-vhost-scsi pre-allocates the maximum sg entries per command and if a
-command requires more than VHOST_SCSI_PREALLOC_SGLS entries, then that
-command is failed by it. This patch lets vhost communicate the max sg limit
-when it registers vhost_scsi_ops with TCM. With this change, TCM would
-report the max sg entries through "Block Limits" VPD page which will be
-typically queried by the SCSI initiator during device discovery. By knowing
-this limit, the initiator could ensure the maximum transfer length is less
-than or equal to what is reported by vhost-scsi.
+On Wed, May 20, 2020 at 09:54:36PM +0200, Christoph Hellwig wrote:
+> Hi Dave,
+> 
+> this series removes the kernel_setsockopt and kernel_getsockopt
+> functions, and instead switches their users to small functions that
+> implement setting (or in one case getting) a sockopt directly using
+> a normal kernel function call with type safety and all the other
+> benefits of not having a function call.
+> 
+> In some cases these functions seem pretty heavy handed as they do
+> a lock_sock even for just setting a single variable, but this mirrors
+> the real setsockopt implementation unlike a few drivers that just set
+> set the fields directly.
 
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Signed-off-by: Sudhakar Panneerselvam <sudhakar.panneerselvam@oracle.com>
----
- drivers/vhost/scsi.c | 1 +
- 1 file changed, 1 insertion(+)
+Hi Dave and other maintainers,
 
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index c39952243fd3..8b104f76f324 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -2280,6 +2280,7 @@ static void vhost_scsi_drop_tport(struct se_wwn *wwn)
- static const struct target_core_fabric_ops vhost_scsi_ops = {
- 	.module				= THIS_MODULE,
- 	.fabric_name			= "vhost",
-+	.max_data_sg_nents		= VHOST_SCSI_PREALLOC_SGLS,
- 	.tpg_get_wwn			= vhost_scsi_get_fabric_wwn,
- 	.tpg_get_tag			= vhost_scsi_get_tpgt,
- 	.tpg_check_demo_mode		= vhost_scsi_check_true,
--- 
-1.8.3.1
-
+can you take a look at and potentially merge patches 1-30 while we
+discuss the sctp refactoring?  It would get a nice headstart by removing
+kernel_getsockopt and most kernel_setsockopt users, and for the next
+follow on I wouldn't need to spam lots of lists with 30+ patches again.
