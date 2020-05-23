@@ -2,64 +2,103 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 044E91DF57E
-	for <lists+target-devel@lfdr.de>; Sat, 23 May 2020 09:23:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 477851DF68A
+	for <lists+target-devel@lfdr.de>; Sat, 23 May 2020 12:11:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387690AbgEWHXW (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 23 May 2020 03:23:22 -0400
-Received: from verein.lst.de ([213.95.11.211]:34128 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387622AbgEWHXV (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Sat, 23 May 2020 03:23:21 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id EB36D68BEB; Sat, 23 May 2020 09:23:16 +0200 (CEST)
-Date:   Sat, 23 May 2020 09:23:16 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        linux-nvme@lists.infradead.org, linux-sctp@vger.kernel.org,
-        target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
-        drbd-dev@lists.linbit.com, linux-cifs@vger.kernel.org,
-        rds-devel@oss.oracle.com, linux-rdma@vger.kernel.org,
-        cluster-devel@redhat.com, Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-        ceph-devel@vger.kernel.org, linux-nfs@vger.kernel.org,
-        Neil Horman <nhorman@tuxdriver.com>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        netdev@vger.kernel.org, Vlad Yasevich <vyasevich@gmail.com>,
-        linux-kernel@vger.kernel.org, Jon Maloy <jmaloy@redhat.com>,
-        Ying Xue <ying.xue@windriver.com>, ocfs2-devel@oss.oracle.com
-Subject: Re: remove kernel_setsockopt and kernel_getsockopt v2
-Message-ID: <20200523072316.GA10575@lst.de>
-References: <20200520195509.2215098-1-hch@lst.de>
+        id S2387756AbgEWKLp (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 23 May 2020 06:11:45 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:47792 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725268AbgEWKLp (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Sat, 23 May 2020 06:11:45 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04NA8E8r056160;
+        Sat, 23 May 2020 10:11:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=n4h8Ze/WKiLXL3/dPkzL/wAshMKn0b30Ha6W6Rr7XF8=;
+ b=oCl8f3ICddFsd+XbIb+UWjYuM20nfc+mTATGV6AaPSujHe2g4Vvf1HVK0coJPmEE0Jb5
+ SkVT+li1vlyRmeQecBv6McHElWBjb3Pp1OVqVGAKydxY4iWrliHOk+CccX+ZP3r4JBYH
+ /9YuUnMJXzynwu11vuM0N1P62FC3WqQzVFYFFnPsHYk4MGu4dLn+YtWS19XmlHF/9f9E
+ ACtwTrOO72E4+w7hazE/BxdX5iTWyhWnO/r5WGl6xtbJbzw87z7m9g8PgPxR2w6fR/4n
+ VVHLRiOmHNPFC9CfKcuJ6xUAsZoNTgxvPl7P8W8Rn2CnZV7DFYMLxlPt+GE5VDXxBva2 Bw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 316u8qgpgr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sat, 23 May 2020 10:11:38 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04NA9Ie4122828;
+        Sat, 23 May 2020 10:11:38 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 316un0g2wq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 23 May 2020 10:11:37 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04NABbO9022106;
+        Sat, 23 May 2020 10:11:37 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sat, 23 May 2020 03:11:36 -0700
+Date:   Sat, 23 May 2020 13:11:29 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Cc:     Mike Christie <mchristi@redhat.com>, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] scsi: target: tcmu: Fix a use after free in
+ tcmu_check_expired_queue_cmd()
+Message-ID: <20200523101129.GB98132@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200520195509.2215098-1-hch@lst.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9629 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 mlxscore=0
+ malwarescore=0 phishscore=0 spamscore=0 suspectscore=2 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005230084
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9629 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0
+ priorityscore=1501 spamscore=0 cotscore=-2147483648 suspectscore=2
+ phishscore=0 clxscore=1011 mlxlogscore=999 bulkscore=0 adultscore=0
+ lowpriorityscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005230084
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Wed, May 20, 2020 at 09:54:36PM +0200, Christoph Hellwig wrote:
-> Hi Dave,
-> 
-> this series removes the kernel_setsockopt and kernel_getsockopt
-> functions, and instead switches their users to small functions that
-> implement setting (or in one case getting) a sockopt directly using
-> a normal kernel function call with type safety and all the other
-> benefits of not having a function call.
-> 
-> In some cases these functions seem pretty heavy handed as they do
-> a lock_sock even for just setting a single variable, but this mirrors
-> the real setsockopt implementation unlike a few drivers that just set
-> set the fields directly.
+The pr_debug() dereferences "cmd" after we already freed it by calling
+tcmu_free_cmd(cmd).  The debug printk needs to be done earlier.
 
-Hi Dave and other maintainers,
+Fixes: 61fb24822166 ("scsi: target: tcmu: Userspace must not complete queued commands")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/target/target_core_user.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-can you take a look at and potentially merge patches 1-30 while we
-discuss the sctp refactoring?  It would get a nice headstart by removing
-kernel_getsockopt and most kernel_setsockopt users, and for the next
-follow on I wouldn't need to spam lots of lists with 30+ patches again.
+diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
+index 904d8a8373f2..28fb9441de7a 100644
+--- a/drivers/target/target_core_user.c
++++ b/drivers/target/target_core_user.c
+@@ -1292,13 +1292,13 @@ static void tcmu_check_expired_queue_cmd(struct tcmu_cmd *cmd)
+ 	if (!time_after(jiffies, cmd->deadline))
+ 		return;
+ 
++	pr_debug("Timing out queued cmd %p on dev %s.\n",
++		  cmd, cmd->tcmu_dev->name);
++
+ 	list_del_init(&cmd->queue_entry);
+ 	se_cmd = cmd->se_cmd;
+ 	tcmu_free_cmd(cmd);
+ 
+-	pr_debug("Timing out queued cmd %p on dev %s.\n",
+-		  cmd, cmd->tcmu_dev->name);
+-
+ 	target_complete_cmd(se_cmd, SAM_STAT_TASK_SET_FULL);
+ }
+ 
+-- 
+2.26.2
+
