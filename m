@@ -2,96 +2,95 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE1171DFA97
-	for <lists+target-devel@lfdr.de>; Sat, 23 May 2020 21:05:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C30541E09C3
+	for <lists+target-devel@lfdr.de>; Mon, 25 May 2020 11:12:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726902AbgEWTFa (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 23 May 2020 15:05:30 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:28686 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726790AbgEWTFa (ORCPT
+        id S2388693AbgEYJMF (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 25 May 2020 05:12:05 -0400
+Received: from mail1.bemta26.messagelabs.com ([85.158.142.2]:28796 "EHLO
+        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725809AbgEYJME (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sat, 23 May 2020 15:05:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1590260729;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Nf7zHjEemPEQTkQ9G+ErBRBTFKvl0CzvhJ6SPwvk8Z4=;
-        b=cdtiEWlJ+OC6XVKHtK2eK4SGaA+wFZQzTk0VsEkpdcR4pdurfePwBs04gT6D3tLoI+7ZL6
-        /gSVHraT2RsCLxOQCQGTrXYx+gSweSN8JDHF34D6ve7D5sIMCgTWR6f8QTaIgXG2dsjY6Z
-        O3U1E1gNZeRwF4MCivfed3VbUNipijc=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-365-EgWFgU5NOzSMlwjpEV0D3g-1; Sat, 23 May 2020 15:05:27 -0400
-X-MC-Unique: EgWFgU5NOzSMlwjpEV0D3g-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 37CB1800D24;
-        Sat, 23 May 2020 19:05:26 +0000 (UTC)
-Received: from [10.10.112.111] (ovpn-112-111.rdu2.redhat.com [10.10.112.111])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id D3C045D9D5;
-        Sat, 23 May 2020 19:05:19 +0000 (UTC)
-Subject: Re: [PATCH 1/1] vhost: scsi: notify TCM about the maximum sg entries
- supported per command.
-To:     Sudhakar Panneerselvam <sudhakar.panneerselvam@oracle.com>,
-        martin.petersen@oracle.com, target-devel@vger.kernel.org,
-        linux-scsi@vger.kernel.org
-Cc:     mst@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
-        stefanha@redhat.com, shirley.ma@oracle.com
-References: <1590166317-953-1-git-send-email-sudhakar.panneerselvam@oracle.com>
-From:   Mike Christie <mchristi@redhat.com>
-Message-ID: <a0cd35c6-71b0-1b9f-ef29-d937b6484290@redhat.com>
-Date:   Sat, 23 May 2020 14:05:19 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        Mon, 25 May 2020 05:12:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
+        s=200619tsfj; t=1590397921; i=@ts.fujitsu.com;
+        bh=2N0ta0xkTHO1ASuSy/Hz5DBj4Fs/cClPX1DUdDg6Jm0=;
+        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+         In-Reply-To:Content-Type:Content-Transfer-Encoding;
+        b=sSNYdPqgbEpkF5OqBVrKLjTt0ITIgf0gdL9s1RkcknCwqoKTVe/FGjxIEqSc84AUM
+         4TTl9nkRHmp+7jH8ek3ELF5p1L9wHe3kjZfpKUEw/hOldxXpEcBj5wMD9czw6Lch8/
+         d5CufJse9qQGriK7HkQOpZez63vk7r7W+rZsEiGBOjF88iXwBxNzi3jLuBPEPfyCc3
+         yFJMWBJ9ktwE5SSXM3IJ+JWan2Bmr4mNjpBViMazKemJFJCq72/JvcF/5F07C2VzSG
+         6ePvImUO5ARvVZmhEBQKHBNQJ52ewrJTc3D6ajEZw8F/Ht4HdmwJJvR/AKxlDa388S
+         gp2ZHjG+WSC1Q==
+Received: from [100.113.3.197] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-2.bemta.az-a.eu-central-1.aws.symcld.net id C2/00-40520-1EB8BCE5; Mon, 25 May 2020 09:12:01 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrFIsWRWlGSWpSXmKPExsViZ8MxRfdh9+k
+  4g92fuCxe/5vOYrH1lrRF9/UdbBbLj/9jslh/ZAOjRevSt0wObB4fn95i8Xi/7yqbx+dNcgHM
+  UayZeUn5FQmsGavWzWMv+Mxc8eZaI1MD4wLmLkYuDiGByYwSUxe2sEA4/YwS5yaAZDg5hAUSJ
+  JZu+cYCYosIpEvcOfuGEaSIWaCLUeLUuaWMIAkhAW2JdROes4PYbAIGEism3Qdr4BVwlNj28w
+  KYzSKgKrF0+yk2EFtUIFzixZY/rBA1ghInZz4Bq+EU0JE4+n85WJxZwExi3uaHzBC2uMStJ/O
+  ZIGx5ie1v5zBPYOSfhaR9FpKWWUhaZiFpWcDIsorRIqkoMz2jJDcxM0fX0MBA19DQWNdQ19RC
+  L7FKN1EvtVQ3OTWvpCgRKKmXWF6sV1yZm5yTopeXWrKJERgFKYWMVjsYt659r3eIUZKDSUmUl
+  6v8dJwQX1J+SmVGYnFGfFFpTmrxIUYZDg4lCV65TqCcYFFqempFWmYOMCJh0hIcPEoivFldQG
+  ne4oLE3OLMdIjUKUZFKXFeOWAcCwmAJDJK8+DaYEngEqOslDAvIwMDgxBPQWpRbmYJqvwrRnE
+  ORiVh3j0g43ky80rgpr8CWswEtPjy+lMgi0sSEVJSDUwb9+RfcmHeuY3v6/EHGWH+UR8WlRw5
+  WXKLZZbbBv3UFy9LBK8WFHDfejKlZMet34xJN9g2Vx9UXv5x20euC+9Ni8++udN37fenoicuh
+  /UPrjnnfvVy1crb557xZm3OL64xZ+GJKdl64lZiedwq27LlayceqZvdf/WshpjVOsUzv8QD5u
+  hXJ763lPt9qlRPoG4hw6qZFSs3lYWnHuQMmrdmXQbrQ/1pslvDWhWMWL9k7Vzpz1rzQ9d8dvm
+  li1vtZCqmP2PU/2mfdXj5lubKXTaOHz7/StDI+7Uof2W3UHvXpYeb1qyznvG+fHW41vVvKTtT
+  Ko44Nh7123Rx5R9+54bGl98m1GtuOsJ8adW8ielsukosxRmJhlrMRcWJAMfaget9AwAA
+X-Env-Sender: bstroesser@ts.fujitsu.com
+X-Msg-Ref: server-36.tower-232.messagelabs.com!1590397920!627678!1
+X-Originating-IP: [62.60.8.148]
+X-SYMC-ESS-Client-Auth: outbound-route-from=pass
+X-StarScan-Received: 
+X-StarScan-Version: 9.50.1; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 30111 invoked from network); 25 May 2020 09:12:01 -0000
+Received: from unknown (HELO mailhost1.uk.fujitsu.com) (62.60.8.148)
+  by server-36.tower-232.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 25 May 2020 09:12:01 -0000
+Received: from x-serv01 ([172.17.38.52])
+        by mailhost1.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 04P9BprI027707;
+        Mon, 25 May 2020 10:11:51 +0100
+Received: from [172.17.39.90] (unknown [172.17.39.90])
+        by x-serv01 (Postfix) with ESMTP id 5E9C920619;
+        Mon, 25 May 2020 11:11:40 +0200 (CEST)
+Subject: Re: [PATCH] scsi: target: tcmu: Fix a use after free in
+ tcmu_check_expired_queue_cmd()
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc:     Mike Christie <mchristi@redhat.com>, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20200523101129.GB98132@mwanda>
+From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Message-ID: <68d6b1e9-65fa-e91c-e55e-f520839b5efe@ts.fujitsu.com>
+Date:   Mon, 25 May 2020 11:11:38 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.1.0
 MIME-Version: 1.0
-In-Reply-To: <1590166317-953-1-git-send-email-sudhakar.panneerselvam@oracle.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20200523101129.GB98132@mwanda>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 5/22/20 11:51 AM, Sudhakar Panneerselvam wrote:
-> vhost-scsi pre-allocates the maximum sg entries per command and if a
-> command requires more than VHOST_SCSI_PREALLOC_SGLS entries, then that
-> command is failed by it. This patch lets vhost communicate the max sg limit
-> when it registers vhost_scsi_ops with TCM. With this change, TCM would
-> report the max sg entries through "Block Limits" VPD page which will be
-> typically queried by the SCSI initiator during device discovery. By knowing
-> this limit, the initiator could ensure the maximum transfer length is less
-> than or equal to what is reported by vhost-scsi.
+On 05/23/20 12:11, Dan Carpenter wrote:
+> The pr_debug() dereferences "cmd" after we already freed it by calling
+> tcmu_free_cmd(cmd).  The debug printk needs to be done earlier.
 > 
-> Cc: Michael S. Tsirkin <mst@redhat.com>
-> Cc: Jason Wang <jasowang@redhat.com>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: Stefan Hajnoczi <stefanha@redhat.com>
-> Signed-off-by: Sudhakar Panneerselvam <sudhakar.panneerselvam@oracle.com>
+> Fixes: 61fb24822166 ("scsi: target: tcmu: Userspace must not complete queued commands")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->  drivers/vhost/scsi.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-> index c39952243fd3..8b104f76f324 100644
-> --- a/drivers/vhost/scsi.c
-> +++ b/drivers/vhost/scsi.c
-> @@ -2280,6 +2280,7 @@ static void vhost_scsi_drop_tport(struct se_wwn *wwn)
->  static const struct target_core_fabric_ops vhost_scsi_ops = {
->  	.module				= THIS_MODULE,
->  	.fabric_name			= "vhost",
-> +	.max_data_sg_nents		= VHOST_SCSI_PREALLOC_SGLS,
->  	.tpg_get_wwn			= vhost_scsi_get_fabric_wwn,
->  	.tpg_get_tag			= vhost_scsi_get_tpgt,
->  	.tpg_check_demo_mode		= vhost_scsi_check_true,
+>   drivers/target/target_core_user.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
 > 
 
-Looks ok to me.
+Thank you.
 
-Reviewed-by: Mike Christie <mchristi@redhat.com>
+I'm very sorry for this stupid bug.
 
+BR, Bodo
