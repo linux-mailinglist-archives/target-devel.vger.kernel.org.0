@@ -2,95 +2,162 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C30541E09C3
-	for <lists+target-devel@lfdr.de>; Mon, 25 May 2020 11:12:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39AE21E13E9
+	for <lists+target-devel@lfdr.de>; Mon, 25 May 2020 20:15:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388693AbgEYJMF (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 25 May 2020 05:12:05 -0400
-Received: from mail1.bemta26.messagelabs.com ([85.158.142.2]:28796 "EHLO
-        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725809AbgEYJME (ORCPT
+        id S1727788AbgEYSPU (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 25 May 2020 14:15:20 -0400
+Received: from mail-qk1-f195.google.com ([209.85.222.195]:40455 "EHLO
+        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725834AbgEYSPT (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 25 May 2020 05:12:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1590397921; i=@ts.fujitsu.com;
-        bh=2N0ta0xkTHO1ASuSy/Hz5DBj4Fs/cClPX1DUdDg6Jm0=;
-        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-         In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        b=sSNYdPqgbEpkF5OqBVrKLjTt0ITIgf0gdL9s1RkcknCwqoKTVe/FGjxIEqSc84AUM
-         4TTl9nkRHmp+7jH8ek3ELF5p1L9wHe3kjZfpKUEw/hOldxXpEcBj5wMD9czw6Lch8/
-         d5CufJse9qQGriK7HkQOpZez63vk7r7W+rZsEiGBOjF88iXwBxNzi3jLuBPEPfyCc3
-         yFJMWBJ9ktwE5SSXM3IJ+JWan2Bmr4mNjpBViMazKemJFJCq72/JvcF/5F07C2VzSG
-         6ePvImUO5ARvVZmhEBQKHBNQJ52ewrJTc3D6ajEZw8F/Ht4HdmwJJvR/AKxlDa388S
-         gp2ZHjG+WSC1Q==
-Received: from [100.113.3.197] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-2.bemta.az-a.eu-central-1.aws.symcld.net id C2/00-40520-1EB8BCE5; Mon, 25 May 2020 09:12:01 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrFIsWRWlGSWpSXmKPExsViZ8MxRfdh9+k
-  4g92fuCxe/5vOYrH1lrRF9/UdbBbLj/9jslh/ZAOjRevSt0wObB4fn95i8Xi/7yqbx+dNcgHM
-  UayZeUn5FQmsGavWzWMv+Mxc8eZaI1MD4wLmLkYuDiGByYwSUxe2sEA4/YwS5yaAZDg5hAUSJ
-  JZu+cYCYosIpEvcOfuGEaSIWaCLUeLUuaWMIAkhAW2JdROes4PYbAIGEism3Qdr4BVwlNj28w
-  KYzSKgKrF0+yk2EFtUIFzixZY/rBA1ghInZz4Bq+EU0JE4+n85WJxZwExi3uaHzBC2uMStJ/O
-  ZIGx5ie1v5zBPYOSfhaR9FpKWWUhaZiFpWcDIsorRIqkoMz2jJDcxM0fX0MBA19DQWNdQ19RC
-  L7FKN1EvtVQ3OTWvpCgRKKmXWF6sV1yZm5yTopeXWrKJERgFKYWMVjsYt659r3eIUZKDSUmUl
-  6v8dJwQX1J+SmVGYnFGfFFpTmrxIUYZDg4lCV65TqCcYFFqempFWmYOMCJh0hIcPEoivFldQG
-  ne4oLE3OLMdIjUKUZFKXFeOWAcCwmAJDJK8+DaYEngEqOslDAvIwMDgxBPQWpRbmYJqvwrRnE
-  ORiVh3j0g43ky80rgpr8CWswEtPjy+lMgi0sSEVJSDUwb9+RfcmHeuY3v6/EHGWH+UR8WlRw5
-  WXKLZZbbBv3UFy9LBK8WFHDfejKlZMet34xJN9g2Vx9UXv5x20euC+9Ni8++udN37fenoicuh
-  /UPrjnnfvVy1crb557xZm3OL64xZ+GJKdl64lZiedwq27LlayceqZvdf/WshpjVOsUzv8QD5u
-  hXJ763lPt9qlRPoG4hw6qZFSs3lYWnHuQMmrdmXQbrQ/1pslvDWhWMWL9k7Vzpz1rzQ9d8dvm
-  li1vtZCqmP2PU/2mfdXj5lubKXTaOHz7/StDI+7Uof2W3UHvXpYeb1qyznvG+fHW41vVvKTtT
-  Ko44Nh7123Rx5R9+54bGl98m1GtuOsJ8adW8ielsukosxRmJhlrMRcWJAMfaget9AwAA
-X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-36.tower-232.messagelabs.com!1590397920!627678!1
-X-Originating-IP: [62.60.8.148]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.50.1; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 30111 invoked from network); 25 May 2020 09:12:01 -0000
-Received: from unknown (HELO mailhost1.uk.fujitsu.com) (62.60.8.148)
-  by server-36.tower-232.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 25 May 2020 09:12:01 -0000
-Received: from x-serv01 ([172.17.38.52])
-        by mailhost1.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 04P9BprI027707;
-        Mon, 25 May 2020 10:11:51 +0100
-Received: from [172.17.39.90] (unknown [172.17.39.90])
-        by x-serv01 (Postfix) with ESMTP id 5E9C920619;
-        Mon, 25 May 2020 11:11:40 +0200 (CEST)
-Subject: Re: [PATCH] scsi: target: tcmu: Fix a use after free in
- tcmu_check_expired_queue_cmd()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc:     Mike Christie <mchristi@redhat.com>, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20200523101129.GB98132@mwanda>
-From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Message-ID: <68d6b1e9-65fa-e91c-e55e-f520839b5efe@ts.fujitsu.com>
-Date:   Mon, 25 May 2020 11:11:38 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.0
+        Mon, 25 May 2020 14:15:19 -0400
+Received: by mail-qk1-f195.google.com with SMTP id c185so4061752qke.7
+        for <target-devel@vger.kernel.org>; Mon, 25 May 2020 11:15:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=eKX0+uPoGaQwvkR7iF4FDx2mROTsEwClo5tOoflVnLM=;
+        b=h813B2eCq22ZfiFh40v7iFpHf8quNJEXWIkDwgxcT5F7Z3eNtzgbKdpxGrzRl7o/dz
+         g3SqkZMmfMgttjGPlESxbUGnkMoPgLhGabKlquoeluusqSVCC2ZYzTqP6riEUnx2TjkJ
+         9KPFimmp8o9qttba2YFNqGb8SXS6e4DuR9R3IcxlEl6GBEelWG8jyxgNfPbl0GnzJRxd
+         r5V3F6uGAbkhSR66+T2W+yTWEnjYbck1V8vWNxamVe9ItLoGnrzf9KxP10+G/eZTy7vX
+         Ow6mKgrhbsd7d021bPl61YejCBzj47YBdYgGmBSBNtSJDvy133Pbs2mdOiKzfswmd4FU
+         3KCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=eKX0+uPoGaQwvkR7iF4FDx2mROTsEwClo5tOoflVnLM=;
+        b=JQtqRUNC/c2ag52O9+yIZWfMEBbA0ibOZjcuOfOAg7Dj5o//Hf2JF4A7x9HSzX1Sw6
+         ymoSM1BllLMm2SmfFra42yiPcsk9CUqmtUsqgMFs7Uc+er/IECBd2DaN5XGMl4toD3BW
+         MyCdZY6wJUJ/yx2CBJ/z1hzdO2cha1rpPILNd6tKpxnBBe/zBNtE/fIXpnDyKV2ftwG6
+         er/MhvZ5m6BPK7PfkQ0dgbDjH9WWmRKjvCvMwyXX8Ux2sDo3zTQbGFewAcFRlohWeHdM
+         0fBz/2ZLsV2HRdgCKamau7d7eRqVxoCOKyR0gDmbhlkICSkeHKVTiC9Q5XTizeKbCE/E
+         Q/wA==
+X-Gm-Message-State: AOAM531WgNkSsgVCD0StL5mK1XwXZbS6q5qwyBwDkzmXoeSd+knO9Cb3
+        GsDWNOzMo0J9QUzzQN1lWgjDNg==
+X-Google-Smtp-Source: ABdhPJwLyD55r8bw1XTSt/MRjSo+WXge4biwlAYf0ydhc+lJWNdthkd53udQb5oArh0e9K5LrYdqew==
+X-Received: by 2002:a37:e101:: with SMTP id c1mr13747043qkm.433.1590430458530;
+        Mon, 25 May 2020 11:14:18 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.48.30])
+        by smtp.gmail.com with ESMTPSA id x2sm10541822qke.42.2020.05.25.11.14.17
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 25 May 2020 11:14:17 -0700 (PDT)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1jdHc9-00078A-Hn; Mon, 25 May 2020 15:14:17 -0300
+Date:   Mon, 25 May 2020 15:14:17 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Leon Romanovsky <leon@kernel.org>
+Cc:     Doug Ledford <dledford@redhat.com>,
+        Leon Romanovsky <leonro@mellanox.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Chaitanya Kulkarni <chaitanya.kulkarni@wdc.com>,
+        Christoph Hellwig <hch@lst.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-nvme@lists.infradead.org, linux-rdma@vger.kernel.org,
+        netdev@vger.kernel.org, rds-devel@oss.oracle.com,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Santosh Shilimkar <santosh.shilimkar@oracle.com>,
+        target-devel@vger.kernel.org
+Subject: Re: [PATCH rdma-next v2 7/7] RDMA/cma: Provide ECE reject reason
+Message-ID: <20200525181417.GC24366@ziepe.ca>
+References: <20200413141538.935574-1-leon@kernel.org>
+ <20200413141538.935574-8-leon@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20200523101129.GB98132@mwanda>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200413141538.935574-8-leon@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 05/23/20 12:11, Dan Carpenter wrote:
-> The pr_debug() dereferences "cmd" after we already freed it by calling
-> tcmu_free_cmd(cmd).  The debug printk needs to be done earlier.
-> 
-> Fixes: 61fb24822166 ("scsi: target: tcmu: Userspace must not complete queued commands")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->   drivers/target/target_core_user.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
-> 
+On Mon, Apr 13, 2020 at 05:15:38PM +0300, Leon Romanovsky wrote:
+> @@ -4223,7 +4223,7 @@ int rdma_notify(struct rdma_cm_id *id, enum ib_event_type event)
+>  EXPORT_SYMBOL(rdma_notify);
+>  
+>  int rdma_reject(struct rdma_cm_id *id, const void *private_data,
+> -		u8 private_data_len)
+> +		u8 private_data_len, enum rdma_ucm_reject_reason reason)
+>  {
+>  	struct rdma_id_private *id_priv;
+>  	int ret;
+> @@ -4237,10 +4237,12 @@ int rdma_reject(struct rdma_cm_id *id, const void *private_data,
+>  			ret = cma_send_sidr_rep(id_priv, IB_SIDR_REJECT, 0,
+>  						private_data, private_data_len);
+>  		} else {
+> +			enum ib_cm_rej_reason r =
+> +				(reason) ?: IB_CM_REJ_CONSUMER_DEFINED;
+> +
+>  			trace_cm_send_rej(id_priv);
+> -			ret = ib_send_cm_rej(id_priv->cm_id.ib,
+> -					     IB_CM_REJ_CONSUMER_DEFINED, NULL,
+> -					     0, private_data, private_data_len);
+> +			ret = ib_send_cm_rej(id_priv->cm_id.ib, r, NULL, 0,
+> +					     private_data, private_data_len);
+>  		}
+>  	} else if (rdma_cap_iw_cm(id->device, id->port_num)) {
+>  		ret = iw_cm_reject(id_priv->cm_id.iw,
+> diff --git a/drivers/infiniband/core/ucma.c b/drivers/infiniband/core/ucma.c
+> index d41598954cc4..99482dc5934b 100644
+> +++ b/drivers/infiniband/core/ucma.c
+> @@ -1178,12 +1178,17 @@ static ssize_t ucma_reject(struct ucma_file *file, const char __user *inbuf,
+>  	if (copy_from_user(&cmd, inbuf, sizeof(cmd)))
+>  		return -EFAULT;
+>  
+> +	if (cmd.reason &&
+> +	    cmd.reason != RDMA_USER_CM_REJ_VENDOR_OPTION_NOT_SUPPORTED)
+> +		return -EINVAL;
 
-Thank you.
+It would be clearer to set cmd.reason to IB_CM_REJ_CONSUMER_DEFINED at
+this point.. 
 
-I'm very sorry for this stupid bug.
+if (!cmd.reason)
+   cmd.reason = IB_CM_REJ_CONSUMER_DEFINED
 
-BR, Bodo
+if (cmd.reason != IB_CM_REJ_CONSUMER_DEFINED && cmd.reason !=
+    RDMA_USER_CM_REJ_VENDOR_OPTION_NOT_SUPPORTED)
+   return -EINVAL
+
+Esaier to follow and no reason userspace shouldn't be able to
+explicitly specifiy the reason's that it is allowed to use.
+
+
+> index 8d961d8b7cdb..f8781b132f62 100644
+> +++ b/include/rdma/rdma_cm.h
+> @@ -324,11 +324,12 @@ int __rdma_accept_ece(struct rdma_cm_id *id, struct rdma_conn_param *conn_param,
+>   */
+>  int rdma_notify(struct rdma_cm_id *id, enum ib_event_type event);
+>  
+> +
+>  /**
+
+Extra hunk?
+
+>   * rdma_reject - Called to reject a connection request or response.
+>   */
+>  int rdma_reject(struct rdma_cm_id *id, const void *private_data,
+> -		u8 private_data_len);
+> +		u8 private_data_len, enum rdma_ucm_reject_reason reason);
+>  
+>  /**
+>   * rdma_disconnect - This function disconnects the associated QP and
+> diff --git a/include/uapi/rdma/rdma_user_cm.h b/include/uapi/rdma/rdma_user_cm.h
+> index c4ca1412bcf9..e545f2de1e13 100644
+> +++ b/include/uapi/rdma/rdma_user_cm.h
+> @@ -78,6 +78,10 @@ enum rdma_ucm_port_space {
+>  	RDMA_PS_UDP   = 0x0111,
+>  };
+>  
+> +enum rdma_ucm_reject_reason {
+> +	RDMA_USER_CM_REJ_VENDOR_OPTION_NOT_SUPPORTED = 35
+> +};
+
+not sure we need ABI defines for IBTA constants?
+
+Jason
