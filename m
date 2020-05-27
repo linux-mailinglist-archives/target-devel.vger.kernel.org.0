@@ -2,85 +2,91 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 929DC1E3548
-	for <lists+target-devel@lfdr.de>; Wed, 27 May 2020 04:14:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C204F1E354D
+	for <lists+target-devel@lfdr.de>; Wed, 27 May 2020 04:14:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725826AbgE0CNR (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 26 May 2020 22:13:17 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:41360 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725271AbgE0CNQ (ORCPT
+        id S1726404AbgE0CNU (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 26 May 2020 22:13:20 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:45914 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725941AbgE0CNT (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 26 May 2020 22:13:16 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04R2C1r2057373;
-        Wed, 27 May 2020 02:13:11 GMT
+        Tue, 26 May 2020 22:13:19 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04R2CpWr165328;
+        Wed, 27 May 2020 02:13:16 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=corp-2020-01-29;
- bh=V9/ddRs+s6zlLZTM4H2U9lU0S4GWlEzFY0+6zXoWmOU=;
- b=CysZYNWi8N4MyVrKx2GXnBO9T+iDAVvYx4u57XAzaASMrowOlG2zqUKf6dC+exkarbUC
- w8DP3F+q8U+N2/jg8K3a6BndEp2gVwBVEKyVpDN1soxXjxUqzMiC+8v5ttgAVYGFD7Mu
- HUOWm5xai7w3J6FDo0NIBc5U9Mz4NCFeA+Ax971nVYowJVjepn9GEn0FQc0KdqMjR0bS
- jhnPqoYC7xh8hZ4ymgOVb3R33FuHmJULskhYEybKGZstmt489SY5CpDR436x7ZKH0Fvq
- OgX3mEfsdpkNpyJp70i0STF7fR0hRAqL/Otx+8n0iZpbghitwYvlN99rgEwvOHfjW54W DA== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 318xbjvym4-1
+ bh=cgNhwBL0YxsJOuzda5stp0OuW/YIWB10RY3uXefOsj0=;
+ b=joKUyMLQ54tlB5puXcZGVEJ/OJR/ObY0xhlTWIz11DE9Cd157j+WlfBfNH8MIbZ8Grbf
+ iVm/KT0gElWDUszkQyWJf3eQwm7tU3QB/jqxySZMY6foV6JU5aFta4ObtXiew4z2y/NQ
+ 7lehI37yw8XlztPyNb11QzSkXxvsPqt4jrOTashkLPksjEhturRYr/VC01YPqEpSsl/M
+ zm9VzQFqAFPenz0hNEaPobXtQmTvVA2SaUdF3pNCh+chrZbmb2UJ5/fFzVJUbXv1/B7C
+ mnTFeZ64LdvdrRKUYG/PLBtKRFFHzP/8WzuChwenetU5B9rBp/jevsbWrYaMiIEjYi2I PQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 318xe1cxvd-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 27 May 2020 02:13:10 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04R2CoVR060320;
-        Wed, 27 May 2020 02:13:10 GMT
+        Wed, 27 May 2020 02:13:16 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04R27XJO133227;
+        Wed, 27 May 2020 02:13:16 GMT
 Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 317dryjtup-1
+        by aserp3020.oracle.com with ESMTP id 317j5q908t-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 27 May 2020 02:13:10 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04R2D9js017230;
-        Wed, 27 May 2020 02:13:09 GMT
+        Wed, 27 May 2020 02:13:15 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04R2DFe9017249;
+        Wed, 27 May 2020 02:13:15 GMT
 Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 26 May 2020 19:13:09 -0700
+        with ESMTP ; Tue, 26 May 2020 19:13:15 -0700
 From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Bodo Stroesser <bstroesser@ts.fujitsu.com>
+To:     Sudhakar Panneerselvam <sudhakar.panneerselvam@oracle.com>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
 Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Mike Christie <mchristi@redhat.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] scsi: target: tcmu: Fix a use after free in tcmu_check_expired_queue_cmd()
-Date:   Tue, 26 May 2020 22:12:55 -0400
-Message-Id: <159054550934.12032.1754394879666854643.b4-ty@oracle.com>
+        jasowang@redhat.com, shirley.ma@oracle.com, mst@redhat.com,
+        pbonzini@redhat.com, stefanha@redhat.com
+Subject: Re: [PATCH 1/1] vhost: scsi: notify TCM about the maximum sg entries supported per command.
+Date:   Tue, 26 May 2020 22:13:00 -0400
+Message-Id: <159054550934.12032.480617639517233845.b4-ty@oracle.com>
 X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200523101129.GB98132@mwanda>
-References: <20200523101129.GB98132@mwanda>
+In-Reply-To: <1590166317-953-1-git-send-email-sudhakar.panneerselvam@oracle.com>
+References: <1590166317-953-1-git-send-email-sudhakar.panneerselvam@oracle.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9633 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 malwarescore=0
- mlxlogscore=923 adultscore=0 suspectscore=0 bulkscore=0 mlxscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 suspectscore=0
+ mlxlogscore=978 mlxscore=0 adultscore=0 phishscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005270013
+ definitions=main-2005270012
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9633 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=972 spamscore=0 mlxscore=0
- lowpriorityscore=0 priorityscore=1501 phishscore=0 cotscore=-2147483648
- suspectscore=0 bulkscore=0 clxscore=1015 impostorscore=0 malwarescore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005270013
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
+ adultscore=0 cotscore=-2147483648 mlxscore=0 bulkscore=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
+ clxscore=1011 impostorscore=0 suspectscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005270013
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Sat, 23 May 2020 13:11:29 +0300, Dan Carpenter wrote:
+On Fri, 22 May 2020 16:51:57 +0000, Sudhakar Panneerselvam wrote:
 
-> The pr_debug() dereferences "cmd" after we already freed it by calling
-> tcmu_free_cmd(cmd).  The debug printk needs to be done earlier.
+> vhost-scsi pre-allocates the maximum sg entries per command and if a
+> command requires more than VHOST_SCSI_PREALLOC_SGLS entries, then that
+> command is failed by it. This patch lets vhost communicate the max sg limit
+> when it registers vhost_scsi_ops with TCM. With this change, TCM would
+> report the max sg entries through "Block Limits" VPD page which will be
+> typically queried by the SCSI initiator during device discovery. By knowing
+> this limit, the initiator could ensure the maximum transfer length is less
+> than or equal to what is reported by vhost-scsi.
 
 Applied to 5.8/scsi-queue, thanks!
 
-[1/1] scsi: target: tcmu: Fix a use after free in tcmu_check_expired_queue_cmd()
-      https://git.kernel.org/mkp/scsi/c/9d7464b18892
+[1/1] scsi: vhost: Notify TCM about the maximum sg entries supported per command
+      https://git.kernel.org/mkp/scsi/c/5ae6a6a91503
 
 -- 
 Martin K. Petersen	Oracle Linux Engineering
