@@ -2,41 +2,60 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EAAC1E64C0
-	for <lists+target-devel@lfdr.de>; Thu, 28 May 2020 16:53:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5EBD1E65BC
+	for <lists+target-devel@lfdr.de>; Thu, 28 May 2020 17:17:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391362AbgE1Oxj (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 28 May 2020 10:53:39 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:44109 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391244AbgE1Oxi (ORCPT
+        id S2404158AbgE1PRC (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 28 May 2020 11:17:02 -0400
+Received: from wout1-smtp.messagingengine.com ([64.147.123.24]:58553 "EHLO
+        wout1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2404221AbgE1PQ7 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 28 May 2020 10:53:38 -0400
-Received: by mail-pg1-f195.google.com with SMTP id p30so13561852pgl.11;
-        Thu, 28 May 2020 07:53:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=cfzDVeenpvj+BZqV0/UhApIa8t7msOrP7Mg4fGDJbms=;
-        b=aFu4DGMAKjLdV5kkQZKqVi9PDjp8s1ze+gdYXwwyva8l6MlIrnQ8kWtkrE4qW8jb3G
-         NkD5d6Y+TR/Igxv3Ysb7xcLy30lSkALRDZRx2aCVcxWM2GBXpWd/mu4PUBFOFKIQzDnc
-         tm2EbVUyZpBcT8Agpler1bsVaPgObiaM7wfixvlEkVuXEHJdiOz84HP5TqwmLfFmPq3e
-         PXKCL1fQtmjZ4tH8YQ5GjvuLmMKYKYS4tjHax+6n1EB/Rzc56KyzC7iqim8VPDga67FB
-         KE+0PQYloLcbyVT7x+6vmo9rkrUOGmT/2fzZVU3j/pbQ6jt6yRVb71cpnMXDABWXU/sh
-         sY0w==
-X-Gm-Message-State: AOAM5300UDoUA1zGlnvTwIAMwoeQD8Qt5q0ZFvasL2HTDZPKAg+0AksQ
-        doa8vfebl3vnvZWOwz/nhrYnaHSoU/8=
-X-Google-Smtp-Source: ABdhPJyww5SkYlCpB6JqMj2ap2uap5OXF3S8N+mAl26zik/nUI7r5eyXEVIv/1IC8TYkgg7xy4bQBg==
-X-Received: by 2002:a63:40a:: with SMTP id 10mr3383814pge.310.1590677616663;
-        Thu, 28 May 2020 07:53:36 -0700 (PDT)
-Received: from ?IPv6:2601:647:4000:d7:40e6:aa88:9c03:e0b4? ([2601:647:4000:d7:40e6:aa88:9c03:e0b4])
-        by smtp.gmail.com with ESMTPSA id k92sm5799676pjh.2.2020.05.28.07.53.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 May 2020 07:53:35 -0700 (PDT)
+        Thu, 28 May 2020 11:16:59 -0400
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
+        by mailout.west.internal (Postfix) with ESMTP id B06FAABA;
+        Thu, 28 May 2020 11:16:57 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Thu, 28 May 2020 11:16:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootc.net; h=
+        subject:to:cc:references:from:message-id:date:mime-version
+        :in-reply-to:content-type:content-transfer-encoding; s=fm2; bh=t
+        d003DFyixtDY6qWdGDWXt7aHufyht8GTRmfiOc/DXo=; b=Etdc4YUU69IE99nuG
+        3Zjzgos+3BKyj8EcQ1n9Ic8BahEemS4aHL5i92tzuajpC3uJZShDwKrX7hhPw+C4
+        M76AsCF+Ca+Y6aR3lSAf4U8P2AW2i/xrHTFJ34wdQesJAPl8jkQCk3h/J4rtfBX3
+        D1ljNzc1hP1+CkdmlYbTyvtsSnfdSqHFq8QjlOwffAn3CCJejEJq47tEk8ZU3GR/
+        jZVgy3ojrH/A7+BhdSr2tS9vg+uvKKa/xLeCPXes0SBwIY5VhJOv9a4fk117yRRE
+        tEumD8MblFP8qbt2g4GSSlk3ejSs/q1kSntnsir4PvJbmk8V2OoUG3wpG2Uj6ged
+        9NN9A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:content-type
+        :date:from:in-reply-to:message-id:mime-version:references
+        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; bh=td003DFyixtDY6qWdGDWXt7aHufyht8GTRmfiOc/D
+        Xo=; b=eGWvnwhjCkbY0Iy+8g0V02MLEqTKQp5rI4iZpxDt+7QWTA+as54C88qvd
+        MjoOtOwyqDxQyacV9vdu9AhNELnlIGb4FeDers2b0WXXJldAKPtQ/IZNChkQHzQc
+        aMqvBr2jyBJZTn6OEmxCpPI8y14VeBl+9LJsVS4uc+3u0Z79SDYqY5CZji30xVD6
+        fi88Uw32iWoZ/dGP4ghqbVWA+HHzWLaa+mwd8LfqU7mrJPnbHiGBy9wPE0XeJDu7
+        Y91wb0sPsy5ohguWWSHy/yS//URl6bNMjbIxROlTlT4u0uo+Wf+qYStKE2Gqb8ns
+        DqTPSZPlZmk7mR3MHbWcdTjFa2BCA==
+X-ME-Sender: <xms:6NXPXqkoxWXG4okRtFNfhDir5vNCcpqWLdN_zHGKgWm1AMsPeAua_A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedruddviedggeefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepuffvfhfhkffffgggjggtgfesthejredttdefjeenucfhrhhomhepvehhrhhi
+    shcuuehoohhtuceosghoohhttgessghoohhttgdrnhgvtheqnecuggftrfgrthhtvghrnh
+    eptedvkeekkefhheetlefhgfejleeiiedtkedtuefgjeeijeettedtieeujeejkeehnecu
+    kfhppeekuddrudekjedrheehrdekkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpegsohhothgtsegsohhothgtrdhnvght
+X-ME-Proxy: <xmx:6NXPXh1CPMnNOj03LYWzAKvJuS6B0f7lYq727PaArUOqEgIhRVUIrQ>
+    <xmx:6NXPXoqMKuIJvSvunz1O_AiAyMqIYgTVYdAACVxdSbgED5iELOQViw>
+    <xmx:6NXPXuk-fQZ0RRffE0n0DNfAtjEVP7hSmYlCm9RnsJRjqP61ByADRQ>
+    <xmx:6dXPXs_LpbXbBrOgQmmY79pTo6_s4chS2OZ8u-2Sy-BwVBnFevKT7w>
+Received: from [81.187.55.88] (ripley.boo.tc [81.187.55.88])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 1A479306218B;
+        Thu, 28 May 2020 11:16:55 -0400 (EDT)
 Subject: Re: [PATCH] sbp-target: add the missed kfree() in an error path
-To:     Chris Boot <bootc@bootc.net>
+To:     Bart Van Assche <bvanassche@acm.org>
 Cc:     Chuhong Yuan <hslester96@gmail.com>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         Nicholas Bellinger <nab@linux-iscsi.org>,
@@ -44,55 +63,119 @@ Cc:     Chuhong Yuan <hslester96@gmail.com>,
         linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
         linux1394-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org
 References: <20200528102056.911825-1-hslester96@gmail.com>
-From:   Bart Van Assche <bvanassche@acm.org>
-Autocrypt: addr=bvanassche@acm.org; prefer-encrypt=mutual; keydata=
- mQENBFSOu4oBCADcRWxVUvkkvRmmwTwIjIJvZOu6wNm+dz5AF4z0FHW2KNZL3oheO3P8UZWr
- LQOrCfRcK8e/sIs2Y2D3Lg/SL7qqbMehGEYcJptu6mKkywBfoYbtBkVoJ/jQsi2H0vBiiCOy
- fmxMHIPcYxaJdXxrOG2UO4B60Y/BzE6OrPDT44w4cZA9DH5xialliWU447Bts8TJNa3lZKS1
- AvW1ZklbvJfAJJAwzDih35LxU2fcWbmhPa7EO2DCv/LM1B10GBB/oQB5kvlq4aA2PSIWkqz4
- 3SI5kCPSsygD6wKnbRsvNn2mIACva6VHdm62A7xel5dJRfpQjXj2snd1F/YNoNc66UUTABEB
- AAG0JEJhcnQgVmFuIEFzc2NoZSA8YnZhbmFzc2NoZUBhY20ub3JnPokBOQQTAQIAIwUCVI67
- igIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEHFcPTXFzhAJ8QkH/1AdXblKL65M
- Y1Zk1bYKnkAb4a98LxCPm/pJBilvci6boefwlBDZ2NZuuYWYgyrehMB5H+q+Kq4P0IBbTqTa
- jTPAANn62A6jwJ0FnCn6YaM9TZQjM1F7LoDX3v+oAkaoXuq0dQ4hnxQNu792bi6QyVdZUvKc
- macVFVgfK9n04mL7RzjO3f+X4midKt/s+G+IPr4DGlrq+WH27eDbpUR3aYRk8EgbgGKvQFdD
- CEBFJi+5ZKOArmJVBSk21RHDpqyz6Vit3rjep7c1SN8s7NhVi9cjkKmMDM7KYhXkWc10lKx2
- RTkFI30rkDm4U+JpdAd2+tP3tjGf9AyGGinpzE2XY1K5AQ0EVI67igEIAKiSyd0nECrgz+H5
- PcFDGYQpGDMTl8MOPCKw/F3diXPuj2eql4xSbAdbUCJzk2ETif5s3twT2ER8cUTEVOaCEUY3
- eOiaFgQ+nGLx4BXqqGewikPJCe+UBjFnH1m2/IFn4T9jPZkV8xlkKmDUqMK5EV9n3eQLkn5g
- lco+FepTtmbkSCCjd91EfThVbNYpVQ5ZjdBCXN66CKyJDMJ85HVr5rmXG/nqriTh6cv1l1Js
- T7AFvvPjUPknS6d+BETMhTkbGzoyS+sywEsQAgA+BMCxBH4LvUmHYhpS+W6CiZ3ZMxjO8Hgc
- ++w1mLeRUvda3i4/U8wDT3SWuHcB3DWlcppECLkAEQEAAYkBHwQYAQIACQUCVI67igIbDAAK
- CRBxXD01xc4QCZ4dB/0QrnEasxjM0PGeXK5hcZMT9Eo998alUfn5XU0RQDYdwp6/kMEXMdmT
- oH0F0xB3SQ8WVSXA9rrc4EBvZruWQ+5/zjVrhhfUAx12CzL4oQ9Ro2k45daYaonKTANYG22y
- //x8dLe2Fv1By4SKGhmzwH87uXxbTJAUxiWIi1np0z3/RDnoVyfmfbbL1DY7zf2hYXLLzsJR
- mSsED/1nlJ9Oq5fALdNEPgDyPUerqHxcmIub+pF0AzJoYHK5punqpqfGmqPbjxrJLPJfHVKy
- goMj5DlBMoYqEgpbwdUYkH6QdizJJCur4icy8GUNbisFYABeoJ91pnD4IGei3MTdvINSZI5e
-Message-ID: <475e4f50-6d20-d653-8288-0676bc708bcc@acm.org>
-Date:   Thu, 28 May 2020 07:53:34 -0700
+ <475e4f50-6d20-d653-8288-0676bc708bcc@acm.org>
+From:   Chris Boot <bootc@bootc.net>
+Autocrypt: addr=bootc@bootc.net; prefer-encrypt=mutual;
+ keydata= mQINBFL1FNgBEADf8jZGW5tZWPDpyx7oWq8L7KD9a2YM5bp48LJ9tXYEVD+j3EIJH3DlYMOh
+ Lif5+XkMaHNAakXSbo41Sjf3ArYOz+ZNvpR3ln/kqYv/ntgbAstlWuWLxGJbjJuLxjSh1eU5
+ jn+XAr0OvQMO9DiwBN3Ocm5B6tkUNhasxOmdlAxef0FsK7Y5bbqxVjC5/3DHqbmDiJvdof4q
+ 1z5SEpuzKLn5xmdU+kANurZekp0JqgprS8gSmDV3fpJa7gTmcX11ArAV4TbI5CmJgnv3u6Nf
+ k8E6oLk7wDs6mKzutS1MMVtaWpOMYqbM8q/QFI+ICf5SGmvpvOTvgIxAC80RWTYaxZn0g6sQ
+ BhnByDcXFk/YYncmbHBYRJBbb+Y5lRGJMiv7KIp0BzDHO2zcDqvAiC2mtEl+iDOC06vqMD+t
+ YRMkjtDsHbB7TCEeFmeSrQddLfoce04cnl3AyY22Vp2J2GsfobdX2Jw1drBou9cUN7shpuCU
+ cqcGEvpT6mRd6uIzbFNXkWp0wiQPKUzDJXlh/GiROtM/468Bbj9JsiIIv183iKw6fQJtMg5c
+ B34/GuEFfbfrqPNNO2ElEX6DcsnRZp3Vq+SMM+dDWXYSF1MJt52tT+deHGgzXj+NMHWU/K5X
+ DWGcxtpM8QbFFwxTl2B5k2jjL61IhCnPpJSQZhzhXRuei04uaQARAQABtBxDaHJpcyBCb290
+ IDxib290Y0Bib290Yy5uZXQ+iQJUBBMBCgA+AhsDBQsJCAcDBRUKCQgLBRYDAgEAAh4BAheA
+ FiEEhGdTyxkhMULFbckY9cg8BdnO7u4FAl3mva8FCQz6aVIACgkQ9cg8BdnO7u5lOA//VWl9
+ wdFy5hA2tktZlMCuej7hJlTINH3uD+xRNsNOxWDaJNNnkuR5Hr9bsATh4oVFtSE+aYjyRC5d
+ 8np9MrDVZl0wVIaD9myzKwXYtruZfodezJjhpahyILkmd/LsKJpPpam8u0VWae9BdbGrBEoO
+ rOU9pAP0wld3cuSXpJBtfS8WsFjy0rZH4omw8MpzHQfZqt5Tze4unUTXbdzgvsMOYGhRlcgD
+ kJW8E0qKJCpVjI+fQjV4hkx3F+6RqeEYnxYcOvTbFN285HFxAzvjPII4MD9iewbDBwqM4u+8
+ 9JO6ES4KJRy+boY23ze1W6LNFC9at/cVZi/SH2OMx7wIUJKiWnf9UMhtC7tnUHRZR+/6cdgI
+ 49beIQs1LldqT3bT5ivDcZx6rrHrIkT3POhV9M2b7hlw8q+DpVXVhCwWkxjQb0Byo6ABe4iz
+ sJl8SY8RtfX29fcIGYxRVqzA+5ynCkMTY0uRyti9GvPfqbvsLQxHQsu92HR3frv8sxb9ya07
+ snq4//kZQ6tH5ry/e7m8Tp867yi32hsNtT2RdVe8SBAOXOqmaFyAjTp3ga8lWEnPGLftcv8B
+ LKR/RZG0+O/ykQI+zI8bthQGVar9M2pN0/hrQU7prbTh11j1BaLZT1F59DjR3osO3BHyV/+h
+ xJdREkzrfUMJ15QvY2k9cbpOZahsgwS5Ag0EUvf4ogEQAKkdFtOZUfNQIWGAuJfYOTnoLqqC
+ kre6E0kw18DpXlH97O+6lKPLB679pKMfzh7uwVlkIjWwc0gQPxQvmKv6PbkflAMzr7FtofNj
+ fMi1eaGdSlRAbo2K1EQTukVTtnkPFOd+Xgp74Gq+Ebr73qO3on04wvM6NzzBdLh+QEWxj4WC
+ Jv6/Eh3BWiyOTAS3qyL1pZiqorrXhmBu4WvoaR2+AgasOVV1d0+flmbj7OQIieQtORLadyyH
+ 7a/c/Q+h+9Dabt6BNT2IdOMEkMm61tdOCsqg2MgsgTyU8FjSnJE+cws/H1W1aufCldD47dpN
+ bJHawl7WEVYYoABuApvXTi6DLNWql0v0ownhNwVKZb3zs/AdkoDRjYb9YSQ/WIPcNtiGrr3p
+ 6xeIKr93EuqZWtWvtpF5DqoJ7FNqN5wQEmOlpj7igQ0r9M3tTQQJg0j6MtCdbo9ZUXtZmjxi
+ 8mdpAz0of8qabgSiPhFuFgHDnqGtRmVgKCY1vD6esmA+wfZnbGaU0tmQQpr2Cdbx11vnfhj/
+ LTObPBYy+ciJlPoXebC1/AsxANbLpjAtQUNWtXAS1NRFSuI1GtQ7RskqPS11uoRMhLkDy0aE
+ 51QIQs3UWuTy591UGH8MwlNIy6pTjFCyRXeM2dynPzCECqOnZfyeuQ/dsiWInmDNRD1auGGE
+ F+Faf11dABEBAAGJAjwEGAEKACYCGwwWIQSEZ1PLGSExQsVtyRj1yDwF2c7u7gUCXea90gUJ
+ DPeFsAAKCRD1yDwF2c7u7gBxEADKykkyLmTVim9NtsRZ5/XQgPGb7+WuOqUI3OOrQV4xet+z
+ UtKllzjzLHYYSSqhCXc9G9Cr/c9XFAuqrxewPvgAzJN6PLAaswH0VHRZoaFUO0jZnccMz7kp
+ nLAtnYKoCGCvYX+ZERt4VsCST3GDjha0bP+2T7jQhBRdwVq/Jj64xRwt1FzYbOoKvM5k2hgJ
+ 7hEuR/phuFnomLTdpoY88IZW6tcg2cHnXjBpjPxzd7QZ0PJjRWwS/zORIUYl35HMWcw2N9ev
+ 0f6i1JxVLgoK01Rxx13AjD5ZxCC9BabY5XmX/BuGLh2IJbGiC//p6O0QDHYIbBMlTHee32dY
+ 0iY5EeGY9dFdUP5Bsh/+HOQLTL4kCMZUewqLwjgl+B09mOXVZ9oadCVx5+sjJHakpmsJ+MTb
+ qpSEFRjZvzLyvWkaknBtfNoM5apq1BuK1IJizK9tPDiEy+KJV9Ppb9K+X4XICxXnGfbKPxsG
+ 8PQf38nVQxhop864cQvFMKL3hXIz7/R6QRpLxWRIqYAkfMwk9ddo4Szt+5rVb+1o99fDAjq6
+ dA9ZirhrpOdokg53b0dmlTAZWhe20gBmpic8dlN0+/xneDWLUd8dxFDxl7oogBS9CSVQ82J0
+ cqb0E17gOOGtDTv7WN7w6Z5kI+fosGt0vHFtPPyFjK+mgEslum/y5SVheMwewbkCDQRZ71Qr
+ ARAAwXrmFr1rP3pPRo5Hs13KLm0tbv6jSqKICMNjC4siJ1xyYjtX4Ra8ml9jMUPSHqza2BXB
+ jiIwWuoHuAOcoLYYqQUIUbujlg3AxhWZBS86qSjhuLZUli9YhGJsalLI31oo1a0yhgsiWZoq
+ ocbD1i18JNVsFHGuF0PXgihCpxL28PBpZ4gunL8Yg2DYLJqsdG0sbu1jSpqk0FaVcn7VfuNx
+ 7rrbX/Ir4pvFRpLAecl29dQd23i7dkEW3F14KckXK1tOcKKviST0G7QahVmkDEGwpHk29ZkW
+ j/3/o86l/6LQ9bPofD0M8ZxGc5Of3tJSDiUVQAXNL27cL2B3AXFT3VP5hu5svUo82lO2dFYl
+ RMHieR/SNXwkNSq05RncU2xzSY56Wy+DhxLEBNz4J5KqHmus4wavXLnA2Da17E4jlUjw0MzM
+ 0Slar0AqJ5AfKrXyELx7c1+sTb4fzo4CHi+d80DHF5JOjux+gpMar9tVGJjXhLEZugMnM3mx
+ p9z2IvnHcU/lVX2v8QE0g17b8ZXoXro9yMNBtLEXGW1HKmdzhpvFrvNKE/JHknaWpbJ3zSiU
+ wT1ykyeqoTnN2ilz3hGuClztUpARpiP5QQSdKaxHN6yfqd6+G/HOAeTCfbBVPBEa0h5ynM79
+ PSD2P3fJG7zHi9mmJ82Sh39C8zcjbvPrge64dDcAEQEAAYkE0gQYAQoAJgIbAhYhBIRnU8sZ
+ ITFCxW3JGPXIPAXZzu7uBQJd5r3SBQkGAConAqDB1CAEGQEKAH0WIQRqTE2CjbcMM8WpuxjW
+ jb0O3aCpZAUCWe9UK18UgAAAAAAuAChpc3N1ZXItZnByQG5vdGF0aW9ucy5vcGVucGdwLmZp
+ ZnRoaG9yc2VtYW4ubmV0NkE0QzREODI4REI3MEMzM0M1QTlCQjE4RDY4REJEMEVEREEwQTk2
+ NAAKCRDWjb0O3aCpZBfbD/48k7H8HmdfmwPByBFZfTi54GESf748bsjwPUyYBuCYPskOage5
+ /EBiNYgFsAMnbRaRKYA+JXszYoMe0c63hcrbGhv8zWmWQGToxRu7jbSBrc9+bruQXm7yBbcZ
+ yg8zVFbA7pRJ5uOw7LgWiRKVzN/Owt/LpsyKcqqm2wk1MPAqIlOhs2WUuH6w8HsW7NU+WEbq
+ ysTzQU3y6Hi7EoKuPmlyt1MPNVsnMR2Nnn4a4oP7O2xgReO/uj/ZX9iIlAL8iHq5C7unBkNk
+ AK0vxKexxoeZ40ALmJpvYXHsTyA9cpTkOrv8fnOvmr22kqmRbfZTUd1eZF9ByILyo2FVHdJS
+ n2vaC7z9Gvz8s2PTLbCaIgCWuLJyOmwpQTMJ+CVFgl6bbIJc71oY75JRRVMgN+BS1UiEguCt
+ N0MrTEnhJMQ5z7P8ENOwH1XTS/BC5+R7CWBNH3+m+GZTEQMSEQkMr31yKjtKwWGupVrKp2ET
+ NEWCG+rjub+5+e6XlvKvj+RmIxPbA/GGLRaSYhUgKJea7fuz+1i5Yz17HsymQnLLmFNaVydp
+ /nhIk6xbgZDGI7fDnWkrkMdyDvswgXDYg5WXTnkkbOcKmxUSbyW+V6R823mTzdOVf7aJYio4
+ NMwErPGoq/fD6av5gEcB81uJOtfiDsKEGdOAJfwczNFWNt7wKumwCkm2qwkQ9cg8BdnO7u7E
+ QBAAqwlTRxT7BEGB86Io1Cv1K9fsEYw5xQWdPofhX48SI22NZMZ4Y0xgXG/aNdI57qZnBfKg
+ 8+JjKZEVO46H8rsa3uUSFD6qvgxRe3OVE/WJcu16ngdGloEXFB3UkenPPpHp6p3u2zYnjeRz
+ +tPhoAbQHB0fclu27IuzptYoGL1X1cF0J21UPXH5SN2oUBdqAKBvBlx/yNFO+E9J+qw9Yn0r
+ Jp0UjfkeQqSY1GxQUHRB9UqCgMuUcGLCYGWAblmht6qA1YySHE3F3X8V8PoYz/yPJtAcRiaC
+ gXk1l8FnPGLkCK0Oo77oNjE1Qdlni3HQYvbebuQxotmcdXePtheAPO/JCDl3j54tZsO6WaNF
+ Ze+cALycC6xmy8lL9qAUGpyX8v4/EJrGejqTXaIeKxTWfCekjjhPFyd/24zfb9rpy/16hRJq
+ E7ix7nHAhCSXYIZTIbfCe6qaLJwe/pA+Ary/2NuvwwwDKg3SFrss9fSAftvP2dDxOyuXb0eJ
+ maaCCvdzqeDVRtasF2TW3g9oVr8ofYqT9BQZoPXITkCJUrxAgMDypbHMUh+6Kuy6D5p2p7aj
+ wVzu2FjNtg8s3yoGCcmtUtDGFswNQukUkgHKSJzYJSPsR5d6oM+oV3QvtqWLkUq1KyI7h7wK
+ 1QBDj3S+cCP/8Pe5l3n1B7V4SkVPBQs/H/ClB6o=
+Message-ID: <dcb29beb-0996-a141-89af-ac9c9c5fd5c0@bootc.net>
+Date:   Thu, 28 May 2020 16:16:51 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <20200528102056.911825-1-hslester96@gmail.com>
+In-Reply-To: <475e4f50-6d20-d653-8288-0676bc708bcc@acm.org>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 2020-05-28 03:20, Chuhong Yuan wrote:
-> sbp_fetch_command() forgets to call kfree() in an error path.
-> Add the missed call to fix it.
+On 28/05/2020 15:53, Bart Van Assche wrote:
+> On 2020-05-28 03:20, Chuhong Yuan wrote:
+>> sbp_fetch_command() forgets to call kfree() in an error path.
+>> Add the missed call to fix it.
+> 
+> Hi Chris,
+> 
+> The changelog of the code under drivers/target/sbp makes we wonder
+> whether this driver has ever had any other users than its original
+> author. Do you agree with this? If so, do you want to keep this driver
+> in the kernel tree?
 
-Hi Chris,
+Hi Bart,
 
-The changelog of the code under drivers/target/sbp makes we wonder
-whether this driver has ever had any other users than its original
-author. Do you agree with this? If so, do you want to keep this driver
-in the kernel tree?
+I think you might be right. I also don't have much time to maintain it
+these days and the hardware I had is long dead. It probably should be
+removed for everyone's sanity.
 
-Thanks,
+Best regards,
+Chris
 
-Bart.
+-- 
+Chris Boot
+bootc@bootc.net
