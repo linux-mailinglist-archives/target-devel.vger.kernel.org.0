@@ -2,97 +2,97 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EC0A1E5D07
-	for <lists+target-devel@lfdr.de>; Thu, 28 May 2020 12:22:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EAAC1E64C0
+	for <lists+target-devel@lfdr.de>; Thu, 28 May 2020 16:53:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387850AbgE1KVw (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 28 May 2020 06:21:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59886 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387810AbgE1KVI (ORCPT
+        id S2391362AbgE1Oxj (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 28 May 2020 10:53:39 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:44109 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391244AbgE1Oxi (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 28 May 2020 06:21:08 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76370C08C5C5;
-        Thu, 28 May 2020 03:21:06 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id j21so13264480pgb.7;
-        Thu, 28 May 2020 03:21:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=sw0rt0kzpIX/gUx8+hCgXRUMgtmjnf69jO+OqqsmVeg=;
-        b=UtM8cW31AvkQC00j8DXuOSIp629fS3hCuVZFezqVeULbkTblEPhvk6Ey2Fx0Qxnm1k
-         eP34hG0buqPe5K7WeGfOwz7sE/7ofmoOGKqBZeDq1SVptUBW+RHbEIqHK4kH4zoM3ikI
-         6Gr7P1OP9YmJZDnHE8xj4lgD/Aa5FQSJgevNB8GBCI3GZCQ9v+1qViC+tGIPFIZ0O4CW
-         lLAPIdiqZTXFRwHlp4VKamYWM4JjMamCa932exOsrAbc+JaljC6bSKdjdaJVwAjnOZ2L
-         lD4dgsSSntxzABZIeSuNi/zfJKAWME61JRPdDGgvfBryQzY6dh+zNnT6XOw5/6lSC3Dr
-         s5CQ==
+        Thu, 28 May 2020 10:53:38 -0400
+Received: by mail-pg1-f195.google.com with SMTP id p30so13561852pgl.11;
+        Thu, 28 May 2020 07:53:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=sw0rt0kzpIX/gUx8+hCgXRUMgtmjnf69jO+OqqsmVeg=;
-        b=f5Zi1WJkyS8I6KS04s0QFpCo+NAm5lyKfaxM2CRcyZZiPa+2prlWpjaTWmGxTx617T
-         nfFyfkwkjOEun6W5wEnmmyA8MxlJEqWsaZpGlbNDLKQsH87mPX7qRoBSBtegEuPZGhHc
-         +ikAwWQ0oHg3IBG8+7kpgTAkvZNyiPFaEDa89FpOUdg9H3V97R5+IlwvkGt6hAsY6Sh8
-         0KE2JN37UolMskYKpUKljnb0bqcYozgna0IMgkRps9l1p+VJcQYyi2iX2dBIGfYtb2rM
-         03Vks9RCAtxM8RqfxTyo1VHreDxMQ+oYGwMHGKkl4dc6voOhTuaJOu+76ye9Dc+v25yw
-         tzJQ==
-X-Gm-Message-State: AOAM532PXCdDKtFO7/A9kR4r+wL3R13s64JCloCVOOoIocBQkDOf8p17
-        nhj8MrMMKJcafFIHN0GnCbU=
-X-Google-Smtp-Source: ABdhPJzcLA0+TQPlgAm8Qs94D4yKVFqRRUBD1tklJ3GnQ1Zw51/zVWrAlHppT6eTOe4HIMuqeGm2kg==
-X-Received: by 2002:a62:1b87:: with SMTP id b129mr2370316pfb.162.1590661265781;
-        Thu, 28 May 2020 03:21:05 -0700 (PDT)
-Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
-        by smtp.gmail.com with ESMTPSA id g65sm370180pfb.61.2020.05.28.03.21.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2020 03:21:05 -0700 (PDT)
-From:   Chuhong Yuan <hslester96@gmail.com>
-Cc:     Chris Boot <bootc@bootc.net>,
+        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=cfzDVeenpvj+BZqV0/UhApIa8t7msOrP7Mg4fGDJbms=;
+        b=aFu4DGMAKjLdV5kkQZKqVi9PDjp8s1ze+gdYXwwyva8l6MlIrnQ8kWtkrE4qW8jb3G
+         NkD5d6Y+TR/Igxv3Ysb7xcLy30lSkALRDZRx2aCVcxWM2GBXpWd/mu4PUBFOFKIQzDnc
+         tm2EbVUyZpBcT8Agpler1bsVaPgObiaM7wfixvlEkVuXEHJdiOz84HP5TqwmLfFmPq3e
+         PXKCL1fQtmjZ4tH8YQ5GjvuLmMKYKYS4tjHax+6n1EB/Rzc56KyzC7iqim8VPDga67FB
+         KE+0PQYloLcbyVT7x+6vmo9rkrUOGmT/2fzZVU3j/pbQ6jt6yRVb71cpnMXDABWXU/sh
+         sY0w==
+X-Gm-Message-State: AOAM5300UDoUA1zGlnvTwIAMwoeQD8Qt5q0ZFvasL2HTDZPKAg+0AksQ
+        doa8vfebl3vnvZWOwz/nhrYnaHSoU/8=
+X-Google-Smtp-Source: ABdhPJyww5SkYlCpB6JqMj2ap2uap5OXF3S8N+mAl26zik/nUI7r5eyXEVIv/1IC8TYkgg7xy4bQBg==
+X-Received: by 2002:a63:40a:: with SMTP id 10mr3383814pge.310.1590677616663;
+        Thu, 28 May 2020 07:53:36 -0700 (PDT)
+Received: from ?IPv6:2601:647:4000:d7:40e6:aa88:9c03:e0b4? ([2601:647:4000:d7:40e6:aa88:9c03:e0b4])
+        by smtp.gmail.com with ESMTPSA id k92sm5799676pjh.2.2020.05.28.07.53.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 May 2020 07:53:35 -0700 (PDT)
+Subject: Re: [PATCH] sbp-target: add the missed kfree() in an error path
+To:     Chris Boot <bootc@bootc.net>
+Cc:     Chuhong Yuan <hslester96@gmail.com>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         Nicholas Bellinger <nab@linux-iscsi.org>,
         Stefan Richter <stefanr@s5r6.in-berlin.de>,
         linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux1394-devel@lists.sourceforge.net,
-        linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH] sbp-target: add the missed kfree() in an error path
-Date:   Thu, 28 May 2020 18:20:56 +0800
-Message-Id: <20200528102056.911825-1-hslester96@gmail.com>
-X-Mailer: git-send-email 2.26.2
+        linux1394-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org
+References: <20200528102056.911825-1-hslester96@gmail.com>
+From:   Bart Van Assche <bvanassche@acm.org>
+Autocrypt: addr=bvanassche@acm.org; prefer-encrypt=mutual; keydata=
+ mQENBFSOu4oBCADcRWxVUvkkvRmmwTwIjIJvZOu6wNm+dz5AF4z0FHW2KNZL3oheO3P8UZWr
+ LQOrCfRcK8e/sIs2Y2D3Lg/SL7qqbMehGEYcJptu6mKkywBfoYbtBkVoJ/jQsi2H0vBiiCOy
+ fmxMHIPcYxaJdXxrOG2UO4B60Y/BzE6OrPDT44w4cZA9DH5xialliWU447Bts8TJNa3lZKS1
+ AvW1ZklbvJfAJJAwzDih35LxU2fcWbmhPa7EO2DCv/LM1B10GBB/oQB5kvlq4aA2PSIWkqz4
+ 3SI5kCPSsygD6wKnbRsvNn2mIACva6VHdm62A7xel5dJRfpQjXj2snd1F/YNoNc66UUTABEB
+ AAG0JEJhcnQgVmFuIEFzc2NoZSA8YnZhbmFzc2NoZUBhY20ub3JnPokBOQQTAQIAIwUCVI67
+ igIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEHFcPTXFzhAJ8QkH/1AdXblKL65M
+ Y1Zk1bYKnkAb4a98LxCPm/pJBilvci6boefwlBDZ2NZuuYWYgyrehMB5H+q+Kq4P0IBbTqTa
+ jTPAANn62A6jwJ0FnCn6YaM9TZQjM1F7LoDX3v+oAkaoXuq0dQ4hnxQNu792bi6QyVdZUvKc
+ macVFVgfK9n04mL7RzjO3f+X4midKt/s+G+IPr4DGlrq+WH27eDbpUR3aYRk8EgbgGKvQFdD
+ CEBFJi+5ZKOArmJVBSk21RHDpqyz6Vit3rjep7c1SN8s7NhVi9cjkKmMDM7KYhXkWc10lKx2
+ RTkFI30rkDm4U+JpdAd2+tP3tjGf9AyGGinpzE2XY1K5AQ0EVI67igEIAKiSyd0nECrgz+H5
+ PcFDGYQpGDMTl8MOPCKw/F3diXPuj2eql4xSbAdbUCJzk2ETif5s3twT2ER8cUTEVOaCEUY3
+ eOiaFgQ+nGLx4BXqqGewikPJCe+UBjFnH1m2/IFn4T9jPZkV8xlkKmDUqMK5EV9n3eQLkn5g
+ lco+FepTtmbkSCCjd91EfThVbNYpVQ5ZjdBCXN66CKyJDMJ85HVr5rmXG/nqriTh6cv1l1Js
+ T7AFvvPjUPknS6d+BETMhTkbGzoyS+sywEsQAgA+BMCxBH4LvUmHYhpS+W6CiZ3ZMxjO8Hgc
+ ++w1mLeRUvda3i4/U8wDT3SWuHcB3DWlcppECLkAEQEAAYkBHwQYAQIACQUCVI67igIbDAAK
+ CRBxXD01xc4QCZ4dB/0QrnEasxjM0PGeXK5hcZMT9Eo998alUfn5XU0RQDYdwp6/kMEXMdmT
+ oH0F0xB3SQ8WVSXA9rrc4EBvZruWQ+5/zjVrhhfUAx12CzL4oQ9Ro2k45daYaonKTANYG22y
+ //x8dLe2Fv1By4SKGhmzwH87uXxbTJAUxiWIi1np0z3/RDnoVyfmfbbL1DY7zf2hYXLLzsJR
+ mSsED/1nlJ9Oq5fALdNEPgDyPUerqHxcmIub+pF0AzJoYHK5punqpqfGmqPbjxrJLPJfHVKy
+ goMj5DlBMoYqEgpbwdUYkH6QdizJJCur4icy8GUNbisFYABeoJ91pnD4IGei3MTdvINSZI5e
+Message-ID: <475e4f50-6d20-d653-8288-0676bc708bcc@acm.org>
+Date:   Thu, 28 May 2020 07:53:34 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+In-Reply-To: <20200528102056.911825-1-hslester96@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-sbp_fetch_command() forgets to call kfree() in an error path.
-Add the missed call to fix it.
+On 2020-05-28 03:20, Chuhong Yuan wrote:
+> sbp_fetch_command() forgets to call kfree() in an error path.
+> Add the missed call to fix it.
 
-Fixes: a511ce339780 ("sbp-target: Initial merge of firewire/ieee-1394 target mode support")
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
----
- drivers/target/sbp/sbp_target.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Hi Chris,
 
-diff --git a/drivers/target/sbp/sbp_target.c b/drivers/target/sbp/sbp_target.c
-index e4a9b9fe3dfb..504a755ea344 100644
---- a/drivers/target/sbp/sbp_target.c
-+++ b/drivers/target/sbp/sbp_target.c
-@@ -1128,8 +1128,10 @@ static int sbp_fetch_command(struct sbp_target_request *req)
- 				req->orb_pointer + sizeof(req->orb),
- 				req->cmd_buf + sizeof(req->orb.command_block),
- 				copy_len);
--		if (ret != RCODE_COMPLETE)
-+		if (ret != RCODE_COMPLETE) {
-+			kfree(req->cmd_buf);
- 			return -EIO;
-+		}
- 	}
- 
- 	return 0;
--- 
-2.26.2
+The changelog of the code under drivers/target/sbp makes we wonder
+whether this driver has ever had any other users than its original
+author. Do you agree with this? If so, do you want to keep this driver
+in the kernel tree?
 
+Thanks,
+
+Bart.
