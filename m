@@ -2,130 +2,82 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CAB01E4DF5
-	for <lists+target-devel@lfdr.de>; Wed, 27 May 2020 21:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03D321E5652
+	for <lists+target-devel@lfdr.de>; Thu, 28 May 2020 07:17:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729142AbgE0TO1 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 27 May 2020 15:14:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60850 "EHLO
+        id S1726913AbgE1FRV (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 28 May 2020 01:17:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726542AbgE0TO1 (ORCPT
+        with ESMTP id S1725764AbgE1FNM (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 27 May 2020 15:14:27 -0400
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B94F7C08C5C2
-        for <target-devel@vger.kernel.org>; Wed, 27 May 2020 12:14:26 -0700 (PDT)
-Received: by mail-il1-x144.google.com with SMTP id h3so2699260ilh.13
-        for <target-devel@vger.kernel.org>; Wed, 27 May 2020 12:14:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=6gQSEGMWPgkGGVyHG9Pe+5fUPTmNwG1QJK7jkF0ZgaY=;
-        b=f2+bfCz5l3s2mc0xZ3f2Pq3WNIRwZ8/K67kflMCF9lRfWG7wXe314goLmBz5B0Cd60
-         +5vJVT0dTUlySipyBR16irIcNP5wMDuUMy1RkgvXzms9Wb+oEtNLdKXLWMsusauMh+xZ
-         NvgnYCDf3lgOevnvYhzKPhv4lszdeNDNo4nIbGDDXy2uvj+nCnHj/hIGINnlzaHpVnXz
-         U2Mhbx0uzLlIHEMjPHZVWXi0epD+kk0mf41r3vnhMeWCo7aOEN2h0PZpzy6BNLO2CdJg
-         4CXuHrITF4Ep7CvoDtfk7R317k4qcgw8oCXy50U5YmzOtUeC08H68OHTNLpfOoE9BdNN
-         BAzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=6gQSEGMWPgkGGVyHG9Pe+5fUPTmNwG1QJK7jkF0ZgaY=;
-        b=o+eHQMVJzoZ0CGvHIO36nQ6mFK4AEECsIrMLSYP7U54N54uVfz9XnNGEwAVlMJXhvM
-         aqerMS5icdJUPqwv4A2c5y8N/l2Pk0ed4yep3cTOmTOcAMFiNU2TopQ6g8EfFtdXNCDj
-         wj9GiyHeb9o3ZjsICB9BbSN7rehlv/jhR4kj/AUoANBBLanQkbmkSNxT9xXPEZJ+s93B
-         3zowf9lQFijaVpuFjYCg3yrfbTWzlsjojHO07RyUqw6dXQa+zIZqX57aQjZE3c1ARmak
-         wpRVRgk3wKuxBYh38lb9ToiXq2MvnkBA+hQ6HdBStUAtncF45cs0iuJq31gRbKYN6cDN
-         0IAg==
-X-Gm-Message-State: AOAM5309qdOkUPO+tLPb1a7d0ziMimWKwraUkhfdzrs93Rn/amLXmKz9
-        3bZ6nn/bMBOzjQ3m/dXmQT9ISg==
-X-Google-Smtp-Source: ABdhPJygidZnbAa0eGY1UJRtoYPZNdP08x0hWzTxRx7yxq441Lory3g22et2VwaQetBDV6SZ86g0Yg==
-X-Received: by 2002:a92:d147:: with SMTP id t7mr4292743ilg.151.1590606865912;
-        Wed, 27 May 2020 12:14:25 -0700 (PDT)
-Received: from ziepe.ca ([206.223.160.26])
-        by smtp.gmail.com with ESMTPSA id g21sm666621ioc.14.2020.05.27.12.14.25
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 27 May 2020 12:14:25 -0700 (PDT)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1je1VQ-0005Pm-Hp; Wed, 27 May 2020 16:14:24 -0300
-Date:   Wed, 27 May 2020 16:14:24 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Leon Romanovsky <leon@kernel.org>
-Cc:     Doug Ledford <dledford@redhat.com>,
-        Leon Romanovsky <leonro@mellanox.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Chaitanya Kulkarni <chaitanya.kulkarni@wdc.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Danil Kipnis <danil.kipnis@cloud.ionos.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jack Wang <jinpu.wang@cloud.ionos.com>,
-        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-nvme@lists.infradead.org, linux-rdma@vger.kernel.org,
-        netdev@vger.kernel.org, rds-devel@oss.oracle.com,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Santosh Shilimkar <santosh.shilimkar@oracle.com>,
-        target-devel@vger.kernel.org
-Subject: Re: [PATCH rdma-next v3 0/6] Add Enhanced Connection Established
- (ECE)
-Message-ID: <20200527191424.GA20778@ziepe.ca>
-References: <20200526103304.196371-1-leon@kernel.org>
+        Thu, 28 May 2020 01:13:12 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 213F7C08C5C3;
+        Wed, 27 May 2020 22:13:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=WsnuuUW/8mNG5XgJndzFDlP4ZHaqtmjvrkyJ/evyN2A=; b=c3NXta7lrMrelp/uYGPfAaa966
+        8FvaQiUf4V98AHB/jCXkfgscBXsFw4O9RoTBbXu69lPUnRpW3L2lwaDhI1JL+c/R+6XC6W1GP/2Wd
+        Cr4aoUNeG+SLIrHNMVjQElvuPUT3WovkTfWaKM44g5p1RhzGtTs19UBh1G8RjOAlg/SRr7CE/PHSp
+        /VVyQt3mSNfWkIGTPN2D+XOMLXnvrbD240ABfnwZp6A9pchmZaJjxwV7O2Div5+NEmg5/VzVz3ZJl
+        MGiO7dqDADVjXVznEmvy0cfLpsTpyGFeUSCFflDRpysUfHCGVw+a/f/NB96VbC/aiG2e20C2e2oeE
+        TiQCXfnQ==;
+Received: from p4fdb1ad2.dip0.t-ipconnect.de ([79.219.26.210] helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jeAqN-0001QR-LQ; Thu, 28 May 2020 05:12:40 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     Eric Dumazet <edumazet@google.com>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        Jon Maloy <jmaloy@redhat.com>,
+        Ying Xue <ying.xue@windriver.com>, drbd-dev@lists.linbit.com,
+        linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-nvme@lists.infradead.org, target-devel@vger.kernel.org,
+        linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+        cluster-devel@redhat.com, ocfs2-devel@oss.oracle.com,
+        netdev@vger.kernel.org, ceph-devel@vger.kernel.org,
+        rds-devel@oss.oracle.com, linux-nfs@vger.kernel.org,
+        tipc-discussion@lists.sourceforge.net
+Subject: remove most callers of kernel_setsockopt v3
+Date:   Thu, 28 May 2020 07:12:08 +0200
+Message-Id: <20200528051236.620353-1-hch@lst.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200526103304.196371-1-leon@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Tue, May 26, 2020 at 01:32:58PM +0300, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@mellanox.com>
-> 
-> Changelog:
->  v3:
->  * Rebased on top of ebd6e96b33a2 RDMA/ipoib: Remove can_sleep parameter from iboib_mcast_alloc
->  * Updated rdma_reject patch to include newly added RTR ulp
->  * Remove empty hunks added by rebase
->  * Changed signature of rdma_reject so kernel users will provide reason by themselves
->  * Squashed UAPI patch to other patches which add functionality
->  * Removed define of the IBTA reason from UAPI
->  v2: https://lore.kernel.org/linux-rdma/20200413141538.935574-1-leon@kernel.org/
->  * Rebased on latest rdma-next and removed already accepted patches.
->  * Updated all rdma_reject in-kernel users to provide reject reason.
->  v1: Dropped field_avail patch in favor of mass conversion to use function
->      which already exists in the kernel code.
->  https://lore.kernel.org/lkml/20200310091438.248429-1-leon@kernel.org
->  v0: https://lore.kernel.org/lkml/20200305150105.207959-1-leon@kernel.org
-> 
-> Enhanced Connection Established or ECE is new negotiation scheme
-> introduced in IBTA v1.4 to exchange extra information about nodes
-> capabilities and later negotiate them at the connection establishment
-> phase.
-> 
-> The RDMA-CM messages (REQ, REP, SIDR_REQ and SIDR_REP) were extended
-> to carry two fields, one new and another gained new functionality:
->  * VendorID is a new field that indicates that common subset of vendor
->    option bits are supported as indicated by that VendorID.
->  * AttributeModifier already exists, but overloaded to indicate which
->    vendor options are supported by this VendorID.
-> 
-> This is kernel part of such functionality which is responsible to get data
-> from librdmacm and properly create and handle RDMA-CM messages.
-> 
-> Thanks
-> 
-> Leon Romanovsky (6):
->   RDMA/cm: Add Enhanced Connection Establishment (ECE) bits
->   RDMA/ucma: Extend ucma_connect to receive ECE parameters
->   RDMA/ucma: Deliver ECE parameters through UCMA events
->   RDMA/cm: Send and receive ECE parameter over the wire
->   RDMA/cma: Connect ECE to rdma_accept
->   RDMA/cma: Provide ECE reject reason
+Hi Dave,
 
-Applied to for-next, thanks
+this series removes most callers of the kernel_setsockopt functions, and
+instead switches their users to small functions that implement setting a
+sockopt directly using a normal kernel function call with type safety and
+all the other benefits of not having a function call.
 
-Jason
+In some cases these functions seem pretty heavy handed as they do
+a lock_sock even for just setting a single variable, but this mirrors
+the real setsockopt implementation unlike a few drivers that just set
+set the fields directly.
+
+
+Changes since v2:
+ - drop the separately merged kernel_getopt_removal
+ - drop the sctp patches, as there is conflicting cleanup going on
+ - add an additional ACK for the rxrpc changes
+
+Changes since v1:
+ - use ->getname for sctp sockets in dlm
+ - add a new ->bind_add struct proto method for dlm/sctp
+ - switch the ipv6 and remaining sctp helpers to inline function so that
+   the ipv6 and sctp modules are not pulled in by any module that could
+   potentially use ipv6 or sctp connections
+ - remove arguments to various sock_* helpers that are always used with
+   the same constant arguments
