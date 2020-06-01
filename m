@@ -2,157 +2,82 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A67C1E796A
-	for <lists+target-devel@lfdr.de>; Fri, 29 May 2020 11:27:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1FBB1E9C5B
+	for <lists+target-devel@lfdr.de>; Mon,  1 Jun 2020 06:07:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725790AbgE2J1D (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 29 May 2020 05:27:03 -0400
-Received: from mail1.bemta25.messagelabs.com ([195.245.230.3]:57238 "EHLO
-        mail1.bemta25.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725306AbgE2J1C (ORCPT
+        id S1725468AbgFAEH3 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 1 Jun 2020 00:07:29 -0400
+Received: from hs-162.6.buanalintas.co.id ([223.165.6.162]:56210 "EHLO
+        mx.bestprofit-futures.co.id" rhost-flags-OK-FAIL-OK-OK)
+        by vger.kernel.org with ESMTP id S1725283AbgFAEH3 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 29 May 2020 05:27:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1590744420; i=@ts.fujitsu.com;
-        bh=F/F58PsdIWKqqeKnez2VulAPhgUIvW8QLlSIPSLcuBQ=;
-        h=From:To:Cc:Subject:Date:Message-Id;
-        b=Zp9qq+/cTgy68XmsmIzPQRLHfcQBStHHXCFIwWlnazED1St74vztFQDvyVYzcRz6G
-         KQUFXjQcFAGKntalcuA+bqr4VPoV3IYPPk/fStTVF1f8tHRhnamR2xHPVQB7Ce0R7Z
-         Q2v7iyLZ8AjYNUbVl2vA4G8/17vihp3D3XxGTF2q2jf0KSALtENxYaB07Pj82T4iQT
-         IlhqGDQnyfekOC5KueYe8k7WaLcxyf+/4gfzk0DRHXhD6t1ByW+tL2C9wfM9tuIDGQ
-         ma/VNEy1BS4PH9Ya4Qx2aep78jhbKY6NiwnebDs+WH+uETjqgfYjQ/QXacZyymh80d
-         WN88KgJMZzw2Q==
-Received: from [100.112.193.214] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-3.bemta.az-a.eu-west-1.aws.symcld.net id 03/A4-09207-465D0DE5; Fri, 29 May 2020 09:27:00 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrILMWRWlGSWpSXmKPExsViZ8MRqpty9UK
-  cwavNHBbd13ewWSw//o/J4u+kG6wWrUvfMjmweHx8eovF4/MmuQCmKNbMvKT8igTWjJ2/jjIW
-  fBar+HnxHVsD4z2hLkYuDiGByYwSvT1nGCGc6YwSKxbvAXI4OdgEDCRWTLrP0sXIwSEiUCsx7
-  1QZSJhZQE9i2r917CC2sICXxJm93WA2i4CqRNuBE2wgNq+ArcSsQ2eZQWwJAXmJjgOTWSYwci
-  5gZFjFaJ5UlJmeUZKbmJmja2hgoGtoaKRraGmia2aml1ilm6iXWqpbnlpcomuol1herFdcmZu
-  ck6KXl1qyiRHo85SCQ047GN+//qB3iFGSg0lJlNf41Pk4Ib6k/JTKjMTijPii0pzU4kOMMhwc
-  ShK8hlcuxAkJFqWmp1akZeYAww8mLcHBoyTCKwWS5i0uSMwtzkyHSJ1iVJQS500BSQiAJDJK8
-  +DaYCF/iVFWSpiXkYGBQYinILUoN7MEVf4VozgHo5Iwb/hFoCk8mXklcNNfAS1mAlr8YMk5kM
-  UliQgpqQamKp/sl6sWvt8odu1F2i+Tm60T9Z65MZ5nS78Y0rFkj9Yu7oAAqzkGsz4vXu2nImL
-  ic9R+six/n82CsqroHbaTy0MW8SZr/22pTnnlte9949W6batvxnH8XH5ld0qkYEDil0tei194
-  H3nIt7B5wUb+7zULp6+9/OxS0aPdck81J1vbnt/D0hUYqznDwXHy1LQ/bw9Mb2io0LMs3xwqr
-  3ztlcCDMzkBvAHm3/vfXjereuD++68pd+7VjJsbY4w2Bklx/XqW/WJSiKxiqU2yYZa+0Uoevj
-  3JTEd14+60+zVdd32pcPlceblRff+7k2tP6dl8iAmLcfsQJJkTdLkq9N4z7ynPbino82iobX/
-  YJtOtxFKckWioxVxUnAgA9hHv+PQCAAA=
-X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-11.tower-271.messagelabs.com!1590744419!732836!1
-X-Originating-IP: [62.60.8.85]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.50.1; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 32468 invoked from network); 29 May 2020 09:27:00 -0000
-Received: from unknown (HELO mailhost4.uk.fujitsu.com) (62.60.8.85)
-  by server-11.tower-271.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 29 May 2020 09:27:00 -0000
-Received: from x-serv01 ([172.17.38.52])
-        by mailhost4.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 04T9Qx0P012070;
-        Fri, 29 May 2020 10:26:59 +0100
-Received: from VTC.emeia.fujitsu.local (unknown [172.17.38.7])
-        by x-serv01 (Postfix) with ESMTP id CA8862060A;
-        Fri, 29 May 2020 11:26:58 +0200 (CEST)
-From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-To:     martin.petersen@oracle.com, michael.christie@oracle.com,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Subject: [PATCH RFC] scsi: target: tcmu: optimize use of flush_dcache_page
-Date:   Fri, 29 May 2020 11:26:56 +0200
-Message-Id: <20200529092656.1048-1-bstroesser@ts.fujitsu.com>
-X-Mailer: git-send-email 2.12.3
+        Mon, 1 Jun 2020 00:07:29 -0400
+X-Greylist: delayed 10682 seconds by postgrey-1.27 at vger.kernel.org; Mon, 01 Jun 2020 00:07:28 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by mx.bestprofit-futures.co.id (Postfix) with ESMTP id F2A4A524EED;
+        Mon,  1 Jun 2020 07:35:29 +0700 (WIB)
+Received: from mx.bestprofit-futures.co.id ([127.0.0.1])
+        by localhost (mx.bestprofit-futures.co.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 4aOWCm9fT2Rl; Mon,  1 Jun 2020 07:35:29 +0700 (WIB)
+Received: from localhost (localhost [127.0.0.1])
+        by mx.bestprofit-futures.co.id (Postfix) with ESMTP id 74E84524EE1;
+        Mon,  1 Jun 2020 07:35:29 +0700 (WIB)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mx.bestprofit-futures.co.id 74E84524EE1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bestprofit-futures.co.id; s=4D3D1390-5211-11EA-8C0C-8C41A122B001;
+        t=1590971729; bh=zLTonXbKn6LYrnOZVETw9C2bepTvRzI70GQOlIiRCC0=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=meH4tHohPpbYo7D10aCnO/ut1cfyunOCMm1i/bzA+uZfkb+YKLHRLQeHgfakmp3MI
+         +1a+e1WeUaKecArcvr4RFALkBMEZEX+I18/pLJEwlQwBe3Dz0Gbkpl445VXIr96VDl
+         3qxqRDI5ubSFi/6PhYIiY8OkmA/yZ53ANO51lV28m8NrZPmG75yovNEn4SNHWWcwbC
+         8QPmm9nioe/LR8hctsMD/mJF7wZs7AShVVmXUMt40hNSNi5ZlmAXcJ0EWgPugCYo8T
+         8NsXsh05dU0YYTpLCtDJXPrQM/w8xDcqbUyZgNyD0CuthAX8uAnMZAYGKUN3epK0vo
+         WJcxaZ8T6v/vA==
+X-Virus-Scanned: amavisd-new at mx.bestprofit-futures.co.id
+Received: from mx.bestprofit-futures.co.id ([127.0.0.1])
+        by localhost (mx.bestprofit-futures.co.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id alhY-q9YcnGZ; Mon,  1 Jun 2020 07:35:29 +0700 (WIB)
+Received: from [10.81.249.6] (unknown [105.8.6.41])
+        by mx.bestprofit-futures.co.id (Postfix) with ESMTPSA id EE6A8524ECA;
+        Mon,  1 Jun 2020 07:35:21 +0700 (WIB)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Millionen_Euro?=
+To:     Recipients <yoshi@bestprofit-futures.co.id>
+From:   ''Tayeb Souami'' <yoshi@bestprofit-futures.co.id>
+Date:   Mon, 01 Jun 2020 02:35:14 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20200601003521.EE6A8524ECA@mx.bestprofit-futures.co.id>
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-(scatter|gather)_data_area() need to flush dcache after
-writing data to or before reading data from a page in
-uio data area.
-The two routines are able to handle data transfer to/from
-such a page in fragments and flush the cache after each
-fragment is copied by calling the wrapper
-tcmu_flush_dcache_range().
+Lieber Freund,
 
-That means:
-1) flush_dcache_page() can be called multiple times for
-   the same page.
-2) Calling flush_dcache_page() indirectly using the
-   wrapper does not make sense, because each call of the
-   wrapper is for one single page only and the calling
-   routine already has the correct page pointer.
+Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der =
+Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zu=
+f=C3=A4llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Ma=
+il nach einem Spinball ausgew=C3=A4hlt.Ich habe den gr=C3=B6=C3=9Ften Teil =
+meines Verm=C3=B6gens auf eine Reihe von Wohlt=C3=A4tigkeitsorganisationen =
+und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die =
+Summe von =E2=82=AC 2.000.000,00 an Sie als eine der ausgew=C3=A4hlten 5 zu=
+ spenden, um meine Gewinne zu =C3=BCberpr=C3=BCfen, sehen Sie bitte meine Y=
+ou Tube Seite unten.
 
-Therefore I changed (scatter|gather)_data_area() such,
-that instead of calling tcmu_flush_dcache_range()
-before/after each memcpy, it now calls flush_dcache_page()
-before unmapping a page (when writing is complete for
-that page) or after mapping a page (when starting to read
-the page).
-
-Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
----
-
-Since I have x86 machines only, where flush_dcache_page()
-is empty, this patch indeed is compile tested only.
-Therefore it needs thorough review or ideally a test on
-an architecture that has a non empty flush_dcache_page().
+UHR MICH HIER: https://www.youtube.com/watch?v=3DZ6ui8ZDQ6Ks
 
 
- drivers/target/target_core_user.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+Das ist dein Spendencode: [TS530342018]
 
-diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-index cdb4848d23c6..d922a7087c31 100644
---- a/drivers/target/target_core_user.c
-+++ b/drivers/target/target_core_user.c
-@@ -676,8 +676,10 @@ static void scatter_data_area(struct tcmu_dev *udev,
- 		from = kmap_atomic(sg_page(sg)) + sg->offset;
- 		while (sg_remaining > 0) {
- 			if (block_remaining == 0) {
--				if (to)
-+				if (to) {
-+					flush_dcache_page(page);
- 					kunmap_atomic(to);
-+				}
- 
- 				block_remaining = DATA_BLOCK_SIZE;
- 				dbi = tcmu_cmd_get_dbi(tcmu_cmd);
-@@ -722,7 +724,6 @@ static void scatter_data_area(struct tcmu_dev *udev,
- 				memcpy(to + offset,
- 				       from + sg->length - sg_remaining,
- 				       copy_bytes);
--				tcmu_flush_dcache_range(to, copy_bytes);
- 			}
- 
- 			sg_remaining -= copy_bytes;
-@@ -731,8 +732,10 @@ static void scatter_data_area(struct tcmu_dev *udev,
- 		kunmap_atomic(from - sg->offset);
- 	}
- 
--	if (to)
-+	if (to) {
-+		flush_dcache_page(page);
- 		kunmap_atomic(to);
-+	}
- }
- 
- static void gather_data_area(struct tcmu_dev *udev, struct tcmu_cmd *cmd,
-@@ -778,13 +781,13 @@ static void gather_data_area(struct tcmu_dev *udev, struct tcmu_cmd *cmd,
- 				dbi = tcmu_cmd_get_dbi(cmd);
- 				page = tcmu_get_block_page(udev, dbi);
- 				from = kmap_atomic(page);
-+				flush_dcache_page(page);
- 			}
- 			copy_bytes = min_t(size_t, sg_remaining,
- 					block_remaining);
- 			if (read_len < copy_bytes)
- 				copy_bytes = read_len;
- 			offset = DATA_BLOCK_SIZE - block_remaining;
--			tcmu_flush_dcache_range(from, copy_bytes);
- 			memcpy(to + sg->length - sg_remaining, from + offset,
- 					copy_bytes);
- 
--- 
-2.12.3
 
+Antworten Sie mit dem SPENDE-CODE an diese
+
+ E-Mail:Tayebsouam.spende@gmail.com
+
+Ich hoffe, Sie und Ihre Familie gl=C3=BCcklich zu machen.
+
+Gr=C3=BC=C3=9Fe
+Herr Tayeb Souami
