@@ -2,116 +2,190 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C97C1F9910
-	for <lists+target-devel@lfdr.de>; Mon, 15 Jun 2020 15:38:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3445C1F9B3E
+	for <lists+target-devel@lfdr.de>; Mon, 15 Jun 2020 17:01:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730499AbgFONh7 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 15 Jun 2020 09:37:59 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:45888 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730167AbgFONh7 (ORCPT
+        id S1730854AbgFOPBB (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 15 Jun 2020 11:01:01 -0400
+Received: from wnew4-smtp.messagingengine.com ([64.147.123.18]:55235 "EHLO
+        wnew4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730837AbgFOPA6 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 15 Jun 2020 09:37:59 -0400
-Received: by mail-pl1-f195.google.com with SMTP id d8so6818491plo.12;
-        Mon, 15 Jun 2020 06:37:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=wpyxJv/PM1wE2X/LCvdaNR8aTZBt1o2wUTKPmTumIZU=;
-        b=CSsXKd73Eu0wUabrIH+cLvboO+tmwivYcj1kgyWxe9rm8bqcfjaCIeCXJC35lTqBH6
-         WSVQiWXSsjjlrfcyapo1Vv7biiw12vJ0VPlfijiITfjG2ilAqvKrxYjEJ4KxPauiS/CJ
-         uP6v096yyHIazQafmIhsjylYBMQb7OFMKX8Y/nNxIoBj+6SaOsAVaiKlGEbsgeVYwENJ
-         qN/9BZV3b95KHTGCKw/FuOoqcrCSb1XXvPFHfZVR62LXfC+tJGpw2F6QaTxO+FA+uDhL
-         A3vC2LJwIK9BBihD2OWxnFAB6Ru1tIp+SOXg+pF14YxsAGQdZvTTrHIjR3ofnHN51vUf
-         tLow==
-X-Gm-Message-State: AOAM531MZuy3vCDbiOzBgsMXXtucnr32BJSDknEOzu3YXwjcoDZRRB3s
-        WDopc4e1dOR7vQkCMjH5kIc8XTZf
-X-Google-Smtp-Source: ABdhPJyr/l0oRGL6uU3APS2OcIqbEqYfER6YeVxPtUFty159+MQPg+GUVoGGRpPJ2VVLgigRmJJ6VQ==
-X-Received: by 2002:a17:902:eed4:: with SMTP id h20mr922321plb.134.1592228277890;
-        Mon, 15 Jun 2020 06:37:57 -0700 (PDT)
-Received: from [192.168.50.147] (c-73-241-217-19.hsd1.ca.comcast.net. [73.241.217.19])
-        by smtp.gmail.com with ESMTPSA id e12sm14177046pfj.137.2020.06.15.06.37.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Jun 2020 06:37:57 -0700 (PDT)
-Subject: Re: [PATCH] IB/srpt: Fix a potential null pointer dereference
-To:     Jing Xiangfeng <jingxiangfeng@huawei.com>, dledford@redhat.com,
-        jgg@ziepe.ca
-Cc:     linux-rdma@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20200615091220.6439-1-jingxiangfeng@huawei.com>
-From:   Bart Van Assche <bvanassche@acm.org>
-Autocrypt: addr=bvanassche@acm.org; prefer-encrypt=mutual; keydata=
- mQENBFSOu4oBCADcRWxVUvkkvRmmwTwIjIJvZOu6wNm+dz5AF4z0FHW2KNZL3oheO3P8UZWr
- LQOrCfRcK8e/sIs2Y2D3Lg/SL7qqbMehGEYcJptu6mKkywBfoYbtBkVoJ/jQsi2H0vBiiCOy
- fmxMHIPcYxaJdXxrOG2UO4B60Y/BzE6OrPDT44w4cZA9DH5xialliWU447Bts8TJNa3lZKS1
- AvW1ZklbvJfAJJAwzDih35LxU2fcWbmhPa7EO2DCv/LM1B10GBB/oQB5kvlq4aA2PSIWkqz4
- 3SI5kCPSsygD6wKnbRsvNn2mIACva6VHdm62A7xel5dJRfpQjXj2snd1F/YNoNc66UUTABEB
- AAG0JEJhcnQgVmFuIEFzc2NoZSA8YnZhbmFzc2NoZUBhY20ub3JnPokBOQQTAQIAIwUCVI67
- igIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEHFcPTXFzhAJ8QkH/1AdXblKL65M
- Y1Zk1bYKnkAb4a98LxCPm/pJBilvci6boefwlBDZ2NZuuYWYgyrehMB5H+q+Kq4P0IBbTqTa
- jTPAANn62A6jwJ0FnCn6YaM9TZQjM1F7LoDX3v+oAkaoXuq0dQ4hnxQNu792bi6QyVdZUvKc
- macVFVgfK9n04mL7RzjO3f+X4midKt/s+G+IPr4DGlrq+WH27eDbpUR3aYRk8EgbgGKvQFdD
- CEBFJi+5ZKOArmJVBSk21RHDpqyz6Vit3rjep7c1SN8s7NhVi9cjkKmMDM7KYhXkWc10lKx2
- RTkFI30rkDm4U+JpdAd2+tP3tjGf9AyGGinpzE2XY1K5AQ0EVI67igEIAKiSyd0nECrgz+H5
- PcFDGYQpGDMTl8MOPCKw/F3diXPuj2eql4xSbAdbUCJzk2ETif5s3twT2ER8cUTEVOaCEUY3
- eOiaFgQ+nGLx4BXqqGewikPJCe+UBjFnH1m2/IFn4T9jPZkV8xlkKmDUqMK5EV9n3eQLkn5g
- lco+FepTtmbkSCCjd91EfThVbNYpVQ5ZjdBCXN66CKyJDMJ85HVr5rmXG/nqriTh6cv1l1Js
- T7AFvvPjUPknS6d+BETMhTkbGzoyS+sywEsQAgA+BMCxBH4LvUmHYhpS+W6CiZ3ZMxjO8Hgc
- ++w1mLeRUvda3i4/U8wDT3SWuHcB3DWlcppECLkAEQEAAYkBHwQYAQIACQUCVI67igIbDAAK
- CRBxXD01xc4QCZ4dB/0QrnEasxjM0PGeXK5hcZMT9Eo998alUfn5XU0RQDYdwp6/kMEXMdmT
- oH0F0xB3SQ8WVSXA9rrc4EBvZruWQ+5/zjVrhhfUAx12CzL4oQ9Ro2k45daYaonKTANYG22y
- //x8dLe2Fv1By4SKGhmzwH87uXxbTJAUxiWIi1np0z3/RDnoVyfmfbbL1DY7zf2hYXLLzsJR
- mSsED/1nlJ9Oq5fALdNEPgDyPUerqHxcmIub+pF0AzJoYHK5punqpqfGmqPbjxrJLPJfHVKy
- goMj5DlBMoYqEgpbwdUYkH6QdizJJCur4icy8GUNbisFYABeoJ91pnD4IGei3MTdvINSZI5e
-Message-ID: <7366b608-4474-cfaa-c465-957fd2d2366d@acm.org>
-Date:   Mon, 15 Jun 2020 06:37:56 -0700
+        Mon, 15 Jun 2020 11:00:58 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailnew.west.internal (Postfix) with ESMTP id EA22277B;
+        Mon, 15 Jun 2020 11:00:55 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Mon, 15 Jun 2020 11:00:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=boo.tc; h=
+        subject:to:cc:references:from:message-id:date:mime-version
+        :in-reply-to:content-type:content-transfer-encoding; s=fm3; bh=P
+        ccZvu+Gt7OCthnxR+MZrD1Iw39LpCBjZ9xKOCERDys=; b=BccoYPbIUFqxIiqbn
+        U6kOyvvZHcSanh6EBVQxQa0xfYn0yfGuXAkTyvl7niajQUK6Xs38RUBkA88uSiqw
+        bN/eke+lohfGYAd/BYHzHN6hOnRIT4ChmYyIBzhcRpebIgRTq9X7lx5AwNDCweDQ
+        STxNLUQSGEMvKvyNicDdGWC+vzlSfW1e+qDm4DjIT7e3TKp2I072gQiBw/IwNbv5
+        hz4V/5GX6n+vpEI612YUJ3DcAIHBqRaYLVr6WG3C+vbk8C0VZkDV59uLAupLWmbr
+        twtMh4ZYoexr1WHsPWnAA0GvgMx749qceqoRNreaoncvRMY4k2Yxbiwj+2Kz9tgn
+        i5Haw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:content-type
+        :date:from:in-reply-to:message-id:mime-version:references
+        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; bh=PccZvu+Gt7OCthnxR+MZrD1Iw39LpCBjZ9xKOCERD
+        ys=; b=aeJz+RkjjyHuJy8EejdX6MrGFalmgytdtKKF3a3rjnbq+Pwh7SBQbtYXv
+        uSBhspvmF5nqOXUHozvyyrc3L4elr9uBrYzVtrxGXM14/b+jB0jJMWHNW4hRt6Bn
+        hD3vt+ry96kTBee8qMqWPWUFWX1iUHa24D33jTkrQKEP5fgNVzU/xNP2egRlE9J6
+        Bi+8NgRMRubCRd9YlSo3ofQjD4uyUtbuwsXvbr3xJInxRz/cso6ujLA8IFFDCgcD
+        WDcHwh7CdnOlMhAXKwLSuPMC/Xlc1DCN4mePaNUt4Xh/5Mmm6Mug+38U7WxrVqNv
+        0eW1fz1Mgi7l2gMINkDQDhKB3NQNw==
+X-ME-Sender: <xms:Jo3nXi5UEfuvoJ_5sSs4WMg_TjuFzh1DyFcPxK3C-FVaLYt3tYUhzw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrudeikedgkeefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    gfrhhlucfvnfffucdlvdehmdenucfjughrpefuvfhfhffkffgfgggjtgfgsehtjeertddt
+    feejnecuhfhrohhmpeevhhhrihhsuceuohhothcuoegsohhothgtsegsohhordhttgeqne
+    cuggftrfgrthhtvghrnhepffejieduveekhfduueejvedvvdfhueetjeeukeduvefhhfdt
+    ieejjedtjeehkeeknecukfhppeekuddrudekjedrheehrdekkeenucevlhhushhtvghruf
+    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhothgtsegsohhordhttg
+X-ME-Proxy: <xmx:J43nXr5HYD5etWF65vYEKO2b6sjwsXobmnTG9Md19ouWdQwhllq_hg>
+    <xmx:J43nXheY--2Dh-5daFo3fgw3McdZR7ZuwoeZWzOTLNftmsZG4NyZcA>
+    <xmx:J43nXvLX28r3QKJVtwzVIZyr6_F6HXul8-TC7xwtTcjdDtdSk2JnpQ>
+    <xmx:J43nXno9g0u0YMJkbvShqSDgA-BNKludOxIsTia-npdeQZ7sEJBy9mGpz34>
+Received: from [81.187.55.88] (ripley.boo.tc [81.187.55.88])
+        by mail.messagingengine.com (Postfix) with ESMTPA id C7F5D3280069;
+        Mon, 15 Jun 2020 11:00:53 -0400 (EDT)
+Subject: Re: [PATCH] scsi: target/sbp: remove firewire SBP target driver
+To:     Finn Thain <fthain@telegraphics.com.au>
+Cc:     linuxppc-dev@lists.ozlabs.org, target-devel@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
+        linux-kernel@vger.kernel.org, Bart Van Assche <bvanassche@acm.org>,
+        Chuhong Yuan <hslester96@gmail.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Nicholas Bellinger <nab@linux-iscsi.org>,
+        Stefan Richter <stefanr@s5r6.in-berlin.de>
+References: <01020172acd3d10f-3964f076-a820-43fc-9494-3f3946e9b7b5-000000@eu-west-1.amazonses.com>
+ <alpine.LNX.2.22.394.2006140934520.15@nippy.intranet>
+ <7ad14946-5c25-fc49-1e48-72d37a607832@boo.tc>
+ <alpine.LNX.2.22.394.2006150919110.8@nippy.intranet>
+From:   Chris Boot <bootc@boo.tc>
+Autocrypt: addr=bootc@boo.tc; prefer-encrypt=mutual;
+ keydata= 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
+ 1QBDj3S+cCP/8Pe5l3n1B7V4SkVPBQs/H/ClB6o=
+Message-ID: <8da0c285-d707-a3d2-063e-472af5cc560f@boo.tc>
+Date:   Mon, 15 Jun 2020 16:00:52 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <20200615091220.6439-1-jingxiangfeng@huawei.com>
+In-Reply-To: <alpine.LNX.2.22.394.2006150919110.8@nippy.intranet>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 2020-06-15 02:12, Jing Xiangfeng wrote:
-> In srpt_cm_req_recv(), it is possible that sdev is NULL,
-> so we should test sdev before using it.
+On 15/06/2020 00:28, Finn Thain wrote:
+> On Sun, 14 Jun 2020, Chris Boot wrote:
 > 
-> Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
-> ---
->  drivers/infiniband/ulp/srpt/ib_srpt.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>> I expect that if someone finds this useful it can stick around (but 
+>> that's not my call).
 > 
-> diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-> index 98552749d71c..72053254bf84 100644
-> --- a/drivers/infiniband/ulp/srpt/ib_srpt.c
-> +++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-> @@ -2143,7 +2143,7 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
->  			    const struct srp_login_req *req,
->  			    const char *src_addr)
->  {
-> -	struct srpt_port *sport = &sdev->port[port_num - 1];
-> +	struct srpt_port *sport;
->  	struct srpt_nexus *nexus;
->  	struct srp_login_rsp *rsp = NULL;
->  	struct srp_login_rej *rej = NULL;
-> @@ -2162,6 +2162,7 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
->  	if (WARN_ON(!sdev || !req))
->  		return -EINVAL;
->  
-> +	sport = &sdev->port[port_num - 1];
->  	it_iu_len = be32_to_cpu(req->req_it_iu_len);
->  
+> Who's call is that? If the patch had said "From: Martin K. Petersen" and 
+> "This driver is being removed because it has the following defects..." 
+> that would be some indication of a good-faith willingness to accept users 
+> as developers in the spirit of the GPL, which is what you seem to be 
+> alluding to (?).
 
-Please remove the (!sdev || !req) check instead of making the above
-change. It's easy to show that both pointers are always valid.
+If you're asking me, I'd say it was martin's call:
 
-Thanks,
+> SCSI TARGET SUBSYSTEM                                                          
+> M:      "Martin K. Petersen" <martin.petersen@oracle.com>                      
+[...]
+> F:      drivers/target/                                                        
+> F:      include/target/                                                        
 
-Bart.
+>> I just don't have the time or inclination or hardware to be able to 
+>> maintain it anymore, so someone else would have to pick it up.
+>>
+> 
+> Which is why most drivers get orphaned, right?
+
+Sure, but that's not what Martin asked me to do, hence this patch.
+
+-- 
+Chris Boot
+bootc@boo.tc
