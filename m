@@ -2,54 +2,69 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 227A81F8B50
-	for <lists+target-devel@lfdr.de>; Mon, 15 Jun 2020 01:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0B611F92CA
+	for <lists+target-devel@lfdr.de>; Mon, 15 Jun 2020 11:09:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727963AbgFNX3A (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sun, 14 Jun 2020 19:29:00 -0400
-Received: from kvm5.telegraphics.com.au ([98.124.60.144]:35186 "EHLO
-        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727928AbgFNX3A (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Sun, 14 Jun 2020 19:29:00 -0400
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by kvm5.telegraphics.com.au (Postfix) with ESMTP id BFEE1272D7;
-        Sun, 14 Jun 2020 19:28:56 -0400 (EDT)
-Date:   Mon, 15 Jun 2020 09:28:56 +1000 (AEST)
-From:   Finn Thain <fthain@telegraphics.com.au>
-To:     Chris Boot <bootc@boo.tc>
-cc:     Chris Boot <bootc@bootc.net>, linuxppc-dev@lists.ozlabs.org,
-        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux1394-devel@lists.sourceforge.net,
-        linux-kernel@vger.kernel.org, Bart Van Assche <bvanassche@acm.org>,
-        Chuhong Yuan <hslester96@gmail.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Nicholas Bellinger <nab@linux-iscsi.org>,
-        Stefan Richter <stefanr@s5r6.in-berlin.de>
-Subject: Re: [PATCH] scsi: target/sbp: remove firewire SBP target driver
-In-Reply-To: <7ad14946-5c25-fc49-1e48-72d37a607832@boo.tc>
-Message-ID: <alpine.LNX.2.22.394.2006150919110.8@nippy.intranet>
-References: <01020172acd3d10f-3964f076-a820-43fc-9494-3f3946e9b7b5-000000@eu-west-1.amazonses.com> <alpine.LNX.2.22.394.2006140934520.15@nippy.intranet> <7ad14946-5c25-fc49-1e48-72d37a607832@boo.tc>
+        id S1729280AbgFOJJF (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 15 Jun 2020 05:09:05 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:5891 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728411AbgFOJJE (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Mon, 15 Jun 2020 05:09:04 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id E0CBB22AA912C8934AB8;
+        Mon, 15 Jun 2020 17:09:01 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.487.0; Mon, 15 Jun 2020 17:08:53 +0800
+From:   Jing Xiangfeng <jingxiangfeng@huawei.com>
+To:     <bvanassche@acm.org>, <dledford@redhat.com>, <jgg@ziepe.ca>
+CC:     <linux-rdma@vger.kernel.org>, <target-devel@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+        <jingxiangfeng@huawei.com>
+Subject: [PATCH] IB/srpt: Fix a potential null pointer dereference
+Date:   Mon, 15 Jun 2020 17:12:20 +0800
+Message-ID: <20200615091220.6439-1-jingxiangfeng@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Sun, 14 Jun 2020, Chris Boot wrote:
+In srpt_cm_req_recv(), it is possible that sdev is NULL,
+so we should test sdev before using it.
 
-> I expect that if someone finds this useful it can stick around (but 
-> that's not my call).
+Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
+---
+ drivers/infiniband/ulp/srpt/ib_srpt.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Who's call is that? If the patch had said "From: Martin K. Petersen" and 
-"This driver is being removed because it has the following defects..." 
-that would be some indication of a good-faith willingness to accept users 
-as developers in the spirit of the GPL, which is what you seem to be 
-alluding to (?).
+diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
+index 98552749d71c..72053254bf84 100644
+--- a/drivers/infiniband/ulp/srpt/ib_srpt.c
++++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
+@@ -2143,7 +2143,7 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
+ 			    const struct srp_login_req *req,
+ 			    const char *src_addr)
+ {
+-	struct srpt_port *sport = &sdev->port[port_num - 1];
++	struct srpt_port *sport;
+ 	struct srpt_nexus *nexus;
+ 	struct srp_login_rsp *rsp = NULL;
+ 	struct srp_login_rej *rej = NULL;
+@@ -2162,6 +2162,7 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
+ 	if (WARN_ON(!sdev || !req))
+ 		return -EINVAL;
+ 
++	sport = &sdev->port[port_num - 1];
+ 	it_iu_len = be32_to_cpu(req->req_it_iu_len);
+ 
+ 	pr_info("Received SRP_LOGIN_REQ with i_port_id %pI6, t_port_id %pI6 and it_iu_len %d on port %d (guid=%pI6); pkey %#04x\n",
+-- 
+2.17.1
 
-> I just don't have the time or inclination or hardware to be able to 
-> maintain it anymore, so someone else would have to pick it up.
-> 
-
-Which is why most drivers get orphaned, right?
