@@ -2,190 +2,144 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3445C1F9B3E
-	for <lists+target-devel@lfdr.de>; Mon, 15 Jun 2020 17:01:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDE651F9F24
+	for <lists+target-devel@lfdr.de>; Mon, 15 Jun 2020 20:09:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730854AbgFOPBB (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 15 Jun 2020 11:01:01 -0400
-Received: from wnew4-smtp.messagingengine.com ([64.147.123.18]:55235 "EHLO
-        wnew4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730837AbgFOPA6 (ORCPT
+        id S1731333AbgFOSJp (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 15 Jun 2020 14:09:45 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:55738 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728585AbgFOSJm (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 15 Jun 2020 11:00:58 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailnew.west.internal (Postfix) with ESMTP id EA22277B;
-        Mon, 15 Jun 2020 11:00:55 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Mon, 15 Jun 2020 11:00:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=boo.tc; h=
-        subject:to:cc:references:from:message-id:date:mime-version
-        :in-reply-to:content-type:content-transfer-encoding; s=fm3; bh=P
-        ccZvu+Gt7OCthnxR+MZrD1Iw39LpCBjZ9xKOCERDys=; b=BccoYPbIUFqxIiqbn
-        U6kOyvvZHcSanh6EBVQxQa0xfYn0yfGuXAkTyvl7niajQUK6Xs38RUBkA88uSiqw
-        bN/eke+lohfGYAd/BYHzHN6hOnRIT4ChmYyIBzhcRpebIgRTq9X7lx5AwNDCweDQ
-        STxNLUQSGEMvKvyNicDdGWC+vzlSfW1e+qDm4DjIT7e3TKp2I072gQiBw/IwNbv5
-        hz4V/5GX6n+vpEI612YUJ3DcAIHBqRaYLVr6WG3C+vbk8C0VZkDV59uLAupLWmbr
-        twtMh4ZYoexr1WHsPWnAA0GvgMx749qceqoRNreaoncvRMY4k2Yxbiwj+2Kz9tgn
-        i5Haw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-transfer-encoding:content-type
-        :date:from:in-reply-to:message-id:mime-version:references
-        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; bh=PccZvu+Gt7OCthnxR+MZrD1Iw39LpCBjZ9xKOCERD
-        ys=; b=aeJz+RkjjyHuJy8EejdX6MrGFalmgytdtKKF3a3rjnbq+Pwh7SBQbtYXv
-        uSBhspvmF5nqOXUHozvyyrc3L4elr9uBrYzVtrxGXM14/b+jB0jJMWHNW4hRt6Bn
-        hD3vt+ry96kTBee8qMqWPWUFWX1iUHa24D33jTkrQKEP5fgNVzU/xNP2egRlE9J6
-        Bi+8NgRMRubCRd9YlSo3ofQjD4uyUtbuwsXvbr3xJInxRz/cso6ujLA8IFFDCgcD
-        WDcHwh7CdnOlMhAXKwLSuPMC/Xlc1DCN4mePaNUt4Xh/5Mmm6Mug+38U7WxrVqNv
-        0eW1fz1Mgi7l2gMINkDQDhKB3NQNw==
-X-ME-Sender: <xms:Jo3nXi5UEfuvoJ_5sSs4WMg_TjuFzh1DyFcPxK3C-FVaLYt3tYUhzw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrudeikedgkeefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    gfrhhlucfvnfffucdlvdehmdenucfjughrpefuvfhfhffkffgfgggjtgfgsehtjeertddt
-    feejnecuhfhrohhmpeevhhhrihhsuceuohhothcuoegsohhothgtsegsohhordhttgeqne
-    cuggftrfgrthhtvghrnhepffejieduveekhfduueejvedvvdfhueetjeeukeduvefhhfdt
-    ieejjedtjeehkeeknecukfhppeekuddrudekjedrheehrdekkeenucevlhhushhtvghruf
-    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhothgtsegsohhordhttg
-X-ME-Proxy: <xmx:J43nXr5HYD5etWF65vYEKO2b6sjwsXobmnTG9Md19ouWdQwhllq_hg>
-    <xmx:J43nXheY--2Dh-5daFo3fgw3McdZR7ZuwoeZWzOTLNftmsZG4NyZcA>
-    <xmx:J43nXvLX28r3QKJVtwzVIZyr6_F6HXul8-TC7xwtTcjdDtdSk2JnpQ>
-    <xmx:J43nXno9g0u0YMJkbvShqSDgA-BNKludOxIsTia-npdeQZ7sEJBy9mGpz34>
-Received: from [81.187.55.88] (ripley.boo.tc [81.187.55.88])
-        by mail.messagingengine.com (Postfix) with ESMTPA id C7F5D3280069;
-        Mon, 15 Jun 2020 11:00:53 -0400 (EDT)
-Subject: Re: [PATCH] scsi: target/sbp: remove firewire SBP target driver
-To:     Finn Thain <fthain@telegraphics.com.au>
-Cc:     linuxppc-dev@lists.ozlabs.org, target-devel@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
-        linux-kernel@vger.kernel.org, Bart Van Assche <bvanassche@acm.org>,
-        Chuhong Yuan <hslester96@gmail.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Nicholas Bellinger <nab@linux-iscsi.org>,
-        Stefan Richter <stefanr@s5r6.in-berlin.de>
-References: <01020172acd3d10f-3964f076-a820-43fc-9494-3f3946e9b7b5-000000@eu-west-1.amazonses.com>
- <alpine.LNX.2.22.394.2006140934520.15@nippy.intranet>
- <7ad14946-5c25-fc49-1e48-72d37a607832@boo.tc>
- <alpine.LNX.2.22.394.2006150919110.8@nippy.intranet>
-From:   Chris Boot <bootc@boo.tc>
-Autocrypt: addr=bootc@boo.tc; prefer-encrypt=mutual;
- keydata= mQINBFL1FNgBEADf8jZGW5tZWPDpyx7oWq8L7KD9a2YM5bp48LJ9tXYEVD+j3EIJH3DlYMOh
- Lif5+XkMaHNAakXSbo41Sjf3ArYOz+ZNvpR3ln/kqYv/ntgbAstlWuWLxGJbjJuLxjSh1eU5
- jn+XAr0OvQMO9DiwBN3Ocm5B6tkUNhasxOmdlAxef0FsK7Y5bbqxVjC5/3DHqbmDiJvdof4q
- 1z5SEpuzKLn5xmdU+kANurZekp0JqgprS8gSmDV3fpJa7gTmcX11ArAV4TbI5CmJgnv3u6Nf
- k8E6oLk7wDs6mKzutS1MMVtaWpOMYqbM8q/QFI+ICf5SGmvpvOTvgIxAC80RWTYaxZn0g6sQ
- BhnByDcXFk/YYncmbHBYRJBbb+Y5lRGJMiv7KIp0BzDHO2zcDqvAiC2mtEl+iDOC06vqMD+t
- YRMkjtDsHbB7TCEeFmeSrQddLfoce04cnl3AyY22Vp2J2GsfobdX2Jw1drBou9cUN7shpuCU
- cqcGEvpT6mRd6uIzbFNXkWp0wiQPKUzDJXlh/GiROtM/468Bbj9JsiIIv183iKw6fQJtMg5c
- B34/GuEFfbfrqPNNO2ElEX6DcsnRZp3Vq+SMM+dDWXYSF1MJt52tT+deHGgzXj+NMHWU/K5X
- DWGcxtpM8QbFFwxTl2B5k2jjL61IhCnPpJSQZhzhXRuei04uaQARAQABtBlDaHJpcyBCb290
- IDxib290Y0Bib28udGM+iQJXBBMBCgBBAhsDBQsJCAcDBRUKCQgLBRYDAgEAAh4BAheAAhkB
- FiEEhGdTyxkhMULFbckY9cg8BdnO7u4FAl3mvaoFCQz6aVIACgkQ9cg8BdnO7u5MWQ//UjXB
- M3Fa0EYRGZAdFvvMbWDAG39zfM9ym9S4nqMqJAkm/SKBSxFPjeZAtbgVjUbsGw39oGpkcg7W
- Myej5DbaELC9SgbxtZBCqoz7agV3iPuewH/i8hTPPx6ErWgqICzEfeOZSnZgTIo3D0uw8G3+
- 03MMjzdbixyeJTOfrigPQeqRqso/i/h7kFCgd1ddEJPg26SPpqeX9LRU5ycwnATGfy5PiGnL
- dqazqslcfF0We0+8GTUY1xGW4CKuiSIC5P4pq/XiiBypM4SGv0pUGpzpxDIKWKNF6PstwTjV
- +qY3YFYuzy5NFT1L8ILLumqECGh79I1Nrpqfp6s9kY40rtrThdOpFu55mshqWapvz/2/9nJw
- 6OnxsM7GJOSjTu3Yp0JuYL/9DlcBiNo+BabVKgjWY4i3p97gsdrgVlSS4VtFkCrol9JcTZwh
- e1fPOJFnFhnatwYy6TatNWHYBwLHVSZxDTZPfOU114MzWowVrrD8YtbZRdV6dSf3UFOSe46j
- Gdo023b8TDf1Kcfkeb4UrPJLo8gqJLqmA/V4i+RhAWnxxjaxHzAbvUFAF7lgoxxLpCo6OV9P
- yOoP+VioNZ4usIZD/J1+RncF9M+vOHvXr/tsmRyf2yTI8C6f/Ixj1fHF+xv/Aa2d5Pgau1XR
- IErdV2/Se74WUkbPsZNHpMLw4JG+Kju5Ag0EUvf4ogEQAKkdFtOZUfNQIWGAuJfYOTnoLqqC
- kre6E0kw18DpXlH97O+6lKPLB679pKMfzh7uwVlkIjWwc0gQPxQvmKv6PbkflAMzr7FtofNj
- fMi1eaGdSlRAbo2K1EQTukVTtnkPFOd+Xgp74Gq+Ebr73qO3on04wvM6NzzBdLh+QEWxj4WC
- Jv6/Eh3BWiyOTAS3qyL1pZiqorrXhmBu4WvoaR2+AgasOVV1d0+flmbj7OQIieQtORLadyyH
- 7a/c/Q+h+9Dabt6BNT2IdOMEkMm61tdOCsqg2MgsgTyU8FjSnJE+cws/H1W1aufCldD47dpN
- bJHawl7WEVYYoABuApvXTi6DLNWql0v0ownhNwVKZb3zs/AdkoDRjYb9YSQ/WIPcNtiGrr3p
- 6xeIKr93EuqZWtWvtpF5DqoJ7FNqN5wQEmOlpj7igQ0r9M3tTQQJg0j6MtCdbo9ZUXtZmjxi
- 8mdpAz0of8qabgSiPhFuFgHDnqGtRmVgKCY1vD6esmA+wfZnbGaU0tmQQpr2Cdbx11vnfhj/
- LTObPBYy+ciJlPoXebC1/AsxANbLpjAtQUNWtXAS1NRFSuI1GtQ7RskqPS11uoRMhLkDy0aE
- 51QIQs3UWuTy591UGH8MwlNIy6pTjFCyRXeM2dynPzCECqOnZfyeuQ/dsiWInmDNRD1auGGE
- F+Faf11dABEBAAGJAjwEGAEKACYCGwwWIQSEZ1PLGSExQsVtyRj1yDwF2c7u7gUCXea90gUJ
- DPeFsAAKCRD1yDwF2c7u7gBxEADKykkyLmTVim9NtsRZ5/XQgPGb7+WuOqUI3OOrQV4xet+z
- UtKllzjzLHYYSSqhCXc9G9Cr/c9XFAuqrxewPvgAzJN6PLAaswH0VHRZoaFUO0jZnccMz7kp
- nLAtnYKoCGCvYX+ZERt4VsCST3GDjha0bP+2T7jQhBRdwVq/Jj64xRwt1FzYbOoKvM5k2hgJ
- 7hEuR/phuFnomLTdpoY88IZW6tcg2cHnXjBpjPxzd7QZ0PJjRWwS/zORIUYl35HMWcw2N9ev
- 0f6i1JxVLgoK01Rxx13AjD5ZxCC9BabY5XmX/BuGLh2IJbGiC//p6O0QDHYIbBMlTHee32dY
- 0iY5EeGY9dFdUP5Bsh/+HOQLTL4kCMZUewqLwjgl+B09mOXVZ9oadCVx5+sjJHakpmsJ+MTb
- qpSEFRjZvzLyvWkaknBtfNoM5apq1BuK1IJizK9tPDiEy+KJV9Ppb9K+X4XICxXnGfbKPxsG
- 8PQf38nVQxhop864cQvFMKL3hXIz7/R6QRpLxWRIqYAkfMwk9ddo4Szt+5rVb+1o99fDAjq6
- dA9ZirhrpOdokg53b0dmlTAZWhe20gBmpic8dlN0+/xneDWLUd8dxFDxl7oogBS9CSVQ82J0
- cqb0E17gOOGtDTv7WN7w6Z5kI+fosGt0vHFtPPyFjK+mgEslum/y5SVheMwewbkCDQRZ71Qr
- ARAAwXrmFr1rP3pPRo5Hs13KLm0tbv6jSqKICMNjC4siJ1xyYjtX4Ra8ml9jMUPSHqza2BXB
- jiIwWuoHuAOcoLYYqQUIUbujlg3AxhWZBS86qSjhuLZUli9YhGJsalLI31oo1a0yhgsiWZoq
- ocbD1i18JNVsFHGuF0PXgihCpxL28PBpZ4gunL8Yg2DYLJqsdG0sbu1jSpqk0FaVcn7VfuNx
- 7rrbX/Ir4pvFRpLAecl29dQd23i7dkEW3F14KckXK1tOcKKviST0G7QahVmkDEGwpHk29ZkW
- j/3/o86l/6LQ9bPofD0M8ZxGc5Of3tJSDiUVQAXNL27cL2B3AXFT3VP5hu5svUo82lO2dFYl
- RMHieR/SNXwkNSq05RncU2xzSY56Wy+DhxLEBNz4J5KqHmus4wavXLnA2Da17E4jlUjw0MzM
- 0Slar0AqJ5AfKrXyELx7c1+sTb4fzo4CHi+d80DHF5JOjux+gpMar9tVGJjXhLEZugMnM3mx
- p9z2IvnHcU/lVX2v8QE0g17b8ZXoXro9yMNBtLEXGW1HKmdzhpvFrvNKE/JHknaWpbJ3zSiU
- wT1ykyeqoTnN2ilz3hGuClztUpARpiP5QQSdKaxHN6yfqd6+G/HOAeTCfbBVPBEa0h5ynM79
- PSD2P3fJG7zHi9mmJ82Sh39C8zcjbvPrge64dDcAEQEAAYkE0gQYAQoAJgIbAhYhBIRnU8sZ
- ITFCxW3JGPXIPAXZzu7uBQJd5r3SBQkGAConAqDB1CAEGQEKAH0WIQRqTE2CjbcMM8WpuxjW
- jb0O3aCpZAUCWe9UK18UgAAAAAAuAChpc3N1ZXItZnByQG5vdGF0aW9ucy5vcGVucGdwLmZp
- ZnRoaG9yc2VtYW4ubmV0NkE0QzREODI4REI3MEMzM0M1QTlCQjE4RDY4REJEMEVEREEwQTk2
- NAAKCRDWjb0O3aCpZBfbD/48k7H8HmdfmwPByBFZfTi54GESf748bsjwPUyYBuCYPskOage5
- /EBiNYgFsAMnbRaRKYA+JXszYoMe0c63hcrbGhv8zWmWQGToxRu7jbSBrc9+bruQXm7yBbcZ
- yg8zVFbA7pRJ5uOw7LgWiRKVzN/Owt/LpsyKcqqm2wk1MPAqIlOhs2WUuH6w8HsW7NU+WEbq
- ysTzQU3y6Hi7EoKuPmlyt1MPNVsnMR2Nnn4a4oP7O2xgReO/uj/ZX9iIlAL8iHq5C7unBkNk
- AK0vxKexxoeZ40ALmJpvYXHsTyA9cpTkOrv8fnOvmr22kqmRbfZTUd1eZF9ByILyo2FVHdJS
- n2vaC7z9Gvz8s2PTLbCaIgCWuLJyOmwpQTMJ+CVFgl6bbIJc71oY75JRRVMgN+BS1UiEguCt
- N0MrTEnhJMQ5z7P8ENOwH1XTS/BC5+R7CWBNH3+m+GZTEQMSEQkMr31yKjtKwWGupVrKp2ET
- NEWCG+rjub+5+e6XlvKvj+RmIxPbA/GGLRaSYhUgKJea7fuz+1i5Yz17HsymQnLLmFNaVydp
- /nhIk6xbgZDGI7fDnWkrkMdyDvswgXDYg5WXTnkkbOcKmxUSbyW+V6R823mTzdOVf7aJYio4
- NMwErPGoq/fD6av5gEcB81uJOtfiDsKEGdOAJfwczNFWNt7wKumwCkm2qwkQ9cg8BdnO7u7E
- QBAAqwlTRxT7BEGB86Io1Cv1K9fsEYw5xQWdPofhX48SI22NZMZ4Y0xgXG/aNdI57qZnBfKg
- 8+JjKZEVO46H8rsa3uUSFD6qvgxRe3OVE/WJcu16ngdGloEXFB3UkenPPpHp6p3u2zYnjeRz
- +tPhoAbQHB0fclu27IuzptYoGL1X1cF0J21UPXH5SN2oUBdqAKBvBlx/yNFO+E9J+qw9Yn0r
- Jp0UjfkeQqSY1GxQUHRB9UqCgMuUcGLCYGWAblmht6qA1YySHE3F3X8V8PoYz/yPJtAcRiaC
- gXk1l8FnPGLkCK0Oo77oNjE1Qdlni3HQYvbebuQxotmcdXePtheAPO/JCDl3j54tZsO6WaNF
- Ze+cALycC6xmy8lL9qAUGpyX8v4/EJrGejqTXaIeKxTWfCekjjhPFyd/24zfb9rpy/16hRJq
- E7ix7nHAhCSXYIZTIbfCe6qaLJwe/pA+Ary/2NuvwwwDKg3SFrss9fSAftvP2dDxOyuXb0eJ
- maaCCvdzqeDVRtasF2TW3g9oVr8ofYqT9BQZoPXITkCJUrxAgMDypbHMUh+6Kuy6D5p2p7aj
- wVzu2FjNtg8s3yoGCcmtUtDGFswNQukUkgHKSJzYJSPsR5d6oM+oV3QvtqWLkUq1KyI7h7wK
- 1QBDj3S+cCP/8Pe5l3n1B7V4SkVPBQs/H/ClB6o=
-Message-ID: <8da0c285-d707-a3d2-063e-472af5cc560f@boo.tc>
-Date:   Mon, 15 Jun 2020 16:00:52 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        Mon, 15 Jun 2020 14:09:42 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05FI7hca026496;
+        Mon, 15 Jun 2020 18:08:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=EdV85x/l0ZQB7qs/RGol05XelTO/TGwy+i5Nwcf8gRM=;
+ b=ksIm2T40o14OrDnPOVl41oLfXflESyB3DKHmSrY07W8hiE/Z7QLC5o1aUTaHPRbSwzbu
+ 9c0NwLH9cAIIrEop8mGTFh8G1XGbz9PddITo/iGjFqouwLRZRmyMPkuv312Tprpn0qqE
+ vsgCBz56dXPpSbVxKCQXClzuApbPztWVszZo40Z9/pDvMf5EwgQrvvf51uoX9UnrZp3o
+ w/4xkBk0XXZDlc2YcrCzTOExgRGYIv3Y4giKzpy8SzyD0DJs8FkiFKoy2usbln1dH7C7
+ /e2gagyqK7O847BIeVNSzHbKNPgl/68telPWwh1LacJqZVCnTiRrQlKn7a2GbDXIJ48j 0Q== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 31p6s22cke-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 15 Jun 2020 18:08:31 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05FHwvkZ051587;
+        Mon, 15 Jun 2020 18:08:30 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 31p6de1e1n-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 15 Jun 2020 18:08:30 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05FI8G7g031730;
+        Mon, 15 Jun 2020 18:08:17 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 15 Jun 2020 11:08:15 -0700
+Date:   Mon, 15 Jun 2020 21:07:53 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Waiman Long <longman@redhat.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joe Perches <joe@perches.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        David Rientjes <rientjes@google.com>,
+        samba-technical@lists.samba.org,
+        virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
+        linux-sctp@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        devel@driverdev.osuosl.org, linux-s390@vger.kernel.org,
+        linux-scsi@vger.kernel.org, x86@kernel.org,
+        kasan-dev@googlegroups.com, cocci@systeme.lip6.fr,
+        linux-wpan@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+        linux-crypto@vger.kernel.org, linux-pm@vger.kernel.org,
+        ecryptfs@vger.kernel.org, linux-nfs@vger.kernel.org,
+        linux-fscrypt@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        tipc-discussion@lists.sourceforge.net, wireguard@lists.zx2c4.com,
+        linux-ppp@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-btrfs@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm, treewide: Rename kzfree() to kfree_sensitive()
+Message-ID: <20200615180753.GJ4151@kadam>
+References: <20200413211550.8307-1-longman@redhat.com>
+ <20200413211550.8307-2-longman@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <alpine.LNX.2.22.394.2006150919110.8@nippy.intranet>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200413211550.8307-2-longman@redhat.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9653 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 adultscore=0 bulkscore=0
+ phishscore=0 malwarescore=0 spamscore=0 mlxlogscore=930 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006150134
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9653 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 impostorscore=0
+ clxscore=1011 mlxscore=0 mlxlogscore=944 priorityscore=1501 phishscore=0
+ malwarescore=0 suspectscore=2 spamscore=0 cotscore=-2147483648 bulkscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006150135
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 15/06/2020 00:28, Finn Thain wrote:
-> On Sun, 14 Jun 2020, Chris Boot wrote:
-> 
->> I expect that if someone finds this useful it can stick around (but 
->> that's not my call).
-> 
-> Who's call is that? If the patch had said "From: Martin K. Petersen" and 
-> "This driver is being removed because it has the following defects..." 
-> that would be some indication of a good-faith willingness to accept users 
-> as developers in the spirit of the GPL, which is what you seem to be 
-> alluding to (?).
+On Mon, Apr 13, 2020 at 05:15:49PM -0400, Waiman Long wrote:
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index 23c7500eea7d..c08bc7eb20bd 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -1707,17 +1707,17 @@ void *krealloc(const void *p, size_t new_size, gfp_t flags)
+>  EXPORT_SYMBOL(krealloc);
+>  
+>  /**
+> - * kzfree - like kfree but zero memory
+> + * kfree_sensitive - Clear sensitive information in memory before freeing
+>   * @p: object to free memory of
+>   *
+>   * The memory of the object @p points to is zeroed before freed.
+> - * If @p is %NULL, kzfree() does nothing.
+> + * If @p is %NULL, kfree_sensitive() does nothing.
+>   *
+>   * Note: this function zeroes the whole allocated buffer which can be a good
+>   * deal bigger than the requested buffer size passed to kmalloc(). So be
+>   * careful when using this function in performance sensitive code.
+>   */
+> -void kzfree(const void *p)
+> +void kfree_sensitive(const void *p)
+>  {
+>  	size_t ks;
+>  	void *mem = (void *)p;
+> @@ -1725,10 +1725,10 @@ void kzfree(const void *p)
+>  	if (unlikely(ZERO_OR_NULL_PTR(mem)))
+>  		return;
+>  	ks = ksize(mem);
+> -	memset(mem, 0, ks);
+> +	memzero_explicit(mem, ks);
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+This is an unrelated bug fix.  It really needs to be pulled into a
+separate patch by itself and back ported to stable kernels.
 
-If you're asking me, I'd say it was martin's call:
+>  	kfree(mem);
+>  }
+> -EXPORT_SYMBOL(kzfree);
+> +EXPORT_SYMBOL(kfree_sensitive);
+>  
+>  /**
+>   * ksize - get the actual amount of memory allocated for a given object
 
-> SCSI TARGET SUBSYSTEM                                                          
-> M:      "Martin K. Petersen" <martin.petersen@oracle.com>                      
-[...]
-> F:      drivers/target/                                                        
-> F:      include/target/                                                        
-
->> I just don't have the time or inclination or hardware to be able to 
->> maintain it anymore, so someone else would have to pick it up.
->>
-> 
-> Which is why most drivers get orphaned, right?
-
-Sure, but that's not what Martin asked me to do, hence this patch.
-
--- 
-Chris Boot
-bootc@boo.tc
+regards,
+dan carpenter
