@@ -2,136 +2,86 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B9231F9F85
-	for <lists+target-devel@lfdr.de>; Mon, 15 Jun 2020 20:40:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 933451FA542
+	for <lists+target-devel@lfdr.de>; Tue, 16 Jun 2020 02:51:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731327AbgFOSkk (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 15 Jun 2020 14:40:40 -0400
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:24690 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1731390AbgFOSkj (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Mon, 15 Jun 2020 14:40:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1592246437;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=3LdVapGy9WTsAkwpfNEzCTfQe3Pij8/lM5ySXZsHExs=;
-        b=JZUrw80wsDeK0bo3tEKQK8XiW9ngmDKg5MFnAeOyBAYl0bASVB+QJjQFV1GJsM7juSSDEX
-        zWSaFZX2UdG6N7HwH1NEKT0XcQDnP7iZ8aY1Tv5Ylz+cF8epg7Ev8QJSHYanngZUDD+NKp
-        g2VWPw/vUn4XzPWpEZ+uPXRfRhU1J0Q=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-513-n3G_ZfGUONug8wkjJytxqA-1; Mon, 15 Jun 2020 14:40:12 -0400
-X-MC-Unique: n3G_ZfGUONug8wkjJytxqA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E5F43184D144;
-        Mon, 15 Jun 2020 18:40:06 +0000 (UTC)
-Received: from llong.remote.csb (ovpn-117-41.rdu2.redhat.com [10.10.117.41])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 3972B5D9CC;
-        Mon, 15 Jun 2020 18:40:00 +0000 (UTC)
-Subject: Re: [PATCH 1/2] mm, treewide: Rename kzfree() to kfree_sensitive()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Joe Perches <joe@perches.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        David Rientjes <rientjes@google.com>,
-        samba-technical@lists.samba.org,
-        virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
-        linux-sctp@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        devel@driverdev.osuosl.org, linux-s390@vger.kernel.org,
-        linux-scsi@vger.kernel.org, x86@kernel.org,
-        kasan-dev@googlegroups.com, cocci@systeme.lip6.fr,
-        linux-wpan@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-        linux-crypto@vger.kernel.org, linux-pm@vger.kernel.org,
-        ecryptfs@vger.kernel.org, linux-nfs@vger.kernel.org,
-        linux-fscrypt@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net, wireguard@lists.zx2c4.com,
-        linux-ppp@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-btrfs@vger.kernel.org
-References: <20200413211550.8307-1-longman@redhat.com>
- <20200413211550.8307-2-longman@redhat.com> <20200615180753.GJ4151@kadam>
-From:   Waiman Long <longman@redhat.com>
-Organization: Red Hat
-Message-ID: <9d084be2-29a3-7757-9386-20dbaeb5fc24@redhat.com>
-Date:   Mon, 15 Jun 2020 14:39:59 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S1726552AbgFPAvb (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 15 Jun 2020 20:51:31 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:6326 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726386AbgFPAvb (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Mon, 15 Jun 2020 20:51:31 -0400
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id C57CDF8AAA548630529D;
+        Tue, 16 Jun 2020 08:51:27 +0800 (CST)
+Received: from [10.166.215.157] (10.166.215.157) by smtp.huawei.com
+ (10.3.19.207) with Microsoft SMTP Server (TLS) id 14.3.487.0; Tue, 16 Jun
+ 2020 08:51:25 +0800
+Subject: Re: [PATCH] IB/srpt: Fix a potential null pointer dereference
+To:     Bart Van Assche <bvanassche@acm.org>, <dledford@redhat.com>,
+        <jgg@ziepe.ca>
+References: <20200615091220.6439-1-jingxiangfeng@huawei.com>
+ <7366b608-4474-cfaa-c465-957fd2d2366d@acm.org>
+CC:     <linux-rdma@vger.kernel.org>, <target-devel@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+From:   Jing Xiangfeng <jingxiangfeng@huawei.com>
+Message-ID: <5EE8178C.9090005@huawei.com>
+Date:   Tue, 16 Jun 2020 08:51:24 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.1.0
 MIME-Version: 1.0
-In-Reply-To: <20200615180753.GJ4151@kadam>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <7366b608-4474-cfaa-c465-957fd2d2366d@acm.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Originating-IP: [10.166.215.157]
+X-CFilter-Loop: Reflected
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 6/15/20 2:07 PM, Dan Carpenter wrote:
-> On Mon, Apr 13, 2020 at 05:15:49PM -0400, Waiman Long wrote:
->> diff --git a/mm/slab_common.c b/mm/slab_common.c
->> index 23c7500eea7d..c08bc7eb20bd 100644
->> --- a/mm/slab_common.c
->> +++ b/mm/slab_common.c
->> @@ -1707,17 +1707,17 @@ void *krealloc(const void *p, size_t new_size, gfp_t flags)
->>   EXPORT_SYMBOL(krealloc);
->>   
->>   /**
->> - * kzfree - like kfree but zero memory
->> + * kfree_sensitive - Clear sensitive information in memory before freeing
->>    * @p: object to free memory of
->>    *
->>    * The memory of the object @p points to is zeroed before freed.
->> - * If @p is %NULL, kzfree() does nothing.
->> + * If @p is %NULL, kfree_sensitive() does nothing.
->>    *
->>    * Note: this function zeroes the whole allocated buffer which can be a good
->>    * deal bigger than the requested buffer size passed to kmalloc(). So be
->>    * careful when using this function in performance sensitive code.
->>    */
->> -void kzfree(const void *p)
->> +void kfree_sensitive(const void *p)
+
+
+On 2020/6/15 21:37, Bart Van Assche wrote:
+> On 2020-06-15 02:12, Jing Xiangfeng wrote:
+>> In srpt_cm_req_recv(), it is possible that sdev is NULL,
+>> so we should test sdev before using it.
+>>
+>> Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
+>> ---
+>>   drivers/infiniband/ulp/srpt/ib_srpt.c | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
+>> index 98552749d71c..72053254bf84 100644
+>> --- a/drivers/infiniband/ulp/srpt/ib_srpt.c
+>> +++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
+>> @@ -2143,7 +2143,7 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
+>>   			    const struct srp_login_req *req,
+>>   			    const char *src_addr)
 >>   {
->>   	size_t ks;
->>   	void *mem = (void *)p;
->> @@ -1725,10 +1725,10 @@ void kzfree(const void *p)
->>   	if (unlikely(ZERO_OR_NULL_PTR(mem)))
->>   		return;
->>   	ks = ksize(mem);
->> -	memset(mem, 0, ks);
->> +	memzero_explicit(mem, ks);
->          ^^^^^^^^^^^^^^^^^^^^^^^^^
-> This is an unrelated bug fix.  It really needs to be pulled into a
-> separate patch by itself and back ported to stable kernels.
+>> -	struct srpt_port *sport = &sdev->port[port_num - 1];
+>> +	struct srpt_port *sport;
+>>   	struct srpt_nexus *nexus;
+>>   	struct srp_login_rsp *rsp = NULL;
+>>   	struct srp_login_rej *rej = NULL;
+>> @@ -2162,6 +2162,7 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
+>>   	if (WARN_ON(!sdev || !req))
+>>   		return -EINVAL;
+>>
+>> +	sport = &sdev->port[port_num - 1];
+>>   	it_iu_len = be32_to_cpu(req->req_it_iu_len);
+>>
 >
->>   	kfree(mem);
->>   }
->> -EXPORT_SYMBOL(kzfree);
->> +EXPORT_SYMBOL(kfree_sensitive);
->>   
->>   /**
->>    * ksize - get the actual amount of memory allocated for a given object
-> regards,
-> dan carpenter
+> Please remove the (!sdev || !req) check instead of making the above
+> change. It's easy to show that both pointers are always valid.
+
+OK, I will send a v2 with this change.
+
+Thanks
 >
-Thanks for the suggestion. I will break it out and post a version soon.
-
-Cheers,
-Longman
-
+> Thanks,
+>
+> Bart.
+> .
+>
