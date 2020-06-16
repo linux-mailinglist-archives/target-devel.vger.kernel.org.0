@@ -2,103 +2,115 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC40C1FB58F
-	for <lists+target-devel@lfdr.de>; Tue, 16 Jun 2020 17:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91BAB1FB646
+	for <lists+target-devel@lfdr.de>; Tue, 16 Jun 2020 17:35:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729173AbgFPPGQ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 16 Jun 2020 11:06:16 -0400
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:57144 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729296AbgFPPGP (ORCPT
+        id S1729177AbgFPPec (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 16 Jun 2020 11:34:32 -0400
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:42028 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728448AbgFPPec (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 16 Jun 2020 11:06:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1592319974;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=zMJwLzxJj7q5lIXa5apx7u6nKtBFyLcKdF8jh3rUT7U=;
-        b=Iy4QSP0X0nzFJZRhwXEbbJiJzvHdirliO1uj+m+YMsRaCJwpS3HfIZ1zf019olhi+jYeGa
-        eBbr2Yl11RSfhXDHCigkWSdtKs54zEl5D6QMjr/w/rKAobeEW22e24o4Y2QhJsaTWBGfWg
-        JMSVrbeANTmWvrxNKxibBejuwidqJvw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-443-zoZVocg1PeKVqdkZgJCjfg-1; Tue, 16 Jun 2020 11:06:11 -0400
-X-MC-Unique: zoZVocg1PeKVqdkZgJCjfg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        Tue, 16 Jun 2020 11:34:32 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id C71AB8EE1E9;
+        Tue, 16 Jun 2020 08:34:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1592321671;
+        bh=ajob1nvDrla9Bt+f3LFtU00Hic0WFbZIYozt4cm3MGM=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=W1sBeQ80o/S7QYGmkg7NPKLODl9DIayewfvNHRL0KXkV4cKwIIId31zNmJSXEAOn8
+         PmIczVXVyJ+XHkmj/F4XEVAvG601VQw6E+e3d1SlKbqVhn8CvXKJZo57Nbz5w9m9k9
+         Fk0B2hGn7EnmgCplAjGFyBu8ncCam1gBtEW7wy9I=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id e-XsTU0ZWdDv; Tue, 16 Jun 2020 08:34:30 -0700 (PDT)
+Received: from jarvis (unknown [216.116.10.17])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id ECA125AED8;
-        Tue, 16 Jun 2020 15:06:06 +0000 (UTC)
-Received: from llong.remote.csb (ovpn-114-156.rdu2.redhat.com [10.10.114.156])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 41DFF5C1D4;
-        Tue, 16 Jun 2020 15:06:00 +0000 (UTC)
-Subject: Re: [PATCH v4 2/3] mm, treewide: Rename kzfree() to kfree_sensitive()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Joe Perches <joe@perches.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        David Rientjes <rientjes@google.com>,
-        Michal Hocko <mhocko@suse.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        David Sterba <dsterba@suse.cz>,
-        "Jason A . Donenfeld" <Jason@zx2c4.com>, linux-mm@kvack.org,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-amlogic@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
-        linux-ppp@vger.kernel.org, wireguard@lists.zx2c4.com,
-        linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-        linux-fscrypt@vger.kernel.org, ecryptfs@vger.kernel.org,
-        kasan-dev@googlegroups.com, linux-bluetooth@vger.kernel.org,
-        linux-wpan@vger.kernel.org, linux-sctp@vger.kernel.org,
-        linux-nfs@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
-        linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org
-References: <20200616015718.7812-1-longman@redhat.com>
- <20200616015718.7812-3-longman@redhat.com> <20200616142624.GO4282@kadam>
-From:   Waiman Long <longman@redhat.com>
-Organization: Red Hat
-Message-ID: <72aa954d-4933-333c-b784-f8df14e407e6@redhat.com>
-Date:   Tue, 16 Jun 2020 11:05:59 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-MIME-Version: 1.0
-In-Reply-To: <20200616142624.GO4282@kadam>
-Content-Type: text/plain; charset=utf-8; format=flowed
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 4FE348EE188;
+        Tue, 16 Jun 2020 08:34:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1592321670;
+        bh=ajob1nvDrla9Bt+f3LFtU00Hic0WFbZIYozt4cm3MGM=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=MYUprjVWr66NFNYQM4jxBy/5blzUQem+8Me7nmbSL8D6xUxpHQ1bYjYJWGDOSQFMP
+         0TrdM6NHXmZUCNnf60cYcNDgiCRbFbF2pklcj6OPtPybkwoQ7Zez969xlVSVJzMk5+
+         XhrYEFkvrYKP8ysOE/5zvYdq13fP6HbGfoQDNx8k=
+Message-ID: <1592321667.4394.5.camel@HansenPartnership.com>
+Subject: Re: [PATCH] scsi: target/sbp: remove firewire SBP target driver
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Finn Thain <fthain@telegraphics.com.au>,
+        Chris Boot <bootc@boo.tc>
+Cc:     "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>,
+        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "linux1394-devel@lists.sourceforge.net" 
+        <linux1394-devel@lists.sourceforge.net>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Chuhong Yuan <hslester96@gmail.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Nicholas Bellinger <nab@linux-iscsi.org>,
+        Stefan Richter <stefanr@s5r6.in-berlin.de>
+Date:   Tue, 16 Jun 2020 08:34:27 -0700
+In-Reply-To: <SN4PR0401MB35982D889857E3C03E96E49D9B9D0@SN4PR0401MB3598.namprd04.prod.outlook.com>
+References: <01020172acd3d10f-3964f076-a820-43fc-9494-3f3946e9b7b5-000000@eu-west-1.amazonses.com>
+         <alpine.LNX.2.22.394.2006140934520.15@nippy.intranet>
+         <7ad14946-5c25-fc49-1e48-72d37a607832@boo.tc>
+         <alpine.LNX.2.22.394.2006150919110.8@nippy.intranet>
+         <8da0c285-d707-a3d2-063e-472af5cc560f@boo.tc>
+         <alpine.LNX.2.22.394.2006161929380.8@nippy.intranet>
+         <8cbab988-fba7-8e27-7faf-9f7aa36ca235@acm.org>
+         <SN4PR0401MB35982D889857E3C03E96E49D9B9D0@SN4PR0401MB3598.namprd04.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 6/16/20 10:26 AM, Dan Carpenter wrote:
-> Last time you sent this we couldn't decide which tree it should go
-> through.  Either the crypto tree or through Andrew seems like the right
-> thing to me.
->
-> Also the other issue is that it risks breaking things if people add
-> new kzfree() instances while we are doing the transition.  Could you
-> just add a "#define kzfree kfree_sensitive" so that things continue to
-> compile and we can remove it in the next kernel release?
->
-> regards,
-> dan carpenter
->
-Yes, that make sure sense. Will send out v5 later today.
+On Tue, 2020-06-16 at 14:13 +0000, Johannes Thumshirn wrote:
+> On 16/06/2020 16:09, Bart Van Assche wrote:
+> > On 2020-06-16 02:42, Finn Thain wrote:
+> > > Martin said, "I'd appreciate a patch to remove it"
+> > > 
+> > > And Bart said, "do you want to keep this driver in the kernel
+> > > tree?"
+> > > 
+> > > AFAICT both comments are quite ambiguous. I don't see an
+> > > actionable request, just an expression of interest from people
+> > > doing their jobs.
+> > > 
+> > > Note well: there is no pay check associated with having a
+> > > MAINTAINERS file 
+> > > entry.
+> > 
+> > Hi Finn,
+> > 
+> > As far as I know the sbp driver only has had one user ever and that
+> > user is no longer user the sbp driver. So why to keep it in the
+> > kernel tree? Restoring a kernel driver can be easy - the first step
+> > is a "git revert".
+> 
+> Why not move the driver to drivers/staging for 2 or 3 kernel releases
+> and if noone steps up, delete it?
 
-Cheers,
-Longman
+Because that's pretty much the worst of all worlds: If the driver is
+simply going orphaned it can stay where it is to avoid confusion.  If
+it's being removed, it's better to remove it from where it is because
+that makes the patch to restore it easy to find.
+
+Chris, the thing is this: if this driver has just one user on a stable
+distro who complains about its removal six months to two years from
+now, Linus will descend on us from a great height (which won't matter
+to you, since you'll be long gone).  This makes everyone very wary of
+outright removal.  If you're really, really sure it has no users, it
+can be deleted, but if there's the slightest chance it has just one, it
+should get orphaned.
+
+James
 
