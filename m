@@ -2,27 +2,27 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8D241FE22C
-	for <lists+target-devel@lfdr.de>; Thu, 18 Jun 2020 04:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ED611FE42C
+	for <lists+target-devel@lfdr.de>; Thu, 18 Jun 2020 04:17:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733291AbgFRB7n (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 17 Jun 2020 21:59:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59134 "EHLO mail.kernel.org"
+        id S1730273AbgFRBUO (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 17 Jun 2020 21:20:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52172 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731245AbgFRBYe (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Wed, 17 Jun 2020 21:24:34 -0400
+        id S1730264AbgFRBUJ (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Wed, 17 Jun 2020 21:20:09 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B38F621927;
-        Thu, 18 Jun 2020 01:24:32 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 492A7206F1;
+        Thu, 18 Jun 2020 01:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592443473;
-        bh=TdiYnjajw3wO5BFajtKDvBXETq0eq3F8VxdZgt6V9hI=;
+        s=default; t=1592443208;
+        bh=Wu4ICg6jA0FGpJIu5+ZL5+NISmPgf8HVCI+TMn6vJas=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R8jzDN+hEr+wEhMV7Cv8owUI6B1xo2+oZz2k6Oe/nwaI376Ps2tp/PB9YSOMPo7Pn
-         W74NnjxhFZ9ttTt01R3hSibn2tsn9hKRKwH34X1I+gWGRvtLSJITXOO5oI4U6Gb3ta
-         lK67gK4/OxgL7vKZUMghlhV95WnPOiIl/bYYlbys=
+        b=TCkLAQ5HbpFmsMIYsXMBQ8uFlf2cJz25GydPjXm8M39Kx7eVrpFs7DxB4ZzFmB+58
+         7Y0262LypAvEllE+2EtfXA/Qaelin/lfiO8GNZwMqAIPwIM8XES3sj8E2EMqWj81fk
+         J8NjPjS1ARvJ36ZaoPheDOBghk59ltrJie/hpFCQ=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
@@ -30,12 +30,12 @@ Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
         target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 104/172] scsi: target: tcmu: Userspace must not complete queued commands
-Date:   Wed, 17 Jun 2020 21:21:10 -0400
-Message-Id: <20200618012218.607130-104-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 165/266] scsi: target: tcmu: Userspace must not complete queued commands
+Date:   Wed, 17 Jun 2020 21:14:50 -0400
+Message-Id: <20200618011631.604574-165-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200618012218.607130-1-sashal@kernel.org>
-References: <20200618012218.607130-1-sashal@kernel.org>
+In-Reply-To: <20200618011631.604574-1-sashal@kernel.org>
+References: <20200618011631.604574-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -75,10 +75,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 71 insertions(+), 83 deletions(-)
 
 diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-index eff1e36ca03c..ac523f247a9c 100644
+index 9425354aef99..70c64e69a1d2 100644
 --- a/drivers/target/target_core_user.c
 +++ b/drivers/target/target_core_user.c
-@@ -893,41 +893,24 @@ static inline size_t tcmu_cmd_get_cmd_size(struct tcmu_cmd *tcmu_cmd,
+@@ -882,41 +882,24 @@ static inline size_t tcmu_cmd_get_cmd_size(struct tcmu_cmd *tcmu_cmd,
  	return command_size;
  }
  
@@ -125,7 +125,7 @@ index eff1e36ca03c..ac523f247a9c 100644
  
  	/*
  	 * For backwards compat if qfull_time_out is not set use
-@@ -942,13 +925,11 @@ static int add_to_qfull_queue(struct tcmu_cmd *tcmu_cmd)
+@@ -931,13 +914,11 @@ static int add_to_qfull_queue(struct tcmu_cmd *tcmu_cmd)
  	else
  		tmo = TCMU_TIME_OUT;
  
@@ -142,7 +142,7 @@ index eff1e36ca03c..ac523f247a9c 100644
  	return 0;
  }
  
-@@ -970,7 +951,7 @@ static int queue_cmd_ring(struct tcmu_cmd *tcmu_cmd, sense_reason_t *scsi_err)
+@@ -959,7 +940,7 @@ static int queue_cmd_ring(struct tcmu_cmd *tcmu_cmd, sense_reason_t *scsi_err)
  	struct tcmu_mailbox *mb;
  	struct tcmu_cmd_entry *entry;
  	struct iovec *iov;
@@ -151,7 +151,7 @@ index eff1e36ca03c..ac523f247a9c 100644
  	uint32_t cmd_head;
  	uint64_t cdb_off;
  	bool copy_to_data_area;
-@@ -1071,14 +1052,21 @@ static int queue_cmd_ring(struct tcmu_cmd *tcmu_cmd, sense_reason_t *scsi_err)
+@@ -1060,14 +1041,21 @@ static int queue_cmd_ring(struct tcmu_cmd *tcmu_cmd, sense_reason_t *scsi_err)
  	}
  	entry->req.iov_bidi_cnt = iov_cnt;
  
@@ -177,7 +177,7 @@ index eff1e36ca03c..ac523f247a9c 100644
  	entry->hdr.cmd_id = tcmu_cmd->cmd_id;
  
  	/*
-@@ -1290,50 +1278,39 @@ static unsigned int tcmu_handle_completions(struct tcmu_dev *udev)
+@@ -1279,50 +1267,39 @@ static unsigned int tcmu_handle_completions(struct tcmu_dev *udev)
  	return handled;
  }
  
@@ -251,7 +251,7 @@ index eff1e36ca03c..ac523f247a9c 100644
  }
  
  static void tcmu_device_timedout(struct tcmu_dev *udev)
-@@ -1418,16 +1395,15 @@ static struct se_device *tcmu_alloc_device(struct se_hba *hba, const char *name)
+@@ -1407,16 +1384,15 @@ static struct se_device *tcmu_alloc_device(struct se_hba *hba, const char *name)
  	return &udev->se_dev;
  }
  
@@ -270,7 +270,7 @@ index eff1e36ca03c..ac523f247a9c 100644
  
  	pr_debug("running %s's cmdr queue forcefail %d\n", udev->name, fail);
  
-@@ -1436,11 +1412,10 @@ static bool run_qfull_queue(struct tcmu_dev *udev, bool fail)
+@@ -1425,11 +1401,10 @@ static bool run_qfull_queue(struct tcmu_dev *udev, bool fail)
  	list_for_each_entry_safe(tcmu_cmd, tmp_cmd, &cmds, queue_entry) {
  		list_del_init(&tcmu_cmd->queue_entry);
  
@@ -284,7 +284,7 @@ index eff1e36ca03c..ac523f247a9c 100644
  			/*
  			 * We were not able to even start the command, so
  			 * fail with busy to allow a retry in case runner
-@@ -1455,10 +1430,8 @@ static bool run_qfull_queue(struct tcmu_dev *udev, bool fail)
+@@ -1444,10 +1419,8 @@ static bool run_qfull_queue(struct tcmu_dev *udev, bool fail)
  
  		ret = queue_cmd_ring(tcmu_cmd, &scsi_ret);
  		if (ret < 0) {
@@ -297,7 +297,7 @@ index eff1e36ca03c..ac523f247a9c 100644
  			/*
  			 * Ignore scsi_ret for now. target_complete_cmd
  			 * drops it.
-@@ -1473,13 +1446,11 @@ static bool run_qfull_queue(struct tcmu_dev *udev, bool fail)
+@@ -1462,13 +1435,11 @@ static bool run_qfull_queue(struct tcmu_dev *udev, bool fail)
  			 * the queue
  			 */
  			list_splice_tail(&cmds, &udev->qfull_queue);
@@ -311,7 +311,7 @@ index eff1e36ca03c..ac523f247a9c 100644
  }
  
  static int tcmu_irqcontrol(struct uio_info *info, s32 irq_on)
-@@ -1663,6 +1634,8 @@ static void tcmu_dev_kref_release(struct kref *kref)
+@@ -1652,6 +1623,8 @@ static void tcmu_dev_kref_release(struct kref *kref)
  		if (tcmu_check_and_free_pending_cmd(cmd) != 0)
  			all_expired = false;
  	}
@@ -320,7 +320,7 @@ index eff1e36ca03c..ac523f247a9c 100644
  	idr_destroy(&udev->commands);
  	WARN_ON(!all_expired);
  
-@@ -2031,9 +2004,6 @@ static void tcmu_reset_ring(struct tcmu_dev *udev, u8 err_level)
+@@ -2037,9 +2010,6 @@ static void tcmu_reset_ring(struct tcmu_dev *udev, u8 err_level)
  	mutex_lock(&udev->cmdr_lock);
  
  	idr_for_each_entry(&udev->commands, cmd, i) {
@@ -330,7 +330,7 @@ index eff1e36ca03c..ac523f247a9c 100644
  		pr_debug("removing cmd %u on dev %s from ring (is expired %d)\n",
  			  cmd->cmd_id, udev->name,
  			  test_bit(TCMU_CMD_BIT_EXPIRED, &cmd->flags));
-@@ -2071,6 +2041,8 @@ static void tcmu_reset_ring(struct tcmu_dev *udev, u8 err_level)
+@@ -2077,6 +2047,8 @@ static void tcmu_reset_ring(struct tcmu_dev *udev, u8 err_level)
  
  	del_timer(&udev->cmd_timer);
  
@@ -339,7 +339,7 @@ index eff1e36ca03c..ac523f247a9c 100644
  	mutex_unlock(&udev->cmdr_lock);
  }
  
-@@ -2692,6 +2664,7 @@ static void find_free_blocks(void)
+@@ -2698,6 +2670,7 @@ static void find_free_blocks(void)
  static void check_timedout_devices(void)
  {
  	struct tcmu_dev *udev, *tmp_dev;
@@ -347,7 +347,7 @@ index eff1e36ca03c..ac523f247a9c 100644
  	LIST_HEAD(devs);
  
  	spin_lock_bh(&timed_out_udevs_lock);
-@@ -2702,9 +2675,24 @@ static void check_timedout_devices(void)
+@@ -2708,9 +2681,24 @@ static void check_timedout_devices(void)
  		spin_unlock_bh(&timed_out_udevs_lock);
  
  		mutex_lock(&udev->cmdr_lock);
