@@ -2,89 +2,89 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A6D41FE6A2
-	for <lists+target-devel@lfdr.de>; Thu, 18 Jun 2020 04:36:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9CCD1FF28E
+	for <lists+target-devel@lfdr.de>; Thu, 18 Jun 2020 15:03:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729288AbgFRBOL (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 17 Jun 2020 21:14:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43734 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727813AbgFRBOK (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Wed, 17 Jun 2020 21:14:10 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BE99720EDD;
-        Thu, 18 Jun 2020 01:14:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592442849;
-        bh=Wrjt8XoJ7Bhht6hDHZeSg1rAz+D9ShRe3k4VcfYD4KE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dxWnCAnABZbTEUhDZKd5+qcmGNaxePNT/gpwcbHBCXXk1jiyeUY2sblyNE6oPk8BW
-         hxveDOd8C2n+ljG+ex/kEqUhYJVXvfvQ7/vtgIrvleBNSDjKz7cXR+CnGFqPdT5ume
-         8UFOgs/8C8vSJxZ82rL45Wkn3SlazDyFpJeVv8Rk=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Mike Christie <mchristi@redhat.com>,
-        David Disseldorp <ddiss@suse.de>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.7 281/388] scsi: target: tcmu: Fix a use after free in tcmu_check_expired_queue_cmd()
-Date:   Wed, 17 Jun 2020 21:06:18 -0400
-Message-Id: <20200618010805.600873-281-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200618010805.600873-1-sashal@kernel.org>
-References: <20200618010805.600873-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+        id S1730046AbgFRNDP (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 18 Jun 2020 09:03:15 -0400
+Received: from mail1.bemta25.messagelabs.com ([195.245.230.65]:35655 "EHLO
+        mail1.bemta25.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730041AbgFRNDO (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Thu, 18 Jun 2020 09:03:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
+        s=200619tsfj; t=1592485392; i=@ts.fujitsu.com;
+        bh=oYumhRJxkWCfO0i7c/hvuANQHDicGRWYDiS67PXa1VI=;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        b=nI7WjRcm43mniDoOGabfjJWNrFkSNxKMEbJcN5pKG9Nq8CQho8LAZITVTGqRkVWRW
+         CRZnji6Pj2a7E6mFP03nDZSEqZa8ZtafpFhxblRtdEKm/Dr6OJ1cbxYmmstdHQlqf0
+         QC6bp8hJOZ57Ug236d3/c+MRyDPH9vh8LApM0Oi9vG4Z7YDQRUOrVFoPdnnDj54dvT
+         yPzK8qRZo7d9nJy5H9kakpKPDsC0vyVhuq1ZtDlQqq9hHx6J3bCaGNWqg5U8tf9I39
+         dtW3HxQMlLg92q/YnQcU4pb5OCLRByWfCmnEI1Jqd9j+840FSHTgD+badOzkeOctdK
+         vNVpcoacaXd7g==
+Received: from [100.112.196.81] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-1.bemta.az-b.eu-west-1.aws.symcld.net id 2F/50-63843-F066BEE5; Thu, 18 Jun 2020 13:03:11 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFuplkeJIrShJLcpLzFFi42Kxs+EI1eVPex1
+  nsGyLosXhhW+YLLqv72CzmNEWZrH8+D8mi7+TbrBatC59y+TA5rFz1l12j8c9Z9g8Pj69xeLx
+  eZNcAEsUa2ZeUn5FAmvGiqszmQoeslbs2HaDrYHxOUsXIyeHkMBkRok751kh7OmMEtNuJYPYb
+  AIGEism3Qeq4eIQEVjDKLHyzjxmkASzQKXE7a3TwWxhAU6JTd3n2UFsFgFViYPHt4AN5RWwk/
+  j4YBrYUAkBeYmOA5NZJjByLmBkWMVokVSUmZ5RkpuYmaNraGCga2hopGtoaaFraGGml1ilm6S
+  XWqpbnlpcomuol1herFdcmZuck6KXl1qyiREYGikFx3btYHz7+oPeIUZJDiYlUd7wxNdxQnxJ
+  +SmVGYnFGfFFpTmpxYcYZTg4lCR4XyYD5QSLUtNTK9Iyc4BhCpOW4OBREuHlSwFK8xYXJOYWZ
+  6ZDpE4xWnKcPjpvETPHi6uLgeSqA9NXMQux5OXnpUqJ8+aDzBMAacgozYMbB4ulS4yyUsK8jA
+  wMDEI8BalFuZklqPKvGMU5GJWEeeeATOHJzCuB2/oK6CAmoIO0wl+BHFSSiJCSamB6pHg8wiR
+  LOOB3bHXhr+pPTFMbuLIMf1nOfZax2OiQGV/JRZeJh+O1DacHVyoe1Z68vTb/EfM9/2cZMto3
+  ajQKVpzxeXPBx/Te1/tFtzoNPGtVjx6t19r+6MjW0L27QmNOnQrewbHBwu8mQ7v+Hh+nhAUOU
+  7wY3fUcjpfFlVTP31XKdC0pYO6DWJO7QXqWM30VnFMZ3oX5xoYWSzWeyQ8p/LMxdxMfz58LL3
+  bd9709d+m89dvmHQw+WL2dP4AtIfuezaeLs21+/7s/jzk29cBze/6jMXGVb2XnKTbtyDQyub+
+  8/32vdG+7nePtg1Hqv1gL625NYvrsyrHvxp8zN5lTjgv8015iZTbz0SmFj1ZKLMUZiYZazEXF
+  iQCp080+IAMAAA==
+X-Env-Sender: bstroesser@ts.fujitsu.com
+X-Msg-Ref: server-59.tower-291.messagelabs.com!1592485390!424327!1
+X-Originating-IP: [62.60.8.85]
+X-SYMC-ESS-Client-Auth: outbound-route-from=pass
+X-StarScan-Received: 
+X-StarScan-Version: 9.50.2; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 25008 invoked from network); 18 Jun 2020 13:03:11 -0000
+Received: from unknown (HELO mailhost4.uk.fujitsu.com) (62.60.8.85)
+  by server-59.tower-291.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 18 Jun 2020 13:03:11 -0000
+Received: from x-serv01 ([172.17.38.52])
+        by mailhost4.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 05ID34SY017661;
+        Thu, 18 Jun 2020 14:03:04 +0100
+Received: from VTC.emeia.fujitsu.local (unknown [172.17.38.7])
+        by x-serv01 (Postfix) with ESMTP id 2F72120300;
+        Thu, 18 Jun 2020 15:03:04 +0200 (CEST)
+From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
+To:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+Cc:     JiangYu <lnsyyj@hotmail.com>, Daniel Meyerholt <dxm523@gmail.com>,
+        Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Subject: 
+Date:   Thu, 18 Jun 2020 15:02:58 +0200
+Message-Id: <20200618130300.31094-1-bstroesser@ts.fujitsu.com>
+X-Mailer: git-send-email 2.12.3
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
+This small series of patches consists of:
+   [PATCH 1/2] scsi: target: tcmu: Optimize use of flush_dcache_page
+   [PATCH 2/2] scsi: target: tcmu: Fix crash in tcmu_flush_dcache_range
 
-[ Upstream commit 9d7464b18892332e35ff37f0b024429a1a9835e6 ]
+Together with commit
+   8c4e0f212398 scsi: target: tcmu: Fix size in calls to tcmu_flush_dcache_range
+these patches fix crashes in tcmu on ARM.
 
-The pr_debug() dereferences "cmd" after we already freed it by calling
-tcmu_free_cmd(cmd).  The debug printk needs to be done earlier.
+The first patch of this series already was sent some weeks ago
+as "PATCH RFC", since it was untested at that time.
 
-Link: https://lore.kernel.org/r/20200523101129.GB98132@mwanda
-Fixes: 61fb24822166 ("scsi: target: tcmu: Userspace must not complete queued commands")
-Reviewed-by: Mike Christie <mchristi@redhat.com>
-Reviewed-by: David Disseldorp <ddiss@suse.de>
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/target/target_core_user.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Meanwhile I added patch 2 of the series to fix the crash reported in:
+   https://github.com/open-iscsi/tcmu-runner/issues/627
+   https://bugzilla.kernel.org/show_bug.cgi?id=208045
 
-diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-index 517570e47958..b63a1e0c4aa6 100644
---- a/drivers/target/target_core_user.c
-+++ b/drivers/target/target_core_user.c
-@@ -1292,13 +1292,13 @@ static void tcmu_check_expired_queue_cmd(struct tcmu_cmd *cmd)
- 	if (!time_after(jiffies, cmd->deadline))
- 		return;
- 
-+	pr_debug("Timing out queued cmd %p on dev %s.\n",
-+		  cmd, cmd->tcmu_dev->name);
-+
- 	list_del_init(&cmd->queue_entry);
- 	se_cmd = cmd->se_cmd;
- 	tcmu_free_cmd(cmd);
- 
--	pr_debug("Timing out queued cmd %p on dev %s.\n",
--		  cmd, cmd->tcmu_dev->name);
--
- 	target_complete_cmd(se_cmd, SAM_STAT_TASK_SET_FULL);
- }
- 
--- 
-2.25.1
+All three patches together were tested on ARM with kernel
+4.19.118 and 5.7.2 (see github issue and bugzilla).
 
