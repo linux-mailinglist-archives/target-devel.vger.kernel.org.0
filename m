@@ -2,39 +2,41 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CABAA1FDC70
-	for <lists+target-devel@lfdr.de>; Thu, 18 Jun 2020 03:19:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D07D1FDD4B
+	for <lists+target-devel@lfdr.de>; Thu, 18 Jun 2020 03:25:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730146AbgFRBTc (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 17 Jun 2020 21:19:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51192 "EHLO mail.kernel.org"
+        id S1731315AbgFRBY4 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 17 Jun 2020 21:24:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59672 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729264AbgFRBT3 (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Wed, 17 Jun 2020 21:19:29 -0400
+        id S1731302AbgFRBYy (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Wed, 17 Jun 2020 21:24:54 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 516E921D90;
-        Thu, 18 Jun 2020 01:19:26 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3BD0220776;
+        Thu, 18 Jun 2020 01:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592443167;
-        bh=n77+mRGJzhZkF3sMpgr1Vq43gLpGDv+qKc9vyAuvuic=;
+        s=default; t=1592443494;
+        bh=WWjhVMfWAJDBpqfzVCsKyPFfmNAuZNLUns5DSJPuq3I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HFDccdtRBKIB85YX4gj/2jByiku7BFBWG23ma49olDgRD017yWo4bOvTqGuhgSOfM
-         cWc71OduWIB+a/xCua82hmVp2JuZjoZD72CIGBVIhZQc6aEqcatR7mBU79MLNCo5MF
-         WTer5qTLriFBvpufHAs5VqN5vzrmYPt4A+/Ldfi0=
+        b=0HOp1KPCVvw89ldIeCK897HfLKX8uawMYJEvbPMROc5F2imWpP//pVARgn8FnIKKD
+         mbkjmNWRco8u0tcbHIt7xCc2mIjpEtVM3dcFsuPKxpqcoEx7NfgHE7FGZs/FxXiLRq
+         4JYhbvgePzlZYBdbHRPYgiXPxxaUehmOOlSu3zjo=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Mike Christie <mchristi@redhat.com>,
+        David Disseldorp <ddiss@suse.de>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
         target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 132/266] scsi: target: loopback: Fix READ with data and sensebytes
-Date:   Wed, 17 Jun 2020 21:14:17 -0400
-Message-Id: <20200618011631.604574-132-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 121/172] scsi: target: tcmu: Fix a use after free in tcmu_check_expired_queue_cmd()
+Date:   Wed, 17 Jun 2020 21:21:27 -0400
+Message-Id: <20200618012218.607130-121-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200618011631.604574-1-sashal@kernel.org>
-References: <20200618011631.604574-1-sashal@kernel.org>
+In-Reply-To: <20200618012218.607130-1-sashal@kernel.org>
+References: <20200618012218.607130-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,103 +46,45 @@ Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-From: Bodo Stroesser <bstroesser@ts.fujitsu.com>
+From: Dan Carpenter <dan.carpenter@oracle.com>
 
-[ Upstream commit c68a56736c129f5dd1632856956f9c3e04bae200 ]
+[ Upstream commit 9d7464b18892332e35ff37f0b024429a1a9835e6 ]
 
-We use tcm_loop with tape emulations running on tcmu.
+The pr_debug() dereferences "cmd" after we already freed it by calling
+tcmu_free_cmd(cmd).  The debug printk needs to be done earlier.
 
-In case application reads a short tape block with a longer READ, or a long
-tape block with a short READ, according to SCC spec data has to be
-tranferred _and_ sensebytes with ILI set and information field containing
-the residual count. Similar problem also exists when using fixed block
-size in READ.
-
-Up to now tcm_loop is not prepared to handle sensebytes if input data is
-provided, as in tcm_loop_queue_data_in() it only sets SAM_STAT_GOOD and, if
-necessary, the residual count.
-
-To fix the bug, the same handling for sensebytes as present in
-tcm_loop_queue_status() must be done in tcm_loop_queue_data_in() also.
-
-After adding this handling, the two function now are nearly identical, so I
-created a single function with two wrappers.
-
-Link: https://lore.kernel.org/r/20200428182617.32726-1-bstroesser@ts.fujitsu.com
-Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Link: https://lore.kernel.org/r/20200523101129.GB98132@mwanda
+Fixes: 61fb24822166 ("scsi: target: tcmu: Userspace must not complete queued commands")
+Reviewed-by: Mike Christie <mchristi@redhat.com>
+Reviewed-by: David Disseldorp <ddiss@suse.de>
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/loopback/tcm_loop.c | 36 +++++++++++++-----------------
- 1 file changed, 15 insertions(+), 21 deletions(-)
+ drivers/target/target_core_user.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/target/loopback/tcm_loop.c b/drivers/target/loopback/tcm_loop.c
-index 3305b47fdf53..16d5a4e117a2 100644
---- a/drivers/target/loopback/tcm_loop.c
-+++ b/drivers/target/loopback/tcm_loop.c
-@@ -545,32 +545,15 @@ static int tcm_loop_write_pending(struct se_cmd *se_cmd)
- 	return 0;
+diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
+index ac523f247a9c..8da89925a874 100644
+--- a/drivers/target/target_core_user.c
++++ b/drivers/target/target_core_user.c
+@@ -1303,13 +1303,13 @@ static void tcmu_check_expired_queue_cmd(struct tcmu_cmd *cmd)
+ 	if (!time_after(jiffies, cmd->deadline))
+ 		return;
+ 
++	pr_debug("Timing out queued cmd %p on dev %s.\n",
++		  cmd, cmd->tcmu_dev->name);
++
+ 	list_del_init(&cmd->queue_entry);
+ 	se_cmd = cmd->se_cmd;
+ 	tcmu_free_cmd(cmd);
+ 
+-	pr_debug("Timing out queued cmd %p on dev %s.\n",
+-		  cmd, cmd->tcmu_dev->name);
+-
+ 	target_complete_cmd(se_cmd, SAM_STAT_TASK_SET_FULL);
  }
  
--static int tcm_loop_queue_data_in(struct se_cmd *se_cmd)
-+static int tcm_loop_queue_data_or_status(const char *func,
-+		struct se_cmd *se_cmd, u8 scsi_status)
- {
- 	struct tcm_loop_cmd *tl_cmd = container_of(se_cmd,
- 				struct tcm_loop_cmd, tl_se_cmd);
- 	struct scsi_cmnd *sc = tl_cmd->sc;
- 
- 	pr_debug("%s() called for scsi_cmnd: %p cdb: 0x%02x\n",
--		 __func__, sc, sc->cmnd[0]);
--
--	sc->result = SAM_STAT_GOOD;
--	set_host_byte(sc, DID_OK);
--	if ((se_cmd->se_cmd_flags & SCF_OVERFLOW_BIT) ||
--	    (se_cmd->se_cmd_flags & SCF_UNDERFLOW_BIT))
--		scsi_set_resid(sc, se_cmd->residual_count);
--	sc->scsi_done(sc);
--	return 0;
--}
--
--static int tcm_loop_queue_status(struct se_cmd *se_cmd)
--{
--	struct tcm_loop_cmd *tl_cmd = container_of(se_cmd,
--				struct tcm_loop_cmd, tl_se_cmd);
--	struct scsi_cmnd *sc = tl_cmd->sc;
--
--	pr_debug("%s() called for scsi_cmnd: %p cdb: 0x%02x\n",
--		 __func__, sc, sc->cmnd[0]);
-+		 func, sc, sc->cmnd[0]);
- 
- 	if (se_cmd->sense_buffer &&
- 	   ((se_cmd->se_cmd_flags & SCF_TRANSPORT_TASK_SENSE) ||
-@@ -581,7 +564,7 @@ static int tcm_loop_queue_status(struct se_cmd *se_cmd)
- 		sc->result = SAM_STAT_CHECK_CONDITION;
- 		set_driver_byte(sc, DRIVER_SENSE);
- 	} else
--		sc->result = se_cmd->scsi_status;
-+		sc->result = scsi_status;
- 
- 	set_host_byte(sc, DID_OK);
- 	if ((se_cmd->se_cmd_flags & SCF_OVERFLOW_BIT) ||
-@@ -591,6 +574,17 @@ static int tcm_loop_queue_status(struct se_cmd *se_cmd)
- 	return 0;
- }
- 
-+static int tcm_loop_queue_data_in(struct se_cmd *se_cmd)
-+{
-+	return tcm_loop_queue_data_or_status(__func__, se_cmd, SAM_STAT_GOOD);
-+}
-+
-+static int tcm_loop_queue_status(struct se_cmd *se_cmd)
-+{
-+	return tcm_loop_queue_data_or_status(__func__,
-+					     se_cmd, se_cmd->scsi_status);
-+}
-+
- static void tcm_loop_queue_tm_rsp(struct se_cmd *se_cmd)
- {
- 	struct tcm_loop_cmd *tl_cmd = container_of(se_cmd,
 -- 
 2.25.1
 
