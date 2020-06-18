@@ -2,182 +2,134 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D2B51FF89D
-	for <lists+target-devel@lfdr.de>; Thu, 18 Jun 2020 18:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D90B01FFAEE
+	for <lists+target-devel@lfdr.de>; Thu, 18 Jun 2020 20:18:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727970AbgFRQGN (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 18 Jun 2020 12:06:13 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:57862 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726981AbgFRQGN (ORCPT
+        id S1728765AbgFRSSZ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 18 Jun 2020 14:18:25 -0400
+Received: from hqnvemgate26.nvidia.com ([216.228.121.65]:10818 "EHLO
+        hqnvemgate26.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727113AbgFRSSY (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 18 Jun 2020 12:06:13 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05IG1VOP111205;
-        Thu, 18 Jun 2020 16:06:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=pf+PcYlALIr+fkiJMn+sIzamCiofFkd8S3+9CnlEKDk=;
- b=jPJJ/01VSh3K1ugsyPvO0mWavz1XOgi2kzOJLSXS2Zgoy0gFlI+kzV/AMM8QpX4jDasE
- bruRqxTU6wiJnJLxx6VcYApJi+DUBM/K5PYvdJ4umfOkyyibs1JDEKoZPOic+I885WTc
- QAF1Y3MyfYJRZ6CGN/ofpeilqTAqau8uvhXujPfV1Dpw5ElMpO220MlW4cd17dS6rjn+
- zthyrHO4q0Ziu6HL5WDEloM9bTvCw4rKj3tsYbqx4wcw0xHgsmNy2sihDamxronWaKdJ
- GZYY+RYZaeTXFDTIyi9Aww//Rg5pROUVMIkhjXt2snpwctgG0P2I2SUR/Af6sTob4ggH bQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 31qg3582qg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 18 Jun 2020 16:06:07 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05IG3m4v116009;
-        Thu, 18 Jun 2020 16:06:07 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 31q66101et-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 18 Jun 2020 16:06:06 +0000
-Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 05IG65xM030065;
-        Thu, 18 Jun 2020 16:06:05 GMT
-Received: from [20.15.0.202] (/73.88.28.6)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 18 Jun 2020 09:06:05 -0700
-Subject: Re: [PATCH 2/2 v2] scsi: target: tcmu: Fix crash in
- tcmu_flush_dcache_range on ARM
-To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Cc:     JiangYu <lnsyyj@hotmail.com>, Daniel Meyerholt <dxm523@gmail.com>
-References: <20200618131632.32748-1-bstroesser@ts.fujitsu.com>
- <20200618131632.32748-3-bstroesser@ts.fujitsu.com>
- <5e4be724-bd54-3a4d-e0d4-8c60910b0c0a@oracle.com>
- <b5b0bead-a94e-3a0f-f862-2c946717cd6b@ts.fujitsu.com>
-From:   Mike Christie <michael.christie@oracle.com>
-Message-ID: <b63ac74a-fab3-373b-1c70-f378113c615c@oracle.com>
-Date:   Thu, 18 Jun 2020 11:06:08 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        Thu, 18 Jun 2020 14:18:24 -0400
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+        id <B5eebafe30000>; Thu, 18 Jun 2020 11:18:11 -0700
+Received: from hqmail.nvidia.com ([172.20.161.6])
+  by hqpgpgate101.nvidia.com (PGP Universal service);
+  Thu, 18 Jun 2020 11:18:24 -0700
+X-PGP-Universal: processed;
+        by hqpgpgate101.nvidia.com on Thu, 18 Jun 2020 11:18:24 -0700
+Received: from HQMAIL109.nvidia.com (172.20.187.15) by HQMAIL109.nvidia.com
+ (172.20.187.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 18 Jun
+ 2020 18:18:19 +0000
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.170)
+ by HQMAIL109.nvidia.com (172.20.187.15) with Microsoft SMTP Server (TLS) id
+ 15.0.1473.3 via Frontend Transport; Thu, 18 Jun 2020 18:18:19 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=QBxdbOwn10zrOClp7Ysv3d9rGi9mZ5LwIt5ef3SEb0nwIHYlrGJwwkZtsSANg9ZM63+bFSbDVMcT0B9LYS/oDbtde0A/SJzPGUXtYQC9tHPhEucbrF1nFOOkB0FujFPdpotR/CHAEJjt1Pa6CHBYuFfoja55L/qmV2uwiA0QtK2QZdbQbtWnQvTCD0+2Anuodxy7O+DB4p9MuSzV2a2paDKifg89qb2EKgUdS6SFdSGHopCy5PVxQCZavZ8G9y96rL/hsFS8+T8PRqHgrOizZcOYEAGQXus5n7Oz1hXp7H1MF/cyAjzAkU6x/bYjpo67qdDNkACg3ZRn/ltU9eFKfA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WLb6w+bYy5CdwxMrMA9IyHu8AP65Z2988HtOGFxhLXI=;
+ b=JZzxLmYOG6O5zd6nfTfL5v2kjssCZK38Ia5EPOKYWiTBWOS6fNnANwDOfqS5N1dwAQN6NGE+7PKaL2r67dmyEozHf1PtRAI3UN7leZzkqTbITlI0AWXgcuLBa9rqCo8t+4zpc7xaDATyhwaz0Sp/Mtci42N1c4m+Dl/G8Ioax3EFXuK2zCyGxr33eMeQOcWCg1zlnMlFAGJJFWk7bTlsdRv2x0GAt+yuwspuYbDHaWnTeK20PDUv9oxSuTo1dEItKsjSFCZ1Zz//jJoRPbOSwbWdWQuln3LVNVWfJMJfSpYOHEAP7C0NcuGy58E7FuhFMfubqVjAOvSMC9jExoilqw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+Authentication-Results: huawei.com; dkim=none (message not signed)
+ header.d=none;huawei.com; dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
+ by DM6PR12MB4267.namprd12.prod.outlook.com (2603:10b6:5:21e::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.21; Thu, 18 Jun
+ 2020 18:18:18 +0000
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::1d53:7cb4:c3d7:2b54]) by DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::1d53:7cb4:c3d7:2b54%6]) with mapi id 15.20.3109.021; Thu, 18 Jun 2020
+ 18:18:17 +0000
+Date:   Thu, 18 Jun 2020 15:18:16 -0300
+From:   Jason Gunthorpe <jgg@nvidia.com>
+To:     Jing Xiangfeng <jingxiangfeng@huawei.com>
+CC:     <bvanassche@acm.org>, <dledford@redhat.com>,
+        <linux-rdma@vger.kernel.org>, <target-devel@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+Subject: Re: [PATCH v3] IB/srpt: Remove WARN_ON from srpt_cm_req_recv
+Message-ID: <20200618181816.GA2453631@mellanox.com>
+References: <20200617140803.181333-1-jingxiangfeng@huawei.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20200617140803.181333-1-jingxiangfeng@huawei.com>
+X-NVConfidentiality: public
+X-ClientProxiedBy: BL0PR05CA0001.namprd05.prod.outlook.com
+ (2603:10b6:208:91::11) To DM6PR12MB3834.namprd12.prod.outlook.com
+ (2603:10b6:5:14a::12)
 MIME-Version: 1.0
-In-Reply-To: <b5b0bead-a94e-3a0f-f862-2c946717cd6b@ts.fujitsu.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9656 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0
- phishscore=0 bulkscore=0 malwarescore=0 mlxscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006180120
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9656 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 mlxscore=0
- clxscore=1015 malwarescore=0 impostorscore=0 adultscore=0
- cotscore=-2147483648 lowpriorityscore=0 mlxlogscore=999 spamscore=0
- suspectscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006180120
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from mlx.ziepe.ca (156.34.48.30) by BL0PR05CA0001.namprd05.prod.outlook.com (2603:10b6:208:91::11) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3131.10 via Frontend Transport; Thu, 18 Jun 2020 18:18:17 +0000
+Received: from jgg by mlx with local (Exim 4.93)        (envelope-from <jgg@nvidia.com>)        id 1jlz7A-00AIJP-2G; Thu, 18 Jun 2020 15:18:16 -0300
+X-NVConfidentiality: public
+X-Originating-IP: [156.34.48.30]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 4a824ce9-cc1b-46a9-dbbc-08d813b3f912
+X-MS-TrafficTypeDiagnostic: DM6PR12MB4267:
+X-Microsoft-Antispam-PRVS: <DM6PR12MB42670244D2B8828547B5A3AEC29B0@DM6PR12MB4267.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4941;
+X-Forefront-PRVS: 0438F90F17
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: aPpfp2ktCYKLLDr63Bbats2vU0dS3XmY7rK4tETSqDT+HzYozlbippoQx3332eaIfLnBpfR/iFardr2g4vd8CoBXxDABQid6wflYYfNb0BjaFqhX2F1g9AOTuV4UTnbUKsLBUykGijJ729XmE64mXQExZO7AzsYvPxossWDE6hCk8COlipiUmj9x0tAIeRRKGo2w7S+07I25fnUIGoPROPRJM5T4GTyN30k58GhISArFWeu+cifwnGq1dNDV5UkevA5LktnGJjKZOoMOLKZiObx23uoWi/mU+1CHxb1hyb9a4mIgA/Yd4tYXwNrpStTw
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3834.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(376002)(396003)(346002)(39860400002)(136003)(366004)(9746002)(36756003)(9786002)(66476007)(66556008)(66946007)(33656002)(8676002)(4744005)(9686003)(1076003)(6916009)(426003)(8936002)(2906002)(83380400001)(26005)(86362001)(186003)(316002)(5660300002)(4326008)(478600001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: gpY3cUEPdQmzC/jnhv90ChsZeaYBZekHkkiRE8uESgUtW7AQpaxMP4ClqAdYObUJqlhHnbKqAcF+vvtlw3pUMkv1aMo1YVBjPwObAjmGtilH1K22dzEAQsf5Y+b7McmHg414EAi48H8vfh9Pgn+L38BhF5nnXV6Z/dmMIZsDvQvduCqxIIf3dE47OcxVOPFTC775hsBgsRnpyle9SPUSXA2aPEnndl4diRlCzUMnxcK9M+pTEJEa0xZcK3EtRyuVFh6bhpo7o/pxfCB5SltpHQa2NMWW0Opsn45PlXhXjLSaUqt3kEphIzZ3OPjkxtTgSCK3YSARRkH7tB/O5rC5Hj4AXe3IUI80Qivj+Jk+YhcBz5Ej6yMmu4vEYc/4EdLctPTLLmiDAj6Cfi67FcolZHG2zN3jaRnx2czPFJ3G+1PPVU3UIPynlCb/6nCxnp9mzm9svWD8sl+d01EZNdN/25hwJOe0AtKOk6poqnCwFj0=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4a824ce9-cc1b-46a9-dbbc-08d813b3f912
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2020 18:18:17.3210
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OFJy6XgZea60rzQWMIUIhydZ9zFePkmGh49JT4bbPwz2Jjdou+sxEF9jmgn4i7rj
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4267
+X-OriginatorOrg: Nvidia.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1592504291; bh=WLb6w+bYy5CdwxMrMA9IyHu8AP65Z2988HtOGFxhLXI=;
+        h=X-PGP-Universal:ARC-Seal:ARC-Message-Signature:
+         ARC-Authentication-Results:Authentication-Results:Date:From:To:CC:
+         Subject:Message-ID:References:Content-Type:Content-Disposition:
+         In-Reply-To:X-NVConfidentiality:X-ClientProxiedBy:MIME-Version:
+         X-MS-Exchange-MessageSentRepresentingType:X-NVConfidentiality:
+         X-Originating-IP:X-MS-PublicTrafficType:
+         X-MS-Office365-Filtering-Correlation-Id:X-MS-TrafficTypeDiagnostic:
+         X-Microsoft-Antispam-PRVS:X-MS-Oob-TLC-OOBClassifiers:
+         X-Forefront-PRVS:X-MS-Exchange-SenderADCheck:X-Microsoft-Antispam:
+         X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+         X-MS-Exchange-AntiSpam-MessageData:
+         X-MS-Exchange-CrossTenant-Network-Message-Id:
+         X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+         X-MS-Exchange-CrossTenant-FromEntityHeader:
+         X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+         X-MS-Exchange-CrossTenant-UserPrincipalName:
+         X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+        b=hYziZV/9ilafgNV1zTzTSLDe/36ughC23oCNJ+QSrlq8EJnMEJ+Xuah6LqhJ2h0LF
+         hlcPdkj/tMt7Bj814/v7YCYycjx73WU2FVsjVNbxtOoefM6nKX2Pm01CdhHn29mQBC
+         KpuyZ5anc1plT7EP3UJHmR0+njKhCf09JBCOq437SxhnOcPlkcOLVUxa04isyv6Yef
+         WNsT9QfJIQyrCZpX6Ey01vcO5P8c1WouoYQN5naL+i72Sn8TkzD1LJRJ7U3MeDOtKK
+         ZBKjonbTXNEF4QsreKkYq5fFuBvgvbNI3WinTAY+giSrbRXQE/RFZrzGCYfu7AH9JH
+         fP4kSrynyW/PQ==
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 6/18/20 10:41 AM, Bodo Stroesser wrote:
-> On 2020-06-18 17:00, Mike Christie wrote:
->> On 6/18/20 8:16 AM, Bodo Stroesser wrote:
->>> This patch fixes the following crash
->>> (see 
->>> https://urldefense.com/v3/__https://bugzilla.kernel.org/show_bug.cgi?id=208045__;!!GqivPVa7Brio!O7JgZIL3VPAzIqwJfZjL48y8M90K3HXv3pUVeoCzZ-vXovCpx5g7xMg-z5aAiVXVtkfE$ 
->>> )
->>>
->>>   Process iscsi_trx (pid: 7496, stack limit = 0x0000000010dd111a)
->>>   CPU: 0 PID: 7496 Comm: iscsi_trx Not tainted 4.19.118-0419118-generic
->>>          #202004230533
->>>   Hardware name: Greatwall QingTian DF720/F601, BIOS 601FBE20 Sep 26 
->>> 2019
->>>   pstate: 80400005 (Nzcv daif +PAN -UAO)
->>>   pc : flush_dcache_page+0x18/0x40
->>>   lr : is_ring_space_avail+0x68/0x2f8 [target_core_user]
->>>   sp : ffff000015123a80
->>>   x29: ffff000015123a80 x28: 0000000000000000
->>>   x27: 0000000000001000 x26: ffff000023ea5000
->>>   x25: ffffcfa25bbe08b8 x24: 0000000000000078
->>>   x23: ffff7e0000000000 x22: ffff000023ea5001
->>>   x21: ffffcfa24b79c000 x20: 0000000000000fff
->>>   x19: ffff7e00008fa940 x18: 0000000000000000
->>>   x17: 0000000000000000 x16: ffff2d047e709138
->>>   x15: 0000000000000000 x14: 0000000000000000
->>>   x13: 0000000000000000 x12: ffff2d047fbd0a40
->>>   x11: 0000000000000000 x10: 0000000000000030
->>>   x9 : 0000000000000000 x8 : ffffc9a254820a00
->>>   x7 : 00000000000013b0 x6 : 000000000000003f
->>>   x5 : 0000000000000040 x4 : ffffcfa25bbe08e8
->>>   x3 : 0000000000001000 x2 : 0000000000000078
->>>   x1 : ffffcfa25bbe08b8 x0 : ffff2d040bc88a18
->>>   Call trace:
->>>    flush_dcache_page+0x18/0x40
->>>    is_ring_space_avail+0x68/0x2f8 [target_core_user]
->>>    queue_cmd_ring+0x1f8/0x680 [target_core_user]
->>>    tcmu_queue_cmd+0xe4/0x158 [target_core_user]
->>>    __target_execute_cmd+0x30/0xf0 [target_core_mod]
->>>    target_execute_cmd+0x294/0x390 [target_core_mod]
->>>    transport_generic_new_cmd+0x1e8/0x358 [target_core_mod]
->>>    transport_handle_cdb_direct+0x50/0xb0 [target_core_mod]
->>>    iscsit_execute_cmd+0x2b4/0x350 [iscsi_target_mod]
->>>    iscsit_sequence_cmd+0xd8/0x1d8 [iscsi_target_mod]
->>>    iscsit_process_scsi_cmd+0xac/0xf8 [iscsi_target_mod]
->>>    iscsit_get_rx_pdu+0x404/0xd00 [iscsi_target_mod]
->>>    iscsi_target_rx_thread+0xb8/0x130 [iscsi_target_mod]
->>>    kthread+0x130/0x138
->>>    ret_from_fork+0x10/0x18
->>>   Code: f9000bf3 aa0003f3 aa1e03e0 d503201f (f9400260)
->>>   ---[ end trace 1e451c73f4266776 ]---
->>>
->>> The solution is based on patch:
->>>
->>>    "scsi: target: tcmu: Optimize use of flush_dcache_page"
->>>
->>> which restricts the use of tcmu_flush_dcache_range() to
->>> addresses from vmalloc'ed areas only.
->>>
->>> This patch now replaces the virt_to_page() call in
->>> tcmu_flush_dcache_range() - which is wrong for vmalloced addrs -
->>> by vmalloc_to_page().
->>>
->>> The patch was tested on ARM with kernel 4.19.118 and 5.7.2
->>>
->>> Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
->>> Tested-by: JiangYu <lnsyyj@hotmail.com>
->>> Tested-by: Daniel Meyerholt <dxm523@gmail.com>
->>> ---
->>>   drivers/target/target_core_user.c | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/target/target_core_user.c 
->>> b/drivers/target/target_core_user.c
->>> index a65e9671ae7a..835d3001cb0e 100644
->>> --- a/drivers/target/target_core_user.c
->>> +++ b/drivers/target/target_core_user.c
->>> @@ -601,7 +601,7 @@ static inline void tcmu_flush_dcache_range(void 
->>> *vaddr, size_t size)
->>>       size = round_up(size+offset, PAGE_SIZE);
->>>       while (size) {
->>> -        flush_dcache_page(virt_to_page(start));
->>> +        flush_dcache_page(vmalloc_to_page(start));
->>>           start += PAGE_SIZE;
->>>           size -= PAGE_SIZE;
->>>       }
->>
->> For this bug we only need to change the flush in is_ring_space_avail 
->> right? It's what is accessing the mb which is vmalloc'd.
-> No, is_ring_space_avail was just the first caller of
-> tcmu_flush_dcache_range for vmalloc'ed pages, so it crashed there.
+On Wed, Jun 17, 2020 at 10:08:03PM +0800, Jing Xiangfeng wrote:
+> The callers pass the pointer '&req' or 'private_data' to
+> srpt_cm_req_recv(), and 'private_data' is initialized in srp_send_req().
+> 'sdev' is allocated and stored in srpt_add_one(). It's easy to show that
+> sdev and req are always valid. So we remove unnecessary WARN_ON.
 > 
-> The entiere address range exposed to userspace via uio consists of
-> two parts:
-> 1) mb + command ring are vmalloc'ed in a single vzalloc call
->     during initialization of a tcmu device.
-> 2) the data area which is allocated page by page calling
->     alloc_page()
-> 
-> The second part is handled by (scatter|gather)_data_area. For the
-> calls from these routines I think usage of virt_to_page in
-> tcmu_flush_dcache_range was fine. But patch number 1 of this
-> series replaced these called with direct calls to flush_dcache_page.
+> Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
+> Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+> ---
+>  drivers/infiniband/ulp/srpt/ib_srpt.c | 3 ---
+>  1 file changed, 3 deletions(-)
 
-That was my problem. Did not see the replacement. Looks good to me.
+Applied to for-next, thanks
+
+Jason
