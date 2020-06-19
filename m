@@ -2,117 +2,114 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E017C201E0D
-	for <lists+target-devel@lfdr.de>; Sat, 20 Jun 2020 00:34:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAD2B201E99
+	for <lists+target-devel@lfdr.de>; Sat, 20 Jun 2020 01:27:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729385AbgFSWe3 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 19 Jun 2020 18:34:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41132 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729388AbgFSWe2 (ORCPT
+        id S1730428AbgFSX1f (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 19 Jun 2020 19:27:35 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:35056 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730379AbgFSX1f (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 19 Jun 2020 18:34:28 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88E95C06174E
-        for <target-devel@vger.kernel.org>; Fri, 19 Jun 2020 15:34:26 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id t21so8845770edr.12
-        for <target-devel@vger.kernel.org>; Fri, 19 Jun 2020 15:34:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=DPv5789sbARTcO5ZLUgaUjnVlkwAZj6Vxnwv3/Mo9OU=;
-        b=cWkQkGQqdVL87PuNRM6eae8LPn/z89gEvAbeasQXZ43UcOduf/kBLFNPCGLKv0ancA
-         2kGPz5XAINxyMRDQQveFJQQJbKiM6eVDaDoiwAMdbQQXnoGx+azcyaO9dMD5s7cUVk1g
-         mzZHRwlKDOU9jzOxU0jq8Er08y3OwS4Gfx2dw/d62Bgybmv1A5CpMoaYlFsaCE7p+1Xj
-         rtUmP8VcS5lOYlwdUPMTyVhuY+RhCfDTcZBsLgqky33aEbsS+eNsuVy+taE1uxo2EGcE
-         k9CbE/g4Gn0KXxNeKj5lBEBUByls/Nqzid/xf8WpT4+VpzHgAgPDeNcT++UNT2KZ9zL5
-         YnFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=DPv5789sbARTcO5ZLUgaUjnVlkwAZj6Vxnwv3/Mo9OU=;
-        b=aIpXr09e4cr91TRpXaExlV3yOjwo97RJQIAVFhVjBKKhAr7kUExe4XREedvwXugX0R
-         ZWwcsDY/vu8XP89N3csTVA+BYE5vjR2cX83e5O4g4BMt2VMQlnfYD87pg57ljxGTBjcQ
-         2uJsfy4wZCZf03bYZPFeatUWjhE2L0Nvz2GjUsvg4JuoTovX5TF1NTxJKZYZdmmsJ3a5
-         tzoFt3MstMQnxQzdBV9VP5d8JryQDwd+MTpOjOI+1/pKXsrJSUOGdhFjPsxq0dV4CPm0
-         knK+y5hJo6yIiBRWyyo4brc8VODR+j051c/dZXzvdmpQsL9SfPu340hKtQxP+zCaQKc7
-         lX1g==
-X-Gm-Message-State: AOAM530lWOtTGZizc5tC1WIkNaUnq+H0beTe/mVD16LPqVVfXlAKrPUX
-        6rvMGKjitdAaPGwLqrySIvSRL1myfc3fqKVwJaU=
-X-Google-Smtp-Source: ABdhPJzPeblFF7aECUKhBVKp6SNh4hp4jTaBEbUtW3x9+S0ewN6njamdUvMbvkFiRAOPkOPChX9lIZA8iNWuwM9Y0sg=
-X-Received: by 2002:a05:6402:393:: with SMTP id o19mr5669423edv.28.1592606065169;
- Fri, 19 Jun 2020 15:34:25 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a50:5303:0:0:0:0:0 with HTTP; Fri, 19 Jun 2020 15:34:24
- -0700 (PDT)
-From:   Mrs Kim Hong Yeoh <mrs.kimhongyeoh55@gmail.com>
-Date:   Fri, 19 Jun 2020 22:34:24 +0000
-X-Google-Sender-Auth: MFE7zc1f3DkmXxU6z61P1ykwrNc
-Message-ID: <CAN=1Ctd2qe6ME8Kv3vkh+MBRLNa6i5e9=+7Y=aHfd0MYMykGrA@mail.gmail.com>
-Subject: MAY THE PEACE OF GOD BE UPON YOU.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        Fri, 19 Jun 2020 19:27:35 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05JNRVdF012251;
+        Fri, 19 Jun 2020 23:27:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to;
+ s=corp-2020-01-29; bh=P0Hz1RuNayOFF/iE1D8g2zB1Oxt50p40/igL1mmxIBc=;
+ b=Vuf8+iPxQtT0LLZxLnc0A6Zo3Jv3YHJ4kpkSSuGRR3ZsKjXWhlZKnlNKq9E0TzZ7QRTj
+ 8JJFJBkz2L5bk+0F3H7eWWtVxo+7O0/gptwUqH2E2HyfVH16pfRvBPrc2j8snYCA8YFs
+ tAQOODlTPZl7RIjFQBzJ2iNJHlCM/ZGxmruZY/38JZ6sClsFGBbeqWNzpSgDon4R/zbe
+ 49cotgPdO2CJdxRVnMA0t7slSOzSrk7ckRuuabwoxzP9VK1ws2c+NS9c2VeDUfUa5c96
+ JylUUYN7aHNgYtmsbk5kEfm75j9Q+/niIy6DkGc7ow1D7RfT7JweayDqw8DKR1vfw5cy kw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 31qecm7n7w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 19 Jun 2020 23:27:31 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05JNNS8P120059;
+        Fri, 19 Jun 2020 23:27:31 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 31q66ws0vv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 19 Jun 2020 23:27:31 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 05JNRTmb006032;
+        Fri, 19 Jun 2020 23:27:29 GMT
+Received: from [20.15.0.2] (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 19 Jun 2020 16:27:28 -0700
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
+Subject: Re: [PATCH] scsi: target: tcmu: Remove unnecessary bit
+ TCMU_CMD_BIT_INFLIGHT
+From:   Michael Christie <michael.christie@oracle.com>
+In-Reply-To: <20200619173806.5016-1-bstroesser@ts.fujitsu.com>
+Date:   Fri, 19 Jun 2020 18:27:27 -0500
+Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <526E97E2-5116-4100-A96D-46B6C790B7F1@oracle.com>
+References: <20200619173806.5016-1-bstroesser@ts.fujitsu.com>
+To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>
+X-Mailer: Apple Mail (2.3608.80.23.2.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9657 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
+ bulkscore=0 adultscore=0 phishscore=0 suspectscore=0 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006190164
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9657 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 cotscore=-2147483648 malwarescore=0
+ clxscore=1015 adultscore=0 suspectscore=0 spamscore=0 lowpriorityscore=0
+ mlxlogscore=999 priorityscore=1501 bulkscore=0 phishscore=0 mlxscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006190164
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Greetings Beloved in Christ,
-
-I had previously sent you an email with no feedback from you.I suppose
-it went to your junk folder.I anticipate that you read this mail
-quickly and let me know your opinion or willingness on this classified
-information that I will release to you.  therefore I would not want to
-jeopardize this opportunity to Save lives of Less Privileged ones and
-also change our financial status and give Less Privileged a secured
-future.
-
-I am Ms. Hong Yeoh Kim, Working at MAYBANK (Malaysia) as the
-Non-Independent Non-Executive Director and Chairman of Maybank. During
-our last banking Audits we discovered an abandoned account belongs to
-one of our Foreign Deceased Customer, Late Mr. Wang Jian, The
-Co-founder and Co-chairman of HNA Group, a Chinese conglomerate with
-significant real estate ownerships across the U.S., died in an
-accident while on a business trip in France on Tuesday.
-
-Please go through this link:
-https://observer.com/2018/07/wang-jian-hna-founder-dies-tragic-fall/
-
-I am writing to request your assistance in transferring the sum of
-$17.000.000.00 (Seventeen Million United States Dollars) into your
-account as the Late Mr. Wang Jian Foreign Business Partner, which I am
-planning to use the fund to invest for public benefit as follows;
-
-1. Establish An Orphanage Home To Help The Orphanages Children.
-2. Build A Hospital To Help The Poor.
-3. Build A Nursing Home For Elderly People Need Care & Meal.
-
-Meanwhile, before I contacted you I have done personal investigation
-in locating any of Late Mr. Wang Jian relatives who knows about the
-account, but I came out unsuccessful. However, I took this decision to
-use this fund in supporting the Orphanages Children, Less Privileged
-and Elderly People Need Care & Meal Support, because i don't want this
-fund to be transfer into our Government Treasury Account as unclaimed
-fund as the law of my country abiding.
-
-As an officer of the Bank I cannot be directly connected to this
-money, so this is why I have to contact you for us to work so that you
-can assist to claim/receive this money into your bank account for us
-start a charity project, Meanwhile you will have 40% of the total fund
-and 60% for charity project, Note there are practically no risk
-involved, it will be bank to bank transfer, all I need from you is to
-stand and claim $17. Million without any problem with the information
-am going to provide to you.
 
 
-Please for the sake of god accept this offer to work with me and let
-us save lives of those Orphanages Children, Less Privileged and
-Elderly People Need Care, I will appreciate it very much. As soon as I
-receive your kind response, I will give you details on how we can
-achieve it successfully i will explain more on how the fund will be
-transfer to you.
+> On Jun 19, 2020, at 12:38 PM, Bodo Stroesser =
+<bstroesser@ts.fujitsu.com> wrote:
+>=20
+> Since
+> commit 61fb24822166 ("scsi: target: tcmu: Userspace must not complete
+> queued commands")
+> tcmu_cmd bit TCMU_CMD_BIT_INFLIGHT is set but never checked.
+> So we can remove it safely.
+>=20
+> Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
+> ---
+> drivers/target/target_core_user.c | 2 --
+> 1 file changed, 2 deletions(-)
+>=20
+> diff --git a/drivers/target/target_core_user.c =
+b/drivers/target/target_core_user.c
+> index 560bfec933bc..b38da27e033f 100644
+> --- a/drivers/target/target_core_user.c
+> +++ b/drivers/target/target_core_user.c
+> @@ -181,7 +181,6 @@ struct tcmu_cmd {
+> 	unsigned long deadline;
+>=20
+> #define TCMU_CMD_BIT_EXPIRED 0
+> -#define TCMU_CMD_BIT_INFLIGHT 1
+> 	unsigned long flags;
+> };
+> /*
+> @@ -1078,7 +1077,6 @@ static int queue_cmd_ring(struct tcmu_cmd =
+*tcmu_cmd, sense_reason_t *scsi_err)
+> 	tcmu_flush_dcache_range(mb, sizeof(*mb));
+>=20
+> 	list_add_tail(&tcmu_cmd->queue_entry, &udev->inflight_queue);
+> -	set_bit(TCMU_CMD_BIT_INFLIGHT, &tcmu_cmd->flags);
+>=20
+> 	/* TODO: only if FLUSH and FUA? */
+> 	uio_event_notify(&udev->uio_info);
 
-Waiting for your urgent response now.
-best regards
-Ms. Hong Yeoh Kim .
+Acked-by: Mike Christie <michael.crhsitie@oracle.com>
+
