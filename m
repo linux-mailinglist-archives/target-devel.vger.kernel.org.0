@@ -2,103 +2,147 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16F90201995
-	for <lists+target-devel@lfdr.de>; Fri, 19 Jun 2020 19:38:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0118201A90
+	for <lists+target-devel@lfdr.de>; Fri, 19 Jun 2020 20:42:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732219AbgFSRic (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 19 Jun 2020 13:38:32 -0400
-Received: from mail1.bemta25.messagelabs.com ([195.245.230.4]:38161 "EHLO
-        mail1.bemta25.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730934AbgFSRic (ORCPT
+        id S2395372AbgFSSl6 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 19 Jun 2020 14:41:58 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:52110 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732225AbgFSSl6 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 19 Jun 2020 13:38:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1592588309; i=@ts.fujitsu.com;
-        bh=bxh83OrtNBrFtGURskqIZiHNmvXTBxqQ8cnMWONKgC0=;
-        h=From:To:Cc:Subject:Date:Message-Id;
-        b=P+PJjoLP4lGch9ctVMwkvSP3kwBel9A8Op9IdCNHwOiDb3nyqfaJtjtUu063coXnE
-         ollcu+hqMQ4V4BXa2xRk+wf+TPPXXWrLURUV5CYHyHt/iPDXH02Guxe5hGmeyHkJaH
-         lVGNf90xl8tsflCDdQeimonPbDrZqy/eQVH+yL0Gzu8n5+I7MS+GpzwsMZxvixxw7C
-         FeOYy19FTLUcoSMN3dkHKsVOvDVDPN/f7KQrSJIXzYZ6dP6JdPXBn9uDxTSY0F3LrB
-         V1RW1WVyDLfRkdqLzLIHNGxYA2rTxFaITmXH2KT0HujoadofhALK5TnEJ737+u2MDK
-         uFUXF4KfLBEVw==
-Received: from [100.112.192.88] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-4.bemta.az-a.eu-west-1.aws.symcld.net id 47/2F-28622-518FCEE5; Fri, 19 Jun 2020 17:38:29 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrMLMWRWlGSWpSXmKPExsViZ8MRoiv6402
-  cwYeDPBbd13ewWSw//o/J4u+kG6wWrUvfMjmweHx8eovF4/MmuQCmKNbMvKT8igTWjH/7j7IU
-  9HFUvHq7gqmBsZe9i5GLQ0hgMqPEjMaLjBDOdEaJM9ums3YxcnKwCRhIrJh0nwUkISKwhlFi5
-  Z15zCAJZgE9iWn/1rGD2MICgRKtH34xgtgsAqoSV1YcBmvmFbCVOL/uNli9hIC8RMeBySwTGD
-  kXMDKsYjRPKspMzyjJTczM0TU0MNA1NDTSNbQ01TU20Uus0k3USy3VLU8tLtE11EssL9Yrrsx
-  NzknRy0st2cQI9HtKwWGlHYzvXn/QO8QoycGkJMrbcetNnBBfUn5KZUZicUZ8UWlOavEhRhkO
-  DiUJ3vJvQDnBotT01Iq0zBxgCMKkJTh4lER494KkeYsLEnOLM9MhUqcYFaXEeSNAEgIgiYzSP
-  Lg2WNhfYpSVEuZlZGBgEOIpSC3KzSxBlX/FKM7BqCTMOxlkCk9mXgnc9FdAi5mAFmuFvwJZXJ
-  KIkJJqYJpfNunR6VmZvxsbGe33+Zocajixusok6e1FroDrF/zfsVRMc2lpsEnjuPckOn9HzoG
-  DbA9+bZn8p77Hw9ChNtTrWGpArGHw/BMJexUNaiNU9R/Yfq3T+7fEKyoj6r26/UoF/So7ztl6
-  x/TvOr0zObgvTEIsqv+mgu1Prr/LCqzvWiia5twXYDU1l5cJjez3OL1xyXtRgbQ198RtPrieZ
-  Dz24iGj9LxfuecXmUxTV34yXbmWt3ZNS+LlE7Z9O3x2rz145/ZKZqMHNS12LRkMykYHghX6zS
-  b4hNgtT45z113+6Y+k+KkPbN/3HYxi3TndrXrdZ98vgp8uTVg6s+1lCsP9Xsdr2dO0TaY9n+G
-  zXomlOCPRUIu5qDgRADN+xU32AgAA
-X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-3.tower-265.messagelabs.com!1592588308!1382521!1
-X-Originating-IP: [62.60.8.84]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.50.2; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 29399 invoked from network); 19 Jun 2020 17:38:29 -0000
-Received: from unknown (HELO mailhost3.uk.fujitsu.com) (62.60.8.84)
-  by server-3.tower-265.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 19 Jun 2020 17:38:29 -0000
-Received: from x-serv01 ([172.17.38.52])
-        by mailhost3.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 05JHcLeU024033;
-        Fri, 19 Jun 2020 18:38:21 +0100
-Received: from VTC.emeia.fujitsu.local (unknown [172.17.38.7])
-        by x-serv01 (Postfix) with ESMTP id DBBF520561;
-        Fri, 19 Jun 2020 19:38:17 +0200 (CEST)
-From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-To:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Subject: [PATCH] scsi: target: tcmu: Remove unnecessary bit TCMU_CMD_BIT_INFLIGHT
-Date:   Fri, 19 Jun 2020 19:38:06 +0200
-Message-Id: <20200619173806.5016-1-bstroesser@ts.fujitsu.com>
-X-Mailer: git-send-email 2.12.3
+        Fri, 19 Jun 2020 14:41:58 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05JIWdFx070739;
+        Fri, 19 Jun 2020 18:41:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : subject :
+ date : message-id; s=corp-2020-01-29;
+ bh=41SJszYT73pPwR3/1I12iphb74gh+cbWYaqqArUgJ2c=;
+ b=QJt1iKuzgVYYKvCFAWAf602XaEeVmcJ8kxsHxezNBc3JjdR+VxgQbcmgrw+yjknqrP7f
+ tDgZC68lu6QmwJPRweNhJw/tKd8FQZRvYOtHoGDuayBCwH5G4h6okAohjXFpb3Gt1eAe
+ XHDWkBDjcp2VGnj0gKRf+VV083NkYq1g9YDCHL44dPdOoSTAr1HVvgFKwmgzprYO1jFT
+ L0JM6jLzKjlVa0pMn9x4gMqPRUADp48fCxBWajOhDRC8rW5Z6tJ0tvj2C/aQxVMLdVWp
+ 91QMwT8t6C5o9tN7pjDUI0dx6W6kPAUy/KVqTT2jYLPpIaT8xlnXkHoxU1iUKYCqTaIC qw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 31q66087sc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 19 Jun 2020 18:41:56 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05JIXrrG074615;
+        Fri, 19 Jun 2020 18:41:56 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 31q6635620-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 19 Jun 2020 18:41:56 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05JIftvS003532;
+        Fri, 19 Jun 2020 18:41:55 GMT
+Received: from ca-dev-arm29.us.oracle.com (/10.129.136.23)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 19 Jun 2020 11:41:55 -0700
+From:   Henry Willard <henry.willard@oracle.com>
+To:     <martin.petersen@oracle.com>, <linux-scsi@vger.kernel.org>,
+        <target-devel@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] scsi: target: tcmu: Call flush_dcache_page() with proper page struct
+Date:   Fri, 19 Jun 2020 11:41:45 -0700
+Message-Id: <1592592105-11497-1-git-send-email-henry.willard@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9657 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0
+ phishscore=0 bulkscore=0 malwarescore=0 mlxscore=0 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006190135
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9657 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 malwarescore=0
+ bulkscore=0 phishscore=0 adultscore=0 priorityscore=1501 mlxscore=0
+ spamscore=0 clxscore=1011 mlxlogscore=999 suspectscore=0 impostorscore=0
+ cotscore=-2147483648 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006190135
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Since
-commit 61fb24822166 ("scsi: target: tcmu: Userspace must not complete
- queued commands")
-tcmu_cmd bit TCMU_CMD_BIT_INFLIGHT is set but never checked.
-So we can remove it safely.
+tcmu_flush_dcache_range() gets called with addresses from both kernel
+linear space and vmalloc space, so virt_to_page() or vmalloc_to_page()
+have to be used as appropriate to get the proper page struct. On x86_64
+flush_dcache_page() is the default noop implementation, so this hasn't
+been a problem there.
 
-Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
+When tcmu_flush_dcache_range() is called with a vmalloc address on Arm64,
+the result is a kernel panic with the following stack trace:
+
+[  448.873342] CPU: 0 PID: 34102 Comm: iscsi_trx Kdump: loaded
+Not tainted 5.4.17-2011.3.2.1.el8uek.aarch64 #2
+[  448.876144] Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
+[  448.878377] pstate: 80400005 (Nzcv daif +PAN -UAO)
+[  448.880182] pc : flush_dcache_page+0x18/0x60
+[  448.881888] lr : is_ring_space_avail+0x74/0x390 [target_core_user]
+[  448.883969] sp : ffff80001720fa70
+[  448.885450] x29: ffff80001720fa70 x28: 0000000000000000
+[  448.887348] x27: 0000000000010000 x26: ffff0003c4b88000
+[  448.889285] x25: 0000000000010000 x24: ffff800017da0000
+[  448.891166] x23: ffffffdfffe00000 x22: 0000000000000078
+[  448.893061] x21: 0000800017da0001 x20: 000000000000ffff
+[  448.894931] x19: ffffffffffe5f680 x18: 0000000000000000
+[  448.896826] x17: 0000000000000000 x16: 0000000000000000
+[  448.898704] x15: 0000000000000000 x14: 0000000000000000
+[  448.900562] x13: 0000000000000000 x12: 0000000000000000
+[  448.902403] x11: ffff0003d188e4d0 x10: 0000000000000030
+[  448.904230] x9 : 0000000000000000 x8 : ffff0003d4073f00
+[  448.906094] x7 : 00000000000013b0 x6 : 000000000000003f
+[  448.907911] x5 : 0000000000000040 x4 : ffff0003d16d6258
+[  448.909720] x3 : 0000000000010000 x2 : 0000000000000078
+[  448.911664] x1 : ffff0003d16d6228 x0 : ffff800009f43b1c
+[  448.913767] Call trace:
+[  448.914984]  flush_dcache_page+0x18/0x60
+[  448.916518]  is_ring_space_avail+0x74/0x390 [target_core_user]
+[  448.918450]  queue_cmd_ring+0x228/0x700 [target_core_user]
+[  448.920318]  tcmu_queue_cmd+0xd8/0x14c [target_core_user]
+[  448.922192]  __target_execute_cmd+0x30/0x130 [target_core_mod]
+[  448.924170]  target_execute_cmd+0x1a4/0x450 [target_core_mod]
+[  448.926212]  transport_generic_new_cmd+0x1b8/0x3a0 [target_core_mod]
+[  448.928289]  transport_handle_cdb_direct+0x50/0xb0 [target_core_mod]
+[  448.930368]  iscsit_execute_cmd+0x2c0/0x360 [iscsi_target_mod]
+[  448.932347]  iscsit_sequence_cmd+0xd8/0x1c8 [iscsi_target_mod]
+[  448.934313]  iscsit_process_scsi_cmd+0xac/0xf8 [iscsi_target_mod]
+[  448.936479]  iscsit_get_rx_pdu+0x450/0xd68 [iscsi_target_mod]
+[  448.938423]  iscsi_target_rx_thread+0xc0/0x168 [iscsi_target_mod]
+[  448.940387]  kthread+0x110/0x114
+[  448.941802]  ret_from_fork+0x10/0x18
+[  448.943271] Code: f9000bf3 aa0003f3 aa1e03e0 d503201f (f9400260)
+[  448.945271] SMP: stopping secondary CPUs
+
+Signed-off-by: Henry Willard <henry.willard@oracle.com>
 ---
- drivers/target/target_core_user.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/target/target_core_user.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-index 560bfec933bc..b38da27e033f 100644
+index 560bfec933bc..7557c0630483 100644
 --- a/drivers/target/target_core_user.c
 +++ b/drivers/target/target_core_user.c
-@@ -181,7 +181,6 @@ struct tcmu_cmd {
- 	unsigned long deadline;
+@@ -597,11 +597,19 @@ static inline void tcmu_flush_dcache_range(void *vaddr, size_t size)
+ {
+ 	unsigned long offset = offset_in_page(vaddr);
+ 	void *start = vaddr - offset;
++	struct page *pg;
  
- #define TCMU_CMD_BIT_EXPIRED 0
--#define TCMU_CMD_BIT_INFLIGHT 1
- 	unsigned long flags;
- };
- /*
-@@ -1078,7 +1077,6 @@ static int queue_cmd_ring(struct tcmu_cmd *tcmu_cmd, sense_reason_t *scsi_err)
- 	tcmu_flush_dcache_range(mb, sizeof(*mb));
+ 	size = round_up(size+offset, PAGE_SIZE);
  
- 	list_add_tail(&tcmu_cmd->queue_entry, &udev->inflight_queue);
--	set_bit(TCMU_CMD_BIT_INFLIGHT, &tcmu_cmd->flags);
- 
- 	/* TODO: only if FLUSH and FUA? */
- 	uio_event_notify(&udev->uio_info);
+ 	while (size) {
+-		flush_dcache_page(virt_to_page(start));
++		if (virt_addr_valid(start))
++			pg = virt_to_page(start);
++		else if (is_vmalloc_addr(start))
++			pg = vmalloc_to_page(start);
++		else
++			break;
++
++		flush_dcache_page(pg);
+ 		start += PAGE_SIZE;
+ 		size -= PAGE_SIZE;
+ 	}
 -- 
-2.12.3
+1.8.3.1
 
