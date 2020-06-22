@@ -2,93 +2,59 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5492B202032
-	for <lists+target-devel@lfdr.de>; Sat, 20 Jun 2020 05:26:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2D24203C2E
+	for <lists+target-devel@lfdr.de>; Mon, 22 Jun 2020 18:07:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732598AbgFTD0w (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 19 Jun 2020 23:26:52 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:58646 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732271AbgFTD0v (ORCPT
+        id S1729211AbgFVQHl (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 22 Jun 2020 12:07:41 -0400
+Received: from sonic308-9.consmr.mail.ne1.yahoo.com ([66.163.187.32]:33816
+        "EHLO sonic308-9.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726328AbgFVQHl (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 19 Jun 2020 23:26:51 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05K3IkYC195227;
-        Sat, 20 Jun 2020 03:26:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=YozYC7BX+b5ExGj9hLTTKU0a2NKjB7YUbKixGCpRWsg=;
- b=fuF14IE7rNtDhQNd0Xj+Qxv5QuA7jX1zWzSJYvJWo+1Vep5pnTRi9URjMSSctizqjNSC
- GtJZJoWqjhvoCLBmGrZjnCm3eDEinH+dwqy765fXqDIDCdbumZpmQTd8MfmhEQbuWrNe
- nQqfRhT9IMDjBVCaDHzynL3ZYpxkuaX/u/Afpi7S1QcWNhqPAeqNdPbYrPAydDyClblV
- JNXRSk9LtcXamVjp1TTBGtUktE66SXQ11C0kzwjMoErmteTyvL2Ihv+DOdb2Pwo4mulo
- b6N4GpUxO7kk2b7r+z9aol7yEWmv4Mxf3YLBN83df62sRozVtS9LBdQPKYTL0b5p0i+5 8w== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 31s9vqr1vr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sat, 20 Jun 2020 03:26:43 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05K3HtB0104127;
-        Sat, 20 Jun 2020 03:26:42 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 31s9sg9qtb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 20 Jun 2020 03:26:42 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05K3Qf6G011087;
-        Sat, 20 Jun 2020 03:26:41 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 19 Jun 2020 20:26:41 -0700
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        Mike Christie <michael.christie@oracle.com>,
-        Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        JiangYu <lnsyyj@hotmail.com>, Daniel Meyerholt <dxm523@gmail.com>
-Subject: Re: [PATCH v2 0/2] scsi: target: tcmu: fix crashes on ARM
-Date:   Fri, 19 Jun 2020 23:26:35 -0400
-Message-Id: <159262354735.7800.15424809109743064228.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200618131632.32748-1-bstroesser@ts.fujitsu.com>
-References: <20200618131632.32748-1-bstroesser@ts.fujitsu.com>
+        Mon, 22 Jun 2020 12:07:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1592842060; bh=cK2qy9Lv5SAgMg9nAvfVmkJPj46H3ss3vOVyjpHm6Nk=; h=Date:From:Reply-To:Subject:References:From:Subject; b=B8Kwb0Y7onKrdQg/gDC3eTd/bgnbwoXfai6dsjD4BDyC5vlA1wJeGHSwyUVh7cHXDyS0gia9z2GCs+gbyN/NMjlHzB/TnHhm5NMghIqzUUY0mAKH01MVRzOuCduVcq9pdkQIoJQOqbNAdsdEZztaQV6BmDV8qVRDE59aNvQIcwTtzzAMWzTJ3nI+J5B/ACcZd1H02W8kC/gEmeeybVDYh2qL+uUvZXXbE4UNGY86zo7YUXdnHpYgqUYFvMWNhbOfcRKzYbZA7qE66UMxiCKW38NmZx+yk/G2kbFGyIRdcRLUZ4CdRvkVqnfvovF5hOqW1qpbN4tP2LYIimO3/HgFwg==
+X-YMail-OSG: RondTvoVM1mzK2cLgb1s_bnHP7wXMwunXHKKKxejRf.pLGIBSZkqxszETHKfCyk
+ Bcru782JIP5xqe7xUAaHjZ4e5AbOsr2znwUDrp4w4i67TMyo0FkgAjXWuwtfh8TvgYPJua19454Y
+ c688jpxEp6CVV3AZ.0VVkMnfWIXZqwrySQGL7xEt949NdQetzBvtPl1ZahgZt_11RP6JdPkqbfVg
+ M5nI2Cw7maG_bd4aDonoTPxlqN.K5_kVhHu4XmojBRfBpyf2g04Dg0Opgt8Oz7Nk2milxhAlCshU
+ g5kCMbCt5wbzvMFr1c9QX.0PGw.KA7MV5TRzpI4tWqLXGF1tfqErI4wu3ZEbUdLVQANwRHqW7qYf
+ iVMPb2w_vUFijaH0.U3g0acn0neWOjSkAKabSVeUCZFI5sP1v_IV34xE_DkzL68b2_wP4aelfO82
+ ripNiCjlUtV04l9Plmg2bQcfzCnNI3StooYz5ZSQYB..57ak5dnsH2t8pc6lwcEL131m8qtOXeCE
+ Nys4ntvsM1EECvGCiWAo2AuUyx1yWnl2oTqm_4ktCPPYFdE80dGb4ue.Q4oy6oK_M20kescYe.Hg
+ uyrzJrRwTht6Vy7iOLUETrckyod98XoCbyDgAqyOfgHm92UHovvygDniknO1pOpOvpKdocjI5PTu
+ gO9a9sOnzBj_5572aVxKYEDV6K9QvZ0EMNcJfuZKPFfDltdVA_FmU2Lqz4vQhomqEYNXib.Eadin
+ aK5MAX7_6.iRtOzmrVoK45d2LKj5IUZBvHjBjj5SiLxRW0ssY4NImhb4o22Thzhtl0S070_B6SOe
+ vfdAJ3nCJwiDmA86_oUXHMjwPxv6EETaZX_GX89LJStL1PaDAjxilWvjHpcwj8M2Agr1Z4opIPNz
+ vz_Pz3MDmSDsSABsEPpCe5CArU.lVXsEwyHfNWGl7DREvmIP6eAvvRH5rZQ1raEW9nHOpef8MKhM
+ o85RobaR28.gyexFfZcW_iuaPoqPRPDai2lgFnaBRJJuiTU2f8_syEPNHhFMhlxi6aGhGZEqPTTN
+ _uojENg4mJQqb9GlqLAgkIQPsHsUFzGRyd5zv0Q7TaUVDdsEob2k24J8dkkzbBZD25ZHYjULZp3T
+ hzFOdnTaumcfosejnVD6VvYIyrVuN6jOWzv.3AwYTbVglHV3sservsQ_pjiDlLiQzZ692PBPhicJ
+ UgZVgAf5CRbBDhBj_Tkg5UXYzwy2Vs4Vmx5jtNz7L.541WYRZAPH0pVaL_7ipnexCo9qdUGs7_0X
+ 9zmchqGF8_OG8k8qa.AUBPVSoqxSuxD6UaxhE3_yy2k8dN1gubGYswEulDk3C
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ne1.yahoo.com with HTTP; Mon, 22 Jun 2020 16:07:40 +0000
+Date:   Mon, 22 Jun 2020 16:07:39 +0000 (UTC)
+From:   Karim Zakari <kariim1960z@gmail.com>
+Reply-To: kzakari04@gmail.com
+Message-ID: <330680018.1870360.1592842059497@mail.yahoo.com>
+Subject: URGENT REPLY.
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9657 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
- bulkscore=0 mlxscore=0 phishscore=0 spamscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006200022
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9657 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 clxscore=1011
- malwarescore=0 lowpriorityscore=0 suspectscore=0 priorityscore=1501
- mlxlogscore=999 mlxscore=0 phishscore=0 cotscore=-2147483648 spamscore=0
- adultscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006200022
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <330680018.1870360.1592842059497.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16138 YMailNodin Mozilla/5.0 (Windows NT 6.1; ) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36
+To:     unlisted-recipients:; (no To-header on input)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Thu, 18 Jun 2020 15:16:30 +0200, Bodo Stroesser wrote:
 
-> This small series of patches consists of:
->    [PATCH 1/2 v2] scsi: target: tcmu: Optimize use of flush_dcache_page
->    [PATCH 2/2 v2] scsi: target: tcmu: Fix crash in tcmu_flush_dcache_range
-> 
-> Together with commit
->    8c4e0f212398 scsi: target: tcmu: Fix size in calls to tcmu_flush_dcache_range
-> these patches fix crashes in tcmu on ARM.
-> 
-> [...]
 
-Applied to 5.9/scsi-queue, thanks!
+Good-Day Friend,
 
-[1/2] scsi: target: tcmu: Optimize use of flush_dcache_page
-      https://git.kernel.org/mkp/scsi/c/3c58f737231e
-[2/2] scsi: target: tcmu: Fix crash in tcmu_flush_dcache_range on ARM
-      https://git.kernel.org/mkp/scsi/c/3145550a7f8b
+ Hope you are doing great Today. I have a proposed business deal worthy (US$16.5 Million Dollars) that will benefit both parties. This is legitimate' legal and your personality will not be compromised.
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Waiting for your response for more details, As you are willing to execute this business opportunity with me.
+
+Sincerely Yours,
+Mr. Karim Zakari.
