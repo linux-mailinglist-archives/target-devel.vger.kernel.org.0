@@ -2,96 +2,116 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E47B206B29
-	for <lists+target-devel@lfdr.de>; Wed, 24 Jun 2020 06:32:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29413206F7D
+	for <lists+target-devel@lfdr.de>; Wed, 24 Jun 2020 10:53:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728715AbgFXEcA (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 24 Jun 2020 00:32:00 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:54616 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726131AbgFXEcA (ORCPT
+        id S2388948AbgFXIxo (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 24 Jun 2020 04:53:44 -0400
+Received: from mail1.bemta26.messagelabs.com ([85.158.142.4]:39409 "EHLO
+        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728732AbgFXIxn (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 24 Jun 2020 00:32:00 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05O4Mpsv053294;
-        Wed, 24 Jun 2020 04:31:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=suWIxa7byyihzA9tXBmQWH7Fk6N+fzCUrLg8b9n8MYU=;
- b=0Z0UTlzgls7TQZ/MbJn4qrSLmLKP3H3fB3F1mjhdA/ihWnYrB9oXx0JV8KwDNqnmi2Hu
- 9WvKWJfP6tLy5Wi+QeRT+jkQ17UxL7tcZhNzzcDucJfGvFkUPJYptT2gz6PEIM5rTsrG
- KVM0eZxHR+PjftowdAacblOhzc5aZc2VHLOomguKLZrkqYZrZsqJtYVNAdZA6/qLiZvb
- 9CY3tZb5cCBgce1MRlE1GlJofWIRJy2R+VqDMbd6X9xb/rnxxa/T/3bkVcC4LaOEAZZe
- tf9TwXLAgLPTUQSl3oya4U1Rups9n+nnxZbPo5aHUb9KfUEZih2ceF/YIRGbBFFGo/6w mQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 31uut5gkuf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 24 Jun 2020 04:31:51 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05O4OAIj117928;
-        Wed, 24 Jun 2020 04:29:51 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 31uur6r6by-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 24 Jun 2020 04:29:51 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 05O4TnHX030165;
-        Wed, 24 Jun 2020 04:29:49 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 24 Jun 2020 04:29:49 +0000
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     linux-scsi@vger.kernel.org, Roman Bolshakov <r.bolshakov@yadro.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        GR-QLogic-Storage-Upstream@marvell.com,
-        target-devel@vger.kernel.org, Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Arun Easi <aeasi@marvell.com>, stable@vger.kernel.org,
-        Martin Wilck <mwilck@suse.com>,
-        Quinn Tran <qutran@marvell.com>, linux@yadro.com,
-        Daniel Wagner <dwagner@suse.de>
-Subject: Re: [PATCH v2] scsi: qla2xxx: Keep initiator ports after RSCN
-Date:   Wed, 24 Jun 2020 00:29:41 -0400
-Message-Id: <159297296072.9797.15955182612058210718.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200605144435.27023-1-r.bolshakov@yadro.com>
-References: <20200605144435.27023-1-r.bolshakov@yadro.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9661 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 malwarescore=0
- suspectscore=0 mlxlogscore=999 adultscore=0 phishscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006240031
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9661 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 clxscore=1015
- lowpriorityscore=0 bulkscore=0 adultscore=0 spamscore=0 suspectscore=0
- phishscore=0 impostorscore=0 cotscore=-2147483648 priorityscore=1501
- mlxscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006240031
+        Wed, 24 Jun 2020 04:53:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
+        s=200619tsfj; t=1592988820; i=@ts.fujitsu.com;
+        bh=xTlDTIhuzqELQkiMm6reVrPea5iD8zScdlt45oATRp4=;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        b=OJiT2kdbLnPop0Fg+g1k8OK6Rr+n8hFJqZhhEsb7skAh2I7By8F5h8OL5K3K4d0e6
+         73nhmRbdD6aL6qDMYhT5ZOTl1hvZ0AFDqgEGZA0ejYuzwrR99KN30MHCxrv5+XtACJ
+         uX5yRRJc3KjPlSmholtvAGp7fIrvpy6r9dIMMSwWbyKfJlXtP7SfawQWn7jDcnwmi5
+         H46HCMwrKLOuN+86erc8DPT/KvlmjZl2Qfk67GWN0a4/omVzSYHsw5ewZYKwwc9bWT
+         PAeO+lSyomLxNUX4jhVieUxSXJfyWs7cjNTKtTvu8n0QWHYrdARHOVGtUPAtc2+RFY
+         mYN7zIl6ARWpQ==
+Received: from [100.113.3.51] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-4.bemta.az-a.eu-central-1.aws.symcld.net id 2D/10-01380-49413FE5; Wed, 24 Jun 2020 08:53:40 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrLLMWRWlGSWpSXmKPExsViZ8MxRXeKyOc
+  4g8f7mS0OL3zDZPHo8ylGi+7rO9gsZrSFWSw//o/J4u+kG6wWrUvfMjmwe+ycdZfd43HPGTaP
+  j09vsXh83iQXwBLFmpmXlF+RwJoxbeJS1oKZvBULzx1ja2Bcx93FyMUhJDCZUeL+jlksEM50R
+  okvKzaxdTFycrAJGEismHQfLCEisIZRYuWdecwgDrPAakaJTx9ng1UJC3hLnOlrZQSxWQRUJX
+  ac/w5UxMHBK2AnseNcEUhYQkBeouPAZJYJjJwLGBlWMVomFWWmZ5TkJmbm6BoaGOgaGhrrAkl
+  jA73EKt1EvdRS3eTUvJKiRKCsXmJ5sV5xZW5yTopeXmrJJkZgqKQUMjTtYHz36oPeIUZJDiYl
+  UV7vh5/ihPiS8lMqMxKLM+KLSnNSiw8xynBwKEnwnhf8HCckWJSanlqRlpkDDFuYtAQHj5IIb
+  78QUJq3uCAxtzgzHSJ1ilFRSpz3NEhCACSRUZoH1waLlUuMslLCvIwMDAxCPAWpRbmZJajyrx
+  jFORiVhHlPgEzhycwrgZv+CmgxE9BiScdPIItLEhFSUg1MU+YES4rebIu1k3OuuXpv/b6JS1U
+  dW3bYHuDPm+p3d0VfffTF3Pn3XwRIKX37GSPz+Lr8I/YY/4WPa8JFd0j93umqGuyZ4MHIv+xz
+  gMYSgeyTLXE9nszlkqo/LFxCZe33Cla7e/3YatDt+3++W9/ZtOSNX0M/GL/88eBEo2xGY+vdq
+  BcquRxSe6p4KoQZ7WZaL0zrbtbtqIp6+9h7dYpoqwH3JJUM1wuimlP6c74d47vnuix/WqCe1g
+  H1kPIlUeaS5xddT/mp5FbQ1CP5euqhcsYTxsEyRx+s91264qK55LSFU6SbZENeq/xNuKOQt9m
+  mk8lPNIOtUMpvnfm32Vdt9y15bNTRFhmTul6uVImlOCPRUIu5qDgRAIwhKpMQAwAA
+X-Env-Sender: bstroesser@ts.fujitsu.com
+X-Msg-Ref: server-22.tower-228.messagelabs.com!1592988819!655672!1
+X-Originating-IP: [62.60.8.148]
+X-SYMC-ESS-Client-Auth: outbound-route-from=pass
+X-StarScan-Received: 
+X-StarScan-Version: 9.50.2; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 8692 invoked from network); 24 Jun 2020 08:53:39 -0000
+Received: from unknown (HELO mailhost1.uk.fujitsu.com) (62.60.8.148)
+  by server-22.tower-228.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 24 Jun 2020 08:53:39 -0000
+Received: from x-serv01 ([172.17.38.52])
+        by mailhost1.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 05O8rck9011594;
+        Wed, 24 Jun 2020 09:53:39 +0100
+Received: from VTC.emeia.fujitsu.local (unknown [172.17.38.7])
+        by x-serv01 (Postfix) with ESMTP id C545A205E2;
+        Wed, 24 Jun 2020 10:53:35 +0200 (CEST)
+From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
+To:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+Cc:     JiangYu <lnsyyj@hotmail.com>, Daniel Meyerholt <dxm523@gmail.com>,
+        Henry Willard <henry.willard@oracle.com>,
+        Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Subject: [PATCH] scsi: target: tcmu: Fix crash on ARM during cmd completion
+Date:   Wed, 24 Jun 2020 10:53:20 +0200
+Message-Id: <20200624085320.31117-1-bstroesser@ts.fujitsu.com>
+X-Mailer: git-send-email 2.12.3
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Fri, 5 Jun 2020 17:44:37 +0300, Roman Bolshakov wrote:
+If tcmu_handle_completions() has to process a padding shorter
+than sizeof(struct tcmu_cmd_entry), the current call to
+tcmu_flush_dcache_range() with sizeof(struct tcmu_cmd_entry) as
+length param is wrong and causes crashes on e.g. ARM, because
+tcmu_flush_dcache_range() in this case calls
+	flush_dcache_page(vmalloc_to_page(start));
+with start being an invalid address above the end of the
+vmalloc'ed area.
 
-> The driver performs SCR (state change registration) in all modes
-> including pure target mode.
-> 
-> For each RSCN, scan_needed flag is set in qla2x00_handle_rscn() for the
-> port mentioned in the RSCN and fabric rescan is scheduled. During the
-> rescan, GNN_FT handler, qla24xx_async_gnnft_done() deletes session of
-> the port that caused the RSCN.
-> 
-> [...]
+The fix is to use the maximum of remaining ring space and
+sizeof(struct tcmu_cmd_entry) as the length param.
 
-Applied to 5.8/scsi-fixes, thanks!
+The patch was tested on kernel 4.19.118.
 
-[1/1] scsi: qla2xxx: Keep initiator ports after RSCN
-      https://git.kernel.org/mkp/scsi/c/632f24f09d5b
+See https://bugzilla.kernel.org/show_bug.cgi?id=208045#c10
 
+Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Tested-by: JiangYu <lnsyyj@hotmail.com>
+---
+ drivers/target/target_core_user.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
+index 3885ca532f8f..82e476d48194 100644
+--- a/drivers/target/target_core_user.c
++++ b/drivers/target/target_core_user.c
+@@ -1221,7 +1221,14 @@ static unsigned int tcmu_handle_completions(struct tcmu_dev *udev)
+ 
+ 		struct tcmu_cmd_entry *entry = (void *) mb + CMDR_OFF + udev->cmdr_last_cleaned;
+ 
+-		tcmu_flush_dcache_range(entry, sizeof(*entry));
++		/*
++		 * Flush max. up to end of cmd ring, since current entry might
++		 * be a padding that is shorter than sizeof(*entry)
++		 */
++		size_t ring_left = head_to_end(udev->cmdr_last_cleaned,
++					       udev->cmdr_size);
++		tcmu_flush_dcache_range(entry, ring_left < sizeof(*entry) ?
++					ring_left : sizeof(*entry));
+ 
+ 		if (tcmu_hdr_get_op(entry->hdr.len_op) == TCMU_OP_PAD) {
+ 			UPDATE_HEAD(udev->cmdr_last_cleaned,
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+2.12.3
+
