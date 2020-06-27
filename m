@@ -2,116 +2,88 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29413206F7D
-	for <lists+target-devel@lfdr.de>; Wed, 24 Jun 2020 10:53:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD43120BE60
+	for <lists+target-devel@lfdr.de>; Sat, 27 Jun 2020 06:37:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388948AbgFXIxo (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 24 Jun 2020 04:53:44 -0400
-Received: from mail1.bemta26.messagelabs.com ([85.158.142.4]:39409 "EHLO
-        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728732AbgFXIxn (ORCPT
+        id S1725924AbgF0EhY (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 27 Jun 2020 00:37:24 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:60032 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725797AbgF0EhY (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 24 Jun 2020 04:53:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1592988820; i=@ts.fujitsu.com;
-        bh=xTlDTIhuzqELQkiMm6reVrPea5iD8zScdlt45oATRp4=;
-        h=From:To:Cc:Subject:Date:Message-Id;
-        b=OJiT2kdbLnPop0Fg+g1k8OK6Rr+n8hFJqZhhEsb7skAh2I7By8F5h8OL5K3K4d0e6
-         73nhmRbdD6aL6qDMYhT5ZOTl1hvZ0AFDqgEGZA0ejYuzwrR99KN30MHCxrv5+XtACJ
-         uX5yRRJc3KjPlSmholtvAGp7fIrvpy6r9dIMMSwWbyKfJlXtP7SfawQWn7jDcnwmi5
-         H46HCMwrKLOuN+86erc8DPT/KvlmjZl2Qfk67GWN0a4/omVzSYHsw5ewZYKwwc9bWT
-         PAeO+lSyomLxNUX4jhVieUxSXJfyWs7cjNTKtTvu8n0QWHYrdARHOVGtUPAtc2+RFY
-         mYN7zIl6ARWpQ==
-Received: from [100.113.3.51] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-4.bemta.az-a.eu-central-1.aws.symcld.net id 2D/10-01380-49413FE5; Wed, 24 Jun 2020 08:53:40 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrLLMWRWlGSWpSXmKPExsViZ8MxRXeKyOc
-  4g8f7mS0OL3zDZPHo8ylGi+7rO9gsZrSFWSw//o/J4u+kG6wWrUvfMjmwe+ycdZfd43HPGTaP
-  j09vsXh83iQXwBLFmpmXlF+RwJoxbeJS1oKZvBULzx1ja2Bcx93FyMUhJDCZUeL+jlksEM50R
-  okvKzaxdTFycrAJGEismHQfLCEisIZRYuWdecwgDrPAakaJTx9ng1UJC3hLnOlrZQSxWQRUJX
-  ac/w5UxMHBK2AnseNcEUhYQkBeouPAZJYJjJwLGBlWMVomFWWmZ5TkJmbm6BoaGOgaGhrrAkl
-  jA73EKt1EvdRS3eTUvJKiRKCsXmJ5sV5xZW5yTopeXmrJJkZgqKQUMjTtYHz36oPeIUZJDiYl
-  UV7vh5/ihPiS8lMqMxKLM+KLSnNSiw8xynBwKEnwnhf8HCckWJSanlqRlpkDDFuYtAQHj5IIb
-  78QUJq3uCAxtzgzHSJ1ilFRSpz3NEhCACSRUZoH1waLlUuMslLCvIwMDAxCPAWpRbmZJajyrx
-  jFORiVhHlPgEzhycwrgZv+CmgxE9BiScdPIItLEhFSUg1MU+YES4rebIu1k3OuuXpv/b6JS1U
-  dW3bYHuDPm+p3d0VfffTF3Pn3XwRIKX37GSPz+Lr8I/YY/4WPa8JFd0j93umqGuyZ4MHIv+xz
-  gMYSgeyTLXE9nszlkqo/LFxCZe33Cla7e/3YatDt+3++W9/ZtOSNX0M/GL/88eBEo2xGY+vdq
-  BcquRxSe6p4KoQZ7WZaL0zrbtbtqIp6+9h7dYpoqwH3JJUM1wuimlP6c74d47vnuix/WqCe1g
-  H1kPIlUeaS5xddT/mp5FbQ1CP5euqhcsYTxsEyRx+s91264qK55LSFU6SbZENeq/xNuKOQt9m
-  mk8lPNIOtUMpvnfm32Vdt9y15bNTRFhmTul6uVImlOCPRUIu5qDgRAIwhKpMQAwAA
-X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-22.tower-228.messagelabs.com!1592988819!655672!1
-X-Originating-IP: [62.60.8.148]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.50.2; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 8692 invoked from network); 24 Jun 2020 08:53:39 -0000
-Received: from unknown (HELO mailhost1.uk.fujitsu.com) (62.60.8.148)
-  by server-22.tower-228.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 24 Jun 2020 08:53:39 -0000
-Received: from x-serv01 ([172.17.38.52])
-        by mailhost1.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 05O8rck9011594;
-        Wed, 24 Jun 2020 09:53:39 +0100
-Received: from VTC.emeia.fujitsu.local (unknown [172.17.38.7])
-        by x-serv01 (Postfix) with ESMTP id C545A205E2;
-        Wed, 24 Jun 2020 10:53:35 +0200 (CEST)
-From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-To:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Cc:     JiangYu <lnsyyj@hotmail.com>, Daniel Meyerholt <dxm523@gmail.com>,
-        Henry Willard <henry.willard@oracle.com>,
-        Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Subject: [PATCH] scsi: target: tcmu: Fix crash on ARM during cmd completion
-Date:   Wed, 24 Jun 2020 10:53:20 +0200
-Message-Id: <20200624085320.31117-1-bstroesser@ts.fujitsu.com>
-X-Mailer: git-send-email 2.12.3
+        Sat, 27 Jun 2020 00:37:24 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05R4X21h078462;
+        Sat, 27 Jun 2020 04:37:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : subject :
+ date : message-id; s=corp-2020-01-29;
+ bh=9BIv/Cpi1aUWEgR/P93x5VT8gzYRCKQy7bmS7pcrJoY=;
+ b=u/4b3mhS8hAhMrfj2rbO8xcyNo5bAr8hyTqJiTUPUMXvJ/YcsOiftSAHrmnEfGfUgQhb
+ ov9VlRRzNl9gHziNOI75JKhMrnQttU96BZaoKJ+T9TrrCDUEO1lpj6mAzxPll4YG+NZl
+ P5n4AcDaD4zmu+qnBCZ7KFFIWx7nczXY5IfH2r06T2azy69pniYEXYnkAYxf1ZegyzML
+ ADmajaIk5eoZrWV/Kz1ey9Dt3uP1HJuOwxPnp6ysL6dF4+MacTHrZACGl1mvwrjhmJox
+ +N84ufE4o2RqNmi/xcQWJbaPrKtyDDhjCYKFBw4H3oiNbn0feP1/oKheEG15pQYAtx9X 2Q== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 31wxrmr10s-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sat, 27 Jun 2020 04:37:15 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05R4Y9ZF122007;
+        Sat, 27 Jun 2020 04:35:14 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 31wv58v89h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 27 Jun 2020 04:35:14 +0000
+Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05R4ZBM7030581;
+        Sat, 27 Jun 2020 04:35:11 GMT
+Received: from ol2.localdomain (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sat, 27 Jun 2020 04:35:10 +0000
+From:   Mike Christie <michael.christie@oracle.com>
+To:     hare@suse.de, bvanassche@acm.org, bstroesser@ts.fujitsu.com,
+        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
+Subject: [RFC PATCH 00/10] target: add configfs interface
+Date:   Fri, 26 Jun 2020 23:34:59 -0500
+Message-Id: <1593232509-13720-1-git-send-email-michael.christie@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9664 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=0 bulkscore=0
+ mlxscore=0 mlxlogscore=999 malwarescore=0 spamscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006270030
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9664 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999
+ priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015
+ malwarescore=0 phishscore=0 adultscore=0 cotscore=-2147483648
+ lowpriorityscore=0 suspectscore=0 spamscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006270030
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-If tcmu_handle_completions() has to process a padding shorter
-than sizeof(struct tcmu_cmd_entry), the current call to
-tcmu_flush_dcache_range() with sizeof(struct tcmu_cmd_entry) as
-length param is wrong and causes crashes on e.g. ARM, because
-tcmu_flush_dcache_range() in this case calls
-	flush_dcache_page(vmalloc_to_page(start));
-with start being an invalid address above the end of the
-vmalloc'ed area.
+The following patches made over linus's current tree (also apply
+over Martin's 5.9 scsi queue branch) add a configfs interface to
+export LIO's sessions.
 
-The fix is to use the maximum of remaining ring space and
-sizeof(struct tcmu_cmd_entry) as the length param.
+With Hannes not liking the refcounting/tricks in the sysfs approach
+I took another stab at configfs. This approach works similar to the
+loop/vhost/usb/xen nexus interface where there is a special file
+that allows userspace to add/remove sessions.
 
-The patch was tested on kernel 4.19.118.
+Because the kernel is making sessions for most drivers, we do not
+have mkdir/rmdir support for the session dir, but using the special
+file approach we can still remove children session in the correct
+order and avoid the issues I hit before. The interface is a little
+odd configfs wise because we use the special file, but it has the
+benefit everything is in the one interface so it's easy to update
+the tools.
 
-See https://bugzilla.kernel.org/show_bug.cgi?id=208045#c10
+If this approach is preferred over the sysfs one then I can repost
+with some other fixes, the transport id patches and the iscsi
+conversion one.
 
-Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Tested-by: JiangYu <lnsyyj@hotmail.com>
----
- drivers/target/target_core_user.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-index 3885ca532f8f..82e476d48194 100644
---- a/drivers/target/target_core_user.c
-+++ b/drivers/target/target_core_user.c
-@@ -1221,7 +1221,14 @@ static unsigned int tcmu_handle_completions(struct tcmu_dev *udev)
- 
- 		struct tcmu_cmd_entry *entry = (void *) mb + CMDR_OFF + udev->cmdr_last_cleaned;
- 
--		tcmu_flush_dcache_range(entry, sizeof(*entry));
-+		/*
-+		 * Flush max. up to end of cmd ring, since current entry might
-+		 * be a padding that is shorter than sizeof(*entry)
-+		 */
-+		size_t ring_left = head_to_end(udev->cmdr_last_cleaned,
-+					       udev->cmdr_size);
-+		tcmu_flush_dcache_range(entry, ring_left < sizeof(*entry) ?
-+					ring_left : sizeof(*entry));
- 
- 		if (tcmu_hdr_get_op(entry->hdr.len_op) == TCMU_OP_PAD) {
- 			UPDATE_HEAD(udev->cmdr_last_cleaned,
--- 
-2.12.3
 
