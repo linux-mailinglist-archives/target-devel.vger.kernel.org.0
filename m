@@ -2,84 +2,89 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0601820BE69
-	for <lists+target-devel@lfdr.de>; Sat, 27 Jun 2020 06:46:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73C4420C49B
+	for <lists+target-devel@lfdr.de>; Sun, 28 Jun 2020 00:06:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725861AbgF0Ep7 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 27 Jun 2020 00:45:59 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:48308 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725840AbgF0Ep6 (ORCPT
+        id S1726316AbgF0WGN (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 27 Jun 2020 18:06:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51240 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725934AbgF0WGN (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sat, 27 Jun 2020 00:45:58 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05R4hX0G067788;
-        Sat, 27 Jun 2020 04:45:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : from : to :
- references : message-id : date : mime-version : in-reply-to : content-type
- : content-transfer-encoding; s=corp-2020-01-29;
- bh=nFo71nSVFCsU+0FggxHBmS1HfWVT47gChz2B23U4Cnc=;
- b=i1mob5PiUBCDlVuQPzWIJTbDDuX5XYgB1YfeTpaeew1ObHT2jc9xGFfIXRLd6tPe4VLe
- 5L0xw5gFjpAdDpDoRqBBM8tbYbcV85dsuy92YYO9bWMZ+vUM+s3BmO0DMeTEUySmmtEy
- anLxQi14mjYrlMuSgK/Mtsmqe/yNrEI0JqdMsEdKN1OszZZP1ET17ZGaiQBqG/n3m2zV
- UrWEphn9Ytc07kIuRsijDdWmTBCWJ0McTCj98L2LLJAHUUFSRh8SGOA6F907Weh2mrVc
- 0WpK0eJ8vKWTiUAmdugeln53nLsgXxKWRTVNtAIJUUBK8rJJ2dDwY2hmkno+EjD7BXsE jQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 31wx2m82rd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sat, 27 Jun 2020 04:45:51 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05R4iNKT109356;
-        Sat, 27 Jun 2020 04:45:51 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 31wwwyw9p6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 27 Jun 2020 04:45:51 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05R4jmpd009716;
-        Sat, 27 Jun 2020 04:45:49 GMT
-Received: from [20.15.0.202] (/73.88.28.6)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sat, 27 Jun 2020 04:45:48 +0000
-Subject: Re: [RFC PATCH 09/10] target: add helper to close session
- synchronously
-From:   Mike Christie <michael.christie@oracle.com>
-To:     hare@suse.de, bvanassche@acm.org, bstroesser@ts.fujitsu.com,
-        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org
-References: <1593232509-13720-1-git-send-email-michael.christie@oracle.com>
- <1593232509-13720-10-git-send-email-michael.christie@oracle.com>
-Message-ID: <89747f03-3bbf-a210-bf7d-4c487d80f285@oracle.com>
-Date:   Fri, 26 Jun 2020 23:45:54 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        Sat, 27 Jun 2020 18:06:13 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9B24C061794
+        for <target-devel@vger.kernel.org>; Sat, 27 Jun 2020 15:06:12 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id r18so6584291pgk.11
+        for <target-devel@vger.kernel.org>; Sat, 27 Jun 2020 15:06:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
+        b=N6kPulua2YSlM8imcShAj91mdG3FVs3SsXSz87fb1+u3nd7u7PFa6MKJ279dIRDWxh
+         0Ldfj86Lh7w+Xrc1R5Ac12lp/bi6BKorqLlDMWYld1qOBhdJB4N7Na0XiYaHB8nKtBEn
+         57C/Tzw6MUWAOIXcOnRxxN4MeNm7iQhU/hvtXzHXK0vqQBasxFJE8WhTf5ke+LZ6XEZm
+         /oWHd42QW3NLQJh3kf1TRlauenW2jL1Poq5HUYmLYngCGGUW3fX0WLGx3ldU3AhEukyR
+         HJCMoV5irc6uSRF+aDmFQnYTlSn+N9B5n6b9ltoSvd3dHTYHCaXSwIr77k6vqrwMxy85
+         lwfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
+        b=HqYSGkzLUYBan3TNj0c6EsahaaQ41+GR98DRqMLVIA+J/2nyPt+3jQO8gM6t2WWq8S
+         X2cnWaYaecRkgvgiGGurMHGGtA4kCF8jf9uG30RxN0hcvsr/VN5yETPmUtN9znRixrxw
+         RStbmLZP6QdzqZjPYOnOfm3S3BD4mFUAAkwuvC/FpWI6iUq8OHAj2hIm4l1Jy5ecYZTy
+         D8wiIhANn295lIYt5nfpmoMDfcFdMOuc1Ml1Zv66NAXDpaCkO62lpb8Y0ZwtGnd0QWaU
+         0DAjJM7NvdzOwbtCWBXmMGYSqeQBtzgw1ZojTWCnjeQxVV/J8Y/LeOOraYPuMkDmIcyI
+         iNMQ==
+X-Gm-Message-State: AOAM5308O3SVFEgT/V+AgtRWuuoaq6nfhuvAnrSpQ0X7r1XOZ4unsU+p
+        8q9C+NutHoEYKiQFzHgXqSWop75tchneqvCrlMFh8FYQSVE=
+X-Google-Smtp-Source: ABdhPJwHv45zwmNuK/YSX2uBVAIqQ2zLOwtA+ngiZqoTP9Rs9Xn2gCCD3OWXiVcvkiJ+PU31Rp2ZvkRVy2hsrxlhX9g=
+X-Received: by 2002:a92:7749:: with SMTP id s70mr10069248ilc.259.1593295098567;
+ Sat, 27 Jun 2020 14:58:18 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1593232509-13720-10-git-send-email-michael.christie@oracle.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9664 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=0
- adultscore=0 mlxscore=0 spamscore=0 bulkscore=0 malwarescore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006270032
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9664 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0
- lowpriorityscore=0 bulkscore=0 mlxlogscore=999 clxscore=1015 adultscore=0
- impostorscore=0 cotscore=-2147483648 priorityscore=1501 malwarescore=0
- phishscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006270032
+Received: by 2002:a4f:4e46:0:0:0:0:0 with HTTP; Sat, 27 Jun 2020 14:58:17
+ -0700 (PDT)
+From:   lookman joe <mrlookmanjoe@gmail.com>
+Date:   Sat, 27 Jun 2020 22:58:17 +0100
+Message-ID: <CAG9X5Hfvk-fmbqs9+RtHRqyUu35f9-A5+EbwjPrw9eVNH09ftg@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 6/26/20 11:35 PM, Mike Christie wrote:
-> +	if (!se_sess->tfo->close_session) {
-> +		pr_err("Session %d does not support configfs session removal.",
-> +		       se_sess->sid);
-> +		return -EINVAL;
-> +	}
+MONEY-GRAM TRANSFERRED PAYMENT INFO:
 
-I just realized I posted a slightly older version of the patch I meant 
-to post. The locking issue above will be fixed in the final version.
+Below is the sender=E2=80=99s information
+
+
+
+1. MG. REFERENCE NO#: 36360857
+
+2. SENDER'S NAME: Johnson Williams
+
+3. AMOUNT TO PICKUP: US$10,000
+
+
+
+Go to any Money Gram office near you and pick up the payment Track the
+
+Reference Number by visiting and click the link below
+
+(https://secure.moneygram.com/embed/track) and enter the Reference
+
+Number: 36360857 and the Last Name: Williams, you will find the payment
+
+available for pickup instantly.
+
+Yours Sincerely,
+
+Mrs. Helen Marvis
+United Nations Liaison Office
+Directorate for International Payments
