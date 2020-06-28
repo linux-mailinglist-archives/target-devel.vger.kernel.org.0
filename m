@@ -2,89 +2,125 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73C4420C49B
-	for <lists+target-devel@lfdr.de>; Sun, 28 Jun 2020 00:06:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 969D220C561
+	for <lists+target-devel@lfdr.de>; Sun, 28 Jun 2020 04:17:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726316AbgF0WGN (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 27 Jun 2020 18:06:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51240 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725934AbgF0WGN (ORCPT
+        id S1725904AbgF1CRa (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 27 Jun 2020 22:17:30 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:40496 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725838AbgF1CRa (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sat, 27 Jun 2020 18:06:13 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9B24C061794
-        for <target-devel@vger.kernel.org>; Sat, 27 Jun 2020 15:06:12 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id r18so6584291pgk.11
-        for <target-devel@vger.kernel.org>; Sat, 27 Jun 2020 15:06:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
-        b=N6kPulua2YSlM8imcShAj91mdG3FVs3SsXSz87fb1+u3nd7u7PFa6MKJ279dIRDWxh
-         0Ldfj86Lh7w+Xrc1R5Ac12lp/bi6BKorqLlDMWYld1qOBhdJB4N7Na0XiYaHB8nKtBEn
-         57C/Tzw6MUWAOIXcOnRxxN4MeNm7iQhU/hvtXzHXK0vqQBasxFJE8WhTf5ke+LZ6XEZm
-         /oWHd42QW3NLQJh3kf1TRlauenW2jL1Poq5HUYmLYngCGGUW3fX0WLGx3ldU3AhEukyR
-         HJCMoV5irc6uSRF+aDmFQnYTlSn+N9B5n6b9ltoSvd3dHTYHCaXSwIr77k6vqrwMxy85
-         lwfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
-        b=HqYSGkzLUYBan3TNj0c6EsahaaQ41+GR98DRqMLVIA+J/2nyPt+3jQO8gM6t2WWq8S
-         X2cnWaYaecRkgvgiGGurMHGGtA4kCF8jf9uG30RxN0hcvsr/VN5yETPmUtN9znRixrxw
-         RStbmLZP6QdzqZjPYOnOfm3S3BD4mFUAAkwuvC/FpWI6iUq8OHAj2hIm4l1Jy5ecYZTy
-         D8wiIhANn295lIYt5nfpmoMDfcFdMOuc1Ml1Zv66NAXDpaCkO62lpb8Y0ZwtGnd0QWaU
-         0DAjJM7NvdzOwbtCWBXmMGYSqeQBtzgw1ZojTWCnjeQxVV/J8Y/LeOOraYPuMkDmIcyI
-         iNMQ==
-X-Gm-Message-State: AOAM5308O3SVFEgT/V+AgtRWuuoaq6nfhuvAnrSpQ0X7r1XOZ4unsU+p
-        8q9C+NutHoEYKiQFzHgXqSWop75tchneqvCrlMFh8FYQSVE=
-X-Google-Smtp-Source: ABdhPJwHv45zwmNuK/YSX2uBVAIqQ2zLOwtA+ngiZqoTP9Rs9Xn2gCCD3OWXiVcvkiJ+PU31Rp2ZvkRVy2hsrxlhX9g=
-X-Received: by 2002:a92:7749:: with SMTP id s70mr10069248ilc.259.1593295098567;
- Sat, 27 Jun 2020 14:58:18 -0700 (PDT)
+        Sat, 27 Jun 2020 22:17:30 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05S2DBM1051212;
+        Sun, 28 Jun 2020 02:17:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=tpAihePks7JcNo+eU/DgGVchBEZlzSbSMix8/s3viuE=;
+ b=vswMekImfpxaV8loDmCVi7P3v6mr+NVKguononsNom5NQEKEuVr9lv1yusjJQ+7+Lucx
+ 060EAtcG9rPH7Fal+sjNC552wziX4LQ4eQdfgE+LWadkqemiGG7RsyCgVSUwHINXgIwU
+ 5mqYRLvBX8UnWII6e1fgssCvAN/cbr5p5awQDjhBbq/1ZBIW9spQI3j7MZ4sVdZFwzQp
+ 2TOcqafKWImq4yrnIwtnAG2brhSkN3Zw3Apfnqdx3wUQqiAGd4fBkQvWVnzsjyojHkq3
+ oQjc3LM2ibc7XLQW8/VCn1RlvAb09lbwZOKftEXUuBRvBUOH15lqP1+LfNjaNVL1FGCg iQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 31wxrmsujs-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sun, 28 Jun 2020 02:17:22 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05S2ENBl172461;
+        Sun, 28 Jun 2020 02:17:22 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 31xfvp3erd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 28 Jun 2020 02:17:22 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05S2HINw016862;
+        Sun, 28 Jun 2020 02:17:18 GMT
+Received: from [20.15.0.2] (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sun, 28 Jun 2020 02:17:16 +0000
+Subject: Re: [PATCH] scsi: target: tcmu: Fix crash on ARM during cmd
+ completion
+To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+Cc:     JiangYu <lnsyyj@hotmail.com>, Daniel Meyerholt <dxm523@gmail.com>,
+        Henry Willard <henry.willard@oracle.com>
+References: <20200624085320.31117-1-bstroesser@ts.fujitsu.com>
+From:   Mike Christie <michael.christie@oracle.com>
+Message-ID: <cc5cc3d3-3895-9850-8f7e-b911a6bf22c0@oracle.com>
+Date:   Sat, 27 Jun 2020 21:17:14 -0500
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.9.0
 MIME-Version: 1.0
-Received: by 2002:a4f:4e46:0:0:0:0:0 with HTTP; Sat, 27 Jun 2020 14:58:17
- -0700 (PDT)
-From:   lookman joe <mrlookmanjoe@gmail.com>
-Date:   Sat, 27 Jun 2020 22:58:17 +0100
-Message-ID: <CAG9X5Hfvk-fmbqs9+RtHRqyUu35f9-A5+EbwjPrw9eVNH09ftg@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200624085320.31117-1-bstroesser@ts.fujitsu.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9665 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0 spamscore=0
+ phishscore=0 malwarescore=0 mlxlogscore=999 bulkscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006280015
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9665 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999
+ priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015
+ malwarescore=0 phishscore=0 adultscore=0 cotscore=-2147483648
+ lowpriorityscore=0 suspectscore=0 spamscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006280015
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-MONEY-GRAM TRANSFERRED PAYMENT INFO:
+On 6/24/20 3:53 AM, Bodo Stroesser wrote:
+> If tcmu_handle_completions() has to process a padding shorter
+> than sizeof(struct tcmu_cmd_entry), the current call to
+> tcmu_flush_dcache_range() with sizeof(struct tcmu_cmd_entry) as
+> length param is wrong and causes crashes on e.g. ARM, because
+> tcmu_flush_dcache_range() in this case calls
+> 	flush_dcache_page(vmalloc_to_page(start));
+> with start being an invalid address above the end of the
+> vmalloc'ed area.
+> 
+> The fix is to use the maximum of remaining ring space and
+> sizeof(struct tcmu_cmd_entry) as the length param.
+> 
+> The patch was tested on kernel 4.19.118.
+> 
+> See https://urldefense.com/v3/__https://bugzilla.kernel.org/show_bug.cgi?id=208045*c10__;Iw!!GqivPVa7Brio!Kxr99oE0H1b9Ily4SE23nDN7ElSf8Tclo1RILfNSXb6iPh6DA5cSgtBQQsLMBKdrLsmT$ 
+> 
+> Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
+> Tested-by: JiangYu <lnsyyj@hotmail.com>
+> ---
+>  drivers/target/target_core_user.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
+> index 3885ca532f8f..82e476d48194 100644
+> --- a/drivers/target/target_core_user.c
+> +++ b/drivers/target/target_core_user.c
+> @@ -1221,7 +1221,14 @@ static unsigned int tcmu_handle_completions(struct tcmu_dev *udev)
+>  
+>  		struct tcmu_cmd_entry *entry = (void *) mb + CMDR_OFF + udev->cmdr_last_cleaned;
+>  
+> -		tcmu_flush_dcache_range(entry, sizeof(*entry));
+> +		/*
+> +		 * Flush max. up to end of cmd ring, since current entry might
+> +		 * be a padding that is shorter than sizeof(*entry)
+> +		 */
+> +		size_t ring_left = head_to_end(udev->cmdr_last_cleaned,
+> +					       udev->cmdr_size);
+> +		tcmu_flush_dcache_range(entry, ring_left < sizeof(*entry) ?
+> +					ring_left : sizeof(*entry));
+>  
+>  		if (tcmu_hdr_get_op(entry->hdr.len_op) == TCMU_OP_PAD) {
+>  			UPDATE_HEAD(udev->cmdr_last_cleaned,
+> 
 
-Below is the sender=E2=80=99s information
+Thanks again.
 
-
-
-1. MG. REFERENCE NO#: 36360857
-
-2. SENDER'S NAME: Johnson Williams
-
-3. AMOUNT TO PICKUP: US$10,000
-
-
-
-Go to any Money Gram office near you and pick up the payment Track the
-
-Reference Number by visiting and click the link below
-
-(https://secure.moneygram.com/embed/track) and enter the Reference
-
-Number: 36360857 and the Last Name: Williams, you will find the payment
-
-available for pickup instantly.
-
-Yours Sincerely,
-
-Mrs. Helen Marvis
-United Nations Liaison Office
-Directorate for International Payments
+Acked-by: Mike Christie <michael.christie@oracle.com>
