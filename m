@@ -2,77 +2,83 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BDD620C9E5
-	for <lists+target-devel@lfdr.de>; Sun, 28 Jun 2020 21:37:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1667E20E929
+	for <lists+target-devel@lfdr.de>; Tue, 30 Jun 2020 01:15:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726738AbgF1Th5 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sun, 28 Jun 2020 15:37:57 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:37300 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726699AbgF1Th5 (ORCPT
+        id S1726746AbgF2XO0 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 29 Jun 2020 19:14:26 -0400
+Received: from mail1.bemta26.messagelabs.com ([85.158.142.2]:49526 "EHLO
+        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726180AbgF2XO0 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sun, 28 Jun 2020 15:37:57 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05SJW2FR026997;
-        Sun, 28 Jun 2020 19:37:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to;
- s=corp-2020-01-29; bh=8UP1J8KIvbZruRKT34GLAOGsHEsERFbjMb6TYIdgN2k=;
- b=SKA0ho0L8D64ZCt+/uCdE3qnGdjpYSs0TM3MQkkSZnON0thQItuoIxru3npGbpfSSRtg
- LyFL6N2N06I2dezWYLzWvxDmqcGLE6vj2GJPnN3uKaOZbT07w/hSTr7OZWsZbKjbdVY4
- o5Z+5AqyOmOpZROvLyRP1vEqtoilPzexG/rk8SDhPZKIm4v/JzugSMfmO5KXhai1CKhZ
- PlViTk90N1Kdp0qSnlkaGYk7djD9dmtd4SEfk4SqqxaFVfC2z6M7o4iANQQMh3cK3Rzu
- uCfrFaz/R1lKMzGI1s6xpwg+4jvLQMC0URE89xbF0mrg3YGDtleQrI62r3/p17TkmqiK /w== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 31wxrmuda1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sun, 28 Jun 2020 19:37:37 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05SJXc56063762;
-        Sun, 28 Jun 2020 19:35:37 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 31xg1u36q5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sun, 28 Jun 2020 19:35:37 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05SJZYGd012940;
-        Sun, 28 Jun 2020 19:35:34 GMT
-Received: from [20.15.0.2] (/73.88.28.6)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sun, 28 Jun 2020 19:35:34 +0000
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
+        Mon, 29 Jun 2020 19:14:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
+        s=200619tsfj; t=1593420813; i=@ts.fujitsu.com;
+        bh=cbG5NOwyLc3AqnYYvEsDThu3inPz53X98TvlIekIdLo=;
+        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+         In-Reply-To:Content-Type:Content-Transfer-Encoding;
+        b=vFf+Id/yazAb6ixz+MRuJQAHWSXRXxzmAukodeaJSISOZX6zW3bJE/Iim5mmsTBo5
+         Ci7jzmCf6rOA4yPpPwAgkhr3KTfWsDcM4zUYvy7T7axnNn1hA6tjKDcDrxpK1mRHmN
+         7GI9u/obKwBZT+jahwgmydM255DxTJBnzdxbuhsqerrKZv/Ts3w5TrrpJ5by4AxsWp
+         KUZ/hk8hhz2yfQ7WfLAHMAkiU+mP4h5fstwkr+CtuDyc3Jd66pMd7rmNAj5n4ruYCl
+         DglnztyHvgDJIztRuUcB/jscF9pb26StKBGgW/at7dvXxLzTDd04cmgmASicX4vXeK
+         v7cA5mTzgk/cw==
+Received: from [100.113.3.51] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-2.bemta.az-a.eu-central-1.aws.symcld.net id DE/AF-52475-D0CA9FE5; Mon, 29 Jun 2020 08:53:33 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrDIsWRWlGSWpSXmKPExsViZ8MxVZd3zc8
+  4gx9PRC2mffjJbHF44Rsmi0efTzFadF/fwWYxoy3MYvnxf0wWfyfdYLVoXfqWyYHD4/IVb4+d
+  s+6yezzuOcPm8fHpLRaPz5vkAlijWDPzkvIrElgzlq+9wl6wnquic+p51gbGDRxdjJwcQgKTG
+  SXOPtXsYuQCsvsZJVYcOcDexcjBISwQILH6bi1IjYhAgsTW16tYQGqYBb4wSvyY2sAC0bCQUW
+  Jn1wxWkCo2AQOJFZPus4DYvAKOEt1Nq9lAbBYBVYkdf7aygQwVFQiXeLbCH6JEUOLkzCdg5Zw
+  CdhKt57eBlTMLmEnM2/yQGcIWl7j1ZD4ThC0vsf3tHOYJjPyzkLTPQtIyC0nLLCQtCxhZVjFa
+  JhVlpmeU5CZm5ugaGhjoGhoa6wJJYwO9xCrdRL3UUt3k1LySokSgrF5iebFecWVuck6KXl5qy
+  SZGYKSkFDI07WB89+qD3iFGSQ4mJVFeowk/44T4kvJTKjMSizPii0pzUosPMcpwcChJ8B5eCZ
+  QTLEpNT61Iy8wBRi1MWoKDR0mE9/YqoDRvcUFibnFmOkTqFKOilDiv9mqghABIIqM0D64Nlig
+  uMcpKCfMyMjAwCPEUpBblZpagyr9iFOdgVBLm7QEZz5OZVwI3/RXQYiagxQWm30AWlyQipKQa
+  mEQaFAPKnQu6X1vk3U1e2f/2d+Hd4qwCtpnJNVP0Og6EfM0KlI/ecXWeyoaLVdvYbix5em+K6
+  5Njwm75i3JU32kUaZ3oO1r1f3O6m3tI+02jrfLOAVyL14hnaNm0lEwKdRMr9FgyaduhYu5Fq1
+  4Z/b147mJZjQx3/q/E1Uv3nVfxlfBJW2Twcs//vOMno+0a0wwZd827vLG+62GQ7tF7jZani4w
+  Db2Sy3yi5ULrlbnDgE469f8NNGzdN/uOR894jOmO2ZMh8PVenmBVHm/XmR5s8LDIy2RAYE27u
+  UlaftuHKrmyzNekTMm6Lnma/1NZ8yzR93yOvWdabf2u8U9+1UyQoblfhVkXfqVEvHF5oKLEUZ
+  yQaajEXFScCAJ2Xoo2PAwAA
+X-Env-Sender: bstroesser@ts.fujitsu.com
+X-Msg-Ref: server-24.tower-232.messagelabs.com!1593420812!392557!1
+X-Originating-IP: [62.60.8.149]
+X-SYMC-ESS-Client-Auth: outbound-route-from=pass
+X-StarScan-Received: 
+X-StarScan-Version: 9.50.2; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 2952 invoked from network); 29 Jun 2020 08:53:33 -0000
+Received: from unknown (HELO mailhost2.uk.fujitsu.com) (62.60.8.149)
+  by server-24.tower-232.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 29 Jun 2020 08:53:33 -0000
+Received: from x-serv01 ([172.17.38.52])
+        by mailhost2.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 05T8rGf4031582;
+        Mon, 29 Jun 2020 09:53:24 +0100
+Received: from [172.17.39.90] (unknown [172.17.39.90])
+        by x-serv01 (Postfix) with ESMTP id 12A96204CE;
+        Mon, 29 Jun 2020 10:53:13 +0200 (CEST)
 Subject: Re: [PATCH] scsi: target: tcmu: Fix crash on ARM during cmd
  completion
-From:   Michael Christie <michael.christie@oracle.com>
-In-Reply-To: <93e7f9ef-566e-6949-b2c7-2e822ee49f39@acm.org>
-Date:   Sun, 28 Jun 2020 14:35:32 -0500
-Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+To:     Michael Christie <michael.christie@oracle.com>,
+        Bart Van Assche <bvanassche@acm.org>
+Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
         linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
         JiangYu <lnsyyj@hotmail.com>,
         Daniel Meyerholt <dxm523@gmail.com>,
         Henry Willard <henry.willard@oracle.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <15C73AF2-672A-4686-A418-0C41993E8060@oracle.com>
 References: <20200624085320.31117-1-bstroesser@ts.fujitsu.com>
  <93e7f9ef-566e-6949-b2c7-2e822ee49f39@acm.org>
-To:     Bart Van Assche <bvanassche@acm.org>
-X-Mailer: Apple Mail (2.3608.80.23.2.2)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9666 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 phishscore=0
- malwarescore=0 mlxlogscore=999 adultscore=0 mlxscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006280146
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9666 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999
- priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015
- malwarescore=0 phishscore=0 adultscore=0 cotscore=-2147483648
- lowpriorityscore=0 suspectscore=0 spamscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006280146
+ <15C73AF2-672A-4686-A418-0C41993E8060@oracle.com>
+From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Message-ID: <655e34b7-c6eb-728c-1352-cd87f51d80fb@ts.fujitsu.com>
+Date:   Mon, 29 Jun 2020 10:53:10 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
+MIME-Version: 1.0
+In-Reply-To: <15C73AF2-672A-4686-A418-0C41993E8060@oracle.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
@@ -80,37 +86,42 @@ X-Mailing-List: target-devel@vger.kernel.org
 
 
 
-> On Jun 27, 2020, at 9:31 PM, Bart Van Assche <bvanassche@acm.org> =
-wrote:
->=20
-> On 2020-06-24 01:53, Bodo Stroesser wrote:
->> The fix is to use the maximum of remaining ring space and
->> sizeof(struct tcmu_cmd_entry) as the length param.
->>=20
->=20
-> [ ... ]
->=20
->> +		/*
->> +		 * Flush max. up to end of cmd ring, since current entry =
-might
->> +		 * be a padding that is shorter than sizeof(*entry)
->> +		 */
->> +		size_t ring_left =3D =
-head_to_end(udev->cmdr_last_cleaned,
->> +					       udev->cmdr_size);
->> +		tcmu_flush_dcache_range(entry, ring_left < =
-sizeof(*entry) ?
->> +					ring_left : sizeof(*entry));
->>=20
->> 		if (tcmu_hdr_get_op(entry->hdr.len_op) =3D=3D =
-TCMU_OP_PAD) {
->> 			UPDATE_HEAD(udev->cmdr_last_cleaned,
->=20
-> The patch description says "maximum" but the above formula calculates =
-the
-> minimum of "ring_left" and sizeof(*entry). Did I perhaps misread this =
-patch?
+On 2020-06-28 21:35, Michael Christie wrote:
+> 
+> 
+>> On Jun 27, 2020, at 9:31 PM, Bart Van Assche <bvanassche@acm.org> wrote:
+>>
+>> On 2020-06-24 01:53, Bodo Stroesser wrote:
+>>> The fix is to use the maximum of remaining ring space and
+>>> sizeof(struct tcmu_cmd_entry) as the length param.
+>>>
+>>
+>> [ ... ]
+>>
+>>> +		/*
+>>> +		 * Flush max. up to end of cmd ring, since current entry might
+>>> +		 * be a padding that is shorter than sizeof(*entry)
+>>> +		 */
+>>> +		size_t ring_left = head_to_end(udev->cmdr_last_cleaned,
+>>> +					       udev->cmdr_size);
+>>> +		tcmu_flush_dcache_range(entry, ring_left < sizeof(*entry) ?
+>>> +					ring_left : sizeof(*entry));
+>>>
+>>> 		if (tcmu_hdr_get_op(entry->hdr.len_op) == TCMU_OP_PAD) {
+>>> 			UPDATE_HEAD(udev->cmdr_last_cleaned,
+>>
+>> The patch description says "maximum" but the above formula calculates the
+>> minimum of "ring_left" and sizeof(*entry). Did I perhaps misread this patch?
+> 
+> Ah yeah, Bodo probably meant to write what they wrote for the comment above about the max up to the end of the ring and not max of space left and entry size.
+> 
 
-Ah yeah, Bodo probably meant to write what they wrote for the comment =
-above about the max up to the end of the ring and not max of space left =
-and entry size.=
+Thank you, you both are right.
+
+While the code and the comment in the code are fine, patch description
+is misleading or even wrong.
+
+So I'm going to re-send the patch with fixed description and Mike's
+Acked-by.
+
+BR, Bodo
