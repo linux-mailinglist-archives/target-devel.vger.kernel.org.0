@@ -2,117 +2,127 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A81C20FA89
-	for <lists+target-devel@lfdr.de>; Tue, 30 Jun 2020 19:27:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FD1220FB3B
+	for <lists+target-devel@lfdr.de>; Tue, 30 Jun 2020 20:01:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728077AbgF3R1y (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 30 Jun 2020 13:27:54 -0400
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:41608 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725872AbgF3R1x (ORCPT
+        id S2389490AbgF3SBX (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 30 Jun 2020 14:01:23 -0400
+Received: from mail1.bemta26.messagelabs.com ([85.158.142.1]:48345 "EHLO
+        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2388845AbgF3SBX (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 30 Jun 2020 13:27:53 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id E216E8EE16A;
-        Tue, 30 Jun 2020 10:27:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1593538073;
-        bh=9Xn6UBDIxLFSPMg8h37zOBFki+CeA2g+YUJAv6sqZ7M=;
-        h=Subject:From:To:Date:In-Reply-To:References:From;
-        b=BRSKzxnBmfxjg4UhkyGTjUzkwMqxHxPWHJGu+hmjVJPVvDG1zQi+cj+BM5owPqmyP
-         qxXY8m+s3A4fkZk+x2YMa/dfIW5jwlwXrvVkfZShlQUQuaRs7MSPpgNTBYOTtx9suR
-         iEEF5riwiDYA6TkhPvb+0aF1PdnYaQfEQJAUA/9I=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id MbachUaXS8a6; Tue, 30 Jun 2020 10:27:52 -0700 (PDT)
-Received: from [153.66.254.194] (unknown [50.35.76.230])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 6E77D8EE079;
-        Tue, 30 Jun 2020 10:27:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1593538072;
-        bh=9Xn6UBDIxLFSPMg8h37zOBFki+CeA2g+YUJAv6sqZ7M=;
-        h=Subject:From:To:Date:In-Reply-To:References:From;
-        b=VWuZK2mfBUs2DqHwcrlqPFe7pBIO3rvXh4c1QCDh4tzI4TFN40qfYYl40bm1Jbx/U
-         IWTU9kQ/MMYR1CC2pidu/qiNDMXlYxfzU0fHFiFSJ58eL/J0IAjVq/2R1WMf7+VASy
-         GVdaVQxWiCV/Ta6btEewZQ0SyLjHhhG2rHP5i7FU=
-Message-ID: <1593538071.4124.7.camel@HansenPartnership.com>
-Subject: Re: [RFC] scsi: target: tcmu: running 32bit userspace on 64bit
- kernel
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
+        Tue, 30 Jun 2020 14:01:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
+        s=200619tsfj; t=1593540078; i=@ts.fujitsu.com;
+        bh=MkC8nFP94Vc4I7A8NkJ2DTj1UAGsIbLVUmiwY+8XuxE=;
+        h=Subject:To:References:From:Message-ID:Date:MIME-Version:
+         In-Reply-To:Content-Type:Content-Transfer-Encoding;
+        b=tC66ocRBKfulKfg65WxtsFHd5FZCoFpa9PrjZkbH7A0mdY/fuhkjgJ7sfjKJXyxGv
+         7Gy1WRIjKMNuBuyQ1VdBfzDKsEJXtRXMr0eoiTTWuYrt6H9NM+Se1kNgAf5jdVP48A
+         DccjBFvyPtgs9vqT7Pm8Tcd7jSiUk+MAzQZUVY7aFSSlFCsNU/3HkQfejAQ8W10Noh
+         02QRZb1vg5Jd6JaxqLjRQ/QCvYwfA8QMjBcDUaf1+gQY50D+oGJ1AjaKugZJqYxcX5
+         Yk+R9rXl75nkJkrX9Z1bCti4I9XtvdrPQwAS5zb1qpc6Eq6OcBAxNz5Egly8hLN1mK
+         vvUlJSC6BQSDw==
+Received: from [100.113.1.118] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-1.bemta.az-a.eu-central-1.aws.symcld.net id 96/20-07993-EED7BFE5; Tue, 30 Jun 2020 18:01:18 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrJIsWRWlGSWpSXmKPExsViZ8MRqvuu9ne
+  cwZxt/BYb+zksuq/vYLNYfvwfk8XfSTdYLVqXvmVyYPWYNukUm8fHp7dYPD5vkgtgjmLNzEvK
+  r0hgzZiy5Dl7wRL+ir6ZGg2MO3i6GLk4hAQmM0o8eH+eGcLpZ5T4fGYSSxcjJ4ewgJ/Ets0Pw
+  RIiAm8ZJbYt7GaFqLoFVDXvPCNIFZuAgcSKSffBOngFHCVWnZrEDGKzCKhKLHw3E8jm4BAVCJ
+  d4tsIfokRQ4uTMJ2DlnAI2ElePNTGB2MwCZhLzwJaB2OISt57Mh4rLS2x/O4d5AiPfLCTts5C
+  0zELSMgtJywJGllWMlklFmekZJbmJmTm6hgYGuoaGxrpA0thAL7FKN1EvtVQ3OTWvpCgRKKuX
+  WF6sV1yZm5yTopeXWrKJERjiKYUMTTsY3736oHeIUZKDSUmU90/17zghvqT8lMqMxOKM+KLSn
+  NTiQ4wyHBxKEryuwKgREixKTU+tSMvMAcYbTFqCg0dJhHdlDVCat7ggMbc4Mx0idYpRUUqcdz
+  dIQgAkkVGaB9cGi/FLjLJSwryMDAwMQjwFqUW5mSWo8q8YxTkYlYR5u0Gm8GTmlcBNfwW0mAl
+  o8TWtXyCLSxIRUlINTBXyv66Vd50SqFvsZPv5hrJOP9cur0zN+bLCJl9+lEY8Mn0RUuIb+Dp8
+  XtDTGB+HyqkxzhKRf7tTNv92Uj6pXMvvfmyPcYx/Z7pOfZdawqveQweCzzanTAu9vmKpuWjB1
+  XtiIQfM3mTx1NtVs9hu3tJ7cHLGCvmrXQvtb/5KuDLvR47A9xMiDc1X/HZzfp49ezdL/YKI9m
+  CtPXOqc6P3F9XpbV8U4GRfl6Zn3WXDJHJMuEkmRmHejps7Z9VceBj0jo95p6trffBNzaWCmp/
+  Ukx85a7D82f45oFjM/vImXs9+dsEQgRNz/3j5zFNU+XRiiVDTVWHPn/nf86/fPb9iqsXNS1I2
+  H3ZmK9t3G1xTYinOSDTUYi4qTgQAC2MNt2wDAAA=
+X-Env-Sender: bstroesser@ts.fujitsu.com
+X-Msg-Ref: server-8.tower-226.messagelabs.com!1593540077!967431!1
+X-Originating-IP: [62.60.8.85]
+X-SYMC-ESS-Client-Auth: outbound-route-from=pass
+X-StarScan-Received: 
+X-StarScan-Version: 9.50.2; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 32236 invoked from network); 30 Jun 2020 18:01:18 -0000
+Received: from unknown (HELO mailhost4.uk.fujitsu.com) (62.60.8.85)
+  by server-8.tower-226.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 30 Jun 2020 18:01:18 -0000
+Received: from x-serv01 ([172.17.38.52])
+        by mailhost4.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 05UI1DOZ003093;
+        Tue, 30 Jun 2020 19:01:13 +0100
+Received: from [172.17.39.90] (unknown [172.17.39.90])
+        by x-serv01 (Postfix) with ESMTP id 55F5420251;
+        Tue, 30 Jun 2020 20:01:03 +0200 (CEST)
+Subject: Re: [RFC] scsi: target: tcmu: running 32bit userspace on 64bit kernel
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>,
         "Martin K. Petersen" <martin.petersen@oracle.com>,
         Mike Christie <michael.christie@oracle.com>,
         linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Date:   Tue, 30 Jun 2020 10:27:51 -0700
-In-Reply-To: <2cc4fd9e-e96d-725b-c047-4bd26af604a6@ts.fujitsu.com>
 References: <364c13da-6d4f-c28b-36b3-082db8c3de58@ts.fujitsu.com>
-         <1593535964.4124.2.camel@HansenPartnership.com>
-         <2cc4fd9e-e96d-725b-c047-4bd26af604a6@ts.fujitsu.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
+ <1593535964.4124.2.camel@HansenPartnership.com>
+ <2cc4fd9e-e96d-725b-c047-4bd26af604a6@ts.fujitsu.com>
+ <1593538071.4124.7.camel@HansenPartnership.com>
+From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Message-ID: <b1452aaf-d5f2-3342-a723-b2cc788ed4b0@ts.fujitsu.com>
+Date:   Tue, 30 Jun 2020 20:00:57 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
+MIME-Version: 1.0
+In-Reply-To: <1593538071.4124.7.camel@HansenPartnership.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Tue, 2020-06-30 at 19:17 +0200, Bodo Stroesser wrote:
-> On 2020-06-30 18:52, James Bottomley wrote:
-> > On Tue, 2020-06-30 at 18:49 +0200, Bodo Stroesser wrote:
-[...]
-> > > So we can compile a 32-bit application that works on 64-bit
-> > > kernel without need to manipulate the include file prepared by
-> > > the kernel.
-> > > 
-> > > What do you think? Do you know a better solution?
-> > 
-> > Can you not use something similar to the compat_ioctl
-> > mechanism?  the job of the compat layer is to re-layout the input
-> > and output structures to impedance match between 32 and 64 bit.
-> > 
-> > James
-> > 
+
+
+On 2020-06-30 19:27, James Bottomley wrote:
+> On Tue, 2020-06-30 at 19:17 +0200, Bodo Stroesser wrote:
+>> On 2020-06-30 18:52, James Bottomley wrote:
+>>> On Tue, 2020-06-30 at 18:49 +0200, Bodo Stroesser wrote:
+> [...]
+>>>> So we can compile a 32-bit application that works on 64-bit
+>>>> kernel without need to manipulate the include file prepared by
+>>>> the kernel.
+>>>>
+>>>> What do you think? Do you know a better solution?
+>>>
+>>> Can you not use something similar to the compat_ioctl
+>>> mechanism?  the job of the compat layer is to re-layout the input
+>>> and output structures to impedance match between 32 and 64 bit.
+>>>
+>>> James
+>>>
+>>
+>> struct tcmu_cmd_entry is prepared by kernel and exposed to userspace
+>> via an mmap()ed uio device. From tcmu module point of view it is
+>> vmalloc area.
+>>
+>> So there is no 'glue' code that could do conversion.
 > 
-> struct tcmu_cmd_entry is prepared by kernel and exposed to userspace
-> via an mmap()ed uio device. From tcmu module point of view it is
-> vmalloc area.
-> 
-> So there is no 'glue' code that could do conversion.
+> OK, so can't you do it like a vdso then?  For them we detect on mmap
+> what the architectural model is and map different areas depending on
+> that, so effectively you have a 64 and a 32 bit layout area and which
+> one you map depends on the architecture type you see coming into the
+> setup call.  You expect only one to be mapped and you only do extra
+> conversions on the impedance mismatch case.
 
-OK, so can't you do it like a vdso then?  For them we detect on mmap
-what the architectural model is and map different areas depending on
-that, so effectively you have a 64 and a 32 bit layout area and which
-one you map depends on the architecture type you see coming into the
-setup call.  You expect only one to be mapped and you only do extra
-conversions on the impedance mismatch case.
+I think, vdso and tcmu's uio mmaps are different in vdso AFAIK being
+constant code while the uio mmap contains data (e.g. tcmu_cmd_entries) 
+that is written and read by tcmu module and userspace. So kernel needs 
+to know what format of entries userspace expects.
+Additionally, the data is preserved over close and re-open of the uio
+device and mapping. So it would be necessary to re-format data existing
+in a ring buffer according to the appl arch. I don't like this idea.
+But alternatively on architecture change we could flush the ring buffer.
 
-> I'm not sure whether there is a way for tcmu to find out, what kind
-> of userspace application is running. If it would know, it probably
-> could prepare the entries accordingly.
+Hmm. tcmu is called during mmap() for the uio-device. If we can
+determine the appl arch at that time, it would work. Let me check.
 
-I forget if the vdso switch is exposed outside the architecture, but an
-inspection of the code should tell you.
-
-> But worst case it could happen that entries prepared for 32-bit,
-> after application stop and start, then are read by a new application
-> version that is 64-bit ...
-
-The userspace application absolutely knows its binary model.  The
-kernel sort of knows (its known in the ELF32 execution model and the
-like).
-
-> Maybe we could add an configFS attribute allowing userspace to
-> configure tcmu accordingly. A change of this attribute could also
-> flush existing tcmu_cmd_entries. But that would mean that userspace
-> application has to take care.
-> 
-> Isn't the compiler definition easier to use?
-
-Well, yes, but that's an ABI change which I thought you were trying to
-avoid?
-
-James
-
+Bodo
