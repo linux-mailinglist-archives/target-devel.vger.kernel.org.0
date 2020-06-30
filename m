@@ -2,95 +2,68 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 404DB20EBF4
-	for <lists+target-devel@lfdr.de>; Tue, 30 Jun 2020 05:25:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DD2D20F0B1
+	for <lists+target-devel@lfdr.de>; Tue, 30 Jun 2020 10:43:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729069AbgF3DZa (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 29 Jun 2020 23:25:30 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:53060 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728956AbgF3DZa (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Mon, 29 Jun 2020 23:25:30 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05U3IFam019543;
-        Tue, 30 Jun 2020 03:25:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=E2/cZwzntc6UkA4LxFJ4tJ6SugI2EpiQCMXc3JYXnUk=;
- b=bjSm9L24TOhRSB54hMOBjGmaBnJ7qWcjGn1rZkYfm6Y/+xYgJnp0TDnRp0wWNtN8CMkv
- WgJgHdi2imjYW0KUVp43mxHBJFYSXQalxoF3wNTFl2anH5DSRNvIUkRLbV0NKe5kx9gi
- rnVVdHeXDzHZMhEu35DmwQ/8bjkxC0sNCoW6P3Xj+vosWvcxFNqJKUKSqgs6u3uBs0cD
- EJC35OdMnSHOBP6EQKKAeBHB50cNOeLWbRTCOOtiC4gO9fGCPqumEvSCGD8/PYEh72kL
- uEN6+XA6rZSoKSYk0IW1QgwXxy97ieyddTj/OHfITtSmMyeqyo2ZGq2Mc5CPpdqOXT1R og== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 31wwhrhrvx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 30 Jun 2020 03:25:09 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05U3Ie00008179;
-        Tue, 30 Jun 2020 03:23:08 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 31xg123xrp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 30 Jun 2020 03:23:08 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05U3N529001961;
-        Tue, 30 Jun 2020 03:23:05 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 30 Jun 2020 03:23:05 +0000
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     Mike Christie <michael.christie@oracle.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        Bart Van Assche <bvanassche@acm.org>,
-        Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        JiangYu <lnsyyj@hotmail.com>,
-        Henry Willard <henry.willard@oracle.com>,
-        Daniel Meyerholt <dxm523@gmail.com>
-Subject: Re: [PATCH v2] scsi: target: tcmu: Fix crash on ARM during cmd completion
-Date:   Mon, 29 Jun 2020 23:23:03 -0400
-Message-Id: <159348736490.22355.1210827363211730704.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200629093756.8947-1-bstroesser@ts.fujitsu.com>
-References: <20200629093756.8947-1-bstroesser@ts.fujitsu.com>
+        id S1731630AbgF3Ino (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 30 Jun 2020 04:43:44 -0400
+Received: from smtp3.sd73.bc.ca ([142.24.50.246]:42652 "EHLO smtp3.sd73.bc.ca"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728132AbgF3Ino (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Tue, 30 Jun 2020 04:43:44 -0400
+X-Greylist: delayed 2602 seconds by postgrey-1.27 at vger.kernel.org; Tue, 30 Jun 2020 04:43:44 EDT
+Received: from smtp.sd73.bc.ca (smtp.sd73.bc.ca [10.10.10.14])
+        by smtp3.sd73.bc.ca (Postfix) with ESMTP id 5872C65D80;
+        Tue, 30 Jun 2020 00:47:32 -0700 (PDT)
+Received: from zimbra2.sd73.bc.ca (zimbra.sd73.bc.ca [10.10.10.7])
+        by smtp.sd73.bc.ca (Postfix) with ESMTP id 13E7AE044F;
+        Tue, 30 Jun 2020 00:47:37 -0700 (PDT)
+Received: from zimbra2.sd73.bc.ca (localhost [127.0.0.1])
+        by zimbra2.sd73.bc.ca (Postfix) with ESMTPS id 25E855C0D4680E;
+        Tue, 30 Jun 2020 00:40:48 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra2.sd73.bc.ca (Postfix) with ESMTP id D4A745C0D4802C;
+        Tue, 30 Jun 2020 00:40:47 -0700 (PDT)
+Received: from zimbra2.sd73.bc.ca ([127.0.0.1])
+        by localhost (zimbra2.sd73.bc.ca [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id TZ-fw-pfC_Wb; Tue, 30 Jun 2020 00:40:47 -0700 (PDT)
+Received: from zimbra2.sd73.bc.ca (zimbra3.sd73.bc.ca [10.10.10.7])
+        by zimbra2.sd73.bc.ca (Postfix) with ESMTP id 502B25C0D48821;
+        Tue, 30 Jun 2020 00:40:46 -0700 (PDT)
+Date:   Tue, 30 Jun 2020 00:40:46 -0700 (PDT)
+From:   charles jackson <lisa.petel@sd73.bc.ca>
+Reply-To: charles jackson <charlesjacksonjr001@gmail.com>
+Message-ID: <767049656.67031506.1593502846147.JavaMail.zimbra@zimbra.sd73.bc.ca>
+Subject: =?UTF-8?Q?=5BPossible_Spam=5D_Covid?= =?UTF-8?Q?_19_Wohlt=C3=A4tigkeitsfon?= =?UTF-8?Q?ds?=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9667 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0
- mlxlogscore=999 suspectscore=0 bulkscore=0 mlxscore=0 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006300023
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9667 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
- phishscore=0 priorityscore=1501 clxscore=1015 cotscore=-2147483648
- mlxscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0
- spamscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006300023
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.10.10.90]
+X-Mailer: Zimbra 8.6.0_GA_1242 (zclient/8.6.0_GA_1242)
+Thread-Topic: Covid 19 =?utf-8?Q?Wohlt=C3=A4tigkeitsfonds?=
+Thread-Index: IM5IDTUiLYRhmZzcJei8PxquPBmiUA==
+To:     unlisted-recipients:; (no To-header on input)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Mon, 29 Jun 2020 11:37:56 +0200, Bodo Stroesser wrote:
 
-> If tcmu_handle_completions() has to process a padding shorter
-> than sizeof(struct tcmu_cmd_entry), the current call to
-> tcmu_flush_dcache_range() with sizeof(struct tcmu_cmd_entry) as
-> length param is wrong and causes crashes on e.g. ARM, because
-> tcmu_flush_dcache_range() in this case calls
-> 	flush_dcache_page(vmalloc_to_page(start));
-> with start being an invalid address above the end of the
-> vmalloc'ed area.
-> 
-> [...]
-
-Applied to 5.9/scsi-queue, thanks!
-
-[1/1] scsi: target: tcmu: Fix crash on ARM during cmd completion
-      https://git.kernel.org/mkp/scsi/c/5a0c256d96f0
 
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+Hallo
+ 
+ Ich bin Charles W. Jackson aus North Carolina, Vereinigte Staaten von Amerika, und ich bin der Gewinner des Mega-Millionen-Jackpots von 344 Millionen US-Dollar. Ich spende die Summe von 2.000.000 Millionen Euro als Teil der Hilfsgelder f&uuml;r das Corona-Virus.
+ 
+ Dies ist Ihr Spendencode: [CJ530342019]
+ 
+ www.youtube.com/watch?v=BSr8myiLPMQ
+ 
+ Bitte antworten Sie auf diese E-Mail mit dem SPENDERCODE:
+ 
+ charlesjacksonjr001@gmail.com
+ 
+ Ich hoffe, dass Sie und Ihre Familie dies durchkommen
+ 
+ 
+ Herr Charles Jackson
