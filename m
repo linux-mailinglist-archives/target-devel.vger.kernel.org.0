@@ -2,122 +2,75 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FF27211102
-	for <lists+target-devel@lfdr.de>; Wed,  1 Jul 2020 18:47:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0957D2119B9
+	for <lists+target-devel@lfdr.de>; Thu,  2 Jul 2020 03:43:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732536AbgGAQrW (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 1 Jul 2020 12:47:22 -0400
-Received: from stargate.chelsio.com ([12.32.117.8]:58949 "EHLO
-        stargate.chelsio.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732161AbgGAQrV (ORCPT
+        id S1728072AbgGBBna (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 1 Jul 2020 21:43:30 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:51516 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726135AbgGBBn3 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 1 Jul 2020 12:47:21 -0400
-Received: from fcoe-test11.asicdesigners.com (fcoe-test11.blr.asicdesigners.com [10.193.185.180])
-        by stargate.chelsio.com (8.13.8/8.13.8) with ESMTP id 061GlGQQ018014;
-        Wed, 1 Jul 2020 09:47:16 -0700
-From:   Varun Prakash <varun@chelsio.com>
-To:     martin.petersen@oracle.com
-Cc:     target-devel@vger.kernel.org, dt@chelsio.com,
-        ganji.aravind@chelsio.com, varun@chelsio.com
-Subject: [PATCH] scsi: target: cxgbit: remove tx flow control code
-Date:   Wed,  1 Jul 2020 22:17:12 +0530
-Message-Id: <1593622032-3082-1-git-send-email-varun@chelsio.com>
-X-Mailer: git-send-email 2.0.2
+        Wed, 1 Jul 2020 21:43:29 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0621cuOw153886;
+        Thu, 2 Jul 2020 01:43:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : subject :
+ date : message-id; s=corp-2020-01-29;
+ bh=Sf60kWglAVOIdJNSQSZtSpBbPeQNurDYKnqxdzAH3+Y=;
+ b=qRpwpQcD9Mr/2ZVJZyY+34Uuqo0dmYrbH+6V81m5cW97WVdHGOofRzceeqRuTgtWd7oJ
+ VEEzMMlDGmA+QKEwydAhp54y9LNo0Z/K1D4tAg4E4yXaDergPYG7ASdFKZf0MT4pJlbQ
+ dhji+kRUNt28Ie4ogyxxWO+RVyJ+XzxTzZn+vE6WYrdBOq7/heC1PzU4WSR9bEyykWrI
+ s5RV/FQQJGs+PUk7Ml7E5s8Ea7BMLF/F3Cequ8M32O0QZz+zmxMYs+aTPSCiBUicGxq1
+ BsB/xOFZEZc4Mz5wbXm/DL/fXDdhZfvBASxQnXWpY0SFgro7zj9mEafmvAuhRG/H/rcJ wg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 31wxrndng2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 02 Jul 2020 01:43:25 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0621bqTs181538;
+        Thu, 2 Jul 2020 01:43:25 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3030.oracle.com with ESMTP id 31xg204txp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 02 Jul 2020 01:43:25 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0621hN1S010391;
+        Thu, 2 Jul 2020 01:43:23 GMT
+Received: from ol2.localdomain (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 02 Jul 2020 01:43:23 +0000
+From:   Mike Christie <michael.christie@oracle.com>
+To:     martin.petersen@oracle.com, bstroesser@ts.fujitsu.com,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+Subject: [PATCH 0/7] target: misc fixes for 5.9 
+Date:   Wed,  1 Jul 2020 20:43:16 -0500
+Message-Id: <1593654203-12442-1-git-send-email-michael.christie@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9669 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 phishscore=0
+ malwarescore=0 mlxlogscore=999 adultscore=0 mlxscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2007020009
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9669 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999
+ priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015
+ malwarescore=0 phishscore=0 adultscore=0 cotscore=-2147483648
+ lowpriorityscore=0 suspectscore=0 spamscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2007020009
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Firmware does tx flow control so remove tx flow
-control code from the driver.
+The following patches were made over Martin's 5.9 queue branch. They fix
+some bugs that intersect with the sysfs/configfs patchset I've been
+posting
 
-Signed-off-by: Varun Prakash <varun@chelsio.com>
----
- drivers/target/iscsi/cxgbit/cxgbit.h        |  1 -
- drivers/target/iscsi/cxgbit/cxgbit_cm.c     |  2 --
- drivers/target/iscsi/cxgbit/cxgbit_target.c | 24 ++++--------------------
- 3 files changed, 4 insertions(+), 23 deletions(-)
-
-diff --git a/drivers/target/iscsi/cxgbit/cxgbit.h b/drivers/target/iscsi/cxgbit/cxgbit.h
-index c04cd08..4069033 100644
---- a/drivers/target/iscsi/cxgbit/cxgbit.h
-+++ b/drivers/target/iscsi/cxgbit/cxgbit.h
-@@ -207,7 +207,6 @@ struct cxgbit_sock {
- 	/* socket lock */
- 	spinlock_t lock;
- 	wait_queue_head_t waitq;
--	wait_queue_head_t ack_waitq;
- 	bool lock_owner;
- 	struct kref kref;
- 	u32 max_iso_npdu;
-diff --git a/drivers/target/iscsi/cxgbit/cxgbit_cm.c b/drivers/target/iscsi/cxgbit/cxgbit_cm.c
-index 493070c..518ded2 100644
---- a/drivers/target/iscsi/cxgbit/cxgbit_cm.c
-+++ b/drivers/target/iscsi/cxgbit/cxgbit_cm.c
-@@ -1360,7 +1360,6 @@ cxgbit_pass_accept_req(struct cxgbit_device *cdev, struct sk_buff *skb)
- 	cxgbit_sock_reset_wr_list(csk);
- 	spin_lock_init(&csk->lock);
- 	init_waitqueue_head(&csk->waitq);
--	init_waitqueue_head(&csk->ack_waitq);
- 	csk->lock_owner = false;
- 
- 	if (cxgbit_alloc_csk_skb(csk)) {
-@@ -1887,7 +1886,6 @@ static void cxgbit_fw4_ack(struct cxgbit_sock *csk, struct sk_buff *skb)
- 		if (csk->snd_una != snd_una) {
- 			csk->snd_una = snd_una;
- 			dst_confirm(csk->dst);
--			wake_up(&csk->ack_waitq);
- 		}
- 	}
- 
-diff --git a/drivers/target/iscsi/cxgbit/cxgbit_target.c b/drivers/target/iscsi/cxgbit/cxgbit_target.c
-index fcdc421..9b3eb2e 100644
---- a/drivers/target/iscsi/cxgbit/cxgbit_target.c
-+++ b/drivers/target/iscsi/cxgbit/cxgbit_target.c
-@@ -284,18 +284,6 @@ void cxgbit_push_tx_frames(struct cxgbit_sock *csk)
- 	}
- }
- 
--static bool cxgbit_lock_sock(struct cxgbit_sock *csk)
--{
--	spin_lock_bh(&csk->lock);
--
--	if (before(csk->write_seq, csk->snd_una + csk->snd_win))
--		csk->lock_owner = true;
--
--	spin_unlock_bh(&csk->lock);
--
--	return csk->lock_owner;
--}
--
- static void cxgbit_unlock_sock(struct cxgbit_sock *csk)
- {
- 	struct sk_buff_head backlogq;
-@@ -325,20 +313,16 @@ static int cxgbit_queue_skb(struct cxgbit_sock *csk, struct sk_buff *skb)
- {
- 	int ret = 0;
- 
--	wait_event_interruptible(csk->ack_waitq, cxgbit_lock_sock(csk));
-+	spin_lock_bh(&csk->lock);
-+	csk->lock_owner = true;
-+	spin_unlock_bh(&csk->lock);
- 
- 	if (unlikely((csk->com.state != CSK_STATE_ESTABLISHED) ||
- 		     signal_pending(current))) {
- 		__kfree_skb(skb);
- 		__skb_queue_purge(&csk->ppodq);
- 		ret = -1;
--		spin_lock_bh(&csk->lock);
--		if (csk->lock_owner) {
--			spin_unlock_bh(&csk->lock);
--			goto unlock;
--		}
--		spin_unlock_bh(&csk->lock);
--		return ret;
-+		goto unlock;
- 	}
- 
- 	csk->write_seq += skb->len +
--- 
-2.0.2
+These patches are not critical so are best for 5.9 or later. They fix
+the SPEC_I_PT handling and how we report the iscsi inititor transport id
+which seems to have always been broken and I do not think anyone uses.
+There is also a fix for a leak during target_core_mod rmmod which is
+rare.
 
