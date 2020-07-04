@@ -2,124 +2,81 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66B2621416A
-	for <lists+target-devel@lfdr.de>; Sat,  4 Jul 2020 00:13:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DBEC214861
+	for <lists+target-devel@lfdr.de>; Sat,  4 Jul 2020 21:29:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726265AbgGCWNm (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 3 Jul 2020 18:13:42 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:57440 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726188AbgGCWNm (ORCPT
+        id S1726909AbgGDT3U (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 4 Jul 2020 15:29:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56014 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726643AbgGDT3T (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 3 Jul 2020 18:13:42 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 063M9DxQ167585;
-        Fri, 3 Jul 2020 22:13:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to;
- s=corp-2020-01-29; bh=K8jAkNG+lwZGI453XPGGB5MPAGaYPo6zw4j3n48Ugzs=;
- b=gO0EoRauhydIrIx/lkG+iC4ROpPxKlzC4wEAINN1noj3NGEUSVEbsr7zeaWdHgINmYI5
- QgqMpmO8bvOCU0RvRgH+sfpcWGEobM3LHq96YJydZ1lqgiFR/bQDTnKdoZSbajNXgryK
- a87zuUv4FpDheR7Q+6Np9+f++wXMiusTD7tnKFtfx6dcxv6xMmBcP6zV8nr3Iq24LN2k
- Hlu9K2j7z2+OoOlpeT1pqq8nU0zI11uFTjfumV5/TZknXb4WKzSDECJ2CKBOK2UzNKs5
- C92rkpBYM4fyk013Vl2ywPr2OZYwtHkj+n+FppNY7+TXo2djEfQVepqVvzcSEvbaBh0G fA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 31xx1ec1uk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 03 Jul 2020 22:13:25 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 063MCs6G070961;
-        Fri, 3 Jul 2020 22:13:24 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 31xg1dhrxr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 Jul 2020 22:13:24 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 063MDMu5012182;
-        Fri, 3 Jul 2020 22:13:22 GMT
-Received: from [20.15.0.2] (/73.88.28.6)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 03 Jul 2020 22:12:27 +0000
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
-Subject: Re: [RFC PATCH 00/10] target: add configfs interface
-From:   Michael Christie <michael.christie@oracle.com>
-In-Reply-To: <0b59d643-61bf-6876-cc42-83ee8040da10@acm.org>
-Date:   Fri, 3 Jul 2020 17:12:26 -0500
-Cc:     Hannes Reinecke <hare@suse.de>,
-        Bodo Stroesser <bstroesser@ts.fujitsu.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <16CCC5B0-A73C-44D3-A413-DBFE23989D26@oracle.com>
-References: <1593232509-13720-1-git-send-email-michael.christie@oracle.com>
- <0b59d643-61bf-6876-cc42-83ee8040da10@acm.org>
-To:     Bart Van Assche <bvanassche@acm.org>
-X-Mailer: Apple Mail (2.3608.80.23.2.2)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9671 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0
- mlxlogscore=999 suspectscore=0 bulkscore=0 mlxscore=0 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2007030152
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9671 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 clxscore=1015 adultscore=0
- suspectscore=0 mlxlogscore=999 cotscore=-2147483648 lowpriorityscore=0
- malwarescore=0 phishscore=0 impostorscore=0 mlxscore=0 spamscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2007030152
+        Sat, 4 Jul 2020 15:29:19 -0400
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73646C061794
+        for <target-devel@vger.kernel.org>; Sat,  4 Jul 2020 12:29:19 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id r22so31555583qke.13
+        for <target-devel@vger.kernel.org>; Sat, 04 Jul 2020 12:29:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=tGw7y2+ozvfaI5O0ckPyJEES122wpdGaQULo47ym37A=;
+        b=VlVfCg6rjBl29wI2jtFqSnzW24yHsXsWiYYUbavNlA/DM0RjbNGbl4uIGqL7c0vAX3
+         VQNWYvo+Djh8bfvwTiu+6pmGR8HPgkVJ7hosKI19pGIk0ZbzHNnRKv0if7qb31eYqDjX
+         pplEspfEPmmkTwhk9ARDnS3Wfc22Iw4SsOGBdbvfhg6bIZV3DblmmkBuybt85yc1QW20
+         yNcut1hq3Gfrs1Znhgy0FEpA1P44EiEZw7oZoxHL7C9SQ0hA3TZGIDCJ4vg7MgOsqf+N
+         r3IjgUlAXF8FmCPWjnTWHQVbo623whSdOFFYy9DRuWIvlsU4J7OgBYnimGKNWNgtdFM6
+         TeXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=tGw7y2+ozvfaI5O0ckPyJEES122wpdGaQULo47ym37A=;
+        b=Y19QBnrgvIirlakYvgt6xaWiHls6FE/EtxeX3nfkJlFLGLrRTgSPf07MdgO1UYP/AO
+         T/dy8SKuEgxP0iScaJ28GKRNaJ019qgLxhi3EKe47ZW58sqra8S5dH+D8asn+3mtH6Gb
+         AXf50HoLcxh4QHx1Ancx3f0yPvbfgVcqsfhNud2Yh4S+RL9ZRIn4O52Ak5h6vt0Gm6q7
+         4FQeEVmhNGV6TsBWYmisaYRirQfRJdknAx0wsLlHaA2KZLQPAuiC5QxYv+HLSTxSz35h
+         d+KqjSDTEpmwMJsj+vfhFbL8mMrF1i1TAZYZrMWh9Gl/iIiAnPDfnxKWQEp3pXDzOckr
+         foXA==
+X-Gm-Message-State: AOAM530rfxn4jlsIg9EDVDXOuTlO7O3l2PsnetAh3o9rcnebyNfOlbK8
+        a8ruTDVqfR5BrIPcGyw1qgKXHLRfbb0V7dQc0SA=
+X-Google-Smtp-Source: ABdhPJzcvlo81hrHd+KmS0ZeJG/u6+GrcMq3ofEKTn0eYHL97U9rRxeNNAHl+FciQd73TTPWeLefEqMauwD5XZG7BAI=
+X-Received: by 2002:a05:620a:10a4:: with SMTP id h4mr39832251qkk.320.1593890958684;
+ Sat, 04 Jul 2020 12:29:18 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:ac8:698b:0:0:0:0:0 with HTTP; Sat, 4 Jul 2020 12:29:18 -0700 (PDT)
+Reply-To: johndav37@aol.com
+From:   "Barrister Ms. Linda B. Bammann, UN-Attorney at Law Court-Benin" 
+        <westernunion.benin982@gmail.com>
+Date:   Sat, 4 Jul 2020 21:29:18 +0200
+Message-ID: <CAP=nHBJMuvhQoZbgcFjLJU5vGdpsKn0a3KOWxH+1HP6e5_ux8g@mail.gmail.com>
+Subject: Contact Diplomatic Agent, Mr. JOHN DAV to receive your ATM Card
+ AMOUNT $12,850.000Million USD today.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-
-
-> On Jul 3, 2020, at 12:37 PM, Bart Van Assche <bvanassche@acm.org> =
-wrote:
->=20
-> On 2020-06-26 21:34, Mike Christie wrote:
->> With Hannes not liking the refcounting/tricks in the sysfs approach
->> I took another stab at configfs. This approach works similar to the
->> loop/vhost/usb/xen nexus interface where there is a special file
->> that allows userspace to add/remove sessions.
->=20
-> Hi Mike,
->=20
-> Are you perhaps referring to the comment in the following message?
-> =
-https://urldefense.com/v3/__https://lore.kernel.org/linux-scsi/f0bd2a33-c0=
-84-6c9b-faa1-9d92bdb2df7a@suse.de/__;!!GqivPVa7Brio!L7jRHXS-8N1S4DIyD7kLwn=
-1WPta5_ANJgQpJrI-fdmRlub6ViFCvtW0VCqwhN37bZMtc$=20
-
-Yes.
-
-> The duplication of strings in that patch also looks weird to me.
-> I think kobject_del() waits for ongoing sysfs show and store callbacks =
-to finish.
-
-Nice!
-
-I didn=E2=80=99t know that. I added that free_session callback for that =
-reason. When testing I was just verifying that the callback was called =
-when all refs to the file had dropped and didn=E2=80=99t check that it =
-was actually device_del.
-
-
-> Since patch 12/15 adds a kobject_del() call in =
-target_sysfs_remove_session(), is
-> that call perhaps sufficient to guarantee that the
-
-Yes. It=E2=80=99s doable. There might be an issue with one driver, but I =
-can fix that up.
-
-
-> se_sess->se_node_acl->initiatorname pointer and similar pointers are =
-all valid
-> at least as long the session sysfs object exists?
->=20
-> Thanks,
->=20
-> Bart.
-
+Attn Dear,Atm Card Beneficiary.
+Contact Diplomatic Agent, Mr. JOHN DAV to receive your ATM Card AMOUNT
+$12,850.000Million USD today.
+His contact address:
+AGENT NAME: Mr. JOHN DAV
+Email: johndav37@aol.com
+We required you to re-confirm your mailing address to Him where the
+ATM Card will get posted to you, because the court has approved your
+delivery this morning.
+your mailing address is required as listed below.
+YOUR FULL-----------------------
+HOME ADDRESS--------------------------------
+COUNTRY------------------------------
+AGE-------------------------------
+SEX-------------------------
+OCCUPATION---------------------------
+COPY OF YOUR VAILID ID CARD---------------------
+Thanks for your full Understanding.
+Send your ATM Card delivery fee $15.00 only to Mr. JOHN DAV.
+Barrister Ms. Linda B. Bammann, UN-Attorney at Law Court-Benin
+Email ID lindabammann42@yahoo.com
