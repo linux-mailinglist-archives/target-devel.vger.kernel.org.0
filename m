@@ -2,102 +2,85 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 405EF217F5F
-	for <lists+target-devel@lfdr.de>; Wed,  8 Jul 2020 08:07:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00A212184E4
+	for <lists+target-devel@lfdr.de>; Wed,  8 Jul 2020 12:24:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729672AbgGHGHQ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 8 Jul 2020 02:07:16 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:34154 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726215AbgGHGHO (ORCPT
+        id S1728239AbgGHKYB (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 8 Jul 2020 06:24:01 -0400
+Received: from mail.elsol.com.pe ([170.231.82.35]:49377 "EHLO
+        mail.elsol.com.pe" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725949AbgGHKYB (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 8 Jul 2020 02:07:14 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 068628jt187743;
-        Wed, 8 Jul 2020 06:07:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=jdmNeZNrmZGmYqPbEanKtcpNUV44YUbacv2zQBbxr2o=;
- b=sQjtXaNQwaN3K7uAQ3y7Ebsq24CofKH6hh9qPBXon1yAA3yp0jo8K0LlAgf/zeOHTui7
- kpJxSE3EXvAsljHlISMnZ++tvEZ5T/DehINN57D2eX69USfIkv1wxxetqa0kOJ8QMKcz
- Jx3nyQ3sQwF6Kne7UQoD6gnCaexRgNEhGWD5/wlobHQ8xfdq/Tp274I/hUdttWDjIh6E
- iLuW8nzjCSoXzzZxnGOvt4WksdtzBbObKkfbSVUhB2dd5+OguZKAYToAKxDCYnYQbfjv
- 783ehUtJbboVys9eeiBsOMKoOIiR5b85VvV1xbNOxbmb6C3SUtmaXB8QxO5cK0j6isAz yg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 323wacm8rx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 08 Jul 2020 06:07:10 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0685xDeE105116;
-        Wed, 8 Jul 2020 06:07:09 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 3233bqb3s9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 08 Jul 2020 06:07:09 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06867833030662;
-        Wed, 8 Jul 2020 06:07:08 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 07 Jul 2020 23:07:08 -0700
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     bstroesser@ts.fujitsu.com, target-devel@vger.kernel.org,
-        linux-scsi@vger.kernel.org,
-        Mike Christie <michael.christie@oracle.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>
-Subject: Re: [PATCH 0/7] target: misc fixes for 5.9
-Date:   Wed,  8 Jul 2020 02:06:53 -0400
-Message-Id: <159418828148.5152.15776013269977713869.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <1593654203-12442-1-git-send-email-michael.christie@oracle.com>
-References: <1593654203-12442-1-git-send-email-michael.christie@oracle.com>
+        Wed, 8 Jul 2020 06:24:01 -0400
+X-Greylist: delayed 10058 seconds by postgrey-1.27 at vger.kernel.org; Wed, 08 Jul 2020 06:24:00 EDT
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.elsol.com.pe (Postfix) with ESMTP id 4B94360849A;
+        Wed,  8 Jul 2020 02:14:26 -0500 (-05)
+Received: from mail.elsol.com.pe ([127.0.0.1])
+        by localhost (mail.elsol.com.pe [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id jjGTpQDgTVau; Wed,  8 Jul 2020 02:14:26 -0500 (-05)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.elsol.com.pe (Postfix) with ESMTP id 919716084B2;
+        Wed,  8 Jul 2020 02:14:23 -0500 (-05)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.elsol.com.pe 919716084B2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=elsol.com.pe;
+        s=17F39D2A-FFD0-11E7-BCBF-081969246B0E; t=1594192463;
+        bh=7Y6RtNhSVAIVHdJEU2gHHWYvaP8LRgEAhMNj0EoKaAA=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=K2cHtH5NGEyfohwC9eK9fRNNid64ZpeHZtZAnQ8Jk8pEkymTMml8E7R/e/zIhM059
+         u+jXrz0SyG1DSXzDOMrCx0+T/DZasoSOAEtTACY8Kq0L2kueOILBLD0Jl02Ibdxsw0
+         vnlhH7TcbZDIRLmxZuJkHyMuOv+xnWI29F9tbrVPW17X3GJ/gQWES8gJ+hfc18prN2
+         yPJrgcXWoduOi/q3YHj7GaX/4DDOEhdRTznnezYt5XOxesXWBGDHKWCVKNL4kPOy6L
+         ht3gvVCrhuhWpJ21jsGuVQni4WC4PkQM6v1FGMxxjnenP+OGKADjw+Wo5WkMSg4C0a
+         nt3mvs/TOsgGA==
+X-Virus-Scanned: amavisd-new at elsol.com.pe
+Received: from mail.elsol.com.pe ([127.0.0.1])
+        by localhost (mail.elsol.com.pe [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id YEZ3w8v59CL0; Wed,  8 Jul 2020 02:14:23 -0500 (-05)
+Received: from [10.86.65.172] (unknown [105.8.7.225])
+        by mail.elsol.com.pe (Postfix) with ESMTPSA id D63EA60844B;
+        Wed,  8 Jul 2020 02:14:12 -0500 (-05)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9675 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 adultscore=0
- malwarescore=0 spamscore=0 mlxlogscore=999 bulkscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2007080041
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9675 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 priorityscore=1501
- phishscore=0 spamscore=0 mlxlogscore=999 adultscore=0 cotscore=-2147483648
- suspectscore=0 impostorscore=0 bulkscore=0 mlxscore=0 clxscore=1015
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2007080041
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
+To:     Recipients <dreyes@elsol.com.pe>
+From:   ''Tayeb Souami'' <dreyes@elsol.com.pe>
+Date:   Wed, 08 Jul 2020 09:10:26 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20200708071412.D63EA60844B@mail.elsol.com.pe>
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Wed, 1 Jul 2020 20:43:16 -0500, Mike Christie wrote:
+Lieber Freund,
 
-> The following patches were made over Martin's 5.9 queue branch. They fix
-> some bugs that intersect with the sysfs/configfs patchset I've been
-> posting
-> 
-> These patches are not critical so are best for 5.9 or later. They fix
-> the SPEC_I_PT handling and how we report the iscsi inititor transport id
-> which seems to have always been broken and I do not think anyone uses.
-> There is also a fix for a leak during target_core_mod rmmod which is
-> rare.
+Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der =
+Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zu=
+f=C3=A4llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Ma=
+il nach einem Spinball ausgew=C3=A4hlt.Ich habe den gr=C3=B6=C3=9Ften Teil =
+meines Verm=C3=B6gens auf eine Reihe von Wohlt=C3=A4tigkeitsorganisationen =
+und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die =
+Summe von =E2=82=AC 2.000.000,00 an Sie als eine der ausgew=C3=A4hlten 5 zu=
+ spenden, um meine Gewinne zu =C3=BCberpr=C3=BCfen, sehen Sie bitte meine Y=
+ou Tube Seite unten.
 
-Applied to 5.9/scsi-queue, thanks!
+UHR MICH HIER: https://www.youtube.com/watch?v=3DZ6ui8ZDQ6Ks
 
-[1/7] scsi: target: Check enforce_pr_isids during registration
-      https://git.kernel.org/mkp/scsi/c/63c9ffe473d3
-[2/7] scsi: target: Fix xcopy sess release leak
-      https://git.kernel.org/mkp/scsi/c/3c006c7d23aa
-[3/7] scsi: target: Fix crash during SPEC_I_PT handling
-      https://git.kernel.org/mkp/scsi/c/f32ba612ef0f
-[4/7] scsi: target: Fix iscsi transport id parsing
-      https://git.kernel.org/mkp/scsi/c/169622eee437
-[5/7] scsi: target: Fix iscsi transport id buffer setup
-      https://git.kernel.org/mkp/scsi/c/a6f9b6cee3f2
-[6/7] scsi: target: Fix iscsi transport id buf len calculation
-      https://git.kernel.org/mkp/scsi/c/bd7f65d95200
-[7/7] scsi: target: Handle short iSIDs
-      https://git.kernel.org/mkp/scsi/c/639341bf8836
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+
+Das ist dein Spendencode: [TS530342018]
+
+
+
+Antworten Sie mit dem SPENDE-CODE an diese
+
+E-Mail:Tayebsouam.spende@gmail.com
+
+
+Ich hoffe, Sie und Ihre Familie gl=C3=BCcklich zu machen.
+
+Gr=C3=BC=C3=9Fe
+Herr Tayeb Souami
