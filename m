@@ -2,85 +2,87 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 00A212184E4
-	for <lists+target-devel@lfdr.de>; Wed,  8 Jul 2020 12:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CEC2219085
+	for <lists+target-devel@lfdr.de>; Wed,  8 Jul 2020 21:30:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728239AbgGHKYB (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 8 Jul 2020 06:24:01 -0400
-Received: from mail.elsol.com.pe ([170.231.82.35]:49377 "EHLO
-        mail.elsol.com.pe" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725949AbgGHKYB (ORCPT
+        id S1726283AbgGHTa5 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 8 Jul 2020 15:30:57 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:40328 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726163AbgGHTa4 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 8 Jul 2020 06:24:01 -0400
-X-Greylist: delayed 10058 seconds by postgrey-1.27 at vger.kernel.org; Wed, 08 Jul 2020 06:24:00 EDT
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.elsol.com.pe (Postfix) with ESMTP id 4B94360849A;
-        Wed,  8 Jul 2020 02:14:26 -0500 (-05)
-Received: from mail.elsol.com.pe ([127.0.0.1])
-        by localhost (mail.elsol.com.pe [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id jjGTpQDgTVau; Wed,  8 Jul 2020 02:14:26 -0500 (-05)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.elsol.com.pe (Postfix) with ESMTP id 919716084B2;
-        Wed,  8 Jul 2020 02:14:23 -0500 (-05)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.elsol.com.pe 919716084B2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=elsol.com.pe;
-        s=17F39D2A-FFD0-11E7-BCBF-081969246B0E; t=1594192463;
-        bh=7Y6RtNhSVAIVHdJEU2gHHWYvaP8LRgEAhMNj0EoKaAA=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=K2cHtH5NGEyfohwC9eK9fRNNid64ZpeHZtZAnQ8Jk8pEkymTMml8E7R/e/zIhM059
-         u+jXrz0SyG1DSXzDOMrCx0+T/DZasoSOAEtTACY8Kq0L2kueOILBLD0Jl02Ibdxsw0
-         vnlhH7TcbZDIRLmxZuJkHyMuOv+xnWI29F9tbrVPW17X3GJ/gQWES8gJ+hfc18prN2
-         yPJrgcXWoduOi/q3YHj7GaX/4DDOEhdRTznnezYt5XOxesXWBGDHKWCVKNL4kPOy6L
-         ht3gvVCrhuhWpJ21jsGuVQni4WC4PkQM6v1FGMxxjnenP+OGKADjw+Wo5WkMSg4C0a
-         nt3mvs/TOsgGA==
-X-Virus-Scanned: amavisd-new at elsol.com.pe
-Received: from mail.elsol.com.pe ([127.0.0.1])
-        by localhost (mail.elsol.com.pe [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id YEZ3w8v59CL0; Wed,  8 Jul 2020 02:14:23 -0500 (-05)
-Received: from [10.86.65.172] (unknown [105.8.7.225])
-        by mail.elsol.com.pe (Postfix) with ESMTPSA id D63EA60844B;
-        Wed,  8 Jul 2020 02:14:12 -0500 (-05)
-Content-Type: text/plain; charset="utf-8"
+        Wed, 8 Jul 2020 15:30:56 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 068JQosm046357;
+        Wed, 8 Jul 2020 19:30:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=qG2tjELifZLlyV72yPLIkgXyaoKEb7Xvgz0tQEKztdY=;
+ b=TS/o8ExVoDqsIlwf45V+rnGkm1QLDH3kOqQ3k0MBRBLfBauFrqLYqePW6j3I01RWPyT6
+ eXVFCgrILAoFosHvpPSClwwUAwMJHJ4eXRAC+g1zXXYxBDzKUDRiDXKFhLwjJG1BCA3f
+ CbnJ1MXeg8XnC8Hoablb1Dv3hxjB1kPvGgVd+M7h4gp38rvFqmdclbDhDWDXWrRuyGih
+ Az6fGwCjRVr0gGkZQrNo+Ldjy2LC3v2/oqerMHexZkpN22XjAUoZDW2UbZt9hO4HnQJp
+ U8KGENPAnlBwtWSiOhm9IxTLqGuL+v4Si27/5NgkXwx+aCb1+Lt59IpAXQZKZgXbOHTB 4g== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 325k348ekt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 08 Jul 2020 19:30:51 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 068JTUq6152460;
+        Wed, 8 Jul 2020 19:30:50 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 325k3fkatb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 08 Jul 2020 19:30:50 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 068JUnhO031124;
+        Wed, 8 Jul 2020 19:30:50 GMT
+Received: from [20.15.0.6] (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 08 Jul 2020 12:30:49 -0700
+Subject: Re: [PATCH] scsi: target: cxgbit: check connection state before
+ issuing hardware command
+To:     Varun Prakash <varun@chelsio.com>, martin.petersen@oracle.com
+Cc:     target-devel@vger.kernel.org, dt@chelsio.com,
+        ganji.aravind@chelsio.com
+References: <1593621970-3026-1-git-send-email-varun@chelsio.com>
+From:   Mike Christie <michael.christie@oracle.com>
+Message-ID: <af826cef-c6be-7e4e-1f49-cecef501d499@oracle.com>
+Date:   Wed, 8 Jul 2020 14:30:48 -0500
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
-To:     Recipients <dreyes@elsol.com.pe>
-From:   ''Tayeb Souami'' <dreyes@elsol.com.pe>
-Date:   Wed, 08 Jul 2020 09:10:26 +0200
-Reply-To: Tayebsouam.spende@gmail.com
-Message-Id: <20200708071412.D63EA60844B@mail.elsol.com.pe>
+In-Reply-To: <1593621970-3026-1-git-send-email-varun@chelsio.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9676 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0
+ mlxlogscore=999 bulkscore=0 spamscore=0 mlxscore=0 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007080116
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9676 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0
+ malwarescore=0 bulkscore=0 phishscore=0 adultscore=0 lowpriorityscore=0
+ mlxlogscore=999 priorityscore=1501 clxscore=1011 impostorscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007080116
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Lieber Freund,
+On 7/1/20 11:46 AM, Varun Prakash wrote:
+> Current code does not check connection state before issuing
+> header/data digest offload and DDP page size setup hardware
+> command.
+> 
+> Add a connection state check to issue hardware command only
+> if connection is in established state.
+> 
+> Signed-off-by: Varun Prakash <varun@chelsio.com>
 
-Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der =
-Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zu=
-f=C3=A4llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Ma=
-il nach einem Spinball ausgew=C3=A4hlt.Ich habe den gr=C3=B6=C3=9Ften Teil =
-meines Verm=C3=B6gens auf eine Reihe von Wohlt=C3=A4tigkeitsorganisationen =
-und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die =
-Summe von =E2=82=AC 2.000.000,00 an Sie als eine der ausgew=C3=A4hlten 5 zu=
- spenden, um meine Gewinne zu =C3=BCberpr=C3=BCfen, sehen Sie bitte meine Y=
-ou Tube Seite unten.
+Looks ok.
 
-UHR MICH HIER: https://www.youtube.com/watch?v=3DZ6ui8ZDQ6Ks
-
-
-
-Das ist dein Spendencode: [TS530342018]
-
-
-
-Antworten Sie mit dem SPENDE-CODE an diese
-
-E-Mail:Tayebsouam.spende@gmail.com
-
-
-Ich hoffe, Sie und Ihre Familie gl=C3=BCcklich zu machen.
-
-Gr=C3=BC=C3=9Fe
-Herr Tayeb Souami
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
