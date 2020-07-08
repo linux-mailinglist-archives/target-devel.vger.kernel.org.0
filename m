@@ -2,132 +2,102 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73D8F21574D
-	for <lists+target-devel@lfdr.de>; Mon,  6 Jul 2020 14:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 405EF217F5F
+	for <lists+target-devel@lfdr.de>; Wed,  8 Jul 2020 08:07:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729013AbgGFMdO (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 6 Jul 2020 08:33:14 -0400
-Received: from mail1.bemta25.messagelabs.com ([195.245.230.4]:57224 "EHLO
-        mail1.bemta25.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728414AbgGFMdN (ORCPT
+        id S1729672AbgGHGHQ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 8 Jul 2020 02:07:16 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:34154 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726215AbgGHGHO (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 6 Jul 2020 08:33:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1594038789; i=@ts.fujitsu.com;
-        bh=5P/tzgpiXbU1DXaEWQbTeSMFpDxg7TlK9Ly6pJZbOzk=;
-        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-         In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        b=Fp99ucXrV9bjot/rBb+4vRGaLA8uiwpbIDYTyCeSdOgrXSI9mLvHmOmna9rusbww7
-         zrxOe2KBpCUOLoctoAdVhP/jmdHsLKt36rCxZuKG/ik32Hsj3G7nQbCLBSsjKWLULf
-         ZS7r3s41iKn30Wh42p2Xvl5QHtdpvVH9rGif7VAQhCq/ChaWaxikRnplWRvihPr13M
-         xMT6l8MbjHIipZ3YLj2kAOLmHL+ubic4VEWHJKGkAwRv8cG6tm8LdtFAa+AwLb47mo
-         CfNu0ZVgP5EDbUht7iQo2zv8lunwGDqFAOLbSDP1WTUNM6HEPYXPM7rINpOS9DRQMp
-         0gLK2LGQeeN0Q==
-Received: from [100.112.194.55] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-4.bemta.az-a.eu-west-1.aws.symcld.net id AD/A6-17694-40A130F5; Mon, 06 Jul 2020 12:33:08 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrFIsWRWlGSWpSXmKPExsViZ8MxVZdFijn
-  e4P05GYtpH34yW+xZNInJovv6DjaL5cf/MVn8nXSD1aJ16VsmBzaPy1e8PT4+vcXisfl0tcfn
-  TXIBLFGsmXlJ+RUJrBmfN55gLvjBW/Hp2lmmBsbJ3F2MXBxCApMYJc4f3cUO4fQzSsx/1M/ax
-  cjJISzgLHHpylZGEFtEwEhixumTLCBFzALrGCVuv1rOAtHxkEli0Y+pLCBVbAIGEism3QezeQ
-  UcJR5+mgJmswioSOxc/pKpi5GDQ1QgXOLZCn+IEkGJkzOfgJVwCthJvGpeCLaYWcBMYt7mh8w
-  QtrjErSfzmSBsbYllC18zT2Dkn4WkfRaSlllIWmYhaVnAyLKK0SKpKDM9oyQ3MTNH19DAQNfQ
-  0EjX0BKIjcz0Eqt0E/VSS3XLU4tLdA31EsuL9Yorc5NzUvTyUks2MQKjIaXgQN0OxgevP+gdY
-  pTkYFIS5d0kxBwvxJeUn1KZkVicEV9UmpNafIhRhoNDSYLXXwIoJ1iUmp5akZaZA4xMmLQEB4
-  +SCK8bSJq3uCAxtzgzHSJ1ilGX4/aGJYuYhVjy8vNSpcR5PcSBigRAijJK8+BGwJLEJUZZKWF
-  eRgYGBiGegtSi3MwSVPlXjOIcjErCvOYgq3gy80rgNr0COoIJ6IhGESaQI0oSEVJSDUyP5up9
-  LT7ae3Rq0Ym0o/fndnA2inTF3nxcIN3SNLnygrLnYWOzDh1f18uzP52LtrctjN+5UMKzaY9pU
-  5emzao/Kwuq4ptFVuYuYC5Psn14zzbr2kabuQEXGF8LzOcLVvBY8LdG6HJTml/PtUNxRyvm3z
-  KQ+3F01hMmttCSIy7PCr5NONNddWbSU4H5zseYtPjfl6xkSImx2/Dq1Syph5uaQ1mkLTz+L9j
-  F8F1cUTX6QreGYinr6+un5FKS+c1m65s4bQoQE1ezfJLu3ZYnLfcq20GcRzc4qKBb57k5Q1n3
-  9Iyq5pXH1moX+noslp9rynTJzj2YKW6RTvdp95d3Hwc1vY8+v56zXCfkWYWDEktxRqKhFnNRc
-  SIAUML9jI0DAAA=
-X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-4.tower-267.messagelabs.com!1594038787!308851!1
-X-Originating-IP: [62.60.8.149]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.50.2; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 1834 invoked from network); 6 Jul 2020 12:33:08 -0000
-Received: from unknown (HELO mailhost2.uk.fujitsu.com) (62.60.8.149)
-  by server-4.tower-267.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 6 Jul 2020 12:33:08 -0000
-Received: from x-serv01 ([172.17.38.52])
-        by mailhost2.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 066CWqle012075;
-        Mon, 6 Jul 2020 13:32:59 +0100
-Received: from [172.17.39.90] (unknown [172.17.39.90])
-        by x-serv01 (Postfix) with ESMTP id 6831B20057;
-        Mon,  6 Jul 2020 14:32:44 +0200 (CEST)
-Subject: Re: [RFC PATCH 10/10] target: export sessions via configfs
-To:     Michael Christie <michael.christie@oracle.com>
-Cc:     Hannes Reinecke <hare@suse.de>,
-        Bart Van Assche <bvanassche@acm.org>,
-        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org
-References: <1593232509-13720-1-git-send-email-michael.christie@oracle.com>
- <1593232509-13720-11-git-send-email-michael.christie@oracle.com>
- <24118898-006c-0538-6685-b4902f9eee48@ts.fujitsu.com>
- <8e557b7a-aebc-7b3c-d02f-637cff0fd4b9@oracle.com>
- <2e70df6e-560f-590f-721c-2532f7af3d50@ts.fujitsu.com>
- <7642F0BE-2E98-47FA-B1B9-00CA083B6530@oracle.com>
-From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Message-ID: <2dc8a518-01c8-fa28-dac5-3fe0162d2f62@ts.fujitsu.com>
-Date:   Mon, 6 Jul 2020 14:32:42 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        Wed, 8 Jul 2020 02:07:14 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 068628jt187743;
+        Wed, 8 Jul 2020 06:07:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=jdmNeZNrmZGmYqPbEanKtcpNUV44YUbacv2zQBbxr2o=;
+ b=sQjtXaNQwaN3K7uAQ3y7Ebsq24CofKH6hh9qPBXon1yAA3yp0jo8K0LlAgf/zeOHTui7
+ kpJxSE3EXvAsljHlISMnZ++tvEZ5T/DehINN57D2eX69USfIkv1wxxetqa0kOJ8QMKcz
+ Jx3nyQ3sQwF6Kne7UQoD6gnCaexRgNEhGWD5/wlobHQ8xfdq/Tp274I/hUdttWDjIh6E
+ iLuW8nzjCSoXzzZxnGOvt4WksdtzBbObKkfbSVUhB2dd5+OguZKAYToAKxDCYnYQbfjv
+ 783ehUtJbboVys9eeiBsOMKoOIiR5b85VvV1xbNOxbmb6C3SUtmaXB8QxO5cK0j6isAz yg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 323wacm8rx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 08 Jul 2020 06:07:10 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0685xDeE105116;
+        Wed, 8 Jul 2020 06:07:09 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 3233bqb3s9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 08 Jul 2020 06:07:09 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06867833030662;
+        Wed, 8 Jul 2020 06:07:08 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 07 Jul 2020 23:07:08 -0700
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     bstroesser@ts.fujitsu.com, target-devel@vger.kernel.org,
+        linux-scsi@vger.kernel.org,
+        Mike Christie <michael.christie@oracle.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>
+Subject: Re: [PATCH 0/7] target: misc fixes for 5.9
+Date:   Wed,  8 Jul 2020 02:06:53 -0400
+Message-Id: <159418828148.5152.15776013269977713869.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <1593654203-12442-1-git-send-email-michael.christie@oracle.com>
+References: <1593654203-12442-1-git-send-email-michael.christie@oracle.com>
 MIME-Version: 1.0
-In-Reply-To: <7642F0BE-2E98-47FA-B1B9-00CA083B6530@oracle.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9675 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 adultscore=0
+ malwarescore=0 spamscore=0 mlxlogscore=999 bulkscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2007080041
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9675 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 priorityscore=1501
+ phishscore=0 spamscore=0 mlxlogscore=999 adultscore=0 cotscore=-2147483648
+ suspectscore=0 impostorscore=0 bulkscore=0 mlxscore=0 clxscore=1015
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2007080041
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+On Wed, 1 Jul 2020 20:43:16 -0500, Mike Christie wrote:
 
+> The following patches were made over Martin's 5.9 queue branch. They fix
+> some bugs that intersect with the sysfs/configfs patchset I've been
+> posting
+> 
+> These patches are not critical so are best for 5.9 or later. They fix
+> the SPEC_I_PT handling and how we report the iscsi inititor transport id
+> which seems to have always been broken and I do not think anyone uses.
+> There is also a fix for a leak during target_core_mod rmmod which is
+> rare.
 
-On 2020-07-03 23:19, Michael Christie wrote:
+Applied to 5.9/scsi-queue, thanks!
 
-...
+[1/7] scsi: target: Check enforce_pr_isids during registration
+      https://git.kernel.org/mkp/scsi/c/63c9ffe473d3
+[2/7] scsi: target: Fix xcopy sess release leak
+      https://git.kernel.org/mkp/scsi/c/3c006c7d23aa
+[3/7] scsi: target: Fix crash during SPEC_I_PT handling
+      https://git.kernel.org/mkp/scsi/c/f32ba612ef0f
+[4/7] scsi: target: Fix iscsi transport id parsing
+      https://git.kernel.org/mkp/scsi/c/169622eee437
+[5/7] scsi: target: Fix iscsi transport id buffer setup
+      https://git.kernel.org/mkp/scsi/c/a6f9b6cee3f2
+[6/7] scsi: target: Fix iscsi transport id buf len calculation
+      https://git.kernel.org/mkp/scsi/c/bd7f65d95200
+[7/7] scsi: target: Handle short iSIDs
+      https://git.kernel.org/mkp/scsi/c/639341bf8836
 
->> Why is the cfgfs_sess_supp flag per tpg? It seems to be set if either
->> tpg/sessions or any acl/sessions folder is created.
->> So what will happen here if e.g session for an acl is created while
->> only tpg/sessions exists?
->=20
-> Ah yeah, that is bogus. I am still working on an issue in this code. I =
-wasn=E2=80=99t expecting a line by line and just a general review of cfgf=
-s vs sysfs :) Sorry about that.
->=20
-> I originally made it so when we make the tpg and before it is enabled y=
-ou had to do mkdir sessions on the tpg to signal the kernel that the app =
-supports the new interface. The kernel would then make the acl sessions d=
-ir for you.
->=20
-> I was tracking down a bug in that though, and for the posting I made it=
- so userspace had to create the acl sessions dir. While cutting and pasti=
-ng the code I forgot to fix up that code.
-
-Ah, ok. Please see below.
->=20
->=20
->=20
->> Do we need an similar flag per acl also?
->> And if we have a per acl and the tpg flag I think they should be remov=
-ed
->> when user removes an empty sessions folder.
->=20
-> It=E2=80=99s just a lot easier to leave it set if userspace has enabled=
- it once. You actually need to take into account if the tpg is enabled, a=
-nd then you have some issues with the drivers that have their own nexus i=
-nterface, and then there are different userspace code paths that handle t=
-his.
->=20
-> I don=E2=80=99t think it=E2=80=99s going to be common to mix and match =
-updated and non-updated tools, so once its set, it=E2=80=99s set. If you =
-disagree let me know. It can be done.
-
-I see no need for such a mix.
-
-If it works like you described above - kernel creates acl/sessions dirs
-after user created tpg/sessions - I think it is really fine.
+-- 
+Martin K. Petersen	Oracle Linux Engineering
