@@ -2,156 +2,100 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EDF821B378
-	for <lists+target-devel@lfdr.de>; Fri, 10 Jul 2020 12:49:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4DF621B852
+	for <lists+target-devel@lfdr.de>; Fri, 10 Jul 2020 16:22:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726840AbgGJKtS (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 10 Jul 2020 06:49:18 -0400
-Received: from mail1.bemta26.messagelabs.com ([85.158.142.1]:33147 "EHLO
-        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726880AbgGJKss (ORCPT
+        id S1727840AbgGJOWM (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 10 Jul 2020 10:22:12 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:35054 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727107AbgGJOWM (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 10 Jul 2020 06:48:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1594378124; i=@ts.fujitsu.com;
-        bh=jQy4nY8Tj9Q0u5Df6KSJFBCCOS8urVh+KpkBLHKQs5s=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        b=Be0AWo0wCFmX9yzU5TqsTUxxEQpYsMr5XiUUyc9LOYZQTm3jK9dF7eu5yLwjnGa4g
-         HaW7uvQW3klU6cNYxZmYpxRt9KJXE28eYXnarQAs2FfHP9t3lcKqeh9PH96mnXrnHY
-         v7SLEjYw1SH3xSBzSj6/p39LTZ8m/MdVkWZvYX5dr/HNXiZF3pdwfL648BmYQUvvk9
-         HTlFrsmgrvYWLWu05G45yExHibQv7bRJwNDn6T789WnNMAK8nX8clzmjnCH0ZUoN62
-         fHUeOYoYWXtpHxptMfIK8wynniV2CjMwAkNHAyvJjeD/uArQi69qQg9ZWlCmAQt3O9
-         cF2PAXVwk74iA==
-Received: from [100.113.3.12] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-1.bemta.az-a.eu-central-1.aws.symcld.net id 03/2C-07993-C87480F5; Fri, 10 Jul 2020 10:48:44 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrLLMWRWlGSWpSXmKPExsViZ8MRqtvjzhF
-  v0DyF1aL7+g42i+XH/zFZ/J10g9WidelbJgcWj49Pb7F4fN4kF8AUxZqZl5RfkcCa0fq+k7ng
-  v0hF48yzTA2Mk4W6GLk4hAQmM0q8X3aYCcKZzigx+cxRIIeTg03AQGLFpPssIAkRgTWMEivvz
-  GMGSTAL6ElM+7eOHcQWFnCXuLTnKQuIzSKgKrH6cysriM0rYCfx7cNJsEESAvISHQcmg9VwCt
-  hL7O/6B2YLAdXs6nvIOoGRewEjwypGy6SizPSMktzEzBxdQwMDXUNDY11DXSMDc73EKt1EvdR
-  S3eTUvJKiRKCsXmJ5sV5xZW5yTopeXmrJJkZgqKQUMp7fwTj1zQe9Q4ySHExKorzTPrLHC/El
-  5adUZiQWZ8QXleakFh9ilOHgUJLglXLjiBcSLEpNT61Iy8wBhi1MWoKDR0mEd74LUJq3uCAxt
-  zgzHSJ1ilFRSpz3nzNQQgAkkVGaB9cGi5VLjLJSwryMDAwMQjwFqUW5mSWo8q8YxTkYlYAqXI
-  Gm8GTmlcBNfwW0mAlo8VEONpDFJYkIKakGJq/3O++8eqTwxFKGJdU/6936vpr4rrqdFYdUjd9
-  8/BvjevPBq9Ll5UozohZ2iLTv49xiVlDOo9jm8fb0hm3eWTmT3nccZ5ho/sjTZv0Wf8naLypp
-  7wMZjm2o2cjT82NV1KrrbE0HlAL+nvBhy3t17fWzcCFT75h1v1d5PtLLMTxYeNJ13db9bSsk5
-  /w31Fu/7Na/Kds2bwnMb2taavLoaYDAXGvhiYkfdu9cuMY4YOrJh7ylHrG745pVn+R+rr0pYu
-  ujK19eFhJ2PO6mwPE/j3Pv73qQef13gfKfsrmflPkM0hSilu2+G7F1/oYeyx1fXtyZ1rxMaqm
-  3Xnfkmgt2XJGbdM/+X3eE2flYWP+HpRFKLMUZiYZazEXFiQBp05apEAMAAA==
-X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-5.tower-226.messagelabs.com!1594378123!1882140!1
-X-Originating-IP: [62.60.8.85]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.50.2; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 14734 invoked from network); 10 Jul 2020 10:48:43 -0000
-Received: from unknown (HELO mailhost4.uk.fujitsu.com) (62.60.8.85)
-  by server-5.tower-226.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 10 Jul 2020 10:48:43 -0000
-Received: from x-serv01 ([172.17.38.52])
-        by mailhost4.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 06AAmghE025788;
-        Fri, 10 Jul 2020 11:48:42 +0100
-Received: from VTC.emeia.fujitsu.local (unknown [172.17.38.7])
-        by x-serv01 (Postfix) with ESMTP id 9CFAE208F4;
-        Fri, 10 Jul 2020 12:48:42 +0200 (CEST)
-From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-To:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Subject: [PATCH 8/8] scsi: target: tcmu: Make TMR notification optional
-Date:   Fri, 10 Jul 2020 12:48:17 +0200
-Message-Id: <20200710104817.19462-9-bstroesser@ts.fujitsu.com>
-X-Mailer: git-send-email 2.12.3
-In-Reply-To: <20200710104817.19462-1-bstroesser@ts.fujitsu.com>
-References: <20200710104817.19462-1-bstroesser@ts.fujitsu.com>
+        Fri, 10 Jul 2020 10:22:12 -0400
+Received: by mail-pf1-f193.google.com with SMTP id a14so2616155pfi.2;
+        Fri, 10 Jul 2020 07:22:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:from:autocrypt:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=7SIXlpAXx0wpVcBxcMkU7bAmZodmCHuwo8UHYSirZoI=;
+        b=oWCjwyJm4P3cpSiArzfQ+sTNIBrD0dDO+6m8Mngwf3xGUEWtDkUWOUN1LLCFhxpotr
+         oCMhD/y2MgsxA3EbGmc+sJ87tEhi9/4nEF6ErYk2mnm9LDTjgHgR2Niy/SNNvc3LYOIT
+         mY5U/HbcN7Au0cuYNJRs3I+0aBEEmBl0ij6i/MUtjhrmkyXA11vLc+PjjkXJtMCKKKiH
+         AJ15Qd3+3Sk0f7NCi5s2nn4dYmGiWpdEcAj7OxSye97g0axHgvXfVLiH0Ih5U+TwrGtr
+         lAf7VNYFHGU7mdffZVUybcyBt6ltzkKi7WdEQ7+GW2xXCQs7oPOF2NF1xP5hz74+8f2G
+         pqCg==
+X-Gm-Message-State: AOAM5334UIRAqdShlFZrCR9WaWVME+idLKymmXPTha12+Lz4yQMIgd2L
+        fKcCdejaB3lhprznUlldNdSo8Yii
+X-Google-Smtp-Source: ABdhPJwK7lvSEMlkpzVRBaQ5keRj52NCsAFXjMjxkZ4Uf8Btagq7Gh6EoaQDRBkCDhhxfx9fDB+l6Q==
+X-Received: by 2002:a62:64ce:: with SMTP id y197mr42002874pfb.19.1594390930716;
+        Fri, 10 Jul 2020 07:22:10 -0700 (PDT)
+Received: from [192.168.50.147] (c-73-241-217-19.hsd1.ca.comcast.net. [73.241.217.19])
+        by smtp.gmail.com with ESMTPSA id b6sm6138563pfp.0.2020.07.10.07.22.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Jul 2020 07:22:09 -0700 (PDT)
+Subject: Re: [PATCH] SCSI RDMA PROTOCOL (SRP) TARGET: Replace HTTP links with
+ HTTPS ones
+To:     "Alexander A. Klimov" <grandmaster@al2klimov.de>,
+        dledford@redhat.com, jgg@ziepe.ca, linux-rdma@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200709194820.27032-1-grandmaster@al2klimov.de>
+From:   Bart Van Assche <bvanassche@acm.org>
+Autocrypt: addr=bvanassche@acm.org; prefer-encrypt=mutual; keydata=
+ mQENBFSOu4oBCADcRWxVUvkkvRmmwTwIjIJvZOu6wNm+dz5AF4z0FHW2KNZL3oheO3P8UZWr
+ LQOrCfRcK8e/sIs2Y2D3Lg/SL7qqbMehGEYcJptu6mKkywBfoYbtBkVoJ/jQsi2H0vBiiCOy
+ fmxMHIPcYxaJdXxrOG2UO4B60Y/BzE6OrPDT44w4cZA9DH5xialliWU447Bts8TJNa3lZKS1
+ AvW1ZklbvJfAJJAwzDih35LxU2fcWbmhPa7EO2DCv/LM1B10GBB/oQB5kvlq4aA2PSIWkqz4
+ 3SI5kCPSsygD6wKnbRsvNn2mIACva6VHdm62A7xel5dJRfpQjXj2snd1F/YNoNc66UUTABEB
+ AAG0JEJhcnQgVmFuIEFzc2NoZSA8YnZhbmFzc2NoZUBhY20ub3JnPokBOQQTAQIAIwUCVI67
+ igIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEHFcPTXFzhAJ8QkH/1AdXblKL65M
+ Y1Zk1bYKnkAb4a98LxCPm/pJBilvci6boefwlBDZ2NZuuYWYgyrehMB5H+q+Kq4P0IBbTqTa
+ jTPAANn62A6jwJ0FnCn6YaM9TZQjM1F7LoDX3v+oAkaoXuq0dQ4hnxQNu792bi6QyVdZUvKc
+ macVFVgfK9n04mL7RzjO3f+X4midKt/s+G+IPr4DGlrq+WH27eDbpUR3aYRk8EgbgGKvQFdD
+ CEBFJi+5ZKOArmJVBSk21RHDpqyz6Vit3rjep7c1SN8s7NhVi9cjkKmMDM7KYhXkWc10lKx2
+ RTkFI30rkDm4U+JpdAd2+tP3tjGf9AyGGinpzE2XY1K5AQ0EVI67igEIAKiSyd0nECrgz+H5
+ PcFDGYQpGDMTl8MOPCKw/F3diXPuj2eql4xSbAdbUCJzk2ETif5s3twT2ER8cUTEVOaCEUY3
+ eOiaFgQ+nGLx4BXqqGewikPJCe+UBjFnH1m2/IFn4T9jPZkV8xlkKmDUqMK5EV9n3eQLkn5g
+ lco+FepTtmbkSCCjd91EfThVbNYpVQ5ZjdBCXN66CKyJDMJ85HVr5rmXG/nqriTh6cv1l1Js
+ T7AFvvPjUPknS6d+BETMhTkbGzoyS+sywEsQAgA+BMCxBH4LvUmHYhpS+W6CiZ3ZMxjO8Hgc
+ ++w1mLeRUvda3i4/U8wDT3SWuHcB3DWlcppECLkAEQEAAYkBHwQYAQIACQUCVI67igIbDAAK
+ CRBxXD01xc4QCZ4dB/0QrnEasxjM0PGeXK5hcZMT9Eo998alUfn5XU0RQDYdwp6/kMEXMdmT
+ oH0F0xB3SQ8WVSXA9rrc4EBvZruWQ+5/zjVrhhfUAx12CzL4oQ9Ro2k45daYaonKTANYG22y
+ //x8dLe2Fv1By4SKGhmzwH87uXxbTJAUxiWIi1np0z3/RDnoVyfmfbbL1DY7zf2hYXLLzsJR
+ mSsED/1nlJ9Oq5fALdNEPgDyPUerqHxcmIub+pF0AzJoYHK5punqpqfGmqPbjxrJLPJfHVKy
+ goMj5DlBMoYqEgpbwdUYkH6QdizJJCur4icy8GUNbisFYABeoJ91pnD4IGei3MTdvINSZI5e
+Message-ID: <3d230abd-752e-8ac1-e18d-b64561b409ff@acm.org>
+Date:   Fri, 10 Jul 2020 07:22:08 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <20200709194820.27032-1-grandmaster@al2klimov.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Add "tmr_notification" configFS attribute to tcmu devices.
-If default value 0 of the attribute is used, tcmu only
-removes aborted commands from qfull_queue.
-If user changes tmr_notification to 1, additionally
-TMR notifications will be written to the cmd ring.
+On 2020-07-09 12:48, Alexander A. Klimov wrote:
+> diff --git a/drivers/infiniband/ulp/srpt/Kconfig b/drivers/infiniband/ulp/srpt/Kconfig
+> index 4b5d9b792cfa..f63b34d9ae32 100644
+> --- a/drivers/infiniband/ulp/srpt/Kconfig
+> +++ b/drivers/infiniband/ulp/srpt/Kconfig
+> @@ -10,4 +10,4 @@ config INFINIBAND_SRPT
+>  	  that supports the RDMA protocol. Currently the RDMA protocol is
+>  	  supported by InfiniBand and by iWarp network hardware. More
+>  	  information about the SRP protocol can be found on the website
+> -	  of the INCITS T10 technical committee (http://www.t10.org/).
+> +	  of the INCITS T10 technical committee (https://www.t10.org/).
 
-Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
----
- drivers/target/target_core_user.c | 39 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+It is not clear to me how modifying an URL in a Kconfig file helps to
+reduce the attack surface on kernel devs?
 
-diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-index e864706de977..a8294f525124 100644
---- a/drivers/target/target_core_user.c
-+++ b/drivers/target/target_core_user.c
-@@ -118,6 +118,7 @@ struct tcmu_dev {
- #define TCMU_DEV_BIT_OPEN 0
- #define TCMU_DEV_BIT_BROKEN 1
- #define TCMU_DEV_BIT_BLOCKED 2
-+#define TCMU_DEV_BIT_TMR_NOTIFY 3
- 	unsigned long flags;
- 
- 	struct uio_info uio_info;
-@@ -1261,6 +1262,9 @@ tcmu_tmr_notify(struct se_device *se_dev, enum tcm_tmreq_table tmf,
- 	if (unqueued)
- 		tcmu_set_next_deadline(&dev->qfull_queue, &dev->qfull_timer);
- 
-+	if (!test_bit(TCMU_DEV_BIT_TMR_NOTIFY, &dev->flags))
-+		goto unlock;
-+
- 	pr_debug("TMR event %d on dev %s, aborted cmds %d, afflicted cmd_ids %d\n",
- 		 tcmu_tmr_type(tmf), dev->name, i, cmd_cnt);
- 
-@@ -2707,6 +2711,40 @@ static ssize_t tcmu_emulate_write_cache_store(struct config_item *item,
- }
- CONFIGFS_ATTR(tcmu_, emulate_write_cache);
- 
-+static ssize_t tcmu_tmr_notification_show(struct config_item *item,
-+					     char *page)
-+{
-+	struct se_dev_attrib *da = container_of(to_config_group(item),
-+					struct se_dev_attrib, da_group);
-+	struct tcmu_dev *dev = TCMU_DEV(da->da_dev);
-+
-+	return snprintf(page, PAGE_SIZE, "%i\n",
-+			test_bit(TCMU_DEV_BIT_TMR_NOTIFY, &dev->flags));
-+}
-+
-+static ssize_t tcmu_tmr_notification_store(struct config_item *item,
-+					   const char *page, size_t count)
-+{
-+	struct se_dev_attrib *da = container_of(to_config_group(item),
-+					struct se_dev_attrib, da_group);
-+	struct tcmu_dev *dev = TCMU_DEV(da->da_dev);
-+	u8 val;
-+	int ret;
-+
-+	ret = kstrtou8(page, 0, &val);
-+	if (ret < 0)
-+		return ret;
-+	if (val > 1)
-+		return -EINVAL;
-+
-+	if (val)
-+		set_bit(TCMU_DEV_BIT_TMR_NOTIFY, &dev->flags);
-+	else
-+		clear_bit(TCMU_DEV_BIT_TMR_NOTIFY, &dev->flags);
-+	return count;
-+}
-+CONFIGFS_ATTR(tcmu_, tmr_notification);
-+
- static ssize_t tcmu_block_dev_show(struct config_item *item, char *page)
- {
- 	struct se_device *se_dev = container_of(to_config_group(item),
-@@ -2788,6 +2826,7 @@ static struct configfs_attribute *tcmu_attrib_attrs[] = {
- 	&tcmu_attr_dev_config,
- 	&tcmu_attr_dev_size,
- 	&tcmu_attr_emulate_write_cache,
-+	&tcmu_attr_tmr_notification,
- 	&tcmu_attr_nl_reply_supported,
- 	NULL,
- };
--- 
-2.12.3
+Thanks,
+
+Bart.
+
 
