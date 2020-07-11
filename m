@@ -2,128 +2,192 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A219E21C5C2
-	for <lists+target-devel@lfdr.de>; Sat, 11 Jul 2020 20:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECA8E21C6AF
+	for <lists+target-devel@lfdr.de>; Sun, 12 Jul 2020 01:27:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728555AbgGKS2k (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 11 Jul 2020 14:28:40 -0400
-Received: from esa4.hgst.iphmx.com ([216.71.154.42]:7168 "EHLO
-        esa4.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726281AbgGKS2j (ORCPT
+        id S1727919AbgGKX1C (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 11 Jul 2020 19:27:02 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:44416 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727021AbgGKX1C (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sat, 11 Jul 2020 14:28:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1594492118; x=1626028118;
-  h=from:to:cc:subject:date:message-id:references:
-   content-transfer-encoding:mime-version;
-  bh=0BNPgj3P5az4YJYKX0z3fnXghzG7AvYqAuaeUJ5GsHo=;
-  b=EWejs//l3ygvthhxoMD3LOx1vmpCq01Vx6RtFqimhYa0SlSSi/t4DckO
-   ByivPv1eLDXzHcJblQLmsXuZRrisv+fPoeLCvBv5VsanAk1+Iw+tXQ+gL
-   rMfz6dpjzROSrIrA/8F/Lk3ehp+/uT3G2kIT3kyzk7Pr5S9O5t35Kxk0m
-   5vR55UpvR8EOZGBBbHUeow89fP747uTsIrXvhksix5hiPH12hpuFDVHMO
-   bTDH+nlGQyFm63V0WhTTF6/fEwqqafqbIj6lM0BgLM6bACmU3cOIOBTp/
-   bqhPQRGhdDXKwk26c/YNXuuWFv4mSQSE6K/BMj3AO6P1ZK0xbJXXFbMVQ
-   w==;
-IronPort-SDR: rUOOTTCW9E/Z5JRr8AsJ1fSC5Uo+kqafK2ltJWXh04lbXMht19cTRQZ8yhnKmmnAVE/WgImkMD
- XV8NeZMi9kogP+bpRFifkWGcagZw68BXj+1BK0SzG3WXusx8JEnW+7sLUv5+bGSyWjUD80rRt9
- +MyujHIh1gMYd+TvTYo+NkiX/HADQrLLrb6+XkdD2UPNW4rwJNgiBBMxLhAgkfi5gmqILerrOA
- mIdMijpbBexYiXZQCc6GhV1E3yzXYGwYqA2cy6LTgofJpm7x77nXa+RAZjJk1kMYX1iel52NSq
- 4Mg=
-X-IronPort-AV: E=Sophos;i="5.75,340,1589212800"; 
-   d="scan'208";a="142213489"
-Received: from mail-co1nam11lp2172.outbound.protection.outlook.com (HELO NAM11-CO1-obe.outbound.protection.outlook.com) ([104.47.56.172])
-  by ob1.hgst.iphmx.com with ESMTP; 12 Jul 2020 02:28:38 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AOJaeAYUCaTBCbyDlAo5iPa+g3D6mG0PFJhJp/jw54I0rzeOK5JpQ4jVrxh5k5Gndoyh+d872iB0C5L7y2+C8G67u5KjfeijThaUjK7ZTaeki6Aoor5OnaS5pIbGfI907PI55pLzC6RyqhuocqdqoRj0ARwsodRegu9Ugmvr1NkhqQoCxgj6d8rAtVWh7dFMlNh2CUeJwK+/x4g/YNqUxURelySEp3DFJRawp1L2Sr+zcAVFWwk7r2Db3RsZPkRXyjkuMpOjQVxpi58QpfTjPAy923+jO+koJjXTsMDliIW4iCqSMqzQO1EZ+khGYL0B1FMvdznt7ARt8YmClIoW3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=siPA2i/JWZmcNIMGmoE9Kwsitz/TiEYc+fcK0fVF0zU=;
- b=YGnCXy3BhRCuyZYpWjvEtjd9Kv6sp33d7CnDdeN2eC7exr6ya8+PPZpwW8hDSirZ0/Zy4XZ6NZm8tNTq/9KAudKrO4m6BtJ5GJNfWRoNYJ6RWRCW9A5yZxMV+/iSoUWef6MyEbOx3WeQzofn14mt52Qo9xwpW15l2iLhkcP8HxOGo8y3W3LzSc5y+TBhCKvGJC0bajToNIValmZWvSifE1fZcwJOJsTi9wMdKqI/yFWGMEdWeysNiOB+Mpt3J/FK5hse8bm3QfmI4o0CMoGGXrkfFt/6Hf79VMWOYek+V76SuENExfac1V6b8ZfPgKfW2POX8IwegEvBESWFX7FQZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
- header.d=wdc.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=siPA2i/JWZmcNIMGmoE9Kwsitz/TiEYc+fcK0fVF0zU=;
- b=Bktaw3JJjvkeMPSG8VQ3wtMfh3CWM+qx9uRUrOHEuaQEFYNfUTf2CU56MfYy8xbexIqZ2hiPeYD0KnTcp9WxxHguwTtqVfOaVoM2rrikXJTMoGw2huIgG661/Wa7qwit5cXOQNUU1eTLD3/pNosoPv/mAuwGllMGXTZs6g+EMkg=
-Received: from BYAPR04MB4965.namprd04.prod.outlook.com (2603:10b6:a03:4d::25)
- by BYAPR04MB4039.namprd04.prod.outlook.com (2603:10b6:a02:ab::25) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.22; Sat, 11 Jul
- 2020 18:28:35 +0000
-Received: from BYAPR04MB4965.namprd04.prod.outlook.com
- ([fe80::4d72:27c:c075:c5e6]) by BYAPR04MB4965.namprd04.prod.outlook.com
- ([fe80::4d72:27c:c075:c5e6%7]) with mapi id 15.20.3174.024; Sat, 11 Jul 2020
- 18:28:35 +0000
-From:   Chaitanya Kulkarni <Chaitanya.Kulkarni@wdc.com>
-To:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Hulk Robot <hulkci@huawei.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-CC:     "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>
-Subject: Re: [PATCH -next] scsi: target: Remove unused variable 'tpg'
-Thread-Topic: [PATCH -next] scsi: target: Remove unused variable 'tpg'
-Thread-Index: AQHWVeU35bOmlLnOa0qTwCDZ6iUnvg==
-Date:   Sat, 11 Jul 2020 18:28:35 +0000
-Message-ID: <BYAPR04MB496584475C53DE2B9B9ABA8786620@BYAPR04MB4965.namprd04.prod.outlook.com>
-References: <20200709114636.69256-1-weiyongjun1@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: huawei.com; dkim=none (message not signed)
- header.d=none;huawei.com; dmarc=none action=none header.from=wdc.com;
-x-originating-ip: [199.255.45.62]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: c54a7530-3ea5-418e-d08d-08d825c83928
-x-ms-traffictypediagnostic: BYAPR04MB4039:
-x-microsoft-antispam-prvs: <BYAPR04MB40393EA613FBA206EDE826EA86620@BYAPR04MB4039.namprd04.prod.outlook.com>
-wdcipoutbound: EOP-TRUE
-x-ms-oob-tlc-oobclassifiers: OLM:12;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: zLmZ/+USfYt4nvJGuGxmHYecXtDiOY7wYdW2hICmobdt4sL6P47hsl/XuHna29sCfhRPlnk/ENCj1P2hY/BtoI9XAvVOHzuRV7zIW/yKTXMovyk9BPR/cP+E1Xul9zp2nRib50LTvopkExGsW8a+gYyAsvUC7i8kzxaY2jqh1vll2fB5u1cXWLLONfaF15NA21DjHa5p39IDgo4UGEBpCpMYvvlM1AL99PAAtt0+hvMfGTR/Tyq9WBIqUHBUkd/y6c7yViwkBc9npliUoxARSxQ8zRpSBeay8TBugceSKmfcrOslBajHIRP2hLqjT0+pFML/Fj9f80adCBOLstxD5g==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR04MB4965.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(136003)(376002)(39860400002)(346002)(366004)(396003)(66446008)(8676002)(5660300002)(86362001)(7696005)(8936002)(71200400001)(4744005)(83380400001)(76116006)(52536014)(186003)(6506007)(478600001)(53546011)(26005)(316002)(66556008)(66476007)(64756008)(66946007)(33656002)(2906002)(55016002)(4326008)(54906003)(110136005)(9686003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata: mZyxhuyi19sN4hMWQua/BjIyu/r3dhmb7MNPaq34JFA7wgm57nzto+SzFF3es/arKk6hB4VFbepctJwDh7DE37nCY9IE0uYAMjRc/jZ0mTRib9djMl65IWnN4MFFANTjJowCBM9WxZp/H3DpOu1z8sUBV8/hdGlqQ/PMKM/mE+9gXNKKXVYB3m8ZgEd4Z56/6NRJq2dxqqEdpvhDDQ0KRFsfu0KngPVS9hDal5fkOkpUDp7vfsPPuQeuWxd2IZ4IPUJz2LW8sC15UjAQ4jjd/L2NK4YHTJshUyq0wiq819cr43aPr/Q8yPvG4HlgISheY03VYOOPXW78/YeWnm7MU4I2LZl6uKWaGxQLNjeGAnsxIh4i7CgpUat/kx7hdb7riW4ATQuQINjqJEZucAXgvTPrDBGGqGGwoIRafxJccK0ZrTZMYniYVIBCEDQIFfDEGTmUJIEhi9YC4c92WPHRcpxVWFO07bQYKx7JMskC9EM=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        Sat, 11 Jul 2020 19:27:02 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06BNQw1G044055;
+        Sat, 11 Jul 2020 23:26:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=xROGGEprKM1P2BV0TlvlFzhqfWumGuMcd5VItxsUSrM=;
+ b=jXZ+/oyd6az02HYNs9f+U7mtpj1xWNSZaJYiYqsVI1vPciyFCD56vBD8aabB/UAja9Yx
+ TQoHXJeScSq7AxOIJ3UaMniY0LaoAUxFTJHY4dgm+l8O+Ul3P75QIiMopztVOINIocnY
+ VsgSNGyXx5h3Ahp46up2QC6wnsxLiMG9I7/CYp3piAq3UlEvDDeEprYm4YTWEFY+/Npt
+ VEiJofH2tvfaZHAz4BgU3qln/TAQ+s2ctXgaTYrM4edQBdvSkTuL7o+mxoxbJx46P9Yo
+ 66SQ4HTxTZtzzVslubkq4K+2FW6agNyEb0VCQP+mb4/xd4lLjFBAOlDK4VbxsWp6E0aq +g== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 3275ckt5jn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sat, 11 Jul 2020 23:26:58 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06BNNdDG006739;
+        Sat, 11 Jul 2020 23:26:58 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 3274rj5qhb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 11 Jul 2020 23:26:57 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06BNQtiX008541;
+        Sat, 11 Jul 2020 23:26:55 GMT
+Received: from [20.15.0.202] (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sat, 11 Jul 2020 16:26:55 -0700
+Subject: Re: [PATCH 2/8] scsi: target: Add tmr_notify backend function
+To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+References: <20200710104817.19462-1-bstroesser@ts.fujitsu.com>
+ <20200710104817.19462-3-bstroesser@ts.fujitsu.com>
+From:   Mike Christie <michael.christie@oracle.com>
+Message-ID: <5c163079-563c-e3e5-2a9c-478a310bd022@oracle.com>
+Date:   Sat, 11 Jul 2020 18:27:04 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-X-OriginatorOrg: wdc.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR04MB4965.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c54a7530-3ea5-418e-d08d-08d825c83928
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Jul 2020 18:28:35.3409
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 4cm/0pH9uEFP3+tDQFh/KAsz76hSYl3sssqLlc1NCuFzWUU9UAPlQGzKLY8rgdo4PngCB5IeXrkaFFEEPE2E2DOD/ceiZFG9to/9itPAWbc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR04MB4039
+In-Reply-To: <20200710104817.19462-3-bstroesser@ts.fujitsu.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9679 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0
+ adultscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007110187
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9679 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 priorityscore=1501
+ bulkscore=0 adultscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
+ impostorscore=0 malwarescore=0 mlxlogscore=999 clxscore=1015 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007110187
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 7/9/20 04:36, Wei Yongjun wrote:=0A=
-> Gcc report warning as follows:=0A=
-> =0A=
-> drivers/target/target_core_pr.c:1162:26: warning:=0A=
->   variable 'tpg' set but not used [-Wunused-but-set-variable]=0A=
->   1162 |  struct se_portal_group *tpg;=0A=
->        |                          ^~~=0A=
-> =0A=
-> After commit 63c9ffe473d3 ("scsi: target: Check enforce_pr_isids=0A=
-> during registration"), 'tpg' is never used, so removing it to=0A=
-> avoid build warning.=0A=
-> =0A=
-> Reported-by: Hulk Robot<hulkci@huawei.com>=0A=
-> Signed-off-by: Wei Yongjun<weiyongjun1@huawei.com>=0A=
-=0A=
-Looks good to me.=0A=
-=0A=
-Reviewed-by: Chaitanya Kulkarni <chaitanya.kulkarni@wdc.com>=0A=
+On 7/10/20 5:48 AM, Bodo Stroesser wrote:
+> Target core is modified to call an optional backend
+> callback function if a TMR is received or commands
+> are aborted implicitly after a PR command was received.
+> The backend function takes as parameters the se_dev, the
+> type of the TMR, and the list of aborted commands.
+> If no commands were aborted, an empty list is supplied.
+> 
+> Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
+> ---
+>   drivers/target/target_core_tmr.c       | 16 +++++++++++++++-
+>   drivers/target/target_core_transport.c |  1 +
+>   include/target/target_core_backend.h   |  2 ++
+>   include/target/target_core_base.h      |  1 +
+>   4 files changed, 19 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/target/target_core_tmr.c b/drivers/target/target_core_tmr.c
+> index b65d7a0a5df1..39d93357db65 100644
+> --- a/drivers/target/target_core_tmr.c
+> +++ b/drivers/target/target_core_tmr.c
+> @@ -116,6 +116,7 @@ void core_tmr_abort_task(
+>   	struct se_tmr_req *tmr,
+>   	struct se_session *se_sess)
+>   {
+> +	LIST_HEAD(aborted_list);
+>   	struct se_cmd *se_cmd, *next;
+>   	unsigned long flags;
+>   	bool rc;
+> @@ -144,7 +145,7 @@ void core_tmr_abort_task(
+>   		if (!rc)
+>   			continue;
+>   
+> -		list_del_init(&se_cmd->state_list);
+> +		list_move_tail(&se_cmd->state_list, &aborted_list);
+>   		se_cmd->state_active = false;
+>   
+>   		spin_unlock_irqrestore(&dev->execute_task_lock, flags);
+> @@ -157,6 +158,11 @@ void core_tmr_abort_task(
+>   			WARN_ON_ONCE(transport_lookup_tmr_lun(tmr->task_cmd) <
+>   					0);
+>   
+> +		if (dev->transport->tmr_notify)
+> +			dev->transport->tmr_notify(dev, TMR_ABORT_TASK,
+> +						   &aborted_list);
+> +
+> +		list_del_init(&se_cmd->state_list);
+>   		target_put_cmd_and_wait(se_cmd);
+>   
+>   		printk("ABORT_TASK: Sending TMR_FUNCTION_COMPLETE for"
+> @@ -167,6 +173,9 @@ void core_tmr_abort_task(
+>   	}
+>   	spin_unlock_irqrestore(&dev->execute_task_lock, flags);
+>   
+> +	if (dev->transport->tmr_notify)
+> +		dev->transport->tmr_notify(dev, TMR_ABORT_TASK, &aborted_list);
+
+Is this needed? It seems like the backend can't do anything because 
+there isn't enough info.
+
+I saw in tcmu_tmr_notify it looks when then happens we can still do 
+queue_tmr_ring, but there would be no commands. Was that intentional?
+
+
+> +
+>   	printk("ABORT_TASK: Sending TMR_TASK_DOES_NOT_EXIST for ref_tag: %lld\n",
+>   			tmr->ref_task_tag);
+>   	tmr->response = TMR_TASK_DOES_NOT_EXIST;
+> @@ -318,6 +327,11 @@ static void core_tmr_drain_state_list(
+>   	}
+>   	spin_unlock_irqrestore(&dev->execute_task_lock, flags);
+>   
+> +	if (dev->transport->tmr_notify)
+> +		dev->transport->tmr_notify(dev, preempt_and_abort_list ?
+> +					   TMR_LUN_RESET_PRO : TMR_LUN_RESET,
+> +					   &drain_task_list);
+> +
+>   	while (!list_empty(&drain_task_list)) {
+>   		cmd = list_entry(drain_task_list.next, struct se_cmd, state_list);
+>   		list_del_init(&cmd->state_list);
+> diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
+> index e6e1fa68de54..9fb0be0aa620 100644
+> --- a/drivers/target/target_core_transport.c
+> +++ b/drivers/target/target_core_transport.c
+> @@ -2946,6 +2946,7 @@ static const char *target_tmf_name(enum tcm_tmreq_table tmf)
+>   	case TMR_LUN_RESET:		return "LUN_RESET";
+>   	case TMR_TARGET_WARM_RESET:	return "TARGET_WARM_RESET";
+>   	case TMR_TARGET_COLD_RESET:	return "TARGET_COLD_RESET";
+> +	case TMR_LUN_RESET_PRO:		return "LUN_RESET_PRO";
+>   	case TMR_UNKNOWN:		break;
+>   	}
+>   	return "(?)";
+> diff --git a/include/target/target_core_backend.h b/include/target/target_core_backend.h
+> index f51452e3b984..6336780d83a7 100644
+> --- a/include/target/target_core_backend.h
+> +++ b/include/target/target_core_backend.h
+> @@ -40,6 +40,8 @@ struct target_backend_ops {
+>   	ssize_t (*show_configfs_dev_params)(struct se_device *, char *);
+>   
+>   	sense_reason_t (*parse_cdb)(struct se_cmd *cmd);
+> +	void (*tmr_notify)(struct se_device *se_dev, enum tcm_tmreq_table,
+> +			   struct list_head *aborted_cmds);
+>   	u32 (*get_device_type)(struct se_device *);
+>   	sector_t (*get_blocks)(struct se_device *);
+>   	sector_t (*get_alignment_offset_lbas)(struct se_device *);
+> diff --git a/include/target/target_core_base.h b/include/target/target_core_base.h
+> index 18c3f277b770..549947d407cf 100644
+> --- a/include/target/target_core_base.h
+> +++ b/include/target/target_core_base.h
+> @@ -207,6 +207,7 @@ enum tcm_tmreq_table {
+>   	TMR_LUN_RESET		= 5,
+>   	TMR_TARGET_WARM_RESET	= 6,
+>   	TMR_TARGET_COLD_RESET	= 7,
+> +	TMR_LUN_RESET_PRO	= 0x80,
+>   	TMR_UNKNOWN		= 0xff,
+>   };
+>   
+> 
+
