@@ -2,126 +2,122 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C91521D78C
-	for <lists+target-devel@lfdr.de>; Mon, 13 Jul 2020 15:50:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B2A921DE33
+	for <lists+target-devel@lfdr.de>; Mon, 13 Jul 2020 19:06:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729972AbgGMNuf (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 13 Jul 2020 09:50:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51844 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729966AbgGMNue (ORCPT
+        id S1729840AbgGMRGN (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 13 Jul 2020 13:06:13 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:35758 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729644AbgGMRGN (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 13 Jul 2020 09:50:34 -0400
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2886C061755
-        for <target-devel@vger.kernel.org>; Mon, 13 Jul 2020 06:50:33 -0700 (PDT)
-Received: by mail-qt1-x841.google.com with SMTP id d27so9931133qtg.4
-        for <target-devel@vger.kernel.org>; Mon, 13 Jul 2020 06:50:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=vlrDlUYUKGml5UggZTrPldaeCrJJpueT2vaP2F68WPk=;
-        b=CMkxtAGi5opCIFDLDXatbH+st+eB5Ijn5qpYvzvMWfQ90tknvaEy3MWVjkhemIW8eG
-         U5/7yxTthqhhWaMF/SpDUkLPGfC8wmS+ZoPJxCjfWU4vs+KvgGotLhm8u/F79uArh6vf
-         1Ds0opoMWMhCcpz6uuq1Ant+g33AgkPod8rY6ovOdjQnv8ZkjVJBbP5HvcAIVonbgi6+
-         940mziew1e1lRJYw16UpuD1W1jd+ofNNjVqHZvyIf8Dxe0jyq4mjBrXTtjfA4Gy45JyL
-         mxhnBofUAvf8q4M4qCdC5UnJ4rTOMRmGIXxgyz/SWGDdf5yxktbW9ueC4//mrcduf65f
-         sCDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=vlrDlUYUKGml5UggZTrPldaeCrJJpueT2vaP2F68WPk=;
-        b=O5gZQU48AdS9BLFiSNEkceyNQ3KDei7DOQ7mmGb634ooxpEXM8MfO2dU3IJKvAqujK
-         4aXxLTuqujYrqX89te7H3b70LnDu5Xj5l8cl+doLsonMQZapIh1XM8r8NkXtjoqa9w2x
-         Pv4yPhzRvMY6Vr8nMhYL0RnMn31gSpiyBKEyBSGS+JOXRroJkGY2j8xpZbF5UODGuuxH
-         sms6V/VPuvOLBplMHhBF7lwWbyxQ++0n6Y9iQsba8ujBsN+AKfGyG70rImur5aYvxN58
-         DCEEC91e5qeHsqEDXTp2x+9LIFKw4GQEGOhF7TMHAJppfaM5/t1U+2OihQFFhqoUxVQu
-         OBag==
-X-Gm-Message-State: AOAM532CloOSrY+QoFt1Q68/NOsDRf+/W8PAk5jd3b1/G+VAPP/Q9J79
-        x6ZeREFc594XWUajjlDHhdiF/A==
-X-Google-Smtp-Source: ABdhPJwLXMUyr7KJNqN8opqxSnS0V/qOb48twXlcI7xQ5LwDgvA+ZzNgxKc5tOh2DjVsaADIqEy1Gw==
-X-Received: by 2002:ac8:4588:: with SMTP id l8mr85227289qtn.189.1594648232276;
-        Mon, 13 Jul 2020 06:50:32 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.48.30])
-        by smtp.gmail.com with ESMTPSA id a185sm18070623qkg.3.2020.07.13.06.50.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2020 06:50:31 -0700 (PDT)
-Received: from jgg by mlx with local (Exim 4.93)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1juyql-009hrJ-6b; Mon, 13 Jul 2020 10:50:31 -0300
-Date:   Mon, 13 Jul 2020 10:50:31 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
-Cc:     Bart Van Assche <bvanassche@acm.org>, dledford@redhat.com,
-        linux-rdma@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        David Miller <davem@davemloft.net>,
-        Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH] SCSI RDMA PROTOCOL (SRP) TARGET: Replace HTTP links with
- HTTPS ones
-Message-ID: <20200713135031.GA25301@ziepe.ca>
-References: <20200709194820.27032-1-grandmaster@al2klimov.de>
- <3d230abd-752e-8ac1-e18d-b64561b409ff@acm.org>
- <8fca4633-41ad-7e86-2354-36381bf5c734@al2klimov.de>
- <bf85e454-cccc-37ef-d55f-d44a5c5c51df@acm.org>
- <c6b97005-e4c7-0a46-37eb-b5bb187ee919@al2klimov.de>
+        Mon, 13 Jul 2020 13:06:13 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06DGquSp070440;
+        Mon, 13 Jul 2020 17:06:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=y1GjRcCwLl6K5BghuR9VMww4uWOUesST3gzhqcype4M=;
+ b=Ar9oAFYfsMUFWZJh6vhy9R+x6UG8xVy8yCwyV5ddgyCYyysohQPP3b6G5Zm0EBxYJIiy
+ KTccIIChY1fsk1luAbNU3NLlswFkOfCOq5Y+R4YAT87u3F/F7QlGQuhxn774jqSWLT/c
+ wkhBSiKH01W9uir60DYZ3bfogQ2D3k2x94A8pmVtMXFOKtYXyYjfeQvD9WRWTxv+tE4g
+ fkxa6j7uAoh1V5DZhjQn+Z0tDegBB0Ung1A7eIm2FRBHntMeSWMdFvjFTxQw91ZuLoM9
+ TPczlV5OeEhsPkn+fmO/6eTG6Wx4zi6k2fTgvOAtXTxTlO+Y3p49wFZmfKs97FVtsStr vw== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 32762n867g-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 13 Jul 2020 17:06:03 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06DGsaNi039219;
+        Mon, 13 Jul 2020 17:06:02 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 327qbvwxur-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 13 Jul 2020 17:06:02 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06DH61P7010206;
+        Mon, 13 Jul 2020 17:06:01 GMT
+Received: from [10.154.152.183] (/10.154.152.183)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 13 Jul 2020 10:06:00 -0700
+Subject: Re: [PATCH -next] scsi: target: Remove unused variable 'tpg'
+To:     Wei Yongjun <weiyongjun1@huawei.com>,
+        Hulk Robot <hulkci@huawei.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+References: <20200709114636.69256-1-weiyongjun1@huawei.com>
+From:   Himanshu Madhani <himanshu.madhani@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <1fdb8a6d-e820-257c-3c94-b0a470beeb71@oracle.com>
+Date:   Mon, 13 Jul 2020 12:05:58 -0500
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c6b97005-e4c7-0a46-37eb-b5bb187ee919@al2klimov.de>
+In-Reply-To: <20200709114636.69256-1-weiyongjun1@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0
+ mlxlogscore=999 bulkscore=0 malwarescore=0 mlxscore=0 phishscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007130122
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 spamscore=0
+ clxscore=1011 priorityscore=1501 mlxlogscore=999 lowpriorityscore=0
+ bulkscore=0 suspectscore=0 phishscore=0 adultscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007130122
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Sun, Jul 12, 2020 at 10:15:29PM +0200, Alexander A. Klimov wrote:
-> 
-> 
-> Am 12.07.20 um 21:52 schrieb Bart Van Assche:
-> > On 2020-07-10 11:12, Alexander A. Klimov wrote:
-> > > Am 10.07.20 um 16:22 schrieb Bart Van Assche:
-> > > > On 2020-07-09 12:48, Alexander A. Klimov wrote:
-> > > > > diff --git a/drivers/infiniband/ulp/srpt/Kconfig b/drivers/infiniband/ulp/srpt/Kconfig
-> > > > > index 4b5d9b792cfa..f63b34d9ae32 100644
-> > > > > +++ b/drivers/infiniband/ulp/srpt/Kconfig
-> > > > > @@ -10,4 +10,4 @@ config INFINIBAND_SRPT
-> > > > >          that supports the RDMA protocol. Currently the RDMA protocol is
-> > > > >          supported by InfiniBand and by iWarp network hardware. More
-> > > > >          information about the SRP protocol can be found on the website
-> > > > > -      of the INCITS T10 technical committee (http://www.t10.org/).
-> > > > > +      of the INCITS T10 technical committee (https://www.t10.org/).
-> > > > 
-> > > > It is not clear to me how modifying an URL in a Kconfig file helps to
-> > > > reduce the attack surface on kernel devs?
-> > > 
-> > > Not on all, just on the ones who open it.
-> > 
-> > Is changing every single HTTP URL in the kernel into a HTTPS URL the best
-> > solution? Is this the only solution? Has it been considered to recommend
-> > kernel developers who are concerned about MITM attacks to install a browser
-> > extension like HTTPS Everywhere instead?
-> I've installed that addon myself.
-> But IMAO it's just a workaround which is (not available to all browsers, not
-> installed by default in any of them and) not even 100% secure unless you
-> tick a particular checkbox.
-> 
-> Anyway the majority of maintainers and Torvalds himself agree with my
-> solution.
-> 
-> I mean, just look at
-> git log '--author=Alexander A. Klimov <grandmaster@al2klimov.de>' \
-> 
-> Or (better) wait for v5.9-rc1 (and all the yet just applied patches it will
-> consist of) *and then* run the command.
 
-Well, if you are going to do this please send just one patch for all
-of drivers/infiniband/ and include/rdma
 
-I don't need to see it broken up any more than that
+On 7/9/20 6:46 AM, Wei Yongjun wrote:
+> Gcc report warning as follows:
+> 
+> drivers/target/target_core_pr.c:1162:26: warning:
+>   variable 'tpg' set but not used [-Wunused-but-set-variable]
+>   1162 |  struct se_portal_group *tpg;
+>        |                          ^~~
+> 
+> After commit 63c9ffe473d3 ("scsi: target: Check enforce_pr_isids
+> during registration"), 'tpg' is never used, so removing it to
+> avoid build warning.
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>   drivers/target/target_core_pr.c | 2 --
+>   1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/target/target_core_pr.c b/drivers/target/target_core_pr.c
+> index 300b03b1b696..8fc88654bff6 100644
+> --- a/drivers/target/target_core_pr.c
+> +++ b/drivers/target/target_core_pr.c
+> @@ -1159,7 +1159,6 @@ static struct t10_pr_registration *__core_scsi3_locate_pr_reg(
+>   {
+>   	struct t10_reservation *pr_tmpl = &dev->t10_pr;
+>   	struct t10_pr_registration *pr_reg, *pr_reg_tmp;
+> -	struct se_portal_group *tpg;
+>   
+>   	spin_lock(&pr_tmpl->registration_lock);
+>   	list_for_each_entry_safe(pr_reg, pr_reg_tmp,
+> @@ -1170,7 +1169,6 @@ static struct t10_pr_registration *__core_scsi3_locate_pr_reg(
+>   		if (pr_reg->pr_reg_nacl != nacl)
+>   			continue;
+>   
+> -		tpg = pr_reg->pr_reg_nacl->se_tpg;
+>   		/*
+>   		 * If this registration does NOT contain a fabric provided
+>   		 * ISID, then we have found a match.
+> 
+Looks Good.
 
-Jason
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+
+-- 
+Himanshu Madhani                     Oracle Linux Engineering
