@@ -2,224 +2,126 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D171821D578
-	for <lists+target-devel@lfdr.de>; Mon, 13 Jul 2020 14:03:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C91521D78C
+	for <lists+target-devel@lfdr.de>; Mon, 13 Jul 2020 15:50:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729143AbgGMMDQ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 13 Jul 2020 08:03:16 -0400
-Received: from mail1.bemta26.messagelabs.com ([85.158.142.5]:44548 "EHLO
-        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728714AbgGMMDP (ORCPT
+        id S1729972AbgGMNuf (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 13 Jul 2020 09:50:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51844 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729966AbgGMNue (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 13 Jul 2020 08:03:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1594641791; i=@ts.fujitsu.com;
-        bh=yhSSR7qg+pE8SmNPWkjJ/NF2m44tgnURWl3Sk2hN0as=;
-        h=Subject:To:References:From:Message-ID:Date:MIME-Version:
-         In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        b=PvBA2+UXKjHvGWpCjz/Qt2FPLUtY+sxeJ6Ks9WuNwfMBKJ0+DOR6DxwCWK0ZxcXsR
-         vBTT3MXFLICpsifJqXkzwmN1ubBnP1XM1vZXBTQI8Ki5jg66WSBKvvTguwQ5tft+bG
-         9AhE0AyneXnRtP6Rbzpp3DNUIkCZFn2Ym1VZ+I2raEo8Oc7daIVbLEmrdqdmrl5RfV
-         Q1TUXKpyxpOsf5MILbCIgU1Q5rD2rgZm8q3YYjLhWPEP1zek8WHb0THKr8oKKJpqMU
-         GS3d1SagWWRvP5FqzKSS4yfUbB9d0+6l6CR5qJIeK9VzWmjJDEcypW9Ya061PXR3+8
-         LuerL8pzQC6eg==
-Received: from [100.113.2.20] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-5.bemta.az-a.eu-central-1.aws.symcld.net id AA/F9-13954-E7D4C0F5; Mon, 13 Jul 2020 12:03:10 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrAIsWRWlGSWpSXmKPExsViZ8MxVbfOlyf
-  e4MFeNYvu6zvYLJYf/8dk8XfSDVaL1qVvmRxYPD4+vcXi8XmTXABTFGtmXlJ+RQJrxqPddQVf
-  tSp2Tr7C2MB4XbWLkYtDSGAyo0Rf5zomCKefUeLrnY9sXYycHMICXhJr/s5hA0mICKxhlFj0e
-  ilU1VJGiYP/loNVsQkYSKyYdJ8FxOYVcJQ4ffgMM4jNIqAq8XHLP8YuRg4OUYFwiWcr/CFKBC
-  VOznwCVs4pYCex+ctMsHJmATOJeZsfQtniEreezGeCsLUlli18zTyBkW8WkvZZSFpmIWmZhaR
-  lASPLKkbLpKLM9IyS3MTMHF1DAwNdQ0NjXUNdI2MzvcQq3US91FLd5NS8kqJEoKxeYnmxXnFl
-  bnJOil5easkmRmBApxQyvtnB+PX1B71DjJIcTEqivAUePPFCfEn5KZUZicUZ8UWlOanFhxhlO
-  DiUJHjnewLlBItS01Mr0jJzgNEFk5bg4FES4bXzAkrzFhck5hZnpkOkTjEqSonzWoAkBEASGa
-  V5cG2wiL7EKCslzMvIwMAgxFOQWpSbWYIq/4pRnINRSZh3FcgUnsy8Erjpr4AWMwEt5vnHCbK
-  4JBEhJdXANHc9u0yO5MnMjMsGXi9/7Yuwdv7SlhzUsvZV8vNN5pKGtvFlbOLfLi5ePTm6XnlS
-  2JMn7ybF9sQa/Ll/lYfBZjZDx8ZQw+nSDb8f7JhuEyUYHFJxn2WZ9KkUwY6MszInyqvPLT/4v
-  rtH+rd7Qly7nZWGhufaGZqfE78t/3CG9Vw9q3airOHM1X8TJ6fMcD9gYxcY89XspItxVN+1ut
-  11BmxtTtVrtW48qRYt+uXzIDZi1gnb/JsCQifnJ0z0UOTMZFfcbBnPyuU9wWjb86m5x49cn3+
-  yNWWC3en1HzfOZmd5ybJ8xasrrGuXZz/kiV58Iyawnq9LfptTUEvqDaUHubLPQ1cyuk8rFN7+
-  Uni/EktxRqKhFnNRcSIABS6+Z2MDAAA=
-X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-7.tower-228.messagelabs.com!1594641790!1051113!1
-X-Originating-IP: [62.60.8.149]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.50.2; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 1854 invoked from network); 13 Jul 2020 12:03:10 -0000
-Received: from unknown (HELO mailhost2.uk.fujitsu.com) (62.60.8.149)
-  by server-7.tower-228.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 13 Jul 2020 12:03:10 -0000
-Received: from x-serv01 ([172.17.38.52])
-        by mailhost2.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 06DC397c024110;
-        Mon, 13 Jul 2020 13:03:09 +0100
-Received: from [172.17.39.90] (unknown [172.17.39.90])
-        by x-serv01 (Postfix) with ESMTP id 811BD20375;
-        Mon, 13 Jul 2020 14:03:06 +0200 (CEST)
-Subject: Re: [PATCH 7/8] scsi: target: tcmu: Implement tmr_notify callback
-To:     Mike Christie <michael.christie@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-References: <20200710104817.19462-1-bstroesser@ts.fujitsu.com>
- <20200710104817.19462-8-bstroesser@ts.fujitsu.com>
- <24d9afb0-3ea9-e83b-acf0-b44f04583a6e@oracle.com>
-From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Message-ID: <b8bb9898-6ff8-2ffb-47d6-d96534c6d315@ts.fujitsu.com>
-Date:   Mon, 13 Jul 2020 14:03:04 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        Mon, 13 Jul 2020 09:50:34 -0400
+Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2886C061755
+        for <target-devel@vger.kernel.org>; Mon, 13 Jul 2020 06:50:33 -0700 (PDT)
+Received: by mail-qt1-x841.google.com with SMTP id d27so9931133qtg.4
+        for <target-devel@vger.kernel.org>; Mon, 13 Jul 2020 06:50:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=vlrDlUYUKGml5UggZTrPldaeCrJJpueT2vaP2F68WPk=;
+        b=CMkxtAGi5opCIFDLDXatbH+st+eB5Ijn5qpYvzvMWfQ90tknvaEy3MWVjkhemIW8eG
+         U5/7yxTthqhhWaMF/SpDUkLPGfC8wmS+ZoPJxCjfWU4vs+KvgGotLhm8u/F79uArh6vf
+         1Ds0opoMWMhCcpz6uuq1Ant+g33AgkPod8rY6ovOdjQnv8ZkjVJBbP5HvcAIVonbgi6+
+         940mziew1e1lRJYw16UpuD1W1jd+ofNNjVqHZvyIf8Dxe0jyq4mjBrXTtjfA4Gy45JyL
+         mxhnBofUAvf8q4M4qCdC5UnJ4rTOMRmGIXxgyz/SWGDdf5yxktbW9ueC4//mrcduf65f
+         sCDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=vlrDlUYUKGml5UggZTrPldaeCrJJpueT2vaP2F68WPk=;
+        b=O5gZQU48AdS9BLFiSNEkceyNQ3KDei7DOQ7mmGb634ooxpEXM8MfO2dU3IJKvAqujK
+         4aXxLTuqujYrqX89te7H3b70LnDu5Xj5l8cl+doLsonMQZapIh1XM8r8NkXtjoqa9w2x
+         Pv4yPhzRvMY6Vr8nMhYL0RnMn31gSpiyBKEyBSGS+JOXRroJkGY2j8xpZbF5UODGuuxH
+         sms6V/VPuvOLBplMHhBF7lwWbyxQ++0n6Y9iQsba8ujBsN+AKfGyG70rImur5aYvxN58
+         DCEEC91e5qeHsqEDXTp2x+9LIFKw4GQEGOhF7TMHAJppfaM5/t1U+2OihQFFhqoUxVQu
+         OBag==
+X-Gm-Message-State: AOAM532CloOSrY+QoFt1Q68/NOsDRf+/W8PAk5jd3b1/G+VAPP/Q9J79
+        x6ZeREFc594XWUajjlDHhdiF/A==
+X-Google-Smtp-Source: ABdhPJwLXMUyr7KJNqN8opqxSnS0V/qOb48twXlcI7xQ5LwDgvA+ZzNgxKc5tOh2DjVsaADIqEy1Gw==
+X-Received: by 2002:ac8:4588:: with SMTP id l8mr85227289qtn.189.1594648232276;
+        Mon, 13 Jul 2020 06:50:32 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.48.30])
+        by smtp.gmail.com with ESMTPSA id a185sm18070623qkg.3.2020.07.13.06.50.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2020 06:50:31 -0700 (PDT)
+Received: from jgg by mlx with local (Exim 4.93)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1juyql-009hrJ-6b; Mon, 13 Jul 2020 10:50:31 -0300
+Date:   Mon, 13 Jul 2020 10:50:31 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
+Cc:     Bart Van Assche <bvanassche@acm.org>, dledford@redhat.com,
+        linux-rdma@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        David Miller <davem@davemloft.net>,
+        Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH] SCSI RDMA PROTOCOL (SRP) TARGET: Replace HTTP links with
+ HTTPS ones
+Message-ID: <20200713135031.GA25301@ziepe.ca>
+References: <20200709194820.27032-1-grandmaster@al2klimov.de>
+ <3d230abd-752e-8ac1-e18d-b64561b409ff@acm.org>
+ <8fca4633-41ad-7e86-2354-36381bf5c734@al2klimov.de>
+ <bf85e454-cccc-37ef-d55f-d44a5c5c51df@acm.org>
+ <c6b97005-e4c7-0a46-37eb-b5bb187ee919@al2klimov.de>
 MIME-Version: 1.0
-In-Reply-To: <24d9afb0-3ea9-e83b-acf0-b44f04583a6e@oracle.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c6b97005-e4c7-0a46-37eb-b5bb187ee919@al2klimov.de>
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 2020-07-12 03:15, Mike Christie wrote:
-> On 7/10/20 5:48 AM, Bodo Stroesser wrote:
+On Sun, Jul 12, 2020 at 10:15:29PM +0200, Alexander A. Klimov wrote:
+> 
+> 
+> Am 12.07.20 um 21:52 schrieb Bart Van Assche:
+> > On 2020-07-10 11:12, Alexander A. Klimov wrote:
+> > > Am 10.07.20 um 16:22 schrieb Bart Van Assche:
+> > > > On 2020-07-09 12:48, Alexander A. Klimov wrote:
+> > > > > diff --git a/drivers/infiniband/ulp/srpt/Kconfig b/drivers/infiniband/ulp/srpt/Kconfig
+> > > > > index 4b5d9b792cfa..f63b34d9ae32 100644
+> > > > > +++ b/drivers/infiniband/ulp/srpt/Kconfig
+> > > > > @@ -10,4 +10,4 @@ config INFINIBAND_SRPT
+> > > > >          that supports the RDMA protocol. Currently the RDMA protocol is
+> > > > >          supported by InfiniBand and by iWarp network hardware. More
+> > > > >          information about the SRP protocol can be found on the website
+> > > > > -      of the INCITS T10 technical committee (http://www.t10.org/).
+> > > > > +      of the INCITS T10 technical committee (https://www.t10.org/).
+> > > > 
+> > > > It is not clear to me how modifying an URL in a Kconfig file helps to
+> > > > reduce the attack surface on kernel devs?
+> > > 
+> > > Not on all, just on the ones who open it.
+> > 
+> > Is changing every single HTTP URL in the kernel into a HTTPS URL the best
+> > solution? Is this the only solution? Has it been considered to recommend
+> > kernel developers who are concerned about MITM attacks to install a browser
+> > extension like HTTPS Everywhere instead?
+> I've installed that addon myself.
+> But IMAO it's just a workaround which is (not available to all browsers, not
+> installed by default in any of them and) not even 100% secure unless you
+> tick a particular checkbox.
+> 
+> Anyway the majority of maintainers and Torvalds himself agree with my
+> solution.
+> 
+> I mean, just look at
+> git log '--author=Alexander A. Klimov <grandmaster@al2klimov.de>' \
+> 
+> Or (better) wait for v5.9-rc1 (and all the yet just applied patches it will
+> consist of) *and then* run the command.
 
-...
+Well, if you are going to do this please send just one patch for all
+of drivers/infiniband/ and include/rdma
 
->> @@ -844,6 +854,9 @@ static bool is_ring_space_avail(struct tcmu_dev=20
->> *udev, struct tcmu_cmd *cmd,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return false;
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->> +=C2=A0=C2=A0=C2=A0 if (!data_needed)
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return true;
->> +
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* try to check and get the data blocks=
- as needed */
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 space =3D spc_bitmap_free(udev->data_bi=
-tmap, udev->dbi_thresh);
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if ((space * DATA_BLOCK_SIZE) < data_ne=
-eded) {
->> @@ -1106,6 +1119,61 @@ static int queue_cmd_ring(struct tcmu_cmd=20
->> *tcmu_cmd, sense_reason_t *scsi_err)
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 1;
->> =C2=A0 }
->> +/*
->=20
-> We do 2 stars for this type of comment:
->=20
-> /**
->=20
->> + * queue_tmr_ring - queue tmr info to ring or internally
->> + *
->=20
-> No extra newline.
->=20
+I don't need to see it broken up any more than that
 
-Ah, thank you. I'll fix both.
->> @@ -1141,6 +1209,85 @@ static void tcmu_set_next_deadline(struct=20
->> list_head *queue,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 del_timer(timer=
-);
->> =C2=A0 }
->> +static int
->> +tcmu_tmr_type(enum tcm_tmreq_table tmf)
->> +{
->> +=C2=A0=C2=A0=C2=A0 switch (tmf) {
->> +=C2=A0=C2=A0=C2=A0 case TMR_ABORT_TASK:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 return TCMU_TMR_ABORT_TASK;
->> +=C2=A0=C2=A0=C2=A0 case TMR_ABORT_TASK_SET:=C2=A0=C2=A0=C2=A0 return =
-TCMU_TMR_ABORT_TASK_SET;
->> +=C2=A0=C2=A0=C2=A0 case TMR_CLEAR_ACA:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 return TCMU_TMR_CLEAR_ACA;
->> +=C2=A0=C2=A0=C2=A0 case TMR_CLEAR_TASK_SET:=C2=A0=C2=A0=C2=A0 return =
-TCMU_TMR_CLEAR_TASK_SET;
->> +=C2=A0=C2=A0=C2=A0 case TMR_LUN_RESET:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 return TCMU_TMR_LUN_RESET;
->> +=C2=A0=C2=A0=C2=A0 case TMR_TARGET_WARM_RESET:=C2=A0=C2=A0=C2=A0 retu=
-rn TCMU_TMR_TARGET_WARM_RESET;
->> +=C2=A0=C2=A0=C2=A0 case TMR_TARGET_COLD_RESET:=C2=A0=C2=A0=C2=A0 retu=
-rn TCMU_TMR_TARGET_COLD_RESET;
->> +=C2=A0=C2=A0=C2=A0 case TMR_LUN_RESET_PRO:=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 return TCMU_TMR_LUN_RESET_PRO;
->> +=C2=A0=C2=A0=C2=A0 default:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 return TCMU_TMR_UNKNOWN;
->> +=C2=A0=C2=A0=C2=A0 }
->> +}
->> +
->> +static void
->> +tcmu_tmr_notify(struct se_device *se_dev, enum tcm_tmreq_table tmf,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct list_head *cmd_list=
-)
->> +{
->> +=C2=A0=C2=A0=C2=A0 int i =3D 0, cmd_cnt =3D 0;
->> +=C2=A0=C2=A0=C2=A0 bool unqueued =3D false;
->> +=C2=A0=C2=A0=C2=A0 uint16_t *cmd_ids =3D NULL;
->> +=C2=A0=C2=A0=C2=A0 struct tcmu_cmd *cmd;
->> +=C2=A0=C2=A0=C2=A0 struct se_cmd *se_cmd;
->> +=C2=A0=C2=A0=C2=A0 struct tcmu_tmr *tmr;
->> +=C2=A0=C2=A0=C2=A0 struct tcmu_dev *dev =3D TCMU_DEV(se_dev);
->> +
->> +=C2=A0=C2=A0=C2=A0 mutex_lock(&dev->cmdr_lock);
->> +
->> +=C2=A0=C2=A0=C2=A0 // First we check for aborted commands in qfull_qu=
-eue
->=20
-> I know the coding style doc does not say to never use // anymore, but=20
-> just use the same style we have already in the rest of the code for=20
-> single line comments:
->=20
-> /* comment */
->=20
->=20
-
-Ok, I'll fix.
-
->> +struct tcmu_tmr_entry {
->> +=C2=A0=C2=A0=C2=A0 struct tcmu_cmd_entry_hdr hdr;
->> +
->> +#define TCMU_TMR_UNKNOWN=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0
->> +#define TCMU_TMR_ABORT_TASK=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- 1
->> +#define TCMU_TMR_ABORT_TASK_SET=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 2
->> +#define TCMU_TMR_CLEAR_ACA=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
-3
->> +#define TCMU_TMR_CLEAR_TASK_SET=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 4
->> +#define TCMU_TMR_LUN_RESET=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
-5
->> +#define TCMU_TMR_TARGET_WARM_RESET=C2=A0=C2=A0=C2=A0 6
->> +#define TCMU_TMR_TARGET_COLD_RESET=C2=A0=C2=A0=C2=A0 7
->> +/* Pseudo reset due to received PR OUT */
->> +#define TCMU_TMR_LUN_RESET_PRO=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 128
->> +=C2=A0=C2=A0=C2=A0 __u8 tmr_type;
->> +
->> +=C2=A0=C2=A0=C2=A0 __u8 __pad1;
->> +=C2=A0=C2=A0=C2=A0 __u16 __pad2;
->> +=C2=A0=C2=A0=C2=A0 __u32 cmd_cnt;
->> +=C2=A0=C2=A0=C2=A0 __u64 __pad3;
->> +=C2=A0=C2=A0=C2=A0 __u64 __pad4;
->> +=C2=A0=C2=A0=C2=A0 __u16 cmd_ids[0];
->> +} __packed;
->> +
->=20
-> Is this new request and the tmr_notify callback just supposed to clean=20
-> up the requested commands or is it supposed to perform the actions of=20
-> the task management function defined in the specs?
->=20
-> The callback name makes it feel like it's just a notification, but the=20
-> names above make it seem like we are supposed to execute the TMF in=20
-> userspace. But if the latter, then how do we notify the kernel if the=20
-> TMF was successful or failed?
-
-My plan is to have a notification only. IMHO userspace (and also tcmu
-or another backend) must not interfere with core's TMR handling.
-The new callback tmr_notify just allows backend to be helpful during
-TMR handling by completing in core aborted, but in backend/userspace
-still running commands early.
-
-Do you refer to the TCMU_TMR_* definitions? I just defined these names
-because TMR_* definitions are in target_core_base.h which is not exposed
-to userspace programs. Knowing the type of TMR that aborted a command is
-useful at least for userspace tracing.
-
-BTW: I hope there are enough padding fields in the tcmu_tmr_entry to
-allow additional session info later?
+Jason
