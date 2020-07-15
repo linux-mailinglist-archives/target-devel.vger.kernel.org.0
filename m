@@ -2,213 +2,171 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 016072211E5
-	for <lists+target-devel@lfdr.de>; Wed, 15 Jul 2020 18:08:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE8F92214AB
+	for <lists+target-devel@lfdr.de>; Wed, 15 Jul 2020 20:47:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726023AbgGOQFL (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 15 Jul 2020 12:05:11 -0400
-Received: from mail1.bemta26.messagelabs.com ([85.158.142.115]:56057 "EHLO
-        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726820AbgGOQEd (ORCPT
+        id S1726843AbgGOSqf (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 15 Jul 2020 14:46:35 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:47516 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726670AbgGOSqf (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 15 Jul 2020 12:04:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1594829056; i=@ts.fujitsu.com;
-        bh=njKgnlVsP2C9AT7Io1jysuyEan8v3y+kYvMV91SWmKk=;
-        h=From:To:Cc:Subject:Date:Message-Id;
-        b=VjOkhfMloLpaVrYDgKJNdUsyCtlOcwQ1Y3LZc+6MDtFx9wEjlGHtvB0mNbV8f1COb
-         iMct6rT3pJ19ctxqcF7c2AHJupl/fXrQf6I1E4sWXAnnabag2jJcN6CNZbbHpGmWY/
-         EiPlyEi45zEnbP76qcBP1ORgW4fIafl7yfjO1+UkbMdXmTu6kikxOABxHqyVDs8wqu
-         1BgZYLVAPzmE7Rsn3tL7E8kHw7iUm43PBBbauO5CP6L0zZOZ8ZObYUa1v6HHhwccRL
-         xUgR8MdIwf56bHj/duyOh0soXKx8jrq3F2ppkTIwRdgfGnEtNwGnadllzuoUtQ1jjr
-         1bvQXFihQe07A==
-Received: from [100.113.4.177] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-4.bemta.az-b.eu-central-1.aws.symcld.net id 35/4C-24114-FF82F0F5; Wed, 15 Jul 2020 16:04:15 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrCLMWRWlGSWpSXmKPExsViZ8MRovtfgz/
-  e4OweRYvu6zvYLJYf/8dk8XfSDVaL1qVvmRxYPD4+vcXi8XmTXABTFGtmXlJ+RQJrxoVvngVn
-  VSsufnnE0sC4QqGLkYtDSGAyo8TShp3MEM50Ron9jb+Yuhg5OdgEDCRWTLrPApIQEVjDKLHyz
-  jxmkASzgJ7EtH/r2EFsYQFHiQnT5oA1sAioSrzf/I8FxOYVsJOYfP40I4gtISAv0XFgMssERs
-  4FjAyrGC2TijLTM0pyEzNzdA0NDHQNDY11zXQNLcz0Eqt0k/RSS3WTU/NKihKBsnqJ5cV6xZW
-  5yTkpenmpJZsYgZ5PKWTbtYPx8+sPeocYJTmYlER5I5j544X4kvJTKjMSizPii0pzUosPMcpw
-  cChJ8DKoA+UEi1LTUyvSMnOAQQiTluDgURLh1QZJ8xYXJOYWZ6ZDpE4xKkqJ815QA0oIgCQyS
-  vPg2mCBf4lRVkqYl5GBgUGIpyC1KDezBFX+FaM4B6OSMG8xyHiezLwSuOmvgBYzAS3e+JkXZH
-  FJIkJKqoGJ+WjfcVFllimGHQ48N2LXbVjK6J3q1HtGzWRRv+X79vnmFjZPfX2nNoYZneAUyJ7
-  8Uva3l49GiajRjj8PLunnbhVxMIlfcEyNtUvOTGR1U8FxxYPbHrw6sn/Hng/L36sd09wTvy/j
-  dDVra46gUcuJUxeabvu2bLPYwZe03LrQRMykvUp9uQzXh+j9M8IEf7j0rCqptE/tqrA8OjfU9
-  dvDWQfFmmIen5C6XpZz/37EHTfNNWpFt7zSHt0p2eY31+5A2iqVgsdzop85lyxn7xdYrPSqXW
-  Njxu09+6Y13ds5qbTMriaFT28Vh1jZUYs1CevWVIbUdpzyu6d6au1iszcFD8v+cMpOPtyy4Gr
-  yTU0lluKMREMt5qLiRAAZAUJ99wIAAA==
-X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-20.tower-238.messagelabs.com!1594829054!654744!1
-X-Originating-IP: [62.60.8.84]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.50.2; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 19948 invoked from network); 15 Jul 2020 16:04:15 -0000
-Received: from unknown (HELO mailhost3.uk.fujitsu.com) (62.60.8.84)
-  by server-20.tower-238.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 15 Jul 2020 16:04:15 -0000
-Received: from x-serv01 ([172.17.38.52])
-        by mailhost3.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 06FG4Exk029131;
-        Wed, 15 Jul 2020 17:04:14 +0100
-Received: from VTC.emeia.fujitsu.local (unknown [172.17.38.7])
-        by x-serv01 (Postfix) with ESMTP id 6452220468;
-        Wed, 15 Jul 2020 18:04:11 +0200 (CEST)
-From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-To:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Mike Christie <michael.christie@oracle.com>,
+        Wed, 15 Jul 2020 14:46:35 -0400
+X-Greylist: delayed 1342 seconds by postgrey-1.27 at vger.kernel.org; Wed, 15 Jul 2020 14:46:34 EDT
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06FIHt6R157655;
+        Wed, 15 Jul 2020 18:24:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=5G0BjHWUZxMdn9E6mO29m9CW3V2ay0SjzvoKoZdc+kA=;
+ b=wxOhec9HTklACdHIkRD+Ze2e2v8sac4hGH4Glfj5j/W+QfwWKwZFOrsKfgsv0SwswCq/
+ mKC5eMhVxyS5+iVDZ528oAOi0Ox87+uRpbd1FFgyO6wKkuHU39+RkUG1hqSHnf0PDyPP
+ 2wXgepdcPIWs07GUsAXgINo1/Kb81MER3F5zKJnG8Fy9iMiw+8rSGNwnDoseMJrv4eex
+ sWlYmzlAIBNhinVyTlTcjSKenChYW6ry2OEZxHFqtXfAtmIjrRIq4dXTOL586zfx02RM
+ ItZalVOvKs6CFTSvsvsjDNpdOFfO5QyyY8zERevPLDTxnji7uE1xdvZYlS5hS8hMK/M9 4g== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 327s65kaqp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 15 Jul 2020 18:24:09 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06FIDf8O016092;
+        Wed, 15 Jul 2020 18:24:09 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 327q0rr6r8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 15 Jul 2020 18:24:09 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 06FIO8GC026106;
+        Wed, 15 Jul 2020 18:24:08 GMT
+Received: from [20.15.0.202] (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 15 Jul 2020 11:24:08 -0700
+Subject: Re: [PATCH 1/8] scsi: target: Modify core_tmr_abort_task()
+To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Subject: [PATCH] scsi: target: loop: Fix handling of aborted TMRs
-Date:   Wed, 15 Jul 2020 18:04:03 +0200
-Message-Id: <20200715160403.12578-1-bstroesser@ts.fujitsu.com>
-X-Mailer: git-send-email 2.12.3
+References: <20200710104817.19462-1-bstroesser@ts.fujitsu.com>
+ <20200710104817.19462-2-bstroesser@ts.fujitsu.com>
+ <ea36fcc0-d01c-eba1-748f-d5cfa39fa105@oracle.com>
+ <0f660dc9-40ee-75a4-2924-761769d9cd38@ts.fujitsu.com>
+ <e4d54aed-88fa-eeed-fe9a-20e627c3841a@oracle.com>
+ <980ec328-f604-556b-400a-1404c56e34ae@ts.fujitsu.com>
+From:   Mike Christie <michael.christie@oracle.com>
+Message-ID: <a263f857-a582-d262-b347-20687502ee91@oracle.com>
+Date:   Wed, 15 Jul 2020 13:24:19 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
+MIME-Version: 1.0
+In-Reply-To: <980ec328-f604-556b-400a-1404c56e34ae@ts.fujitsu.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9683 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 spamscore=0
+ mlxlogscore=999 bulkscore=0 adultscore=0 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007150142
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9683 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
+ phishscore=0 mlxscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
+ clxscore=1015 bulkscore=0 mlxlogscore=999 impostorscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007150142
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-If an ABORT_TASK TMR is aborted by a LUN_RESET, core calls
-tcm_loop's aborted_task fabric callback for the ABORT_TASK.
+On 7/15/20 9:25 AM, Bodo Stroesser wrote:
+> On 2020-07-14 19:43, Mike Christie wrote:
+>> On 7/13/20 6:39 AM, Bodo Stroesser wrote:
+>>> On 2020-07-12 02:49, Mike Christie wrote:
+>>>> On 7/10/20 5:48 AM, Bodo Stroesser wrote:
+>>>
+>>> ...
+>>>
+>>>>> @@ -137,11 +138,16 @@ void core_tmr_abort_task(
+>>>>>           printk("ABORT_TASK: Found referenced %s task_tag: %llu\n",
+>>>>>               se_cmd->se_tfo->fabric_name, ref_tag);
+>>>>> -        if (!__target_check_io_state(se_cmd, se_sess,
+>>>>> -                         dev->dev_attrib.emulate_tas))
+>>>>> +        spin_lock_irqsave(&se_sess->sess_cmd_lock, flags);
+>>>>> +        rc = __target_check_io_state(se_cmd, se_sess, 0);
+>>>>> +        spin_unlock_irqrestore(&se_sess->sess_cmd_lock, flags);
+>>>>> +        if (!rc)
+>>>>>               continue;
+>>>>> -        spin_unlock_irqrestore(&se_sess->sess_cmd_lock, flags);
+>>>>> +        list_del_init(&se_cmd->state_list);
+>>>>
+>>>> Do we only want to do this if in the next patch tmr_notify can 
+>>>> successfully accept the tmr?
+>>>
+>>> This change does not modify behavior of the core. Please see how
+>>> core_tmr_drain_state_list() uses state_list to queue commands after
+>>> successfully calling __target_check_io_state() for later call of 
+>>> target_put_cmd_and_wait().
+>>>
+>>> This patch just unifies ABORT_TASK and LUN_RESET handling such,
+>>> that in next patch we can call tmr_notify handler with a list of
+>>> aborted commands in both cases. The list uses the state_list list_head
+>>> in the se_cmd.
+>>>
+>>>>
+>>>> If tmr_notify can't allocate memory for the abort case, we would 
+>>>> delete it from the list. Later the initiator would send a LUN_RESET 
+>>>> but core_tmr_drain_state_list won't see it and pass it to the 
+>>>> tmr_notify call.
+>>>>
+>>>
+>>> tmr_notify handler will not and must not modify the list of aborted
+>>> cmds. So if backend just does nothing for whatever reason we will end
+>>> up with the "old" behavior of the core as it was before the change.
+>>>
+>>> The general idea is to send info about received TMRs together with the
+>>> list of aborted commands to the backend, to allow TMR tracing and
+>>> canceling of aborted commands. But backend must not interfere with TMR
+>>> processing in core.
+>>
+>> I don't think we are talking about the same thing.
+> 
+> Yeah, probably I misunderstood.
+> 
+>>
+>> For the abort case, let's say tmr_notify fails.So for the tcmu case, 
+>> the tmr does not get queued and userspace never knows about it.
+> 
+> True.
+> 
+> For the tcmu case tmr_notify can fail only if kmalloc(..., GFP_KERNEL)
+> fails.
+> 
+>> The initiator then sends a LUN reset. For the reset, the tmr_notify 
+>> call's list will be missing the command that got the abort, right?
+> 
+> Yes.
+> 
+> In core, the LUN RESET will wait in core_tmr_drain_tmr_list for the
+> previous ABORT_TASK to complete, while the ABORT_TASK itself waits for
+> the aborted command to complete in core_tmr_abort_task.
+> 
+> So, when LUN_RESET handling comes to calling core_tmr_drain_state_list,
+> the aborted command will definitely already be done.
+> 
+>> How will the backend know to clean up that command during the LUN 
+>> reset handling?
+>>
+> 
+> It will not know, so core just has to wait until backend completes the
+> aborted cmd - maybe after long time - just like it always did before my
+> change.
 
-The aborted_task callback is not prepared to handle aborted TMRs,
-but is an empty function which is ok for aborted SCSI cmds only.
-So it does not wake up tcm_loop_issue_tmr() sleeping in
-wait_for_completion(). Therefore scmd_eh_abort_handler
-hangs forever and we get the following messages:
+Ah I see. When I made the original comment and was asking about if the 
+callback was supposed to perform some of the TMF operations I was 
+thinking we were going to change up a lot of this code.
 
-INFO: task kworker/u48:1:31216 blocked for more than 3932 seconds.
-      Tainted: G           OE     5.8.0-rc1+ #1
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-kworker/u48:1   D    0 31216      2 0x00004000
-Workqueue: scsi_tmf_14 scmd_eh_abort_handler [scsi_mod]
-Call Trace:
- __schedule+0x2aa/0x6d0
- schedule+0x42/0xb0
- schedule_timeout+0x1ba/0x280
- ? __queue_work+0x13b/0x3d0
- ? kmem_cache_alloc_trace+0x1e6/0x200
- wait_for_completion+0x7f/0xd0
- tcm_loop_issue_tmr.isra.10+0xc1/0x110 [tcm_loop]
- tcm_loop_abort_task+0x3d/0x50 [tcm_loop]
- scmd_eh_abort_handler+0x91/0x230 [scsi_mod]
- process_one_work+0x166/0x370
- worker_thread+0x49/0x3e0
- ? rescuer_thread+0x320/0x320
- kthread+0xfc/0x130
- ? kthread_bind+0x10/0x10
- ret_from_fork+0x22/0x30
+I think your idea where it's more of a way to notify the modules and we 
+are not changing any of this behavior is better since no one wants to 
+get into that :)
 
-Fix:
-After calling the aborted_task callback the core immediately
-releases the se_cmd that represents the ABORT_TASK. The woken
-up thread (tcm_loop_issue_tmr) therefore must not access se_cmd
-and tl_cmd in case of aborted TMRs.
-
-So I changed aborted_task and queue_tm_rsp to transfer result
-code from se_cmd to tcm_loop_issue_tmr's stack and added the
-missing wake_up() to aborted_task.
-Now tcm_loop_issue_tmr after waking up no longer accesses se_cmd
-and tl_cmd. Therefore tcm_loop_issue_tmr no longer needs to call
-target_put_sess_cmd and flag TARGET_SCF_ACK_KREF is no longer
-needed in se_cmd.
-
-Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
----
- drivers/target/loopback/tcm_loop.c | 39 ++++++++++++++++++++++----------------
- drivers/target/loopback/tcm_loop.h |  4 +++-
- 2 files changed, 26 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/target/loopback/tcm_loop.c b/drivers/target/loopback/tcm_loop.c
-index 16d5a4e117a2..0968bc8b6640 100644
---- a/drivers/target/loopback/tcm_loop.c
-+++ b/drivers/target/loopback/tcm_loop.c
-@@ -199,6 +199,7 @@ static int tcm_loop_issue_tmr(struct tcm_loop_tpg *tl_tpg,
- 	struct tcm_loop_nexus *tl_nexus;
- 	struct tcm_loop_cmd *tl_cmd;
- 	int ret = TMR_FUNCTION_FAILED, rc;
-+	DECLARE_COMPLETION_ONSTACK(compl);
- 
- 	/*
- 	 * Locate the tl_nexus and se_sess pointers
-@@ -213,26 +214,23 @@ static int tcm_loop_issue_tmr(struct tcm_loop_tpg *tl_tpg,
- 	if (!tl_cmd)
- 		return ret;
- 
--	init_completion(&tl_cmd->tmr_done);
-+	tl_cmd->is_tmr = true;
-+	tl_cmd->tmr_done = &compl;
-+	tl_cmd->tmr_result = &ret;
- 
- 	se_cmd = &tl_cmd->tl_se_cmd;
- 	se_sess = tl_tpg->tl_nexus->se_sess;
- 
- 	rc = target_submit_tmr(se_cmd, se_sess, tl_cmd->tl_sense_buf, lun,
--			       NULL, tmr, GFP_KERNEL, task,
--			       TARGET_SCF_ACK_KREF);
--	if (rc < 0)
--		goto release;
--	wait_for_completion(&tl_cmd->tmr_done);
--	ret = se_cmd->se_tmr_req->response;
--	target_put_sess_cmd(se_cmd);
-+			       NULL, tmr, GFP_KERNEL, task, 0);
-+	if (rc < 0) {
-+		kmem_cache_free(tcm_loop_cmd_cache, tl_cmd);
-+		return ret;
-+	}
- 
--out:
--	return ret;
-+	wait_for_completion(tl_cmd->tmr_done);
- 
--release:
--	kmem_cache_free(tcm_loop_cmd_cache, tl_cmd);
--	goto out;
-+	return ret;
- }
- 
- static int tcm_loop_abort_task(struct scsi_cmnd *sc)
-@@ -590,13 +588,22 @@ static void tcm_loop_queue_tm_rsp(struct se_cmd *se_cmd)
- 	struct tcm_loop_cmd *tl_cmd = container_of(se_cmd,
- 				struct tcm_loop_cmd, tl_se_cmd);
- 
--	/* Wake up tcm_loop_issue_tmr(). */
--	complete(&tl_cmd->tmr_done);
-+	/* Set tmr result and wake up tcm_loop_issue_tmr(). */
-+	*tl_cmd->tmr_result = se_cmd->se_tmr_req->response;
-+	complete(tl_cmd->tmr_done);
- }
- 
- static void tcm_loop_aborted_task(struct se_cmd *se_cmd)
- {
--	return;
-+	struct tcm_loop_cmd *tl_cmd = container_of(se_cmd,
-+				struct tcm_loop_cmd, tl_se_cmd);
-+
-+	if (!tl_cmd->is_tmr)
-+		return;
-+
-+	/* Set tmr result and wake up tcm_loop_issue_tmr(). */
-+	*tl_cmd->tmr_result = TMR_FUNCTION_REJECTED;
-+	complete(tl_cmd->tmr_done);
- }
- 
- static char *tcm_loop_dump_proto_id(struct tcm_loop_hba *tl_hba)
-diff --git a/drivers/target/loopback/tcm_loop.h b/drivers/target/loopback/tcm_loop.h
-index d3110909a213..e7615b9f5ed1 100644
---- a/drivers/target/loopback/tcm_loop.h
-+++ b/drivers/target/loopback/tcm_loop.h
-@@ -17,7 +17,9 @@ struct tcm_loop_cmd {
- 	/* The TCM I/O descriptor that is accessed via container_of() */
- 	struct se_cmd tl_se_cmd;
- 	struct work_struct work;
--	struct completion tmr_done;
-+	struct completion *tmr_done;
-+	bool is_tmr;
-+	int *tmr_result;
- 	/* Sense buffer that will be mapped into outgoing status */
- 	unsigned char tl_sense_buf[TRANSPORT_SENSE_BUFFER];
- };
--- 
-2.12.3
-
+Seems ok to me.
