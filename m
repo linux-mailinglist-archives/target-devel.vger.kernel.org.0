@@ -2,89 +2,157 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 630AB222037
-	for <lists+target-devel@lfdr.de>; Thu, 16 Jul 2020 12:03:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2896822404A
+	for <lists+target-devel@lfdr.de>; Fri, 17 Jul 2020 18:14:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726973AbgGPKDR (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 16 Jul 2020 06:03:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34596 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726190AbgGPKDR (ORCPT
+        id S1726715AbgGQQMf (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 17 Jul 2020 12:12:35 -0400
+Received: from mail3.bemta25.messagelabs.com ([195.245.230.82]:32883 "EHLO
+        mail3.bemta25.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726104AbgGQQMe (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 16 Jul 2020 06:03:17 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F02C7C08C5C0
-        for <target-devel@vger.kernel.org>; Thu, 16 Jul 2020 03:03:16 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id g67so4595928pgc.8
-        for <target-devel@vger.kernel.org>; Thu, 16 Jul 2020 03:03:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=wCm6g8PFrAG/ekXZHVoEYGMTgypsF/q64n/9gor/F3E=;
-        b=LLgdBMQyAhNYTnpWigaSMpydcREs4d8c4U0eDCKJ8X+mjBnhzN0q2zVyx4YEVb5wtU
-         IgmIVL6wRWiwIdQTVmQipxJK2d6SubI6RGxX1IKMCLrNJmjpRELqFfuBd+nKLb6bweSp
-         bklBPVC8P0qfmySgq8gSnANR7dEktyMxLFo4khg7CJxU6286saIfTew02ANDUOGyOLqu
-         oeevooUJHyVzAGcJmTV8g6uJZ2Qi8A05Yy7wqjjyfPwh2tZApzwk19MRpXcH+LRD7lQH
-         /Z6mjraTM/5KRVeh5vSyKAU+2LuwZocpJWjfjz8j1wPNfoF1vGwrU/Xi7Be3pv8Q+cva
-         Iunw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=wCm6g8PFrAG/ekXZHVoEYGMTgypsF/q64n/9gor/F3E=;
-        b=r0tJGTTuw7NszXR6cOKi9LjQ2qy4OwinPK7KO4vNmmxj0Xkk0q7PZ2WsQ3WyXFkSUJ
-         Rn4aepZOhU6ErV2Wvv7dduKCq9Oj3+BPd601GI5NEd2reMppsA0Zy/qRdt6ee+RnunnB
-         jHHFyabtw1QO7tPC/o46cYEWBs6C8xM0hHcdaWnCF6cQew7U/HZkCKv134/ZskzIenyY
-         jWK2hOV2iR9lxOKBl/cdmiq3+qNZVNVSHxpHIIIQ3JH6zfL0N5Dk5Nsk4tgunfddMPEO
-         +2ssMIDDMtRi8NGDkIQCQwtI6tJ5nrcCUdvDtj7W0mPcJp7XmDmwZvy2lcczC8mm4eHV
-         uQwQ==
-X-Gm-Message-State: AOAM532pcTk0WThAw0bcrdbAGp2RUcJuzMIGQwo7mklirGDSc9ZqTu2b
-        mcxS1Og1WxlxICpAu5VQBdXTpA==
-X-Google-Smtp-Source: ABdhPJwNrDgUO7VlNAjZ8Fo6AQngwNwXisibH9GXT9GMvN4cprhyzv7vwb7cxiTZ8B256OaU3jnMag==
-X-Received: by 2002:a62:8183:: with SMTP id t125mr3019763pfd.210.1594893796570;
-        Thu, 16 Jul 2020 03:03:16 -0700 (PDT)
-Received: from debian.bytedance.net ([61.120.150.75])
-        by smtp.gmail.com with ESMTPSA id f29sm4602477pga.59.2020.07.16.03.03.13
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 16 Jul 2020 03:03:16 -0700 (PDT)
-From:   Hou Pu <houpu@bytedance.com>
-To:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org
-Cc:     mchristi@redhat.com, Hou Pu <houpu@bytedance.com>
-Subject: [PATCH v4 2/2] iscsi-target: Fix inconsistent debug message in __iscsi_target_sk_check_close
-Date:   Thu, 16 Jul 2020 06:02:12 -0400
-Message-Id: <20200716100212.4237-3-houpu@bytedance.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20200716100212.4237-1-houpu@bytedance.com>
-References: <20200716100212.4237-1-houpu@bytedance.com>
+        Fri, 17 Jul 2020 12:12:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
+        s=200619tsfj; t=1595002350; i=@ts.fujitsu.com;
+        bh=O/d0VW/jXWhDBE2zBHO+VcUFvEi/68vYHJGqIwinNDE=;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        b=bDjJXZxs0wbaU3LZHVC3TJnXtz7YfBdWQjzG1Ool57goUjQzFBekhWSJjPHwISyr4
+         qaCQt+VCPTBaXpSMAQhNPSrHv82Eb2Pi+5pcgqafcx7hlA/jPzqnvvCaFLQKaHrKUC
+         24SyndWVPC3l+jNqGq2Tp8TtVc2+V1OZTTATNcR/IoIz31M2AYklNQgm4iffrZpoAA
+         83kp+6mV2Wgcp8C5u/m0yrS/EOTxDDnm7zXSszvUZDQl5cHOBmlKJORdf6Ngcp7R9x
+         01NUSG5gWWFSEcXcZeSMHoGfAVsnWCZBZIfyl2RikX6soO7LmBVeGmnAF5mh7F90Dc
+         mZSTG3F9Le5sA==
+Received: from [100.112.197.196] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-2.bemta.az-b.eu-west-1.aws.symcld.net id 64/F6-29177-EEDC11F5; Fri, 17 Jul 2020 16:12:30 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrPLMWRWlGSWpSXmKPExsViZ8MRovvurGC
+  8Qe8FFovu6zvYLJYf/8dk8XfSDVaL1qVvmRxYPD4+vcXi8XmTXABTFGtmXlJ+RQJrRk+jcUGn
+  XMW7NVtYGxgfSnQxcnEICUxmlFj7aCc7hDOdUaL7xh2WLkZODjYBA4kVk+6zgCREBNYwSqy8M
+  48ZJMEsoCcx7d86dhBbWMBT4snuDjYQm0VAVeLg2klMIDavgJ3E5iszGUFsCQF5iY4Dk1kmMH
+  IuYGRYxWiRVJSZnlGSm5iZo2toYKBraGika2hprmtobK6XWKWbpJdaqlueWlyia6iXWF6sV1y
+  Zm5yTopeXWrKJEej3lIKjnTsYf736oHeIUZKDSUmUt22VYLwQX1J+SmVGYnFGfFFpTmrxIUYZ
+  Dg4lCV7xU0A5waLU9NSKtMwcYAjCpCU4eJREeFuBYSjEW1yQmFucmQ6ROsWoy3Hz/ZJFzEIse
+  fl5qVLivD0gRQIgRRmleXAjYPFwiVFWSpiXkYGBQYinILUoN7MEVf4VozgHo5Iw716QKTyZeS
+  Vwm14BHcEEdMTGz7wgR5QkIqSkGphCvv3aFarpNTN/7r9H3+z9BVLCN/17dEX28fMzPZN3HGt
+  cuG7ug5cTD6/I+L7HvlvEem8p2z47Wf9zapvOfzmnO/uzo5L1oz1uN7/N7vH7N/eF+GqZiuaC
+  uQ3Tn2xPXHzU+6belNwKjrfMfwOZf9kX+MsWbrdl/B/e8LbusPv9/9rlpVyP7N3nKLktdXhwV
+  prvSArjJF2/5D0/naYG50i7zX3CmHnKqn/Xwlalq5s557H2zPj/aYq536Pb14yD4zX4RVmsVB
+  IkA85qXmZTv7rgZfP0N13NE0K+FcuwKP1r23i0/Oppt12zmKqa797+cF0v/K6lT8oNy9sRkq2
+  eccnfGuXmztvQrGc5wVHu3F0pJZbijERDLeai4kQAwkQlpgIDAAA=
+X-Env-Sender: bstroesser@ts.fujitsu.com
+X-Msg-Ref: server-11.tower-285.messagelabs.com!1595002349!816814!1
+X-Originating-IP: [62.60.8.84]
+X-SYMC-ESS-Client-Auth: outbound-route-from=pass
+X-StarScan-Received: 
+X-StarScan-Version: 9.50.2; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 27790 invoked from network); 17 Jul 2020 16:12:29 -0000
+Received: from unknown (HELO mailhost3.uk.fujitsu.com) (62.60.8.84)
+  by server-11.tower-285.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 17 Jul 2020 16:12:29 -0000
+Received: from x-serv01 ([172.17.38.52])
+        by mailhost3.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 06HGCNfS009777;
+        Fri, 17 Jul 2020 17:12:23 +0100
+Received: from VTC.emeia.fujitsu.local (unknown [172.17.38.7])
+        by x-serv01 (Postfix) with ESMTP id D61EE20199;
+        Fri, 17 Jul 2020 18:12:20 +0200 (CEST)
+From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
+To:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Subject: [PATCH v2 0/8] scsi: target: tcmu: Add TMR notification for tcmu
+Date:   Fri, 17 Jul 2020 18:12:04 +0200
+Message-Id: <20200717161212.10731-1-bstroesser@ts.fujitsu.com>
+X-Mailer: git-send-email 2.12.3
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-The commit 25cdda95fda7 ("iscsi-target: Fix initial login PDU
-asynchronous socket close OOPs") changed the return value of
-__iscsi_target_sk_check_close. But the pr_debug is still printing
-FALSE when returning TRUE which is a little confusing.
+This patch series is made on top of Martin's for-next branch.
 
-Signed-off-by: Hou Pu <houpu@bytedance.com>
+ChangeLog:
+
+v2: in patch "scsi: target: tcmu: Implement tmr_notify callback"
+    changed new comment's style from "// ..." to "/* ... */"
+    and correctly use "/** " for function doc.
+
 ---
- drivers/target/iscsi/iscsi_target_nego.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/target/iscsi/iscsi_target_nego.c b/drivers/target/iscsi/iscsi_target_nego.c
-index 10477e44d17b..701c008d6bd5 100644
---- a/drivers/target/iscsi/iscsi_target_nego.c
-+++ b/drivers/target/iscsi/iscsi_target_nego.c
-@@ -481,7 +481,7 @@ static bool __iscsi_target_sk_check_close(struct sock *sk)
- {
- 	if (sk->sk_state == TCP_CLOSE_WAIT || sk->sk_state == TCP_CLOSE) {
- 		pr_debug("__iscsi_target_sk_check_close: TCP_CLOSE_WAIT|TCP_CLOSE,"
--			"returning FALSE\n");
-+			"returning TRUE\n");
- 		return true;
- 	}
- 	return false;
+TCM/LIO core handles TMRs without involving backends.
+But TMR completion message is sent to initiator only after
+commands aborted by the TMR are completed by the backend.
+Especially in case of tcmu backend, if userspace executes long
+running commands and therefore initiator sends ABORT_TASK on
+timeout, the ABORT itself can time out if core still waits for
+userspace/tcmu to complete the command.
+
+It would be very helpful for userspace to get a notification
+about received TMR and which commands were aborted by that TMR.
+Then userspace can decide whether to cancel command processing,
+and it can send command completion earlier than it would without
+TMR notification.
+It is also helpful for userspace traces and device emulation to
+get notification about TMR events.
+
+So this patch series in the first two patches implements in
+core the usage of a new optional backend callback for TMR
+notifications. The core calls it before core waits for
+completion of aborted commands (params: se_dev, TMR type,
+and list of se_cmds aborted by this TMR).
+Of course other backends than tcmu can use this part of the
+series also to implement their own TMR notification if
+necessary.
+
+The further six patches implement the TMR notify callback for
+tcmu. The new configFS attribute tmr_notification allows to
+switch on TMR messages on the cmd ring. The default of the
+attribute is the old behavior without TMR info on the ring, but
+with following changes:
+ - if tcmu receives an already aborted command, it immediately
+   rejects it. So it will never appear in userspace.
+ - if tcmu finds, that according to TMR notification a cmd on
+   the qfull_queue was aborted, tcmu removes it from qfull_queue
+   and completes it immediately. So userspace will not 'see'
+   those commands.
+
+When attribute tmr_notification is set to 1, tcmu additionally
+prepares a list of cmd_ids from those commands, that are aborted
+by the TMR and are active in cmd ring (not timed out).
+This list together with the TMR type is either immediately
+written to cmd ring (new TMR entry type) or queued in a separate
+tmr queue if ring space is too small.
+TMRs in the tmr queue do not time out. If ring space becomes
+available, tcmu moves TMRs from tmr queue to ring with higher
+priority than cmds from qfull queue.
+
+This mechanism makes sure that userspace receives TMR
+notifications as early as possible. Userspace can use the
+list of cmd_ids attached to the TMR notification to identify
+aborted commands from its list of received and not yet completed
+commands. In case userspace has meanwhile completed some of the
+cmd_ids on the list, it can just ignore these cmd_ids.
+A possible new command having the same cmd_id as one of the
+aborted commands will always appear on the ring after the TMR
+notification.
+
+Bodo Stroesser (8):
+  scsi: target: Modify core_tmr_abort_task()
+  scsi: target: Add tmr_notify backend function
+  scsi: target: tcmu: Use priv pointer in se_cmd
+  scsi: target: tcmu: Do not queue aborted commands
+  scsi: target: tcmu: Factor out new helper ring_insert_padding
+  scsi: target: tcmu: Fix and simplify timeout handling
+  scsi: target: tcmu: Implement tmr_notify callback
+  scsi: target: tcmu: Make TMR notification optional
+
+ drivers/target/target_core_tmr.c       |  36 +++-
+ drivers/target/target_core_transport.c |   1 +
+ drivers/target/target_core_user.c      | 374 +++++++++++++++++++++++++++------
+ include/target/target_core_backend.h   |   2 +
+ include/target/target_core_base.h      |   1 +
+ include/uapi/linux/target_core_user.h  |  25 +++
+ 6 files changed, 367 insertions(+), 72 deletions(-)
+
 -- 
-2.11.0
+2.12.3
 
