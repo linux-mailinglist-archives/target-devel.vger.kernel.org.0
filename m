@@ -2,155 +2,123 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2CEA22E0D1
-	for <lists+target-devel@lfdr.de>; Sun, 26 Jul 2020 17:35:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A95A422E20E
+	for <lists+target-devel@lfdr.de>; Sun, 26 Jul 2020 20:39:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727959AbgGZPfz (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sun, 26 Jul 2020 11:35:55 -0400
-Received: from mail1.bemta26.messagelabs.com ([85.158.142.112]:41720 "EHLO
-        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727905AbgGZPfw (ORCPT
+        id S1726144AbgGZSjU (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 26 Jul 2020 14:39:20 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:43410 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726081AbgGZSjU (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sun, 26 Jul 2020 11:35:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1595777748; i=@ts.fujitsu.com;
-        bh=RVa74JN/7E1sOtlG/xtrBRDEnUbmbOYmdPBQhTIohTc=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        b=U1WUnzB72AnaqPqdMHxw88ON9q9oJM9gF4PSfz1GZtLp8dvfpmSrS37/GdFBqDneC
-         GVkWDveo6F0olwBQKrPoPlFymSANmh5UMCpX1JQmpWyry9772vBTktYTT6zklnUSrU
-         fyhZXs7DyI2i3URMlTEVM+yWq4ylNK6IstXEIIJ8FBSHuE3ZUkfrEh03wSep1EiDus
-         MO8kkaLDmdd/2dxN1D5g0dUAwaSSRGSRAPvfmzO3XezSiJeN8Zwnv+UCEng0f8IqLz
-         5ooWxD6W4dt0aygNsBEWogWa/WC4psKsOAW3fCsp3R5CTTsjwnan7rnI27dJtXPV2d
-         /7kodfftZNT0w==
-Received: from [100.113.7.116] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-1.bemta.az-b.eu-central-1.aws.symcld.net id 29/07-32390-3D2AD1F5; Sun, 26 Jul 2020 15:35:47 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrDLMWRWlGSWpSXmKPExsViZ8MRont5kWy
-  8wcKHEhbd13ewWSw//o/J4u+kG6wWrUvfMjmweHx8eovF4/MmuQCmKNbMvKT8igTWjPP//zEV
-  /BGpmPn2AWMD4yyhLkYuDiGByYwSaz99ZIJwpjNKPJ09h7GLkZODTcBAYsWk+ywgCRGBNYwSK
-  +/MYwZJMAvoSUz7t469i5GDQ1jAS+LUJVOQMIuAqsTCWU/YQGxeATuJ6Wu+soDYEgLyEh0HJo
-  PZnAL2EhvnfgAbIwRUs2zTAfYJjNwLGBlWMVomFWWmZ5TkJmbm6BoaGOgaGhrrmusaGhnqJVb
-  pJumlluomp+aVFCUCZfUSy4v1iitzk3NS9PJSSzYxAgMlpZC9cgfj2jcf9A4xSnIwKYnyGkyR
-  jRfiS8pPqcxILM6ILyrNSS0+xCjDwaEkwXt1IVBOsCg1PbUiLTMHGLQwaQkOHiUR3jkgad7ig
-  sTc4sx0iNQpRkUpcd5+kIQASCKjNA+uDRYplxhlpYR5GRkYGIR4ClKLcjNLUOVfMYpzMCoJ81
-  qBTOHJzCuBm/4KaDET0GL3S5Igi0sSEVJSDUze/dd38Hto8QdNK1/M6isceUjPRPOrnVz0pwq
-  9RfffGp1Y/IjhXric7K1Tp2qmLVByOT/ZpuRvSXvyAd0AezPm61NkV2wr9+uztz1RuYrxoWTv
-  HMatAhLTHrbMdJ0keezOvpM6Z49tYkpb8Xi9Rkzc/J2trp0hZZ4z2oO4jR6ll19Z+emlnbj5n
-  0sHu/5Js1kkiHY+uWI58dYt86o72XNfrHdSPpLeedJNVuNC4ithDvfu9afD7Sry3y9VftbcHL
-  pydmZ/nU9dne6OQ6mJ6wW0T8x3ev19Z/f59/sfSf2bm6W3oSXg7Gn+Bx+tFyjMNpVUb+99FmF
-  vltB0dFWcXsd858fsp094CrP3/H3pG6fEUpyRaKjFXFScCACIPsLaDwMAAA==
-X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-17.tower-248.messagelabs.com!1595777746!197365!1
-X-Originating-IP: [62.60.8.84]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.50.2; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 18185 invoked from network); 26 Jul 2020 15:35:47 -0000
-Received: from unknown (HELO mailhost3.uk.fujitsu.com) (62.60.8.84)
-  by server-17.tower-248.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 26 Jul 2020 15:35:47 -0000
-Received: from x-serv01 ([172.17.38.52])
-        by mailhost3.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 06QFZkD6021579;
-        Sun, 26 Jul 2020 16:35:46 +0100
-Received: from VTC.emeia.fujitsu.local (unknown [172.17.38.7])
-        by x-serv01 (Postfix) with ESMTP id 6292020720;
-        Sun, 26 Jul 2020 17:35:37 +0200 (CEST)
-From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-To:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Mike Christie <michael.christie@oracle.com>,
+        Sun, 26 Jul 2020 14:39:20 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06QIbljR082852;
+        Sun, 26 Jul 2020 18:39:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=nApuHpVdBAEz1jxhBB90dQ9j80Nu0n3EgArkR+VtjhY=;
+ b=q6QlSFjeHP+zEWE7bVbFrdE6zAiT3xDcgEy5fskqKtSocd9qJQs6SESBxh61nh7MnHw7
+ YY2qFJWaXBuDt2Ly0ObtouQxGpwZOogGgmzdzWB3JClDlUGZyEvD36TlgvIFLhqm00gu
+ 6NhO2hFfBS8aXEcViSPjfdHJFZR+DURqDy5Y2hgza3cqf9FdsUIlh1zpFVqC39NQex0T
+ 8ahn06xBilHRwRn2bqClOCTHdWGa1Osc2uRJA/gGczW/PDDfZTvk4UxIztwQ7DTMS/1Z
+ XrTfAdc8mSg5XqTO1KyZWATWLheKeQa43xU9zLdk7I5oCBsBC9uKarjkfCKzWdsS8Lt9 HQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 32gxd3hn7f-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sun, 26 Jul 2020 18:39:16 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06QIJFMP092950;
+        Sun, 26 Jul 2020 18:37:16 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3030.oracle.com with ESMTP id 32hdppbh5j-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 26 Jul 2020 18:37:16 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 06QIbBN9017118;
+        Sun, 26 Jul 2020 18:37:11 GMT
+Received: from [20.15.0.8] (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sun, 26 Jul 2020 11:37:11 -0700
+Subject: Re: [PATCH] scsi: target: loop: Fix handling of aborted TMRs
+To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Subject: [PATCH v3 8/8] scsi: target: tcmu: Make TMR notification optional
-Date:   Sun, 26 Jul 2020 17:35:10 +0200
-Message-Id: <20200726153510.13077-9-bstroesser@ts.fujitsu.com>
-X-Mailer: git-send-email 2.12.3
-In-Reply-To: <20200726153510.13077-1-bstroesser@ts.fujitsu.com>
-References: <20200726153510.13077-1-bstroesser@ts.fujitsu.com>
+References: <20200715160403.12578-1-bstroesser@ts.fujitsu.com>
+ <795a006d-6d66-a635-7e76-601cb7807f5b@oracle.com>
+ <2694d1fc-8792-0fe2-4dec-78f15d3b4ec5@ts.fujitsu.com>
+From:   Mike Christie <michael.christie@oracle.com>
+Message-ID: <90048ea8-3b8f-cc06-7869-dca645cd68f2@oracle.com>
+Date:   Sun, 26 Jul 2020 13:37:10 -0500
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <2694d1fc-8792-0fe2-4dec-78f15d3b4ec5@ts.fujitsu.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9694 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0 adultscore=0
+ phishscore=0 malwarescore=0 mlxlogscore=999 spamscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007260145
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9694 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
+ lowpriorityscore=0 impostorscore=0 clxscore=1015 suspectscore=0
+ bulkscore=0 mlxlogscore=999 priorityscore=1501 mlxscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007260146
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Add "tmr_notification" configFS attribute to tcmu devices.
-If default value 0 of the attribute is used, tcmu only
-removes aborted commands from qfull_queue.
-If user changes tmr_notification to 1, additionally
-TMR notifications will be written to the cmd ring.
+On 7/26/20 6:02 AM, Bodo Stroesser wrote:
+> On 2020-07-26 07:16, Mike Christie wrote:
+>> On 7/15/20 11:04 AM, Bodo Stroesser wrote:
+>>> Fix:
+>>> After calling the aborted_task callback the core immediately
+>>> releases the se_cmd that represents the ABORT_TASK. The woken
+>>> up thread (tcm_loop_issue_tmr) therefore must not access se_cmd
+>>> and tl_cmd in case of aborted TMRs.
+>>
+>> The code and fix description below look ok. I didn't get the above part though. If we have TARGET_SCF_ACK_KREF set then doesn't the se_cmd and tl_cmd stay around until we do the target_put_sess_cmd in tcm_loop_issue_tmr?
+> 
+> No. For an aborted ABORT_TASK, target_handle_abort is called.
+> If tas is not set, it executes this code:
+> 
+>         } else {
+>                 /*
+>                  * Allow the fabric driver to unmap any resources before
+>                  * releasing the descriptor via TFO->release_cmd().
+>                  */
+>                 cmd->se_tfo->aborted_task(cmd);
+>                 if (ack_kref)
+>                         WARN_ON_ONCE(target_put_sess_cmd(cmd) != 0);
+>                 /*
+>                  * To do: establish a unit attention condition on the I_T
+>                  * nexus associated with cmd. See also the paragraph "Aborting
+>                  * commands" in SAM.
+>                  */
+>         }
+> 
+>         WARN_ON_ONCE(kref_read(&cmd->cmd_kref) == 0);
+> 
+>         transport_lun_remove_cmd(cmd);
+> 
+>         transport_cmd_check_stop_to_fabric(cmd);
+> 
+> That means: no matter whether SCF_ACK_REF is set in the cmd or not:
+> 1) fabric's aborted_task handler and a waiter woken up by aborted_task must not call target_put_sess_cmd.
+> 2) a waiter woken up by aborted_task() must not access se_cmd (or tl_cmd) since target_handle_abort
+>    might have released it completely meanwhile.
+> 
 
-Signed-off-by: Bodo Stroesser <bstroesser@ts.fujitsu.com>
----
- drivers/target/target_core_user.c | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+Oh no, so xen has the same cmd lifetime issue as loop right?
 
-diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-index cb5a561a46e8..9b7592350502 100644
---- a/drivers/target/target_core_user.c
-+++ b/drivers/target/target_core_user.c
-@@ -118,6 +118,7 @@ struct tcmu_dev {
- #define TCMU_DEV_BIT_OPEN 0
- #define TCMU_DEV_BIT_BROKEN 1
- #define TCMU_DEV_BIT_BLOCKED 2
-+#define TCMU_DEV_BIT_TMR_NOTIFY 3
- 	unsigned long flags;
- 
- 	struct uio_info uio_info;
-@@ -1260,6 +1261,9 @@ tcmu_tmr_notify(struct se_device *se_dev, enum tcm_tmreq_table tmf,
- 	if (unqueued)
- 		tcmu_set_next_deadline(&udev->qfull_queue, &udev->qfull_timer);
- 
-+	if (!test_bit(TCMU_DEV_BIT_TMR_NOTIFY, &udev->flags))
-+		goto unlock;
-+
- 	pr_debug("TMR event %d on dev %s, aborted cmds %d, afflicted cmd_ids %d\n",
- 		 tcmu_tmr_type(tmf), udev->name, i, cmd_cnt);
- 
-@@ -2706,6 +2710,39 @@ static ssize_t tcmu_emulate_write_cache_store(struct config_item *item,
- }
- CONFIGFS_ATTR(tcmu_, emulate_write_cache);
- 
-+static ssize_t tcmu_tmr_notification_show(struct config_item *item, char *page)
-+{
-+	struct se_dev_attrib *da = container_of(to_config_group(item),
-+					struct se_dev_attrib, da_group);
-+	struct tcmu_dev *udev = TCMU_DEV(da->da_dev);
-+
-+	return snprintf(page, PAGE_SIZE, "%i\n",
-+			test_bit(TCMU_DEV_BIT_TMR_NOTIFY, &udev->flags));
-+}
-+
-+static ssize_t tcmu_tmr_notification_store(struct config_item *item,
-+					   const char *page, size_t count)
-+{
-+	struct se_dev_attrib *da = container_of(to_config_group(item),
-+					struct se_dev_attrib, da_group);
-+	struct tcmu_dev *udev = TCMU_DEV(da->da_dev);
-+	u8 val;
-+	int ret;
-+
-+	ret = kstrtou8(page, 0, &val);
-+	if (ret < 0)
-+		return ret;
-+	if (val > 1)
-+		return -EINVAL;
-+
-+	if (val)
-+		set_bit(TCMU_DEV_BIT_TMR_NOTIFY, &udev->flags);
-+	else
-+		clear_bit(TCMU_DEV_BIT_TMR_NOTIFY, &udev->flags);
-+	return count;
-+}
-+CONFIGFS_ATTR(tcmu_, tmr_notification);
-+
- static ssize_t tcmu_block_dev_show(struct config_item *item, char *page)
- {
- 	struct se_device *se_dev = container_of(to_config_group(item),
-@@ -2787,6 +2824,7 @@ static struct configfs_attribute *tcmu_attrib_attrs[] = {
- 	&tcmu_attr_dev_config,
- 	&tcmu_attr_dev_size,
- 	&tcmu_attr_emulate_write_cache,
-+	&tcmu_attr_tmr_notification,
- 	&tcmu_attr_nl_reply_supported,
- 	NULL,
- };
--- 
-2.12.3
+And, it looks like iscsi has an issue too. I can hit both of those WARNs.
 
+I'm ok with your patch, but is there a way to fix this in core for everyone?
+
+It seems like something that must have worked at some point for everyone, but we broke. I'll try to get some time today and git bisect this to see if it's a regression.
