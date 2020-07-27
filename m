@@ -2,161 +2,147 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32F4A22E20C
-	for <lists+target-devel@lfdr.de>; Sun, 26 Jul 2020 20:38:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0B0B22F0B4
+	for <lists+target-devel@lfdr.de>; Mon, 27 Jul 2020 16:27:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727037AbgGZSi3 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sun, 26 Jul 2020 14:38:29 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:42968 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726824AbgGZSi2 (ORCPT
+        id S1732608AbgG0O01 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 27 Jul 2020 10:26:27 -0400
+Received: from mail1.bemta26.messagelabs.com ([85.158.142.113]:40833 "EHLO
+        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1732592AbgG0O0Z (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sun, 26 Jul 2020 14:38:28 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06QIbx0C082867;
-        Sun, 26 Jul 2020 18:38:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=VyREZUMBrtWdFUD+uUI7DsAjSnDNv5MTuIfaBrWgI4o=;
- b=wDW/3vjEnyP64aF/LNjMsm8v55xnUqcOwKfXmkCAeu20hknu02F/pf9wArYRGVNmtAZ1
- 2fl1XHzGH/1znmBGmRMbdE+nal0qdWW3KLJB4x7tCuES254MGhtXWGpIpG04kbFMUulj
- mmxKEkbpCSF0OxTOSFQQZls+REeX3ptEgcnvmiEnOzEbiYlspCJDv3PSmgVdcpKnbZIw
- V5vtIRjonDlh4ugmltQG+tOyPOi2RVXPtCtAAyTLrAWt9jFZ8QtBf3ogUiN64akJtYZ/
- G4bJE44v1IxDPByhEv3YbjsfBK+JA8R8cvrw959ld3ffW0aAUvmypFGNbsKUhFecS3Nt gw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 32gxd3hn6j-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sun, 26 Jul 2020 18:38:24 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06QIJF1Y093057;
-        Sun, 26 Jul 2020 18:38:23 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 32hdppbhem-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sun, 26 Jul 2020 18:38:23 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 06QIcMMS017549;
-        Sun, 26 Jul 2020 18:38:22 GMT
-Received: from [20.15.0.8] (/73.88.28.6)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sun, 26 Jul 2020 11:38:22 -0700
-Subject: Re: [PATCH v3 0/8] scsi: target: tcmu: Add TMR notification for tcmu
-To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
+        Mon, 27 Jul 2020 10:26:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
+        s=200619tsfj; t=1595859981; i=@ts.fujitsu.com;
+        bh=4E27zNem+Z9EGkXpiHjf/1zOwy1imGa6yfZ6czr2aGA=;
+        h=Subject:To:References:From:Message-ID:Date:MIME-Version:
+         In-Reply-To:Content-Type:Content-Transfer-Encoding;
+        b=IelngzuUlVzfTNtAGVr4xqibdaV+nG6aUVdczneiZMW3cCzfxODZcsTEHdrlPVN3A
+         EghQXut3iOcE8mwmtdPfRbnpe7qyGxY42aclgfl6681Xoz5e8Y0n3yXyfeWfAY+V49
+         6rtTs1VFQbQz5XA2n/Jw66oyGkiLhwjXUT30osjuzCrFB6d5816OlVSHEiLD/xv4Yn
+         Qfb8BfVqu6HZNepU2gI6KR29i/HSVfls1wNxlD7s0kwowPxY8Qd9cUXbQd7gxDQFk6
+         JiiV4Yb48PL9ZQ/SmW6qpPcwpsG2ot8Lbhyu6TvDY1rB3nvgVQkxi+70Aw7od7I1Ym
+         BD/8oGXk9/pxw==
+Received: from [100.113.7.116] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
+        by server-2.bemta.az-b.eu-central-1.aws.symcld.net id B1/C2-35251-D04EE1F5; Mon, 27 Jul 2020 14:26:21 +0000
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrDIsWRWlGSWpSXmKPExsViZ8MxVZfniVy
+  8wYL7lhbd13ewWSw//o/J4u+kG6wWrUvfMjmweHx8eovF4/MmuQCmKNbMvKT8igTWjCs3JjEW
+  PJWpuHTzPWMDY49YFyMXh5DAZEaJjj+32CCcfkaJzuanjF2MnBzCAq4Sq9ddZwFJiAisYZRY9
+  HopE0TVbUaJO4t2s4BUsQkYSKyYdB/M5hVwlNj4vY8NxGYRUJW4fn0b0CQODlGBcIlnK/whSg
+  QlTs58AlbOKWAnsW7pXFYQm1lAXeLPvEvMELa4xK0n85kgbHmJ7W/nME9g5JuFpH0WkpZZSFp
+  mIWlZwMiyitEiqSgzPaMkNzEzR9fQwEDX0NBY10zXwlwvsUo3SS+1VDc5Na+kKBEoqZdYXqxX
+  XJmbnJOil5dasokRGNAphWzhOxjPvP6gd4hRkoNJSZT332K5eCG+pPyUyozE4oz4otKc1OJDj
+  DIcHEoSvEoPgXKCRanpqRVpmTnA6IJJS3DwKInwWj8CSvMWFyTmFmemQ6ROMepyXL4+bxGzEE
+  tefl6qlDivLUiRAEhRRmke3AhYpF9ilJUS5mVkYGAQ4ilILcrNLEGVf8UozsGoJMw7G+QSnsy
+  8ErhNr4COYAI6ovG4LMgRJYkIKakGppn/ytKmOk6OyJijcW+Ga86zNdts/3D85Ig7oevpE1T9
+  S6G3jPVGRkKpz2K5N5UyJq5X7bqy+6+b1SRP/i2m9ntH+MSszpN5/xtfTL3/N212/80tveqdL
+  2L22+6JVH3NdmiOt2NXwdHOxd5RQicDfn0SuNdfl8sQmavaLa/TtP/E1IpJs3rdeGP87xdeN5
+  izu7+u8Mrpsgg/qXubIq6L2Ndrt1sr3ytX+PG/5HTN22/tC1nbUyzuP3ELjDu8c9nt7TkNSsJ
+  /7VeYl2lZ5Vs6bur2Yn3ZIt21mYt9BfNN1ZMT1mqnWh7fvm5dzZOAkMfJ/88fPf1i+vqlQpxL
+  HSvEdq+LW3/q9rOt1WoSN1ZvVGIpzkg01GIuKk4EAHDDHnpvAwAA
+X-Env-Sender: bstroesser@ts.fujitsu.com
+X-Msg-Ref: server-20.tower-248.messagelabs.com!1595859980!272158!1
+X-Originating-IP: [62.60.8.149]
+X-SYMC-ESS-Client-Auth: outbound-route-from=pass
+X-StarScan-Received: 
+X-StarScan-Version: 9.50.2; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 25483 invoked from network); 27 Jul 2020 14:26:20 -0000
+Received: from unknown (HELO mailhost2.uk.fujitsu.com) (62.60.8.149)
+  by server-20.tower-248.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 27 Jul 2020 14:26:20 -0000
+Received: from x-serv01 ([172.17.38.52])
+        by mailhost2.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 06REQDK1028624;
+        Mon, 27 Jul 2020 15:26:13 +0100
+Received: from [172.17.39.90] (unknown [172.17.39.90])
+        by x-serv01 (Postfix) with ESMTP id 26B50201DA;
+        Mon, 27 Jul 2020 16:26:09 +0200 (CEST)
+Subject: Re: [PATCH] scsi: target: loop: Fix handling of aborted TMRs
+To:     Mike Christie <michael.christie@oracle.com>,
         "Martin K. Petersen" <martin.petersen@oracle.com>,
         linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-References: <20200726153510.13077-1-bstroesser@ts.fujitsu.com>
-From:   Mike Christie <michael.christie@oracle.com>
-Message-ID: <283dd5a6-b925-a33a-f481-f4b7bff2517b@oracle.com>
-Date:   Sun, 26 Jul 2020 13:38:21 -0500
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.10.0
+References: <20200715160403.12578-1-bstroesser@ts.fujitsu.com>
+ <795a006d-6d66-a635-7e76-601cb7807f5b@oracle.com>
+ <2694d1fc-8792-0fe2-4dec-78f15d3b4ec5@ts.fujitsu.com>
+ <90048ea8-3b8f-cc06-7869-dca645cd68f2@oracle.com>
+From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Message-ID: <7c2d8052-fb5e-0a3b-a894-df8bfab44f21@ts.fujitsu.com>
+Date:   Mon, 27 Jul 2020 16:26:05 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <20200726153510.13077-1-bstroesser@ts.fujitsu.com>
+In-Reply-To: <90048ea8-3b8f-cc06-7869-dca645cd68f2@oracle.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9694 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0 adultscore=0
- phishscore=0 malwarescore=0 mlxlogscore=999 spamscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007260145
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9694 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
- lowpriorityscore=0 impostorscore=0 clxscore=1015 suspectscore=0
- bulkscore=0 mlxlogscore=999 priorityscore=1501 mlxscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007260146
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 7/26/20 10:35 AM, Bodo Stroesser wrote:
-> This patch series is made on top of Martin's for-next branch.
+On 2020-07-26 20:37, Mike Christie wrote:
+> On 7/26/20 6:02 AM, Bodo Stroesser wrote:
+>> On 2020-07-26 07:16, Mike Christie wrote:
+>>> On 7/15/20 11:04 AM, Bodo Stroesser wrote:
+>>>> Fix:
+>>>> After calling the aborted_task callback the core immediately
+>>>> releases the se_cmd that represents the ABORT_TASK. The woken
+>>>> up thread (tcm_loop_issue_tmr) therefore must not access se_cmd
+>>>> and tl_cmd in case of aborted TMRs.
+>>>
+>>> The code and fix description below look ok. I didn't get the above part though. If we have TARGET_SCF_ACK_KREF set then doesn't the se_cmd and tl_cmd stay around until we do the target_put_sess_cmd in tcm_loop_issue_tmr?
+>>
+>> No. For an aborted ABORT_TASK, target_handle_abort is called.
+>> If tas is not set, it executes this code:
+>>
+>>          } else {
+>>                  /*
+>>                   * Allow the fabric driver to unmap any resources before
+>>                   * releasing the descriptor via TFO->release_cmd().
+>>                   */
+>>                  cmd->se_tfo->aborted_task(cmd);
+>>                  if (ack_kref)
+>>                          WARN_ON_ONCE(target_put_sess_cmd(cmd) != 0);
+>>                  /*
+>>                   * To do: establish a unit attention condition on the I_T
+>>                   * nexus associated with cmd. See also the paragraph "Aborting
+>>                   * commands" in SAM.
+>>                   */
+>>          }
+>>
+>>          WARN_ON_ONCE(kref_read(&cmd->cmd_kref) == 0);
+>>
+>>          transport_lun_remove_cmd(cmd);
+>>
+>>          transport_cmd_check_stop_to_fabric(cmd);
+>>
+>> That means: no matter whether SCF_ACK_REF is set in the cmd or not:
+>> 1) fabric's aborted_task handler and a waiter woken up by aborted_task must not call target_put_sess_cmd.
+>> 2) a waiter woken up by aborted_task() must not access se_cmd (or tl_cmd) since target_handle_abort
+>>     might have released it completely meanwhile.
+>>
 > 
-> ChangeLog:
+> Oh no, so xen has the same cmd lifetime issue as loop right?
+
+To me it looks like xen uses nearly the same code like tcm_loop did before my patch.
+There is nothing wrong with that code regarding the cmd lifetime.
+The problem instead is, that the thread which started a TMR (ABORT_TASK) will sleep forever if that TMR itself is aborted by a further TMR (LUN_RESET).
+This is because tcm_loop_aborted_task() misses the complete() call.
+ 
+But if we just add the complete() call to XXXX_aborted_task(), we run into trouble because what core expects from fabric handlers is different:
+1) If core calls XXXX_queue_tm_rsp(), then fabric has to release one ref count only if SCF_ACK_REF is set. Otherwise it must not.
+2) If core calls XXXX_aborted_task(), then fabric must not release ref count, no matter whether SCF_ACK_REF is set.
+
+So I decided for my patch to no longer use TARGET_SCF_ACK_KREF, since then we can handle both situation the same way.
+After that it was a short step to move the data fields used by the thread after wakeup() from tl_cmd to stack, because then the woken up theqard has no need to access tl_cmd, which can be freed meanwhile.
+
+I think, the same way to fix the problem would be fine for xen also, but I'm still wondering why the thread there does not call target_put_sess_cmd, but calls transport_generic_free_cmd.
+
 > 
-> v2: in patch "scsi: target: tcmu: Implement tmr_notify callback"
->     changed new comment's style from "// ..." to "/* ... */"
->     and correctly use "/** " for function doc.
+> And, it looks like iscsi has an issue too. I can hit both of those WARNs.
 > 
-> V3:
->  - Patch 1 "scsi: target: Modify core_tmr_abort_task()":
->    fixed wrong spin_lock handling. Nested calls to
->    spin_lock_irqsave and spin_lock_irqrestore used the same
->    flags field. Inner pair replaced by spin_lock / spin_unlock
->     
->  - Patches 5,7,8:
->    "scsi: target: tcmu: Factor out new helper ring_insert_padding"
->    "scsi: target: tcmu: Implement tmr_notify callback"
->    "scsi: target: tcmu: Make TMR notification optional"
->    New definitions of struct tcmu_dev *dev renamed to *udev.
+> I'm ok with your patch, but is there a way to fix this in core for everyone?
 > 
->  - Patch 8 "scsi: target: tcmu: Make TMR notification optional"
->    Spacing fixed at function definition.
-> 
-> ---
-> 
-> TCM/LIO core handles TMRs without involving backends.
-> But TMR completion message is sent to initiator only after
-> commands aborted by the TMR are completed by the backend.
-> Especially in case of tcmu backend, if userspace executes long
-> running commands and therefore initiator sends ABORT_TASK on
-> timeout, the ABORT itself can time out if core still waits for
-> userspace/tcmu to complete the command.
-> 
-> It would be very helpful for userspace to get a notification
-> about received TMR and which commands were aborted by that TMR.
-> Then userspace can decide whether to cancel command processing,
-> and it can send command completion earlier than it would without
-> TMR notification.
-> It is also helpful for userspace traces and device emulation to
-> get notification about TMR events.
-> 
-> So this patch series in the first two patches implements in
-> core the usage of a new optional backend callback for TMR
-> notifications. The core calls it before core waits for
-> completion of aborted commands (params: se_dev, TMR type,
-> and list of se_cmds aborted by this TMR).
-> Of course other backends than tcmu can use this part of the
-> series also to implement their own TMR notification if
-> necessary.
-> 
-> The further six patches implement the TMR notify callback for
-> tcmu. The new configFS attribute tmr_notification allows to
-> switch on TMR messages on the cmd ring. The default of the
-> attribute is the old behavior without TMR info on the ring, but
-> with following changes:
->  - if tcmu receives an already aborted command, it immediately
->    rejects it. So it will never appear in userspace.
->  - if tcmu finds, that according to TMR notification a cmd on
->    the qfull_queue was aborted, tcmu removes it from qfull_queue
->    and completes it immediately. So userspace will not 'see'
->    those commands.
-> 
-> When attribute tmr_notification is set to 1, tcmu additionally
-> prepares a list of cmd_ids from those commands, that are aborted
-> by the TMR and are active in cmd ring (not timed out).
-> This list together with the TMR type is either immediately
-> written to cmd ring (new TMR entry type) or queued in a separate
-> tmr queue if ring space is too small.
-> TMRs in the tmr queue do not time out. If ring space becomes
-> available, tcmu moves TMRs from tmr queue to ring with higher
-> priority than cmds from qfull queue.
-> 
-> This mechanism makes sure that userspace receives TMR
-> notifications as early as possible. Userspace can use the
-> list of cmd_ids attached to the TMR notification to identify
-> aborted commands from its list of received and not yet completed
-> commands. In case userspace has meanwhile completed some of the
-> cmd_ids on the list, it can just ignore these cmd_ids.
-> A possible new command having the same cmd_id as one of the
-> aborted commands will always appear on the ring after the TMR
-> notification.
+> It seems like something that must have worked at some point for everyone, but we broke. I'll try to get some time today and git bisect this to see if it's a regression.
 > 
 
-Thanks for all the work on this.
-
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-
+I'm wondering whether aborting an Abort ever was tested at least for these drivers.
