@@ -2,147 +2,143 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0B0B22F0B4
-	for <lists+target-devel@lfdr.de>; Mon, 27 Jul 2020 16:27:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 189E322F778
+	for <lists+target-devel@lfdr.de>; Mon, 27 Jul 2020 20:14:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732608AbgG0O01 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 27 Jul 2020 10:26:27 -0400
-Received: from mail1.bemta26.messagelabs.com ([85.158.142.113]:40833 "EHLO
-        mail1.bemta26.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732592AbgG0O0Z (ORCPT
+        id S1731110AbgG0SN5 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 27 Jul 2020 14:13:57 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:48460 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728312AbgG0SN5 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 27 Jul 2020 10:26:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1595859981; i=@ts.fujitsu.com;
-        bh=4E27zNem+Z9EGkXpiHjf/1zOwy1imGa6yfZ6czr2aGA=;
-        h=Subject:To:References:From:Message-ID:Date:MIME-Version:
-         In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        b=IelngzuUlVzfTNtAGVr4xqibdaV+nG6aUVdczneiZMW3cCzfxODZcsTEHdrlPVN3A
-         EghQXut3iOcE8mwmtdPfRbnpe7qyGxY42aclgfl6681Xoz5e8Y0n3yXyfeWfAY+V49
-         6rtTs1VFQbQz5XA2n/Jw66oyGkiLhwjXUT30osjuzCrFB6d5816OlVSHEiLD/xv4Yn
-         Qfb8BfVqu6HZNepU2gI6KR29i/HSVfls1wNxlD7s0kwowPxY8Qd9cUXbQd7gxDQFk6
-         JiiV4Yb48PL9ZQ/SmW6qpPcwpsG2ot8Lbhyu6TvDY1rB3nvgVQkxi+70Aw7od7I1Ym
-         BD/8oGXk9/pxw==
-Received: from [100.113.7.116] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-2.bemta.az-b.eu-central-1.aws.symcld.net id B1/C2-35251-D04EE1F5; Mon, 27 Jul 2020 14:26:21 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrDIsWRWlGSWpSXmKPExsViZ8MxVZfniVy
-  8wYL7lhbd13ewWSw//o/J4u+kG6wWrUvfMjmweHx8eovF4/MmuQCmKNbMvKT8igTWjCs3JjEW
-  PJWpuHTzPWMDY49YFyMXh5DAZEaJjj+32CCcfkaJzuanjF2MnBzCAq4Sq9ddZwFJiAisYZRY9
-  HopE0TVbUaJO4t2s4BUsQkYSKyYdB/M5hVwlNj4vY8NxGYRUJW4fn0b0CQODlGBcIlnK/whSg
-  QlTs58AlbOKWAnsW7pXFYQm1lAXeLPvEvMELa4xK0n85kgbHmJ7W/nME9g5JuFpH0WkpZZSFp
-  mIWlZwMiyitEiqSgzPaMkNzEzR9fQwEDX0NBY10zXwlwvsUo3SS+1VDc5Na+kKBEoqZdYXqxX
-  XJmbnJOil5dasokRGNAphWzhOxjPvP6gd4hRkoNJSZT332K5eCG+pPyUyozE4oz4otKc1OJDj
-  DIcHEoSvEoPgXKCRanpqRVpmTnA6IJJS3DwKInwWj8CSvMWFyTmFmemQ6ROMepyXL4+bxGzEE
-  tefl6qlDivLUiRAEhRRmke3AhYpF9ilJUS5mVkYGAQ4ilILcrNLEGVf8UozsGoJMw7G+QSnsy
-  8ErhNr4COYAI6ovG4LMgRJYkIKakGppn/ytKmOk6OyJijcW+Ga86zNdts/3D85Ig7oevpE1T9
-  S6G3jPVGRkKpz2K5N5UyJq5X7bqy+6+b1SRP/i2m9ntH+MSszpN5/xtfTL3/N212/80tveqdL
-  2L22+6JVH3NdmiOt2NXwdHOxd5RQicDfn0SuNdfl8sQmavaLa/TtP/E1IpJs3rdeGP87xdeN5
-  izu7+u8Mrpsgg/qXubIq6L2Ndrt1sr3ytX+PG/5HTN22/tC1nbUyzuP3ELjDu8c9nt7TkNSsJ
-  /7VeYl2lZ5Vs6bur2Yn3ZIt21mYt9BfNN1ZMT1mqnWh7fvm5dzZOAkMfJ/88fPf1i+vqlQpxL
-  HSvEdq+LW3/q9rOt1WoSN1ZvVGIpzkg01GIuKk4EAHDDHnpvAwAA
-X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-20.tower-248.messagelabs.com!1595859980!272158!1
-X-Originating-IP: [62.60.8.149]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.50.2; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 25483 invoked from network); 27 Jul 2020 14:26:20 -0000
-Received: from unknown (HELO mailhost2.uk.fujitsu.com) (62.60.8.149)
-  by server-20.tower-248.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 27 Jul 2020 14:26:20 -0000
-Received: from x-serv01 ([172.17.38.52])
-        by mailhost2.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 06REQDK1028624;
-        Mon, 27 Jul 2020 15:26:13 +0100
-Received: from [172.17.39.90] (unknown [172.17.39.90])
-        by x-serv01 (Postfix) with ESMTP id 26B50201DA;
-        Mon, 27 Jul 2020 16:26:09 +0200 (CEST)
+        Mon, 27 Jul 2020 14:13:57 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06RIBa3f086665;
+        Mon, 27 Jul 2020 18:13:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=o37VbToTbIhNJVlzIhHl/VDVaZiERhaMiVJdtdW3pkY=;
+ b=TILvl5kgvMc2Egus8pOWq/vQOzJMoxEBVQ5i9KM2e2kjwVyARiwqUAobkmTV/db+25oz
+ eK9M9EoGKepeo8YBMr8DUVXdaJnc1mpxW/M3w9tFrdsIndF2j7NIgMcLezoaaLb52Ujx
+ IMilTg1810ufGc3SnEec/aZK2sl34KDh90oPs6MhLbcEixjosgN/ef56Y+2gzLeg3W4v
+ BFgc37DZDncNt/NG7uJsT4E3kQ6ufWrmz1hAwcrpzr25w1S5QW22DMPFS0Z0p+UxOHqN
+ tujvaq+nUzMpZ37SNY1eCqlPXFVmAoVGIUQRLRqKHD7L0Mx7a8xB9SE6kPu50VL+vBq1 jA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 32hu1jb4ex-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 27 Jul 2020 18:13:53 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06RICNtv124136;
+        Mon, 27 Jul 2020 18:13:52 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 32hu5rcdt2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 27 Jul 2020 18:13:52 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06RIDpAn032613;
+        Mon, 27 Jul 2020 18:13:51 GMT
+Received: from [20.15.0.8] (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 27 Jul 2020 11:13:51 -0700
 Subject: Re: [PATCH] scsi: target: loop: Fix handling of aborted TMRs
-To:     Mike Christie <michael.christie@oracle.com>,
+To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
         "Martin K. Petersen" <martin.petersen@oracle.com>,
         linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
 References: <20200715160403.12578-1-bstroesser@ts.fujitsu.com>
  <795a006d-6d66-a635-7e76-601cb7807f5b@oracle.com>
  <2694d1fc-8792-0fe2-4dec-78f15d3b4ec5@ts.fujitsu.com>
  <90048ea8-3b8f-cc06-7869-dca645cd68f2@oracle.com>
-From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Message-ID: <7c2d8052-fb5e-0a3b-a894-df8bfab44f21@ts.fujitsu.com>
-Date:   Mon, 27 Jul 2020 16:26:05 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ <7c2d8052-fb5e-0a3b-a894-df8bfab44f21@ts.fujitsu.com>
+From:   Mike Christie <michael.christie@oracle.com>
+Message-ID: <b8fc90b9-7038-b202-e7ef-bc4da56816f0@oracle.com>
+Date:   Mon, 27 Jul 2020 13:13:50 -0500
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <90048ea8-3b8f-cc06-7869-dca645cd68f2@oracle.com>
+In-Reply-To: <7c2d8052-fb5e-0a3b-a894-df8bfab44f21@ts.fujitsu.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9695 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 adultscore=0 bulkscore=0
+ malwarescore=0 mlxscore=0 spamscore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007270123
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9695 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 mlxlogscore=999
+ malwarescore=0 impostorscore=0 priorityscore=1501 spamscore=0 phishscore=0
+ suspectscore=2 bulkscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007270123
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 2020-07-26 20:37, Mike Christie wrote:
-> On 7/26/20 6:02 AM, Bodo Stroesser wrote:
->> On 2020-07-26 07:16, Mike Christie wrote:
->>> On 7/15/20 11:04 AM, Bodo Stroesser wrote:
->>>> Fix:
->>>> After calling the aborted_task callback the core immediately
->>>> releases the se_cmd that represents the ABORT_TASK. The woken
->>>> up thread (tcm_loop_issue_tmr) therefore must not access se_cmd
->>>> and tl_cmd in case of aborted TMRs.
+On 7/27/20 9:26 AM, Bodo Stroesser wrote:
+> On 2020-07-26 20:37, Mike Christie wrote:
+>> On 7/26/20 6:02 AM, Bodo Stroesser wrote:
+>>> On 2020-07-26 07:16, Mike Christie wrote:
+>>>> On 7/15/20 11:04 AM, Bodo Stroesser wrote:
+>>>>> Fix:
+>>>>> After calling the aborted_task callback the core immediately
+>>>>> releases the se_cmd that represents the ABORT_TASK. The woken
+>>>>> up thread (tcm_loop_issue_tmr) therefore must not access se_cmd
+>>>>> and tl_cmd in case of aborted TMRs.
+>>>>
+>>>> The code and fix description below look ok. I didn't get the above part though. If we have TARGET_SCF_ACK_KREF set then doesn't the se_cmd and tl_cmd stay around until we do the target_put_sess_cmd in tcm_loop_issue_tmr?
 >>>
->>> The code and fix description below look ok. I didn't get the above part though. If we have TARGET_SCF_ACK_KREF set then doesn't the se_cmd and tl_cmd stay around until we do the target_put_sess_cmd in tcm_loop_issue_tmr?
+>>> No. For an aborted ABORT_TASK, target_handle_abort is called.
+>>> If tas is not set, it executes this code:
+>>>
+>>>          } else {
+>>>                  /*
+>>>                   * Allow the fabric driver to unmap any resources before
+>>>                   * releasing the descriptor via TFO->release_cmd().
+>>>                   */
+>>>                  cmd->se_tfo->aborted_task(cmd);
+>>>                  if (ack_kref)
+>>>                          WARN_ON_ONCE(target_put_sess_cmd(cmd) != 0);
+>>>                  /*
+>>>                   * To do: establish a unit attention condition on the I_T
+>>>                   * nexus associated with cmd. See also the paragraph "Aborting
+>>>                   * commands" in SAM.
+>>>                   */
+>>>          }
+>>>
+>>>          WARN_ON_ONCE(kref_read(&cmd->cmd_kref) == 0);
+>>>
+>>>          transport_lun_remove_cmd(cmd);
+>>>
+>>>          transport_cmd_check_stop_to_fabric(cmd);
+>>>
+>>> That means: no matter whether SCF_ACK_REF is set in the cmd or not:
+>>> 1) fabric's aborted_task handler and a waiter woken up by aborted_task must not call target_put_sess_cmd.
+>>> 2) a waiter woken up by aborted_task() must not access se_cmd (or tl_cmd) since target_handle_abort
+>>>     might have released it completely meanwhile.
+>>>
 >>
->> No. For an aborted ABORT_TASK, target_handle_abort is called.
->> If tas is not set, it executes this code:
->>
->>          } else {
->>                  /*
->>                   * Allow the fabric driver to unmap any resources before
->>                   * releasing the descriptor via TFO->release_cmd().
->>                   */
->>                  cmd->se_tfo->aborted_task(cmd);
->>                  if (ack_kref)
->>                          WARN_ON_ONCE(target_put_sess_cmd(cmd) != 0);
->>                  /*
->>                   * To do: establish a unit attention condition on the I_T
->>                   * nexus associated with cmd. See also the paragraph "Aborting
->>                   * commands" in SAM.
->>                   */
->>          }
->>
->>          WARN_ON_ONCE(kref_read(&cmd->cmd_kref) == 0);
->>
->>          transport_lun_remove_cmd(cmd);
->>
->>          transport_cmd_check_stop_to_fabric(cmd);
->>
->> That means: no matter whether SCF_ACK_REF is set in the cmd or not:
->> 1) fabric's aborted_task handler and a waiter woken up by aborted_task must not call target_put_sess_cmd.
->> 2) a waiter woken up by aborted_task() must not access se_cmd (or tl_cmd) since target_handle_abort
->>     might have released it completely meanwhile.
->>
+>> Oh no, so xen has the same cmd lifetime issue as loop right?
 > 
-> Oh no, so xen has the same cmd lifetime issue as loop right?
+> To me it looks like xen uses nearly the same code like tcm_loop did before my patch.
+> There is nothing wrong with that code regarding the cmd lifetim> The problem instead is, that the thread which started a TMR (ABORT_TASK) will sleep forever if that TMR itself is aborted by a further TMR (LUN_RESET).
+> This is because tcm_loop_aborted_task() misses the complete() call.
+>  
+> But if we just add the complete() call to XXXX_aborted_task(), we run into trouble because what core expects from fabric handlers is different:
+> 1) If core calls XXXX_queue_tm_rsp(), then fabric has to release one ref count only if SCF_ACK_REF is set. Otherwise it must not.
+> 2) If core calls XXXX_aborted_task(), then fabric must not release ref count, no matter whether SCF_ACK_REF is set.
 
-To me it looks like xen uses nearly the same code like tcm_loop did before my patch.
-There is nothing wrong with that code regarding the cmd lifetime.
-The problem instead is, that the thread which started a TMR (ABORT_TASK) will sleep forever if that TMR itself is aborted by a further TMR (LUN_RESET).
-This is because tcm_loop_aborted_task() misses the complete() call.
- 
-But if we just add the complete() call to XXXX_aborted_task(), we run into trouble because what core expects from fabric handlers is different:
-1) If core calls XXXX_queue_tm_rsp(), then fabric has to release one ref count only if SCF_ACK_REF is set. Otherwise it must not.
-2) If core calls XXXX_aborted_task(), then fabric must not release ref count, no matter whether SCF_ACK_REF is set.
+Maybe we agree.
 
-So I decided for my patch to no longer use TARGET_SCF_ACK_KREF, since then we can handle both situation the same way.
-After that it was a short step to move the data fields used by the thread after wakeup() from tl_cmd to stack, because then the woken up theqard has no need to access tl_cmd, which can be freed meanwhile.
-
-I think, the same way to fix the problem would be fine for xen also, but I'm still wondering why the thread there does not call target_put_sess_cmd, but calls transport_generic_free_cmd.
+I was calling #2 a cmd lifetime issue. At least loop, xen and iscsi think they can access the cmd after aborted_cmd. For loop/xen we just don't hit it, because we hit #1 first. For iscsi we are.
 
 > 
-> And, it looks like iscsi has an issue too. I can hit both of those WARNs.
+> So I decided for my patch to no longer use TARGET_SCF_ACK_KREF, since then we can handle both situation the same way.
+> After that it was a short step to move the data fields used by the thread after wakeup() from tl_cmd to stack, because then the woken up theqard has no need to access tl_cmd, which can be freed meanwhile.
 > 
-> I'm ok with your patch, but is there a way to fix this in core for everyone?
-> 
-> It seems like something that must have worked at some point for everyone, but we broke. I'll try to get some time today and git bisect this to see if it's a regression.
-> 
+> I think, the same way to fix the problem would be fine for xen also, but I'm still wondering why the thread there does not call target_put_sess_cmd, but calls transport_generic_free_cmd.
 
-I'm wondering whether aborting an Abort ever was tested at least for these drivers.
+For xen and #1 and #2 I agree we can do a similar fix as you did for xen.
+
+I would really like to figure out if #2 is a regression and understand what happened so we don't make the same mistake again and also fix iscsi. The problem with iscsi though is every couple kernels has a bug in this code path so git bisect is being a pain.
