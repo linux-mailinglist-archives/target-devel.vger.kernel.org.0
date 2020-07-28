@@ -2,85 +2,66 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21E542308E6
-	for <lists+target-devel@lfdr.de>; Tue, 28 Jul 2020 13:38:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58FC1230BB6
+	for <lists+target-devel@lfdr.de>; Tue, 28 Jul 2020 15:45:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729190AbgG1LiU (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 28 Jul 2020 07:38:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37404 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729102AbgG1LiS (ORCPT
+        id S1730081AbgG1Npm convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+target-devel@lfdr.de>); Tue, 28 Jul 2020 09:45:42 -0400
+Received: from customer-201-134-139-73.uninet-ide.com.mx ([201.134.139.73]:44024
+        "EHLO correo.tlalpan.gob.mx" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1730012AbgG1Npm (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 28 Jul 2020 07:38:18 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8639CC08C5DE
-        for <target-devel@vger.kernel.org>; Tue, 28 Jul 2020 04:38:16 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id z18so14397735wrm.12
-        for <target-devel@vger.kernel.org>; Tue, 28 Jul 2020 04:38:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=z88eUg589kIPbwfcJkBbHKFa4QR0wOZWGk2diK1jFPM=;
-        b=b8/14qSmtpua6DExDbiZQujm3FVCJQWOEnGYc8m39CT4QhCFHb7H/8m/Mr+GJhki5y
-         D26KeL8e5wwIhpqswED7Iyj8LNXjLx29RYfhZ1pPRjvkmM3zHNDeTF1tCFcQE9cmRh/R
-         raunFxUrBwUmVbHiIcNmDsAsXlg0feXUzfnq5cUO9m3PCR65DPFX0ENqSsff92XlzdML
-         2lZ1DHEdMBJRJ7G/JmLQNbN9a0xCfCCdIavasCRbfc1GMLbxrWB9YQiD4Jx827i+wgQH
-         uvPy2fXgy98qEeiaY5zYJY4YAm1gQLhdwyYSQS3qfKNnqXIVHUgDrgxJy+XFocnlCNnt
-         WweQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=z88eUg589kIPbwfcJkBbHKFa4QR0wOZWGk2diK1jFPM=;
-        b=pJD8skboTMEBDEIMk9qEyurzEa/YfZ4mIVIN8nx0PxYm4PQPt94CCIIibhNhAW3jc5
-         gslCUakC2XvZVHIjOm4PES7E6An5TkcAWqpPXx7nu1+EgGcumAIx5Vx8E8TJbiYy0DnC
-         BsSBEPSRsE3bfjFl60/gfIwMnqD76Fk08Gn1mr3SMJyQpwlrzYUysHLHhS7V1va/DJB2
-         kvBiSR+Nd/q6hNDns/ADOommNOUfI+SVZ8v6WVKDmf5xMemJROJcoTkoTXYnVenqD15Z
-         raP94cqNqD9HfMLkpsvLW9TYYxaqNIHpJGLaAnjJ6rt/8OPBDHp3E8/NCkgCumeMNitd
-         21PQ==
-X-Gm-Message-State: AOAM531H4VEiRPs3zS2mCRAyqb9BW9/0srbk1lwWnTmJVmxMsgU3aVbO
-        7X8kx6vKlcVf5b0oiOj1SY9IKlOXNuOFduzwoyI4s0DdSEs=
-X-Google-Smtp-Source: ABdhPJxf3Z6j28ZJZ91yE+38HygJgiTtZMyB/VSeYng0agg0J+nv4s0qzz48SwEN7D8BizofBLS128ELYqeZWTC2zc4=
-X-Received: by 2002:a5d:5746:: with SMTP id q6mr24649773wrw.59.1595936294234;
- Tue, 28 Jul 2020 04:38:14 -0700 (PDT)
+        Tue, 28 Jul 2020 09:45:42 -0400
+X-Greylist: delayed 16066 seconds by postgrey-1.27 at vger.kernel.org; Tue, 28 Jul 2020 09:45:42 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by correo.tlalpan.gob.mx (Postfix) with ESMTP id 3D0383A1C15;
+        Tue, 28 Jul 2020 02:47:52 -0500 (CDT)
+Received: from correo.tlalpan.gob.mx ([127.0.0.1])
+        by localhost (correo.tlalpan.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id sBMR1ctVK_mz; Tue, 28 Jul 2020 02:47:52 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+        by correo.tlalpan.gob.mx (Postfix) with ESMTP id E091F3A1C3B;
+        Tue, 28 Jul 2020 02:41:36 -0500 (CDT)
+X-Virus-Scanned: amavisd-new at tlalpan.gob.mx
+Received: from correo.tlalpan.gob.mx ([127.0.0.1])
+        by localhost (correo.tlalpan.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id pkin6VoU6LU3; Tue, 28 Jul 2020 02:41:36 -0500 (CDT)
+Received: from [10.52.139.218] (unknown [105.4.1.161])
+        by correo.tlalpan.gob.mx (Postfix) with ESMTPSA id EAE9D39F6F2;
+        Tue, 28 Jul 2020 02:36:55 -0500 (CDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Received: by 2002:a5d:65cb:0:0:0:0:0 with HTTP; Tue, 28 Jul 2020 04:38:13
- -0700 (PDT)
-From:   Rashid Al-Wahaibi <pdlarsen550@gmail.com>
-Date:   Tue, 28 Jul 2020 12:38:13 +0100
-Message-ID: <CAE00X2F5SUiQf0qCZYq3Yx353S0Esu1hA3RH4THqOM0WZMKHFQ@mail.gmail.com>
-Subject: Your Partnership
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
+To:     Recipients <aguayenergia@tlalpan.gob.mx>
+From:   '''Tayeb souami' <aguayenergia@tlalpan.gob.mx>
+Date:   Tue, 28 Jul 2020 09:41:14 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20200728073655.EAE9D39F6F2@correo.tlalpan.gob.mx>
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
--- 
-Good day,
-My name is Rashid Al-Wahaibi, I am from Oman but base here in the UK
-and a Managing Partner of BP Partnership Ltd, a Financial Consultancy
-Firm with office in the United Kingdom. I am contacting you based on
-the request of Ms Rosmah Mansor Najib Razak, wife of Najib Razak, the
-immediate past Malaysian Prime Minister.
+Lieber Freund,
 
-I found your profile satisfying and decided to contact you based on Ms
-Rosmah Mansor Najib Razak desire to invest in any viable project in
-your region.
+Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden, um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite unten.
 
-I need you to guide me on the type of investment that will be of best
-interest and provide good return on investment in your country and
-also act as her investment manager. She is ready to invest $25m to
-$50m USD
-
-I will explain further detail of this business proposal when you reply
-to this email indicating your interest.
+UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
 
 
-Regards,
 
-Rashid Al-Wahaibi,
-Bp Partnership Ltd
-60 Raglan Road
-Reigate, ENG RH2 0HN,
-United Kingdom
+Das ist dein Spendencode: [TS530342018]
+
+
+
+Antworten Sie mit dem SPENDE-CODE an diese
+
+E-Mail:Tayebsouam.spende@gmail.com
+
+
+Ich hoffe, Sie und Ihre Familie glücklich zu machen.
+
+Grüße
+Herr Tayeb Souami
