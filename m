@@ -2,63 +2,104 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E57C230C59
-	for <lists+target-devel@lfdr.de>; Tue, 28 Jul 2020 16:24:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A29EA231861
+	for <lists+target-devel@lfdr.de>; Wed, 29 Jul 2020 06:10:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730396AbgG1OYj convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+target-devel@lfdr.de>); Tue, 28 Jul 2020 10:24:39 -0400
-Received: from customer-201-134-139-73.uninet-ide.com.mx ([201.134.139.73]:57072
-        "EHLO correo.tlalpan.gob.mx" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730089AbgG1OYj (ORCPT
+        id S1726476AbgG2EKr (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 29 Jul 2020 00:10:47 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:43234 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726319AbgG2EKq (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 28 Jul 2020 10:24:39 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by correo.tlalpan.gob.mx (Postfix) with ESMTP id 10ADF48DD60;
-        Tue, 28 Jul 2020 04:14:32 -0500 (CDT)
-Received: from correo.tlalpan.gob.mx ([127.0.0.1])
-        by localhost (correo.tlalpan.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id G5jt4tbcQlKn; Tue, 28 Jul 2020 04:14:31 -0500 (CDT)
-Received: from localhost (localhost [127.0.0.1])
-        by correo.tlalpan.gob.mx (Postfix) with ESMTP id C35E344CFCD;
-        Tue, 28 Jul 2020 03:42:42 -0500 (CDT)
-X-Virus-Scanned: amavisd-new at tlalpan.gob.mx
-Received: from correo.tlalpan.gob.mx ([127.0.0.1])
-        by localhost (correo.tlalpan.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id F_Md9IJPAD8d; Tue, 28 Jul 2020 03:42:42 -0500 (CDT)
-Received: from [10.85.108.11] (unknown [105.8.2.12])
-        by correo.tlalpan.gob.mx (Postfix) with ESMTPSA id DE22A432735;
-        Tue, 28 Jul 2020 03:29:02 -0500 (CDT)
-Content-Type: text/plain; charset="utf-8"
+        Wed, 29 Jul 2020 00:10:46 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06T42p9w073233;
+        Wed, 29 Jul 2020 04:10:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=mFgPZLBhbrr08eGSo1D38FwIFNHtP7ViGpu1FsdLV/Q=;
+ b=ciGF3E4EE8FCNZY/9akgurJT/ccUh9Wt3FYh2kCQaoissoIDntC48pNshnZSf5I8TGuw
+ GE8xhMT6/EksF085bO/wmccjw6kMcc5+8XkjNLlEzUmpnjS0lTWXCVsl0ovL+5GX//LK
+ gEZWuMYxXfx7SLMV9FfADZNoZNZyk/8+iqAugmKhztBEI2dtlwXKmCZyw4VmFIy634P9
+ rGGBdVxP1u1CQ5Ouq7P/3xXYGK1YkHV/pX3GXPyqcP2r7vcMRLjDKmx9+7iD4lFpbQmf
+ IWg0qEGaBRRCMwO++0QmFLVfLWEXyZm7Azs+FSqY7qlpks4MZmrq+dqtHs+S3Fc4lhUW Jg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 32hu1jb6de-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 29 Jul 2020 04:10:42 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06T42aSH023674;
+        Wed, 29 Jul 2020 04:10:41 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 32hu5u1pve-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 29 Jul 2020 04:10:41 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 06T4AeXo018612;
+        Wed, 29 Jul 2020 04:10:40 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 28 Jul 2020 21:10:40 -0700
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     Mike Christie <michael.christie@oracle.com>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>
+Subject: Re: [PATCH v3 0/8] scsi: target: tcmu: Add TMR notification for tcmu
+Date:   Wed, 29 Jul 2020 00:10:32 -0400
+Message-Id: <159599579268.11289.16855842795289437175.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200726153510.13077-1-bstroesser@ts.fujitsu.com>
+References: <20200726153510.13077-1-bstroesser@ts.fujitsu.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
-To:     Recipients <aguayenergia@tlalpan.gob.mx>
-From:   ''Tayeb Souami'' <aguayenergia@tlalpan.gob.mx>
-Date:   Tue, 28 Jul 2020 10:33:20 +0200
-Reply-To: Tayebsouam.spende@gmail.com
-Message-Id: <20200728082903.DE22A432735@correo.tlalpan.gob.mx>
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9696 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 bulkscore=0
+ malwarescore=0 suspectscore=0 spamscore=0 mlxlogscore=999 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007290027
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9696 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 clxscore=1015
+ malwarescore=0 spamscore=0 suspectscore=0 bulkscore=0 priorityscore=1501
+ phishscore=0 mlxlogscore=999 lowpriorityscore=0 impostorscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007290027
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Lieber Freund,
+On Sun, 26 Jul 2020 17:35:02 +0200, Bodo Stroesser wrote:
 
-Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden, um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite unten.
+> This patch series is made on top of Martin's for-next branch.
+> 
+> ChangeLog:
+> 
+> v2: in patch "scsi: target: tcmu: Implement tmr_notify callback"
+>     changed new comment's style from "// ..." to "/* ... */"
+>     and correctly use "/** " for function doc.
+> 
+> [...]
 
-UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
+Applied to 5.9/scsi-queue, thanks!
 
+[1/8] scsi: target: Modify core_tmr_abort_task()
+      https://git.kernel.org/mkp/scsi/c/f5e2714ad1a6
+[2/8] scsi: target: Add tmr_notify backend function
+      https://git.kernel.org/mkp/scsi/c/2e45a1a9c75d
+[3/8] scsi: target: tcmu: Use priv pointer in se_cmd
+      https://git.kernel.org/mkp/scsi/c/a35129024e88
+[4/8] scsi: target: tcmu: Do not queue aborted commands
+      https://git.kernel.org/mkp/scsi/c/c96849276211
+[5/8] scsi: target: tcmu: Factor out new helper ring_insert_padding
+      https://git.kernel.org/mkp/scsi/c/3d3f9d56a570
+[6/8] scsi: target: tcmu: Fix and simplify timeout handling
+      https://git.kernel.org/mkp/scsi/c/ed212ca87897
+[7/8] scsi: target: tcmu: Implement tmr_notify callback
+      https://git.kernel.org/mkp/scsi/c/bc2d214af5db
+[8/8] scsi: target: tcmu: Make TMR notification optional
+      https://git.kernel.org/mkp/scsi/c/59526d7a187f
 
-Das ist dein Spendencode: [TS530342018]
-
-
-Antworten Sie mit dem SPENDE-CODE an diese
-
-E-Mail:Tayebsouam.spende@gmail.com
-
-
-Ich hoffe, Sie und Ihre Familie glücklich zu machen.
-
-Grüße
-Herr Tayeb Souami
+-- 
+Martin K. Petersen	Oracle Linux Engineering
