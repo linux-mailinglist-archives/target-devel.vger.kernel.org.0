@@ -2,92 +2,172 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51C72231865
-	for <lists+target-devel@lfdr.de>; Wed, 29 Jul 2020 06:10:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8036231EEE
+	for <lists+target-devel@lfdr.de>; Wed, 29 Jul 2020 15:03:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726319AbgG2EKw (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 29 Jul 2020 00:10:52 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:45504 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726548AbgG2EKw (ORCPT
+        id S1727050AbgG2ND6 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 29 Jul 2020 09:03:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46456 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727026AbgG2ND6 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 29 Jul 2020 00:10:52 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06T41dmo159218;
-        Wed, 29 Jul 2020 04:10:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=mriZwRXIHonAt6bhurHKpqs0Cl4KXgEcu8ISDCpfmc4=;
- b=xY2yF6hp6KDHK2Jotxq6nztFRfiKg8PUYZyekmlqmiwdv6frHrK+gCnMpM/CXWNth9V2
- +mQTkHIL2rBsnsGreOoFkE5a9ttaWw17rwrF/JWyNI7a/1EqKyLZNxXoupzfRuwA8cw7
- pBS956jVdn/lP5DIOynaPQnw1LrpOXywMB/DkTJ4kcGoDtKq77vJcEARBAwG5a4gdQBu
- 8Bo/UVI5xVWbiATgfSDYPWJEWMRsNAWrbxMUWIbnyIo7Y170i25oRDtRGayUkpQ8PAbp
- 0KydUzSmXUC4CeAQY8VOnRHyH+0PrdBJ+u0lXijzBZeRGEZSlCm2cW0SWEg1YXpwJCkz uQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 32hu1jb5r7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 29 Jul 2020 04:10:48 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06T42bbe023836;
-        Wed, 29 Jul 2020 04:10:47 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 32hu5u1pwr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 29 Jul 2020 04:10:47 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06T4AjLl030755;
-        Wed, 29 Jul 2020 04:10:46 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 28 Jul 2020 21:10:45 -0700
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        Hou Pu <houpu@bytedance.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        mchristi@redhat.com
-Subject: Re: [PATCH v4 0/2] iscsi-target: fix login error when receiving is too fast
-Date:   Wed, 29 Jul 2020 00:10:37 -0400
-Message-Id: <159599579268.11289.2746650835004823983.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200716100212.4237-1-houpu@bytedance.com>
-References: <20200716100212.4237-1-houpu@bytedance.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9696 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 bulkscore=0
- malwarescore=0 suspectscore=0 spamscore=0 mlxlogscore=857 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007290027
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9696 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 bulkscore=0 mlxlogscore=873
- lowpriorityscore=0 malwarescore=0 clxscore=1011 mlxscore=0 impostorscore=0
- phishscore=0 adultscore=0 suspectscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007290027
+        Wed, 29 Jul 2020 09:03:58 -0400
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71809C0619D4
+        for <target-devel@vger.kernel.org>; Wed, 29 Jul 2020 06:03:58 -0700 (PDT)
+Received: by mail-pj1-x1041.google.com with SMTP id e22so2003829pjt.3
+        for <target-devel@vger.kernel.org>; Wed, 29 Jul 2020 06:03:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id;
+        bh=u9Fs8JFKpYorssSuY35iRa45QXcNSCimMAssbW0zI4Q=;
+        b=O6VR8cQFjNpWZroeLWuJjiEDHTkhHrrlwoBR7IIge8QR+bHCmkI5JSenFDw+saUwkE
+         sLsPG+210ZG27f5Nssa5hW2KhhM68E9EdrRLGIMOXdPtsURUVEFHLFB6xd4V7JzOzZu4
+         Ymra9Kd/C6pkFVm40Jv/uE3fH2kkLHm47h+8vYv2MjKIv4V2sTTCS20TC67H0eT+ABTu
+         y5/8mPPaWgg1+zR09gvwqX9hllCHckgVm+4Bo8zD0p33EMX0Eyr3gHaRacMfAIFAJYOo
+         hE9snATZy58Et612nsVq4c6Ljmjr/nPecK2W0Y7nGBKOS3yNHHOxSQb8okyqK1ts1Ily
+         5gpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=u9Fs8JFKpYorssSuY35iRa45QXcNSCimMAssbW0zI4Q=;
+        b=SF35BSVybfvZwpSzDKiNJIeZIDhxxpc03zkYIRjfa7UJ8S/trEWZW4NRvcQc0k/9U3
+         nD0nE0GiyT3tsgbphWhnr5u0yTUh4VKmrnR8PrHK8KCJGASn2LPiQaMsepoNzWDx7ib4
+         t/MTSZKN/X8fD0v57/S/bLMp2EImZOHZKQRbIAsYL4QGlGJK22pUUJoW+ThMpTz5VYmv
+         wB8OrhlglCvAJMId0JjOpLvQLX0edCHKfrd6N4Ou5cSrU6T1GB4yvLvU5r9Ka5RD5uMv
+         QZJFZXqXV5wxLyi0mJx2lIeAma9+S69eaxqaOe5mYoG4vldNi0J0ehDbTbpS9gOjZ2sM
+         hONg==
+X-Gm-Message-State: AOAM533Xex4MhrBke5LIuvrwH7sCVhoa09FOpD3EUpvI0IyohJWV08Tq
+        a7FnkdLKmMi0jlrOAOkXUHgiaA==
+X-Google-Smtp-Source: ABdhPJximOr+wp5Q7N5sPRtSZxwpjuc3QfCEcMD07CK6rU3ColT6m1rCPLm89/CM9GECHAuNZYQ13g==
+X-Received: by 2002:a17:902:59c1:: with SMTP id d1mr28388711plj.78.1596027837788;
+        Wed, 29 Jul 2020 06:03:57 -0700 (PDT)
+Received: from debian.bytedance.net ([61.120.150.75])
+        by smtp.gmail.com with ESMTPSA id 196sm2538784pgd.16.2020.07.29.06.03.54
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 29 Jul 2020 06:03:56 -0700 (PDT)
+From:   Hou Pu <houpu@bytedance.com>
+To:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, michael.christie@oracle.com
+Cc:     Hou Pu <houpu@bytedance.com>, stable@vger.kernel.org
+Subject: [PATCH] iscsi-target: fix hang in iscsit_access_np() when getting tpg->np_login_sem
+Date:   Wed, 29 Jul 2020 09:03:43 -0400
+Message-Id: <20200729130343.24976-1-houpu@bytedance.com>
+X-Mailer: git-send-email 2.11.0
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Thu, 16 Jul 2020 06:02:10 -0400, Hou Pu wrote:
+The iscsi target login thread might stuck in following stack:
 
-> We encountered "iSCSI Login negotiation failed" several times.
-> After enable debug log in iscsi_target_nego.c of iSCSI target.
-> Error shows:
->   "Got LOGIN_FLAGS_READ_ACTIVE=1, conn: xxxxxxxxxx >>>>"
-> 
-> Patch 1 is trying to fix this problem. Please see comment in patch 1
-> for details.
-> 
-> [...]
+cat /proc/`pidof iscsi_np`/stack
+[<0>] down_interruptible+0x42/0x50
+[<0>] iscsit_access_np+0xe3/0x167
+[<0>] iscsi_target_locate_portal+0x695/0x8ac
+[<0>] __iscsi_target_login_thread+0x855/0xb82
+[<0>] iscsi_target_login_thread+0x2f/0x5a
+[<0>] kthread+0xfa/0x130
+[<0>] ret_from_fork+0x1f/0x30
 
-Applied to 5.9/scsi-queue, thanks!
+This could be reproduced by following steps:
+1. Initiator A try to login iqn1-tpg1 on port 3260. After finishing
+   PDU exchange in the login thread and before the negotiation is
+   finished, at this time the network link is down. In a production
+   environment, this could happen. I could emulated it by bring
+   the network card down in the initiator node by ifconfig eth0 down.
+   (Now A could never finish this login. And tpg->np_login_sem is
+   hold by it).
+2. Initiator B try to login iqn2-tpg1 on port 3260. After finishing
+   PDU exchange in the login thread. The target expect to process
+   remaining login PDUs in workqueue context.
+3. Initiator A' try to re-login to iqn1-tpg1 on port 3260 from
+   a new socket. It will wait for tpg->np_login_sem with
+   np->np_login_timer loaded to wait for at most 15 second.
+   (Because the lock is held by A. A never gets a change to
+   release tpg->np_login_sem. so A' should finally get timeout).
+4. Before A' got timeout. Initiator B gets negotiation failed and
+   calls iscsi_target_login_drop()->iscsi_target_login_sess_out().
+   The np->np_login_timer is canceled. And initiator A' will hang
+   there forever. Because A' is now in the login thread. All other
+   login requests could not be serviced.
 
-[1/2] scsi: target: iscsi: Fix login error when receiving
-      https://git.kernel.org/mkp/scsi/c/4e108d4f2816
-[2/2] scsi: target: iscsi: Fix inconsistent debug message
-      https://git.kernel.org/mkp/scsi/c/df2de6f28629
+Fix this by moving iscsi_stop_login_thread_timer() out of
+iscsi_target_login_sess_out(). Also remove iscsi_np parameter
+from iscsi_target_login_sess_out().
 
+Cc: stable@vger.kernel.org
+Signed-off-by: Hou Pu <houpu@bytedance.com>
+---
+ drivers/target/iscsi/iscsi_target_login.c | 6 +++---
+ drivers/target/iscsi/iscsi_target_login.h | 3 +--
+ drivers/target/iscsi/iscsi_target_nego.c  | 3 +--
+ 3 files changed, 5 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/target/iscsi/iscsi_target_login.c b/drivers/target/iscsi/iscsi_target_login.c
+index 85748e338858..893d1b406c29 100644
+--- a/drivers/target/iscsi/iscsi_target_login.c
++++ b/drivers/target/iscsi/iscsi_target_login.c
+@@ -1149,7 +1149,7 @@ void iscsit_free_conn(struct iscsi_conn *conn)
+ }
+ 
+ void iscsi_target_login_sess_out(struct iscsi_conn *conn,
+-		struct iscsi_np *np, bool zero_tsih, bool new_sess)
++				 bool zero_tsih, bool new_sess)
+ {
+ 	if (!new_sess)
+ 		goto old_sess_out;
+@@ -1167,7 +1167,6 @@ void iscsi_target_login_sess_out(struct iscsi_conn *conn,
+ 	conn->sess = NULL;
+ 
+ old_sess_out:
+-	iscsi_stop_login_thread_timer(np);
+ 	/*
+ 	 * If login negotiation fails check if the Time2Retain timer
+ 	 * needs to be restarted.
+@@ -1407,8 +1406,9 @@ static int __iscsi_target_login_thread(struct iscsi_np *np)
+ new_sess_out:
+ 	new_sess = true;
+ old_sess_out:
++	iscsi_stop_login_thread_timer(np);
+ 	tpg_np = conn->tpg_np;
+-	iscsi_target_login_sess_out(conn, np, zero_tsih, new_sess);
++	iscsi_target_login_sess_out(conn, zero_tsih, new_sess);
+ 	new_sess = false;
+ 
+ 	if (tpg) {
+diff --git a/drivers/target/iscsi/iscsi_target_login.h b/drivers/target/iscsi/iscsi_target_login.h
+index 3b8e3639ff5d..fc95e6150253 100644
+--- a/drivers/target/iscsi/iscsi_target_login.h
++++ b/drivers/target/iscsi/iscsi_target_login.h
+@@ -22,8 +22,7 @@ extern int iscsit_put_login_tx(struct iscsi_conn *, struct iscsi_login *, u32);
+ extern void iscsit_free_conn(struct iscsi_conn *);
+ extern int iscsit_start_kthreads(struct iscsi_conn *);
+ extern void iscsi_post_login_handler(struct iscsi_np *, struct iscsi_conn *, u8);
+-extern void iscsi_target_login_sess_out(struct iscsi_conn *, struct iscsi_np *,
+-				bool, bool);
++extern void iscsi_target_login_sess_out(struct iscsi_conn *, bool, bool);
+ extern int iscsi_target_login_thread(void *);
+ extern void iscsi_handle_login_thread_timeout(struct timer_list *t);
+ 
+diff --git a/drivers/target/iscsi/iscsi_target_nego.c b/drivers/target/iscsi/iscsi_target_nego.c
+index 685d771b51d4..e32d93b92742 100644
+--- a/drivers/target/iscsi/iscsi_target_nego.c
++++ b/drivers/target/iscsi/iscsi_target_nego.c
+@@ -535,12 +535,11 @@ static bool iscsi_target_sk_check_and_clear(struct iscsi_conn *conn, unsigned in
+ 
+ static void iscsi_target_login_drop(struct iscsi_conn *conn, struct iscsi_login *login)
+ {
+-	struct iscsi_np *np = login->np;
+ 	bool zero_tsih = login->zero_tsih;
+ 
+ 	iscsi_remove_failed_auth_entry(conn);
+ 	iscsi_target_nego_release(conn);
+-	iscsi_target_login_sess_out(conn, np, zero_tsih, true);
++	iscsi_target_login_sess_out(conn, zero_tsih, true);
+ }
+ 
+ struct conn_timeout {
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+2.11.0
+
