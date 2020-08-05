@@ -2,82 +2,85 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7CEC23A90A
-	for <lists+target-devel@lfdr.de>; Mon,  3 Aug 2020 17:01:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA08B23C2F7
+	for <lists+target-devel@lfdr.de>; Wed,  5 Aug 2020 03:18:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727015AbgHCPAN (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 3 Aug 2020 11:00:13 -0400
-Received: from mail-il-dmz.mellanox.com ([193.47.165.129]:56096 "EHLO
-        mellanox.co.il" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726189AbgHCPAL (ORCPT
+        id S1727050AbgHEBR7 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 4 Aug 2020 21:17:59 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:51818 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727019AbgHEBR6 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 3 Aug 2020 11:00:11 -0400
-Received: from Internal Mail-Server by MTLPINE1 (envelope-from maxg@mellanox.com)
-        with SMTP; 3 Aug 2020 18:00:08 +0300
-Received: from mtr-vdi-031.wap.labs.mlnx. (mtr-vdi-031.wap.labs.mlnx [10.209.102.136])
-        by labmailer.mlnx (8.13.8/8.13.8) with ESMTP id 073F08HY019034;
-        Mon, 3 Aug 2020 18:00:08 +0300
-From:   Max Gurtovoy <maxg@mellanox.com>
-To:     sagi@grimberg.me, michael.christie@oracle.com,
-        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
-        martin.petersen@oracle.com, bvanassche@acm.org
-Cc:     oren@mellanox.com, Max Gurtovoy <maxg@mellanox.com>
-Subject: [PATCH 1/1] target: make iscsit_register_transport() return void
-Date:   Mon,  3 Aug 2020 18:00:08 +0300
-Message-Id: <20200803150008.83920-1-maxg@mellanox.com>
-X-Mailer: git-send-email 2.21.0
+        Tue, 4 Aug 2020 21:17:58 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0751C2qD135547;
+        Wed, 5 Aug 2020 01:17:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=zQs+pT64RxtSTUDQB3wwLi5w19TqBgvgH2P7d1bcsn8=;
+ b=QENi2opKS30oyF+rgsyk/LrC/9vw7OfxHSUv82OYKDuD8z3yDdDgVwVD7D18JH8xU8Ps
+ P7gCdbz/iOufV1NiCldNsoJ6hGitubgRUOGZePwkmGRAPbEEPrgM9x0/k7VLJ8S6YBQk
+ zOd2dckptIynRvEyMcfD2aKRJA7wO5HaqxiW1OuEM8nu7Dd/yA4NouEbjLnrCW5hlqEX
+ 6rMbgyz9bQxJJlxHqrtDfi1bbGM7t8n8jZvxxnjEyGHzneFtXQbd0EoUt4AFv8dnN2mF
+ q1D4rjU0boRzsO2rqBRMFUtJeWmvgA3nb5Y7ca1nRvqm74qpYpdKw9WwSA9F7bcsQFfG tw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 32n11n7aps-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 05 Aug 2020 01:17:44 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 075198kM088131;
+        Wed, 5 Aug 2020 01:17:43 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 32p5gt1mxk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 05 Aug 2020 01:17:43 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0751Hf0C007535;
+        Wed, 5 Aug 2020 01:17:41 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 04 Aug 2020 18:17:40 -0700
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     sagi@grimberg.me, target-devel@vger.kernel.org,
+        michael.christie@oracle.com, linux-scsi@vger.kernel.org,
+        bvanassche@acm.org, Max Gurtovoy <maxg@mellanox.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        oren@mellanox.com
+Subject: Re: [PATCH 1/1] target: make iscsit_register_transport() return void
+Date:   Tue,  4 Aug 2020 21:17:33 -0400
+Message-Id: <159659019689.15726.3035694434346153928.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20200803150008.83920-1-maxg@mellanox.com>
+References: <20200803150008.83920-1-maxg@mellanox.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9703 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 bulkscore=0
+ phishscore=0 spamscore=0 adultscore=0 suspectscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008050008
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9703 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 priorityscore=1501
+ impostorscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0 mlxscore=0
+ suspectscore=0 mlxlogscore=999 phishscore=0 adultscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008050008
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-This function always return 0 now, we can make it return void to
-simplify the code. Also, no caller ever check the return value of this
-function.
+On Mon, 3 Aug 2020 18:00:08 +0300, Max Gurtovoy wrote:
 
-Signed-off-by: Max Gurtovoy <maxg@mellanox.com>
----
- drivers/target/iscsi/iscsi_target_transport.c | 4 +---
- include/target/iscsi/iscsi_transport.h        | 2 +-
- 2 files changed, 2 insertions(+), 4 deletions(-)
+> This function always return 0 now, we can make it return void to
+> simplify the code. Also, no caller ever check the return value of this
+> function.
 
-diff --git a/drivers/target/iscsi/iscsi_target_transport.c b/drivers/target/iscsi/iscsi_target_transport.c
-index 0369405..27c85f2 100644
---- a/drivers/target/iscsi/iscsi_target_transport.c
-+++ b/drivers/target/iscsi/iscsi_target_transport.c
-@@ -31,7 +31,7 @@ void iscsit_put_transport(struct iscsit_transport *t)
- 	module_put(t->owner);
- }
- 
--int iscsit_register_transport(struct iscsit_transport *t)
-+void iscsit_register_transport(struct iscsit_transport *t)
- {
- 	INIT_LIST_HEAD(&t->t_node);
- 
-@@ -40,8 +40,6 @@ int iscsit_register_transport(struct iscsit_transport *t)
- 	mutex_unlock(&transport_mutex);
- 
- 	pr_debug("Registered iSCSI transport: %s\n", t->name);
--
--	return 0;
- }
- EXPORT_SYMBOL(iscsit_register_transport);
- 
-diff --git a/include/target/iscsi/iscsi_transport.h b/include/target/iscsi/iscsi_transport.h
-index 75bee29..b8feba7 100644
---- a/include/target/iscsi/iscsi_transport.h
-+++ b/include/target/iscsi/iscsi_transport.h
-@@ -43,7 +43,7 @@ static inline void *iscsit_priv_cmd(struct iscsi_cmd *cmd)
-  * From iscsi_target_transport.c
-  */
- 
--extern int iscsit_register_transport(struct iscsit_transport *);
-+extern void iscsit_register_transport(struct iscsit_transport *);
- extern void iscsit_unregister_transport(struct iscsit_transport *);
- extern struct iscsit_transport *iscsit_get_transport(int);
- extern void iscsit_put_transport(struct iscsit_transport *);
+Applied to 5.9/scsi-queue, thanks!
+
+[1/1] scsi: target: Make iscsit_register_transport() return void
+      https://git.kernel.org/mkp/scsi/c/a8ac78357d9b
+
 -- 
-1.8.3.1
-
+Martin K. Petersen	Oracle Linux Engineering
