@@ -2,85 +2,98 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA08B23C2F7
-	for <lists+target-devel@lfdr.de>; Wed,  5 Aug 2020 03:18:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA66923E595
+	for <lists+target-devel@lfdr.de>; Fri,  7 Aug 2020 03:44:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727050AbgHEBR7 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 4 Aug 2020 21:17:59 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:51818 "EHLO
+        id S1726071AbgHGBoP (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 6 Aug 2020 21:44:15 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:35284 "EHLO
         userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727019AbgHEBR6 (ORCPT
+        with ESMTP id S1726027AbgHGBoO (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 4 Aug 2020 21:17:58 -0400
+        Thu, 6 Aug 2020 21:44:14 -0400
 Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0751C2qD135547;
-        Wed, 5 Aug 2020 01:17:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=zQs+pT64RxtSTUDQB3wwLi5w19TqBgvgH2P7d1bcsn8=;
- b=QENi2opKS30oyF+rgsyk/LrC/9vw7OfxHSUv82OYKDuD8z3yDdDgVwVD7D18JH8xU8Ps
- P7gCdbz/iOufV1NiCldNsoJ6hGitubgRUOGZePwkmGRAPbEEPrgM9x0/k7VLJ8S6YBQk
- zOd2dckptIynRvEyMcfD2aKRJA7wO5HaqxiW1OuEM8nu7Dd/yA4NouEbjLnrCW5hlqEX
- 6rMbgyz9bQxJJlxHqrtDfi1bbGM7t8n8jZvxxnjEyGHzneFtXQbd0EoUt4AFv8dnN2mF
- q1D4rjU0boRzsO2rqBRMFUtJeWmvgA3nb5Y7ca1nRvqm74qpYpdKw9WwSA9F7bcsQFfG tw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 32n11n7aps-1
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0771dQ48067439;
+        Fri, 7 Aug 2020 01:44:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : from : to :
+ references : message-id : date : mime-version : in-reply-to : content-type
+ : content-transfer-encoding; s=corp-2020-01-29;
+ bh=CKmKekFHX8OlbwYKdzSliZVNkk5aUoha/tvPqjH8QSM=;
+ b=Qtt/NZfdN4bTazpJTbEl4b7cERgEafOenfDJWRXpzte7cM6l+s/G6jKjOr2s2mRGJhzJ
+ WulgR3oagZQrN9e15XaFLVQ7i2t01IcAJs5wcZ0w5czgqbdbYpT5lKRRw6xY/Tk0SIdU
+ bHLKzm2wV0cTct0izxdBoLNl9lDFtMvszS8+54tT4O4r9LOY9V/30x4UkakJ/JD3UjbG
+ 99fK17w+rVKX/6mGDbHgkL3I13u+b99AwtKhgMZMo2w/AghTq+oNCwsQn613guRqSRY2
+ fZAYbva6Z9EghJxeW3YyQenK09DIqItYGVA12J3tnB2r8wmzH8HMScQoPHxdp6i+rI5+ BQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 32r6fxp3a4-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 05 Aug 2020 01:17:44 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 075198kM088131;
-        Wed, 5 Aug 2020 01:17:43 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 32p5gt1mxk-1
+        Fri, 07 Aug 2020 01:44:10 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0771buFk054019;
+        Fri, 7 Aug 2020 01:42:10 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 32r6cwj4j2-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 05 Aug 2020 01:17:43 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0751Hf0C007535;
-        Wed, 5 Aug 2020 01:17:41 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        Fri, 07 Aug 2020 01:42:10 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0771g8U0029525;
+        Fri, 7 Aug 2020 01:42:08 GMT
+Received: from [20.15.0.202] (/73.88.28.6)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 04 Aug 2020 18:17:40 -0700
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     sagi@grimberg.me, target-devel@vger.kernel.org,
-        michael.christie@oracle.com, linux-scsi@vger.kernel.org,
-        bvanassche@acm.org, Max Gurtovoy <maxg@mellanox.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        oren@mellanox.com
-Subject: Re: [PATCH 1/1] target: make iscsit_register_transport() return void
-Date:   Tue,  4 Aug 2020 21:17:33 -0400
-Message-Id: <159659019689.15726.3035694434346153928.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200803150008.83920-1-maxg@mellanox.com>
-References: <20200803150008.83920-1-maxg@mellanox.com>
+        with ESMTP ; Thu, 06 Aug 2020 18:42:08 -0700
+Subject: Re: [PATCH] scsi: target: loop: Fix handling of aborted TMRs
+From:   Mike Christie <michael.christie@oracle.com>
+To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+References: <20200715160403.12578-1-bstroesser@ts.fujitsu.com>
+ <795a006d-6d66-a635-7e76-601cb7807f5b@oracle.com>
+ <2694d1fc-8792-0fe2-4dec-78f15d3b4ec5@ts.fujitsu.com>
+ <90048ea8-3b8f-cc06-7869-dca645cd68f2@oracle.com>
+ <7c2d8052-fb5e-0a3b-a894-df8bfab44f21@ts.fujitsu.com>
+ <b8fc90b9-7038-b202-e7ef-bc4da56816f0@oracle.com>
+Message-ID: <61420558-b077-13ca-b5e3-6269fb419233@oracle.com>
+Date:   Thu, 6 Aug 2020 20:42:07 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9703 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 bulkscore=0
- phishscore=0 spamscore=0 adultscore=0 suspectscore=0 mlxlogscore=999
+In-Reply-To: <b8fc90b9-7038-b202-e7ef-bc4da56816f0@oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9705 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0 bulkscore=0
+ spamscore=0 adultscore=0 mlxlogscore=999 phishscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008050008
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9703 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 priorityscore=1501
- impostorscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0 mlxscore=0
- suspectscore=0 mlxlogscore=999 phishscore=0 adultscore=0 bulkscore=0
+ definitions=main-2008070010
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9705 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 impostorscore=0 adultscore=0
+ bulkscore=0 priorityscore=1501 mlxlogscore=999 phishscore=0
+ lowpriorityscore=0 suspectscore=0 spamscore=0 clxscore=1015 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008050008
+ definitions=main-2008070010
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Mon, 3 Aug 2020 18:00:08 +0300, Max Gurtovoy wrote:
+On 7/27/20 1:13 PM, Mike Christie wrote:
+> I would really like to figure out if #2 is a regression and understand what happened so we don't make the same mistake again and also fix iscsi. The problem with iscsi though is every couple kernels has a bug in this code path so git bisect is being a pain.
 
-> This function always return 0 now, we can make it return void to
-> simplify the code. Also, no caller ever check the return value of this
-> function.
+Sorry for the delay. I was able to track down the hang part of this. It turns out loop did work at some point. It worked a couple times over the years, but every X kernels we would break it again.
 
-Applied to 5.9/scsi-queue, thanks!
+The last time we didn't have the hang was because we executed TMFs one at a time. We would end up always calling queue_tm_rsp since the LUN reset was always going to execute after the abort. So to fix the wake up / hang part of the bug for everyone we could revert:
 
-[1/1] scsi: target: Make iscsit_register_transport() return void
-      https://git.kernel.org/mkp/scsi/c/a8ac78357d9b
+commit db5b21a24e01d35495014076700efa02d6dcbb68
+Author: Bart Van Assche <bvanassche@acm.org>
+Date:   Tue Nov 27 15:51:59 2018 -0800
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+    scsi: target/core: Use system workqueues for TMF
+
+It's not clear how much processing TMFs for the same device in parallel helps. If it doesn't help, this would be an easy fix for everyone.
+
+One other thing that is not clear to me is if aborted_task was always meant to be used for task management requests. I think when it was first added, it was only called for normal cmds. I couldn't tell exactly when we meant (vs it snuck in by accident) to start calling it for all commands.
+
+If the async TMF feature helps, then I'm ok with with your fix for loop where we say the aborted_task callout was meant for all commands and go from there. We then have to do something similar in xen, and check that the other drivers didn't expect the old behavior. I think for that qla2xxx bug you mentioned, tcm_qla2xxx_aborted_task didn't expect a qla_tgt_mgmt_cmd to be passed into aborted_task so it crashed trying to access it as a qla_tgt_cmd.
+
+What do you think?
