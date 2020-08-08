@@ -2,98 +2,91 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA66923E595
-	for <lists+target-devel@lfdr.de>; Fri,  7 Aug 2020 03:44:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16FD523F762
+	for <lists+target-devel@lfdr.de>; Sat,  8 Aug 2020 13:32:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726071AbgHGBoP (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 6 Aug 2020 21:44:15 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:35284 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726027AbgHGBoO (ORCPT
+        id S1726232AbgHHLcA (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 8 Aug 2020 07:32:00 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:44150 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726202AbgHHLcA (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 6 Aug 2020 21:44:14 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0771dQ48067439;
-        Fri, 7 Aug 2020 01:44:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : from : to :
- references : message-id : date : mime-version : in-reply-to : content-type
- : content-transfer-encoding; s=corp-2020-01-29;
- bh=CKmKekFHX8OlbwYKdzSliZVNkk5aUoha/tvPqjH8QSM=;
- b=Qtt/NZfdN4bTazpJTbEl4b7cERgEafOenfDJWRXpzte7cM6l+s/G6jKjOr2s2mRGJhzJ
- WulgR3oagZQrN9e15XaFLVQ7i2t01IcAJs5wcZ0w5czgqbdbYpT5lKRRw6xY/Tk0SIdU
- bHLKzm2wV0cTct0izxdBoLNl9lDFtMvszS8+54tT4O4r9LOY9V/30x4UkakJ/JD3UjbG
- 99fK17w+rVKX/6mGDbHgkL3I13u+b99AwtKhgMZMo2w/AghTq+oNCwsQn613guRqSRY2
- fZAYbva6Z9EghJxeW3YyQenK09DIqItYGVA12J3tnB2r8wmzH8HMScQoPHxdp6i+rI5+ BQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 32r6fxp3a4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 07 Aug 2020 01:44:10 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0771buFk054019;
-        Fri, 7 Aug 2020 01:42:10 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 32r6cwj4j2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 07 Aug 2020 01:42:10 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0771g8U0029525;
-        Fri, 7 Aug 2020 01:42:08 GMT
-Received: from [20.15.0.202] (/73.88.28.6)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 06 Aug 2020 18:42:08 -0700
-Subject: Re: [PATCH] scsi: target: loop: Fix handling of aborted TMRs
-From:   Mike Christie <michael.christie@oracle.com>
-To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-References: <20200715160403.12578-1-bstroesser@ts.fujitsu.com>
- <795a006d-6d66-a635-7e76-601cb7807f5b@oracle.com>
- <2694d1fc-8792-0fe2-4dec-78f15d3b4ec5@ts.fujitsu.com>
- <90048ea8-3b8f-cc06-7869-dca645cd68f2@oracle.com>
- <7c2d8052-fb5e-0a3b-a894-df8bfab44f21@ts.fujitsu.com>
- <b8fc90b9-7038-b202-e7ef-bc4da56816f0@oracle.com>
-Message-ID: <61420558-b077-13ca-b5e3-6269fb419233@oracle.com>
-Date:   Thu, 6 Aug 2020 20:42:07 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Sat, 8 Aug 2020 07:32:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1596886319;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+        bh=khr56tqitgbpYsYTYM2VRcEiOVSL+m4Xi7+Cn3YoZgI=;
+        b=LsJSNQczBNi7PGSqiWIPfPm19SeQmeiMqlCPvulSFJXANTU1Esl5XEaTfsGL2on+gqowFh
+        +eeWyE0x8Xp7wn9i4R6IixfjqjyCNaImPU7xt2w7HGpfQs/SPMZwZLjgJOOnYRrQxZBIk+
+        +tLrzbLuTkJnRftMC+Gvf5i2IK1Ns/Q=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-435-ERh1RUInOA29DD9j-xkHBg-1; Sat, 08 Aug 2020 07:31:54 -0400
+X-MC-Unique: ERh1RUInOA29DD9j-xkHBg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C35201DE0;
+        Sat,  8 Aug 2020 11:31:40 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 5C7038AC2C;
+        Sat,  8 Aug 2020 11:31:40 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
+        by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 078BVdX0010897;
+        Sat, 8 Aug 2020 07:31:39 -0400
+Received: from localhost (mpatocka@localhost)
+        by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 078BVdQg010893;
+        Sat, 8 Aug 2020 07:31:39 -0400
+X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
+Date:   Sat, 8 Aug 2020 07:31:39 -0400 (EDT)
+From:   Mikulas Patocka <mpatocka@redhat.com>
+X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
+To:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Joel Becker <jlbec@evilplan.org>,
+        Christoph Hellwig <hch@lst.de>
+cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+Subject: target core warning
+Message-ID: <alpine.LRH.2.02.2008080725350.10490@file01.intranet.prod.int.rdu2.redhat.com>
+User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
 MIME-Version: 1.0
-In-Reply-To: <b8fc90b9-7038-b202-e7ef-bc4da56816f0@oracle.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9705 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0 bulkscore=0
- spamscore=0 adultscore=0 mlxlogscore=999 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008070010
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9705 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 impostorscore=0 adultscore=0
- bulkscore=0 priorityscore=1501 mlxlogscore=999 phishscore=0
- lowpriorityscore=0 suspectscore=0 spamscore=0 clxscore=1015 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008070010
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 7/27/20 1:13 PM, Mike Christie wrote:
-> I would really like to figure out if #2 is a regression and understand what happened so we don't make the same mistake again and also fix iscsi. The problem with iscsi though is every couple kernels has a bug in this code path so git bisect is being a pain.
+Hi
 
-Sorry for the delay. I was able to track down the hang part of this. It turns out loop did work at some point. It worked a couple times over the years, but every X kernels we would break it again.
+I report that I get this warning on shutdown with the kernel 5.8. The 
+warning is 100% reproducible.
 
-The last time we didn't have the hang was because we executed TMFs one at a time. We would end up always calling queue_tm_rsp since the LUN reset was always going to execute after the abort. So to fix the wake up / hang part of the bug for everyone we could revert:
+Is it a known problem? Should I bisect it?
 
-commit db5b21a24e01d35495014076700efa02d6dcbb68
-Author: Bart Van Assche <bvanassche@acm.org>
-Date:   Tue Nov 27 15:51:59 2018 -0800
+Mikulas
 
-    scsi: target/core: Use system workqueues for TMF
+------------[ cut here ]------------
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 0 PID: 2777 at lib/refcount.c:28 refcount_warn_saturate+0xe1/0x100
+Modules linked in: sha256_generic libsha256 blowfish_generic blowfish_common cbc essiv authenc dm_crypt dm_loop dm_mod dax msr iscsi_target_mod target_core_pscsi target_core_file target_core_mod configfs cpufreq_userspace cpufreq_powersave cpufreq_ondemand cpufreq_conservative autofs4 ipv6 ext4 crc32c_generic crc16 mbcache jbd2 hpfs nls_cp852 msdos fat snd_pcm_oss snd_mixer_oss snd_pcm snd_timer snd soundcore matroxfb_base matroxfb_g450 matroxfb_accel cfbfillrect cfbimgblt cfbcopyarea matroxfb_DAC1064 g450_pll matroxfb_misc floppy fuse powernow_k6 pcspkr evdev via_agp agpgart pata_it821x hid_generic usbhid hid sg e1000 ehci_pci pata_via uhci_hcd ehci_hcd libata usbcore usb_common unix
+CPU: 0 PID: 2777 Comm: rmdir Not tainted 5.8.0 #1
+Hardware name: System Manufacturer Product Name/VA-503, BIOS 4.51 PG 01/11/01
+EIP: refcount_warn_saturate+0xe1/0x100
+Code: 56 40 c1 c6 05 42 5f 47 c1 01 e8 fa 2d e4 ff 0f 0b 58 c3 8d b6 00 00 00 00 68 98 56 40 c1 c6 05 44 5f 47 c1 01 e8 df 2d e4 ff <0f> 0b 59 c3 eb 19 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
+EAX: 00000026 EBX: deb83238 ECX: c145f08c EDX: c145f088
+ESI: deb83098 EDI: e0a6d950 EBP: 00000000 ESP: de371ed0
+DS: 007b ES: 007b FS: 0000 GS: 0033 SS: 0068 EFLAGS: 00010286
+CR0: 80050033 CR2: 082d6dfc CR3: 1e901000 CR4: 00000090
+Call Trace:
+ ? configfs_remove_default_groups+0x33/0x60 [configfs]
+ ? target_fabric_drop_tpg+0xa/0x20 [target_core_mod]
+ ? configfs_rmdir+0x193/0x2e0 [configfs]
+ ? vfs_rmdir+0x53/0x160
+ ? do_rmdir+0x144/0x180
+ ? do_syscall_32_irqs_on+0x34/0x1a0
+ ? exc_page_fault+0x183/0x3e0
+ ? do_int80_syscall_32+0x6/0x20
+ ? entry_INT80_32+0xf1/0xf1
+---[ end trace 59dc38640589748b ]---
 
-It's not clear how much processing TMFs for the same device in parallel helps. If it doesn't help, this would be an easy fix for everyone.
-
-One other thing that is not clear to me is if aborted_task was always meant to be used for task management requests. I think when it was first added, it was only called for normal cmds. I couldn't tell exactly when we meant (vs it snuck in by accident) to start calling it for all commands.
-
-If the async TMF feature helps, then I'm ok with with your fix for loop where we say the aborted_task callout was meant for all commands and go from there. We then have to do something similar in xen, and check that the other drivers didn't expect the old behavior. I think for that qla2xxx bug you mentioned, tcm_qla2xxx_aborted_task didn't expect a qla_tgt_mgmt_cmd to be passed into aborted_task so it crashed trying to access it as a qla_tgt_cmd.
-
-What do you think?
