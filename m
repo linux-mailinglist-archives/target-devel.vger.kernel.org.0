@@ -2,127 +2,98 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5D4C2477C0
-	for <lists+target-devel@lfdr.de>; Mon, 17 Aug 2020 21:57:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2546F248385
+	for <lists+target-devel@lfdr.de>; Tue, 18 Aug 2020 13:05:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729291AbgHQT56 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 17 Aug 2020 15:57:58 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:26564 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729118AbgHQT55 (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Mon, 17 Aug 2020 15:57:57 -0400
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07HJVarS069185;
-        Mon, 17 Aug 2020 15:57:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=QXJRfHN9mmsNDk6QsxgcWobeI8TPkD80t9GisADyH1o=;
- b=o3bJlhjDSSSEg4dGq9I4xGGrKMsrAoSBn41x6Llja9uWHRqZro1eS3ir0chvo9yl73GM
- QICyBow0LVqNyrgllx9sZHk4OUUVncBWVBWr6P9tHLQgTOYlkdSi265KWBJLHsEbj3mG
- 7iAEoK6D5aeallb/jHWED5ghWzWHAFlrVH6Lf2QFS5zDEKKOVZadYgBvoZOEzYGjbbqr
- OALsAKxmd3To6cp1GT3u1ktlaefTZ1QmRo9TevoftrOb+qByAmG3x84MnJLU67/sV5ww
- IXpfATGvrAxCKTLUbu2loUgZR7LsSDiJ1PuzTkZViDdUfByh9Ayu4wZhzV9HAI24Lkhy IA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 32y7nhdu77-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 17 Aug 2020 15:57:41 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07HJVcGI069350;
-        Mon, 17 Aug 2020 15:57:40 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 32y7nhdu6v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 17 Aug 2020 15:57:40 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
-        by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07HJsWfR004287;
-        Mon, 17 Aug 2020 19:57:39 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
-        by ppma05wdc.us.ibm.com with ESMTP id 32x7b8ued3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 17 Aug 2020 19:57:39 +0000
-Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-        by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 07HJvaiW62718344
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 17 Aug 2020 19:57:36 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 1676378060;
-        Mon, 17 Aug 2020 19:57:39 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id D176F78066;
-        Mon, 17 Aug 2020 19:57:33 +0000 (GMT)
-Received: from [153.66.254.174] (unknown [9.80.233.55])
-        by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Mon, 17 Aug 2020 19:57:33 +0000 (GMT)
-Message-ID: <1597694252.22390.12.camel@linux.ibm.com>
-Subject: Re: [PATCH 0/8] scsi: convert tasklets to use new tasklet_setup()
-From:   James Bottomley <jejb@linux.ibm.com>
-Reply-To: jejb@linux.ibm.com
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Allen Pais <allen.cryptic@gmail.com>, martin.petersen@oracle.com,
-        kashyap.desai@broadcom.com, sumit.saxena@broadcom.com,
-        shivasharan.srikanteshwara@broadcom.com,
-        linux-scsi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, target-devel@vger.kernel.org,
-        megaraidlinux.pdl@broadcom.com, Allen Pais <allen.lkml@gmail.com>
-Date:   Mon, 17 Aug 2020 12:57:32 -0700
-In-Reply-To: <202008171227.D3A4F454D8@keescook>
-References: <20200817085409.25268-1-allen.cryptic@gmail.com>
-         <1597675318.4475.11.camel@linux.ibm.com> <202008171227.D3A4F454D8@keescook>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-08-17_14:2020-08-17,2020-08-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- malwarescore=0 mlxscore=0 suspectscore=0 phishscore=0 bulkscore=0
- spamscore=0 adultscore=0 priorityscore=1501 impostorscore=0
- mlxlogscore=999 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2006250000 definitions=main-2008170131
+        id S1726535AbgHRLFM (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 18 Aug 2020 07:05:12 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:51438 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726273AbgHRLFI (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Tue, 18 Aug 2020 07:05:08 -0400
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 3AD0686DAFEEDC458BC7;
+        Tue, 18 Aug 2020 19:05:01 +0800 (CST)
+Received: from huawei.com (10.175.124.27) by DGGEMS403-HUB.china.huawei.com
+ (10.3.19.203) with Microsoft SMTP Server id 14.3.487.0; Tue, 18 Aug 2020
+ 19:04:50 +0800
+From:   Wu Bo <wubo40@huawei.com>
+To:     <martin.petersen@oracle.com>, <michael.christie@oracle.com>,
+        <bvanassche@acm.org>, <sudhakar.panneerselvam@oracle.com>,
+        <mlombard@redhat.com>, <ddiss@suse.de>
+CC:     <linux-scsi@vger.kernel.org>, <target-devel@vger.kernel.org>,
+        <linfeilong@huawei.com>, <liuzhiqiang26@huawei.com>,
+        <wubo40@huawei.com>
+Subject: [PATCH] target:iscsi-target:Fix null pointer access while logout the iscsi session
+Date:   Tue, 18 Aug 2020 19:16:10 +0800
+Message-ID: <1597749370-631500-1-git-send-email-wubo40@huawei.com>
+X-Mailer: git-send-email 1.8.3.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.175.124.27]
+X-CFilter-Loop: Reflected
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Mon, 2020-08-17 at 12:28 -0700, Kees Cook wrote:
-> On Mon, Aug 17, 2020 at 07:41:58AM -0700, James Bottomley wrote:
-> > On Mon, 2020-08-17 at 14:24 +0530, Allen Pais wrote:
-> > > From: Allen Pais <allen.lkml@gmail.com>
-> > > 
-> > > Commit 12cc923f1ccc ("tasklet: Introduce new initialization
-> > > API")' introduced a new tasklet initialization API. This series
-> > > converts all the scsi drivers to use the new tasklet_setup() API
-> > 
-> > I've got to say I agree with Jens, this was a silly obfuscation:
-> > 
-> > +#define from_tasklet(var, callback_tasklet, tasklet_fieldname) \
-> > +       container_of(callback_tasklet, typeof(*var),
-> > tasklet_fieldname)
-> > 
-> > Just use container_of directly since we all understand what it
-> > does.
-> 
-> But then the lines get really long, wrapped, etc.
+From: Wu Bo <wubo40@huawei.com>
 
-I really don't think that's a problem but if you want to add a new
-generic container_of that does typeof instead of insisting on the type,
-I'd be sort of OK with that ... provided you don't gratuitously alter
-the argument order.
+When I use fio to test the iscsi volumes and logout of the iscsi session
+at the same time, the following crash occurs:
 
-The thing I object to is that this encourages everyone to roll their
-own unnecessary container_of type macros in spite of the fact that it's
-function is wholly generic.  It's fine if you're eliminating one of the
-arguments, or actually making the macro specific to the type, but in
-this case you're not, you're making a completely generic macro where
-the name is the only thing that's specific to this case.
+[24912.893443] BUG: unable to handle kernel NULL pointer dereference at 0000000000000140
+[24912.893748] Oops: 0002 [#1] SMP PTI
+[24912.893883] CPU: 3 PID: 239032 Comm: kworker/3:2 Kdump: loaded Tainted:  
+[24912.894316] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+[24912.894773] Workqueue: target_completion target_complete_ok_work [target_core_mod]
+[24912.895065] RIP: 0010:sbitmap_queue_clear+0x2a/0x70
+[24912.895328] Code: 41 54 41 89 f4 55 89 d5 53 48 89 fb 8b 4f 04 89 f0 d3 e8 48 8d 3c
+[24912.895906] RSP: 0018:ffff9eb14129bdf0 EFLAGS: 00010206
+[24912.896268] RAX: 000000000000001b RBX: ffff9065367f23c0 RCX: 0000000000000005
+[24912.896591] RDX: 0000000000000000 RSI: 000000000000003b RDI: 00000000000000c0
+[24912.896919] RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
+[24912.897556] R10: ffff9064bf6261e0 R11: 0000000000000100 R12: 000000000000003b
+[24912.897913] R13: 0000000000000000 R14: 0000000000000000 R15: ffff906518610c18
+[24912.897916] FS:  0000000000000000(0000) GS:ffff90653ad80000(0000) knlGS:0000000000000000
+[24912.898988] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[24912.899410] CR2: 0000000000000140 CR3: 0000000127c0a004 CR4: 00000000000206e0
+[24912.899830] Call Trace:
+[24912.900278]  target_release_cmd_kref+0x11d/0x2b0 [target_core_mod]
+[24912.900727]  target_put_sess_cmd+0x23/0x30 [target_core_mod]
+[24912.901181]  target_complete_ok_work+0xc2/0x370 [target_core_mod]
+[24912.901649]  ? __schedule+0x304/0x930
+[24912.902921]  process_one_work+0x195/0x390
+[24912.903396]  worker_thread+0x30/0x390
+[24912.903866]  ? process_one_work+0x390/0x390
+[24912.904355]  kthread+0x10d/0x130
+[24912.904835]  ? kthread_flush_work_fn+0x10/0x10
+[24912.905335]  ret_from_fork+0x35/0x40
 
->  This is what the timer_struct conversion did too (added a
-> container_of wrapper), so I think it makes sense here too.
+The iscsi-target thread executes the logout operation, 
+deletes the session,and releases the sess_tag_pool without waiting 
+for all cmds to complete. When the cmds is completed, the target_complete
+worker put the tag to sess_tag_pool, the sess_tag_pool has been released 
+at this time, So accessed the NULL pointer.
 
-I didn't see that one to object to it ...
+Signed-off-by: Wu Bo <wubo40@huawei.com>
+---
+ drivers/target/iscsi/iscsi_target.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-James
+diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
+index c968961..a8ea4a7 100644
+--- a/drivers/target/iscsi/iscsi_target.c
++++ b/drivers/target/iscsi/iscsi_target.c
+@@ -4387,6 +4387,8 @@ int iscsit_close_session(struct iscsi_session *sess)
+ 		}
+ 	}
+ 
++	target_sess_cmd_list_set_waiting(sess->se_sess);
++	target_wait_for_sess_cmds(sess->se_sess);
+ 	transport_deregister_session(sess->se_sess);
+ 
+ 	if (sess->sess_ops->ErrorRecoveryLevel == 2)
+-- 
+1.8.3.1
 
