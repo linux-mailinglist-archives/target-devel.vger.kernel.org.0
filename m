@@ -2,27 +2,27 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED56D24AB5D
-	for <lists+target-devel@lfdr.de>; Thu, 20 Aug 2020 02:10:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C031C24AB2D
+	for <lists+target-devel@lfdr.de>; Thu, 20 Aug 2020 02:08:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728037AbgHTACf (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 19 Aug 2020 20:02:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59514 "EHLO mail.kernel.org"
+        id S1728003AbgHTAIc (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 19 Aug 2020 20:08:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60676 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728027AbgHTACe (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Wed, 19 Aug 2020 20:02:34 -0400
+        id S1728209AbgHTADG (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Wed, 19 Aug 2020 20:03:06 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9D94420FC3;
-        Thu, 20 Aug 2020 00:02:32 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D383A208C7;
+        Thu, 20 Aug 2020 00:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597881753;
-        bh=IgiPxDi5wXjrLJkZg1ANTnEff/PCYXX1uHumPBMZeRs=;
+        s=default; t=1597881785;
+        bh=MUfmXe8Eq8zaIzW6yi47MEM48fwEIH2DgIVAT67gkcM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yExa6F3VQ2lBPyqDFgtYiIBub7z10Q7qTEx7nfT0pxCZ54OIc3mmsVt8BN1qvY7Zs
-         5CaBOMRvZlAT4hSaMFkPXtLA5ILyQHJ/T92fbddCQPZsvqoqr6xA/xnDJ8XJwl68+Y
-         oLDmflsHk7YECfomhDlXFpNLMpTnnQ1T496B+ojQ=
+        b=f0zb7KaLqRhNJNVM1KgMdhnms2D3x8Yty06I8ene2ZLfdMCkQVo1HroExbjOX9BuD
+         cSCvo4piDUZiyYJbbflgM4dEF3n8DE8lVhZNI7k92FqUL0jHJMS/seAVB3qAYf4HyW
+         KgVgtCuZEH9JbQm7GsvXUdhGuVxVqu9HLQG/vDMs=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
@@ -32,12 +32,12 @@ Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
         target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 02/22] scsi: target: tcmu: Fix crash in tcmu_flush_dcache_range on ARM
-Date:   Wed, 19 Aug 2020 20:02:09 -0400
-Message-Id: <20200820000229.215333-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 02/18] scsi: target: tcmu: Fix crash in tcmu_flush_dcache_range on ARM
+Date:   Wed, 19 Aug 2020 20:02:45 -0400
+Message-Id: <20200820000302.215560-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200820000229.215333-1-sashal@kernel.org>
-References: <20200820000229.215333-1-sashal@kernel.org>
+In-Reply-To: <20200820000302.215560-1-sashal@kernel.org>
+References: <20200820000302.215560-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -121,10 +121,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-index a497e7c1f4fcc..d766fb14942b3 100644
+index 8da89925a874d..9c05e820857aa 100644
 --- a/drivers/target/target_core_user.c
 +++ b/drivers/target/target_core_user.c
-@@ -601,7 +601,7 @@ static inline void tcmu_flush_dcache_range(void *vaddr, size_t size)
+@@ -612,7 +612,7 @@ static inline void tcmu_flush_dcache_range(void *vaddr, size_t size)
  	size = round_up(size+offset, PAGE_SIZE);
  
  	while (size) {
