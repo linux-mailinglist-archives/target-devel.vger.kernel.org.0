@@ -2,27 +2,27 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94F5224DE36
-	for <lists+target-devel@lfdr.de>; Fri, 21 Aug 2020 19:29:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B612624DD99
+	for <lists+target-devel@lfdr.de>; Fri, 21 Aug 2020 19:21:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727929AbgHUR1i (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 21 Aug 2020 13:27:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46396 "EHLO mail.kernel.org"
+        id S1728266AbgHURUn (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 21 Aug 2020 13:20:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48870 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727030AbgHUQOt (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Fri, 21 Aug 2020 12:14:49 -0400
+        id S1728043AbgHUQQH (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Fri, 21 Aug 2020 12:16:07 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4A487208DB;
-        Fri, 21 Aug 2020 16:14:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B72D420578;
+        Fri, 21 Aug 2020 16:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598026485;
-        bh=EXoawfmYWrSHVVtbX28ADzXQjEsgIgBnv+xyKHR6zSA=;
+        s=default; t=1598026566;
+        bh=0fVKRcxzaOhqKpTZuNkdyaVVibqDGakKkUCMuuKRGMk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BFS+GZBLwhHmRd3/nTam8lNvMCLCeeyyC4g1rXwT+BMP6PsYfmwPMwEe+KdcUA4EJ
-         ES3f1L9o2HvhNkKDi22xUFn8M7apN7+fhNDgPN0tzA1kxOYtBLysTczQd3uq7L67CH
-         9Oaev54XQI4vmbsapJII3CuyFS9aaMopZoSDPB2U=
+        b=EEtDT6z7zzkxUxd2WRLQLETChSMMODA53QA37xwWSqFc5CyAbfVOubbUNkevKLjVX
+         Y97KhtPbw2ctxIamQpO7Bml4cWBNow6/w7ZuOvsMorhvsSySP8k3XxqPFAMUW8pD7z
+         kKmK2iYtH/5m/J1ileNh4rKpDZ1rCli6Cw8Hqjak=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
@@ -31,12 +31,12 @@ Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
         target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.8 17/62] scsi: target: tcmu: Fix crash on ARM during cmd completion
-Date:   Fri, 21 Aug 2020 12:13:38 -0400
-Message-Id: <20200821161423.347071-17-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.7 17/61] scsi: target: tcmu: Fix crash on ARM during cmd completion
+Date:   Fri, 21 Aug 2020 12:15:01 -0400
+Message-Id: <20200821161545.347622-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200821161423.347071-1-sashal@kernel.org>
-References: <20200821161423.347071-1-sashal@kernel.org>
+In-Reply-To: <20200821161545.347622-1-sashal@kernel.org>
+References: <20200821161545.347622-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -76,7 +76,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-index 560bfec933bc3..1eb1fb0165cd5 100644
+index b63a1e0c4aa6d..b64ed7dbaa68a 100644
 --- a/drivers/target/target_core_user.c
 +++ b/drivers/target/target_core_user.c
 @@ -1220,7 +1220,14 @@ static unsigned int tcmu_handle_completions(struct tcmu_dev *udev)
