@@ -2,85 +2,138 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BAF524B688
-	for <lists+target-devel@lfdr.de>; Thu, 20 Aug 2020 12:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E71AD24D99A
+	for <lists+target-devel@lfdr.de>; Fri, 21 Aug 2020 18:15:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730631AbgHTKgv (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 20 Aug 2020 06:36:51 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:45488 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727064AbgHTKgu (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 20 Aug 2020 06:36:50 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 4652C5DEAC01CB543DBB;
-        Thu, 20 Aug 2020 18:36:45 +0800 (CST)
-Received: from [127.0.0.1] (10.174.179.35) by DGGEMS414-HUB.china.huawei.com
- (10.3.19.214) with Microsoft SMTP Server id 14.3.487.0; Thu, 20 Aug 2020
- 18:36:36 +0800
-Subject: Re: [PATCH] target:iscsi-target:Fix null pointer access while logout
- the iscsi session
-To:     David Disseldorp <ddiss@suse.de>
-CC:     <martin.petersen@oracle.com>, <michael.christie@oracle.com>,
-        <bvanassche@acm.org>, <sudhakar.panneerselvam@oracle.com>,
-        <mlombard@redhat.com>, <linux-scsi@vger.kernel.org>,
-        <target-devel@vger.kernel.org>, <linfeilong@huawei.com>,
-        <liuzhiqiang26@huawei.com>
-References: <1597749370-631500-1-git-send-email-wubo40@huawei.com>
- <20200818161125.359383ef@suse.de>
-From:   Wu Bo <wubo40@huawei.com>
-Message-ID: <49026bef-fb57-208d-c08c-cbdc3d166200@huawei.com>
-Date:   Thu, 20 Aug 2020 18:36:36 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S1727828AbgHUQPG (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 21 Aug 2020 12:15:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46614 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727786AbgHUQPE (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Fri, 21 Aug 2020 12:15:04 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id EF4F32086A;
+        Fri, 21 Aug 2020 16:15:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1598026503;
+        bh=1B+QXaftpvc71qrW0YzBAEyEARivFDbq++HPRv+l/7Y=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=AaD5/GvbfiGVdrs1lFv67l/NS1AVQx6QbGbRN8t2A6uXDtLTcxRBp+g5PahWjhZjt
+         VywhGVTzUza4wJ/G0cy3mM5/IO4G91FN3rBISpE/zbubrrXI9Y/rWtj1YxXQ/etI3P
+         gmEVbCpGPFS8lgFg1WO5SJoX15rXWFGqB3q/zl/E=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Mike Christie <michael.christie@oracle.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.8 32/62] scsi: target: Fix xcopy sess release leak
+Date:   Fri, 21 Aug 2020 12:13:53 -0400
+Message-Id: <20200821161423.347071-32-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200821161423.347071-1-sashal@kernel.org>
+References: <20200821161423.347071-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20200818161125.359383ef@suse.de>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.179.35]
-X-CFilter-Loop: Reflected
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 2020/8/18 22:11, David Disseldorp wrote:
-> Hi,
-> 
-> On Tue, 18 Aug 2020 19:16:10 +0800, Wu Bo wrote:
-> 
->> From: Wu Bo <wubo40@huawei.com>
->>
->> When I use fio to test the iscsi volumes and logout of the iscsi session
->> at the same time, the following crash occurs:
-> 
-> The change looks reasonable here, but I'd like get a reproducer for it.
-> I've attempted something via:
-> https://github.com/ddiss/libiscsi/tree/async_logout_during_write
-> (run iscsi-test-cu --test iSCSI.iSCSITMF.LogoutDuringIOAsync)
-> 
-> Do you have any ideas why I'm not able to hit this oops?
-> 
-> Thanks, David
-> 
-> .
-> 
+From: Mike Christie <michael.christie@oracle.com>
 
-Hi,
+[ Upstream commit 3c006c7d23aac928279f7cbe83bbac4361255d53 ]
 
-This is more difficult to reproduce it,
-I found that the upstream already has a similar solution.
+transport_init_session can allocate memory via percpu_ref_init, and
+target_xcopy_release_pt never frees it. This adds a
+transport_uninit_session function to handle cleanup of resources allocated
+in the init function.
 
-commit: e9d3009cb936bd0faf0719f68d98ad8afb1e613b
-scsi: target: iscsi: Wait for all commands to finish before freeing a 
-session.
+Link: https://lore.kernel.org/r/1593654203-12442-3-git-send-email-michael.christie@oracle.com
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/target/target_core_internal.h  |  1 +
+ drivers/target/target_core_transport.c |  7 ++++++-
+ drivers/target/target_core_xcopy.c     | 11 +++++++++--
+ 3 files changed, 16 insertions(+), 3 deletions(-)
 
-Thanks, Wu Bo
-
-
-
-
-
-
-
+diff --git a/drivers/target/target_core_internal.h b/drivers/target/target_core_internal.h
+index 8533444159635..e7b3c6e5d5744 100644
+--- a/drivers/target/target_core_internal.h
++++ b/drivers/target/target_core_internal.h
+@@ -138,6 +138,7 @@ int	init_se_kmem_caches(void);
+ void	release_se_kmem_caches(void);
+ u32	scsi_get_new_index(scsi_index_t);
+ void	transport_subsystem_check_init(void);
++void	transport_uninit_session(struct se_session *);
+ unsigned char *transport_dump_cmd_direction(struct se_cmd *);
+ void	transport_dump_dev_state(struct se_device *, char *, int *);
+ void	transport_dump_dev_info(struct se_device *, struct se_lun *,
+diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
+index 90ecdd706a017..e6e1fa68de542 100644
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -236,6 +236,11 @@ int transport_init_session(struct se_session *se_sess)
+ }
+ EXPORT_SYMBOL(transport_init_session);
+ 
++void transport_uninit_session(struct se_session *se_sess)
++{
++	percpu_ref_exit(&se_sess->cmd_count);
++}
++
+ /**
+  * transport_alloc_session - allocate a session object and initialize it
+  * @sup_prot_ops: bitmask that defines which T10-PI modes are supported.
+@@ -579,7 +584,7 @@ void transport_free_session(struct se_session *se_sess)
+ 		sbitmap_queue_free(&se_sess->sess_tag_pool);
+ 		kvfree(se_sess->sess_cmd_map);
+ 	}
+-	percpu_ref_exit(&se_sess->cmd_count);
++	transport_uninit_session(se_sess);
+ 	kmem_cache_free(se_sess_cache, se_sess);
+ }
+ EXPORT_SYMBOL(transport_free_session);
+diff --git a/drivers/target/target_core_xcopy.c b/drivers/target/target_core_xcopy.c
+index 0d00ccbeb0503..44e15d7fb2f09 100644
+--- a/drivers/target/target_core_xcopy.c
++++ b/drivers/target/target_core_xcopy.c
+@@ -474,7 +474,7 @@ int target_xcopy_setup_pt(void)
+ 	memset(&xcopy_pt_sess, 0, sizeof(struct se_session));
+ 	ret = transport_init_session(&xcopy_pt_sess);
+ 	if (ret < 0)
+-		return ret;
++		goto destroy_wq;
+ 
+ 	xcopy_pt_nacl.se_tpg = &xcopy_pt_tpg;
+ 	xcopy_pt_nacl.nacl_sess = &xcopy_pt_sess;
+@@ -483,12 +483,19 @@ int target_xcopy_setup_pt(void)
+ 	xcopy_pt_sess.se_node_acl = &xcopy_pt_nacl;
+ 
+ 	return 0;
++
++destroy_wq:
++	destroy_workqueue(xcopy_wq);
++	xcopy_wq = NULL;
++	return ret;
+ }
+ 
+ void target_xcopy_release_pt(void)
+ {
+-	if (xcopy_wq)
++	if (xcopy_wq) {
+ 		destroy_workqueue(xcopy_wq);
++		transport_uninit_session(&xcopy_pt_sess);
++	}
+ }
+ 
+ /*
+-- 
+2.25.1
 
