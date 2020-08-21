@@ -2,27 +2,27 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 048A324DBEF
-	for <lists+target-devel@lfdr.de>; Fri, 21 Aug 2020 18:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3929824DBB2
+	for <lists+target-devel@lfdr.de>; Fri, 21 Aug 2020 18:46:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728423AbgHUQur (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 21 Aug 2020 12:50:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50022 "EHLO mail.kernel.org"
+        id S1728146AbgHUQog (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 21 Aug 2020 12:44:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48780 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728353AbgHUQUF (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Fri, 21 Aug 2020 12:20:05 -0400
+        id S1728385AbgHUQUm (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Fri, 21 Aug 2020 12:20:42 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6AFFE22D75;
-        Fri, 21 Aug 2020 16:19:07 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 83EA522C9F;
+        Fri, 21 Aug 2020 16:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598026748;
-        bh=qy/zy7/k3qprHoSgslxOorRcVvl71aW5F34JsIVxdt8=;
+        s=default; t=1598026785;
+        bh=xAEgqohY3FdYqYTTjlQYaSeUB4UNZYS7CDwMTrmHEbM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XF0iYBgZeeqI2RdAJH7dIeRR10t4TFqwUdCHE+BzHh1FMyr0r+6fPFHNQoDU7/b5l
-         LXV2lQ9FYuPI+kpnmBKe4aC8IfpXnki2atNV0PoxCqELpWUXzAq78cHgZjDaSO5F3c
-         FBUs0Fd8EHPeCZnPd6/czy+J45yth2xh9iIu8+x4=
+        b=m1IOW4UDl3/BZLHx/LW0xHuRy4jPBUf4ccUcTrTVyIELHPxQQt8zRSUuTZftzQX3m
+         EruUj79ItnxG4mrN2ePGYGb0gfuNDuksTX0Pk5Rq+etODDYgUQRGT8friaG5YBaYvc
+         njDsI/pERmIMvW4kd9RhVQq7kNF2YF56OXV8H2eM=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
@@ -31,12 +31,12 @@ Cc:     Bodo Stroesser <bstroesser@ts.fujitsu.com>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
         target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 08/30] scsi: target: tcmu: Fix crash on ARM during cmd completion
-Date:   Fri, 21 Aug 2020 12:18:35 -0400
-Message-Id: <20200821161857.348955-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 05/26] scsi: target: tcmu: Fix crash on ARM during cmd completion
+Date:   Fri, 21 Aug 2020 12:19:16 -0400
+Message-Id: <20200821161938.349246-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200821161857.348955-1-sashal@kernel.org>
-References: <20200821161857.348955-1-sashal@kernel.org>
+In-Reply-To: <20200821161938.349246-1-sashal@kernel.org>
+References: <20200821161938.349246-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -76,10 +76,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-index c4a5fb6f038fc..96601fda47b18 100644
+index 1a83456a65a00..693fbb2858404 100644
 --- a/drivers/target/target_core_user.c
 +++ b/drivers/target/target_core_user.c
-@@ -997,7 +997,14 @@ static unsigned int tcmu_handle_completions(struct tcmu_dev *udev)
+@@ -666,7 +666,14 @@ static unsigned int tcmu_handle_completions(struct tcmu_dev *udev)
  		struct tcmu_cmd_entry *entry = (void *) mb + CMDR_OFF + udev->cmdr_last_cleaned;
  		struct tcmu_cmd *cmd;
  
