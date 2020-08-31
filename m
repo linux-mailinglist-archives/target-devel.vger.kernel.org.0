@@ -2,75 +2,66 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3553025583F
-	for <lists+target-devel@lfdr.de>; Fri, 28 Aug 2020 12:03:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF02E2578E3
+	for <lists+target-devel@lfdr.de>; Mon, 31 Aug 2020 14:02:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729058AbgH1KDh (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 28 Aug 2020 06:03:37 -0400
-Received: from mail1.bemta25.messagelabs.com ([195.245.230.68]:32656 "EHLO
-        mail1.bemta25.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729045AbgH1KDf (ORCPT
+        id S1727019AbgHaMCi (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 31 Aug 2020 08:02:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51072 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727037AbgHaMCf (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 28 Aug 2020 06:03:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1598609011; i=@ts.fujitsu.com;
-        bh=i87hszAIHouezrUX4nSwQs0jo2K5Dqe3/ZD9piaM/20=;
-        h=Subject:From:To:References:Message-ID:Date:MIME-Version:
-         In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        b=n0TjUYlchdv3nS7rueihD+0Gou+vMlCoRi55Lbs3RXTXf4Dovrr8UCm4J3AL9IEp+
-         hPMNn0NA+z3ml98dLQSOqwonLTqbD+kSnSDtpf4Xj/p6kIPGkjKLHafgiQtYocCMOJ
-         UlqcC2SYiSf23x73e7cZwmD5y5EEDFpTTuLwiFVtUdC0ZwlwpgY663zMa9etnFJXyT
-         K4xKmWMlBaGr+HPDTsYFZo5upo55+JdDrecgMVJDtRR6cxW1+oBllHCVSOMsisIAfs
-         ztk05FBPmldFDQib5M3gNdtNkCe/UmGksk6Ak15+NUS7eKsYzBd7CNWN1aganGkIpV
-         RNkOqcbG2dC2w==
-Received: from [100.112.197.40] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-4.bemta.az-b.eu-west-1.aws.symcld.net id 75/C1-16187-376D84F5; Fri, 28 Aug 2020 10:03:31 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrKIsWRWlGSWpSXmKPExsViZ8MRqlt8zSP
-  e4PgleYvu6zvYLJYf/8dksf7IBkaLBRsfMVq0Ln3L5MDq8fHpLRaP9/uusnl83iQXwBzFmpmX
-  lF+RwJrR/qWVtWCjUMXxD99ZGxh38nUxcnEICUxmlPh8/wwrhNPPKLHr6Dz2LkZODmGBMIkX3
-  z8ygdhsAgYSKybdZwEpEhHYwyjxbUIfVMc6RolVM2+BdfAKOErMedwCVMXBwSKgKrHmkxyIKS
-  oQLvFshT9EhaDEyZlPWEBsTgEniQ2/V7CB2MwCZhLzNj9khrDFJW49mc8EYctLbH87h3kCI98
-  sJO2zkLTMQtIyC0nLAkaWVYwWSUWZ6RkluYmZObqGBga6hoZGuoaWFrqGFmZ6iVW6SXqppbrl
-  qcUluoZ6ieXFesWVuck5KXp5qSWbGIEhnlJwbNcOxrevP+gdYpTkYFIS5bU86REvxJeUn1KZk
-  VicEV9UmpNafIhRhoNDSYJ30WWgnGBRanpqRVpmDjDeYNISHDxKIrzlV4DSvMUFibnFmekQqV
-  OMuhwvri5exCzEkpeflyolzmsKUiQAUpRRmgc3Ahb7lxhlpYR5GRkYGIR4ClKLcjNLUOVfMYp
-  zMCoJ8z4DuYQnM68EbtMroCOYgI6YG+YKckRJIkJKqoEpXz3h+ZOrM+5yG7Xu2Xhv7vb/b8VV
-  L2b8bGdr7egO3xGaPkOb6WZCbunpU9535I91KmoFXzduzW1wfl5z/1Tgr237p0Q/cjHM8NWSv
-  31n83yd7KN3/nSU1uvq/2MSn7tpfbSqtdOkG3pLhcQmv+Z6unXzsbMz7XYq75b0enk99sz/B2
-  UXOKLD1n2foqjY9Ox++fujZfe+CMXLrH0R8USf96Oco7Xm15gvq1YuYXqQcOjg/t3f4mxmsZg
-  q7404v8A2SvjDvcaSbyeX/Vt+Peb6FLNY3S1pH49bh+X3Tt+UIziTael/88bVc0NSV+99sUCs
-  SP3N0YfvzFyLQ275rfa0blTWOup2oP6EX7qNxIdjEkosxRmJhlrMRcWJAOyF6oF4AwAA
-X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-3.tower-287.messagelabs.com!1598609010!549738!1
-X-Originating-IP: [62.60.8.85]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.50.3; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 10085 invoked from network); 28 Aug 2020 10:03:31 -0000
-Received: from unknown (HELO mailhost4.uk.fujitsu.com) (62.60.8.85)
-  by server-3.tower-287.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 28 Aug 2020 10:03:31 -0000
-Received: from x-serv01 ([172.17.38.52])
-        by mailhost4.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 07SA3UsK026689;
-        Fri, 28 Aug 2020 11:03:30 +0100
-Received: from [172.17.39.90] (unknown [172.17.39.90])
-        by x-serv01 (Postfix) with ESMTP id 2718E202FF;
-        Fri, 28 Aug 2020 12:03:30 +0200 (CEST)
-Subject: Re: [PATCH] scsi: target: tcmu: fix size in calls to
- tcmu_flush_dcache_range
-From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-To:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
-        Mike Christie <mchristi@redhat.com>, stable@vger.kernel.org
-References: <20200528193108.9085-1-bstroesser@ts.fujitsu.com>
- <159114947916.26776.943125808891892721.b4-ty@oracle.com>
- <79f7119f-fda7-64cc-b617-d49a23f2e628@ts.fujitsu.com>
-Message-ID: <28862cd1-e7f2-d161-1bab-4d2ff73cf6a1@ts.fujitsu.com>
-Date:   Fri, 28 Aug 2020 12:03:38 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        Mon, 31 Aug 2020 08:02:35 -0400
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC339C061573
+        for <target-devel@vger.kernel.org>; Mon, 31 Aug 2020 05:02:34 -0700 (PDT)
+Received: by mail-pg1-x541.google.com with SMTP id w186so473725pgb.8
+        for <target-devel@vger.kernel.org>; Mon, 31 Aug 2020 05:02:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=a08AENI2DFUJOZiGvCRTg/GXwM7bPYe8BJ+rCJWtnl4=;
+        b=YOKtzczKXPTHUogmgXL30H3d8zUTN7PA3qH1/VNy/iIqfSR5XtUZyM07m1Joxg985J
+         VrNmTjEogNeVB1HiyJhuBpqLFF53UzSzSNwyuyuXB7jAinMQyKMdsBL6X0pdjsjdobc+
+         ewgM7hdO7Id5BLI7CG75ztKZ2HVgBH0LYm9IO7z85XLDzDN9IG4X0vJHZWBUNK1h4IAR
+         BBgh52YyXAHcZPc6rfS1u5wBtniJAjmpQulu6mHEtyeB73B3roqTuMs568SyhmBcrbKZ
+         7pqQSzhoMrZNBTGewkIv9tLosYbAgL8Jgnm/8x/NzaRG291HqSY4Bup7OP/P7r0cPfWh
+         36jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=a08AENI2DFUJOZiGvCRTg/GXwM7bPYe8BJ+rCJWtnl4=;
+        b=p3Nv3G7p8j4YvCqsxBn8mbMkmlil0HWOt1AIcbfkdCnM7ZPufXBPHskLuo+NBrbaf8
+         cLPRam7plD0vEfuC5uudBakJl1ZJpUJFILHZSeNidNoBThkj8fPRrIfKS4YdDqnUCPve
+         Q+pr2QZ25Ry/o+g9EfhIOGl1Fy4g3ZqIbraOL9XH8Os3WOY/7fgi8/fJGbB5ytL+PBbN
+         JZ3gr5F0w0YIkbmrOssoPG1Hp+ze86chdcUx8yVxzsNCH2JRHOQFLwsdwHvqwbmaleEL
+         +JQRQneUPNkQhqCh/3SeiZhxzv75/R0vkAtDHS21LWjCT80MMfUtxz7zAUGKsizz2m9q
+         8Pow==
+X-Gm-Message-State: AOAM5312stZ48/PSHqISQMbb2iXljfbDQj3LTAhXpHYGg/PM2D0v4DLp
+        lwAAMGBX1UpB0F386DiK+WdYeg==
+X-Google-Smtp-Source: ABdhPJyVcgDinpA+btaIb9dzZaKvDLDOFy3R9RZel/AFBg1k8y/YJWPQcqpdSx2jFCouDYNOHU0pag==
+X-Received: by 2002:a65:66c4:: with SMTP id c4mr1014869pgw.442.1598875354300;
+        Mon, 31 Aug 2020 05:02:34 -0700 (PDT)
+Received: from houpudeMacBook-Pro.local ([240e:b1:e401:1::d])
+        by smtp.gmail.com with ESMTPSA id q201sm7756648pfq.80.2020.08.31.05.02.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Aug 2020 05:02:33 -0700 (PDT)
+Subject: Re: [PATCH] iscsi-target: fix hang in iscsit_access_np() when getting
+ tpg->np_login_sem
+To:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, michael.christie@oracle.com
+Cc:     stable@vger.kernel.org
+References: <20200729130343.24976-1-houpu@bytedance.com>
+From:   Hou Pu <houpu@bytedance.com>
+Message-ID: <01a58989-8777-3967-ebcd-f8c080e18a3c@bytedance.com>
+Date:   Mon, 31 Aug 2020 20:02:20 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
+ Gecko/20100101 Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <79f7119f-fda7-64cc-b617-d49a23f2e628@ts.fujitsu.com>
+In-Reply-To: <20200729130343.24976-1-houpu@bytedance.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -79,63 +70,138 @@ Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+
 Hi,
-I'm adding stable@vger.kernel.org
 
-Once again, this time really adding stable.
+Could anyone help review this patch? It is an important
+fix.
 
-On 2020-06-03 04:31, Martin K. Petersen wrote:
-> On Thu, 28 May 2020 21:31:08 +0200, Bodo Stroesser wrote:
->
->> 1) If remaining ring space before the end of the ring is
->>      smaller then the next cmd to write, tcmu writes a padding
->>      entry which fills the remaining space at the end of the
->>      ring.
->>      Then tcmu calls tcmu_flush_dcache_range() with the size
->>      of struct tcmu_cmd_entry as data length to flush.
->>      If the space filled by the padding was smaller then
->>      tcmu_cmd_entry, tcmu_flush_dcache_range() is called for
->>      an address range reaching behind the end of the vmalloc'ed
->>      ring.
->>      tcmu_flush_dcache_range() in a loop calls
->>         flush_dcache_page(virt_to_page(start));
->>      for every page being part of the range. On x86 the line is
->>      optimized out by the compiler, as flush_dcache_page() is
->>      empty on x86.
->>      But I assume the above can cause trouble on other
->>      architectures that really have a flush_dcache_page().
->>      For paddings only the header part of an entry is relevant
->>      Due to alignment rules the header always fits in the
->>      remaining space, if padding is needed.
->>      So tcmu_flush_dcache_range() can safely be called with
->>      sizeof(entry->hdr) as the length here.
->>
->> [...]
->
-> Applied to 5.8/scsi-queue, thanks!
->
-> [1/1] scsi: target: tcmu: Fix size in calls to tcmu_flush_dcache_range
->         https://git.kernel.org/mkp/scsi/c/8c4e0f212398
->
+Login thread could hang __forever__ and only reboot could
+solve this. This happened several times in our production
+environment.
 
-The full commit of this patch is:
-      8c4e0f212398cdd1eb4310a5981d06a723cdd24f
+np->np_login_timer is shared by all TPGs of a portal.
+should be used carefully. If a connection to iqn-TPG A start
+login timer, It should not stop by another connection
+to iqn-TPG B.
 
-This patch is the first of four patches that are necessary to run tcmu
-on ARM without crash. For details please see
-      https://bugzilla.kernel.org/show_bug.cgi?id=208045
-Upsteam commits of patches 2,3, and 4 are:
-    2: 3c58f737231e "scsi: target: tcmu: Optimize use of flush_dcache_page"
-    3: 3145550a7f8b "scsi: target: tcmu: Fix crash in 
-tcmu_flush_dcache_range on ARM"
-    4: 5a0c256d96f0 "scsi: target: tcmu: Fix crash on ARM during cmd 
-completion"
+np->np_login_timer protect potential hangs in
+__iscsi_target_login_thread.
+should be used locally in this function. It should really
+not be used in iscsi_target_login_sess_out from workqueue
+context.
 
-Since patches 3 and 4 already were accepted for 5.8, 5.4, and 4.19, and
-I sent a request to add patch 2 about 1 hour ago, please consider adding
-this patch to 5.4 and 4.19, because without it tcmu on ARM will still
-crash.
+Thanks,
+Hou
 
-Thank you,
-Bodo
-
+On 2020/7/29 9:03 PM, Hou Pu wrote:
+> The iscsi target login thread might stuck in following stack:
+> 
+> cat /proc/`pidof iscsi_np`/stack
+> [<0>] down_interruptible+0x42/0x50
+> [<0>] iscsit_access_np+0xe3/0x167
+> [<0>] iscsi_target_locate_portal+0x695/0x8ac
+> [<0>] __iscsi_target_login_thread+0x855/0xb82
+> [<0>] iscsi_target_login_thread+0x2f/0x5a
+> [<0>] kthread+0xfa/0x130
+> [<0>] ret_from_fork+0x1f/0x30
+> 
+> This could be reproduced by following steps:
+> 1. Initiator A try to login iqn1-tpg1 on port 3260. After finishing
+>     PDU exchange in the login thread and before the negotiation is
+>     finished, at this time the network link is down. In a production
+>     environment, this could happen. I could emulated it by bring
+>     the network card down in the initiator node by ifconfig eth0 down.
+>     (Now A could never finish this login. And tpg->np_login_sem is
+>     hold by it).
+> 2. Initiator B try to login iqn2-tpg1 on port 3260. After finishing
+>     PDU exchange in the login thread. The target expect to process
+>     remaining login PDUs in workqueue context.
+> 3. Initiator A' try to re-login to iqn1-tpg1 on port 3260 from
+>     a new socket. It will wait for tpg->np_login_sem with
+>     np->np_login_timer loaded to wait for at most 15 second.
+>     (Because the lock is held by A. A never gets a change to
+>     release tpg->np_login_sem. so A' should finally get timeout).
+> 4. Before A' got timeout. Initiator B gets negotiation failed and
+>     calls iscsi_target_login_drop()->iscsi_target_login_sess_out().
+>     The np->np_login_timer is canceled. And initiator A' will hang
+>     there forever. Because A' is now in the login thread. All other
+>     login requests could not be serviced.
+> 
+> Fix this by moving iscsi_stop_login_thread_timer() out of
+> iscsi_target_login_sess_out(). Also remove iscsi_np parameter
+> from iscsi_target_login_sess_out().
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hou Pu <houpu@bytedance.com>
+> ---
+>   drivers/target/iscsi/iscsi_target_login.c | 6 +++---
+>   drivers/target/iscsi/iscsi_target_login.h | 3 +--
+>   drivers/target/iscsi/iscsi_target_nego.c  | 3 +--
+>   3 files changed, 5 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/target/iscsi/iscsi_target_login.c b/drivers/target/iscsi/iscsi_target_login.c
+> index 85748e338858..893d1b406c29 100644
+> --- a/drivers/target/iscsi/iscsi_target_login.c
+> +++ b/drivers/target/iscsi/iscsi_target_login.c
+> @@ -1149,7 +1149,7 @@ void iscsit_free_conn(struct iscsi_conn *conn)
+>   }
+>   
+>   void iscsi_target_login_sess_out(struct iscsi_conn *conn,
+> -		struct iscsi_np *np, bool zero_tsih, bool new_sess)
+> +				 bool zero_tsih, bool new_sess)
+>   {
+>   	if (!new_sess)
+>   		goto old_sess_out;
+> @@ -1167,7 +1167,6 @@ void iscsi_target_login_sess_out(struct iscsi_conn *conn,
+>   	conn->sess = NULL;
+>   
+>   old_sess_out:
+> -	iscsi_stop_login_thread_timer(np);
+>   	/*
+>   	 * If login negotiation fails check if the Time2Retain timer
+>   	 * needs to be restarted.
+> @@ -1407,8 +1406,9 @@ static int __iscsi_target_login_thread(struct iscsi_np *np)
+>   new_sess_out:
+>   	new_sess = true;
+>   old_sess_out:
+> +	iscsi_stop_login_thread_timer(np);
+>   	tpg_np = conn->tpg_np;
+> -	iscsi_target_login_sess_out(conn, np, zero_tsih, new_sess);
+> +	iscsi_target_login_sess_out(conn, zero_tsih, new_sess);
+>   	new_sess = false;
+>   
+>   	if (tpg) {
+> diff --git a/drivers/target/iscsi/iscsi_target_login.h b/drivers/target/iscsi/iscsi_target_login.h
+> index 3b8e3639ff5d..fc95e6150253 100644
+> --- a/drivers/target/iscsi/iscsi_target_login.h
+> +++ b/drivers/target/iscsi/iscsi_target_login.h
+> @@ -22,8 +22,7 @@ extern int iscsit_put_login_tx(struct iscsi_conn *, struct iscsi_login *, u32);
+>   extern void iscsit_free_conn(struct iscsi_conn *);
+>   extern int iscsit_start_kthreads(struct iscsi_conn *);
+>   extern void iscsi_post_login_handler(struct iscsi_np *, struct iscsi_conn *, u8);
+> -extern void iscsi_target_login_sess_out(struct iscsi_conn *, struct iscsi_np *,
+> -				bool, bool);
+> +extern void iscsi_target_login_sess_out(struct iscsi_conn *, bool, bool);
+>   extern int iscsi_target_login_thread(void *);
+>   extern void iscsi_handle_login_thread_timeout(struct timer_list *t);
+>   
+> diff --git a/drivers/target/iscsi/iscsi_target_nego.c b/drivers/target/iscsi/iscsi_target_nego.c
+> index 685d771b51d4..e32d93b92742 100644
+> --- a/drivers/target/iscsi/iscsi_target_nego.c
+> +++ b/drivers/target/iscsi/iscsi_target_nego.c
+> @@ -535,12 +535,11 @@ static bool iscsi_target_sk_check_and_clear(struct iscsi_conn *conn, unsigned in
+>   
+>   static void iscsi_target_login_drop(struct iscsi_conn *conn, struct iscsi_login *login)
+>   {
+> -	struct iscsi_np *np = login->np;
+>   	bool zero_tsih = login->zero_tsih;
+>   
+>   	iscsi_remove_failed_auth_entry(conn);
+>   	iscsi_target_nego_release(conn);
+> -	iscsi_target_login_sess_out(conn, np, zero_tsih, true);
+> +	iscsi_target_login_sess_out(conn, zero_tsih, true);
+>   }
+>   
+>   struct conn_timeout {
+> 
