@@ -2,206 +2,107 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF02E2578E3
-	for <lists+target-devel@lfdr.de>; Mon, 31 Aug 2020 14:02:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64027258C58
+	for <lists+target-devel@lfdr.de>; Tue,  1 Sep 2020 12:07:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727019AbgHaMCi (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 31 Aug 2020 08:02:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51072 "EHLO
+        id S1726307AbgIAKG7 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 1 Sep 2020 06:06:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727037AbgHaMCf (ORCPT
+        with ESMTP id S1725848AbgIAKG6 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 31 Aug 2020 08:02:35 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC339C061573
-        for <target-devel@vger.kernel.org>; Mon, 31 Aug 2020 05:02:34 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id w186so473725pgb.8
-        for <target-devel@vger.kernel.org>; Mon, 31 Aug 2020 05:02:34 -0700 (PDT)
+        Tue, 1 Sep 2020 06:06:58 -0400
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DC52C061244;
+        Tue,  1 Sep 2020 03:06:58 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id n23so650161otq.11;
+        Tue, 01 Sep 2020 03:06:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=a08AENI2DFUJOZiGvCRTg/GXwM7bPYe8BJ+rCJWtnl4=;
-        b=YOKtzczKXPTHUogmgXL30H3d8zUTN7PA3qH1/VNy/iIqfSR5XtUZyM07m1Joxg985J
-         VrNmTjEogNeVB1HiyJhuBpqLFF53UzSzSNwyuyuXB7jAinMQyKMdsBL6X0pdjsjdobc+
-         ewgM7hdO7Id5BLI7CG75ztKZ2HVgBH0LYm9IO7z85XLDzDN9IG4X0vJHZWBUNK1h4IAR
-         BBgh52YyXAHcZPc6rfS1u5wBtniJAjmpQulu6mHEtyeB73B3roqTuMs568SyhmBcrbKZ
-         7pqQSzhoMrZNBTGewkIv9tLosYbAgL8Jgnm/8x/NzaRG291HqSY4Bup7OP/P7r0cPfWh
-         36jg==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pDrlWYFFkJJmssRq429+R+iuI/x8+DPm+PEwzlRDqBQ=;
+        b=ZDL+Sj5oxpSQaoR6SHTUZZvCQ7FGrawiRYTcPP1ISEjV8Nh0SjcZHoAjzrG1DsVkjY
+         T5Tu+mYaFHH2GFeUbajP6d4BqB+fIIQZu6bJfRL5EfGJsks7NzlgkMBHX1Jq+Jf3+Sge
+         +5AZ8xmnLs45iWiRvRTdu4ePGcd/03w44lK3fLLdI+kcinJIScOq0oXTEqxanPoEML0i
+         qi6PD9aKlthYNS8YFTglNlsu7ouvD7XOaP/sbT1RgMViL5oQGjof4DM3LjtqV3/TEh57
+         3P9WZHWSk9t+Lk8irPJb/fcHeoVTD0vjwJRL6pXoBrl2pge0s6wRSamce0MqUG9W/k0i
+         A5tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=a08AENI2DFUJOZiGvCRTg/GXwM7bPYe8BJ+rCJWtnl4=;
-        b=p3Nv3G7p8j4YvCqsxBn8mbMkmlil0HWOt1AIcbfkdCnM7ZPufXBPHskLuo+NBrbaf8
-         cLPRam7plD0vEfuC5uudBakJl1ZJpUJFILHZSeNidNoBThkj8fPRrIfKS4YdDqnUCPve
-         Q+pr2QZ25Ry/o+g9EfhIOGl1Fy4g3ZqIbraOL9XH8Os3WOY/7fgi8/fJGbB5ytL+PBbN
-         JZ3gr5F0w0YIkbmrOssoPG1Hp+ze86chdcUx8yVxzsNCH2JRHOQFLwsdwHvqwbmaleEL
-         +JQRQneUPNkQhqCh/3SeiZhxzv75/R0vkAtDHS21LWjCT80MMfUtxz7zAUGKsizz2m9q
-         8Pow==
-X-Gm-Message-State: AOAM5312stZ48/PSHqISQMbb2iXljfbDQj3LTAhXpHYGg/PM2D0v4DLp
-        lwAAMGBX1UpB0F386DiK+WdYeg==
-X-Google-Smtp-Source: ABdhPJyVcgDinpA+btaIb9dzZaKvDLDOFy3R9RZel/AFBg1k8y/YJWPQcqpdSx2jFCouDYNOHU0pag==
-X-Received: by 2002:a65:66c4:: with SMTP id c4mr1014869pgw.442.1598875354300;
-        Mon, 31 Aug 2020 05:02:34 -0700 (PDT)
-Received: from houpudeMacBook-Pro.local ([240e:b1:e401:1::d])
-        by smtp.gmail.com with ESMTPSA id q201sm7756648pfq.80.2020.08.31.05.02.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Aug 2020 05:02:33 -0700 (PDT)
-Subject: Re: [PATCH] iscsi-target: fix hang in iscsit_access_np() when getting
- tpg->np_login_sem
-To:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, michael.christie@oracle.com
-Cc:     stable@vger.kernel.org
-References: <20200729130343.24976-1-houpu@bytedance.com>
-From:   Hou Pu <houpu@bytedance.com>
-Message-ID: <01a58989-8777-3967-ebcd-f8c080e18a3c@bytedance.com>
-Date:   Mon, 31 Aug 2020 20:02:20 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
- Gecko/20100101 Thunderbird/68.11.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pDrlWYFFkJJmssRq429+R+iuI/x8+DPm+PEwzlRDqBQ=;
+        b=DslHrc1rN5D8GaEEZcw1nJ3a2dCwCz6cKltslmpLUdYRZkSY9pu4SP5eMgu5JdN6YG
+         7WaU7mpjJNeFg6c/aZgYaG6aOE6J8zWuFG8SChe2W8w0bdD9aakPUKn33x36FtFBYYLa
+         7pv1jn0l6oL52LRx96MAGP+YUWQFfyXaNvgA51/NDUnr8F/Yw0lxyfxWanMd58xaMP11
+         37MyFZp3piKPylkfgYBRQI6PI3wya2EUs/D+nAzCEQK6NIT87MYe6ElM6VdcXDbywbmh
+         DDZKHB0405LSwIoJw0BeJf+T3boRPfIJGU9CKIPgKLeBdSvcKCoBObahUxNRRvNqoFbD
+         HwtA==
+X-Gm-Message-State: AOAM530fIKpK5jqPFPANQgCxBZFuyoU+YL5UCgBBY0sssKdAqkAsQH+Y
+        cZQKJbAKLadiUKbxSXoLlC9hwxmekOODPwdm2qE=
+X-Google-Smtp-Source: ABdhPJx4lXxBvlL1JVdxVRRP212exraJg+7ZOk+1qs7Vpy3WfCLZR53D+a2GsBQpTXygcuosjRHnzjW/vlzvjKLf66U=
+X-Received: by 2002:a05:6830:2246:: with SMTP id t6mr832583otd.264.1598954817468;
+ Tue, 01 Sep 2020 03:06:57 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200729130343.24976-1-houpu@bytedance.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20200817085409.25268-1-allen.cryptic@gmail.com>
+ <1597675318.4475.11.camel@linux.ibm.com> <202008171227.D3A4F454D8@keescook> <1597694252.22390.12.camel@linux.ibm.com>
+In-Reply-To: <1597694252.22390.12.camel@linux.ibm.com>
+From:   Allen <allen.lkml@gmail.com>
+Date:   Tue, 1 Sep 2020 15:36:46 +0530
+Message-ID: <CAOMdWSKmNVQTpJtdEMNHc5SS75WNS7F0duzQi14kg62R4Un8zA@mail.gmail.com>
+Subject: Re: [PATCH 0/8] scsi: convert tasklets to use new tasklet_setup()
+To:     jejb@linux.ibm.com
+Cc:     Kees Cook <keescook@chromium.org>,
+        Allen Pais <allen.cryptic@gmail.com>,
+        martin.petersen@oracle.com, kashyap.desai@broadcom.com,
+        sumit.saxena@broadcom.com, shivasharan.srikanteshwara@broadcom.com,
+        linux-scsi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        target-devel@vger.kernel.org, megaraidlinux.pdl@broadcom.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+> > > >
+> > > > Commit 12cc923f1ccc ("tasklet: Introduce new initialization
+> > > > API")' introduced a new tasklet initialization API. This series
+> > > > converts all the scsi drivers to use the new tasklet_setup() API
+> > >
+> > > I've got to say I agree with Jens, this was a silly obfuscation:
+> > >
+> > > +#define from_tasklet(var, callback_tasklet, tasklet_fieldname) \
+> > > +       container_of(callback_tasklet, typeof(*var),
+> > > tasklet_fieldname)
+> > >
+> > > Just use container_of directly since we all understand what it
+> > > does.
+> >
+> > But then the lines get really long, wrapped, etc.
+>
+> I really don't think that's a problem but if you want to add a new
+> generic container_of that does typeof instead of insisting on the type,
+> I'd be sort of OK with that ... provided you don't gratuitously alter
+> the argument order.
+>
+> The thing I object to is that this encourages everyone to roll their
+> own unnecessary container_of type macros in spite of the fact that it's
+> function is wholly generic.  It's fine if you're eliminating one of the
+> arguments, or actually making the macro specific to the type, but in
+> this case you're not, you're making a completely generic macro where
+> the name is the only thing that's specific to this case.
+>
+> >  This is what the timer_struct conversion did too (added a
+> > container_of wrapper), so I think it makes sense here too.
+>
+> I didn't see that one to object to it ...
 
-Hi,
-
-Could anyone help review this patch? It is an important
-fix.
-
-Login thread could hang __forever__ and only reboot could
-solve this. This happened several times in our production
-environment.
-
-np->np_login_timer is shared by all TPGs of a portal.
-should be used carefully. If a connection to iqn-TPG A start
-login timer, It should not stop by another connection
-to iqn-TPG B.
-
-np->np_login_timer protect potential hangs in
-__iscsi_target_login_thread.
-should be used locally in this function. It should really
-not be used in iscsi_target_login_sess_out from workqueue
-context.
+Since we could not get the generic API accepted, can I send out V2
+which would use container_of()?
 
 Thanks,
-Hou
 
-On 2020/7/29 9:03 PM, Hou Pu wrote:
-> The iscsi target login thread might stuck in following stack:
-> 
-> cat /proc/`pidof iscsi_np`/stack
-> [<0>] down_interruptible+0x42/0x50
-> [<0>] iscsit_access_np+0xe3/0x167
-> [<0>] iscsi_target_locate_portal+0x695/0x8ac
-> [<0>] __iscsi_target_login_thread+0x855/0xb82
-> [<0>] iscsi_target_login_thread+0x2f/0x5a
-> [<0>] kthread+0xfa/0x130
-> [<0>] ret_from_fork+0x1f/0x30
-> 
-> This could be reproduced by following steps:
-> 1. Initiator A try to login iqn1-tpg1 on port 3260. After finishing
->     PDU exchange in the login thread and before the negotiation is
->     finished, at this time the network link is down. In a production
->     environment, this could happen. I could emulated it by bring
->     the network card down in the initiator node by ifconfig eth0 down.
->     (Now A could never finish this login. And tpg->np_login_sem is
->     hold by it).
-> 2. Initiator B try to login iqn2-tpg1 on port 3260. After finishing
->     PDU exchange in the login thread. The target expect to process
->     remaining login PDUs in workqueue context.
-> 3. Initiator A' try to re-login to iqn1-tpg1 on port 3260 from
->     a new socket. It will wait for tpg->np_login_sem with
->     np->np_login_timer loaded to wait for at most 15 second.
->     (Because the lock is held by A. A never gets a change to
->     release tpg->np_login_sem. so A' should finally get timeout).
-> 4. Before A' got timeout. Initiator B gets negotiation failed and
->     calls iscsi_target_login_drop()->iscsi_target_login_sess_out().
->     The np->np_login_timer is canceled. And initiator A' will hang
->     there forever. Because A' is now in the login thread. All other
->     login requests could not be serviced.
-> 
-> Fix this by moving iscsi_stop_login_thread_timer() out of
-> iscsi_target_login_sess_out(). Also remove iscsi_np parameter
-> from iscsi_target_login_sess_out().
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hou Pu <houpu@bytedance.com>
-> ---
->   drivers/target/iscsi/iscsi_target_login.c | 6 +++---
->   drivers/target/iscsi/iscsi_target_login.h | 3 +--
->   drivers/target/iscsi/iscsi_target_nego.c  | 3 +--
->   3 files changed, 5 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/target/iscsi/iscsi_target_login.c b/drivers/target/iscsi/iscsi_target_login.c
-> index 85748e338858..893d1b406c29 100644
-> --- a/drivers/target/iscsi/iscsi_target_login.c
-> +++ b/drivers/target/iscsi/iscsi_target_login.c
-> @@ -1149,7 +1149,7 @@ void iscsit_free_conn(struct iscsi_conn *conn)
->   }
->   
->   void iscsi_target_login_sess_out(struct iscsi_conn *conn,
-> -		struct iscsi_np *np, bool zero_tsih, bool new_sess)
-> +				 bool zero_tsih, bool new_sess)
->   {
->   	if (!new_sess)
->   		goto old_sess_out;
-> @@ -1167,7 +1167,6 @@ void iscsi_target_login_sess_out(struct iscsi_conn *conn,
->   	conn->sess = NULL;
->   
->   old_sess_out:
-> -	iscsi_stop_login_thread_timer(np);
->   	/*
->   	 * If login negotiation fails check if the Time2Retain timer
->   	 * needs to be restarted.
-> @@ -1407,8 +1406,9 @@ static int __iscsi_target_login_thread(struct iscsi_np *np)
->   new_sess_out:
->   	new_sess = true;
->   old_sess_out:
-> +	iscsi_stop_login_thread_timer(np);
->   	tpg_np = conn->tpg_np;
-> -	iscsi_target_login_sess_out(conn, np, zero_tsih, new_sess);
-> +	iscsi_target_login_sess_out(conn, zero_tsih, new_sess);
->   	new_sess = false;
->   
->   	if (tpg) {
-> diff --git a/drivers/target/iscsi/iscsi_target_login.h b/drivers/target/iscsi/iscsi_target_login.h
-> index 3b8e3639ff5d..fc95e6150253 100644
-> --- a/drivers/target/iscsi/iscsi_target_login.h
-> +++ b/drivers/target/iscsi/iscsi_target_login.h
-> @@ -22,8 +22,7 @@ extern int iscsit_put_login_tx(struct iscsi_conn *, struct iscsi_login *, u32);
->   extern void iscsit_free_conn(struct iscsi_conn *);
->   extern int iscsit_start_kthreads(struct iscsi_conn *);
->   extern void iscsi_post_login_handler(struct iscsi_np *, struct iscsi_conn *, u8);
-> -extern void iscsi_target_login_sess_out(struct iscsi_conn *, struct iscsi_np *,
-> -				bool, bool);
-> +extern void iscsi_target_login_sess_out(struct iscsi_conn *, bool, bool);
->   extern int iscsi_target_login_thread(void *);
->   extern void iscsi_handle_login_thread_timeout(struct timer_list *t);
->   
-> diff --git a/drivers/target/iscsi/iscsi_target_nego.c b/drivers/target/iscsi/iscsi_target_nego.c
-> index 685d771b51d4..e32d93b92742 100644
-> --- a/drivers/target/iscsi/iscsi_target_nego.c
-> +++ b/drivers/target/iscsi/iscsi_target_nego.c
-> @@ -535,12 +535,11 @@ static bool iscsi_target_sk_check_and_clear(struct iscsi_conn *conn, unsigned in
->   
->   static void iscsi_target_login_drop(struct iscsi_conn *conn, struct iscsi_login *login)
->   {
-> -	struct iscsi_np *np = login->np;
->   	bool zero_tsih = login->zero_tsih;
->   
->   	iscsi_remove_failed_auth_entry(conn);
->   	iscsi_target_nego_release(conn);
-> -	iscsi_target_login_sess_out(conn, np, zero_tsih, true);
-> +	iscsi_target_login_sess_out(conn, zero_tsih, true);
->   }
->   
->   struct conn_timeout {
-> 
+-- 
+       - Allen
