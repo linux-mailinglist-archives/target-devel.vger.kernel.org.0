@@ -2,107 +2,111 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64027258C58
-	for <lists+target-devel@lfdr.de>; Tue,  1 Sep 2020 12:07:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56A06258FBA
+	for <lists+target-devel@lfdr.de>; Tue,  1 Sep 2020 16:02:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726307AbgIAKG7 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 1 Sep 2020 06:06:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60718 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725848AbgIAKG6 (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Tue, 1 Sep 2020 06:06:58 -0400
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DC52C061244;
-        Tue,  1 Sep 2020 03:06:58 -0700 (PDT)
-Received: by mail-ot1-x342.google.com with SMTP id n23so650161otq.11;
-        Tue, 01 Sep 2020 03:06:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=pDrlWYFFkJJmssRq429+R+iuI/x8+DPm+PEwzlRDqBQ=;
-        b=ZDL+Sj5oxpSQaoR6SHTUZZvCQ7FGrawiRYTcPP1ISEjV8Nh0SjcZHoAjzrG1DsVkjY
-         T5Tu+mYaFHH2GFeUbajP6d4BqB+fIIQZu6bJfRL5EfGJsks7NzlgkMBHX1Jq+Jf3+Sge
-         +5AZ8xmnLs45iWiRvRTdu4ePGcd/03w44lK3fLLdI+kcinJIScOq0oXTEqxanPoEML0i
-         qi6PD9aKlthYNS8YFTglNlsu7ouvD7XOaP/sbT1RgMViL5oQGjof4DM3LjtqV3/TEh57
-         3P9WZHWSk9t+Lk8irPJb/fcHeoVTD0vjwJRL6pXoBrl2pge0s6wRSamce0MqUG9W/k0i
-         A5tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=pDrlWYFFkJJmssRq429+R+iuI/x8+DPm+PEwzlRDqBQ=;
-        b=DslHrc1rN5D8GaEEZcw1nJ3a2dCwCz6cKltslmpLUdYRZkSY9pu4SP5eMgu5JdN6YG
-         7WaU7mpjJNeFg6c/aZgYaG6aOE6J8zWuFG8SChe2W8w0bdD9aakPUKn33x36FtFBYYLa
-         7pv1jn0l6oL52LRx96MAGP+YUWQFfyXaNvgA51/NDUnr8F/Yw0lxyfxWanMd58xaMP11
-         37MyFZp3piKPylkfgYBRQI6PI3wya2EUs/D+nAzCEQK6NIT87MYe6ElM6VdcXDbywbmh
-         DDZKHB0405LSwIoJw0BeJf+T3boRPfIJGU9CKIPgKLeBdSvcKCoBObahUxNRRvNqoFbD
-         HwtA==
-X-Gm-Message-State: AOAM530fIKpK5jqPFPANQgCxBZFuyoU+YL5UCgBBY0sssKdAqkAsQH+Y
-        cZQKJbAKLadiUKbxSXoLlC9hwxmekOODPwdm2qE=
-X-Google-Smtp-Source: ABdhPJx4lXxBvlL1JVdxVRRP212exraJg+7ZOk+1qs7Vpy3WfCLZR53D+a2GsBQpTXygcuosjRHnzjW/vlzvjKLf66U=
-X-Received: by 2002:a05:6830:2246:: with SMTP id t6mr832583otd.264.1598954817468;
- Tue, 01 Sep 2020 03:06:57 -0700 (PDT)
+        id S1728320AbgIAOCn (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 1 Sep 2020 10:02:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51270 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728228AbgIAOBp (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Tue, 1 Sep 2020 10:01:45 -0400
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6242E20684;
+        Tue,  1 Sep 2020 14:01:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1598968905;
+        bh=/N8nHavQMwb1Q9MG1292ynTkA5Sd/Itzgyiq3Mb3uxY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=fQPmSxPgimwG78UEqzuF6YeEg0SeElwP+0SU6ICChsYBc8UVWfFfu/+c2MhUY42uh
+         rVkEdBLw/M9ptU+qu+/wW1bKif4cCV3MSm5y246UkpP4HOne9NIlZJMpOxkHSBUNyE
+         2iDgfU+3+oVNKMhUqzavSuZQSmt66+qoEvSBxHIo=
+Date:   Tue, 1 Sep 2020 16:02:12 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        Mike Christie <mchristi@redhat.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] scsi: target: tcmu: fix size in calls to
+ tcmu_flush_dcache_range
+Message-ID: <20200901140212.GE397411@kroah.com>
+References: <20200528193108.9085-1-bstroesser@ts.fujitsu.com>
+ <159114947916.26776.943125808891892721.b4-ty@oracle.com>
+ <79f7119f-fda7-64cc-b617-d49a23f2e628@ts.fujitsu.com>
+ <28862cd1-e7f2-d161-1bab-4d2ff73cf6a1@ts.fujitsu.com>
 MIME-Version: 1.0
-References: <20200817085409.25268-1-allen.cryptic@gmail.com>
- <1597675318.4475.11.camel@linux.ibm.com> <202008171227.D3A4F454D8@keescook> <1597694252.22390.12.camel@linux.ibm.com>
-In-Reply-To: <1597694252.22390.12.camel@linux.ibm.com>
-From:   Allen <allen.lkml@gmail.com>
-Date:   Tue, 1 Sep 2020 15:36:46 +0530
-Message-ID: <CAOMdWSKmNVQTpJtdEMNHc5SS75WNS7F0duzQi14kg62R4Un8zA@mail.gmail.com>
-Subject: Re: [PATCH 0/8] scsi: convert tasklets to use new tasklet_setup()
-To:     jejb@linux.ibm.com
-Cc:     Kees Cook <keescook@chromium.org>,
-        Allen Pais <allen.cryptic@gmail.com>,
-        martin.petersen@oracle.com, kashyap.desai@broadcom.com,
-        sumit.saxena@broadcom.com, shivasharan.srikanteshwara@broadcom.com,
-        linux-scsi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        target-devel@vger.kernel.org, megaraidlinux.pdl@broadcom.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <28862cd1-e7f2-d161-1bab-4d2ff73cf6a1@ts.fujitsu.com>
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-> > > >
-> > > > Commit 12cc923f1ccc ("tasklet: Introduce new initialization
-> > > > API")' introduced a new tasklet initialization API. This series
-> > > > converts all the scsi drivers to use the new tasklet_setup() API
-> > >
-> > > I've got to say I agree with Jens, this was a silly obfuscation:
-> > >
-> > > +#define from_tasklet(var, callback_tasklet, tasklet_fieldname) \
-> > > +       container_of(callback_tasklet, typeof(*var),
-> > > tasklet_fieldname)
-> > >
-> > > Just use container_of directly since we all understand what it
-> > > does.
-> >
-> > But then the lines get really long, wrapped, etc.
->
-> I really don't think that's a problem but if you want to add a new
-> generic container_of that does typeof instead of insisting on the type,
-> I'd be sort of OK with that ... provided you don't gratuitously alter
-> the argument order.
->
-> The thing I object to is that this encourages everyone to roll their
-> own unnecessary container_of type macros in spite of the fact that it's
-> function is wholly generic.  It's fine if you're eliminating one of the
-> arguments, or actually making the macro specific to the type, but in
-> this case you're not, you're making a completely generic macro where
-> the name is the only thing that's specific to this case.
->
-> >  This is what the timer_struct conversion did too (added a
-> > container_of wrapper), so I think it makes sense here too.
->
-> I didn't see that one to object to it ...
+On Fri, Aug 28, 2020 at 12:03:38PM +0200, Bodo Stroesser wrote:
+> Hi,
+> I'm adding stable@vger.kernel.org
+> 
+> Once again, this time really adding stable.
+> 
+> On 2020-06-03 04:31, Martin K. Petersen wrote:
+> > On Thu, 28 May 2020 21:31:08 +0200, Bodo Stroesser wrote:
+> > 
+> > > 1) If remaining ring space before the end of the ring is
+> > >      smaller then the next cmd to write, tcmu writes a padding
+> > >      entry which fills the remaining space at the end of the
+> > >      ring.
+> > >      Then tcmu calls tcmu_flush_dcache_range() with the size
+> > >      of struct tcmu_cmd_entry as data length to flush.
+> > >      If the space filled by the padding was smaller then
+> > >      tcmu_cmd_entry, tcmu_flush_dcache_range() is called for
+> > >      an address range reaching behind the end of the vmalloc'ed
+> > >      ring.
+> > >      tcmu_flush_dcache_range() in a loop calls
+> > >         flush_dcache_page(virt_to_page(start));
+> > >      for every page being part of the range. On x86 the line is
+> > >      optimized out by the compiler, as flush_dcache_page() is
+> > >      empty on x86.
+> > >      But I assume the above can cause trouble on other
+> > >      architectures that really have a flush_dcache_page().
+> > >      For paddings only the header part of an entry is relevant
+> > >      Due to alignment rules the header always fits in the
+> > >      remaining space, if padding is needed.
+> > >      So tcmu_flush_dcache_range() can safely be called with
+> > >      sizeof(entry->hdr) as the length here.
+> > > 
+> > > [...]
+> > 
+> > Applied to 5.8/scsi-queue, thanks!
+> > 
+> > [1/1] scsi: target: tcmu: Fix size in calls to tcmu_flush_dcache_range
+> >         https://git.kernel.org/mkp/scsi/c/8c4e0f212398
+> > 
+> 
+> The full commit of this patch is:
+>      8c4e0f212398cdd1eb4310a5981d06a723cdd24f
+> 
+> This patch is the first of four patches that are necessary to run tcmu
+> on ARM without crash. For details please see
+>      https://bugzilla.kernel.org/show_bug.cgi?id=208045
+> Upsteam commits of patches 2,3, and 4 are:
+>    2: 3c58f737231e "scsi: target: tcmu: Optimize use of flush_dcache_page"
+>    3: 3145550a7f8b "scsi: target: tcmu: Fix crash in tcmu_flush_dcache_range
+> on ARM"
+>    4: 5a0c256d96f0 "scsi: target: tcmu: Fix crash on ARM during cmd
+> completion"
+> 
+> Since patches 3 and 4 already were accepted for 5.8, 5.4, and 4.19, and
+> I sent a request to add patch 2 about 1 hour ago, please consider adding
+> this patch to 5.4 and 4.19, because without it tcmu on ARM will still
+> crash.
 
-Since we could not get the generic API accepted, can I send out V2
-which would use container_of()?
+I don't see such a request, and am confused now.
 
-Thanks,
+What exact commits do you want backported, and to what trees?
 
--- 
-       - Allen
+thanks,
+
+greg k-h
