@@ -2,180 +2,187 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF11B25AE95
-	for <lists+target-devel@lfdr.de>; Wed,  2 Sep 2020 17:16:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA51C25B430
+	for <lists+target-devel@lfdr.de>; Wed,  2 Sep 2020 21:02:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726567AbgIBPQl (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 2 Sep 2020 11:16:41 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:48098 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726140AbgIBPPQ (ORCPT
+        id S1726567AbgIBTCS (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 2 Sep 2020 15:02:18 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:58306 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726124AbgIBTCR (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 2 Sep 2020 11:15:16 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 082FEtmV056149;
-        Wed, 2 Sep 2020 15:15:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=mime-version :
- message-id : date : from : sender : to : cc : subject : references :
- in-reply-to : content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=gYMWuaYNXg+rjqjQKWcbvCaqzN+3Nom7q57z5YBU6sM=;
- b=FsD+G+l71itn02BQ151GYD5PxhUuMTTIf2Id+DOvxobxTQfbOL9im9aujzQ+nqfOR1lW
- tXm7B1xNMWAyBlY8On5VgRbU00VtjDZQBgKeBxPPtHE+frCxOdvIUTAaOKL1UVGlpTE1
- cW+GZhiSy9H0A/kSdEaD4hJq93vmlfFlxGe1i1yoaVNQ6W6f5d/GJIxyPErRqwWeA/Qx
- lVjBYNgWuUpKFiWvhwhWTlArC2HSvFxnTuI4rSdxDRfeWWyTfvY7MCddTg8DfBtrhufT
- seJb0DGNcRwg85UWu4eLDDxuDDyn1sYKrC6AWji0isa/bqB5+gE5rPwI4Mazxkj2ldXj kQ== 
+        Wed, 2 Sep 2020 15:02:17 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 082Is04l177872;
+        Wed, 2 Sep 2020 19:02:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=+5nXlfRChHWChHNEKZ5ej28tkqI+7By/rL4n8sS49zc=;
+ b=K0UAZQWzfNbBKy0dGHalqpyHKN1S8xVXutRXfH7kYASAWwutX5SYH034+7knoxWOSexI
+ P8ASnVivGsdSyseMu61+MXsUZ4eR51bh3loxG07OWTdYp7EpQeEaTZE3p/JGU/P6Hat1
+ hdvsfuIyLEFf0VByBwSh7x9CKu+TgGE5kYhzJ+f1WgkEMFun307gyEzUGs0KYCjpplA3
+ 3XCdFAM7UTgAbQbJZmGT3AJJ/6Y6WBIYOG4c18URc1eCkOWp0L+FGu+TfuHDqa349DHk
+ x4+iQPK9K4sPDE1LDv9T+xVcakT5528LotvedrYS/v8vBuk18j1N+wEX4a1Cziz0bn6O VA== 
 Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 337eer37ka-1
+        by userp2120.oracle.com with ESMTP id 339dmn33wb-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 02 Sep 2020 15:15:00 +0000
+        Wed, 02 Sep 2020 19:02:14 +0000
 Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 082F5EIa028797;
-        Wed, 2 Sep 2020 15:14:59 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 3380kq5kf2-1
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 082J1FJT106774;
+        Wed, 2 Sep 2020 19:02:13 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 3380kqgj44-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 02 Sep 2020 15:14:59 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 082FExGd000395;
-        Wed, 2 Sep 2020 15:14:59 GMT
+        Wed, 02 Sep 2020 19:02:13 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 082J2C5Z019201;
+        Wed, 2 Sep 2020 19:02:12 GMT
+Received: from [20.15.0.202] (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 02 Sep 2020 12:02:12 -0700
+Subject: Re: [PATCH] iscsi-target: fix hang in iscsit_access_np() when getting
+ tpg->np_login_sem
+To:     Hou Pu <houpu@bytedance.com>, martin.petersen@oracle.com,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+Cc:     stable@vger.kernel.org
+References: <20200729130343.24976-1-houpu@bytedance.com>
+From:   Mike Christie <michael.christie@oracle.com>
+Message-ID: <32079608-6e37-e70b-821e-8519af4e590a@oracle.com>
+Date:   Wed, 2 Sep 2020 14:02:10 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Message-ID: <dcc05e5d-5b8f-4ae1-991d-b8d454eff3f0@default>
-Date:   Wed, 2 Sep 2020 08:14:57 -0700 (PDT)
-From:   Sudhakar Panneerselvam <sudhakar.panneerselvam@oracle.com>
-To:     Martin Wilck <mwilck@suse.com>,
-        Martin Petersen <martin.petersen@oracle.com>,
-        Michael Christie <michael.christie@oracle.com>,
-        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org
-Cc:     Shirley Ma <shirley.ma@oracle.com>,
-        Hannes Reinecke <hare@suse.com>,
-        Daniel Wagner <daniel.wagner@suse.com>,
-        Arun Easi <aeasi@marvell.com>
-Subject: RE: [PATCH v4 2/4] target: initialize LUN in transport_init_se_cmd().
-References: <1591559913-8388-1-git-send-email-sudhakar.panneerselvam@oracle.com>
- <1591559913-8388-3-git-send-email-sudhakar.panneerselvam@oracle.com>
- <cbbd368e6e33af6e22c850192e69b27edd043efd.camel@suse.com>
-In-Reply-To: <cbbd368e6e33af6e22c850192e69b27edd043efd.camel@suse.com>
-X-Priority: 3
-X-Mailer: Oracle Beehive Extensions for Outlook 2.0.1.9.1  (1003210) [OL
- 15.0.5267.0 (x86)]
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200729130343.24976-1-houpu@bytedance.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9732 signatures=668679
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 adultscore=0
- mlxscore=0 suspectscore=0 malwarescore=0 mlxlogscore=999 bulkscore=0
+ mlxscore=0 suspectscore=2 malwarescore=0 mlxlogscore=999 bulkscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009020145
+ definitions=main-2009020178
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9732 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 priorityscore=1501
- lowpriorityscore=0 malwarescore=0 adultscore=0 spamscore=0 mlxscore=0
- phishscore=0 impostorscore=0 mlxlogscore=999 bulkscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009020146
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0
+ mlxlogscore=999 adultscore=0 impostorscore=0 mlxscore=0 suspectscore=2
+ spamscore=0 clxscore=1015 malwarescore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009020177
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hi Martin,
+On 7/29/20 8:03 AM, Hou Pu wrote:
+> The iscsi target login thread might stuck in following stack:
+> 
+> cat /proc/`pidof iscsi_np`/stack
+> [<0>] down_interruptible+0x42/0x50
+> [<0>] iscsit_access_np+0xe3/0x167
+> [<0>] iscsi_target_locate_portal+0x695/0x8ac
+> [<0>] __iscsi_target_login_thread+0x855/0xb82
+> [<0>] iscsi_target_login_thread+0x2f/0x5a
+> [<0>] kthread+0xfa/0x130
+> [<0>] ret_from_fork+0x1f/0x30
+> 
+> This could be reproduced by following steps:
+> 1. Initiator A try to login iqn1-tpg1 on port 3260. After finishing
+>    PDU exchange in the login thread and before the negotiation is
+>    finished, at this time the network link is down. In a production
+>    environment, this could happen. I could emulated it by bring
+>    the network card down in the initiator node by ifconfig eth0 down.
+>    (Now A could never finish this login. And tpg->np_login_sem is
+>    hold by it).
+> 2. Initiator B try to login iqn2-tpg1 on port 3260. After finishing
+>    PDU exchange in the login thread. The target expect to process
+>    remaining login PDUs in workqueue context.
+> 3. Initiator A' try to re-login to iqn1-tpg1 on port 3260 from
+>    a new socket. It will wait for tpg->np_login_sem with
+>    np->np_login_timer loaded to wait for at most 15 second.
+>    (Because the lock is held by A. A never gets a change to
+>    release tpg->np_login_sem. so A' should finally get timeout).
+> 4. Before A' got timeout. Initiator B gets negotiation failed and
+>    calls iscsi_target_login_drop()->iscsi_target_login_sess_out().
+>    The np->np_login_timer is canceled. And initiator A' will hang
+>    there forever. Because A' is now in the login thread. All other
+>    login requests could not be serviced.
+> 
+> Fix this by moving iscsi_stop_login_thread_timer() out of
+> iscsi_target_login_sess_out(). Also remove iscsi_np parameter
+> from iscsi_target_login_sess_out().
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hou Pu <houpu@bytedance.com>
+> ---
+>  drivers/target/iscsi/iscsi_target_login.c | 6 +++---
+>  drivers/target/iscsi/iscsi_target_login.h | 3 +--
+>  drivers/target/iscsi/iscsi_target_nego.c  | 3 +--
+>  3 files changed, 5 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/target/iscsi/iscsi_target_login.c b/drivers/target/iscsi/iscsi_target_login.c
+> index 85748e338858..893d1b406c29 100644
+> --- a/drivers/target/iscsi/iscsi_target_login.c
+> +++ b/drivers/target/iscsi/iscsi_target_login.c
+> @@ -1149,7 +1149,7 @@ void iscsit_free_conn(struct iscsi_conn *conn)
+>  }
+>  
+>  void iscsi_target_login_sess_out(struct iscsi_conn *conn,
+> -		struct iscsi_np *np, bool zero_tsih, bool new_sess)
+> +				 bool zero_tsih, bool new_sess)
+>  {
+>  	if (!new_sess)
+>  		goto old_sess_out;
+> @@ -1167,7 +1167,6 @@ void iscsi_target_login_sess_out(struct iscsi_conn *conn,
+>  	conn->sess = NULL;
+>  
+>  old_sess_out:
+> -	iscsi_stop_login_thread_timer(np);
+>  	/*
+>  	 * If login negotiation fails check if the Time2Retain timer
+>  	 * needs to be restarted.
+> @@ -1407,8 +1406,9 @@ static int __iscsi_target_login_thread(struct iscsi_np *np)
+>  new_sess_out:
+>  	new_sess = true;
+>  old_sess_out:
+> +	iscsi_stop_login_thread_timer(np);
+>  	tpg_np = conn->tpg_np;
+> -	iscsi_target_login_sess_out(conn, np, zero_tsih, new_sess);
+> +	iscsi_target_login_sess_out(conn, zero_tsih, new_sess);
+>  	new_sess = false;
+>  
+>  	if (tpg) {
+> diff --git a/drivers/target/iscsi/iscsi_target_login.h b/drivers/target/iscsi/iscsi_target_login.h
+> index 3b8e3639ff5d..fc95e6150253 100644
+> --- a/drivers/target/iscsi/iscsi_target_login.h
+> +++ b/drivers/target/iscsi/iscsi_target_login.h
+> @@ -22,8 +22,7 @@ extern int iscsit_put_login_tx(struct iscsi_conn *, struct iscsi_login *, u32);
+>  extern void iscsit_free_conn(struct iscsi_conn *);
+>  extern int iscsit_start_kthreads(struct iscsi_conn *);
+>  extern void iscsi_post_login_handler(struct iscsi_np *, struct iscsi_conn *, u8);
+> -extern void iscsi_target_login_sess_out(struct iscsi_conn *, struct iscsi_np *,
+> -				bool, bool);
+> +extern void iscsi_target_login_sess_out(struct iscsi_conn *, bool, bool);
+>  extern int iscsi_target_login_thread(void *);
+>  extern void iscsi_handle_login_thread_timeout(struct timer_list *t);
+>  
+> diff --git a/drivers/target/iscsi/iscsi_target_nego.c b/drivers/target/iscsi/iscsi_target_nego.c
+> index 685d771b51d4..e32d93b92742 100644
+> --- a/drivers/target/iscsi/iscsi_target_nego.c
+> +++ b/drivers/target/iscsi/iscsi_target_nego.c
+> @@ -535,12 +535,11 @@ static bool iscsi_target_sk_check_and_clear(struct iscsi_conn *conn, unsigned in
+>  
+>  static void iscsi_target_login_drop(struct iscsi_conn *conn, struct iscsi_login *login)
+>  {
+> -	struct iscsi_np *np = login->np;
+>  	bool zero_tsih = login->zero_tsih;
+>  
+>  	iscsi_remove_failed_auth_entry(conn);
+>  	iscsi_target_nego_release(conn);
+> -	iscsi_target_login_sess_out(conn, np, zero_tsih, true);
+> +	iscsi_target_login_sess_out(conn, zero_tsih, true);
+>  }
+>  
+>  struct conn_timeout {
+> 
 
-> -----Original Message-----
-> From: Martin Wilck [mailto:mwilck@suse.com]
-> Sent: Wednesday, September 2, 2020 7:50 AM
-> To: Sudhakar Panneerselvam <sudhakar.panneerselvam@oracle.com>; Martin
-> Petersen <martin.petersen@oracle.com>; Michael Christie
-> <michael.christie@oracle.com>; target-devel@vger.kernel.org; linux-
-> scsi@vger.kernel.org
-> Cc: Shirley Ma <shirley.ma@oracle.com>; Hannes Reinecke <hare@suse.com>;
-> Daniel Wagner <daniel.wagner@suse.com>; Arun Easi <aeasi@marvell.com>
-> Subject: Re: [PATCH v4 2/4] target: initialize LUN in transport_init_se_c=
-md().
->=20
-> Hello Sudhakar,
->=20
-> On Sun, 2020-06-07 at 19:58 +0000, Sudhakar Panneerselvam wrote:
-> > Initialization of orig_fe_lun is moved to transport_init_se_cmd()
-> > from
-> > transport_lookup_cmd_lun(). This helps for the cases where the scsi
-> > request
-> > fails before the call to transport_lookup_cmd_lun() so that
-> > trace_target_cmd_complete() can print the LUN information to the
-> > trace
-> > buffer. Due to this change, the lun parameter is removed from
-> > transport_lookup_cmd_lun() and transport_lookup_tmr_lun().
-> >
-> > Signed-off-by: Sudhakar Panneerselvam <
-> > sudhakar.panneerselvam@oracle.com>
-> > ---
-> >  drivers/target/iscsi/iscsi_target.c    | 11 +++++------
-> >  drivers/target/target_core_device.c    | 19 ++++++++-----------
-> >  drivers/target/target_core_tmr.c       |  4 ++--
-> >  drivers/target/target_core_transport.c | 12 +++++++-----
-> >  drivers/target/target_core_xcopy.c     |  4 ++--
-> >  drivers/usb/gadget/function/f_tcm.c    |  6 ++++--
-> >  include/target/target_core_fabric.h    |  6 +++---
-> >  7 files changed, 31 insertions(+), 31 deletions(-)
-> >
-> > [...]
-> > diff --git a/drivers/target/target_core_transport.c
-> > b/drivers/target/target_core_transport.c
-> > index f2f7c5b818cc..7ea77933e64d 100644
-> > --- a/drivers/target/target_core_transport.c
-> > +++ b/drivers/target/target_core_transport.c
-> > [...]
-> > @@ -1790,7 +1792,7 @@ int target_submit_tmr(struct se_cmd *se_cmd,
-> > struct se_session *se_sess,
-> >  =09BUG_ON(!se_tpg);
-> >
-> >  =09transport_init_se_cmd(se_cmd, se_tpg->se_tpg_tfo, se_sess,
-> > -=09=09=09      0, DMA_NONE, TCM_SIMPLE_TAG, sense);
-> > +=09=09=09      0, DMA_NONE, TCM_SIMPLE_TAG, sense,
-> > unpacked_lun);
-> >  =09/*
-> >  =09 * FIXME: Currently expect caller to handle se_cmd->se_tmr_req
-> >  =09 * allocation failure.
->=20
-> Between this hunk and the next one in target_submit_tmr(), there
-> is this code:
->=20
->         /*
->          * If this is ABORT_TASK with no explicit fabric provided LUN,
->          * go ahead and search active session tags for a match to figure
->          * out unpacked_lun for the original se_cmd.
->          */
->         if (tm_type =3D=3D TMR_ABORT_TASK && (flags &
-> TARGET_SCF_LOOKUP_LUN_FROM_TAG)) {
->                 if (!target_lookup_lun_from_tag(se_sess, tag, &unpacked_l=
-un))
->                         goto failure;
->         }
->=20
-> > @@ -1818,7 +1820,7 @@ int target_submit_tmr(struct se_cmd *se_cmd,
-> > struct se_session *se_sess,
-> >  =09=09=09goto failure;
-> >  =09}
-> >
-> > -=09ret =3D transport_lookup_tmr_lun(se_cmd, unpacked_lun);
-> > +=09ret =3D transport_lookup_tmr_lun(se_cmd);
-> >  =09if (ret)
-> >  =09=09goto failure;
-> >
->=20
-> AFAICS, your patch breaks the case where the above code is executed to
-> derive unpacked_lun from the tag. The updated value of unpacked_lun is
-> never used. That would break aborts for the qla2xxx target.
->=20
-> Am I overlooking something? Can you please explain?
->=20
-
-You are right. This change breaks the qlogic abort task code path, since it=
- is the only transport that sets the TARGET_SCF_LOOKUP_LUN_FROM_TAG flag ma=
-king that condition true. My apologies. I can send out a patch if you have =
-not written one already. Please let me know.
-
-Thanks
-Sudhakar
-
-> Regards
-> Martin
->=20
->=20
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
