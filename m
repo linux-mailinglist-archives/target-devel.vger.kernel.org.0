@@ -2,72 +2,69 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF59C25A364
-	for <lists+target-devel@lfdr.de>; Wed,  2 Sep 2020 04:59:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8979D25A3F5
+	for <lists+target-devel@lfdr.de>; Wed,  2 Sep 2020 05:18:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726406AbgIBC7G (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 1 Sep 2020 22:59:06 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:48134 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726140AbgIBC7F (ORCPT
+        id S1726268AbgIBDSF (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 1 Sep 2020 23:18:05 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:45754 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726140AbgIBDSD (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 1 Sep 2020 22:59:05 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0822reYl124264;
-        Wed, 2 Sep 2020 02:59:03 GMT
+        Tue, 1 Sep 2020 23:18:03 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0823A767112870;
+        Wed, 2 Sep 2020 03:17:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=content-type :
  mime-version : subject : from : in-reply-to : date : cc :
  content-transfer-encoding : message-id : references : to;
- s=corp-2020-01-29; bh=0giVz1o+VCCS8VKnCNvTQEqXBGUN6yWSXQt6dCZHuEU=;
- b=oHRFz4j6AovQaOWR8xieEzt14PRdaP2mpEzk5RNCOY7zavt1iC7je3s9yJM8J1BC8sfy
- o2u8aF7vZtY+DQ9+SNpwEAkRvJF4TznM38kWVIh/ph6fBJWF6YvMxpVkG324thQBwK6q
- ZqMelE8QaVsIZhujjDP+zD0+7etDfop5Lm0XzK8IBbKbCgDw/FYdrghcFZtZsAP5W5d6
- wU3R014R58iOhq4v9QNGfjQoT20jErBWbUTUC4ScSIoHcMRWyCSiTzQ7z490gdTB0XiG
- THsT31LJXRaWZLAQzL1wmbrLklzER+gvovyMLnxUaWNvZ9P0CNLfWcJOsVVJyyeBfE+U Pw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 339dmmxaaf-1
+ s=corp-2020-01-29; bh=G+5966owiAg86IIpCS294ZtfjahT/X8PWQHsoOn/A4o=;
+ b=pkwRjUjjIRsLSAqWfQda3cFlCXdPyinEivkPoiLZCWPgkr0X8nvFhSop9juFd1m/FbmH
+ MUS+W8SEV0z8+bPku3xOPPc6Ic5kYMGN1xm8vSpqWhNhIyTvK+J1qxxQrOvQdbIFap7e
+ Dx0MbbpjLXJ6xWDOB1+8VhpalHGCw1kb1YAiUB5DiRoEohDHaft9ZGPe9ci0ZFh8cpEg
+ TICJDjagoJepTRd2nhSIiV+Sde/Uk5d/0ovaXElleOhUUa3tbx+gS2zgG5heJyno9NTS
+ yfcStMLUXsJONPZrv0a6atwYE25AYLxPYPpywspMqy4s1Jjs+Dqcd/N1Q5tJCSSc4JOD xg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 337eym7uhx-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 02 Sep 2020 02:59:03 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0822t16F186009;
-        Wed, 2 Sep 2020 02:57:02 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 3380st0wt5-1
+        Wed, 02 Sep 2020 03:17:54 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08239iS3007735;
+        Wed, 2 Sep 2020 03:17:53 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 3380xxs00x-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 02 Sep 2020 02:57:02 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0822v1hJ005678;
-        Wed, 2 Sep 2020 02:57:01 GMT
+        Wed, 02 Sep 2020 03:17:53 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0823HqpS008630;
+        Wed, 2 Sep 2020 03:17:52 GMT
 Received: from [20.15.0.5] (/73.88.28.6)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 01 Sep 2020 19:57:01 -0700
+        with ESMTP ; Tue, 01 Sep 2020 20:17:52 -0700
 Content-Type: text/plain;
-        charset=utf-8
+        charset=us-ascii
 Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.1\))
-Subject: Re: [PATCH] iscsi-target: fix hang in iscsit_access_np() when getting
- tpg->np_login_sem
+Subject: Re: [RFC PATCH] scsi: target: detect XCOPY NAA descriptor conflicts
 From:   Michael Christie <michael.christie@oracle.com>
-In-Reply-To: <20200729130343.24976-1-houpu@bytedance.com>
-Date:   Tue, 1 Sep 2020 21:57:00 -0500
-Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        stable@vger.kernel.org
+In-Reply-To: <20200813002142.13820-1-ddiss@suse.de>
+Date:   Tue, 1 Sep 2020 22:17:51 -0500
+Cc:     target-devel@vger.kernel.org, linux-scsi@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <24875CC6-70FA-477D-BB74-51FBFDD96732@oracle.com>
-References: <20200729130343.24976-1-houpu@bytedance.com>
-To:     Hou Pu <houpu@bytedance.com>
+Message-Id: <2155E745-0E65-441B-93AF-7B4C0A53F5F4@oracle.com>
+References: <20200813002142.13820-1-ddiss@suse.de>
+To:     David Disseldorp <ddiss@suse.de>
 X-Mailer: Apple Mail (2.3608.120.23.2.1)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9731 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
- phishscore=0 malwarescore=0 mlxscore=0 spamscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009020026
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 phishscore=0
+ malwarescore=0 bulkscore=0 mlxscore=0 mlxlogscore=999 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009020029
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9731 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0
- mlxlogscore=999 adultscore=0 impostorscore=0 mlxscore=0 suspectscore=0
- spamscore=0 clxscore=1011 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009020026
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0
+ priorityscore=1501 phishscore=0 mlxlogscore=999 mlxscore=0
+ lowpriorityscore=0 clxscore=1015 spamscore=0 bulkscore=0 impostorscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009020029
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
@@ -75,45 +72,65 @@ X-Mailing-List: target-devel@vger.kernel.org
 
 
 
-> On Jul 29, 2020, at 8:03 AM, Hou Pu <houpu@bytedance.com> wrote:
+> On Aug 12, 2020, at 7:21 PM, David Disseldorp <ddiss@suse.de> wrote:
 >=20
-> The iscsi target login thread might stuck in following stack:
+> LIO's XCOPY implementation currently only accepts IEEE NAA 0x83 type
+> device descriptors for copy source and destination IDs. These IDs are
+> automatically generated by spc_parse_naa_6h_vendor_specific() using
+> *only* hexadecimal characters present in the user-configured
+> vpd_unit_serial string, and advertised in the Device ID Page INQUIRY
+> response.
 >=20
-> cat /proc/`pidof iscsi_np`/stack
-> [<0>] down_interruptible+0x42/0x50
-> [<0>] iscsit_access_np+0xe3/0x167
-> [<0>] iscsi_target_locate_portal+0x695/0x8ac
-> [<0>] __iscsi_target_login_thread+0x855/0xb82
-> [<0>] iscsi_target_login_thread+0x2f/0x5a
-> [<0>] kthread+0xfa/0x130
-> [<0>] ret_from_fork+0x1f/0x30
+> spc_parse_naa_6h_vendor_specific() mapping can quite easily result in
+> two devices with differing vpd_unit_serial strings sharing the same =
+NAA
+> ID. E.g.
+> LUN0
+> -> backstore device=3D/dev/sda, vpd_unit_serial=3Dunitserialfirst
+> LUN1
+> -> backstore device=3D/dev/sdb, vpd_unit_serial=3Dunitserialforth
 >=20
-> This could be reproduced by following steps:
-> 1. Initiator A try to login iqn1-tpg1 on port 3260. After finishing
->   PDU exchange in the login thread and before the negotiation is
->   finished, at this time the network link is down. In a production
->   environment, this could happen. I could emulated it by bring
->   the network card down in the initiator node by ifconfig eth0 down.
->   (Now A could never finish this login. And tpg->np_login_sem is
->   hold by it).
-> 2. Initiator B try to login iqn2-tpg1 on port 3260. After finishing
->   PDU exchange in the login thread. The target expect to process
->   remaining login PDUs in workqueue context.
-> 3. Initiator A' try to re-login to iqn1-tpg1 on port 3260 from
->   a new socket. It will wait for tpg->np_login_sem with
->   np->np_login_timer loaded to wait for at most 15 second.
->   (Because the lock is held by A. A never gets a change to
->   release tpg->np_login_sem. so A' should finally get timeout).
-> 4. Before A' got timeout. Initiator B gets negotiation failed and
->   calls iscsi_target_login_drop()->iscsi_target_login_sess_out().
->   The np->np_login_timer is canceled. And initiator A' will hang
->   there forever. Because A' is now in the login thread. All other
->   login requests could not be serviced.
+> In this case, both LUNs would advertise an NAA ID of:
+> 0x01405eaf0000000000000000...
+> Where 0x01405 corresponds to the OpenFabrics IEEE Company ID and 0xeaf
+> are hex characters taken from vpd_unit_serial.
+>=20
+> With the above example, an initiator wishing to copy data from LUN0 to
+> LUN1 may issue an XCOPY request with a copy source and copy dest set
+> to 0x01405eaf... and observe that (despite XCOPY success), no data has
+> moved from LUN0 to LUN1. Instead LIO has processed the request using
+> LUN0 as source and destination.
+>=20
+> This change sees LIO fail XCOPY requests if the copy source or
+> destination correspond to a non-unique NAA identifier.
+>=20
+> Signed-off-by: David Disseldorp <ddiss@suse.de>
+> ---
+> drivers/target/target_core_xcopy.c | 23 +++++++++++++++++------
+> 1 file changed, 17 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/drivers/target/target_core_xcopy.c =
+b/drivers/target/target_core_xcopy.c
+> index 44e15d7fb2f0..3ce5da4b3e81 100644
+> --- a/drivers/target/target_core_xcopy.c
+> +++ b/drivers/target/target_core_xcopy.c
+> @@ -68,8 +68,14 @@ static int =
+target_xcopy_locate_se_dev_e4_iter(struct se_device *se_dev,
+> 	if (rc !=3D 0)
+> 		return 0;
+>=20
+> -	info->found_dev =3D se_dev;
+> 	pr_debug("XCOPY 0xe4: located se_dev: %p\n", se_dev);
+> +	if (info->found_dev) {
+> +		pr_warn("XCOPY 0xe4 descriptor conflict for se_dev %p =
+and %p\n",
+> +			info->found_dev, se_dev);
+> +		=
+target_undepend_item(&info->found_dev->dev_group.cg_item);
+> +		return -ENOTUNIQ;
+> +	}
+> +	info->found_dev =3D se_dev;
 
-iqn1 and iqn1 are different targets right? It=E2=80=99s not clear to me =
-how when initiator B fails negotiation that it cancels the timer for the =
-portal under a different iqn/target.
+Was it valid to copy to/from the same LUN? You would copy from/to =
+different src/destinations on that LUN. Would your patch break that?
 
-Is iqn2-tpg1->np1 a different struct than iqn1-tpg1-np1? I mean =
-iscsit_get_tpg_from_np would return a different np struct for initiator =
-B and for A?=
