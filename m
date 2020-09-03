@@ -2,55 +2,62 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7D0825BD27
-	for <lists+target-devel@lfdr.de>; Thu,  3 Sep 2020 10:26:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BF7F25C073
+	for <lists+target-devel@lfdr.de>; Thu,  3 Sep 2020 13:38:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727786AbgICI0O (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 3 Sep 2020 04:26:14 -0400
-Received: from verein.lst.de ([213.95.11.211]:36890 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725984AbgICI0N (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 3 Sep 2020 04:26:13 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 727D868BEB; Thu,  3 Sep 2020 10:26:09 +0200 (CEST)
-Date:   Thu, 3 Sep 2020 10:26:09 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-        dm-devel@redhat.com,
-        Linux Documentation <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-block <linux-block@vger.kernel.org>,
-        drbd-dev@lists.linbit.com, linux-ide@vger.kernel.org,
-        linux-raid@vger.kernel.org,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        linux-s390@vger.kernel.org,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        target-devel@vger.kernel.org
-Subject: Re: [PATCH 2/9] block: add a bdev_is_partition helper
-Message-ID: <20200903082609.GA23498@lst.de>
-References: <20200903054104.228829-1-hch@lst.de> <20200903054104.228829-3-hch@lst.de> <CAPDyKFrkcpziGFPmSd8Kx4bzhoN6zxF1E8MagLQSa4sBmnicOg@mail.gmail.com>
+        id S1728717AbgICLht (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 3 Sep 2020 07:37:49 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:40212 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728716AbgICLhg (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Thu, 3 Sep 2020 07:37:36 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 0AF79D883C5C254F01E4;
+        Thu,  3 Sep 2020 19:37:03 +0800 (CST)
+Received: from linux-ibm.site (10.175.102.37) by
+ DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
+ 14.3.487.0; Thu, 3 Sep 2020 19:36:54 +0800
+From:   Xiongfeng Wang <wangxiongfeng2@huawei.com>
+To:     <martin.petersen@oracle.com>
+CC:     <linux-scsi@vger.kernel.org>, <target-devel@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <wangxiongfeng2@huawei.com>
+Subject: [PATCH] scsi: target: tcmu: add a missing newline when printing parameters
+Date:   Thu, 3 Sep 2020 19:29:33 +0800
+Message-ID: <1599132573-33818-1-git-send-email-wangxiongfeng2@huawei.com>
+X-Mailer: git-send-email 1.7.12.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFrkcpziGFPmSd8Kx4bzhoN6zxF1E8MagLQSa4sBmnicOg@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Type: text/plain
+X-Originating-IP: [10.175.102.37]
+X-CFilter-Loop: Reflected
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Thu, Sep 03, 2020 at 10:19:34AM +0200, Ulf Hansson wrote:
-> On Thu, 3 Sep 2020 at 07:42, Christoph Hellwig <hch@lst.de> wrote:
-> >
-> > Add a littler helper to make the somewhat arcane bd_contains checks a
-> > little more obvious.
-> >
-> > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> 
-> Not sure why we have both "bd_contains" and "bd_partno", nevertheless,
-> feel free to add:
+When I cat module paramter 'global_max_data_area_mb' by sysfs, it
+displays as follows. It's better to add a newline for easy reading.
 
-Right now both are needed for how blkdev_get/put work.  But I plan to
-eventual kill off bd_contains after some major surgery to that code.
+root@(none):/# cat /sys/module/target_core_user/parameters/global_max_data_area_mb
+2048noneroot@(none):/#
+
+Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+---
+ drivers/target/target_core_user.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
+index 9b75923..9775670 100644
+--- a/drivers/target/target_core_user.c
++++ b/drivers/target/target_core_user.c
+@@ -242,7 +242,7 @@ static int tcmu_set_global_max_data_area(const char *str,
+ static int tcmu_get_global_max_data_area(char *buffer,
+ 					 const struct kernel_param *kp)
+ {
+-	return sprintf(buffer, "%d", TCMU_BLOCKS_TO_MBS(tcmu_global_max_blocks));
++	return sprintf(buffer, "%d\n", TCMU_BLOCKS_TO_MBS(tcmu_global_max_blocks));
+ }
+ 
+ static const struct kernel_param_ops tcmu_global_max_data_area_op = {
+-- 
+1.7.12.4
 
