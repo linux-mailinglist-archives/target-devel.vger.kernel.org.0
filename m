@@ -2,88 +2,129 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87ABF25C371
-	for <lists+target-devel@lfdr.de>; Thu,  3 Sep 2020 16:52:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB28B25C583
+	for <lists+target-devel@lfdr.de>; Thu,  3 Sep 2020 17:37:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729211AbgICOv5 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 3 Sep 2020 10:51:57 -0400
-Received: from mx2.suse.de ([195.135.220.15]:60338 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729208AbgICOOR (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 3 Sep 2020 10:14:17 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 8790EABED;
-        Thu,  3 Sep 2020 13:13:11 +0000 (UTC)
-Message-ID: <4f50cb6d85573779e3c776a26abc4b95c5a5637a.camel@suse.com>
-Subject: Re: [PATCH v4 2/4] target: initialize LUN in
- transport_init_se_cmd().
-From:   Martin Wilck <mwilck@suse.com>
-To:     Arun Easi <aeasi@marvell.com>,
-        Sudhakar Panneerselvam <sudhakar.panneerselvam@oracle.com>,
-        Martin Petersen <martin.petersen@oracle.com>,
-        Michael Christie <michael.christie@oracle.com>,
-        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org
-Cc:     Shirley Ma <shirley.ma@oracle.com>,
-        Hannes Reinecke <hare@suse.com>,
-        Daniel Wagner <daniel.wagner@suse.com>
-Date:   Thu, 03 Sep 2020 15:13:09 +0200
-In-Reply-To: <f1e02a57e5d42c492d89acc2f82809e91e42d2aa.camel@suse.com>
-References: <1591559913-8388-1-git-send-email-sudhakar.panneerselvam@oracle.com>
-         <1591559913-8388-3-git-send-email-sudhakar.panneerselvam@oracle.com>
-         <cbbd368e6e33af6e22c850192e69b27edd043efd.camel@suse.com>
-         <dcc05e5d-5b8f-4ae1-991d-b8d454eff3f0@default>
-         <f1e02a57e5d42c492d89acc2f82809e91e42d2aa.camel@suse.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-User-Agent: Evolution 3.36.5 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        id S1728210AbgICPhG (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 3 Sep 2020 11:37:06 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:50978 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728036AbgICPhE (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Thu, 3 Sep 2020 11:37:04 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 083FXvsq194222;
+        Thu, 3 Sep 2020 15:37:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to;
+ s=corp-2020-01-29; bh=dtiQ03CReIpSecyBc/8ufU2knhQkZUc6ny1k7/fQ7u0=;
+ b=xI/cy3NnT0NWDf8IzVxnET4UPq3vcYjpThfBixU03i/9D5Q+Ey6YL3xCNAgCmTJVAOXf
+ cDjPV9QsSHsGWbCaaua9Uo0JRKwkGqQaAxyo379+JsB7CYV57FkmV9fRdHA0Nff8OhNh
+ ti8ofmaExqmR2uDvVbv1NFXCGk6EUBOolWYV6912YKm3f9B36In9vV8poR2hiJit6+Ax
+ 9lJKf7JWpziwzVri17GtK7u6JezP6QUzqDwExhiB++2MBXr3NR/Oxlr8hC8icLDq1x8/
+ TquO3wkQuLQe8UNqx72aF2siFBMieAXMV27W++wEjTuaKJyOP1NnNcX4PHSaZpH94OY2 xg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 339dmn7y33-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 03 Sep 2020 15:37:00 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 083FZHUh042782;
+        Thu, 3 Sep 2020 15:36:59 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 3380krym1n-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 03 Sep 2020 15:36:59 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 083Faw0o008916;
+        Thu, 3 Sep 2020 15:36:59 GMT
+Received: from [20.15.0.5] (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 03 Sep 2020 08:36:58 -0700
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.1\))
+Subject: Re: [RFC PATCH] scsi: target: detect XCOPY NAA descriptor conflicts
+From:   Michael Christie <michael.christie@oracle.com>
+In-Reply-To: <20200903002336.083e88a4@suse.de>
+Date:   Thu, 3 Sep 2020 10:36:58 -0500
+Cc:     target-devel@vger.kernel.org, linux-scsi@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <7F596A9A-2116-4BA8-8A32-E98EDE996D8C@oracle.com>
+References: <20200813002142.13820-1-ddiss@suse.de>
+ <2155E745-0E65-441B-93AF-7B4C0A53F5F4@oracle.com>
+ <20200903002336.083e88a4@suse.de>
+To:     David Disseldorp <ddiss@suse.de>
+X-Mailer: Apple Mail (2.3608.120.23.2.1)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9733 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 adultscore=0
+ mlxscore=0 suspectscore=0 malwarescore=0 mlxlogscore=999 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009030145
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9733 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0
+ mlxlogscore=999 adultscore=0 impostorscore=0 mlxscore=0 suspectscore=0
+ spamscore=0 clxscore=1015 malwarescore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009030145
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Thu, 2020-09-03 at 15:00 +0200, Martin Wilck wrote:
-> On Wed, 2020-09-02 at 08:14 -0700, Sudhakar Panneerselvam wrote:
-> > Hi Martin,
-> > 
-> > > AFAICS, your patch breaks the case where the above code is
-> > > executed
-> > > to
-> > > derive unpacked_lun from the tag. The updated value of
-> > > unpacked_lun
-> > > is
-> > > never used. That would break aborts for the qla2xxx target.
-> > > 
-> > > Am I overlooking something? Can you please explain?
-> > > 
-> > 
-> > You are right. This change breaks the qlogic abort task code path,
-> > since it is the only transport that sets the
-> > TARGET_SCF_LOOKUP_LUN_FROM_TAG flag making that condition true. My
-> > apologies. I can send out a patch if you have not written one
-> > already. Please let me know.
-> 
-> Please go ahead. I haven't written a patch - I'm not experienced
-> enough
-> with the target code to quickly grok whether simply moving the
-> target_lookup_lun_from_tag() code upward would work, in particular
-> wrt
-> handling failures and cleaning up.
 
-We may want to discuss whether TARGET_SCF_LOOKUP_LUN_FROM_TAG should be
-removed entirely. As you said, qla2xxx is the only user of this
-feature. And it actually uses it only in a single code path, 
-__qlt_24xx_handle_abts() (everywhere else the LUN is known beforehand,
-AFAICT).
 
-If you look at the code of __qlt_24xx_handle_abts(), you can see that
-it calls tcm_qla2xxx_find_cmd_by_tag(), which does the same thing
-as target_lookup_lun_from_tag(): iterate over se_sess->sess_cmd_list
-until a matching tag is found. It would clearly be equivalent, and more
-efficient, if qla2xxx set the lun directly rather than relying on
-common code iterating through the same list again, later.
+> On Sep 2, 2020, at 5:23 PM, David Disseldorp <ddiss@suse.de> wrote:
+>=20
+> Hi Mike,
+>=20
+> On Tue, 1 Sep 2020 22:17:51 -0500, Michael Christie wrote:
+>=20
+>>> --- a/drivers/target/target_core_xcopy.c
+>>> +++ b/drivers/target/target_core_xcopy.c
+>>> @@ -68,8 +68,14 @@ static int =
+target_xcopy_locate_se_dev_e4_iter(struct se_device *se_dev,
+>>> 	if (rc !=3D 0)
+>>> 		return 0;
+>>>=20
+>>> -	info->found_dev =3D se_dev;
+>>> 	pr_debug("XCOPY 0xe4: located se_dev: %p\n", se_dev);
+>>> +	if (info->found_dev) {
+>>> +		pr_warn("XCOPY 0xe4 descriptor conflict for se_dev %p =
+and %p\n",
+>>> +			info->found_dev, se_dev);
+>>> +		=
+target_undepend_item(&info->found_dev->dev_group.cg_item);
+>>> +		return -ENOTUNIQ;
+>>> +	}
+>>> +	info->found_dev =3D se_dev; =20
+>>=20
+>> Was it valid to copy to/from the same LUN? You would copy from/to =
+different src/destinations on that LUN. Would your patch break that?
+>=20
+> XCOPY allows for copies to occur on the same LUN or between separate
+> src/destinations. The intention of this patch is that regardless of =
+the
+> source or destination, if the NAA WWN could refer to multiple LUNs on
+> the same target (via target_for_each_device()) then the XCOPY should
+> fail and force the initiator to fallback to initiator driver copy.
 
-Martin
+So is the answer to my question a maybe but it probably will never =
+happen?
 
+If the user has multiple backend devices with the same serial, then your =
+patch would now return error right? Is the reason that this patch is a =
+RFC to try and figure out if that case is valid or ever happens? If so, =
+the only way I could see that happening on purpose is if someone was =
+trying to bypass a device issue.
+
+For example, I create 2 tcmu devices. They both point to the same real =
+device. Then export dev1 through target port1 and dev2 through target =
+port2. Each tcmu device would then have it=E2=80=99s own data/cmd ring =
+and locking, so you do not hit those perf issues. I do this for perf =
+testing. I don=E2=80=99t think that type of thing is common or ever =
+done, so I think the patch would be ok if that is a concern and it=E2=80=99=
+s better than possible data corruption.
+
+Code wise it looks ok to me.
 
