@@ -2,104 +2,135 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD00F25CB87
-	for <lists+target-devel@lfdr.de>; Thu,  3 Sep 2020 22:54:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4125A25D81C
+	for <lists+target-devel@lfdr.de>; Fri,  4 Sep 2020 13:55:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726397AbgICUy1 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+target-devel@lfdr.de>); Thu, 3 Sep 2020 16:54:27 -0400
-Received: from mx2.suse.de ([195.135.220.15]:50268 "EHLO mx2.suse.de"
+        id S1728588AbgIDLzo (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 4 Sep 2020 07:55:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58962 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726088AbgICUy1 (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 3 Sep 2020 16:54:27 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 5C36EAB7D;
-        Thu,  3 Sep 2020 20:54:26 +0000 (UTC)
-Date:   Thu, 3 Sep 2020 22:54:24 +0200
-From:   David Disseldorp <ddiss@suse.de>
-To:     Michael Christie <michael.christie@oracle.com>
-Cc:     target-devel@vger.kernel.org, linux-scsi@vger.kernel.org
-Subject: Re: [RFC PATCH] scsi: target: detect XCOPY NAA descriptor conflicts
-Message-ID: <20200903225424.331f1d94@suse.de>
-In-Reply-To: <7F596A9A-2116-4BA8-8A32-E98EDE996D8C@oracle.com>
-References: <20200813002142.13820-1-ddiss@suse.de>
-        <2155E745-0E65-441B-93AF-7B4C0A53F5F4@oracle.com>
-        <20200903002336.083e88a4@suse.de>
-        <7F596A9A-2116-4BA8-8A32-E98EDE996D8C@oracle.com>
+        id S1729897AbgIDLzj (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Fri, 4 Sep 2020 07:55:39 -0400
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id AA13E214F1;
+        Fri,  4 Sep 2020 11:55:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1599220538;
+        bh=3gjh72ssf9Q4cLyUZJiBs6BnZ4iUD7PvuTcSLsrMwQk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=X251CJuI/Ywhpc5U5mJzTiW8MI5Lom7mP/1kes/9EHNa5BrvU6C9iZY+0B8WSTJwT
+         7wYGHJHR0QJHbjLPsTHnLnhIHZllV1kZ2TrHE2al4VL/7ubptyXuu0hWE+8NhTwaAj
+         8Hl9zy/6MzMqjPFzYE7XSQE9H9JEnDauJ1fMK4xw=
+Date:   Fri, 4 Sep 2020 13:55:59 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Bodo Stroesser <bstroesser@ts.fujitsu.com>
+Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        Mike Christie <mchristi@redhat.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] scsi: target: tcmu: fix size in calls to
+ tcmu_flush_dcache_range
+Message-ID: <20200904115559.GC2964473@kroah.com>
+References: <20200528193108.9085-1-bstroesser@ts.fujitsu.com>
+ <159114947916.26776.943125808891892721.b4-ty@oracle.com>
+ <79f7119f-fda7-64cc-b617-d49a23f2e628@ts.fujitsu.com>
+ <28862cd1-e7f2-d161-1bab-4d2ff73cf6a1@ts.fujitsu.com>
+ <20200901140212.GE397411@kroah.com>
+ <8ced4335-dcae-96c8-7c14-3eeb5c97324b@ts.fujitsu.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8ced4335-dcae-96c8-7c14-3eeb5c97324b@ts.fujitsu.com>
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Thu, 3 Sep 2020 10:36:58 -0500, Michael Christie wrote:
-
-> > On Sep 2, 2020, at 5:23 PM, David Disseldorp <ddiss@suse.de> wrote:
+On Tue, Sep 01, 2020 at 05:58:29PM +0200, Bodo Stroesser wrote:
+> On 2020-09-01 16:02, Greg KH wrote:
+> > On Fri, Aug 28, 2020 at 12:03:38PM +0200, Bodo Stroesser wrote:
+> >> Hi,
+> >> I'm adding stable@vger.kernel.org
+> >>
+> >> Once again, this time really adding stable.
+> >>
+> >> On 2020-06-03 04:31, Martin K. Petersen wrote:
+> >>> On Thu, 28 May 2020 21:31:08 +0200, Bodo Stroesser wrote:
+> >>>
+> >>>> 1) If remaining ring space before the end of the ring is
+> >>>>       smaller then the next cmd to write, tcmu writes a padding
+> >>>>       entry which fills the remaining space at the end of the
+> >>>>       ring.
+> >>>>       Then tcmu calls tcmu_flush_dcache_range() with the size
+> >>>>       of struct tcmu_cmd_entry as data length to flush.
+> >>>>       If the space filled by the padding was smaller then
+> >>>>       tcmu_cmd_entry, tcmu_flush_dcache_range() is called for
+> >>>>       an address range reaching behind the end of the vmalloc'ed
+> >>>>       ring.
+> >>>>       tcmu_flush_dcache_range() in a loop calls
+> >>>>          flush_dcache_page(virt_to_page(start));
+> >>>>       for every page being part of the range. On x86 the line is
+> >>>>       optimized out by the compiler, as flush_dcache_page() is
+> >>>>       empty on x86.
+> >>>>       But I assume the above can cause trouble on other
+> >>>>       architectures that really have a flush_dcache_page().
+> >>>>       For paddings only the header part of an entry is relevant
+> >>>>       Due to alignment rules the header always fits in the
+> >>>>       remaining space, if padding is needed.
+> >>>>       So tcmu_flush_dcache_range() can safely be called with
+> >>>>       sizeof(entry->hdr) as the length here.
+> >>>>
+> >>>> [...]
+> >>>
+> >>> Applied to 5.8/scsi-queue, thanks!
+> >>>
+> >>> [1/1] scsi: target: tcmu: Fix size in calls to tcmu_flush_dcache_range
+> >>>          https://git.kernel.org/mkp/scsi/c/8c4e0f212398
+> >>>
+> >>
+> >> The full commit of this patch is:
+> >>       8c4e0f212398cdd1eb4310a5981d06a723cdd24f
+> >>
+> >> This patch is the first of four patches that are necessary to run tcmu
+> >> on ARM without crash. For details please see
+> >>       https://bugzilla.kernel.org/show_bug.cgi?id=208045
+> >> Upsteam commits of patches 2,3, and 4 are:
+> >>     2: 3c58f737231e "scsi: target: tcmu: Optimize use of flush_dcache_page"
+> >>     3: 3145550a7f8b "scsi: target: tcmu: Fix crash in tcmu_flush_dcache_range
+> >> on ARM"
+> >>     4: 5a0c256d96f0 "scsi: target: tcmu: Fix crash on ARM during cmd
+> >> completion"
+> >>
+> >> Since patches 3 and 4 already were accepted for 5.8, 5.4, and 4.19, and
+> >> I sent a request to add patch 2 about 1 hour ago, please consider adding
+> >> this patch to 5.4 and 4.19, because without it tcmu on ARM will still
+> >> crash.
 > > 
-> > Hi Mike,
+> > I don't see such a request, and am confused now.
 > > 
-> > On Tue, 1 Sep 2020 22:17:51 -0500, Michael Christie wrote:
-> >   
-> >>> --- a/drivers/target/target_core_xcopy.c
-> >>> +++ b/drivers/target/target_core_xcopy.c
-> >>> @@ -68,8 +68,14 @@ static int target_xcopy_locate_se_dev_e4_iter(struct se_device *se_dev,
-> >>> 	if (rc != 0)
-> >>> 		return 0;
-> >>> 
-> >>> -	info->found_dev = se_dev;
-> >>> 	pr_debug("XCOPY 0xe4: located se_dev: %p\n", se_dev);
-> >>> +	if (info->found_dev) {
-> >>> +		pr_warn("XCOPY 0xe4 descriptor conflict for se_dev %p and %p\n",
-> >>> +			info->found_dev, se_dev);
-> >>> +		target_undepend_item(&info->found_dev->dev_group.cg_item);
-> >>> +		return -ENOTUNIQ;
-> >>> +	}
-> >>> +	info->found_dev = se_dev;    
-> >> 
-> >> Was it valid to copy to/from the same LUN? You would copy from/to different src/destinations on that LUN. Would your patch break that?  
+> > What exact commits do you want backported, and to what trees?
 > > 
-> > XCOPY allows for copies to occur on the same LUN or between separate
-> > src/destinations. The intention of this patch is that regardless of the
-> > source or destination, if the NAA WWN could refer to multiple LUNs on
-> > the same target (via target_for_each_device()) then the XCOPY should
-> > fail and force the initiator to fallback to initiator driver copy.  
+> > thanks,
+> > 
+> > greg k-h
+> > 
 > 
-> So is the answer to my question a maybe but it probably will never happen?
-
-A src=dest XCOPY? I think it's just as likely as a cross device XCOPY.
-The UUID collision error is probably unlikely to be triggered because:
-- XCOPY is a pretty exotic SCSI command mostly used by ESXi
-- Users may already provide a vpd_unit_serial with enough unique
-  hexadecimal characters(?)
-- The initiator could detect the NAA WWN collision itself by comparing
-  the INQUIRY(dev-id)->NAA between other LUNs on the target, and thereby
-  detect+avoid sending XCOPY requests with ambiguous src/dest WWNs
-
-> If the user has multiple backend devices with the same serial, then your patch would now return error right?
-
-Yes, XCOPY will now fail if the src or dest NAA WWN matches more than
-one se_dev. Keep in mind that the NAA WWN is derived from only the
-hexadecimal characters of the vpd_unit_serial (see
-spc_parse_naa_6h_vendor_specific), so collision might be more likely.
-
-> Is the reason that this patch is a RFC to try and figure out if that case is valid or ever happens? If so, the only way I could see that happening on purpose is if someone was trying to bypass a device issue.
-
-Sorry, I should have mode this more clear in the patch itself. The
-reasons for RFC are:
-- there might be a better approach. I considered detecting NAA WWN
-  collisions when the vpd_unit_serial is set via configfs. Throwing a
-  configfs error might break existing setups, rather than just
-  triggering the XCOPY error (allowing for subsequent READ/WRITE
-  fallback).
-- I've tested this with libiscsi's iscsi-dd (-x) and test suite, but not
-  against the ESXi initiator yet.
-
-> For example, I create 2 tcmu devices. They both point to the same real device. Then export dev1 through target port1 and dev2 through target port2. Each tcmu device would then have it’s own data/cmd ring and locking, so you do not hit those perf issues. I do this for perf testing. I don’t think that type of thing is common or ever done, so I think the patch would be ok if that is a concern and it’s better than possible data corruption.
+> Sorry for the confusion.
 > 
-> Code wise it looks ok to me.
+> The subject of the request I mentioned is
+>     "Re: [PATCH v2 0/2] scsi: target: tcmu: fix crashes on ARM"
+> because it is for the first patch of a small series of two.
+> 
+> Please backport to kernels 4.19 and 5.4 (it is part of 5.8 from beginning):
+>   8c4e0f212398 "scsi: target: tcmu: fix size in calls to tcmu_flush_dcache_range"
+> 
+> Please backport to kernels 4.19, 5.4 and 5.8:
+>   3c58f737231e "scsi: target: tcmu: Optimize use of flush_dcache_page"
+> 
+> Backporting to 4.14 or earlier AFAICS would need more work, especially testing.
+> I don't think that its worth it.
 
-Thanks a lot for the feedback, Mike.
+Thanks, both now queued up.
 
-Cheers, David
+greg k-h
