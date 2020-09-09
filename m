@@ -2,173 +2,94 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73F7A261347
-	for <lists+target-devel@lfdr.de>; Tue,  8 Sep 2020 17:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CE9A262442
+	for <lists+target-devel@lfdr.de>; Wed,  9 Sep 2020 02:55:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730287AbgIHPO4 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 8 Sep 2020 11:14:56 -0400
-Received: from mail3.bemta25.messagelabs.com ([195.245.230.82]:14003 "EHLO
-        mail3.bemta25.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730239AbgIHPOW (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Tue, 8 Sep 2020 11:14:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ts.fujitsu.com;
-        s=200619tsfj; t=1599575493; i=@ts.fujitsu.com;
-        bh=OWYDgE2xVfFjzK6blR/YjuqNB/gJdPmUk9ZGy7fbnfY=;
-        h=Subject:To:References:From:Message-ID:Date:MIME-Version:
-         In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        b=WSDkE+Sfg0CJKilDgRj9B3dnkkOeapR+bBF9tsRW/AEvBNRHgtpTa/rNSWJ3KaKdm
-         oCmmm8FUqpfCDdclac2mgQVJ68Qf6H9hxJKsuf7cx2s0WYBF7pcgf4e1M7Mb07UAnt
-         DQZ7Fdaq09/oajH7ygM27BassuOmVqgMjhQ7kAcBE0lEKd2za7LiIwSpD1mkoIza3l
-         rtsT3nqsvF9d1RCOHJguGAFtpdXnQ1VBgar860j8lKrKTR+FiojLG0xRZvqHoeIii4
-         kpGcQkJLuG8sag+IVA9LzBzEaL6mms1vNSNFonGRdaTzkZB+Glgrx07sGKlR0nJ+9d
-         QOkr07ihXNsSg==
-Received: from [100.112.199.122] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-2.bemta.az-b.eu-west-1.aws.symcld.net id C7/89-29177-5C5975F5; Tue, 08 Sep 2020 14:31:33 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrFIsWRWlGSWpSXmKPExsViZ8MRontkani
-  8wczJehYb+zksuq/vYLNYfvwfk8XfSTdYLVqXvmVyYPWYNukUm8fHp7dYPD5vkgtgjmLNzEvK
-  r0hgzXjau4a5YLZ0Rf+HTsYGxuOiXYxcHEICkxgl1vT/ZIJw+hklLmx5zdzFyMkhLJAg8ejQf
-  zaQhIjAW0aJw9P/M4IkhAQKJFZeW8MKYrMJGEismHSfBcTmFXCUmNJ6DqyZRUBF4k3TAyCbg0
-  NUIFzi2Qp/iBJBiZMzn4CVcwrYSex59g2snFnATGLe5odQtrjErSfzmSBseYntb+cwT2Dkm4W
-  kfRaSlllIWmYhaVnAyLKK0SKpKDM9oyQ3MTNH19DAQNfQ0EjX0NJc19DYXC+xSjdJL7VUtzy1
-  uETXUC+xvFivuDI3OSdFLy+1ZBMjMMBTCo527mD89eqD3iFGSQ4mJVHe1ZPC44X4kvJTKjMSi
-  zPii0pzUosPMcpwcChJ8PoBY0ZIsCg1PbUiLTMHGG0waQkOHiUR3v9TgNK8xQWJucWZ6RCpU4
-  zGHDuPzlvEzHFy1ZJFzEIsefl5qVLivCUgpQIgpRmleXCDYEngEqOslDAvIwMDgxBPQWpRbmY
-  JqvwrRnEORiVh3p0gU3gy80rg9r0COoUJ6BQprVCQU0oSEVJSDUy6Tx7se5AaVfUjjvvt80UN
-  7qnJk51TS9mX5/Nn/b53eCFP6jdn/m1layJTr0d1rowwrBI8NUNo9r9/W4TDao6mR6hvjo3Yt
-  PNQfdShEyHGgpyBT0MX7P7y7kz/Noa4hAbximc1JsxKu+2WdXUUJ5vsv3wmOuz2DMfbkdlmxV
-  5Jd/Td/Z+rpgg+K3p3tH/edLfNVg8/1B6bfd3oO9vCiMyX/1qe5xltkk+oXctn63viw+TiFI/
-  9vyw/ffwguXS2mfrChjkb3/vVFbjm8E+JqpgXGX/RZK7NTMlZPfGXdQwPNTisbN6wuT5uy0kz
-  uw1JRpMTDW61zH7u0qn5r0XoS6NPb8Bsr+bYxOl7/348za3EUpyRaKjFXFScCABX5roXfQMAA
-  A==
-X-Env-Sender: bstroesser@ts.fujitsu.com
-X-Msg-Ref: server-9.tower-285.messagelabs.com!1599575492!24351!1
-X-Originating-IP: [62.60.8.84]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.50.3; banners=-,-,-
-X-VirusChecked: Checked
-Received: (qmail 2294 invoked from network); 8 Sep 2020 14:31:32 -0000
-Received: from unknown (HELO mailhost3.uk.fujitsu.com) (62.60.8.84)
-  by server-9.tower-285.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 8 Sep 2020 14:31:32 -0000
-Received: from x-serv01 ([172.17.38.52])
-        by mailhost3.uk.fujitsu.com (8.14.5/8.14.5) with SMTP id 088EVVcs016502;
-        Tue, 8 Sep 2020 15:31:31 +0100
-Received: from [172.17.39.90] (unknown [172.17.39.90])
-        by x-serv01 (Postfix) with ESMTP id C1D9F20355;
-        Tue,  8 Sep 2020 16:31:18 +0200 (CEST)
-Subject: Re: [PATCH v2] scsi: target: tcmu: add compat mode for 32bit
- userspace on 64bit kernel
-To:     Mike Christie <michael.christie@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-References: <20200903174105.4571-1-bstroesser@ts.fujitsu.com>
- <8f276b52-f741-b00b-9b00-77fcd855c4fe@oracle.com>
-From:   Bodo Stroesser <bstroesser@ts.fujitsu.com>
-Message-ID: <79cd442a-2c7d-76e9-e82d-c40d2b57ecde@ts.fujitsu.com>
-Date:   Tue, 8 Sep 2020 16:31:24 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        id S1729048AbgIIAzo (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 8 Sep 2020 20:55:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52096 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726489AbgIIAzn (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Tue, 8 Sep 2020 20:55:43 -0400
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D1279216C4;
+        Wed,  9 Sep 2020 00:55:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1599612942;
+        bh=NljrK6DZ67Y2lgb5dD1jWF3Bw2u9eqUapVKXFIgps3U=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=GOiNe8A+Z0vTTTifPiCPBcHcdbEHQkfWlRxTDBj/Pe0I88gYH9vzSKUDLD27Jcns2
+         5pdMRPZ/uvmf9F4zMSASsMr58Na9advGa///ZSw/JngxR332XN39tr/EYePt27PZKM
+         ZYhwsKS7Z+Y39YoQL3C0SH2R0XvxsGhvJw+cD5lI=
+Received: by mail-lj1-f182.google.com with SMTP id v23so1314350ljd.1;
+        Tue, 08 Sep 2020 17:55:41 -0700 (PDT)
+X-Gm-Message-State: AOAM5334n58LSKdKFGwwTaZNM5DOloWuZLb4IuyA1HB/PbymqaaMf7ji
+        ufTtlaSwSNiS8h4afMtvncN31VW+DElumS8G1l4=
+X-Google-Smtp-Source: ABdhPJxQq74vo5JbuRHxUTS8m9tdD+iAtivYUG50MMcb53T1num8JutKqyxkzEWd0qSatAXELIL2sCltGdwuDe8hang=
+X-Received: by 2002:a2e:8597:: with SMTP id b23mr561854lji.41.1599612940170;
+ Tue, 08 Sep 2020 17:55:40 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <8f276b52-f741-b00b-9b00-77fcd855c4fe@oracle.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20200903054104.228829-1-hch@lst.de> <20200903054104.228829-4-hch@lst.de>
+In-Reply-To: <20200903054104.228829-4-hch@lst.de>
+From:   Song Liu <song@kernel.org>
+Date:   Tue, 8 Sep 2020 17:55:29 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW7ZtGruPhBWZpjCDoyq1DwoA3t_p3UXbSPrHGMnHh7enw@mail.gmail.com>
+Message-ID: <CAPhsuW7ZtGruPhBWZpjCDoyq1DwoA3t_p3UXbSPrHGMnHh7enw@mail.gmail.com>
+Subject: Re: [PATCH 3/9] md: compare bd_disk instead of bd_contains
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Jens Axboe <axboe@kernel.dk>, dm-devel@redhat.com,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-block@vger.kernel.org, drbd-dev@lists.linbit.com,
+        linux-ide@vger.kernel.org, linux-raid <linux-raid@vger.kernel.org>,
+        linux-mmc@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 2020-09-08 01:14, Mike Christie wrote:
-> On 9/3/20 12:41 PM, Bodo Stroesser wrote:
->> +#ifdef TCMU_COMPAT
->> +static inline void compat_new_iov(struct iovec **iov, int *iov_cnt)
->> +{
->> +	struct compat_iovec **c_iov = (struct compat_iovec **)iov;
->> +
->> +	if (*iov_cnt != 0)
->> +		(*c_iov)++;
->> +	(*iov_cnt)++;
->> +
->> +	memset(*c_iov, 0, sizeof(struct compat_iovec));
->> +}
->> +
->> +static inline size_t compat_iov_tail(struct iovec *iov)
->> +{
->> +	struct compat_iovec *c_iov = (struct compat_iovec *)iov;
->> +
->> +	return (size_t)c_iov->iov_base + c_iov->iov_len;
->> +}
->> +#endif
->> +
->>   static void scatter_data_area(struct tcmu_dev *udev,
->>   	struct tcmu_cmd *tcmu_cmd, struct scatterlist *data_sg,
->>   	unsigned int data_nents, struct iovec **iov,
->> @@ -705,13 +763,41 @@ static void scatter_data_area(struct tcmu_dev *udev,
->>   			to_offset = get_block_offset_user(udev, dbi,
->>   					block_remaining);
->>   
->> +			copy_bytes = min_t(size_t, sg_remaining,
->> +					block_remaining);
->> +			if (copy_data) {
->> +				offset = DATA_BLOCK_SIZE - block_remaining;
->> +				memcpy(to + offset,
->> +				       from + sg->length - sg_remaining,
->> +				       copy_bytes);
->> +			}
->> +			sg_remaining -= copy_bytes;
->> +			block_remaining -= copy_bytes;
->> +
->>   			/*
->>   			 * The following code will gather and map the blocks
->>   			 * to the same iovec when the blocks are all next to
->>   			 * each other.
->>   			 */
->> -			copy_bytes = min_t(size_t, sg_remaining,
->> -					block_remaining);
->> +#ifdef TCMU_COMPAT
->> +			if (udev->compat) {
->> +				struct compat_iovec *c_iov;
->> +
->> +				if (*iov_cnt != 0 &&
->> +				    to_offset == compat_iov_tail(*iov)) {
->> +					c_iov = (struct compat_iovec *)*iov;
->> +					c_iov->iov_len += copy_bytes;
->> +				} else {
->> +					compat_new_iov(iov, iov_cnt);
->> +					c_iov = (struct compat_iovec *)*iov;
->> +					c_iov->iov_base =
->> +						(compat_uptr_t)to_offset;
->> +					c_iov->iov_len = copy_bytes;
->> +				}
->> +				continue;
->> +			}
->> +#endif
-> 
-> I think a couple one or two liner ifdefs in the middle of a function is something people look the other way on. Maybe here we went a little too wild though. If we are not going the callout route, I think it would be nicer here to separate this part into functions. In the ifdef with compat_new_iov/compat_iov_tail above this function, add a tcmu_compat_iov_set and move the code above there. Move the code below it that does the non compat code to a new function tcmu_iov_set. We will still need a ifdef for the tcmu_compat_iov_set somewhere, but it feels more organized.
-> 
+On Wed, Sep 2, 2020 at 10:43 PM Christoph Hellwig <hch@lst.de> wrote:
+>
+> To check for partitions of the same disk bd_contains works as well, but
+> bd_disk is way more obvious.
+>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Ok. I agree.
+Acked-by: Song Liu <song@kernel.org>
 
-To be honest, I already prepared a new patch series allowing to
-have buffer chunks bigger than one page in data area of tcmu's
-uio device. While tcmu still uses single page allocation, the
-change allows to have shorter iovec lists, less buffer bits to
-maintain, and if necessary allows userspace to choose buffer chunks
-as big as max. expected IO data size, which from userspace perspective
-makes every IO up to that chosen data size appear in a single
-consecutive buffer (1 iovec only)
-
-The first patches of that series already do some re-work and
-optimization of queue_cmd_ring and scatter_data_area such, that we
-end up with something very similar to what you suggest :)
-
-So instead of this patch I'll soon send a short series consisting
-of those 3 patches and a new version of the current patch.
-I hope, that series will look more organized.
-
-Thank you,
-Bodo
-
-
+> ---
+>  drivers/md/md.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/md/md.c b/drivers/md/md.c
+> index 9562ef598ae1f4..3f33562d10d6f5 100644
+> --- a/drivers/md/md.c
+> +++ b/drivers/md/md.c
+> @@ -2322,8 +2322,7 @@ static int match_mddev_units(struct mddev *mddev1, struct mddev *mddev2)
+>                             test_bit(Journal, &rdev2->flags) ||
+>                             rdev2->raid_disk == -1)
+>                                 continue;
+> -                       if (rdev->bdev->bd_contains ==
+> -                           rdev2->bdev->bd_contains) {
+> +                       if (rdev->bdev->bd_disk == rdev2->bdev->bd_disk) {
+>                                 rcu_read_unlock();
+>                                 return 1;
+>                         }
+> @@ -5944,8 +5943,8 @@ int md_run(struct mddev *mddev)
+>                 rdev_for_each(rdev, mddev)
+>                         rdev_for_each(rdev2, mddev) {
+>                                 if (rdev < rdev2 &&
+> -                                   rdev->bdev->bd_contains ==
+> -                                   rdev2->bdev->bd_contains) {
+> +                                   rdev->bdev->bd_disk ==
+> +                                   rdev2->bdev->bd_disk) {
+>                                         pr_warn("%s: WARNING: %s appears to be on the same physical disk as %s.\n",
+>                                                 mdname(mddev),
+>                                                 bdevname(rdev->bdev,b),
+> --
+> 2.28.0
+>
