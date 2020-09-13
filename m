@@ -2,70 +2,49 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 817812682A3
-	for <lists+target-devel@lfdr.de>; Mon, 14 Sep 2020 04:31:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3C63268B83
+	for <lists+target-devel@lfdr.de>; Mon, 14 Sep 2020 14:55:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725974AbgINCbl (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sun, 13 Sep 2020 22:31:41 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:50060 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725965AbgINCbk (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Sun, 13 Sep 2020 22:31:40 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 59480422421C14DEE23F;
-        Mon, 14 Sep 2020 10:31:38 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
- 14.3.487.0; Mon, 14 Sep 2020 10:31:27 +0800
-From:   Jing Xiangfeng <jingxiangfeng@huawei.com>
-To:     <martin.petersen@oracle.com>, <bvanassche@acm.org>,
-        <michael.christie@oracle.com>, <mlombard@redhat.com>,
-        <sudhakar.panneerselvam@oracle.com>, <ddiss@suse.de>,
-        <gustavoars@kernel.org>
-CC:     <linux-scsi@vger.kernel.org>, <target-devel@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <jingxiangfeng@huawei.com>
-Subject: [PATCH] scsi: target: remove redundant assignment to variable 'ret'
-Date:   Mon, 14 Sep 2020 10:32:07 +0800
-Message-ID: <20200914023207.113792-1-jingxiangfeng@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726541AbgINMxt convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+target-devel@lfdr.de>); Mon, 14 Sep 2020 08:53:49 -0400
+Received: from mail.bnv.gob.ve ([201.249.200.115]:54030 "EHLO
+        correo.bnv.gob.ve" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726549AbgINMxs (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Mon, 14 Sep 2020 08:53:48 -0400
+X-Greylist: delayed 22359 seconds by postgrey-1.27 at vger.kernel.org; Mon, 14 Sep 2020 08:53:48 EDT
+Received: from localhost (localhost.bnv.gob.ve [127.0.0.1])
+        by correo.bnv.gob.ve (Postfix) with ESMTP id 1ADDC3382778;
+        Sun, 13 Sep 2020 22:23:55 -0400 (-04)
+Received: from correo.bnv.gob.ve ([127.0.0.1])
+        by localhost (correo.bnv.gob.ve [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id cMmdsMwNPgSR; Sun, 13 Sep 2020 22:23:54 -0400 (-04)
+Received: from localhost (localhost.bnv.gob.ve [127.0.0.1])
+        by correo.bnv.gob.ve (Postfix) with ESMTP id DA973348129F;
+        Sun, 13 Sep 2020 21:08:28 -0400 (-04)
+X-Virus-Scanned: amavisd-new at bnv.gob.ve
+Received: from correo.bnv.gob.ve ([127.0.0.1])
+        by localhost (correo.bnv.gob.ve [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id OEPcozTXccyU; Sun, 13 Sep 2020 21:08:28 -0400 (-04)
+Received: from [192.168.8.101] (8ta-229-1-199.telkomadsl.co.za [197.229.1.199])
+        by correo.bnv.gob.ve (Postfix) with ESMTPSA id AF91333829E6;
+        Sun, 13 Sep 2020 19:27:48 -0400 (-04)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Spende von 2.000.000,00 Euro.
+To:     Recipients <manuelfranco@info.com>
+From:   "manuel franco" <manuelfranco@info.com>
+Date:   Mon, 14 Sep 2020 01:27:40 +0200
+Reply-To: manuelfrancospende11@gmail.com
+Message-Id: <20200913232749.AF91333829E6@correo.bnv.gob.ve>
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-The variable ret has been initialized with a value '0'. The assignment
-in switch-case is redundant. So remove it.
+ Sie haben eine Spende von 2.000.000,00 Euro.
 
-Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
----
- drivers/target/iscsi/iscsi_target.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
-index cd045dc75a58..f5272ac18b16 100644
---- a/drivers/target/iscsi/iscsi_target.c
-+++ b/drivers/target/iscsi/iscsi_target.c
-@@ -4516,7 +4516,6 @@ int iscsit_logout_post_handler(
- 			iscsit_logout_post_handler_closesession(conn);
- 			break;
- 		}
--		ret = 0;
- 		break;
- 	case ISCSI_LOGOUT_REASON_CLOSE_CONNECTION:
- 		if (conn->cid == cmd->logout_cid) {
-@@ -4527,7 +4526,6 @@ int iscsit_logout_post_handler(
- 				iscsit_logout_post_handler_samecid(conn);
- 				break;
- 			}
--			ret = 0;
- 		} else {
- 			switch (cmd->logout_response) {
- 			case ISCSI_LOGOUT_SUCCESS:
--- 
-2.17.1
-
+Mein Name ist Manuel Franco aus den USA.
+Ich habe die America-Lotterie im Wert von 768 Millionen US-Dollar gewonnen und spende einen Teil davon an nur 5 glückliche Menschen und einige Waisenhäuser als Wohlwollen für die Menschheit.
