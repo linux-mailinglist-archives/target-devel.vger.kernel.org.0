@@ -2,49 +2,39 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3C63268B83
-	for <lists+target-devel@lfdr.de>; Mon, 14 Sep 2020 14:55:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6195269DFF
+	for <lists+target-devel@lfdr.de>; Tue, 15 Sep 2020 07:45:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726541AbgINMxt convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+target-devel@lfdr.de>); Mon, 14 Sep 2020 08:53:49 -0400
-Received: from mail.bnv.gob.ve ([201.249.200.115]:54030 "EHLO
-        correo.bnv.gob.ve" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726549AbgINMxs (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Mon, 14 Sep 2020 08:53:48 -0400
-X-Greylist: delayed 22359 seconds by postgrey-1.27 at vger.kernel.org; Mon, 14 Sep 2020 08:53:48 EDT
-Received: from localhost (localhost.bnv.gob.ve [127.0.0.1])
-        by correo.bnv.gob.ve (Postfix) with ESMTP id 1ADDC3382778;
-        Sun, 13 Sep 2020 22:23:55 -0400 (-04)
-Received: from correo.bnv.gob.ve ([127.0.0.1])
-        by localhost (correo.bnv.gob.ve [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id cMmdsMwNPgSR; Sun, 13 Sep 2020 22:23:54 -0400 (-04)
-Received: from localhost (localhost.bnv.gob.ve [127.0.0.1])
-        by correo.bnv.gob.ve (Postfix) with ESMTP id DA973348129F;
-        Sun, 13 Sep 2020 21:08:28 -0400 (-04)
-X-Virus-Scanned: amavisd-new at bnv.gob.ve
-Received: from correo.bnv.gob.ve ([127.0.0.1])
-        by localhost (correo.bnv.gob.ve [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id OEPcozTXccyU; Sun, 13 Sep 2020 21:08:28 -0400 (-04)
-Received: from [192.168.8.101] (8ta-229-1-199.telkomadsl.co.za [197.229.1.199])
-        by correo.bnv.gob.ve (Postfix) with ESMTPSA id AF91333829E6;
-        Sun, 13 Sep 2020 19:27:48 -0400 (-04)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1726125AbgIOFpa (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 15 Sep 2020 01:45:30 -0400
+Received: from verein.lst.de ([213.95.11.211]:46372 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726046AbgIOFp3 (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Tue, 15 Sep 2020 01:45:29 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 9F7B76736F; Tue, 15 Sep 2020 07:45:25 +0200 (CEST)
+Date:   Tue, 15 Sep 2020 07:45:25 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     dm-devel@redhat.com, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+        drbd-dev@lists.linbit.com, linux-ide@vger.kernel.org,
+        linux-raid@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
+Subject: Re: clean up is partition checks
+Message-ID: <20200915054525.GA18276@lst.de>
+References: <20200903054104.228829-1-hch@lst.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Spende von 2.000.000,00 Euro.
-To:     Recipients <manuelfranco@info.com>
-From:   "manuel franco" <manuelfranco@info.com>
-Date:   Mon, 14 Sep 2020 01:27:40 +0200
-Reply-To: manuelfrancospende11@gmail.com
-Message-Id: <20200913232749.AF91333829E6@correo.bnv.gob.ve>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200903054104.228829-1-hch@lst.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
- Sie haben eine Spende von 2.000.000,00 Euro.
+Jens,
 
-Mein Name ist Manuel Franco aus den USA.
-Ich habe die America-Lotterie im Wert von 768 Millionen US-Dollar gewonnen und spende einen Teil davon an nur 5 glückliche Menschen und einige Waisenhäuser als Wohlwollen für die Menschheit.
+can you pick this series up?
