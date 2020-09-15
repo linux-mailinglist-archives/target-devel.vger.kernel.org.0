@@ -2,97 +2,85 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD74626A497
-	for <lists+target-devel@lfdr.de>; Tue, 15 Sep 2020 14:02:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89E0D26B04A
+	for <lists+target-devel@lfdr.de>; Wed, 16 Sep 2020 00:07:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726453AbgIOMCH (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 15 Sep 2020 08:02:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:40078 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726460AbgIOMBm (ORCPT
+        id S1727990AbgIOWHD (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 15 Sep 2020 18:07:03 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:60918 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728130AbgIOWG7 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 15 Sep 2020 08:01:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1600171261;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=iRKZxnfmXT6xHa0W2Qaoc/OtvN5Snga93SmINoltYeM=;
-        b=Hq3VryK5+vKOmtXxhLfkYV+t54OBg7nmsdsdT9/eLhJAno5DdrR16S9gJ9RncBKJr2wV2D
-        EfOk4xGF4STB0diVQZf0sJgNAUPZR7GrjCkKp9bSYyVQQ8pzvBKvXQWEznwjJsnwBBQnxw
-        CuksPvySA96djK/v0xv74bK8o8DA1hk=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-204-MTpbt8lGPiuhSS14uL2xMA-1; Tue, 15 Sep 2020 07:58:06 -0400
-X-MC-Unique: MTpbt8lGPiuhSS14uL2xMA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9DB4F801ADF;
-        Tue, 15 Sep 2020 11:58:04 +0000 (UTC)
-Received: from [10.40.193.20] (unknown [10.40.193.20])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0D2977B7B2;
-        Tue, 15 Sep 2020 11:58:01 +0000 (UTC)
+        Tue, 15 Sep 2020 18:06:59 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08FM4liv007862;
+        Tue, 15 Sep 2020 22:06:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : mime-version :
+ content-type; s=corp-2020-01-29;
+ bh=bME8sByLBwNLbJudnSNj1nVjUvDsDQdQqcKom0FlSRU=;
+ b=UddL6Nf2SGObJgM1ltSAQP4mmCOnhSztzmrrycS6VZb59UaxuT3GDEb9yWOFagzKYvEK
+ +k47QxtHY6JKMnF9VKHHUruMzfpT83dYu4p3/B7V4SNFe0Hq+CfV4lm331WRKEe/XMuQ
+ XL7ihvNT9i2A3TyoPPGsqhV58ONZLjpOR3MNH+voqTPZjLakdCZhamCQIrcsNtxP3+qa
+ 94o6ySUp3QBIpk8B7nvZR4r51bboSHU+YoaqVlXLqIc7FB6aF7Xw07TUFwewlx29rGbR
+ H7cxtHg8HPNNFh30MKeZrj9ScZ66a64gMOV31cebAT/LLgVAmwkc9wEQhiKeXOxIA76E Vw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 33j91dhenn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 15 Sep 2020 22:06:35 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08FM1okB041321;
+        Tue, 15 Sep 2020 22:06:35 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 33hm31brbb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 15 Sep 2020 22:06:35 +0000
+Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08FM6WIK026369;
+        Tue, 15 Sep 2020 22:06:32 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 15 Sep 2020 22:06:31 +0000
+To:     Jing Xiangfeng <jingxiangfeng@huawei.com>
+Cc:     <martin.petersen@oracle.com>, <bvanassche@acm.org>,
+        <michael.christie@oracle.com>, <mlombard@redhat.com>,
+        <sudhakar.panneerselvam@oracle.com>, <ddiss@suse.de>,
+        <gustavoars@kernel.org>, <linux-scsi@vger.kernel.org>,
+        <target-devel@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH] scsi: target: remove redundant assignment to variable
  'ret'
-To:     Jing Xiangfeng <jingxiangfeng@huawei.com>,
-        martin.petersen@oracle.com, bvanassche@acm.org,
-        michael.christie@oracle.com, sudhakar.panneerselvam@oracle.com,
-        ddiss@suse.de, gustavoars@kernel.org
-Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq1een24rvk.fsf@ca-mkp.ca.oracle.com>
 References: <20200914023207.113792-1-jingxiangfeng@huawei.com>
-From:   Maurizio Lombardi <mlombard@redhat.com>
-Message-ID: <2410adca-9e8c-d16e-8097-9c6eb8103362@redhat.com>
-Date:   Tue, 15 Sep 2020 13:58:00 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+Date:   Tue, 15 Sep 2020 18:06:28 -0400
+In-Reply-To: <20200914023207.113792-1-jingxiangfeng@huawei.com> (Jing
+        Xiangfeng's message of "Mon, 14 Sep 2020 10:32:07 +0800")
 MIME-Version: 1.0
-In-Reply-To: <20200914023207.113792-1-jingxiangfeng@huawei.com>
-Content-Type: text/plain; charset=iso-8859-2
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9745 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 bulkscore=0 mlxlogscore=999
+ malwarescore=0 mlxscore=0 phishscore=0 adultscore=0 suspectscore=1
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009150171
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9745 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 impostorscore=0
+ priorityscore=1501 malwarescore=0 suspectscore=1 mlxlogscore=999
+ clxscore=1011 adultscore=0 lowpriorityscore=0 spamscore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009150171
 Sender: target-devel-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
 
+Jing,
 
-Dne 14. 09. 20 v 4:32 Jing Xiangfeng napsal(a):
 > The variable ret has been initialized with a value '0'. The assignment
 > in switch-case is redundant. So remove it.
-> 
-> Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
-> ---
->  drivers/target/iscsi/iscsi_target.c | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
-> index cd045dc75a58..f5272ac18b16 100644
-> --- a/drivers/target/iscsi/iscsi_target.c
-> +++ b/drivers/target/iscsi/iscsi_target.c
-> @@ -4516,7 +4516,6 @@ int iscsit_logout_post_handler(
->  			iscsit_logout_post_handler_closesession(conn);
->  			break;
->  		}
-> -		ret = 0;
->  		break;
->  	case ISCSI_LOGOUT_REASON_CLOSE_CONNECTION:
->  		if (conn->cid == cmd->logout_cid) {
-> @@ -4527,7 +4526,6 @@ int iscsit_logout_post_handler(
->  				iscsit_logout_post_handler_samecid(conn);
->  				break;
->  			}
-> -			ret = 0;
->  		} else {
->  			switch (cmd->logout_response) {
->  			case ISCSI_LOGOUT_SUCCESS:
-> 
 
-Looks ok to me.
+Applied to 5.10/scsi-staging, thanks!
 
-Reviewed-by: Maurizio Lombardi <mlombard@redhat.com>
-
+-- 
+Martin K. Petersen	Oracle Linux Engineering
