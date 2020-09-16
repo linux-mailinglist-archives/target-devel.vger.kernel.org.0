@@ -2,92 +2,50 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7638526CFBB
-	for <lists+target-devel@lfdr.de>; Thu, 17 Sep 2020 01:54:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2170526D2FF
+	for <lists+target-devel@lfdr.de>; Thu, 17 Sep 2020 07:23:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726549AbgIPXym (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 16 Sep 2020 19:54:42 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:41438 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726409AbgIPXyl (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Wed, 16 Sep 2020 19:54:41 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08GNdCI5043285;
-        Wed, 16 Sep 2020 23:54:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id; s=corp-2020-01-29;
- bh=faphjq4V6qIdb6BswXLcrA4nmRlyKCEQZO7jAdMlnvo=;
- b=0XyIgSaiFSBIMb6k+onifLcP364Lk3ScvdZxhjiGZQ5SmBGmiaD7cOmm7v8mAE7Eccgu
- 4UdlwvNQPOmChBioSU/e/NRgf7pXSPTUVId5T+QTvE75/4d7OhpE9FGCxoWb984twhif
- ky7Z0+8GoFTNCb3Mao+9e268o+N6eyqdk4/jLrXDCsL8t7yOfXXgWk26xUcchJNRA//r
- 0/IbBDFG2uTejk0qSzw3OJWM0PiLT0S2X/mQN0F+luXzya5eZ0tu4Y1bhMfoZeBOsQ5P
- 9n+nY9dwKEdfz5r/OWNL2DfLUcJJqCIePnk5PkGErfT0f7wggt3pRK4g0TMKoZM0iNuw UA== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 33gp9me074-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 16 Sep 2020 23:54:39 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08GNe1IQ192413;
-        Wed, 16 Sep 2020 23:54:39 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 33khpm6v7m-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 16 Sep 2020 23:54:39 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08GNscb8027289;
-        Wed, 16 Sep 2020 23:54:38 GMT
-Received: from supannee-devvm-ol7.osdevelopmeniad.oraclevcn.com (/100.100.231.179)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 16 Sep 2020 23:54:38 +0000
-From:   Sudhakar Panneerselvam <sudhakar.panneerselvam@oracle.com>
-To:     martin.petersen@oracle.com, michael.christie@oracle.com,
-        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org
-Cc:     ssudhakarp@gmail.com
-Subject: [PATCH] scsi: target: Fix lun lookup for TARGET_SCF_LOOKUP_LUN_FROM_TAG case.
-Date:   Wed, 16 Sep 2020 23:54:31 +0000
-Message-Id: <1600300471-26135-1-git-send-email-sudhakar.panneerselvam@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9746 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
- mlxlogscore=999 phishscore=0 mlxscore=0 adultscore=0 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009160176
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9746 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999
- adultscore=0 malwarescore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
- spamscore=0 priorityscore=1501 suspectscore=0 impostorscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009160176
+        id S1726180AbgIQFXV (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 17 Sep 2020 01:23:21 -0400
+Received: from hairstylesfeed.com ([138.197.30.88]:60170 "EHLO ubuntu"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726249AbgIQFXU (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Thu, 17 Sep 2020 01:23:20 -0400
+X-Greylist: delayed 12686 seconds by postgrey-1.27 at vger.kernel.org; Thu, 17 Sep 2020 01:23:20 EDT
+Received: from Shop01 (localhost [127.0.0.1])
+        by ubuntu (Postfix) with SMTP id D198751C2C;
+        Wed, 16 Sep 2020 11:50:29 +0000 (UTC)
+Received: from [6.252.84.127] by Shop01 id <2029131-85552>; Wed, 16 Sep 2020 09:48:36 -0300
+Message-ID: <18-u5hol46n-d@8hpmw>
+From:   "Nicola W. Samir" <nicola@brighenti.net>
+Reply-To: "Nicola W. Samir" <nicola@brighenti.net>
+To:     tara_nate07@att.net
+Subject: LUCRATIVE PROJECT VENTURE
+Date:   Wed, 16 Sep 20 09:48:36 GMT
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+        boundary="7E87.4AB_3A0"
+X-Priority: 3
+X-MSMail-Priority: Normal
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-transport_lookup_tmr_lun() uses "orig_fe_lun" member of struct se_cmd
-for the lookup. Hence, update this field directly for the
-TARGET_SCF_LOOKUP_LUN_FROM_TAG case.
 
-Fixes: a36840d80027 ("target: Initialize LUN in transport_init_se_cmd()")
-Reported-by: Martin Wilck <mwilck@suse.com>
-Signed-off-by: Sudhakar Panneerselvam <sudhakar.panneerselvam@oracle.com>
----
- drivers/target/target_core_transport.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+--7E87.4AB_3A0
+Content-Type: text/plain;
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
-index 9fb0be0aa620..8dd289214dd8 100644
---- a/drivers/target/target_core_transport.c
-+++ b/drivers/target/target_core_transport.c
-@@ -1840,7 +1840,8 @@ int target_submit_tmr(struct se_cmd *se_cmd, struct se_session *se_sess,
- 	 * out unpacked_lun for the original se_cmd.
- 	 */
- 	if (tm_type == TMR_ABORT_TASK && (flags & TARGET_SCF_LOOKUP_LUN_FROM_TAG)) {
--		if (!target_lookup_lun_from_tag(se_sess, tag, &unpacked_lun))
-+		if (!target_lookup_lun_from_tag(se_sess, tag,
-+						&se_cmd->orig_fe_lun))
- 			goto failure;
- 	}
- 
--- 
-1.8.3.1
+I am an Independent Financial Consultant, I have a reputable client who is=
+ seeking for an experienced individual or company that can profitably inve=
+st $51,000.000 United State Dollars privately for TPI. 
+
+Your swift response is highly needed.
+The modalities is 100% risk free
+
+Best Regard
+Nicola Samir Wahiba
+
+--7E87.4AB_3A0--
 
