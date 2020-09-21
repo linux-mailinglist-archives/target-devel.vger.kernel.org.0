@@ -2,162 +2,95 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 639EC27325E
-	for <lists+target-devel@lfdr.de>; Mon, 21 Sep 2020 21:05:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BF152736F8
+	for <lists+target-devel@lfdr.de>; Tue, 22 Sep 2020 01:59:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727755AbgIUTEj (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 21 Sep 2020 15:04:39 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:41738 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727593AbgIUTEj (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Mon, 21 Sep 2020 15:04:39 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08LIJOS9071634;
-        Mon, 21 Sep 2020 18:23:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : subject :
- date : message-id : in-reply-to : references; s=corp-2020-01-29;
- bh=caI1ONMrsb/w+dsM1jY2IAtogW1OeaMvXH799kffeOw=;
- b=YGr9asXYdunAw06scws1xGGnDBEEDkqsablQdoLEFfPdn6ikDXFuoHvoCYgEw/csuSxr
- 8qlN4GAvBdDXZEYDLkMyaoJ55IvgfaetYGmCtmzjgsZ6TM02HzgMNd1sJgp35vZTfbtO
- pB36LJpF0OIlDWMQAnja/KBSSfSHF0hQKs+wqn2FLel7RjSPB6OyYHesn1toHu+h1oxq
- TLh429cOnqxOvxr9SOwJCCwohCovoAhG900pOcBB6uYnhZzFVd5AQAzhVHIKodpqpHb0
- PyIydORLu/y27t2cshBf9/VFpQ+ltB244QhKI313hiNuYYRHFMQKUOsEyniTYE9mnXI9 Rw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2130.oracle.com with ESMTP id 33n7gaa8af-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 21 Sep 2020 18:23:26 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08LIKKOj063392;
-        Mon, 21 Sep 2020 18:23:25 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 33nurr97c9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 21 Sep 2020 18:23:25 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08LINOeG018026;
-        Mon, 21 Sep 2020 18:23:24 GMT
-Received: from ol2.localdomain (/73.88.28.6)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 21 Sep 2020 11:23:24 -0700
-From:   Mike Christie <michael.christie@oracle.com>
-To:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, mst@redhat.com, jasowang@redhat.com,
-        pbonzini@redhat.com, stefanha@redhat.com,
-        virtualization@lists.linux-foundation.org
-Subject: [PATCH 7/8] vhost: remove work arg from vhost_work_flush
-Date:   Mon, 21 Sep 2020 13:23:07 -0500
-Message-Id: <1600712588-9514-8-git-send-email-michael.christie@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1600712588-9514-1-git-send-email-michael.christie@oracle.com>
-References: <1600712588-9514-1-git-send-email-michael.christie@oracle.com>
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9751 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
- phishscore=0 mlxlogscore=999 bulkscore=0 mlxscore=0 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009210131
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9751 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 bulkscore=0
- mlxscore=0 suspectscore=0 impostorscore=0 malwarescore=0 spamscore=0
- phishscore=0 mlxlogscore=999 clxscore=1015 adultscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009210131
+        id S1728726AbgIUX7A (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 21 Sep 2020 19:59:00 -0400
+Received: from mail.rusoil.net ([188.128.114.25]:54172 "EHLO mail.rusoil.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726913AbgIUX67 (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Mon, 21 Sep 2020 19:58:59 -0400
+X-Greylist: delayed 517 seconds by postgrey-1.27 at vger.kernel.org; Mon, 21 Sep 2020 19:58:58 EDT
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.rusoil.net (Postfix) with ESMTP id DB83A41466;
+        Tue, 22 Sep 2020 04:50:54 +0500 (YEKT)
+Received: from mail.rusoil.net ([127.0.0.1])
+        by localhost (mail.rusoil.net [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id FZgYXq47xvAw; Tue, 22 Sep 2020 04:50:54 +0500 (YEKT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.rusoil.net (Postfix) with ESMTP id 12B204118D;
+        Tue, 22 Sep 2020 04:50:53 +0500 (YEKT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rusoil.net 12B204118D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rusoil.net;
+        s=maildkim; t=1600732253;
+        bh=6R3BgBYiA7fkqGiiNDuwPskBnpH9JXyNAW/l3ZEA+wY=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=VzJO2lLk6sFE85UBfND6Acq3zYaabXwdGgx3LBBdsdA1kXzDs8TuTORZzQTHsbgb3
+         AVSBLWO5IYggWObAHNkuBDLa2oc7kZ1FRInUAQb1TH+es4AOg69DqueT1H59rWk05f
+         6HnNE7Deecucci+rdbK01KSe16GNGRoAJJVH25HE=
+X-Virus-Scanned: amavisd-new at mail.rusoil.net
+Received: from mail.rusoil.net ([127.0.0.1])
+        by localhost (mail.rusoil.net [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id jNdbx66y1UPl; Tue, 22 Sep 2020 04:50:52 +0500 (YEKT)
+Received: from mail.rusoil.net (mail.rusoil.net [172.16.7.34])
+        by mail.rusoil.net (Postfix) with ESMTP id 7CA0341138;
+        Tue, 22 Sep 2020 04:50:48 +0500 (YEKT)
+Date:   Tue, 22 Sep 2020 04:50:48 +0500 (YEKT)
+From:   Blue Oak Mortgage and Loans <em@rusoil.net>
+Reply-To: Blue Oak Mortgage and Loans <info@bluelmtg.net>
+Message-ID: <1132312692.909225.1600732248449.JavaMail.zimbra@rusoil.net>
+Subject: Wir finanzieren Projekte und Unternehmen
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [192.210.183.69]
+X-Mailer: Zimbra 8.8.12_GA_3803 (ZimbraWebClient - FF79 (Win)/8.8.12_GA_3794)
+Thread-Index: WE0BNdnNCnDEShQw5e9YQ0zJ8qhhNQ==
+Thread-Topic: Wir finanzieren Projekte und Unternehmen
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-vhost_work_flush doesn't do anything with the work arg. This patch drops
-it and then renames vhost_work_flush to vhost_work_dev_flush to reflect
-that the function flushes all the works in the dev and not just a
-specific queue or work item.
 
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
----
- drivers/vhost/scsi.c  | 4 ++--
- drivers/vhost/vhost.c | 8 ++++----
- drivers/vhost/vhost.h | 2 +-
- drivers/vhost/vsock.c | 2 +-
- 4 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 8791db8..5833059 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -1469,8 +1469,8 @@ static void vhost_scsi_flush(struct vhost_scsi *vs)
- 	/* Flush both the vhost poll and vhost work */
- 	for (i = 0; i < VHOST_SCSI_MAX_VQ; i++)
- 		vhost_scsi_flush_vq(vs, i);
--	vhost_work_flush(&vs->dev, &vs->vs_completion_work);
--	vhost_work_flush(&vs->dev, &vs->vs_event_work);
-+	vhost_work_dev_flush(&vs->dev);
-+	vhost_work_dev_flush(&vs->dev);
- 
- 	/* Wait for all reqs issued before the flush to be finished */
- 	for (i = 0; i < VHOST_SCSI_MAX_VQ; i++)
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index 5dd9eb1..f83674e 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -231,7 +231,7 @@ void vhost_poll_stop(struct vhost_poll *poll)
- }
- EXPORT_SYMBOL_GPL(vhost_poll_stop);
- 
--void vhost_work_flush(struct vhost_dev *dev, struct vhost_work *work)
-+void vhost_work_dev_flush(struct vhost_dev *dev)
- {
- 	struct vhost_flush_struct flush;
- 
-@@ -243,13 +243,13 @@ void vhost_work_flush(struct vhost_dev *dev, struct vhost_work *work)
- 		wait_for_completion(&flush.wait_event);
- 	}
- }
--EXPORT_SYMBOL_GPL(vhost_work_flush);
-+EXPORT_SYMBOL_GPL(vhost_work_dev_flush);
- 
- /* Flush any work that has been scheduled. When calling this, don't hold any
-  * locks that are also used by the callback. */
- void vhost_poll_flush(struct vhost_poll *poll)
- {
--	vhost_work_flush(poll->dev, &poll->work);
-+	vhost_work_dev_flush(poll->dev);
- }
- EXPORT_SYMBOL_GPL(vhost_poll_flush);
- 
-@@ -542,7 +542,7 @@ static int vhost_attach_cgroups(struct vhost_dev *dev)
- 	attach.owner = current;
- 	vhost_work_init(&attach.work, vhost_attach_cgroups_work);
- 	vhost_work_queue(dev, &attach.work);
--	vhost_work_flush(dev, &attach.work);
-+	vhost_work_dev_flush(dev);
- 	return attach.ret;
- }
- 
-diff --git a/drivers/vhost/vhost.h b/drivers/vhost/vhost.h
-index 3d30b3d..b91efb5 100644
---- a/drivers/vhost/vhost.h
-+++ b/drivers/vhost/vhost.h
-@@ -46,7 +46,7 @@ void vhost_poll_init(struct vhost_poll *poll, vhost_work_fn_t fn,
- void vhost_poll_stop(struct vhost_poll *poll);
- void vhost_poll_flush(struct vhost_poll *poll);
- void vhost_poll_queue(struct vhost_poll *poll);
--void vhost_work_flush(struct vhost_dev *dev, struct vhost_work *work);
-+void vhost_work_dev_flush(struct vhost_dev *dev);
- long vhost_vring_ioctl(struct vhost_dev *d, unsigned int ioctl, void __user *argp);
- 
- struct vhost_log {
-diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index a483cec..f40205f 100644
---- a/drivers/vhost/vsock.c
-+++ b/drivers/vhost/vsock.c
-@@ -652,7 +652,7 @@ static void vhost_vsock_flush(struct vhost_vsock *vsock)
- 	for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++)
- 		if (vsock->vqs[i].handle_kick)
- 			vhost_poll_flush(&vsock->vqs[i].poll);
--	vhost_work_flush(&vsock->dev, &vsock->send_pkt_work);
-+	vhost_work_dev_flush(&vsock->dev);
- }
- 
- static void vhost_vsock_reset_orphans(struct sock *sk)
--- 
-1.8.3.1
+Dies ist ein Newsletter von Blue Oak Mortgage and Loans. Bitte melden Sie s=
+ich ab, wenn Sie keine E-Mail mehr von uns erhalten m=C3=B6chten.
 
+
+Eine kurze Einf=C3=BChrung.
+
+Wir sind ein f=C3=BChrendes Finanzierungsunternehmen in Europa. Wir finanzi=
+eren Startups / etablierte Unternehmen, finanzieren Gro=C3=9Fprojekte (Bau,=
+ Landwirtschaft, Immobilien und dergleichen) zu einem niedrigen Zinssatz vo=
+n 2% pro Jahr.
+
+
+Darlehensverfahren
+
+1. Sie m=C3=BCssen das Online-Bewerbungsformular ausf=C3=BCllen und eine or=
+dnungsgem=C3=A4=C3=9F unterschriebene Kopie an uns zur=C3=BCcksenden.
+
+2. M=C3=B6glicherweise m=C3=BCssen Sie Finanzdokumente als unterst=C3=BCtze=
+nden Nachweis f=C3=BCr die F=C3=A4higkeit zur R=C3=BCckzahlung von Krediten=
+ vorlegen.
+
+3. Wenn Ihr Darlehen genehmigt wurde, m=C3=BCssen Sie eine Versicherungsgar=
+antie f=C3=BCr die Darlehenssicherheit vorlegen. Wir empfehlen eine Versich=
+erungsgesellschaft. Sie sind allein verantwortlich f=C3=BCr die Zahlung und=
+ den Erwerb der Anleihe, die als Sicherheit dienen. Die H=C3=B6he der Anlei=
+he h=C3=A4ngt von Ihrem Darlehensbetrag ab. Die Versicherungsgesellschaft w=
+ird Sie durch den Prozess f=C3=BChren. (F=C3=BCr Gro=C3=9Fprojekte)
+
+4. Ihr =C3=9Cberweisungsprozess wird eingeleitet, sobald die Versicherungsa=
+nleihe =C3=BCberpr=C3=BCft wurde. Ihr Darlehensr=C3=BCckzahlungsplan wird i=
+m NC-Darlehensvertragsformular aufgef=C3=BChrt.
+
+Wenn die Bedingungen Sie beruhigen, k=C3=B6nnen Sie uns =C3=BCber die Whats=
+App-Nummer / E-Mail kontaktieren und auch unsere Website besuchen, um weite=
+re Informationen zu erhalten. Wir freuen uns darauf, von Ihnen zu h=C3=B6re=
+n.
+
+WhatsApp: + 90-552-365-3483
+E-Mail: info@bluelmtg.net
