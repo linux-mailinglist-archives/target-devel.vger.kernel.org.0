@@ -2,76 +2,90 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B92A272FC6
-	for <lists+target-devel@lfdr.de>; Mon, 21 Sep 2020 19:00:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2EF12731D2
+	for <lists+target-devel@lfdr.de>; Mon, 21 Sep 2020 20:23:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730337AbgIUQ72 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 21 Sep 2020 12:59:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40096 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730308AbgIUQ7O (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Mon, 21 Sep 2020 12:59:14 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4CAA5235FD;
-        Mon, 21 Sep 2020 16:59:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600707553;
-        bh=ilYPXYXOrK02dbgWO785dFtleHl2+7nPjk6K0R/PBvw=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=yyPOpwzx1pKltzf4H+v0LidZoBubumrt/74zHAY5TzeAVoIQ8re/YX4A1pDxLKPo6
-         Vv1/tJnpF8BhoP6or7Ck079oNkAaG4N9D7DU/T8PUoATLp0KQqEJ2DLkYD20jr0P0O
-         GwH9D2LvhnnnkrNBzbXQKA7gy9dil44xEFwmKaEQ=
-Date:   Mon, 21 Sep 2020 17:58:21 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     linux-spi@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     linux-serial@vger.kernel.org, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-block@vger.kernel.org,
-        Yossi Leybovich <sleybo@amazon.com>,
-        linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
-        dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-rdma@vger.kernel.org,
-        Dan Williams <dan.j.williams@intel.com>,
-        rds-devel@oss.oracle.com
-In-Reply-To: <1600601186-7420-1-git-send-email-Julia.Lawall@inria.fr>
-References: <1600601186-7420-1-git-send-email-Julia.Lawall@inria.fr>
-Subject: Re: [PATCH 00/14] drop double zeroing
-Message-Id: <160070750168.56292.17961674601916397869.b4-ty@kernel.org>
+        id S1727338AbgIUSX0 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 21 Sep 2020 14:23:26 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:52688 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726456AbgIUSX0 (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Mon, 21 Sep 2020 14:23:26 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08LIJKSU171428;
+        Mon, 21 Sep 2020 18:23:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : subject :
+ date : message-id : in-reply-to : references; s=corp-2020-01-29;
+ bh=CJC+0uiXSimKq9KmM6pfRQBbqRMaMG/3h+0Jq1hz7Fs=;
+ b=nUGmKdIjsRXzE+XwAXT/eQIkaymIZHKrEX4zTv1BrZtlv/YWWSV+kE18UtLVdyC/dJ0F
+ 2AYgM9GdpOqzZt6Q7sdkQQpCO26spkGhQ7TIq/RFMIF/dlhFDnjPAGWq3QW8Sc5U8eg/
+ 8lqWGhydFspZ+XvzpLC8m1BpboMZMmvyxtjHtKAX+/ZFxsiQbEO4kXsJWRjgiP55mOs9
+ 8LHt6zvmrQyDqi/6i9G4FqlcdPUwHep4bPQUjPLTamYtKjY0fjuYpPzcr5qzAfxmoI6C
+ Xt2AV1NNpa93ygKgXnlRjhnzY2BeObGRtmtX2pB+/7KYaTWY3KiTWYFMzOfIDQOWEj+k 3Q== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 33n9xkqusc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 21 Sep 2020 18:23:21 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08LIKHCg116025;
+        Mon, 21 Sep 2020 18:23:21 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 33nujm3dnm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 21 Sep 2020 18:23:21 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08LINLkO013333;
+        Mon, 21 Sep 2020 18:23:21 GMT
+Received: from ol2.localdomain (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 21 Sep 2020 11:23:20 -0700
+From:   Mike Christie <michael.christie@oracle.com>
+To:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, mst@redhat.com, jasowang@redhat.com,
+        pbonzini@redhat.com, stefanha@redhat.com,
+        virtualization@lists.linux-foundation.org
+Subject: [PATCH 1/8] vhost vdpa: fix vhost_vdpa_open error handling
+Date:   Mon, 21 Sep 2020 13:23:01 -0500
+Message-Id: <1600712588-9514-2-git-send-email-michael.christie@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1600712588-9514-1-git-send-email-michael.christie@oracle.com>
+References: <1600712588-9514-1-git-send-email-michael.christie@oracle.com>
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9751 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0
+ mlxlogscore=999 phishscore=0 adultscore=0 spamscore=0 suspectscore=2
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009210131
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9751 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 malwarescore=0
+ suspectscore=2 priorityscore=1501 adultscore=0 spamscore=0 clxscore=1015
+ mlxlogscore=999 bulkscore=0 mlxscore=0 phishscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009210131
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Sun, 20 Sep 2020 13:26:12 +0200, Julia Lawall wrote:
-> sg_init_table zeroes its first argument, so the allocation of that argument
-> doesn't have to.
+We must free the vqs array in the open failure path, because
+vhost_vdpa_release will not be called.
 
-Applied to
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+---
+ drivers/vhost/vdpa.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+index 3fab94f..3301214 100644
+--- a/drivers/vhost/vdpa.c
++++ b/drivers/vhost/vdpa.c
+@@ -808,6 +808,7 @@ static int vhost_vdpa_open(struct inode *inode, struct file *filep)
+ 
+ err_init_iotlb:
+ 	vhost_dev_cleanup(&v->vdev);
++	kfree(vqs);
+ err:
+ 	atomic_dec(&v->opened);
+ 	return r;
+-- 
+1.8.3.1
 
-Thanks!
-
-[1/1] spi/topcliff-pch: drop double zeroing
-      commit: ca03dba30f2b8ff45a2972c6691e4c96d8c52b3b
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
