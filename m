@@ -2,100 +2,86 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24A752738E6
-	for <lists+target-devel@lfdr.de>; Tue, 22 Sep 2020 04:51:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 801302739D4
+	for <lists+target-devel@lfdr.de>; Tue, 22 Sep 2020 06:27:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728741AbgIVCvT (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 21 Sep 2020 22:51:19 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:36593 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728633AbgIVCvT (ORCPT
+        id S1726495AbgIVE1D (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 22 Sep 2020 00:27:03 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:50608 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726488AbgIVE1D (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 21 Sep 2020 22:51:19 -0400
-Received: by mail-pg1-f195.google.com with SMTP id f2so10737625pgd.3;
-        Mon, 21 Sep 2020 19:51:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:references:autocrypt:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=GEH2ouQ/FrnoeV2ifHjtr5VvhmLz9Uk83pyAGiMJ9mI=;
-        b=f8v1zXa0Z6Yfab+KKhIbOtYHkUH5hWc3hMT4BJD5lruojPhKJ5UnBY1nlTHa5c3onR
-         mSKC4eU4+OxNqFAb+egEJc7dpcPKqm09Qtw4m1Vu/QqBqXljFEygO4zQRM0BAdWLvDQb
-         NsykxaXWu3toKfHlKsiNrnWH1nKsdvNBcHA4LnQ6JeoTL55wDUpdaw33LDKBhdXP3lnf
-         +V2UOVEvexZVf5T0VPMhRfCUBEbIqHtvlNtgw9/NsPo+UcO1MbKk9oBW315PmOE+Yeqt
-         9NZY+HTzmfUr9wlJBXiHM6A2yQ+Ah6Q1d/6JiMNeU2uaiffYhy9rdL3afHmSAi2yHOPm
-         eudg==
-X-Gm-Message-State: AOAM531NgUaJg5qIeyLaJy1nWnESEP6GJ5IGHhxfQdk6KeO28XW5VnAi
-        SyEhxgRmN1UY0kQhphB0FAjDXmZzFXg=
-X-Google-Smtp-Source: ABdhPJykidwpfujICftdXOECgGbvv7xW0qg0g80Ktd47bH1WSCmI7ik7bpUTCBcrJdJ7oWm0g1FSTA==
-X-Received: by 2002:a17:902:aa0a:b029:d0:89f4:6224 with SMTP id be10-20020a170902aa0ab02900d089f46224mr2734907plb.12.1600743078615;
-        Mon, 21 Sep 2020 19:51:18 -0700 (PDT)
-Received: from ?IPv6:2601:647:4000:d7:5e05:892c:575b:24c7? ([2601:647:4000:d7:5e05:892c:575b:24c7])
-        by smtp.gmail.com with ESMTPSA id 190sm13710253pfy.22.2020.09.21.19.51.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Sep 2020 19:51:17 -0700 (PDT)
-Subject: Re: [PATCH 4/8] vhost scsi: fix cmd completion race
-From:   Bart Van Assche <bvanassche@acm.org>
-To:     Mike Christie <michael.christie@oracle.com>,
-        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, mst@redhat.com, jasowang@redhat.com,
-        pbonzini@redhat.com, stefanha@redhat.com,
-        virtualization@lists.linux-foundation.org
-References: <1600712588-9514-1-git-send-email-michael.christie@oracle.com>
- <1600712588-9514-5-git-send-email-michael.christie@oracle.com>
- <cf8e5b11-dfd2-4570-1dab-25486c591dde@acm.org>
-Autocrypt: addr=bvanassche@acm.org; prefer-encrypt=mutual; keydata=
- mQENBFSOu4oBCADcRWxVUvkkvRmmwTwIjIJvZOu6wNm+dz5AF4z0FHW2KNZL3oheO3P8UZWr
- LQOrCfRcK8e/sIs2Y2D3Lg/SL7qqbMehGEYcJptu6mKkywBfoYbtBkVoJ/jQsi2H0vBiiCOy
- fmxMHIPcYxaJdXxrOG2UO4B60Y/BzE6OrPDT44w4cZA9DH5xialliWU447Bts8TJNa3lZKS1
- AvW1ZklbvJfAJJAwzDih35LxU2fcWbmhPa7EO2DCv/LM1B10GBB/oQB5kvlq4aA2PSIWkqz4
- 3SI5kCPSsygD6wKnbRsvNn2mIACva6VHdm62A7xel5dJRfpQjXj2snd1F/YNoNc66UUTABEB
- AAG0JEJhcnQgVmFuIEFzc2NoZSA8YnZhbmFzc2NoZUBhY20ub3JnPokBOQQTAQIAIwUCVI67
- igIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEHFcPTXFzhAJ8QkH/1AdXblKL65M
- Y1Zk1bYKnkAb4a98LxCPm/pJBilvci6boefwlBDZ2NZuuYWYgyrehMB5H+q+Kq4P0IBbTqTa
- jTPAANn62A6jwJ0FnCn6YaM9TZQjM1F7LoDX3v+oAkaoXuq0dQ4hnxQNu792bi6QyVdZUvKc
- macVFVgfK9n04mL7RzjO3f+X4midKt/s+G+IPr4DGlrq+WH27eDbpUR3aYRk8EgbgGKvQFdD
- CEBFJi+5ZKOArmJVBSk21RHDpqyz6Vit3rjep7c1SN8s7NhVi9cjkKmMDM7KYhXkWc10lKx2
- RTkFI30rkDm4U+JpdAd2+tP3tjGf9AyGGinpzE2XY1K5AQ0EVI67igEIAKiSyd0nECrgz+H5
- PcFDGYQpGDMTl8MOPCKw/F3diXPuj2eql4xSbAdbUCJzk2ETif5s3twT2ER8cUTEVOaCEUY3
- eOiaFgQ+nGLx4BXqqGewikPJCe+UBjFnH1m2/IFn4T9jPZkV8xlkKmDUqMK5EV9n3eQLkn5g
- lco+FepTtmbkSCCjd91EfThVbNYpVQ5ZjdBCXN66CKyJDMJ85HVr5rmXG/nqriTh6cv1l1Js
- T7AFvvPjUPknS6d+BETMhTkbGzoyS+sywEsQAgA+BMCxBH4LvUmHYhpS+W6CiZ3ZMxjO8Hgc
- ++w1mLeRUvda3i4/U8wDT3SWuHcB3DWlcppECLkAEQEAAYkBHwQYAQIACQUCVI67igIbDAAK
- CRBxXD01xc4QCZ4dB/0QrnEasxjM0PGeXK5hcZMT9Eo998alUfn5XU0RQDYdwp6/kMEXMdmT
- oH0F0xB3SQ8WVSXA9rrc4EBvZruWQ+5/zjVrhhfUAx12CzL4oQ9Ro2k45daYaonKTANYG22y
- //x8dLe2Fv1By4SKGhmzwH87uXxbTJAUxiWIi1np0z3/RDnoVyfmfbbL1DY7zf2hYXLLzsJR
- mSsED/1nlJ9Oq5fALdNEPgDyPUerqHxcmIub+pF0AzJoYHK5punqpqfGmqPbjxrJLPJfHVKy
- goMj5DlBMoYqEgpbwdUYkH6QdizJJCur4icy8GUNbisFYABeoJ91pnD4IGei3MTdvINSZI5e
-Message-ID: <89c3be36-c03f-c8a0-c4dc-d46d57de86ae@acm.org>
-Date:   Mon, 21 Sep 2020 19:51:16 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        Tue, 22 Sep 2020 00:27:03 -0400
+X-Greylist: delayed 1765 seconds by postgrey-1.27 at vger.kernel.org; Tue, 22 Sep 2020 00:27:02 EDT
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08M3xPfA159635;
+        Tue, 22 Sep 2020 03:59:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=MU7vMfEG7uHngKI/Ec05AQOxUFlYKEr4CiXVKbCfj6s=;
+ b=xs2GZd9zUrU5eBesTxFNjhJTmZD7nYpFct4IkqLuP4Z996yTZ3p5ZEghK6oK3c4jC/6V
+ iX6q1748Y0VbCP0XbNCwT5wEEpx+U4cB5kYzJ1nEoGV8U6xGTKT2AOBBJHXxmLYzUypf
+ feWsMntnQJr1B+WJw+V6ZWuLFwFqBv8gRiYPGwztY8cU1pFm/V8Q7FCiudpW8TM8LUUi
+ LUpNtaOdAsemKbpWXEHos07g6uEYy0l0/jr5dORWAYiXaY1iR6qwd8nCXx7HwirUN7D0
+ 74238Qm8RqjLNtupiL9X35Dp1aoQF8xpb5t23bBZMHyxfcp3aSq8IgTFw1rdOUQjIr3I XQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2130.oracle.com with ESMTP id 33n7gad5y6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 22 Sep 2020 03:59:20 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08M3tsKr017547;
+        Tue, 22 Sep 2020 03:57:19 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 33nuw2pke0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 22 Sep 2020 03:57:19 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08M3vInr019130;
+        Tue, 22 Sep 2020 03:57:18 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 21 Sep 2020 20:57:18 -0700
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     mlombard@redhat.com, ddiss@suse.de, gustavoars@kernel.org,
+        Jing Xiangfeng <jingxiangfeng@huawei.com>,
+        michael.christie@oracle.com, sudhakar.panneerselvam@oracle.com,
+        bvanassche@acm.org
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] scsi: target: remove redundant assignment to variable 'ret'
+Date:   Mon, 21 Sep 2020 23:56:49 -0400
+Message-Id: <160074695008.411.535339245470908448.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20200914023207.113792-1-jingxiangfeng@huawei.com>
+References: <20200914023207.113792-1-jingxiangfeng@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <cf8e5b11-dfd2-4570-1dab-25486c591dde@acm.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9751 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 malwarescore=0
+ mlxscore=0 suspectscore=0 adultscore=0 mlxlogscore=962 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009220031
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9751 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 bulkscore=0
+ mlxscore=0 suspectscore=0 impostorscore=0 malwarescore=0 spamscore=0
+ phishscore=0 mlxlogscore=989 clxscore=1015 adultscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009220031
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 2020-09-21 19:48, Bart Van Assche wrote:
-> On 2020-09-21 11:23, Mike Christie wrote:
->> We might not do the final se_cmd put from vhost_scsi_complete_cmd_work.
->> If the last put happens a little later then we could race where
->> vhost_scsi_complete_cmd_work does vhost_signal, the guest runs and sends
->> more IO, and vhost_scsi_handle_vq runs but does not find any free cmds.
->>
->> This patch has us delay completing the cmd until the last lio core ref
->> is dropped. We then know that once we signal to the guest that the cmd
->> is completed that if it queues a new command it will find a free cmd.
-> 
-> It seems weird to me to see a reference to LIO in the description of a
-> vhost patch? Since this driver supports more backends than LIO, shouldn't
-> the patch description be made more generic?
+On Mon, 14 Sep 2020 10:32:07 +0800, Jing Xiangfeng wrote:
 
-Please ignore the above comment.
+> The variable ret has been initialized with a value '0'. The assignment
+> in switch-case is redundant. So remove it.
 
-Bart.
+Applied to 5.10/scsi-queue, thanks!
+
+[1/1] scsi: target: Remove redundant assignment to variable 'ret'
+      https://git.kernel.org/mkp/scsi/c/1c370903d12d
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
