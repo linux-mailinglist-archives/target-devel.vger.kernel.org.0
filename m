@@ -2,85 +2,99 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AAB73273A04
-	for <lists+target-devel@lfdr.de>; Tue, 22 Sep 2020 07:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B18E274559
+	for <lists+target-devel@lfdr.de>; Tue, 22 Sep 2020 17:34:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728624AbgIVFH5 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 22 Sep 2020 01:07:57 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:34688 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728290AbgIVFH5 (ORCPT
+        id S1726631AbgIVPeU (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 22 Sep 2020 11:34:20 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:51350 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726566AbgIVPeU (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 22 Sep 2020 01:07:57 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08M3nxFM149327;
-        Tue, 22 Sep 2020 03:57:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=ENsNdIxngoDD2Ep7VAATIU/SioAPOAeynj5qP1cu2HI=;
- b=o3vQBw/PIIzShbmbxV1Kwh+BSFd0/D1vC45X1I2z9IIq95U5f2YqpQRXF2Tn7P0Cw24E
- aqLKBXxYFy4m1B3OPOeHNOyXfLeOJ+a1G+4RpRr2c4wNdJsy24NOmxT4oqDl58zaTLr3
- /5Zl5GpBwZocWO4YC1AvXDz1GNvk6ZcsNYEaRk7qx9AzTRuOSdRzGVBgKf+ckQ9gcqB7
- CimFFeHtzTcjVXcnyMRV0uTpFnezfM3wZ2nUBSBrRaNDzgeiYfsG8ub7quvcR8CojFaZ
- 14nrv6pncQojyZVcX/PWAYBRKMsyXOGLSApCI71a41WVw36o50UBsx/dLpj2oEFXgSOp yA== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2130.oracle.com with ESMTP id 33n7gad5t0-1
+        Tue, 22 Sep 2020 11:34:20 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08MFXPNZ163847;
+        Tue, 22 Sep 2020 15:34:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to;
+ s=corp-2020-01-29; bh=oc+s2oDj3M2tyyz1TgJaIrqxuvA2gWQ+CNbN4CJWN6g=;
+ b=K2T+8jzbcwAj41Hk45u13ZhKXtLrBa8oAP9cz+d1/XiXDSgXv1RK+LhdhoB70kYp3CU4
+ zMXfm/TcoLRwdFNs0276qQ2zLNPnwnQC9yWf7JlhilQvx8L6Vr5hxEmqXYkO8m1UkBWQ
+ yNJD6er5uV20v/Ppl+9Al8eUSEPW0Om4UaPgocoGcU1A7gskXtAB4jtqZtT7rpvJHcL9
+ w0p1u3F4l82dvXW8IMRFFOvxgYP9YnsTH1Ld/cwfXwJQ0F+gS3A27YVqQxmCQsQQh7Es
+ v0NJNuygSI8DOHlH2PRWfVUq/CizXNI8HBIo/abZ89EFMebl2ZRVKSoaybxn9Z/3llMD kQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 33q5rgbumc-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 22 Sep 2020 03:57:26 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08M3tKTO020619;
-        Tue, 22 Sep 2020 03:57:25 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 33nuwxk741-1
+        Tue, 22 Sep 2020 15:34:14 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08MFUTbs054058;
+        Tue, 22 Sep 2020 15:34:13 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 33nurt4024-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 22 Sep 2020 03:57:25 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08M3vOga032579;
-        Tue, 22 Sep 2020 03:57:24 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        Tue, 22 Sep 2020 15:34:13 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08MFYCkI011248;
+        Tue, 22 Sep 2020 15:34:12 GMT
+Received: from [20.15.0.8] (/73.88.28.6)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 21 Sep 2020 20:57:24 -0700
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     Xiongfeng Wang <wangxiongfeng2@huawei.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        with ESMTP ; Tue, 22 Sep 2020 08:34:12 -0700
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.1\))
+Subject: Re: [PATCH 2/8] vhost: add helper to check if a vq has been setup
+From:   Michael Christie <michael.christie@oracle.com>
+In-Reply-To: <ce73f019-a247-7913-47fd-b3e5e7bdf81f@acm.org>
+Date:   Tue, 22 Sep 2020 10:34:10 -0500
+Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
         linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] scsi: target: tcmu: add a missing newline when printing parameters
-Date:   Mon, 21 Sep 2020 23:56:55 -0400
-Message-Id: <160074695010.411.10221836550956633689.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <1599132573-33818-1-git-send-email-wangxiongfeng2@huawei.com>
-References: <1599132573-33818-1-git-send-email-wangxiongfeng2@huawei.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9751 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 adultscore=0
- bulkscore=0 mlxlogscore=854 phishscore=0 suspectscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009220031
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9751 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 bulkscore=0
- mlxscore=0 suspectscore=0 impostorscore=0 malwarescore=0 spamscore=0
- phishscore=0 mlxlogscore=868 clxscore=1015 adultscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009220030
+        mst@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
+        stefanha@redhat.com, virtualization@lists.linux-foundation.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <63A53BA5-653D-4DCA-88C3-812A3607FC2E@oracle.com>
+References: <1600712588-9514-1-git-send-email-michael.christie@oracle.com>
+ <1600712588-9514-3-git-send-email-michael.christie@oracle.com>
+ <ce73f019-a247-7913-47fd-b3e5e7bdf81f@acm.org>
+To:     Bart Van Assche <bvanassche@acm.org>
+X-Mailer: Apple Mail (2.3608.120.23.2.1)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9752 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
+ phishscore=0 mlxlogscore=999 bulkscore=0 mlxscore=0 suspectscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009220121
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9752 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 impostorscore=0
+ clxscore=1015 suspectscore=0 phishscore=0 malwarescore=0
+ priorityscore=1501 mlxlogscore=999 adultscore=0 bulkscore=0 mlxscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009220121
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Thu, 3 Sep 2020 19:29:33 +0800, Xiongfeng Wang wrote:
 
-> When I cat module paramter 'global_max_data_area_mb' by sysfs, it
-> displays as follows. It's better to add a newline for easy reading.
-> 
-> root@(none):/# cat /sys/module/target_core_user/parameters/global_max_data_area_mb
-> 2048noneroot@(none):/#
 
-Applied to 5.10/scsi-queue, thanks!
+> On Sep 21, 2020, at 9:45 PM, Bart Van Assche <bvanassche@acm.org> =
+wrote:
+>=20
+> On 2020-09-21 11:23, Mike Christie wrote:
+>> +bool vhost_vq_is_setup(struct vhost_virtqueue *vq)
+>> +{
+>> +	if (vq->avail && vq->desc && vq->used && vhost_vq_access_ok(vq))
+>> +		return true;
+>> +	else
+>> +		return false;
+>> +}
+>=20
+> Has it been considered changing the body of this function into
+> "return vq->avail && vq->desc && vq->used && vhost_vq_access_ok(vq)"? =
+I'm
 
-[1/1] scsi: target: tcmu: Add missing newline when printing parameters
-      https://git.kernel.org/mkp/scsi/c/6d70cb343484
+If we do not go the VHOST_SET_VRING_ENABLE route, then I'll do what you =
+suggest.
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+
+> concerned otherwise one or another build bot will suggest to make that
+> change.
