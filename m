@@ -2,118 +2,104 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E311F27563C
-	for <lists+target-devel@lfdr.de>; Wed, 23 Sep 2020 12:23:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EAB3275B9C
+	for <lists+target-devel@lfdr.de>; Wed, 23 Sep 2020 17:22:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726715AbgIWKXM (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 23 Sep 2020 06:23:12 -0400
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:36832 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726703AbgIWKXL (ORCPT
+        id S1726897AbgIWPWn (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 23 Sep 2020 11:22:43 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.54]:34512 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726687AbgIWPWm (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 23 Sep 2020 06:23:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1600856590;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=VFgJToirjL1LcUbMYxqpCEwKfTDu3I+1Nj36cIZeHgU=;
-        b=Yd0IdmQTpH+5D0QQ1w/Mb0SJ3HD/w1q6wrLgrcj+8ir03so6qzuOax5OWqOWdbB8APf+sJ
-        KUQBtls6bZL0rRggnw5zrvIqY3v6COVWbj5mQyHhw12ZBj2Eayd3CvCZngbSHa2VeParIx
-        XK+zJcHcDbxHiZ0MO1hT1H8KdcnAuFc=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-527-fOSqIDmcNduMdU4A8WSzrQ-1; Wed, 23 Sep 2020 06:23:08 -0400
-X-MC-Unique: fOSqIDmcNduMdU4A8WSzrQ-1
-Received: by mail-wr1-f71.google.com with SMTP id 33so8613471wrk.12
-        for <target-devel@vger.kernel.org>; Wed, 23 Sep 2020 03:23:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=VFgJToirjL1LcUbMYxqpCEwKfTDu3I+1Nj36cIZeHgU=;
-        b=T/GscKgrJc4mUUNA9kUmMTEhCTu3tIjbzdMI5vxn56/qPyqPbSeGUEK+lDUMxsaedY
-         8jEZuZZv95gyafVlGWJFWKAB6+Z42q5YIWAk6967kAF8AWgVdO4aokqOBXT5xKDACByD
-         7ssbX57C2zmTvI9jO3k1pk8MFwDtwOHVzG24I7fbeJZfF0jAqobkVGB0jVqiIfAsiary
-         7tsqYldKzQJ9Vxtb/SrANIRJKgjSn/f97xqiVbxI9kdC5h/pbKiKht8SeMjAHL4MDPF0
-         9cfjClRgtMZA9fA56ti5sCMlkqVKdD8IxfZjop7cjcQFgBwjWsnh+qNwchBSsjedtyX+
-         8bDg==
-X-Gm-Message-State: AOAM530F2xxF1B2jzWIfSoj9JiW0iJYVpQo56EZs8FNfAxuUcJrE02ok
-        xdAXZUM23Sed2uBE6x+5kdVNa8ilaIHf260SnK5+rsiBZ/LnzgI1La+EOS45dSLBW8QDC4JTgwx
-        NM0K+oJy/PjIMA7DhazXQPv1n
-X-Received: by 2002:a05:600c:20c:: with SMTP id 12mr4741715wmi.40.1600856587515;
-        Wed, 23 Sep 2020 03:23:07 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwvwid4yBpJLIUdhmHJZC1dioF+qkVR7rcecEnmaK5giSVtQGS8/+Yh8i8w9490r84enyaBxw==
-X-Received: by 2002:a05:600c:20c:: with SMTP id 12mr4741681wmi.40.1600856587231;
-        Wed, 23 Sep 2020 03:23:07 -0700 (PDT)
-Received: from ?IPv6:2001:b07:6468:f312:15f1:648d:7de6:bad9? ([2001:b07:6468:f312:15f1:648d:7de6:bad9])
-        by smtp.gmail.com with ESMTPSA id y6sm30308257wrn.41.2020.09.23.03.23.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Sep 2020 03:23:06 -0700 (PDT)
-Subject: Re: [PATCH 5/8] vhost scsi: add lun parser helper
-To:     Mike Christie <michael.christie@oracle.com>,
-        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, mst@redhat.com, jasowang@redhat.com,
-        stefanha@redhat.com, virtualization@lists.linux-foundation.org
-References: <1600712588-9514-1-git-send-email-michael.christie@oracle.com>
- <1600712588-9514-6-git-send-email-michael.christie@oracle.com>
-From:   Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <c981b20e-895a-d5ce-9973-ffe7b21bd724@redhat.com>
-Date:   Wed, 23 Sep 2020 12:23:05 +0200
+        Wed, 23 Sep 2020 11:22:42 -0400
+X-Greylist: delayed 713 seconds by postgrey-1.27 at vger.kernel.org; Wed, 23 Sep 2020 11:22:39 EDT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1600874558;
+        s=strato-dkim-0002; d=reintjes.nrw;
+        h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=R7hI6d/NmZuNcg1vUXN4expafaD5dS9k1NOlJgVsfQ0=;
+        b=mKq3yxzIBoK6eXKDjSaCRr3BwBIqpDKeJr75f5YQmPBPRRn9qdkRISKeudlw+eJUaN
+        i9j0YoD7Nd07ieGLh8UqSmYZ1Ccml4PGsZ2Mglopdz9Hz5rLCJkN670J1l7AKyk9w16x
+        a5x5cVcgZWQk6FXpa0G8mlW7WSJEKPFpozzrnE9Mqlay09jPyJDrOXyUKIYtt6nlhpnO
+        Iws66XTKRoaWIH3voDt0xHa2loKeKKkr2KuI9gRfjll43rW7LApn0Q1chdN5eLyO3daW
+        Z1KVrRhdU65Y8/6yfAJtnadI1+vhAkdCKhH0qGquacG5znElBXtRT3qPa76R5ygpIUbq
+        FhJQ==
+X-RZG-AUTH: ":IGUXYVP6Ne1lB7nQNv+YSUx4qaxF0YAcTeeZr8criwvl+4OoAsy1YB7b8FzONHo5ckdw3KGGkZZ/Zu8="
+X-RZG-CLASS-ID: mo00
+Received: from [192.168.0.198]
+        by smtp.strato.de (RZmta 46.10.7 DYNA|AUTH)
+        with ESMTPSA id Y04b60w8NFAYy22
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+        Wed, 23 Sep 2020 17:10:34 +0200 (CEST)
+Subject: Re: [PATCH 00/14] drop double zeroing
+To:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     linux-serial@vger.kernel.org, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-block@vger.kernel.org,
+        Yossi Leybovich <sleybo@amazon.com>,
+        linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
+        dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-rdma@vger.kernel.org,
+        Dan Williams <dan.j.williams@intel.com>,
+        rds-devel@oss.oracle.com
+References: <1600601186-7420-1-git-send-email-Julia.Lawall@inria.fr>
+ <160070750168.56292.17961674601916397869.b4-ty@kernel.org>
+From:   Rolf Reintjes <lists2.rolf@reintjes.nrw>
+Message-ID: <c3b33526-936d-ffa4-c301-4d0485822be1@reintjes.nrw>
+Date:   Wed, 23 Sep 2020 17:10:33 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-In-Reply-To: <1600712588-9514-6-git-send-email-michael.christie@oracle.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <160070750168.56292.17961674601916397869.b4-ty@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 21/09/20 20:23, Mike Christie wrote:
-> Move code to parse lun from req's lun_buf to helper, so tmf code
-> can use it in the next patch.
-> 
-> Signed-off-by: Mike Christie <michael.christie@oracle.com>
-> ---
->  drivers/vhost/scsi.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-> index 26d0f75..736ce19 100644
-> --- a/drivers/vhost/scsi.c
-> +++ b/drivers/vhost/scsi.c
-> @@ -899,6 +899,11 @@ static void vhost_scsi_submission_work(struct work_struct *work)
->  	return ret;
->  }
->  
-> +static u16 vhost_buf_to_lun(u8 *lun_buf)
-> +{
-> +	return ((lun_buf[2] << 8) | lun_buf[3]) & 0x3FFF;
-> +}
-> +
->  static void
->  vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
->  {
-> @@ -1037,12 +1042,12 @@ static void vhost_scsi_submission_work(struct work_struct *work)
->  			tag = vhost64_to_cpu(vq, v_req_pi.tag);
->  			task_attr = v_req_pi.task_attr;
->  			cdb = &v_req_pi.cdb[0];
-> -			lun = ((v_req_pi.lun[2] << 8) | v_req_pi.lun[3]) & 0x3FFF;
-> +			lun = vhost_buf_to_lun(v_req_pi.lun);
->  		} else {
->  			tag = vhost64_to_cpu(vq, v_req.tag);
->  			task_attr = v_req.task_attr;
->  			cdb = &v_req.cdb[0];
-> -			lun = ((v_req.lun[2] << 8) | v_req.lun[3]) & 0x3FFF;
-> +			lun = vhost_buf_to_lun(v_req.lun);
->  		}
->  		/*
->  		 * Check that the received CDB size does not exceeded our
-> 
+Hello Mark,
 
-Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+On 21.09.20 18:58, Mark Brown wrote:
+> On Sun, 20 Sep 2020 13:26:12 +0200, Julia Lawall wrote:
+>> sg_init_table zeroes its first argument, so the allocation of that argument
+>> doesn't have to.
+> 
+> Applied to
+> 
+>     https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+> 
+> Thanks!
+
+I do not understand which of the 14 patches you applied. Your mail 
+responds to the 00/14 mail.
+
+Rolf
+
+> 
+> [1/1] spi/topcliff-pch: drop double zeroing
+>        commit: ca03dba30f2b8ff45a2972c6691e4c96d8c52b3b
+> 
+> All being well this means that it will be integrated into the linux-next
+> tree (usually sometime in the next 24 hours) and sent to Linus during
+> the next merge window (or sooner if it is a bug fix), however if
+> problems are discovered then the patch may be dropped or reverted.
+> 
+> You may get further e-mails resulting from automated or manual testing
+> and review of the tree, please engage with people reporting problems and
+> send followup patches addressing any issues that are reported if needed.
+> 
+> If any updates are required or you are submitting further changes they
+> should be sent as incremental updates against current git, existing
+> patches will not be replaced.
+> 
+> Please add any relevant lists and maintainers to the CCs when replying
+> to this mail.
+> 
+> Thanks,
+> Mark
+> 
 
