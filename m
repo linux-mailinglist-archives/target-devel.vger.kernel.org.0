@@ -2,84 +2,72 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DFEF274DF9
-	for <lists+target-devel@lfdr.de>; Wed, 23 Sep 2020 02:52:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 039AF275082
+	for <lists+target-devel@lfdr.de>; Wed, 23 Sep 2020 07:57:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726608AbgIWAwD (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 22 Sep 2020 20:52:03 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:38024 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726548AbgIWAwC (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Tue, 22 Sep 2020 20:52:02 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08N0jAKR001202;
-        Wed, 23 Sep 2020 00:52:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=4cVhTdG3zorw6QjJt5z3I67vupn2zO/nb+w7JYhBzXg=;
- b=ukJcrQpekHFv4oE5hSit3fg34zsWtgSCx/Mq6ybknXfv03Wk+xA3fYv8HoO+FY+OVvsT
- XexA8MeU63be1KWtom5lGM+rgWYjpBVOlRWGt5GoaBh7HIayIkA7lJ6LqSTcp7k5FN+5
- 1PzBO+fRBTmnxYe4atV+dyA3qb1pqvkX7iR7orZ1+oQrMlQDMHceQvjsr3XDgKaYixZH
- ZEYu3GCBp0l8q1cDTjTdxVheFGPrYfKhjItGBdM5MJD7Cy/weq3vJMM/s80SdKTLTAIT
- tJgbdhGpaHWzJ/HtpPNAwi6w3lnk4hTR/IkPYlfsRZMj+u+umX+co1e7AYApYfxqTpdt Yw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 33q5rge482-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 23 Sep 2020 00:52:00 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08N0iO9D055860;
-        Wed, 23 Sep 2020 00:51:59 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 33nurtssxa-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 23 Sep 2020 00:51:59 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08N0px2R004345;
-        Wed, 23 Sep 2020 00:51:59 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 22 Sep 2020 17:51:58 -0700
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     target-devel@vger.kernel.org,
-        Sudhakar Panneerselvam <sudhakar.panneerselvam@oracle.com>,
-        linux-scsi@vger.kernel.org, michael.christie@oracle.com
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        ssudhakarp@gmail.com
-Subject: Re: [PATCH] scsi: target: Fix lun lookup for TARGET_SCF_LOOKUP_LUN_FROM_TAG case.
-Date:   Tue, 22 Sep 2020 20:51:57 -0400
-Message-Id: <160082230400.6366.234985652157623643.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <1600300471-26135-1-git-send-email-sudhakar.panneerselvam@oracle.com>
-References: <1600300471-26135-1-git-send-email-sudhakar.panneerselvam@oracle.com>
+        id S1726448AbgIWF5V (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 23 Sep 2020 01:57:21 -0400
+Received: from hermes.cta.br ([161.24.235.5]:58686 "EHLO hermes.cta.br"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726179AbgIWF5U (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Wed, 23 Sep 2020 01:57:20 -0400
+X-Greylist: delayed 2056 seconds by postgrey-1.27 at vger.kernel.org; Wed, 23 Sep 2020 01:57:19 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by hermes.cta.br (Postfix) with ESMTP id 55CFE16E78D1;
+        Wed, 23 Sep 2020 02:01:35 -0300 (-03)
+Received: from hermes.cta.br ([127.0.0.1])
+        by localhost (hermes.cta.br [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id y74zZaTd-LPb; Wed, 23 Sep 2020 02:01:34 -0300 (-03)
+Received: from localhost (localhost [127.0.0.1])
+        by hermes.cta.br (Postfix) with ESMTP id 3501E1548F88;
+        Wed, 23 Sep 2020 01:28:34 -0300 (-03)
+DKIM-Filter: OpenDKIM Filter v2.10.3 hermes.cta.br 3501E1548F88
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cta.br;
+        s=50824260-A46F-11E8-B5E3-16F5207DEC71; t=1600835315;
+        bh=PEgy+RpcsckcVXxslQn6d+tc//P81+6V7lvSU9dRFp0=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=m5bKSPAkzx5K+02FhePTj+Qoszc3aMaq4TFwAhC99ouDOjWyEwqSTInUz4YC/XxJJ
+         lGvJ0JdbcqWCOm6+HlnG5MpNfy80X96Jp410ioDXquYg4hHCaZ0AsCtCNR+lGYs3rw
+         AOOLKTzGx+GCVd+UhdWCqHhvzqMPxD6X8aQOxJRWWWfePup2kNoTiKLg2rjQDKhRC2
+         omrCihpehUSYqEKQ0Bbc/ffcW5aWrlZkUt3/Cj030TVYRMNu77g3tSDwrIMJ0d6+16
+         DrdG7bY9d+isiKwg2wOBngTAiZkB+g1+8fLUZ1kSGkNiFfIkqN0RbDVcZAzKLaO8hh
+         YSBpCwaJl6Xjw==
+X-Virus-Scanned: amavisd-new at cta.br
+Received: from hermes.cta.br ([127.0.0.1])
+        by localhost (hermes.cta.br [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 9H_T08tFoTK1; Wed, 23 Sep 2020 01:28:33 -0300 (-03)
+Received: from [10.120.212.214] (unknown [105.12.3.179])
+        by hermes.cta.br (Postfix) with ESMTPSA id 0B3C216E78CA;
+        Wed, 23 Sep 2020 01:15:00 -0300 (-03)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9752 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
- phishscore=0 mlxlogscore=932 bulkscore=0 mlxscore=0 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009230001
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9752 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 impostorscore=0
- clxscore=1011 suspectscore=0 phishscore=0 malwarescore=0
- priorityscore=1501 mlxlogscore=960 adultscore=0 bulkscore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009230001
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: spende von 2,000,000 euro
+To:     Recipients <scco@cta.br>
+From:   ''Tayeb souami'' <scco@cta.br>
+Date:   Wed, 23 Sep 2020 06:17:14 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20200923041501.0B3C216E78CA@hermes.cta.br>
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Wed, 16 Sep 2020 23:54:31 +0000, Sudhakar Panneerselvam wrote:
+Hallo mein lieber Freund
+                                  Mein Name ist Tayeb Souami aus New Jersey=
+ in Amerika und ich habe den America Lottery Jackpot von 315 Millionen Euro=
+ gewonnen. Ich habe mich entschlossen, die Summe von 2.000.000 Euro an f=FC=
+nf gl=FCckliche Personen zu spenden, und Sie wurden als einer der Beg=FCnst=
+igten ausgew=E4hlt. Bitte klicken Sie auf diesen Link, um mehr =FCber meine=
+n Gewinn zu erfahren.
 
-> transport_lookup_tmr_lun() uses "orig_fe_lun" member of struct se_cmd
-> for the lookup. Hence, update this field directly for the
-> TARGET_SCF_LOOKUP_LUN_FROM_TAG case.
 
-Applied to 5.9/scsi-fixes, thanks!
+UHR MICH HIER: https://www.youtube.com/watch?v=3DZ6ui8ZDQ6Ks
 
-[1/1] scsi: target: Fix lun lookup for TARGET_SCF_LOOKUP_LUN_FROM_TAG case
-      https://git.kernel.org/mkp/scsi/c/149415586243
+Bitte kontaktieren Sie mich =FCber diese E-Mail: Tayebsouam.spende@gmail.com
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+
+Ich hoffe, Sie und Ihre Familie gl=FCcklich zu machen.
+
+Gr=FC=DFe
+Herr Tayeb Souami
