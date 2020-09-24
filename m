@@ -2,120 +2,194 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A583276AAE
-	for <lists+target-devel@lfdr.de>; Thu, 24 Sep 2020 09:23:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E1D427757B
+	for <lists+target-devel@lfdr.de>; Thu, 24 Sep 2020 17:33:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727056AbgIXHXD (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 24 Sep 2020 03:23:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:29065 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726993AbgIXHXD (ORCPT
+        id S1728391AbgIXPdv (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 24 Sep 2020 11:33:51 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:55000 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728333AbgIXPdv (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 24 Sep 2020 03:23:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1600932181;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=n9ho7ZxUFjV5yAYuN8t5tarm5DyMHoZty06HftqxrjU=;
-        b=ZHxMuhxWIewaCNhWDU6gr+9OGZRkSD2HtvdHFW5XJON6ceWBwj2feGHmO46t5nGyxTUgXv
-        KBjUF0GZzatTy70r1re/YKhaXlY0WzcfePcvv2ejf20kWeVisiSwJagN7iwbwn003gMjh/
-        U9FMA364c6tmvV8jpah36uotBnvWtkI=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-244-O94fTBLHNcOBCXemmv_D7Q-1; Thu, 24 Sep 2020 03:22:59 -0400
-X-MC-Unique: O94fTBLHNcOBCXemmv_D7Q-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A38578015A5;
-        Thu, 24 Sep 2020 07:22:58 +0000 (UTC)
-Received: from [10.72.13.193] (ovpn-13-193.pek2.redhat.com [10.72.13.193])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 6CA421002C01;
-        Thu, 24 Sep 2020 07:22:49 +0000 (UTC)
-Subject: Re: [PATCH 2/8] vhost: add helper to check if a vq has been setup
-To:     Mike Christie <michael.christie@oracle.com>,
-        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, mst@redhat.com, pbonzini@redhat.com,
-        stefanha@redhat.com, virtualization@lists.linux-foundation.org
+        Thu, 24 Sep 2020 11:33:51 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08OFElqh122833;
+        Thu, 24 Sep 2020 15:33:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to;
+ s=corp-2020-01-29; bh=3QoIa80vjBXbMTD8oILmbPH0nePlE98HPxpyod5LC3Y=;
+ b=HjEMEvNbDj/CL2d0izKC/ztKN4kTT/sIdskM5Jl04xQSWf/MoUelrYQp4ENeMGJExbFL
+ IKgvcJMB48wxDaglHatNL7nCz53oU1GUuM3dC2jy1bvd+a5VGxPDdShuY8M+Gn3QXNwM
+ AO1/P+FLCpgOMoZUe3AGwYDU7dS8qgj52grfGEshlgzZqLAvzP3NXFt/NeQxVUC8tFDd
+ C9aMNVLSagaJXF8sMjYD11kBxkmfVCC+r3fZ6M8R0o892va2WBsEq54M87qZUIx0qmr9
+ E9mz2RyJTjrguXEFZ8XFne4NEYvbUVEn5Ye1wNso+OXD/sjqWLtQwv1L3Imoqsm8lbwa iQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 33ndnus2h1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 24 Sep 2020 15:33:34 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08OFUYFf054252;
+        Thu, 24 Sep 2020 15:31:34 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 33nurwb7fr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 24 Sep 2020 15:31:34 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08OFVXVQ020397;
+        Thu, 24 Sep 2020 15:31:33 GMT
+Received: from [20.15.0.8] (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 24 Sep 2020 08:31:33 -0700
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.1\))
+Subject: Re: [PATCH 3/8] vhost scsi: alloc cmds per vq instead of session
+From:   Michael Christie <michael.christie@oracle.com>
+In-Reply-To: <20200924022107-mutt-send-email-mst@kernel.org>
+Date:   Thu, 24 Sep 2020 10:31:30 -0500
+Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        jasowang@redhat.com, pbonzini@redhat.com, stefanha@redhat.com,
+        virtualization@lists.linux-foundation.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <BE3F7F89-D0BF-44BA-921A-112E104C96C5@oracle.com>
 References: <1600712588-9514-1-git-send-email-michael.christie@oracle.com>
- <1600712588-9514-3-git-send-email-michael.christie@oracle.com>
- <e2d16333-d5ed-4c5c-58b3-7b5d0a9da47a@redhat.com>
- <63094bae-1f26-c21e-9b3c-3a6aa99a7e24@oracle.com>
-From:   Jason Wang <jasowang@redhat.com>
-Message-ID: <e81db364-8b9e-bd01-5d22-3fd52375c8d3@redhat.com>
-Date:   Thu, 24 Sep 2020 15:22:47 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <63094bae-1f26-c21e-9b3c-3a6aa99a7e24@oracle.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+ <1600712588-9514-4-git-send-email-michael.christie@oracle.com>
+ <20200924022107-mutt-send-email-mst@kernel.org>
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+X-Mailer: Apple Mail (2.3608.120.23.2.1)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9753 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
+ phishscore=0 mlxlogscore=999 bulkscore=0 mlxscore=0 suspectscore=2
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009240118
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9753 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 adultscore=0
+ phishscore=0 lowpriorityscore=0 suspectscore=2 bulkscore=0 mlxlogscore=999
+ spamscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009240117
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
 
-On 2020/9/24 上午3:12, Mike Christie wrote:
-> On 9/21/20 9:02 PM, Jason Wang wrote:
->> On 2020/9/22 上午2:23, Mike Christie wrote:
->>> This adds a helper check if a vq has been setup. The next patches
->>> will use this when we move the vhost scsi cmd preallocation from per
->>> session to per vq. In the per vq case, we only want to allocate cmds
->>> for vqs that have actually been setup and not for all the possible
->>> vqs.
->>>
->>> Signed-off-by: Mike Christie <michael.christie@oracle.com>
->>> ---
->>>    drivers/vhost/vhost.c | 9 +++++++++
->>>    drivers/vhost/vhost.h | 1 +
->>>    2 files changed, 10 insertions(+)
->>>
->>> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
->>> index b45519c..5dd9eb1 100644
->>> --- a/drivers/vhost/vhost.c
->>> +++ b/drivers/vhost/vhost.c
->>> @@ -305,6 +305,15 @@ static void vhost_vring_call_reset(struct vhost_vring_call *call_ctx)
->>>        spin_lock_init(&call_ctx->ctx_lock);
->>>    }
->>>    +bool vhost_vq_is_setup(struct vhost_virtqueue *vq)
->>> +{
->>> +    if (vq->avail && vq->desc && vq->used && vhost_vq_access_ok(vq))
->>> +        return true;
->>> +    else
->>> +        return false;
->>> +}
->>> +EXPORT_SYMBOL_GPL(vhost_vq_is_setup);
->>
->> This is probably ok but I wonder maybe we should have something like what vDPA did (VHOST_SET_VRING_ENABLE) to match virtio 1.0 device definition.
-> It looks like I can make that work. Some questions:
->
-> 1. Do you mean a generic VHOST_SET_VRING_ENABLE or a SCSI specific one VHOST_SCSI_SET_VRING_ENABLE?
 
+> On Sep 24, 2020, at 1:22 AM, Michael S. Tsirkin <mst@redhat.com> =
+wrote:
+>=20
+> On Mon, Sep 21, 2020 at 01:23:03PM -0500, Mike Christie wrote:
+>> We currently are limited to 256 cmds per session. This leads to =
+problems
+>> where if the user has increased virtqueue_size to more than 2 or
+>> cmd_per_lun to more than 256 vhost_scsi_get_tag can fail and the =
+guest
+>> will get IO errors.
+>>=20
+>> This patch moves the cmd allocation to per vq so we can easily match
+>> whatever the user has specified for num_queues and
+>> virtqueue_size/cmd_per_lun. It also makes it easier to control how =
+much
+>> memory we preallocate. For cases, where perf is not as important and
+>> we can use the current defaults (1 vq and 128 cmds per vq) memory use
+>> from preallocate cmds is cut in half. For cases, where we are willing
+>> to use more memory for higher perf, cmd mem use will now increase as
+>> the num queues and queue depth increases.
+>>=20
+>> Signed-off-by: Mike Christie <michael.christie@oracle.com>
+>> ---
+>> drivers/vhost/scsi.c | 204 =
+++++++++++++++++++++++++++++++++-------------------
+>> 1 file changed, 127 insertions(+), 77 deletions(-)
+>>=20
+>> diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+>> index b22adf0..13311b8 100644
+>> --- a/drivers/vhost/scsi.c
+>> +++ b/drivers/vhost/scsi.c
+>> @@ -52,7 +52,6 @@
+>> #define VHOST_SCSI_VERSION  "v0.1"
+>> #define VHOST_SCSI_NAMELEN 256
+>> #define VHOST_SCSI_MAX_CDB_SIZE 32
+>> -#define VHOST_SCSI_DEFAULT_TAGS 256
+>> #define VHOST_SCSI_PREALLOC_SGLS 2048
+>> #define VHOST_SCSI_PREALLOC_UPAGES 2048
+>> #define VHOST_SCSI_PREALLOC_PROT_SGLS 2048
+>> @@ -189,6 +188,9 @@ struct vhost_scsi_virtqueue {
+>> 	 * Writers must also take dev mutex and flush under it.
+>> 	 */
+>> 	int inflight_idx;
+>> +	struct vhost_scsi_cmd *scsi_cmds;
+>> +	struct sbitmap scsi_tags;
+>> +	int max_cmds;
+>> };
+>>=20
+>> struct vhost_scsi {
+>> @@ -324,7 +326,9 @@ static void vhost_scsi_release_cmd(struct se_cmd =
+*se_cmd)
+>> {
+>> 	struct vhost_scsi_cmd *tv_cmd =3D container_of(se_cmd,
+>> 				struct vhost_scsi_cmd, tvc_se_cmd);
+>> -	struct se_session *se_sess =3D tv_cmd->tvc_nexus->tvn_se_sess;
+>> +	struct vhost_scsi_virtqueue *svq =3D =
+container_of(tv_cmd->tvc_vq,
+>> +				struct vhost_scsi_virtqueue, vq);
+>> +	struct vhost_scsi_inflight *inflight =3D tv_cmd->inflight;
+>> 	int i;
+>>=20
+>> 	if (tv_cmd->tvc_sgl_count) {
+>> @@ -336,8 +340,8 @@ static void vhost_scsi_release_cmd(struct se_cmd =
+*se_cmd)
+>> 			put_page(sg_page(&tv_cmd->tvc_prot_sgl[i]));
+>> 	}
+>>=20
+>> -	vhost_scsi_put_inflight(tv_cmd->inflight);
+>> -	target_free_tag(se_sess, se_cmd);
+>> +	sbitmap_clear_bit(&svq->scsi_tags, se_cmd->map_tag);
+>> +	vhost_scsi_put_inflight(inflight);
+>> }
+>>=20
+>> static u32 vhost_scsi_sess_get_index(struct se_session *se_sess)
+>> @@ -566,13 +570,14 @@ static void vhost_scsi_complete_cmd_work(struct =
+vhost_work *work)
+>> }
+>>=20
+>> static struct vhost_scsi_cmd *
+>> -vhost_scsi_get_tag(struct vhost_virtqueue *vq, struct vhost_scsi_tpg =
+*tpg,
+>> +vhost_scsi_get_cmd(struct vhost_virtqueue *vq, struct vhost_scsi_tpg =
+*tpg,
+>> 		   unsigned char *cdb, u64 scsi_tag, u16 lun, u8 =
+task_attr,
+>> 		   u32 exp_data_len, int data_direction)
+>> {
+>> +	struct vhost_scsi_virtqueue *svq =3D container_of(vq,
+>> +					struct vhost_scsi_virtqueue, =
+vq);
+>> 	struct vhost_scsi_cmd *cmd;
+>> 	struct vhost_scsi_nexus *tv_nexus;
+>> -	struct se_session *se_sess;
+>> 	struct scatterlist *sg, *prot_sg;
+>> 	struct page **pages;
+>> 	int tag, cpu;
+>> @@ -582,15 +587,14 @@ static void vhost_scsi_complete_cmd_work(struct =
+vhost_work *work)
+>> 		pr_err("Unable to locate active struct =
+vhost_scsi_nexus\n");
+>> 		return ERR_PTR(-EIO);
+>> 	}
+>> -	se_sess =3D tv_nexus->tvn_se_sess;
+>>=20
+>> -	tag =3D sbitmap_queue_get(&se_sess->sess_tag_pool, &cpu);
+>> +	tag =3D sbitmap_get(&svq->scsi_tags, 0, false);
+>> 	if (tag < 0) {
+>> 		pr_err("Unable to obtain tag for vhost_scsi_cmd\n");
+>> 		return ERR_PTR(-ENOMEM);
+>> 	}
+>=20
+>=20
+> After this change, cpu is uninitialized.
 
-It would be better if we can make it generic.
+I=E2=80=99ve fixed this.
 
-
->
-> 2. I can see the VHOST_VDPA_SET_VRING_ENABLE kernel code and the vhost_set_vring_enable qemu code, so I have an idea of how it should work for vhost scsi. However, I'm not sure the requirements for a generic VHOST_SET_VRING_ENABLE if that is what you meant. I could not find it in the spec either. Could you send me a pointer to the section?
-
-
-In the spec, for PCI, it's the queue_enable for modern device.
-
-
->
-> For example, for vhost-net we seem to enable a device in the VHOST_NET_SET_BACKEND ioctl, so I'm not sure what behavior should be or needs to be implemented for net and vsock.
-
-
-Yes, but VHOST_NET_SET_BACKEND is for the whole device not a specific 
-virtqueue.
-
-
-Thanks
-
-
->
-
+We don=E2=80=99t use the cmd=E2=80=99s map_cpu field anymore, so I have =
+deleted it and the cpu var above.=
