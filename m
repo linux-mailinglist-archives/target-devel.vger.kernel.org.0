@@ -2,118 +2,444 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE50C2760CE
-	for <lists+target-devel@lfdr.de>; Wed, 23 Sep 2020 21:14:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E3912768D1
+	for <lists+target-devel@lfdr.de>; Thu, 24 Sep 2020 08:22:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726419AbgIWTO7 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 23 Sep 2020 15:14:59 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:46916 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726199AbgIWTO7 (ORCPT
+        id S1726844AbgIXGWm (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 24 Sep 2020 02:22:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:32092 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726806AbgIXGWl (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 23 Sep 2020 15:14:59 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08NJ5Z7B050262;
-        Wed, 23 Sep 2020 19:14:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=FOhm5BDhhxeDYqPw6WM2h2xUFnH+2vEGRQOEp8Grrlw=;
- b=HxKCEOo+C6yh45LP7xXftAjGnii+qKm00aQ1UtStYU3GbCTHmA/2C9Bj75JhoCpNqUUU
- UUimTEHHyI0cXku6n/X7M+uIDVDAPsG1XO5dWUncsHqVNFoSnmtoawqM9BHl/4Yf0vAw
- uEnn9HhsJK7wiUPG0rBcj8l1Na8PEYgytd2AyWUYL8vXk/hGHHVHRV1ximhz/MO9EVrb
- F5yFkPg/v+qgFm97jEZUAK7UAQOaw3ocuHIhWfDGyN0BztFUJc7xfTCVOWallh0ly3xh
- gPjO2HsVo6JUp/8HKHpp+ijmjpU/9Q3emlDSLqdRW9zcKt/xHfcP3In6n6UKmcUY+j/p HQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 33q5rgjpy4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 23 Sep 2020 19:14:54 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08NJ6Qi1185797;
-        Wed, 23 Sep 2020 19:12:54 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 33nurv4a9n-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 23 Sep 2020 19:12:53 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08NJCqNs014956;
-        Wed, 23 Sep 2020 19:12:52 GMT
-Received: from [20.15.0.202] (/73.88.28.6)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 23 Sep 2020 12:12:52 -0700
-Subject: Re: [PATCH 2/8] vhost: add helper to check if a vq has been setup
-To:     Jason Wang <jasowang@redhat.com>, martin.petersen@oracle.com,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        mst@redhat.com, pbonzini@redhat.com, stefanha@redhat.com,
+        Thu, 24 Sep 2020 02:22:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1600928559;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=gEcu4iBOxnLTbz9gqtT1ua1Oy+okXu52tVH1BUCGzcg=;
+        b=cgrjDpQZOjCRq2+1zcwAGp7aXQjl1C1UoDLNjy4LcpopAuloL0ETdqbmS6D0/tCmH1/4Nh
+        1H7XTPk7OVaAFtbPNRDdHsWN7KNxbFpQNbUwrKj9MX4ycvv7hS0V1UyBqU8n5mHr4oSEHo
+        FakUlbEOEMEJ6JxmXlP2GdRYOQBf55k=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-344-YFNrFQ9ENKeLe8kD7wOW-A-1; Thu, 24 Sep 2020 02:22:37 -0400
+X-MC-Unique: YFNrFQ9ENKeLe8kD7wOW-A-1
+Received: by mail-wr1-f70.google.com with SMTP id d13so795781wrr.23
+        for <target-devel@vger.kernel.org>; Wed, 23 Sep 2020 23:22:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=gEcu4iBOxnLTbz9gqtT1ua1Oy+okXu52tVH1BUCGzcg=;
+        b=WLf+Fvoy1+sJxavCUWsWa119g+KoNNXdCkCO6p4gKIVI/VFeB/zm2iPStM1PHSqn+0
+         oRUas269Lp6Jw2+bx1VJoE69U4wezwkASEO31mbL66hrLictzlczJXu1T9TLtwB6G1c8
+         3Zd/lWBNQQJ6kQWUVlnJJO3QL9N156uaIreZnAcskFQv0xrEQxgqKGbkf54N6mOs1MQ5
+         tiQppQ0JeTGxU579wkZ2kVlFkIHp80wHZ3Tw+jWcye6JlCqzcrvhVQxaurnHrSWTOlsM
+         Y+qaHYWzKh+LMU0Wy18CRusYq3bcFOEPhfJyJ7uInD7ugNsqeKhp19HDPDnjVP4bF/ti
+         VlRQ==
+X-Gm-Message-State: AOAM531hqCn4+Uv5agENVlf+4igeHYfcLOimLit6+3qwp4LiwUNf7Yij
+        YHM/YUkmRDW/se80qyL7flyNPhywr530zEwNZGvN65JBaT0cbr3QEzWxhkTMFW/CF8aM7N3bIqJ
+        wqki632PnqJuncd0y1FKHUfZA
+X-Received: by 2002:a7b:cc09:: with SMTP id f9mr2920495wmh.93.1600928556074;
+        Wed, 23 Sep 2020 23:22:36 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzoh0ZKLW0e65cydYc7n6/Gq1PKp4GnxH32SyCB3hl8vT0YCuziH4KYTidiSZ4HMuurvOlvqg==
+X-Received: by 2002:a7b:cc09:: with SMTP id f9mr2920472wmh.93.1600928555769;
+        Wed, 23 Sep 2020 23:22:35 -0700 (PDT)
+Received: from redhat.com (bzq-79-179-71-128.red.bezeqint.net. [79.179.71.128])
+        by smtp.gmail.com with ESMTPSA id r21sm2565717wrc.70.2020.09.23.23.22.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2020 23:22:34 -0700 (PDT)
+Date:   Thu, 24 Sep 2020 02:22:32 -0400
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     Mike Christie <michael.christie@oracle.com>
+Cc:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, jasowang@redhat.com,
+        pbonzini@redhat.com, stefanha@redhat.com,
         virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH 3/8] vhost scsi: alloc cmds per vq instead of session
+Message-ID: <20200924022107-mutt-send-email-mst@kernel.org>
 References: <1600712588-9514-1-git-send-email-michael.christie@oracle.com>
- <1600712588-9514-3-git-send-email-michael.christie@oracle.com>
- <e2d16333-d5ed-4c5c-58b3-7b5d0a9da47a@redhat.com>
-From:   Mike Christie <michael.christie@oracle.com>
-Message-ID: <63094bae-1f26-c21e-9b3c-3a6aa99a7e24@oracle.com>
-Date:   Wed, 23 Sep 2020 14:12:51 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <1600712588-9514-4-git-send-email-michael.christie@oracle.com>
 MIME-Version: 1.0
-In-Reply-To: <e2d16333-d5ed-4c5c-58b3-7b5d0a9da47a@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9753 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
- phishscore=0 mlxlogscore=999 bulkscore=0 mlxscore=0 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009230141
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9753 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 impostorscore=0
- clxscore=1015 suspectscore=0 phishscore=0 malwarescore=0
- priorityscore=1501 mlxlogscore=999 adultscore=0 bulkscore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009230141
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1600712588-9514-4-git-send-email-michael.christie@oracle.com>
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 9/21/20 9:02 PM, Jason Wang wrote:
+On Mon, Sep 21, 2020 at 01:23:03PM -0500, Mike Christie wrote:
+> We currently are limited to 256 cmds per session. This leads to problems
+> where if the user has increased virtqueue_size to more than 2 or
+> cmd_per_lun to more than 256 vhost_scsi_get_tag can fail and the guest
+> will get IO errors.
 > 
-> On 2020/9/22 上午2:23, Mike Christie wrote:
->> This adds a helper check if a vq has been setup. The next patches
->> will use this when we move the vhost scsi cmd preallocation from per
->> session to per vq. In the per vq case, we only want to allocate cmds
->> for vqs that have actually been setup and not for all the possible
->> vqs.
->>
->> Signed-off-by: Mike Christie <michael.christie@oracle.com>
->> ---
->>   drivers/vhost/vhost.c | 9 +++++++++
->>   drivers/vhost/vhost.h | 1 +
->>   2 files changed, 10 insertions(+)
->>
->> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
->> index b45519c..5dd9eb1 100644
->> --- a/drivers/vhost/vhost.c
->> +++ b/drivers/vhost/vhost.c
->> @@ -305,6 +305,15 @@ static void vhost_vring_call_reset(struct vhost_vring_call *call_ctx)
->>       spin_lock_init(&call_ctx->ctx_lock);
->>   }
->>   +bool vhost_vq_is_setup(struct vhost_virtqueue *vq)
->> +{
->> +    if (vq->avail && vq->desc && vq->used && vhost_vq_access_ok(vq))
->> +        return true;
->> +    else
->> +        return false;
->> +}
->> +EXPORT_SYMBOL_GPL(vhost_vq_is_setup);
+> This patch moves the cmd allocation to per vq so we can easily match
+> whatever the user has specified for num_queues and
+> virtqueue_size/cmd_per_lun. It also makes it easier to control how much
+> memory we preallocate. For cases, where perf is not as important and
+> we can use the current defaults (1 vq and 128 cmds per vq) memory use
+> from preallocate cmds is cut in half. For cases, where we are willing
+> to use more memory for higher perf, cmd mem use will now increase as
+> the num queues and queue depth increases.
 > 
+> Signed-off-by: Mike Christie <michael.christie@oracle.com>
+> ---
+>  drivers/vhost/scsi.c | 204 ++++++++++++++++++++++++++++++++-------------------
+>  1 file changed, 127 insertions(+), 77 deletions(-)
 > 
-> This is probably ok but I wonder maybe we should have something like what vDPA did (VHOST_SET_VRING_ENABLE) to match virtio 1.0 device definition.
+> diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+> index b22adf0..13311b8 100644
+> --- a/drivers/vhost/scsi.c
+> +++ b/drivers/vhost/scsi.c
+> @@ -52,7 +52,6 @@
+>  #define VHOST_SCSI_VERSION  "v0.1"
+>  #define VHOST_SCSI_NAMELEN 256
+>  #define VHOST_SCSI_MAX_CDB_SIZE 32
+> -#define VHOST_SCSI_DEFAULT_TAGS 256
+>  #define VHOST_SCSI_PREALLOC_SGLS 2048
+>  #define VHOST_SCSI_PREALLOC_UPAGES 2048
+>  #define VHOST_SCSI_PREALLOC_PROT_SGLS 2048
+> @@ -189,6 +188,9 @@ struct vhost_scsi_virtqueue {
+>  	 * Writers must also take dev mutex and flush under it.
+>  	 */
+>  	int inflight_idx;
+> +	struct vhost_scsi_cmd *scsi_cmds;
+> +	struct sbitmap scsi_tags;
+> +	int max_cmds;
+>  };
+>  
+>  struct vhost_scsi {
+> @@ -324,7 +326,9 @@ static void vhost_scsi_release_cmd(struct se_cmd *se_cmd)
+>  {
+>  	struct vhost_scsi_cmd *tv_cmd = container_of(se_cmd,
+>  				struct vhost_scsi_cmd, tvc_se_cmd);
+> -	struct se_session *se_sess = tv_cmd->tvc_nexus->tvn_se_sess;
+> +	struct vhost_scsi_virtqueue *svq = container_of(tv_cmd->tvc_vq,
+> +				struct vhost_scsi_virtqueue, vq);
+> +	struct vhost_scsi_inflight *inflight = tv_cmd->inflight;
+>  	int i;
+>  
+>  	if (tv_cmd->tvc_sgl_count) {
+> @@ -336,8 +340,8 @@ static void vhost_scsi_release_cmd(struct se_cmd *se_cmd)
+>  			put_page(sg_page(&tv_cmd->tvc_prot_sgl[i]));
+>  	}
+>  
+> -	vhost_scsi_put_inflight(tv_cmd->inflight);
+> -	target_free_tag(se_sess, se_cmd);
+> +	sbitmap_clear_bit(&svq->scsi_tags, se_cmd->map_tag);
+> +	vhost_scsi_put_inflight(inflight);
+>  }
+>  
+>  static u32 vhost_scsi_sess_get_index(struct se_session *se_sess)
+> @@ -566,13 +570,14 @@ static void vhost_scsi_complete_cmd_work(struct vhost_work *work)
+>  }
+>  
+>  static struct vhost_scsi_cmd *
+> -vhost_scsi_get_tag(struct vhost_virtqueue *vq, struct vhost_scsi_tpg *tpg,
+> +vhost_scsi_get_cmd(struct vhost_virtqueue *vq, struct vhost_scsi_tpg *tpg,
+>  		   unsigned char *cdb, u64 scsi_tag, u16 lun, u8 task_attr,
+>  		   u32 exp_data_len, int data_direction)
+>  {
+> +	struct vhost_scsi_virtqueue *svq = container_of(vq,
+> +					struct vhost_scsi_virtqueue, vq);
+>  	struct vhost_scsi_cmd *cmd;
+>  	struct vhost_scsi_nexus *tv_nexus;
+> -	struct se_session *se_sess;
+>  	struct scatterlist *sg, *prot_sg;
+>  	struct page **pages;
+>  	int tag, cpu;
+> @@ -582,15 +587,14 @@ static void vhost_scsi_complete_cmd_work(struct vhost_work *work)
+>  		pr_err("Unable to locate active struct vhost_scsi_nexus\n");
+>  		return ERR_PTR(-EIO);
+>  	}
+> -	se_sess = tv_nexus->tvn_se_sess;
+>  
+> -	tag = sbitmap_queue_get(&se_sess->sess_tag_pool, &cpu);
+> +	tag = sbitmap_get(&svq->scsi_tags, 0, false);
+>  	if (tag < 0) {
+>  		pr_err("Unable to obtain tag for vhost_scsi_cmd\n");
+>  		return ERR_PTR(-ENOMEM);
+>  	}
 
-It looks like I can make that work. Some questions:
 
-1. Do you mean a generic VHOST_SET_VRING_ENABLE or a SCSI specific one VHOST_SCSI_SET_VRING_ENABLE?
+After this change, cpu is uninitialized.
 
-2. I can see the VHOST_VDPA_SET_VRING_ENABLE kernel code and the vhost_set_vring_enable qemu code, so I have an idea of how it should work for vhost scsi. However, I'm not sure the requirements for a generic VHOST_SET_VRING_ENABLE if that is what you meant. I could not find it in the spec either. Could you send me a pointer to the section?
 
-For example, for vhost-net we seem to enable a device in the VHOST_NET_SET_BACKEND ioctl, so I'm not sure what behavior should be or needs to be implemented for net and vsock.
-
+>  
+> -	cmd = &((struct vhost_scsi_cmd *)se_sess->sess_cmd_map)[tag];
+> +	cmd = &svq->scsi_cmds[tag];
+>  	sg = cmd->tvc_sgl;
+>  	prot_sg = cmd->tvc_prot_sgl;
+>  	pages = cmd->tvc_upages;
+> @@ -1065,11 +1069,11 @@ static void vhost_scsi_submission_work(struct work_struct *work)
+>  				scsi_command_size(cdb), VHOST_SCSI_MAX_CDB_SIZE);
+>  				goto err;
+>  		}
+> -		cmd = vhost_scsi_get_tag(vq, tpg, cdb, tag, lun, task_attr,
+> +		cmd = vhost_scsi_get_cmd(vq, tpg, cdb, tag, lun, task_attr,
+>  					 exp_data_len + prot_bytes,
+>  					 data_direction);
+>  		if (IS_ERR(cmd)) {
+> -			vq_err(vq, "vhost_scsi_get_tag failed %ld\n",
+> +			vq_err(vq, "vhost_scsi_get_cmd failed %ld\n",
+>  			       PTR_ERR(cmd));
+>  			goto err;
+>  		}
+> @@ -1373,6 +1377,83 @@ static void vhost_scsi_flush(struct vhost_scsi *vs)
+>  		wait_for_completion(&old_inflight[i]->comp);
+>  }
+>  
+> +static void vhost_scsi_destroy_vq_cmds(struct vhost_virtqueue *vq)
+> +{
+> +	struct vhost_scsi_virtqueue *svq = container_of(vq,
+> +					struct vhost_scsi_virtqueue, vq);
+> +	struct vhost_scsi_cmd *tv_cmd;
+> +	unsigned int i;
+> +
+> +	if (!svq->scsi_cmds)
+> +		return;
+> +
+> +	for (i = 0; i < svq->max_cmds; i++) {
+> +		tv_cmd = &svq->scsi_cmds[i];
+> +
+> +		kfree(tv_cmd->tvc_sgl);
+> +		kfree(tv_cmd->tvc_prot_sgl);
+> +		kfree(tv_cmd->tvc_upages);
+> +	}
+> +
+> +	sbitmap_free(&svq->scsi_tags);
+> +	kfree(svq->scsi_cmds);
+> +	svq->scsi_cmds = NULL;
+> +}
+> +
+> +static int vhost_scsi_setup_vq_cmds(struct vhost_virtqueue *vq, int max_cmds)
+> +{
+> +	struct vhost_scsi_virtqueue *svq = container_of(vq,
+> +					struct vhost_scsi_virtqueue, vq);
+> +	struct vhost_scsi_cmd *tv_cmd;
+> +	unsigned int i;
+> +
+> +	if (svq->scsi_cmds)
+> +		return 0;
+> +
+> +	if (sbitmap_init_node(&svq->scsi_tags, max_cmds, -1, GFP_KERNEL,
+> +			      NUMA_NO_NODE))
+> +		return -ENOMEM;
+> +	svq->max_cmds = max_cmds;
+> +
+> +	svq->scsi_cmds = kcalloc(max_cmds, sizeof(*tv_cmd), GFP_KERNEL);
+> +	if (!svq->scsi_cmds) {
+> +		sbitmap_free(&svq->scsi_tags);
+> +		return -ENOMEM;
+> +	}
+> +
+> +	for (i = 0; i < max_cmds; i++) {
+> +		tv_cmd = &svq->scsi_cmds[i];
+> +
+> +		tv_cmd->tvc_sgl = kcalloc(VHOST_SCSI_PREALLOC_SGLS,
+> +					  sizeof(struct scatterlist),
+> +					  GFP_KERNEL);
+> +		if (!tv_cmd->tvc_sgl) {
+> +			pr_err("Unable to allocate tv_cmd->tvc_sgl\n");
+> +			goto out;
+> +		}
+> +
+> +		tv_cmd->tvc_upages = kcalloc(VHOST_SCSI_PREALLOC_UPAGES,
+> +					     sizeof(struct page *),
+> +					     GFP_KERNEL);
+> +		if (!tv_cmd->tvc_upages) {
+> +			pr_err("Unable to allocate tv_cmd->tvc_upages\n");
+> +			goto out;
+> +		}
+> +
+> +		tv_cmd->tvc_prot_sgl = kcalloc(VHOST_SCSI_PREALLOC_PROT_SGLS,
+> +					       sizeof(struct scatterlist),
+> +					       GFP_KERNEL);
+> +		if (!tv_cmd->tvc_prot_sgl) {
+> +			pr_err("Unable to allocate tv_cmd->tvc_prot_sgl\n");
+> +			goto out;
+> +		}
+> +	}
+> +	return 0;
+> +out:
+> +	vhost_scsi_destroy_vq_cmds(vq);
+> +	return -ENOMEM;
+> +}
+> +
+>  /*
+>   * Called from vhost_scsi_ioctl() context to walk the list of available
+>   * vhost_scsi_tpg with an active struct vhost_scsi_nexus
+> @@ -1427,10 +1508,9 @@ static void vhost_scsi_flush(struct vhost_scsi *vs)
+>  
+>  		if (!strcmp(tv_tport->tport_name, t->vhost_wwpn)) {
+>  			if (vs->vs_tpg && vs->vs_tpg[tpg->tport_tpgt]) {
+> -				kfree(vs_tpg);
+>  				mutex_unlock(&tpg->tv_tpg_mutex);
+>  				ret = -EEXIST;
+> -				goto out;
+> +				goto undepend;
+>  			}
+>  			/*
+>  			 * In order to ensure individual vhost-scsi configfs
+> @@ -1442,9 +1522,8 @@ static void vhost_scsi_flush(struct vhost_scsi *vs)
+>  			ret = target_depend_item(&se_tpg->tpg_group.cg_item);
+>  			if (ret) {
+>  				pr_warn("target_depend_item() failed: %d\n", ret);
+> -				kfree(vs_tpg);
+>  				mutex_unlock(&tpg->tv_tpg_mutex);
+> -				goto out;
+> +				goto undepend;
+>  			}
+>  			tpg->tv_tpg_vhost_count++;
+>  			tpg->vhost_scsi = vs;
+> @@ -1457,6 +1536,16 @@ static void vhost_scsi_flush(struct vhost_scsi *vs)
+>  	if (match) {
+>  		memcpy(vs->vs_vhost_wwpn, t->vhost_wwpn,
+>  		       sizeof(vs->vs_vhost_wwpn));
+> +
+> +		for (i = VHOST_SCSI_VQ_IO; i < VHOST_SCSI_MAX_VQ; i++) {
+> +			vq = &vs->vqs[i].vq;
+> +			if (!vhost_vq_is_setup(vq))
+> +				continue;
+> +
+> +			if (vhost_scsi_setup_vq_cmds(vq, vq->num))
+> +				goto destroy_vq_cmds;
+> +		}
+> +
+>  		for (i = 0; i < VHOST_SCSI_MAX_VQ; i++) {
+>  			vq = &vs->vqs[i].vq;
+>  			mutex_lock(&vq->mutex);
+> @@ -1476,7 +1565,22 @@ static void vhost_scsi_flush(struct vhost_scsi *vs)
+>  	vhost_scsi_flush(vs);
+>  	kfree(vs->vs_tpg);
+>  	vs->vs_tpg = vs_tpg;
+> +	goto out;
+>  
+> +destroy_vq_cmds:
+> +	for (i--; i >= VHOST_SCSI_VQ_IO; i--) {
+> +		if (!vhost_vq_get_backend(&vs->vqs[i].vq))
+> +			vhost_scsi_destroy_vq_cmds(&vs->vqs[i].vq);
+> +	}
+> +undepend:
+> +	for (i = 0; i < VHOST_SCSI_MAX_TARGET; i++) {
+> +		tpg = vs_tpg[i];
+> +		if (tpg) {
+> +			tpg->tv_tpg_vhost_count--;
+> +			target_undepend_item(&tpg->se_tpg.tpg_group.cg_item);
+> +		}
+> +	}
+> +	kfree(vs_tpg);
+>  out:
+>  	mutex_unlock(&vs->dev.mutex);
+>  	mutex_unlock(&vhost_scsi_mutex);
+> @@ -1549,6 +1653,12 @@ static void vhost_scsi_flush(struct vhost_scsi *vs)
+>  			mutex_lock(&vq->mutex);
+>  			vhost_vq_set_backend(vq, NULL);
+>  			mutex_unlock(&vq->mutex);
+> +			/*
+> +			 * Make sure cmds are not running before tearing them
+> +			 * down.
+> +			 */
+> +			vhost_scsi_flush(vs);
+> +			vhost_scsi_destroy_vq_cmds(vq);
+>  		}
+>  	}
+>  	/*
+> @@ -1842,23 +1952,6 @@ static void vhost_scsi_port_unlink(struct se_portal_group *se_tpg,
+>  	mutex_unlock(&vhost_scsi_mutex);
+>  }
+>  
+> -static void vhost_scsi_free_cmd_map_res(struct se_session *se_sess)
+> -{
+> -	struct vhost_scsi_cmd *tv_cmd;
+> -	unsigned int i;
+> -
+> -	if (!se_sess->sess_cmd_map)
+> -		return;
+> -
+> -	for (i = 0; i < VHOST_SCSI_DEFAULT_TAGS; i++) {
+> -		tv_cmd = &((struct vhost_scsi_cmd *)se_sess->sess_cmd_map)[i];
+> -
+> -		kfree(tv_cmd->tvc_sgl);
+> -		kfree(tv_cmd->tvc_prot_sgl);
+> -		kfree(tv_cmd->tvc_upages);
+> -	}
+> -}
+> -
+>  static ssize_t vhost_scsi_tpg_attrib_fabric_prot_type_store(
+>  		struct config_item *item, const char *page, size_t count)
+>  {
+> @@ -1898,45 +1991,6 @@ static ssize_t vhost_scsi_tpg_attrib_fabric_prot_type_show(
+>  	NULL,
+>  };
+>  
+> -static int vhost_scsi_nexus_cb(struct se_portal_group *se_tpg,
+> -			       struct se_session *se_sess, void *p)
+> -{
+> -	struct vhost_scsi_cmd *tv_cmd;
+> -	unsigned int i;
+> -
+> -	for (i = 0; i < VHOST_SCSI_DEFAULT_TAGS; i++) {
+> -		tv_cmd = &((struct vhost_scsi_cmd *)se_sess->sess_cmd_map)[i];
+> -
+> -		tv_cmd->tvc_sgl = kcalloc(VHOST_SCSI_PREALLOC_SGLS,
+> -					  sizeof(struct scatterlist),
+> -					  GFP_KERNEL);
+> -		if (!tv_cmd->tvc_sgl) {
+> -			pr_err("Unable to allocate tv_cmd->tvc_sgl\n");
+> -			goto out;
+> -		}
+> -
+> -		tv_cmd->tvc_upages = kcalloc(VHOST_SCSI_PREALLOC_UPAGES,
+> -					     sizeof(struct page *),
+> -					     GFP_KERNEL);
+> -		if (!tv_cmd->tvc_upages) {
+> -			pr_err("Unable to allocate tv_cmd->tvc_upages\n");
+> -			goto out;
+> -		}
+> -
+> -		tv_cmd->tvc_prot_sgl = kcalloc(VHOST_SCSI_PREALLOC_PROT_SGLS,
+> -					       sizeof(struct scatterlist),
+> -					       GFP_KERNEL);
+> -		if (!tv_cmd->tvc_prot_sgl) {
+> -			pr_err("Unable to allocate tv_cmd->tvc_prot_sgl\n");
+> -			goto out;
+> -		}
+> -	}
+> -	return 0;
+> -out:
+> -	vhost_scsi_free_cmd_map_res(se_sess);
+> -	return -ENOMEM;
+> -}
+> -
+>  static int vhost_scsi_make_nexus(struct vhost_scsi_tpg *tpg,
+>  				const char *name)
+>  {
+> @@ -1960,12 +2014,9 @@ static int vhost_scsi_make_nexus(struct vhost_scsi_tpg *tpg,
+>  	 * struct se_node_acl for the vhost_scsi struct se_portal_group with
+>  	 * the SCSI Initiator port name of the passed configfs group 'name'.
+>  	 */
+> -	tv_nexus->tvn_se_sess = target_setup_session(&tpg->se_tpg,
+> -					VHOST_SCSI_DEFAULT_TAGS,
+> -					sizeof(struct vhost_scsi_cmd),
+> +	tv_nexus->tvn_se_sess = target_setup_session(&tpg->se_tpg, 0, 0,
+>  					TARGET_PROT_DIN_PASS | TARGET_PROT_DOUT_PASS,
+> -					(unsigned char *)name, tv_nexus,
+> -					vhost_scsi_nexus_cb);
+> +					(unsigned char *)name, tv_nexus, NULL);
+>  	if (IS_ERR(tv_nexus->tvn_se_sess)) {
+>  		mutex_unlock(&tpg->tv_tpg_mutex);
+>  		kfree(tv_nexus);
+> @@ -2015,7 +2066,6 @@ static int vhost_scsi_drop_nexus(struct vhost_scsi_tpg *tpg)
+>  		" %s Initiator Port: %s\n", vhost_scsi_dump_proto_id(tpg->tport),
+>  		tv_nexus->tvn_se_sess->se_node_acl->initiatorname);
+>  
+> -	vhost_scsi_free_cmd_map_res(se_sess);
+>  	/*
+>  	 * Release the SCSI I_T Nexus to the emulated vhost Target Port
+>  	 */
+> -- 
+> 1.8.3.1
 
