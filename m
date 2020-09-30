@@ -2,95 +2,45 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF9BA27DEFF
-	for <lists+target-devel@lfdr.de>; Wed, 30 Sep 2020 05:35:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5551E27E2DF
+	for <lists+target-devel@lfdr.de>; Wed, 30 Sep 2020 09:48:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729774AbgI3DfB (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 29 Sep 2020 23:35:01 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:41898 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726299AbgI3DfB (ORCPT
+        id S1725823AbgI3HsD (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 30 Sep 2020 03:48:03 -0400
+Received: from [110.74.151.213] ([110.74.151.213]:59415 "EHLO
+        mail.bless.gov.my" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725440AbgI3HsD (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 29 Sep 2020 23:35:01 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08U3P4hH178693;
-        Wed, 30 Sep 2020 03:34:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=XI1g9fYcldngXijmgxQ0vTHeCH0RD2obYMnKOd0J/nk=;
- b=IM5M06DMXK9VHKxTVohjJrIS1oJ00djtmAKFaWEF0x+StD0j+pjNX5xs6IVMCpUhrpB3
- MypxC4G1F6qPiTTVqvSA78/vTFPf/fUV9D9nT9IudFox+m5VP6dWdhesW4QHKeSmHC/M
- d9kv28LV0OQP4rhkIkO1vNlEyRYttPvTqIDETiKUPSvQH+tAf8nrQP8Jel23hbTItaSR
- w/F+4QeAyVfd2j+jwG8Wp/AwFWbAWYF+wCN3Jr3KEPcdodRTtxRbhJU/fpVwwAvAbIu6
- Z287yH2NZBqbiXN6RxGpY95L+GCPr+x4E0qzTdY1rSALuT8TaG4cwKphv2fqCFbHa8Jp 6g== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 33swkkx9pq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 30 Sep 2020 03:34:57 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08U3OklE004028;
-        Wed, 30 Sep 2020 03:34:56 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 33tfdt3kyb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 30 Sep 2020 03:34:56 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08U3YrsL030420;
-        Wed, 30 Sep 2020 03:34:53 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 29 Sep 2020 20:34:53 -0700
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     linux-scsi@vger.kernel.org,
-        Bodo Stroesser <bstroesser@ts.fujitsu.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        target-devel@vger.kernel.org
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>
-Subject: Re: [PATCH 0/3] target: scsi: tcmu: code rework and speed up of read data handling
-Date:   Tue, 29 Sep 2020 23:34:46 -0400
-Message-Id: <160143685412.27701.100112187449074876.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200910155041.17654-1-bstroesser@ts.fujitsu.com>
-References: <20200910155041.17654-1-bstroesser@ts.fujitsu.com>
+        Wed, 30 Sep 2020 03:48:03 -0400
+Received: from User (unknown [172.20.84.1])
+        by mail.bless.gov.my (Postfix) with SMTP id 862C143EFC61;
+        Wed, 30 Sep 2020 08:20:56 +0800 (MYT)
+Reply-To: <iinfo446@gmail.com>
+From:   "Mrs. Susan Carter" <test@mail.bless.gov.my>
+Subject: Good day,    
+Date:   Wed, 30 Sep 2020 01:21:19 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9759 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
- adultscore=0 malwarescore=0 spamscore=0 mlxscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009300023
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9759 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 phishscore=0
- suspectscore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501
- impostorscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009300023
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20200930002056.862C143EFC61@mail.bless.gov.my>
+To:     undisclosed-recipients:;
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Thu, 10 Sep 2020 17:50:38 +0200, Bodo Stroesser wrote:
+Good day,
 
-> This small series is made on top of Martin's 5.10/scsi-queue branch.
-> 
-> The patches simplify some code, splits off new helper functions
-> or implement a cleaner code sequence to prevent double work.
-> The 3rd patch speeds up buffer preparation for SCSI commands with
-> long read data.
-> The series is also base for cleaned up version v3 of my patch
->   scsi: target: tcmu: add compat mode for 32bit userspace on 64bit kernel
-> 
-> [...]
+My name are Mrs. Susan Carter an America but a United Kingdom Citizen, I???m 57 years old, widow, married to late Eng Martins Carter who is a British, who until his death worked with Dutch Filtration for Twenty-Six years before he died in the year 2015 after a brief illness that lasted only five days.
 
-Applied to 5.10/scsi-queue, thanks!
+When my late husband was alive he deposited the sum of US$50 Million in bank USA through his Financial Lawyer in the United State of America and we all agreed as a couple to donate all of that to charity. Following my health (Lung Cancer), my Doctor told me that I may not live longer than required due to my health condition.
 
-[1/3] scsi: target: tcmu: Join tcmu_cmd_get_data_length() and tcmu_cmd_get_block_cnt()
-      https://git.kernel.org/mkp/scsi/c/52ef2743f16c
-[2/3] scsi: target: tcmu: Optimize queue_cmd_ring()
-      https://git.kernel.org/mkp/scsi/c/7e98905e9d0d
-[3/3] scsi: target: tcmu: Optimize scatter_data_area()
-      https://git.kernel.org/mkp/scsi/c/3c9a7c58ea3d
+Looking forward to seeing someone who can use the money for charitable work.
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Best Regards
+Yours sincerely
+Mrs. Susan Carter
