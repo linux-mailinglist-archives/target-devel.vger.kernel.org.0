@@ -2,155 +2,84 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A53327CE98
-	for <lists+target-devel@lfdr.de>; Tue, 29 Sep 2020 15:09:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BFF527DEFD
+	for <lists+target-devel@lfdr.de>; Wed, 30 Sep 2020 05:34:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728469AbgI2NJc (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 29 Sep 2020 09:09:32 -0400
-Received: from mta-02.yadro.com ([89.207.88.252]:55230 "EHLO mta-01.yadro.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725776AbgI2NJc (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Tue, 29 Sep 2020 09:09:32 -0400
-X-Greylist: delayed 568 seconds by postgrey-1.27 at vger.kernel.org; Tue, 29 Sep 2020 09:09:30 EDT
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 5EE024130F;
-        Tue, 29 Sep 2020 13:00:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        content-type:content-type:content-transfer-encoding:mime-version
-        :x-mailer:message-id:date:date:subject:subject:from:from
-        :received:received:received; s=mta-01; t=1601384400; x=
-        1603198801; bh=7xJTnSO91QLvsgqMIur4w57ZOU8fr4C60zZVB/8GBKg=; b=V
-        xHBV+r7n5Fd8rjYZbMn5gi+PryP4ynVuQSF6e4I4bwRM9as78hSOycC38Dlekt7B
-        DWardyc4/WVA5yQBylLxpwy6hjeSmrrAy9px0lxFeAZRJiF7tzQDkVIrcAKjpGz0
-        +j53bAHq8BrTAbHu86/dP2yJcm4ndryKMjE+BgJh9M=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id j2wPOe6E6rYS; Tue, 29 Sep 2020 16:00:00 +0300 (MSK)
-Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com [172.17.10.102])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id 2CDB9412FD;
-        Tue, 29 Sep 2020 16:00:00 +0300 (MSK)
-Received: from localhost (172.17.204.212) by T-EXCH-02.corp.yadro.com
- (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Tue, 29
- Sep 2020 16:00:00 +0300
-From:   Roman Bolshakov <r.bolshakov@yadro.com>
-To:     <target-devel@vger.kernel.org>
-CC:     <linux-scsi@vger.kernel.org>, <linux@yadro.com>,
-        Roman Bolshakov <r.bolshakov@yadro.com>
-Subject: [PATCH] scsi: target: core: Add CONTROL field for trace events
-Date:   Tue, 29 Sep 2020 15:59:57 +0300
-Message-ID: <20200929125957.83069-1-r.bolshakov@yadro.com>
+        id S1727899AbgI3DeD (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 29 Sep 2020 23:34:03 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:41132 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726299AbgI3DeD (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Tue, 29 Sep 2020 23:34:03 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08U3Q7PY125054;
+        Wed, 30 Sep 2020 03:34:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=4cVhTdG3zorw6QjJt5z3I67vupn2zO/nb+w7JYhBzXg=;
+ b=W9iYzWASkWTjuYAZ0aZjawAkk3jXhgNFNV/yeB5Sd8spCOV+L9F965LkMGtUqkoFPZeG
+ J+BLuk0DvUl5Cz3CbhFVwqncjGZx2El2N4pER+Z3L0UNjXXoyVMFLNZV4cB4TY+WDbvT
+ 8Q8sYtqW8dJ3y42WNED62SnZ6T+TU6pgxcJedTEN9czQZjsTYqXODxQuEPgqMieXlAzb
+ aFpNEIs1T32b9rLDg0xXwVw30Ch+ol5hrqWy7/cm8XQbfAfghV/9UsdKauA4rUWDdgfN
+ PGTZl7EhY3l7iR7RodpwmP53/czyjL02UUV12lwz3ten7Af71+5htDjZxAq4LUs1B6K1 tQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 33sx9n675k-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 30 Sep 2020 03:34:01 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08U3QV7C064809;
+        Wed, 30 Sep 2020 03:34:00 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 33tfhygkg6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 30 Sep 2020 03:34:00 +0000
+Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08U3XxQQ030091;
+        Wed, 30 Sep 2020 03:33:59 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 29 Sep 2020 20:33:59 -0700
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        Sudhakar Panneerselvam <sudhakar.panneerselvam@oracle.com>,
+        michael.christie@oracle.com
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        ssudhakarp@gmail.com
+Subject: Re: [PATCH] scsi: target: Fix lun lookup for TARGET_SCF_LOOKUP_LUN_FROM_TAG case.
+Date:   Tue, 29 Sep 2020 23:33:58 -0400
+Message-Id: <160143682620.27626.3126650527213630749.b4-ty@oracle.com>
 X-Mailer: git-send-email 2.28.0
+In-Reply-To: <1600300471-26135-1-git-send-email-sudhakar.panneerselvam@oracle.com>
+References: <1600300471-26135-1-git-send-email-sudhakar.panneerselvam@oracle.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [172.17.204.212]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-02.corp.yadro.com (172.17.10.102)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9759 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=908 bulkscore=0
+ phishscore=0 malwarescore=0 adultscore=0 suspectscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009300023
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9759 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=934 suspectscore=0
+ phishscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015
+ spamscore=0 impostorscore=0 malwarescore=0 bulkscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009300023
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-trace-cmd report doesn't show events from target subsystem because
-scsi_command_size() leaks through event format string:
+On Wed, 16 Sep 2020 23:54:31 +0000, Sudhakar Panneerselvam wrote:
 
-  [target:target_sequencer_start] function scsi_command_size not defined
-  [target:target_cmd_complete] function scsi_command_size not defined
+> transport_lookup_tmr_lun() uses "orig_fe_lun" member of struct se_cmd
+> for the lookup. Hence, update this field directly for the
+> TARGET_SCF_LOOKUP_LUN_FROM_TAG case.
 
-Addition of scsi_command_size() to plugin_scsi.c in trace-cmd doesn't
-help because an expression is used inside TP_printk(). trace-cmd event
-parser doesn't understand minus sign inside [ ]:
+Applied to 5.9/scsi-fixes, thanks!
 
-  Error: expected ']' but read '-'
+[1/1] scsi: target: Fix lun lookup for TARGET_SCF_LOOKUP_LUN_FROM_TAG case
+      https://git.kernel.org/mkp/scsi/c/149415586243
 
-Rather than duplicating kernel code in plugin_scsi.c, it's better to
-provide a dedicated field for CONTROL byte.
-
-Signed-off-by: Roman Bolshakov <r.bolshakov@yadro.com>
----
- include/scsi/scsi_common.h    |  7 +++++++
- include/trace/events/target.h | 12 ++++++------
- 2 files changed, 13 insertions(+), 6 deletions(-)
-
-diff --git a/include/scsi/scsi_common.h b/include/scsi/scsi_common.h
-index 731ac09ed231..5b567b43e1b1 100644
---- a/include/scsi/scsi_common.h
-+++ b/include/scsi/scsi_common.h
-@@ -25,6 +25,13 @@ scsi_command_size(const unsigned char *cmnd)
- 		scsi_varlen_cdb_length(cmnd) : COMMAND_SIZE(cmnd[0]);
- }
- 
-+static inline unsigned char
-+scsi_command_control(const unsigned char *cmnd)
-+{
-+	return (cmnd[0] == VARIABLE_LENGTH_CMD) ?
-+		cmnd[1] : cmnd[COMMAND_SIZE(cmnd[0]) - 1];
-+}
-+
- /* Returns a human-readable name for the device */
- extern const char *scsi_device_type(unsigned type);
- 
-diff --git a/include/trace/events/target.h b/include/trace/events/target.h
-index 77408edd29d2..67fad2677ed5 100644
---- a/include/trace/events/target.h
-+++ b/include/trace/events/target.h
-@@ -141,6 +141,7 @@ TRACE_EVENT(target_sequencer_start,
- 		__field( unsigned int,	opcode		)
- 		__field( unsigned int,	data_length	)
- 		__field( unsigned int,	task_attribute  )
-+		__field( unsigned char,	control		)
- 		__array( unsigned char,	cdb, TCM_MAX_COMMAND_SIZE	)
- 		__string( initiator,	cmd->se_sess->se_node_acl->initiatorname	)
- 	),
-@@ -151,6 +152,7 @@ TRACE_EVENT(target_sequencer_start,
- 		__entry->opcode		= cmd->t_task_cdb[0];
- 		__entry->data_length	= cmd->data_length;
- 		__entry->task_attribute	= cmd->sam_task_attr;
-+		__entry->control	= scsi_command_control(cmd->t_task_cdb);
- 		memcpy(__entry->cdb, cmd->t_task_cdb, TCM_MAX_COMMAND_SIZE);
- 		__assign_str(initiator, cmd->se_sess->se_node_acl->initiatorname);
- 	),
-@@ -160,9 +162,7 @@ TRACE_EVENT(target_sequencer_start,
- 		  __entry->tag, show_opcode_name(__entry->opcode),
- 		  __entry->data_length, __print_hex(__entry->cdb, 16),
- 		  show_task_attribute_name(__entry->task_attribute),
--		  scsi_command_size(__entry->cdb) <= 16 ?
--			__entry->cdb[scsi_command_size(__entry->cdb) - 1] :
--			__entry->cdb[1]
-+		  __entry->control
- 	)
- );
- 
-@@ -178,6 +178,7 @@ TRACE_EVENT(target_cmd_complete,
- 		__field( unsigned int,	opcode		)
- 		__field( unsigned int,	data_length	)
- 		__field( unsigned int,	task_attribute  )
-+		__field( unsigned char,	control		)
- 		__field( unsigned char,	scsi_status	)
- 		__field( unsigned char,	sense_length	)
- 		__array( unsigned char,	cdb, TCM_MAX_COMMAND_SIZE	)
-@@ -191,6 +192,7 @@ TRACE_EVENT(target_cmd_complete,
- 		__entry->opcode		= cmd->t_task_cdb[0];
- 		__entry->data_length	= cmd->data_length;
- 		__entry->task_attribute	= cmd->sam_task_attr;
-+		__entry->control	= scsi_command_control(cmd->t_task_cdb);
- 		__entry->scsi_status	= cmd->scsi_status;
- 		__entry->sense_length	= cmd->scsi_status == SAM_STAT_CHECK_CONDITION ?
- 			min(18, ((u8 *) cmd->sense_buffer)[SPC_ADD_SENSE_LEN_OFFSET] + 8) : 0;
-@@ -208,9 +210,7 @@ TRACE_EVENT(target_cmd_complete,
- 		  show_opcode_name(__entry->opcode),
- 		  __entry->data_length, __print_hex(__entry->cdb, 16),
- 		  show_task_attribute_name(__entry->task_attribute),
--		  scsi_command_size(__entry->cdb) <= 16 ?
--			__entry->cdb[scsi_command_size(__entry->cdb) - 1] :
--			__entry->cdb[1]
-+		  __entry->control
- 	)
- );
- 
 -- 
-2.28.0
-
+Martin K. Petersen	Oracle Linux Engineering
