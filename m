@@ -2,64 +2,80 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2351281BD5
-	for <lists+target-devel@lfdr.de>; Fri,  2 Oct 2020 21:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90E66281E89
+	for <lists+target-devel@lfdr.de>; Sat,  3 Oct 2020 00:41:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388591AbgJBTXY convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+target-devel@lfdr.de>); Fri, 2 Oct 2020 15:23:24 -0400
-Received: from mx.metalurgs.lv ([81.198.125.103]:65054 "EHLO mx.metalurgs.lv"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388589AbgJBTXY (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Fri, 2 Oct 2020 15:23:24 -0400
-X-Greylist: delayed 460 seconds by postgrey-1.27 at vger.kernel.org; Fri, 02 Oct 2020 15:23:23 EDT
-Received: from mx.metalurgs.lv (localhost [127.0.0.1])
-        by mx.metalurgs.lv (Postfix) with ESMTP id A36FC62730
-        for <target-devel@vger.kernel.org>; Fri,  2 Oct 2020 22:15:42 +0300 (EEST)
-Received: from kas30pipe.localhost (localhost [127.0.0.1])
-        by mx.metalurgs.lv (Postfix) with ESMTP id 885096210A
-        for <target-devel@vger.kernel.org>; Fri,  2 Oct 2020 22:15:42 +0300 (EEST)
-Received: by mx.metalurgs.lv (Postfix, from userid 1005)
-        id D041D62BB3; Fri,  2 Oct 2020 22:15:40 +0300 (EEST)
-Received: from [100.64.1.74] (unknown [190.15.125.50])
-        (Authenticated sender: admin)
-        by mx.metalurgs.lv (Postfix) with ESMTPA id 4C7F762732;
-        Fri,  2 Oct 2020 22:15:34 +0300 (EEST)
+        id S1725797AbgJBWlO (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 2 Oct 2020 18:41:14 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:60278 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725554AbgJBWlM (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Fri, 2 Oct 2020 18:41:12 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 092MdvKu070266;
+        Fri, 2 Oct 2020 22:41:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : mime-version :
+ content-type; s=corp-2020-01-29;
+ bh=Q4bKodpaOILL4ATFX/AB2Mj1wx/yrk+xtT2l9Dw6hFU=;
+ b=l9B5brpjEuEkeNVBoe0TMRsszW4YT2qe2zOeKXTMdUkykJ+x6b3mfT/rK2Csvb0ExGXC
+ jdLY7icNlEHXyXo9jq4BYbmZSmS82d8XyqvN8A470MnLnHwqvR2aQpp95T0RAen0VyKC
+ 67DR8lqOGNuns/OBw5GV1QevRlvB94UiJJg+kd9rAtwxoYxYPpwKnHWZhPY6GyIsCdWq
+ tkyVhciVH6buzDCofVlt1F0sgEuCxMl3B36o6kqWgzlwd4QZFl7SQ0DOqqyKc5qgV1/B
+ o0k/GaUyO9ySM3IR0LUHuv0YffJeYajLsZMAGiZEdb+8fCnv/Rz+XXGm+STyhyQXsyrb 2g== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2130.oracle.com with ESMTP id 33wupg45c9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 02 Oct 2020 22:41:10 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 092MebcQ141892;
+        Fri, 2 Oct 2020 22:41:10 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 33tfj3nqb8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 02 Oct 2020 22:41:09 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 092Mf9wt013589;
+        Fri, 2 Oct 2020 22:41:09 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 02 Oct 2020 15:41:09 -0700
+To:     Roman Bolshakov <r.bolshakov@yadro.com>
+Cc:     <target-devel@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
+        <linux@yadro.com>
+Subject: Re: [PATCH] scsi: target: core: Add CONTROL field for trace events
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq11rigfdza.fsf@ca-mkp.ca.oracle.com>
+References: <20200929125957.83069-1-r.bolshakov@yadro.com>
+Date:   Fri, 02 Oct 2020 18:41:06 -0400
+In-Reply-To: <20200929125957.83069-1-r.bolshakov@yadro.com> (Roman Bolshakov's
+        message of "Tue, 29 Sep 2020 15:59:57 +0300")
 MIME-Version: 1.0
-Content-Description: Mail message body
-To:     Recipients <financialcapability6@gmail.com>
-From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
-Date:   Fri, 02 Oct 2020 16:15:27 -0300
-Reply-To: binmurrah@gmail.com
-X-SpamTest-Envelope-From: financialcapability6@gmail.com
-X-SpamTest-Group-ID: 00000000
-X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
-X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
-X-SpamTest-Info: {DATE: unreal year}
-X-SpamTest-Method: none
-X-SpamTest-Rate: 55
-X-SpamTest-Status: Not detected
-X-SpamTest-Status-Extended: not_detected
-X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
-Message-ID: <20201002191540.D041D62BB3@mx.metalurgs.lv>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Subject: Low Rate Loan.
-X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
-         bases: 20140401 #7726142, check: 20201002 notchecked
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9762 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999 bulkscore=0
+ phishscore=0 malwarescore=0 adultscore=0 suspectscore=1 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2010020172
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9762 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
+ lowpriorityscore=0 impostorscore=0 priorityscore=1501 clxscore=1011
+ phishscore=0 mlxscore=0 bulkscore=0 spamscore=0 mlxlogscore=999
+ suspectscore=1 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2010020172
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hello Dear,
 
-We are Investment Company offering Corporate and Personal
-Loan at 3% Interest Rate for a duration of 10Years.
+Roman,
 
-We also pay 1% commission to brokers, who introduce project
-owners for finance or other opportunities.
+> trace-cmd report doesn't show events from target subsystem because
+> scsi_command_size() leaks through event format string:
 
-Please get back to me if you are interested for more
-details.
+Applied to 5.10/scsi-staging, thanks!
 
-Yours faithfully,
-Hashim Bin 
+-- 
+Martin K. Petersen	Oracle Linux Engineering
