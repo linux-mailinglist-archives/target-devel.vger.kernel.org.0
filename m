@@ -2,176 +2,104 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AB93281A4D
-	for <lists+target-devel@lfdr.de>; Fri,  2 Oct 2020 19:58:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 804A6281A93
+	for <lists+target-devel@lfdr.de>; Fri,  2 Oct 2020 20:08:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387688AbgJBR6w (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 2 Oct 2020 13:58:52 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:52650 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726224AbgJBR6w (ORCPT
+        id S2388225AbgJBSIT (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 2 Oct 2020 14:08:19 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:34704 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726386AbgJBSIT (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 2 Oct 2020 13:58:52 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 092Hu7Ah003103;
-        Fri, 2 Oct 2020 17:58:50 GMT
+        Fri, 2 Oct 2020 14:08:19 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 092HtDDp118788;
+        Fri, 2 Oct 2020 18:08:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
  references : from : message-id : date : mime-version : in-reply-to :
  content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=PMyjh+pcZr3w4jFEQFDISBmO/+meiQsT9a6RuFwWbOQ=;
- b=w56Qwb1AabS9hGGTZ14jHyCRzwEcCx41Kaasm5riILvOJeUZ8TLmqfi+27xlJ/g4JYjE
- Ckzqd2qqJvHmsUMDUPHYw+5wWwyGN5cRWRXDC2m53p2JtMhrS7WnxmSuz50MDCiEGgTe
- ON9DMMvB+tRs2qlV8W8L3mXTFGyvXbCP84nmtaAn29eL3zL6ufyTWhXkwYjSjsi/uddH
- Q8MUJw9mct6PipNchtqFr5ZFpRMXgbPMA+WxkUeyTDLHB3a8dYOhBmcNs/MoN3VV6LUK
- grxcE/yDlHWwhRntUZvzfTX40167wAAIEFgziUQZ/6eyGurMfmOzmBIvtG6eagLQ20F7 Cg== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2130.oracle.com with ESMTP id 33wupg33j1-1
+ bh=8KUXiP5mPalx+8Bxxg62tIom5BlWJ1xMsNx3w4Odrp8=;
+ b=DCspPbt0m/wgH2ckjpQQxqOzST18AU3/pTvGODGDxaIQnCf+mv+v+VZuaxUXxTk/o8tU
+ WB40kaS670VS+mBjYfeyrCkh3Dalg6p7wkkwBRrz8JQg92zvVNflzxM7qgqt7+NLIZQJ
+ +KSTpAN1RLCNHRP9VojKSs2vDNmtCVf+JtfTS5rUoWQYORjVtv8TRbFwG8IT8R74OVP0
+ YLc8i8RGv9iEGVCxmGIvFWCNx6cUDIr+SYdHCv722Vy83ZZ5cP7APnM2Y2XW0iGcKogg
+ Hv6nzqLlgZslZbAxZyAZ0aDAnVHb2wwn3zi67yOHYHm7LSgYEZcxWeHhv4re5xgos0nE HA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 33sx9nm78p-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 02 Oct 2020 17:58:50 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 092HotDm132990;
-        Fri, 2 Oct 2020 17:58:49 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 33tfdxws0a-1
+        Fri, 02 Oct 2020 18:08:12 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 092HoaxT095930;
+        Fri, 2 Oct 2020 18:06:12 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 33tfj3dbg9-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 02 Oct 2020 17:58:49 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 092Hwm16030822;
-        Fri, 2 Oct 2020 17:58:48 GMT
+        Fri, 02 Oct 2020 18:06:11 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 092I69V5011613;
+        Fri, 2 Oct 2020 18:06:09 GMT
 Received: from [20.15.0.202] (/73.88.28.6)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 02 Oct 2020 10:58:47 -0700
-Subject: Re: [PATCH] scsi: target: core: Add CONTROL field for trace events
-To:     Roman Bolshakov <r.bolshakov@yadro.com>,
-        target-devel@vger.kernel.org
-Cc:     linux-scsi@vger.kernel.org, linux@yadro.com
-References: <20200929125957.83069-1-r.bolshakov@yadro.com>
+        with ESMTP ; Fri, 02 Oct 2020 11:06:08 -0700
+Subject: Re: [PATCH] Revert "scsi: target/iscsi: Detect conn_cmd_list
+ corruption early"
+To:     Maurizio Lombardi <mlombard@redhat.com>, martin.petersen@oracle.com
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        bvanassche@acm.org
+References: <20201002073341.12470-1-mlombard@redhat.com>
 From:   Mike Christie <michael.christie@oracle.com>
-Message-ID: <af5c5b31-299a-a780-01ab-7a8b62b0edfd@oracle.com>
-Date:   Fri, 2 Oct 2020 12:58:47 -0500
+Message-ID: <dc48abf2-0b54-0241-6931-e2041c5dbc40@oracle.com>
+Date:   Fri, 2 Oct 2020 13:06:08 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200929125957.83069-1-r.bolshakov@yadro.com>
+In-Reply-To: <20201002073341.12470-1-mlombard@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9762 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
- adultscore=0 malwarescore=0 spamscore=0 mlxscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2010020131
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999 bulkscore=0
+ phishscore=0 malwarescore=0 adultscore=0 suspectscore=2 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2010020131
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9762 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
- lowpriorityscore=0 impostorscore=0 priorityscore=1501 clxscore=1011
- phishscore=0 mlxscore=0 bulkscore=0 spamscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2010020131
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=2
+ phishscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0 clxscore=1011
+ spamscore=0 impostorscore=0 malwarescore=0 bulkscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2010020131
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 9/29/20 7:59 AM, Roman Bolshakov wrote:
-> trace-cmd report doesn't show events from target subsystem because
-> scsi_command_size() leaks through event format string:
+On 10/2/20 2:33 AM, Maurizio Lombardi wrote:
+> This reverts commit b0055acaedf56a2717a6e2a4b700f1959a1b60df.
 > 
->   [target:target_sequencer_start] function scsi_command_size not defined
->   [target:target_cmd_complete] function scsi_command_size not defined
+> This warning is duplicated because the very same condition
+> is already checked in __iscsit_free_cmd().
 > 
-> Addition of scsi_command_size() to plugin_scsi.c in trace-cmd doesn't
-> help because an expression is used inside TP_printk(). trace-cmd event
-> parser doesn't understand minus sign inside [ ]:
-> 
->   Error: expected ']' but read '-'
-> 
-> Rather than duplicating kernel code in plugin_scsi.c, it's better to
-> provide a dedicated field for CONTROL byte.
-> 
-> Signed-off-by: Roman Bolshakov <r.bolshakov@yadro.com>
+> Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
 > ---
->  include/scsi/scsi_common.h    |  7 +++++++
->  include/trace/events/target.h | 12 ++++++------
->  2 files changed, 13 insertions(+), 6 deletions(-)
+>  drivers/target/iscsi/iscsi_target_util.c | 2 --
+>  1 file changed, 2 deletions(-)
 > 
-> diff --git a/include/scsi/scsi_common.h b/include/scsi/scsi_common.h
-> index 731ac09ed231..5b567b43e1b1 100644
-> --- a/include/scsi/scsi_common.h
-> +++ b/include/scsi/scsi_common.h
-> @@ -25,6 +25,13 @@ scsi_command_size(const unsigned char *cmnd)
->  		scsi_varlen_cdb_length(cmnd) : COMMAND_SIZE(cmnd[0]);
->  }
+> diff --git a/drivers/target/iscsi/iscsi_target_util.c b/drivers/target/iscsi/iscsi_target_util.c
+> index 45ba07c6ec27..ff7830ddbd7b 100644
+> --- a/drivers/target/iscsi/iscsi_target_util.c
+> +++ b/drivers/target/iscsi/iscsi_target_util.c
+> @@ -764,8 +764,6 @@ void iscsit_free_cmd(struct iscsi_cmd *cmd, bool shutdown)
+>  	struct se_cmd *se_cmd = cmd->se_cmd.se_tfo ? &cmd->se_cmd : NULL;
+>  	int rc;
 >  
-> +static inline unsigned char
-> +scsi_command_control(const unsigned char *cmnd)
-> +{
-> +	return (cmnd[0] == VARIABLE_LENGTH_CMD) ?
-> +		cmnd[1] : cmnd[COMMAND_SIZE(cmnd[0]) - 1];
-> +}
-> +
->  /* Returns a human-readable name for the device */
->  extern const char *scsi_device_type(unsigned type);
->  
-> diff --git a/include/trace/events/target.h b/include/trace/events/target.h
-> index 77408edd29d2..67fad2677ed5 100644
-> --- a/include/trace/events/target.h
-> +++ b/include/trace/events/target.h
-> @@ -141,6 +141,7 @@ TRACE_EVENT(target_sequencer_start,
->  		__field( unsigned int,	opcode		)
->  		__field( unsigned int,	data_length	)
->  		__field( unsigned int,	task_attribute  )
-> +		__field( unsigned char,	control		)
->  		__array( unsigned char,	cdb, TCM_MAX_COMMAND_SIZE	)
->  		__string( initiator,	cmd->se_sess->se_node_acl->initiatorname	)
->  	),
-> @@ -151,6 +152,7 @@ TRACE_EVENT(target_sequencer_start,
->  		__entry->opcode		= cmd->t_task_cdb[0];
->  		__entry->data_length	= cmd->data_length;
->  		__entry->task_attribute	= cmd->sam_task_attr;
-> +		__entry->control	= scsi_command_control(cmd->t_task_cdb);
->  		memcpy(__entry->cdb, cmd->t_task_cdb, TCM_MAX_COMMAND_SIZE);
->  		__assign_str(initiator, cmd->se_sess->se_node_acl->initiatorname);
->  	),
-> @@ -160,9 +162,7 @@ TRACE_EVENT(target_sequencer_start,
->  		  __entry->tag, show_opcode_name(__entry->opcode),
->  		  __entry->data_length, __print_hex(__entry->cdb, 16),
->  		  show_task_attribute_name(__entry->task_attribute),
-> -		  scsi_command_size(__entry->cdb) <= 16 ?
-> -			__entry->cdb[scsi_command_size(__entry->cdb) - 1] :
-> -			__entry->cdb[1]
-> +		  __entry->control
->  	)
->  );
->  
-> @@ -178,6 +178,7 @@ TRACE_EVENT(target_cmd_complete,
->  		__field( unsigned int,	opcode		)
->  		__field( unsigned int,	data_length	)
->  		__field( unsigned int,	task_attribute  )
-> +		__field( unsigned char,	control		)
->  		__field( unsigned char,	scsi_status	)
->  		__field( unsigned char,	sense_length	)
->  		__array( unsigned char,	cdb, TCM_MAX_COMMAND_SIZE	)
-> @@ -191,6 +192,7 @@ TRACE_EVENT(target_cmd_complete,
->  		__entry->opcode		= cmd->t_task_cdb[0];
->  		__entry->data_length	= cmd->data_length;
->  		__entry->task_attribute	= cmd->sam_task_attr;
-> +		__entry->control	= scsi_command_control(cmd->t_task_cdb);
->  		__entry->scsi_status	= cmd->scsi_status;
->  		__entry->sense_length	= cmd->scsi_status == SAM_STAT_CHECK_CONDITION ?
->  			min(18, ((u8 *) cmd->sense_buffer)[SPC_ADD_SENSE_LEN_OFFSET] + 8) : 0;
-> @@ -208,9 +210,7 @@ TRACE_EVENT(target_cmd_complete,
->  		  show_opcode_name(__entry->opcode),
->  		  __entry->data_length, __print_hex(__entry->cdb, 16),
->  		  show_task_attribute_name(__entry->task_attribute),
-> -		  scsi_command_size(__entry->cdb) <= 16 ?
-> -			__entry->cdb[scsi_command_size(__entry->cdb) - 1] :
-> -			__entry->cdb[1]
-> +		  __entry->control
->  	)
->  );
->  
+> -	WARN_ON(!list_empty(&cmd->i_conn_node));
+> -
+>  	__iscsit_free_cmd(cmd, shutdown);
+>  	if (se_cmd) {
+>  		rc = transport_generic_free_cmd(se_cmd, shutdown);
+> 
 
-I'm not an expert on the tracing side of the code, but the target/scsi
-parts look ok to me.
+Maurizio, are you hitting these WARN()s?
+
+Patch looks ok.
 
 Reviewed-by: Mike Christie <michael.christie@oracle.com>
-
