@@ -2,60 +2,74 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD46B27FE2A
-	for <lists+target-devel@lfdr.de>; Thu,  1 Oct 2020 13:13:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B821A280E14
+	for <lists+target-devel@lfdr.de>; Fri,  2 Oct 2020 09:33:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731243AbgJALNe (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 1 Oct 2020 07:13:34 -0400
-Received: from ftender.ru ([178.218.214.211]:51545 "HELO ftender2.ru"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with SMTP
-        id S1726992AbgJALNd (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 1 Oct 2020 07:13:33 -0400
-X-Greylist: delayed 77281 seconds by postgrey-1.27 at vger.kernel.org; Thu, 01 Oct 2020 07:13:32 EDT
-dkim-signature: v=1; a=rsa-sha256; d=ftender2.ru; s=ke1;
-        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        bh=m3pASy53GgfFwHppvIPHJghbzAHQviKN6bgk+M/PrtE=;
-        b=G5LOVxyBgt101U/EDNO3YWjNWaDZ2FSvVkogeSnNtIV6aLl0/EWn4mF/I8esm7ddHh3qmntfvazelDH9J8EP/7laIAWByl4GzvJQaSgeiG7DZKtMc25/XbUdZpId6HBxhRgCQy1tgVQfXdmMnSfoPQKsy06hlatYxLccZjGq3ag=
-Received: from User (Unknown [176.32.20.25])
-        by ftender2.ru
-        ; Tue, 29 Sep 2020 17:08:09 +0300
-Message-ID: <240ECFE7-C621-4C3F-A098-CF66CDA8EEEB@ftender2.ru>
-Reply-To: <maviswanczyko@aol.com>
-From:   "L.  Wanczyk." <billing@ftender2.ru>
-Subject: DONATION .....                       211
-Date:   Tue, 29 Sep 2020 16:07:12 -0700
+        id S1726263AbgJBHds (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 2 Oct 2020 03:33:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:43722 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725961AbgJBHds (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Fri, 2 Oct 2020 03:33:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1601624027;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=wBXzihMG2sj/H713MdZMBi9VEglJ/cPQiGjlk1VaOfY=;
+        b=dSnIaXvV9SYKnTDg/dS9zwJ1xg5Ft1Y+HAZheZ6hlHw+g8/xZY2K5uSqxFCgLQf7BUDMKv
+        2WvoGaVETgg5LNu7elkqE3q/5wDQ2ZoEYMZPTXLr6lRuKszxg+Td4P1XLcIZ91fXi97H8M
+        7aYVMcnqDL8G99fwR0zw6i/0CE/P2ww=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-169-sjX1v1weNQKoUMeghcmigw-1; Fri, 02 Oct 2020 03:33:45 -0400
+X-MC-Unique: sjX1v1weNQKoUMeghcmigw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2B49C1006701;
+        Fri,  2 Oct 2020 07:33:44 +0000 (UTC)
+Received: from nangaparbat.redhat.com (unknown [10.40.192.160])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id DF3EA19C78;
+        Fri,  2 Oct 2020 07:33:42 +0000 (UTC)
+From:   Maurizio Lombardi <mlombard@redhat.com>
+To:     martin.petersen@oracle.com
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        bvanassche@acm.org
+Subject: [PATCH] Revert "scsi: target/iscsi: Detect conn_cmd_list corruption early"
+Date:   Fri,  2 Oct 2020 09:33:41 +0200
+Message-Id: <20201002073341.12470-1-mlombard@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1081
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1081
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hello,
+This reverts commit b0055acaedf56a2717a6e2a4b700f1959a1b60df.
 
-I'm Mrs. Mavis Wanczyk, the mega winner of $758 Million in Mega Millions
-Jackpot, I am donating to 5 random individuals if you get this email then
-your email was selected after a spin ball. I have spread most of my wealth
-over a number of charities and organizations. I have voluntarily decided to
-donate the sum of $ 10 Million USD to you as one of the selected , to verify
-my
-winnings via YouTube page below.
+This warning is duplicated because the very same condition
+is already checked in __iscsit_free_cmd().
 
-WATCH ME HERE: https://www.youtube.com/watch?v=7kWnqvJM1mM
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+---
+ drivers/target/iscsi/iscsi_target_util.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-THIS IS YOUR DONATION CODE: F207162
-Kindly send your direct telephone and fax number to enable me to reach you
-
-Reply with the DONATION CODE to this email: maviswanczykoo@aol.com
-
-Hope to make you and your family happy.
-
-Regards,
-Mrs. Mavis L. Wanczyk.
+diff --git a/drivers/target/iscsi/iscsi_target_util.c b/drivers/target/iscsi/iscsi_target_util.c
+index 45ba07c6ec27..ff7830ddbd7b 100644
+--- a/drivers/target/iscsi/iscsi_target_util.c
++++ b/drivers/target/iscsi/iscsi_target_util.c
+@@ -764,8 +764,6 @@ void iscsit_free_cmd(struct iscsi_cmd *cmd, bool shutdown)
+ 	struct se_cmd *se_cmd = cmd->se_cmd.se_tfo ? &cmd->se_cmd : NULL;
+ 	int rc;
+ 
+-	WARN_ON(!list_empty(&cmd->i_conn_node));
+-
+ 	__iscsit_free_cmd(cmd, shutdown);
+ 	if (se_cmd) {
+ 		rc = transport_generic_free_cmd(se_cmd, shutdown);
+-- 
+2.26.2
 
