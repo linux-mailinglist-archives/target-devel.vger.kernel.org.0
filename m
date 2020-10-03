@@ -2,91 +2,73 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 533E9281FC4
-	for <lists+target-devel@lfdr.de>; Sat,  3 Oct 2020 02:23:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA86F28220E
+	for <lists+target-devel@lfdr.de>; Sat,  3 Oct 2020 09:46:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725497AbgJCAXp (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 2 Oct 2020 20:23:45 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:40048 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725379AbgJCAXp (ORCPT
+        id S1725648AbgJCHqq (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 3 Oct 2020 03:46:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:21318 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725446AbgJCHqq (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 2 Oct 2020 20:23:45 -0400
-Received: by mail-pf1-f196.google.com with SMTP id w21so2503703pfc.7;
-        Fri, 02 Oct 2020 17:23:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=CtWlc9tOOk7EdLHe8DbuEVwI2UYtcy4XzuaSQSybDAA=;
-        b=NVlit/ppejkqJXXyEqshB6DykTMZXNu1mMx4M1/oG8WSGFnh1wmqDR5zx3BxESgxun
-         IAyxi/j1lQlRzBZdgmo6SspJVfcXSBYMETHHMmjv1pUxCaOgBFVK/66xMvSR/+kwXmAU
-         DmnI/jayfCwulCQeSXV5ZRhmQnS0qsfMJxc65TbZEJINjPUqiWuJBZGmk1Kwu6q7FVyD
-         QSh9H1ttJr6voRjeIazmPeDJtgX92GvogOo5ZDBJR61SHt/D8MCRauGf+lLn1TbJY8Eo
-         VCTPuENnhmdXX+n+diPTQIqAC1abTEZWcKRt5heqp2eA/kOzTBDXW+7E+W9WCgyRNPTG
-         2Nyw==
-X-Gm-Message-State: AOAM530UoHerbVWK/tD2NuKS4a9zpv/OdKIOwgxQPZEyecRK3678PTRF
-        zNd5FD5saacwI8PWMFB3eRd33ll67P4=
-X-Google-Smtp-Source: ABdhPJyEwxKMNfbbclA/aT2WZM/lMuKisnCfxXIDNBG/1U6ujaD4QdhZJV7RnphaN030C4YPj8WLTg==
-X-Received: by 2002:aa7:9f4e:0:b029:142:2501:39f1 with SMTP id h14-20020aa79f4e0000b0290142250139f1mr5248880pfr.64.1601684624054;
-        Fri, 02 Oct 2020 17:23:44 -0700 (PDT)
-Received: from [192.168.50.110] (c-73-241-217-19.hsd1.ca.comcast.net. [73.241.217.19])
-        by smtp.gmail.com with ESMTPSA id e27sm3368624pfj.62.2020.10.02.17.23.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Oct 2020 17:23:42 -0700 (PDT)
+        Sat, 3 Oct 2020 03:46:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1601711205;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=h2AzxtYaTSxka2r1iICnzEmVQjFVNOuyh2nVtFkxPpI=;
+        b=WGrHr3/tYaxltTH7r2iMPyDVK2VcSzJr5TKbeQk7DU8BIu2Osev79pVauea9JuHwCeKoK3
+        i4/Ul8OrtXc+G9Y8ypUs49Yz7JlFmatUpoIIu5HCrQoFbKVp6w5aeuP0FyvPQHMYPTak/n
+        lUrR0nBdtuhR/kW8LOTZw9CBSd0TJNg=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-411-TIdd74KbP4m2-EPAoxLqoA-1; Sat, 03 Oct 2020 03:46:43 -0400
+X-MC-Unique: TIdd74KbP4m2-EPAoxLqoA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 072798030BE;
+        Sat,  3 Oct 2020 07:46:42 +0000 (UTC)
+Received: from [10.40.192.38] (unknown [10.40.192.38])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id B19E85D9D3;
+        Sat,  3 Oct 2020 07:46:40 +0000 (UTC)
 Subject: Re: [PATCH] Revert "scsi: target/iscsi: Detect conn_cmd_list
  corruption early"
-To:     Maurizio Lombardi <mlombard@redhat.com>, martin.petersen@oracle.com
+To:     Bart Van Assche <bvanassche@acm.org>, martin.petersen@oracle.com
 Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
 References: <20201002073341.12470-1-mlombard@redhat.com>
-From:   Bart Van Assche <bvanassche@acm.org>
-Message-ID: <ce44115e-f8ac-0307-88bd-f6a2e9d7f7f3@acm.org>
-Date:   Fri, 2 Oct 2020 17:23:40 -0700
+ <ce44115e-f8ac-0307-88bd-f6a2e9d7f7f3@acm.org>
+From:   Maurizio Lombardi <mlombard@redhat.com>
+Message-ID: <fea1f8a6-615e-6d44-ec20-b4f46da10d55@redhat.com>
+Date:   Sat, 3 Oct 2020 09:46:39 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <20201002073341.12470-1-mlombard@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <ce44115e-f8ac-0307-88bd-f6a2e9d7f7f3@acm.org>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 10/2/20 12:33 AM, Maurizio Lombardi wrote:
-> This reverts commit b0055acaedf56a2717a6e2a4b700f1959a1b60df.
+
+
+Dne 03. 10. 20 v 2:23 Bart Van Assche napsal(a):
+> Hi Maurizio,
 > 
-> This warning is duplicated because the very same condition
-> is already checked in __iscsit_free_cmd().
-> 
-> Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-> ---
->   drivers/target/iscsi/iscsi_target_util.c | 2 --
->   1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/target/iscsi/iscsi_target_util.c b/drivers/target/iscsi/iscsi_target_util.c
-> index 45ba07c6ec27..ff7830ddbd7b 100644
-> --- a/drivers/target/iscsi/iscsi_target_util.c
-> +++ b/drivers/target/iscsi/iscsi_target_util.c
-> @@ -764,8 +764,6 @@ void iscsit_free_cmd(struct iscsi_cmd *cmd, bool shutdown)
->   	struct se_cmd *se_cmd = cmd->se_cmd.se_tfo ? &cmd->se_cmd : NULL;
->   	int rc;
->   
-> -	WARN_ON(!list_empty(&cmd->i_conn_node));
-> -
->   	__iscsit_free_cmd(cmd, shutdown);
->   	if (se_cmd) {
->   		rc = transport_generic_free_cmd(se_cmd, shutdown);
+> I agree that the same WARN_ON() occurs inside __iscsit_free_cmd(). What is not
+> clear to me is how removing the WARN_ON() statement from iscsit_free_cmd() can
+> help since an identical statement occurs inside __iscsit_free_cmd()?
 
-Hi Maurizio,
 
-I agree that the same WARN_ON() occurs inside __iscsit_free_cmd(). What is not
-clear to me is how removing the WARN_ON() statement from iscsit_free_cmd() can
-help since an identical statement occurs inside __iscsit_free_cmd()?
+It doesn't help indeed, this patch just removes one duplicate warning but doesn't
+really change anything.
 
-Thanks,
+The bug I am trying to fix will need a different patch to prevent the race condition.
 
-Bart.
-
+Maurizio
 
