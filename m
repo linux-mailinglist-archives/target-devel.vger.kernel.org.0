@@ -2,80 +2,91 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90E66281E89
-	for <lists+target-devel@lfdr.de>; Sat,  3 Oct 2020 00:41:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 533E9281FC4
+	for <lists+target-devel@lfdr.de>; Sat,  3 Oct 2020 02:23:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725797AbgJBWlO (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 2 Oct 2020 18:41:14 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:60278 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725554AbgJBWlM (ORCPT
+        id S1725497AbgJCAXp (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 2 Oct 2020 20:23:45 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:40048 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725379AbgJCAXp (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 2 Oct 2020 18:41:12 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 092MdvKu070266;
-        Fri, 2 Oct 2020 22:41:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : message-id : references : date : in-reply-to : mime-version :
- content-type; s=corp-2020-01-29;
- bh=Q4bKodpaOILL4ATFX/AB2Mj1wx/yrk+xtT2l9Dw6hFU=;
- b=l9B5brpjEuEkeNVBoe0TMRsszW4YT2qe2zOeKXTMdUkykJ+x6b3mfT/rK2Csvb0ExGXC
- jdLY7icNlEHXyXo9jq4BYbmZSmS82d8XyqvN8A470MnLnHwqvR2aQpp95T0RAen0VyKC
- 67DR8lqOGNuns/OBw5GV1QevRlvB94UiJJg+kd9rAtwxoYxYPpwKnHWZhPY6GyIsCdWq
- tkyVhciVH6buzDCofVlt1F0sgEuCxMl3B36o6kqWgzlwd4QZFl7SQ0DOqqyKc5qgV1/B
- o0k/GaUyO9ySM3IR0LUHuv0YffJeYajLsZMAGiZEdb+8fCnv/Rz+XXGm+STyhyQXsyrb 2g== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2130.oracle.com with ESMTP id 33wupg45c9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 02 Oct 2020 22:41:10 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 092MebcQ141892;
-        Fri, 2 Oct 2020 22:41:10 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 33tfj3nqb8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 02 Oct 2020 22:41:09 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 092Mf9wt013589;
-        Fri, 2 Oct 2020 22:41:09 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 02 Oct 2020 15:41:09 -0700
-To:     Roman Bolshakov <r.bolshakov@yadro.com>
-Cc:     <target-devel@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-        <linux@yadro.com>
-Subject: Re: [PATCH] scsi: target: core: Add CONTROL field for trace events
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <yq11rigfdza.fsf@ca-mkp.ca.oracle.com>
-References: <20200929125957.83069-1-r.bolshakov@yadro.com>
-Date:   Fri, 02 Oct 2020 18:41:06 -0400
-In-Reply-To: <20200929125957.83069-1-r.bolshakov@yadro.com> (Roman Bolshakov's
-        message of "Tue, 29 Sep 2020 15:59:57 +0300")
+        Fri, 2 Oct 2020 20:23:45 -0400
+Received: by mail-pf1-f196.google.com with SMTP id w21so2503703pfc.7;
+        Fri, 02 Oct 2020 17:23:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=CtWlc9tOOk7EdLHe8DbuEVwI2UYtcy4XzuaSQSybDAA=;
+        b=NVlit/ppejkqJXXyEqshB6DykTMZXNu1mMx4M1/oG8WSGFnh1wmqDR5zx3BxESgxun
+         IAyxi/j1lQlRzBZdgmo6SspJVfcXSBYMETHHMmjv1pUxCaOgBFVK/66xMvSR/+kwXmAU
+         DmnI/jayfCwulCQeSXV5ZRhmQnS0qsfMJxc65TbZEJINjPUqiWuJBZGmk1Kwu6q7FVyD
+         QSh9H1ttJr6voRjeIazmPeDJtgX92GvogOo5ZDBJR61SHt/D8MCRauGf+lLn1TbJY8Eo
+         VCTPuENnhmdXX+n+diPTQIqAC1abTEZWcKRt5heqp2eA/kOzTBDXW+7E+W9WCgyRNPTG
+         2Nyw==
+X-Gm-Message-State: AOAM530UoHerbVWK/tD2NuKS4a9zpv/OdKIOwgxQPZEyecRK3678PTRF
+        zNd5FD5saacwI8PWMFB3eRd33ll67P4=
+X-Google-Smtp-Source: ABdhPJyEwxKMNfbbclA/aT2WZM/lMuKisnCfxXIDNBG/1U6ujaD4QdhZJV7RnphaN030C4YPj8WLTg==
+X-Received: by 2002:aa7:9f4e:0:b029:142:2501:39f1 with SMTP id h14-20020aa79f4e0000b0290142250139f1mr5248880pfr.64.1601684624054;
+        Fri, 02 Oct 2020 17:23:44 -0700 (PDT)
+Received: from [192.168.50.110] (c-73-241-217-19.hsd1.ca.comcast.net. [73.241.217.19])
+        by smtp.gmail.com with ESMTPSA id e27sm3368624pfj.62.2020.10.02.17.23.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 02 Oct 2020 17:23:42 -0700 (PDT)
+Subject: Re: [PATCH] Revert "scsi: target/iscsi: Detect conn_cmd_list
+ corruption early"
+To:     Maurizio Lombardi <mlombard@redhat.com>, martin.petersen@oracle.com
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+References: <20201002073341.12470-1-mlombard@redhat.com>
+From:   Bart Van Assche <bvanassche@acm.org>
+Message-ID: <ce44115e-f8ac-0307-88bd-f6a2e9d7f7f3@acm.org>
+Date:   Fri, 2 Oct 2020 17:23:40 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9762 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999 bulkscore=0
- phishscore=0 malwarescore=0 adultscore=0 suspectscore=1 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2010020172
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9762 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
- lowpriorityscore=0 impostorscore=0 priorityscore=1501 clxscore=1011
- phishscore=0 mlxscore=0 bulkscore=0 spamscore=0 mlxlogscore=999
- suspectscore=1 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2010020172
+In-Reply-To: <20201002073341.12470-1-mlombard@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+On 10/2/20 12:33 AM, Maurizio Lombardi wrote:
+> This reverts commit b0055acaedf56a2717a6e2a4b700f1959a1b60df.
+> 
+> This warning is duplicated because the very same condition
+> is already checked in __iscsit_free_cmd().
+> 
+> Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+> ---
+>   drivers/target/iscsi/iscsi_target_util.c | 2 --
+>   1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/target/iscsi/iscsi_target_util.c b/drivers/target/iscsi/iscsi_target_util.c
+> index 45ba07c6ec27..ff7830ddbd7b 100644
+> --- a/drivers/target/iscsi/iscsi_target_util.c
+> +++ b/drivers/target/iscsi/iscsi_target_util.c
+> @@ -764,8 +764,6 @@ void iscsit_free_cmd(struct iscsi_cmd *cmd, bool shutdown)
+>   	struct se_cmd *se_cmd = cmd->se_cmd.se_tfo ? &cmd->se_cmd : NULL;
+>   	int rc;
+>   
+> -	WARN_ON(!list_empty(&cmd->i_conn_node));
+> -
+>   	__iscsit_free_cmd(cmd, shutdown);
+>   	if (se_cmd) {
+>   		rc = transport_generic_free_cmd(se_cmd, shutdown);
 
-Roman,
+Hi Maurizio,
 
-> trace-cmd report doesn't show events from target subsystem because
-> scsi_command_size() leaks through event format string:
+I agree that the same WARN_ON() occurs inside __iscsit_free_cmd(). What is not
+clear to me is how removing the WARN_ON() statement from iscsit_free_cmd() can
+help since an identical statement occurs inside __iscsit_free_cmd()?
 
-Applied to 5.10/scsi-staging, thanks!
+Thanks,
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Bart.
+
+
