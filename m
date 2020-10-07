@@ -2,122 +2,79 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03462286193
-	for <lists+target-devel@lfdr.de>; Wed,  7 Oct 2020 16:53:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D565B286428
+	for <lists+target-devel@lfdr.de>; Wed,  7 Oct 2020 18:31:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728672AbgJGOxx (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 7 Oct 2020 10:53:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:25701 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728679AbgJGOxw (ORCPT
+        id S1728140AbgJGQa6 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 7 Oct 2020 12:30:58 -0400
+Received: from sonic311-14.consmr.mail.bf2.yahoo.com ([74.6.131.124]:46346
+        "EHLO sonic311-14.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727437AbgJGQa4 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 7 Oct 2020 10:53:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1602082431;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=sdsd8Ng3fG6CochuxToB2XwYhkI5DE+revworc2rIdo=;
-        b=bixlT/QRnfwNUE3wqZixzcnucVaosXM2hM4mYkYw+c+HvCNFfAISVLZdpZxa/QkR6vDSxq
-        IvREOnQ71OKDg1KE5pdpQ+abs0//VDHujfOqRIgpB6NHtklRIowHT4b7Ga6byt1ziKyrPK
-        7XJsMb2YVuFkgn5kaZiVJWQfrlpyp5Q=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-377-j750TGzTO1KSvOhH6bVcPQ-1; Wed, 07 Oct 2020 10:53:47 -0400
-X-MC-Unique: j750TGzTO1KSvOhH6bVcPQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 08535101FFD6;
-        Wed,  7 Oct 2020 14:53:35 +0000 (UTC)
-Received: from nangaparbat.redhat.com (unknown [10.35.206.121])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9080560BEC;
-        Wed,  7 Oct 2020 14:53:32 +0000 (UTC)
-From:   Maurizio Lombardi <mlombard@redhat.com>
-To:     martin.petersen@oracle.com
-Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        bvanassche@acm.org, michael.christie@oracle.com
-Subject: [PATCH 2/2] target: iscsi: fix a race condition when aborting a task
-Date:   Wed,  7 Oct 2020 16:53:26 +0200
-Message-Id: <20201007145326.56850-3-mlombard@redhat.com>
-In-Reply-To: <20201007145326.56850-1-mlombard@redhat.com>
-References: <20201007145326.56850-1-mlombard@redhat.com>
+        Wed, 7 Oct 2020 12:30:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1602088255; bh=PxMwWzXvs+dqOoH0/FHvFmQpYH2JguaCUHYAVLLmaiw=; h=Date:From:Reply-To:Subject:References:From:Subject; b=Eyg6+y7F+LYPs1JL7GqgNsvO0nfvvD6QTQz0zOjjYH19h7e8uybDqNpfpbvrPJPohEyJzEiU3Q/ZG1NSMK16U64m5lhBv6rL4BI4VHHhBZXH/586P0Y6eadgI7oc5jaWs6MK4R6jE7V2kPE+nWnPevVh043TlvsRz2DNVWISVUbpSdNnzUVow/iau1wdIxg/nud5SXCu/DYo/8oWxzE3q6VSgpN/Fic0UL2WjL9++9HJn10Ltvs/n5mVlKDFJ9xVA58bmqSWtx/gzKI28dlfexENwG4oU4DRYR5Ogs7SOneJr6ToEIv4lOeqzdn+AaIs4dSRNg00hmRst8NWoFhJHg==
+X-YMail-OSG: 4aQ3EjIVM1kNrUzwOnljlQu8.0p2CfIRAN5JD0Cli4AuIgTd4MQO28dQQQgnSBW
+ L4u3VPCRBJYYqL1mSHyimTelxTZ76mT_etPsIRCR84Ii49WCxCGfSO.iRBd4SeTBGHOfixcLTIPh
+ kY2SSP5Dt03abSms08gfR.uMZEee9oroZOgsHLt.zc5PoIzDIDCTUT8JgiCfFokZBb6mqGs1BfkJ
+ rAu0Td.2MfiohMIneIOWswKeOz8JKGQKZJzzShmV0y7WLa.mAMei_qrCYtAND66BZBLh3agr127g
+ nYfEjplF0_oUTv7nQmuIegapgQo7mIy6OJ0S0AlvAV4q91LHaSMzUOdkRylqhFVkVAeDHwXog4j5
+ l9Bci60cAsSJuZdnnx9fiobxCHLfbN7_dMXrJG65zAVCJMRGE22dK7ChcjRP9IjHxHpGA7gq6lfb
+ eLaVjrhzifoUCQ.pOnekG9zR7M1t.2Btgf2l_TPhLHf552VcYbaxcyGDTQE167N5owsOkfxACdmD
+ CyCIIso9Ug80vBYkJV.suOkA11FY5v1Q2qJafGgTesMlGEwPfWKbg2KH3s9UXTPApxKCfN1FkhK8
+ LJm0I_Kdg1JCO7GtDOQcvbQtiL7GkShC7sLcEvvi5rWC4bklf_gK0l8rUv6EPeZw3eqt01l3gYNs
+ AIsMMY1LWFA_ZmciYH4HDFxauzIUCghA47rkl.zkUZGOlCSGzTWYZBy05bnfGETI9Hbn1KHe0msU
+ VLsU7V4qsvkBieplxNf5TNz2LlD0iHgVvzBO4IygCaDV2RoRBVUMHYjaYOQrTKlPg1Crn7f.ny6q
+ QptRned0bH0jU8UMwW0n76PmzxJC2pnjv2aMZl3kzxuxOyQo5CX5Ug4fK5fp0E1mfFBNtlE_lFdO
+ REF_X9Rr5KfFPyervVhLAgcUFGEh0lNnIDBmcVUXP4NUli_ydtGnZXGfuHrpbiOVIWlWLS_e9dvx
+ OS9EgyTUziHWKme90bdpqCbwd20.344v.x9QMuIoMFYJwqKJ6dGDTHbJu2eIMyXaOni1DWT_jyY4
+ Fm7YdjA9yPk4mLkj2DVmKna5dG3tr.8DRcoUHCsRfTy0mAOvX3zm_YDVRgTS8j31twXJv5DIBBVl
+ scLgYiOlSj_uw_oVN6jni2UW6Mx_0eXYj7pIMPvedsuPVaixjDJL8thKX7.TXKB6YN56ZRtlxJgt
+ I.ns9VCCrofiw7T0gZqb_hA91bnOV9TcdRv8zieiNriXcVw6cboKIVio2Ss_sOO6_mAXL16tnGEa
+ HW173U2iCb8hRwauswHMtkc_lZCZ2DvNW37QDfaNiCzuWZdwGkMbfy0k8cz6dgmVU3audXJcl1hk
+ qUeJkR_PSZ0ttNHxf39j6oRPQw8I2AQ53Ce0szMlbyUCN0V9DNWuNUJ5ZS1ooqbTyldbPaPw_F9H
+ EV6VpmChy8oI6k2jsWPLjxjLATmETWeg70PjJFMJ1v9IJrQ--
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.bf2.yahoo.com with HTTP; Wed, 7 Oct 2020 16:30:55 +0000
+Date:   Wed, 7 Oct 2020 16:30:55 +0000 (UTC)
+From:   Marilyn Robert <fredodinga22@gmail.com>
+Reply-To: marilyobert@gmail.com
+Message-ID: <1936210565.150941.1602088255223@mail.yahoo.com>
+Subject: =?UTF-8?B?0J3QsNGY0LzQuNC70LAg0LrQsNGYINCz0L7RgdC/0L7QtNCw0YDQvtGC?=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+References: <1936210565.150941.1602088255223.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16795 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-The iscsit_release_commands_from_conn() function does the following
-operations:
-
-1) locks the cmd_lock spinlock
-2) Scans the list of commands and sets the CMD_T_FABRIC_STOP flag
-3) Releases the cmd_lock spinlock
-4) Rescans the list again and clears the i_conn_node link of each command
-
-If an abort task timer is fired between 3) and 4), it will find
-the CMD_T_FABRIC_STOP flag set and won't call list_del_init();
-therefore it may end up calling __iscsit_free_cmd() with a
-non-empty i_conn_node list, thus triggering the warning.
-
-Considering that:
-
-- we expect list_del_init() to be executed by
-  iscsit_release_commands_from_conn() when the CMD_T_FABRIC_STOP is set.
-- iscsit_aborted_task() is the only function that calls __iscsit_free_cmd()
-  directly, while all the other functions call iscsit_free_cmd().
-- the warning in __iscsit_free_cmd() is a duplicate (the same warning
-  can be found in iscsit_free_cmd().
-
-We can fix the bug by simply removing the warning from __iscsit_free_cmd()
-
-kernel: ------------[ cut here ]------------
-kernel: WARNING: CPU: 1 PID: 21173 at drivers/target/iscsi/iscsi_target_util.c:720 __iscsit_free_cmd+0x26e/0x290 [iscsi_target_mod]
-...
-kernel: CPU: 1 PID: 21173 Comm: kworker/u8:3 Kdump: loaded Not tainted 3.10.0-1062.4.1.el7.x86_64 #1
-kernel: Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 09/17/2015
-kernel: Workqueue: tmr-user target_tmr_work [target_core_mod]
-kernel: Call Trace:
-kernel: [<ffffffff91d78ba4>] dump_stack+0x19/0x1b
-kernel: [<ffffffff9169a958>] __warn+0xd8/0x100
-kernel: [<ffffffff9169aa9d>] warn_slowpath_null+0x1d/0x20
-kernel: [<ffffffffc0a6f69e>] __iscsit_free_cmd+0x26e/0x290 [iscsi_target_mod]
-kernel: [<ffffffffc0a70bc4>] iscsit_aborted_task+0x64/0x70 [iscsi_target_mod]
-kernel: [<ffffffffc0a7830a>] lio_aborted_task+0x2a/0x30 [iscsi_target_mod]
-kernel: [<ffffffffc09fa516>] transport_cmd_finish_abort+0x66/0xb0 [target_core_mod]
-kernel: [<ffffffffc09f4d92>] core_tmr_abort_task+0x102/0x180 [target_core_mod]
-kernel: [<ffffffffc09f7bb2>] target_tmr_work+0x152/0x170 [target_core_mod]
-kernel: [<ffffffff916bd1df>] process_one_work+0x17f/0x440
-kernel: [<ffffffff916be2f6>] worker_thread+0x126/0x3c0
-kernel: [<ffffffff916be1d0>] ? manage_workers.isra.26+0x2a0/0x2a0
-kernel: [<ffffffff916c51b1>] kthread+0xd1/0xe0
-kernel: [<ffffffff916c50e0>] ? insert_kthread_work+0x40/0x40
-kernel: [<ffffffff91d8bd37>] ret_from_fork_nospec_begin+0x21/0x21
-kernel: [<ffffffff916c50e0>] ? insert_kthread_work+0x40/0x40
-kernel: ---[ end trace ed2119501826ec7a ]---
-
-
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
----
- drivers/target/iscsi/iscsi_target_util.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/target/iscsi/iscsi_target_util.c b/drivers/target/iscsi/iscsi_target_util.c
-index 3082f5bde9fa..61233755ece0 100644
---- a/drivers/target/iscsi/iscsi_target_util.c
-+++ b/drivers/target/iscsi/iscsi_target_util.c
-@@ -741,8 +741,6 @@ void __iscsit_free_cmd(struct iscsi_cmd *cmd, bool check_queues)
- {
- 	struct iscsi_conn *conn = cmd->conn;
- 
--	WARN_ON(!list_empty(&cmd->i_conn_node));
--
- 	if (cmd->data_direction == DMA_TO_DEVICE) {
- 		iscsit_stop_dataout_timer(cmd);
- 		iscsit_free_r2ts_from_list(cmd);
--- 
-2.26.2
-
+DQoNCtCd0LDRmNC80LjQu9CwINC60LDRmCDQs9C+0YHQv9C+0LTQsNGA0L7Rgg0KDQrQiNCw0YEg
+0YHRg9C8IDY4LdCz0L7QtNC40YjQvdCwINC20LXQvdCwLCDQutC+0ZjQsCDRgdGC0YDQsNC00LAg
+0L7QtCDQv9GA0L7QtNC+0LvQttC10L0g0LrQsNGA0YbQuNC90L7QvCDQvdCwINC00L7RmNC60LAs
+INC+0LQg0YHQuNGC0LUg0LzQtdC00LjRhtC40L3RgdC60Lgg0LjQvdC00LjQutCw0YbQuNC4LCDQ
+vNC+0ZjQsNGC0LAg0YHQvtGB0YLQvtGY0LHQsCDQvdCw0LLQuNGB0YLQuNC90LAg0YHQtSDQstC7
+0L7RiNC4INC4INC+0YfQuNCz0LvQtdC00L3QviDQtSDQtNC10LrQsCDQvNC+0LbQtdCx0Lgg0L3Q
+tdC80LAg0LTQsCDQttC40LLQtdCw0Lwg0L/QvtCy0LXRnNC1INC+0LQg0YjQtdGB0YIg0LzQtdGB
+0LXRhtC4INC60LDQutC+INGA0LXQt9GD0LvRgtCw0YIg0L3QsCDQsdGA0LfQuNC+0YIg0YDQsNGB
+0YIg0Lgg0LHQvtC70LrQsNGC0LAg0YjRgtC+INGB0LUg0ZjQsNCy0YPQstCwINC60LDRmCDQvdC1
+0LAuINCc0L7RmNC+0YIg0YHQvtC/0YDRg9CzINC/0L7Rh9C40L3QsCDQvdC10LrQvtC70LrRgyDQ
+s9C+0LTQuNC90Lgg0L3QsNC90LDQt9Cw0LQg0Lgg0L3QsNGI0LjRgtC1INC00L7Qu9Cz0Lgg0LPQ
+vtC00LjQvdC4INCx0YDQsNC6INC90LUg0LHQtdCwINCx0LvQsNCz0L7RgdC70L7QstC10L3QuCDR
+gdC+INC90LjRgtGDINC10LTQvdC+INC00LXRgtC1LCDQv9C+INC90LXQs9C+0LLQsNGC0LAg0YHQ
+vNGA0YIg0LPQviDQvdCw0YHQu9C10LTQuNCyINGG0LXQu9C+0YLQviDQvdC10LPQvtCy0L4g0LHQ
+vtCz0LDRgtGB0YLQstC+Lg0KDQrQlNC+0LDRk9Cw0Lwg0LrQsNGYINCy0LDRgSDQvtGC0LrQsNC6
+0L4g0YHQtSDQv9C+0LzQvtC70LjQsiDQt9CwINGC0L7QsCwg0L/QvtC00LPQvtGC0LLQtdC9INGB
+0YPQvCDQtNCwINC00L7QvdC40YDQsNC8INGB0YPQvNCwINC+0LQgMiwgMzAwLCAwMDAg0LXQstGA
+0LAg0LfQsCDQv9C+0LzQvtGIINC90LAg0YHQuNGA0L7QvNCw0YjQvdC40YLQtSwg0YHQuNGA0L7Q
+vNCw0YjQvdC40YLQtSDQuCDQv9C+0LzQsNC70LrRgyDQv9GA0LjQstC40LvQtdCz0LjRgNCw0L3Q
+uNGC0LUg0LzQtdGT0YMg0LLQsNGI0LjRgtC1INGB0L7QsdGA0LDQvdC40ZjQsCAvINC+0L/RiNGC
+0LXRgdGC0LLQvi4g0JfQsNCx0LXQu9C10LbQtdGC0LUg0LTQtdC60LAg0L7QstC+0Zgg0YTQvtC9
+0LQg0LUg0LTQtdC/0L7QvdC40YDQsNC9INCy0L4g0LHQsNC90LrQsCDQutCw0LTQtSDRiNGC0L4g
+0YDQsNCx0L7RgtC10YjQtSDQvNC+0ZjQvtGCINGB0L7Qv9GA0YPQsy4gQXBwcmVjaWF0ZdC1INGG
+0LXQvdCw0Lwg0LDQutC+INC+0LHRgNC90LXRgtC1INCy0L3QuNC80LDQvdC40LUg0L3QsCDQvNC+
+0LXRgtC+INCx0LDRgNCw0ZrQtSDQt9CwINC/0YDQvtC/0LDQs9C40YDQsNGa0LUg0L3QsCDQvNCw
+0YHQsNC20LDRgtCwINC90LAg0LrRgNCw0LvRgdGC0LLQvtGC0L4sINGc0LUg0LLQuCDQtNCw0LTQ
+sNC8INC/0L7QstC10ZzQtSDQtNC10YLQsNC70Lgg0LfQsCDRgtC+0LAg0LrQsNC60L4g0LTQsCDQ
+v9C+0YHRgtCw0L/QuNGC0LUuDQoNCtCR0LvQsNCz0L7QtNCw0YDQsNC8DQrQky3Rk9CwINCc0LXR
+gNC40LvQuNC9INCg0L7QsdC10YDRgg==
