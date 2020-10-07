@@ -2,79 +2,114 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E716D286437
-	for <lists+target-devel@lfdr.de>; Wed,  7 Oct 2020 18:31:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81C1A286989
+	for <lists+target-devel@lfdr.de>; Wed,  7 Oct 2020 22:55:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728171AbgJGQbs (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 7 Oct 2020 12:31:48 -0400
-Received: from sonic311-14.consmr.mail.bf2.yahoo.com ([74.6.131.124]:41108
-        "EHLO sonic311-14.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727903AbgJGQbq (ORCPT
+        id S1728503AbgJGUzX (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 7 Oct 2020 16:55:23 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:43274 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727816AbgJGUzX (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 7 Oct 2020 12:31:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1602088303; bh=PxMwWzXvs+dqOoH0/FHvFmQpYH2JguaCUHYAVLLmaiw=; h=Date:From:Reply-To:Subject:References:From:Subject; b=RfEyYiHf64C4648Icjw00x7B6YtEcJ6qXVLPFy4qBVroCvWvJNNmqxcSg393ocSOmFA4xSS4zUch8qMciHBrlysvbOOheKKdnPvfAHLy2PeAvrw3tCS91Bu8WTOIutPeBzAd4uksjtD9YyOzMVjgagHxXA8wvh2dcBimVLUTREeUnsd70XnokfCeefmYeeTOkjRN1G+GJJABoqSSHdosKLwuPMsIEC2RRBqx4jO6ZU5Sk0Luo09zi+W+T9NKlX6qUHN/I6UTSaROACLj9XeNQvScmitmyvjZX0QP0IO/16zdQNuGxO92n6zcK4e0rFNhLst2DWJ6SAlu/m+b35+ZaQ==
-X-YMail-OSG: 4aQ3EjIVM1kNrUzwOnljlQu8.0p2CfIRAN5JD0Cli4AuIgTd4MQO28dQQQgnSBW
- L4u3VPCRBJYYqL1mSHyimTelxTZ76mT_etPsIRCR84Ii49WCxCGfSO.iRBd4SeTBGHOfixcLTIPh
- kY2SSP5Dt03abSms08gfR.uMZEee9oroZOgsHLt.zc5PoIzDIDCTUT8JgiCfFokZBb6mqGs1BfkJ
- rAu0Td.2MfiohMIneIOWswKeOz8JKGQKZJzzShmV0y7WLa.mAMei_qrCYtAND66BZBLh3agr127g
- nYfEjplF0_oUTv7nQmuIegapgQo7mIy6OJ0S0AlvAV4q91LHaSMzUOdkRylqhFVkVAeDHwXog4j5
- l9Bci60cAsSJuZdnnx9fiobxCHLfbN7_dMXrJG65zAVCJMRGE22dK7ChcjRP9IjHxHpGA7gq6lfb
- eLaVjrhzifoUCQ.pOnekG9zR7M1t.2Btgf2l_TPhLHf552VcYbaxcyGDTQE167N5owsOkfxACdmD
- CyCIIso9Ug80vBYkJV.suOkA11FY5v1Q2qJafGgTesMlGEwPfWKbg2KH3s9UXTPApxKCfN1FkhK8
- LJm0I_Kdg1JCO7GtDOQcvbQtiL7GkShC7sLcEvvi5rWC4bklf_gK0l8rUv6EPeZw3eqt01l3gYNs
- AIsMMY1LWFA_ZmciYH4HDFxauzIUCghA47rkl.zkUZGOlCSGzTWYZBy05bnfGETI9Hbn1KHe0msU
- VLsU7V4qsvkBieplxNf5TNz2LlD0iHgVvzBO4IygCaDV2RoRBVUMHYjaYOQrTKlPg1Crn7f.ny6q
- QptRned0bH0jU8UMwW0n76PmzxJC2pnjv2aMZl3kzxuxOyQo5CX5Ug4fK5fp0E1mfFBNtlE_lFdO
- REF_X9Rr5KfFPyervVhLAgcUFGEh0lNnIDBmcVUXP4NUli_ydtGnZXGfuHrpbiOVIWlWLS_e9dvx
- OS9EgyTUziHWKme90bdpqCbwd20.344v.x9QMuIoMFYJwqKJ6dGDTHbJu2eIMyXaOni1DWT_jyY4
- Fm7YdjA9yPk4mLkj2DVmKna5dG3tr.8DRcoUHCsRfTy0mAOvX3zm_YDVRgTS8j31twXJv5DIBBVl
- scLgYiOlSj_uw_oVN6jni2UW6Mx_0eXYj7pIMPvedsuPVaixjDJL8thKX7.TXKB6YN56ZRtlxJgt
- I.ns9VCCrofiw7T0gZqb_hA91bnOV9TcdRv8zieiNriXcVw6cboKIVio2Ss_sOO6_mAXL16tnGEa
- HW173U2iCb8hRwauswHMtkc_lZCZ2DvNW37QDfaNiCzuWZdwGkMbfy0k8cz6dgmVU3audXJcl1hk
- qUeJkR_PSZ0ttNHxf39j6oRPQw8I2AQ53Ce0szMlbyUCN0V9DNWuNUJ5ZS1ooqbTyldbPaPw_F9H
- EV6VpmChy8oI6k2jsWPLjxjLATmETWeg70PjJFMJ1v9IJrQ--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.bf2.yahoo.com with HTTP; Wed, 7 Oct 2020 16:31:43 +0000
-Date:   Wed, 7 Oct 2020 16:30:55 +0000 (UTC)
-From:   Marilyn Robert <fredodinga22@gmail.com>
-Reply-To: marilyobert@gmail.com
-Message-ID: <1936210565.150941.1602088255223@mail.yahoo.com>
-Subject: =?UTF-8?B?0J3QsNGY0LzQuNC70LAg0LrQsNGYINCz0L7RgdC/0L7QtNCw0YDQvtGC?=
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-References: <1936210565.150941.1602088255223.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16795 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36
-To:     unlisted-recipients:; (no To-header on input)
+        Wed, 7 Oct 2020 16:55:23 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 097KnSPi038239;
+        Wed, 7 Oct 2020 20:55:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : subject :
+ date : message-id; s=corp-2020-01-29;
+ bh=5maJtZ5Qqi8YcG2Pgsbhr+lhhOjLigFAU3RBzOM0cvA=;
+ b=e9NiFsTA/HRevMPXChAKjsL6jXV8+CExxg9iD54kr5tKvn9S8HDZg0KWWMfqKcNzXN4P
+ KX4MDNrxTqXmsO1yioElOxMXwTLeDFvPBeuIbuqU39kingxJmDZ5Rd8CsYBhtIHx5lfn
+ UccPlQDZjOuDpE0Ql/hFRbPXuMQMpcUp9oYrSu12+xz+VpEpbbJbCfTcoWWn1/pzRGF5
+ C4SF0/nCmU4DcOnOfIkqETT9y6WCMa3vtWMiLkf5LA0ZNEM8j52LFkvC8V0b24YvNFKZ
+ 1XiY14OIDBdlmjYf8Mp+bC+oJE7UVGZ8P58BBnM4+BA+WL97gDVg+/xWD4h7/ajH5gMU pQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 33xhxn475a-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 07 Oct 2020 20:55:18 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 097KoDgd151578;
+        Wed, 7 Oct 2020 20:55:17 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3030.oracle.com with ESMTP id 33y38025ak-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 07 Oct 2020 20:55:17 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 097KtGgd009040;
+        Wed, 7 Oct 2020 20:55:16 GMT
+Received: from ol2.localdomain (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 07 Oct 2020 13:55:16 -0700
+From:   Mike Christie <michael.christie@oracle.com>
+To:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, mst@redhat.com, jasowang@redhat.com,
+        pbonzini@redhat.com, stefanha@redhat.com,
+        virtualization@lists.linux-foundation.org
+Subject: [PATCH 00/16 V2] vhost: fix scsi cmd handling and IOPs
+Date:   Wed,  7 Oct 2020 15:54:45 -0500
+Message-Id: <1602104101-5592-1-git-send-email-michael.christie@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9767 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 spamscore=0
+ mlxscore=0 malwarescore=0 suspectscore=0 adultscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2010070134
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9767 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 bulkscore=0
+ impostorscore=0 lowpriorityscore=0 suspectscore=0 phishscore=0
+ mlxlogscore=999 adultscore=0 clxscore=1015 spamscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2010070134
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-DQoNCtCd0LDRmNC80LjQu9CwINC60LDRmCDQs9C+0YHQv9C+0LTQsNGA0L7Rgg0KDQrQiNCw0YEg
-0YHRg9C8IDY4LdCz0L7QtNC40YjQvdCwINC20LXQvdCwLCDQutC+0ZjQsCDRgdGC0YDQsNC00LAg
-0L7QtCDQv9GA0L7QtNC+0LvQttC10L0g0LrQsNGA0YbQuNC90L7QvCDQvdCwINC00L7RmNC60LAs
-INC+0LQg0YHQuNGC0LUg0LzQtdC00LjRhtC40L3RgdC60Lgg0LjQvdC00LjQutCw0YbQuNC4LCDQ
-vNC+0ZjQsNGC0LAg0YHQvtGB0YLQvtGY0LHQsCDQvdCw0LLQuNGB0YLQuNC90LAg0YHQtSDQstC7
-0L7RiNC4INC4INC+0YfQuNCz0LvQtdC00L3QviDQtSDQtNC10LrQsCDQvNC+0LbQtdCx0Lgg0L3Q
-tdC80LAg0LTQsCDQttC40LLQtdCw0Lwg0L/QvtCy0LXRnNC1INC+0LQg0YjQtdGB0YIg0LzQtdGB
-0LXRhtC4INC60LDQutC+INGA0LXQt9GD0LvRgtCw0YIg0L3QsCDQsdGA0LfQuNC+0YIg0YDQsNGB
-0YIg0Lgg0LHQvtC70LrQsNGC0LAg0YjRgtC+INGB0LUg0ZjQsNCy0YPQstCwINC60LDRmCDQvdC1
-0LAuINCc0L7RmNC+0YIg0YHQvtC/0YDRg9CzINC/0L7Rh9C40L3QsCDQvdC10LrQvtC70LrRgyDQ
-s9C+0LTQuNC90Lgg0L3QsNC90LDQt9Cw0LQg0Lgg0L3QsNGI0LjRgtC1INC00L7Qu9Cz0Lgg0LPQ
-vtC00LjQvdC4INCx0YDQsNC6INC90LUg0LHQtdCwINCx0LvQsNCz0L7RgdC70L7QstC10L3QuCDR
-gdC+INC90LjRgtGDINC10LTQvdC+INC00LXRgtC1LCDQv9C+INC90LXQs9C+0LLQsNGC0LAg0YHQ
-vNGA0YIg0LPQviDQvdCw0YHQu9C10LTQuNCyINGG0LXQu9C+0YLQviDQvdC10LPQvtCy0L4g0LHQ
-vtCz0LDRgtGB0YLQstC+Lg0KDQrQlNC+0LDRk9Cw0Lwg0LrQsNGYINCy0LDRgSDQvtGC0LrQsNC6
-0L4g0YHQtSDQv9C+0LzQvtC70LjQsiDQt9CwINGC0L7QsCwg0L/QvtC00LPQvtGC0LLQtdC9INGB
-0YPQvCDQtNCwINC00L7QvdC40YDQsNC8INGB0YPQvNCwINC+0LQgMiwgMzAwLCAwMDAg0LXQstGA
-0LAg0LfQsCDQv9C+0LzQvtGIINC90LAg0YHQuNGA0L7QvNCw0YjQvdC40YLQtSwg0YHQuNGA0L7Q
-vNCw0YjQvdC40YLQtSDQuCDQv9C+0LzQsNC70LrRgyDQv9GA0LjQstC40LvQtdCz0LjRgNCw0L3Q
-uNGC0LUg0LzQtdGT0YMg0LLQsNGI0LjRgtC1INGB0L7QsdGA0LDQvdC40ZjQsCAvINC+0L/RiNGC
-0LXRgdGC0LLQvi4g0JfQsNCx0LXQu9C10LbQtdGC0LUg0LTQtdC60LAg0L7QstC+0Zgg0YTQvtC9
-0LQg0LUg0LTQtdC/0L7QvdC40YDQsNC9INCy0L4g0LHQsNC90LrQsCDQutCw0LTQtSDRiNGC0L4g
-0YDQsNCx0L7RgtC10YjQtSDQvNC+0ZjQvtGCINGB0L7Qv9GA0YPQsy4gQXBwcmVjaWF0ZdC1INGG
-0LXQvdCw0Lwg0LDQutC+INC+0LHRgNC90LXRgtC1INCy0L3QuNC80LDQvdC40LUg0L3QsCDQvNC+
-0LXRgtC+INCx0LDRgNCw0ZrQtSDQt9CwINC/0YDQvtC/0LDQs9C40YDQsNGa0LUg0L3QsCDQvNCw
-0YHQsNC20LDRgtCwINC90LAg0LrRgNCw0LvRgdGC0LLQvtGC0L4sINGc0LUg0LLQuCDQtNCw0LTQ
-sNC8INC/0L7QstC10ZzQtSDQtNC10YLQsNC70Lgg0LfQsCDRgtC+0LAg0LrQsNC60L4g0LTQsCDQ
-v9C+0YHRgtCw0L/QuNGC0LUuDQoNCtCR0LvQsNCz0L7QtNCw0YDQsNC8DQrQky3Rk9CwINCc0LXR
-gNC40LvQuNC9INCg0L7QsdC10YDRgg==
+The following patches were made over Michael's vhost branch here:
+https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git/log/?h=vhost
+ 
+The patches also apply to Linus's or Martin's trees if you apply
+https://patchwork.kernel.org/patch/11790681/
+which was merged into mst's tree already.
+
+The following patches are a follow up to this post:
+https://patchwork.kernel.org/cover/11790763/
+which originally was fixing how vhost-scsi handled cmds so we would
+not get IO errors when sending more than 256 cmds.
+
+In that patchset I needed to detect if a vq was in use and for this
+patch:
+https://patchwork.kernel.org/patch/11790685/
+it was suggested to add support for VHOST_RING_ENABLE. While doing
+that though I hit a couple problems:
+
+1. The patches moved how vhost-scsi allocated cmds from per lio
+session to per vhost vq. To support both VHOST_RING_ENABLE and
+where userspace didn't support it, I would have to keep around the
+old per session/device cmd allocator/completion and then also maintain
+the new code. Or, I would still have to use this patch
+patchwork.kernel.org/cover/11790763/ for the compat case so there
+adding the new ioctl would not help much.
+
+2. For vhost-scsi I also wanted to prevent where we allocate iovecs
+for 128 vqs even though we normally use a couple. To do this, I needed
+something similar to #1, but the problem is that the VHOST_RING_ENABLE
+call would come too late.
+
+To try and balance #1 and #2, these patches just allow vhost-scsi
+to setup a vq when userspace starts to config it. This allows the
+driver to only fully setup (we still waste some memory to support older
+setups but do not have to preallocate everything like before) what
+is used plus I do not need to maintain 2 code paths.
+
+Note that in this posting I am also including additional patches
+that create multiple vhost worker threads, because I wanted to see
+if people felt that maybe to support that and for this enablement
+issue we want a completely a new ioctl.
+
+
+V2:
+- fix use before set cpu var errors
+- drop vhost_vq_is_setup
+- include patches to do a worker thread per scsi IO vq
+
+
