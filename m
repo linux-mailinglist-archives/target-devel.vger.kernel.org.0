@@ -2,397 +2,109 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 066EB2874A3
-	for <lists+target-devel@lfdr.de>; Thu,  8 Oct 2020 14:59:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA662287B45
+	for <lists+target-devel@lfdr.de>; Thu,  8 Oct 2020 19:57:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730150AbgJHM7M (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 8 Oct 2020 08:59:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42690 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730147AbgJHM7M (ORCPT
+        id S1727092AbgJHR5A (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 8 Oct 2020 13:57:00 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:42922 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726165AbgJHR5A (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 8 Oct 2020 08:59:12 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E399C061755;
-        Thu,  8 Oct 2020 05:59:11 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id h24so7955037ejg.9;
-        Thu, 08 Oct 2020 05:59:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=6CmIcId382ivY506pDLn4Z1yLiEWLzzu+5hgEvy88Ek=;
-        b=QROsOIb2NLc+L48R0aTNjK+EvEiYGtHeVHqeGjDRhemtf/A6dCdJ4mUM62dbugARfp
-         lvap24jn0C2OaHoFxOBwiNTDKe5Pdr7588MfPoUDABoVHgohQqpxJ4HHyQRKc8KsKd3y
-         BqdUH7GDg0GSUAtnsymsDA/JdFX+DBgS/IGe+epxp5Eoe9PhcWjTjmQY9jCxKtvTu8Dx
-         CQ6cvDuloHmnvmO75ZdzFhEWVgY5gvmAftjgG6WjTvlFfgInkx5DRH0AL7+C2U8I55Yq
-         /ZG2QpiE0MXYmbjAp7MEQx+G6rOXTFHEEaaZEOznB6Yy79B+qu4HlJMxf6jFAxUtRTKb
-         B0RQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=6CmIcId382ivY506pDLn4Z1yLiEWLzzu+5hgEvy88Ek=;
-        b=Q53YH7BhiCFP0YwNjTSbqJJ0WWeO58RiiwqRwhDnGcOJFvSXDSN0giOkW4IhVvRIGV
-         drNcQdvXyrohwSVkG745397az0F49lIPhp2YT3K1Nsr6+/BJCDKa4MxU9t9+7k/USmRj
-         omvRQH073l0UA1fjjD9O54q6/zcT6MlvFUFDKXdyaLwb9+GI6LrX1+7rzjYw4/mjHu02
-         C1Lw2WWHstSP3i/Hj/OTlLg/CYWHRPPW3qw438FInzBKqdCeb6X46PH48Va+wd+PzREZ
-         QbBmfAWLFamFeExcjzQsMj3L/zD0DUpfLaNHcuOz0gjwz84tf8uUXLmD89pFgorpUNQb
-         cggg==
-X-Gm-Message-State: AOAM533/hi3diYLNvdOBC00ZnwplckixTaathCmv9Ag1DSNFBM3+CK6w
-        c955oEYBwwYh+ZJG/uSkFA7uj7xP/6CRNEWb
-X-Google-Smtp-Source: ABdhPJypEPAellamsjbvWMZFyIv/RHXWnPicAvsIFeLGc++Tfp1IXNucdZjhxZ7E1bVPnummXYTvbg==
-X-Received: by 2002:a17:906:b053:: with SMTP id bj19mr8233662ejb.146.1602161950181;
-        Thu, 08 Oct 2020 05:59:10 -0700 (PDT)
-Received: from localhost (ipbcc08ad4.dynamic.kabel-deutschland.de. [188.192.138.212])
-        by smtp.gmail.com with ESMTPSA id m7sm4475554edv.88.2020.10.08.05.59.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Oct 2020 05:59:09 -0700 (PDT)
-From:   Bodo Stroesser <bostroesser@gmail.com>
-To:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Mike Christie <michael.christie@oracle.com>
-Cc:     James Bottomley <James.Bottomley@HansenPartnership.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        Bodo Stroesser <bostroesser@gmail.com>
-Subject: [PATCH v4] scsi: target: tcmu: add compat mode for 32bit userspace on 64bit kernel
-Date:   Thu,  8 Oct 2020 14:58:49 +0200
-Message-Id: <20201008125849.10407-1-bostroesser@gmail.com>
-X-Mailer: git-send-email 2.12.3
+        Thu, 8 Oct 2020 13:57:00 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 098Hs46U022618;
+        Thu, 8 Oct 2020 17:56:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : from : to :
+ references : message-id : date : mime-version : in-reply-to : content-type
+ : content-transfer-encoding; s=corp-2020-01-29;
+ bh=h8ss32GNoMY4Gb2h06R51s5k0jGG0pfVMa62VOK6f9g=;
+ b=o3M8hguzI65ghvo/l3eusiiM+2QX1EoiTKM76EIDVpm75pkBNAxnUVdZX1Sa8erxByLP
+ /XNrfrg3GuAWuIql51hSyJWGoH0Da72r31pjVCdpQsk75DdDTbGQmIcxIrHLwDogjjOZ
+ ztPGTubBm/qTPam0cTgvDuZSF5SPMEifhULp9nLVBuACuHv2USnOimUaf0gkCCzSzr0s
+ WNYnjqGaZ84J4fakZ6LN85q05wftftLgRumZwJf5Pm22iYKzyDAQpxR+49yHAq1e8Gdt
+ wdhACX71pP/lH1LgPRY4miDX+EvM2k8VcPUBg/OxQr1fRD35SDnybxNgf0JAtufjO6t4 JA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 33ym34x8f9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 08 Oct 2020 17:56:56 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 098HtNJk022904;
+        Thu, 8 Oct 2020 17:56:56 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 33y2vrc30f-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 08 Oct 2020 17:56:55 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 098HusN5027222;
+        Thu, 8 Oct 2020 17:56:54 GMT
+Received: from [20.15.0.202] (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 08 Oct 2020 10:56:54 -0700
+Subject: Re: [PATCH 12/16] vhost: support multiple worker threads
+From:   Mike Christie <michael.christie@oracle.com>
+To:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, mst@redhat.com, jasowang@redhat.com,
+        pbonzini@redhat.com, stefanha@redhat.com,
+        virtualization@lists.linux-foundation.org
+References: <1602104101-5592-1-git-send-email-michael.christie@oracle.com>
+ <1602104101-5592-13-git-send-email-michael.christie@oracle.com>
+Message-ID: <da6f25b4-7a98-9294-a987-43d100625499@oracle.com>
+Date:   Thu, 8 Oct 2020 12:56:53 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <1602104101-5592-13-git-send-email-michael.christie@oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9768 signatures=668681
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
+ malwarescore=0 suspectscore=0 spamscore=0 phishscore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2010080131
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9768 signatures=668681
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0 priorityscore=1501
+ mlxscore=0 mlxlogscore=999 clxscore=1015 bulkscore=0 spamscore=0
+ malwarescore=0 phishscore=0 suspectscore=0 adultscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2010080131
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-When using tcmu it might happen, that userspace application cannot
-be built as 64 bit program even on a 64 bit host due to existing
-32 bit libraries that must be used, e.g. for compression, encryption,
-deduplication, ...
+On 10/7/20 3:54 PM, Mike Christie wrote:
+> This is a prep patch to support multiple vhost worker threads per vhost
+> dev. This patch converts the code that had assumed a single worker
+> thread by:
+> 
+> 1. Moving worker related fields to a new struct vhost_worker.
+> 2. Converting vhost.c code to use the new struct and assume we will
+> have an array of workers.
+> 3. It also exports a helper function that will be used in the last
+> patch when vhost-scsi is converted to use this new functionality.
+> 
 
-Currently this only works with manual changes in userspace include
-file target_core_user.h due to a missing padding field in
-struct tcmu_cmd_entry. Additionally one has to change uio.h because
-32-bit userspace interprets struct iovec to have 8 byte size while
-64-bit kernel creates it with 16 byte size.
+Oh yeah I also wanted to bring up this patch:
 
-This patch adds CONFIG_COMPAT support for X86_64 in tcmu to avoid
-header file editing.
+https://www.spinics.net/lists/netdev/msg192548.html
 
-During mmap() of the command ring and data area of tcmu_dev's
-uio device, tcmu checks and saves the value returned from
-in_compat_syscall(). That way it allows multiple tasks to mmap()
-only if they are of same type (32-/64-bit).
+The problem with my multi-threading patches is that I was focused on
+the cgroup support parts and that lead to some gross decisions.
 
-During SCSI command processing tcmu now creates tcmu_cmd_entry
-records according to the saved type of the userspace program.
+1. I kept the cgroup support, but as a result I do not have control
+over the threading affinity and making sure cmds are executed on a
+optimal CPU like the above patches do.
 
-Offset and size of data fields in tcmu_cmd_entry differ between
-32-bit and 64-bit only in the req part.
-The field cdb_off (__u64) is on a 4-byte boundary in 32-bit, while
-in 64-bit it is on the next 8-byte boundary.
-The same is true for the start of the "struct iovec iov[]" array.
-It also contains 8 vs. 16 byte per array entry in 32-bit vs 64-bit
-mode.
+When I drop the cgroup support and make sure threads are bound to
+specific CPUs and then make sure IO is run on the CPU it came in on
+then IOPs jumps from 600K to 800K for vhost-scsi.
 
-Since differences are not too many, I mostly inserted changes into
-existing code where necessary instead of writing a full set of
-compat_* functions.
+2. I can possible create a lot of threads.
 
-This patch is tested on x86_64.
+So a couple open issues are:
 
-Signed-off-by: Bodo Stroesser <bostroesser@gmail.com>
----
+1. Can we do a thread per cpu that is shared across all vhost devices?
+That would lead to dropping the cgroup vhost worker support.
 
-This patch is made on top of Martin's 5.10/scsi-queue tree
-
-History:
-
-- First attempt was a PATCH RFC that didn't compile correctly in
-  32-bit kernel, but in 64bit kernel only.
-
-- The first PATCH was fixed to compile in 32bit kernel and in
-  64bit kernel with and without CONFIG_COMPAT.
-  Additionally I changed it to support CONFIG_COMPAT for X86_64
-  only, since I wasn't able to find out what field sizes and
-  offsets if struct tcmu_cmd_entry userspace programs on other
-  archs would expect in compat mode.
-
-- V2:
-  Meanwhile I found out, that the compat handling in the patch
-  should be fine for all ARCHes:
-  * see iovec vs. compat_iovec handling in fs/io_uring.c
-  * see usage of "__attribute__ ((__packed__))" in
-    struct btrfs_ioctl_send_args_32 in fs/btrfs/ioctl.c
-    vs. struct btrfs_ioctl_send_args in include/uapi/linux/btrfs.h
-  So I re-allowed COMPAT support for all ARCHes.
-
-- V3:
-  Now the patch is based on Martin's 5.10/scsi-queue branch plus
-  the following 3 patches I wrote to make code easier to
-  understand and speed up command handling for READ type commands:
-    scsi: target: tcmu: join tcmu_cmd_get_data_length and tcmu_cmd_get_block_cnt
-    scsi: target: tcmu: optimize queue_cmd_ring
-    scsi: target: tcmu: optimize scatter_data_area
-  The above small series already splits off iov creation from
-  scatter_data_area and simplifies it. Based on that and according
-  to Mike's comment on V2, I reworked the patch to no longer have
-  multi line pieces of code in #ifdef TCMU_COMPAT.
-
-- V4:
-  * Resend with changed author/signed-off email address
-  * In case TCMU_COMPAT is not set, define tcmu_mmap_compat_check
-    as a macro.
-  * patch applies to scsi-queue or staging branch.
----
- drivers/target/target_core_user.c | 134 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 125 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-index 4c960b66de8e..954031c48830 100644
---- a/drivers/target/target_core_user.c
-+++ b/drivers/target/target_core_user.c
-@@ -24,6 +24,12 @@
- #include <net/genetlink.h>
- #include <scsi/scsi_common.h>
- #include <scsi/scsi_proto.h>
-+
-+#if defined(CONFIG_COMPAT) && defined(CONFIG_64BIT)
-+#define TCMU_COMPAT
-+#include <linux/compat.h>
-+#endif
-+
- #include <target/target_core_base.h>
- #include <target/target_core_fabric.h>
- #include <target/target_core_backend.h>
-@@ -136,6 +142,11 @@ struct tcmu_dev {
- 	uint32_t max_blocks;
- 	size_t ring_size;
- 
-+#ifdef TCMU_COMPAT
-+	bool compat;
-+	bool new_open;
-+#endif
-+
- 	struct mutex cmdr_lock;
- 	struct list_head qfull_queue;
- 	struct list_head tmr_queue;
-@@ -197,6 +208,31 @@ struct tcmu_tmr {
- 	int16_t tmr_cmd_ids[0];
- };
- 
-+#ifdef TCMU_COMPAT
-+struct tcmu_compat_cmd_entry {
-+	struct tcmu_cmd_entry_hdr hdr;
-+
-+	union {
-+		struct {
-+			__u32 iov_cnt;
-+			__u32 iov_bidi_cnt;
-+			__u32 iov_dif_cnt;
-+			__u64 cdb_off;
-+			__u64 __pad1;
-+			__u64 __pad2;
-+			struct compat_iovec iov[0];
-+		} __packed req;
-+		struct {
-+			__u8 scsi_status;
-+			__u8 __pad1;
-+			__u16 __pad2;
-+			__u32 read_len;
-+			char sense_buffer[TCMU_SENSE_BUFFERSIZE];
-+		} rsp;
-+	};
-+} __packed;
-+#endif
-+
- /*
-  * To avoid dead lock the mutex lock order should always be:
-  *
-@@ -585,6 +621,26 @@ static inline void tcmu_cmd_set_block_cnts(struct tcmu_cmd *cmd)
- 	}
- }
- 
-+#ifdef TCMU_COMPAT
-+static int handle_compat_iovec(struct tcmu_dev *udev, struct iovec **iov,
-+			       int prev_dbi, int dbi, int len)
-+{
-+	struct compat_iovec **c_iov = (struct compat_iovec **)iov;
-+
-+	if (dbi != prev_dbi + 1) {
-+		/* dbi is not next to previous dbi, so start new iov */
-+		if (prev_dbi >= 0)
-+			(*c_iov)++;
-+		/* write offset relative to mb_addr */
-+		(*c_iov)->iov_base = (compat_uptr_t)
-+				(udev->data_off + dbi * DATA_BLOCK_SIZE);
-+	}
-+	(*c_iov)->iov_len += len;
-+
-+	return dbi;
-+}
-+#endif
-+
- static int new_block_to_iov(struct tcmu_dev *udev, struct tcmu_cmd *cmd,
- 			    struct iovec **iov, int prev_dbi, int *remain)
- {
-@@ -598,6 +654,10 @@ static int new_block_to_iov(struct tcmu_dev *udev, struct tcmu_cmd *cmd,
- 	 * The following code will gather and map the blocks to the same iovec
- 	 * when the blocks are all next to each other.
- 	 */
-+#ifdef TCMU_COMPAT
-+	if (udev->compat)
-+		return handle_compat_iovec(udev, iov, prev_dbi, dbi, len);
-+#endif
- 	if (dbi != prev_dbi + 1) {
- 		/* dbi is not next to previous dbi, so start new iov */
- 		if (prev_dbi >= 0)
-@@ -886,8 +946,14 @@ static int tcmu_alloc_data_space(struct tcmu_dev *udev, struct tcmu_cmd *cmd,
- 	return iov_cnt + ret;
- }
- 
--static inline size_t tcmu_cmd_get_base_cmd_size(size_t iov_cnt)
-+static inline size_t tcmu_cmd_get_base_cmd_size(struct tcmu_dev *tcmu_dev,
-+						size_t iov_cnt)
- {
-+#ifdef TCMU_COMPAT
-+	if (tcmu_dev->compat)
-+		return max(offsetof(struct tcmu_compat_cmd_entry, req.iov[iov_cnt]),
-+				sizeof(struct tcmu_compat_cmd_entry));
-+#endif
- 	return max(offsetof(struct tcmu_cmd_entry, req.iov[iov_cnt]),
- 			sizeof(struct tcmu_cmd_entry));
- }
-@@ -1029,7 +1095,7 @@ static int queue_cmd_ring(struct tcmu_cmd *tcmu_cmd, sense_reason_t *scsi_err)
- 	 * Must be a certain minimum size for response sense info, but
- 	 * also may be larger if the iov array is large.
- 	 */
--	base_command_size = tcmu_cmd_get_base_cmd_size(iov_cnt);
-+	base_command_size = tcmu_cmd_get_base_cmd_size(udev, iov_cnt);
- 	command_size = tcmu_cmd_get_cmd_size(tcmu_cmd, base_command_size);
- 
- 	if (command_size > (udev->cmdr_size / 2)) {
-@@ -1068,7 +1134,13 @@ static int queue_cmd_ring(struct tcmu_cmd *tcmu_cmd, sense_reason_t *scsi_err)
- 
- 	/* prepare iov list and copy data to data area if necessary */
- 	tcmu_cmd_reset_dbi_cur(tcmu_cmd);
--	iov = &entry->req.iov[0];
-+#ifdef TCMU_COMPAT
-+	if (udev->compat)
-+		iov = (struct iovec *)
-+			&((struct tcmu_compat_cmd_entry *)entry)->req.iov[0];
-+	else
-+#endif
-+		iov = &entry->req.iov[0];
- 
- 	if (se_cmd->data_direction == DMA_TO_DEVICE ||
- 	    se_cmd->se_cmd_flags & SCF_BIDI)
-@@ -1080,7 +1152,13 @@ static int queue_cmd_ring(struct tcmu_cmd *tcmu_cmd, sense_reason_t *scsi_err)
- 
- 	/* Handle BIDI commands */
- 	if (se_cmd->se_cmd_flags & SCF_BIDI) {
--		iov++;
-+#ifdef TCMU_COMPAT
-+		if (udev->compat)
-+			iov = (struct iovec *)((struct compat_iovec *)iov + 1);
-+		else
-+#endif
-+			iov++;
-+
- 		tcmu_setup_iovs(udev, tcmu_cmd, &iov, tcmu_cmd->data_len_bidi);
- 		entry->req.iov_bidi_cnt = iov_bidi_cnt;
- 	}
-@@ -1094,7 +1172,13 @@ static int queue_cmd_ring(struct tcmu_cmd *tcmu_cmd, sense_reason_t *scsi_err)
- 	/* All offsets relative to mb_addr, not start of entry! */
- 	cdb_off = CMDR_OFF + cmd_head + base_command_size;
- 	memcpy((void *) mb + cdb_off, se_cmd->t_task_cdb, scsi_command_size(se_cmd->t_task_cdb));
--	entry->req.cdb_off = cdb_off;
-+#ifdef TCMU_COMPAT
-+	if (udev->compat)
-+		((struct tcmu_compat_cmd_entry *)entry)->req.cdb_off = cdb_off;
-+	else
-+#endif
-+		entry->req.cdb_off = cdb_off;
-+
- 	tcmu_flush_dcache_range(entry, command_size);
- 
- 	UPDATE_HEAD(mb->cmd_head, command_size, udev->cmdr_size);
-@@ -1729,6 +1813,32 @@ static const struct vm_operations_struct tcmu_vm_ops = {
- 	.fault = tcmu_vma_fault,
- };
- 
-+#ifdef TCMU_COMPAT
-+static void __tcmu_reset_ring(struct tcmu_dev *, u8);
-+
-+static int tcmu_mmap_compat_check(struct tcmu_dev *udev)
-+{
-+	mutex_lock(&udev->cmdr_lock);
-+	if (udev->new_open) {
-+		if (in_compat_syscall() != udev->compat) {
-+			udev->compat = !udev->compat;
-+			__tcmu_reset_ring(udev, 1);
-+		}
-+		udev->new_open = false;
-+	} else if (in_compat_syscall() != udev->compat) {
-+		mutex_unlock(&udev->cmdr_lock);
-+		return -EINVAL;
-+	}
-+	mutex_unlock(&udev->cmdr_lock);
-+
-+	pr_debug("mmap() successful on %s, compat = %d\n", udev->name, udev->compat);
-+
-+	return 0;
-+}
-+#else
-+#define tcmu_mmap_compat_check(udev) 0
-+#endif
-+
- static int tcmu_mmap(struct uio_info *info, struct vm_area_struct *vma)
- {
- 	struct tcmu_dev *udev = container_of(info, struct tcmu_dev, uio_info);
-@@ -1742,7 +1852,7 @@ static int tcmu_mmap(struct uio_info *info, struct vm_area_struct *vma)
- 	if (vma_pages(vma) != (udev->ring_size >> PAGE_SHIFT))
- 		return -EINVAL;
- 
--	return 0;
-+	return tcmu_mmap_compat_check(udev);
- }
- 
- static int tcmu_open(struct uio_info *info, struct inode *inode)
-@@ -1755,6 +1865,9 @@ static int tcmu_open(struct uio_info *info, struct inode *inode)
- 
- 	udev->inode = inode;
- 	kref_get(&udev->kref);
-+#ifdef TCMU_COMPAT
-+	udev->new_open = true;
-+#endif
- 
- 	pr_debug("open\n");
- 
-@@ -2209,14 +2322,12 @@ static void tcmu_block_dev(struct tcmu_dev *udev)
- 	mutex_unlock(&udev->cmdr_lock);
- }
- 
--static void tcmu_reset_ring(struct tcmu_dev *udev, u8 err_level)
-+static void __tcmu_reset_ring(struct tcmu_dev *udev, u8 err_level)
- {
- 	struct tcmu_mailbox *mb;
- 	struct tcmu_cmd *cmd;
- 	int i;
- 
--	mutex_lock(&udev->cmdr_lock);
--
- 	idr_for_each_entry(&udev->commands, cmd, i) {
- 		pr_debug("removing cmd %u on dev %s from ring (is expired %d)\n",
- 			  cmd->cmd_id, udev->name,
-@@ -2265,7 +2376,12 @@ static void tcmu_reset_ring(struct tcmu_dev *udev, u8 err_level)
- 	tcmu_remove_all_queued_tmr(udev);
- 
- 	run_qfull_queue(udev, false);
-+}
- 
-+static void tcmu_reset_ring(struct tcmu_dev *udev, u8 err_level)
-+{
-+	mutex_lock(&udev->cmdr_lock);
-+	__tcmu_reset_ring(udev, err_level);
- 	mutex_unlock(&udev->cmdr_lock);
- }
- 
--- 
-2.12.3
-
+2. Can we just use the kernel's workqueues then?
