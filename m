@@ -2,103 +2,49 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 88832286CE2
-	for <lists+target-devel@lfdr.de>; Thu,  8 Oct 2020 04:43:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E637286E39
+	for <lists+target-devel@lfdr.de>; Thu,  8 Oct 2020 07:41:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727663AbgJHCnX (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 7 Oct 2020 22:43:23 -0400
-Received: from smtprelay0225.hostedemail.com ([216.40.44.225]:50524 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727449AbgJHCnX (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Wed, 7 Oct 2020 22:43:23 -0400
-X-Greylist: delayed 405 seconds by postgrey-1.27 at vger.kernel.org; Wed, 07 Oct 2020 22:43:22 EDT
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave03.hostedemail.com (Postfix) with ESMTP id C6456181CA77A
-        for <target-devel@vger.kernel.org>; Thu,  8 Oct 2020 02:36:37 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay07.hostedemail.com (Postfix) with ESMTP id 57877181D337B;
-        Thu,  8 Oct 2020 02:36:36 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:541:973:988:989:1260:1311:1314:1345:1437:1515:1534:1542:1711:1730:1747:1777:1792:2194:2199:2393:2559:2562:2903:3138:3139:3140:3141:3142:3353:3865:3867:3868:3871:3874:4250:4321:4559:4605:5007:6261:8603:8957:10004:10848:11026:11658:11914:12043:12048:12296:12297:12555:12679:12895:12986:13161:13229:13870:13894:14096:14394:14721:21080:21433:21451:21627:30054:30062,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: table34_1a085dd271d4
-X-Filterd-Recvd-Size: 3500
-Received: from joe-laptop.perches.com (unknown [47.151.133.149])
-        (Authenticated sender: joe@perches.com)
-        by omf08.hostedemail.com (Postfix) with ESMTPA;
-        Thu,  8 Oct 2020 02:36:35 +0000 (UTC)
-From:   Joe Perches <joe@perches.com>
-To:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        linux-rdma@vger.kernel.org, target-devel@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH-next 0/4] RDMA: sprintf to sysfs_emit conversions
-Date:   Wed,  7 Oct 2020 19:36:23 -0700
-Message-Id: <cover.1602122879.git.joe@perches.com>
-X-Mailer: git-send-email 2.26.0
+        id S1728271AbgJHFle (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 8 Oct 2020 01:41:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56628 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728023AbgJHFld (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Thu, 8 Oct 2020 01:41:33 -0400
+Received: from localhost (unknown [213.57.247.131])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id CC01F206E9;
+        Thu,  8 Oct 2020 05:41:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602135693;
+        bh=DQOPFcbgjR1Ctf/u+f8XFQ9sBqwbx8OZySFosz7p3mI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=AAMXPES+6mXIY3W8EjWyxU0vPUiHlvktxQQ6x+NGUWNfLcMtUdKnXvQldmZSQbkfp
+         d8Z5vMDuI/kcjNUpVYRpXvaCmQ+5A8EetFqZBqOsBV2Bs1ZGAYmK5UB6l8RFy4rKh1
+         muOoSZ+I1yux+UT1WRhGC87EA9Q5CLuJoBd7QnQA=
+Date:   Thu, 8 Oct 2020 08:41:28 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+        linux-rdma@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH-next 0/4] RDMA: sprintf to sysfs_emit conversions
+Message-ID: <20201008054128.GD13580@unreal>
+References: <cover.1602122879.git.joe@perches.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1602122879.git.joe@perches.com>
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-A recent commit added a sysfs_emit and sysfs_emit_at to allow various
-sysfs show functions to ensure that the PAGE_SIZE buffer argument is
-never overrun and always NUL terminated.
+On Wed, Oct 07, 2020 at 07:36:23PM -0700, Joe Perches wrote:
+> A recent commit added a sysfs_emit and sysfs_emit_at to allow various
+> sysfs show functions to ensure that the PAGE_SIZE buffer argument is
+> never overrun and always NUL terminated.
 
-Convert the RDMA/InfiniBand subsystem to use these new functions.
+Unfortunately but the sysfs_emit commit is not in rdma-next tree yet.
 
-The first 2 patches exclusively used coccinelle to convert uses.
-The third and fourth patches were done manually.
-
-Compiled allyesconfig and defconfig with all infiniband options selected
-no warnings, but untested, no hardward
-
-Overall object size is reduced
-
-total size: allyesconfig x86-64
-new: 8364003	1680968	 131520	10176491 9b47eb	(TOTALS)
-old: 8365883	1681032	 131520	10178435 9b4f83	(TOTALS)
-
-total size: defconfig x86-64 with all infiniband selected
-new; 1359153	 131228	   1910  1492291 16c543	(TOTALS)
-old: 1359422	 131228	   1910  1492560 16c650	(TOTALS)
-
-Joe Perches (4):
-  RDMA: Convert sysfs device * show functions to use sysfs_emit()
-  RDMA: Convert sysfs kobject * show functions to use sysfs_emit()
-  RDMA: manual changes for sysfs_emit and neatening
-  RDMA: Convert various random sprintf sysfs _show uses to sysfs_emit
-
- drivers/infiniband/core/cm.c                  |   4 +-
- drivers/infiniband/core/cma_configfs.c        |   4 +-
- drivers/infiniband/core/sysfs.c               | 155 ++++++++++--------
- drivers/infiniband/core/ucma.c                |   2 +-
- drivers/infiniband/core/user_mad.c            |   6 +-
- drivers/infiniband/core/uverbs_main.c         |   4 +-
- drivers/infiniband/hw/bnxt_re/main.c          |   4 +-
- drivers/infiniband/hw/cxgb4/provider.c        |  13 +-
- drivers/infiniband/hw/hfi1/sysfs.c            |  62 ++++---
- drivers/infiniband/hw/i40iw/i40iw_verbs.c     |   6 +-
- drivers/infiniband/hw/mlx4/main.c             |   9 +-
- drivers/infiniband/hw/mlx4/mcg.c              |  82 +++++----
- drivers/infiniband/hw/mlx4/sysfs.c            |  70 ++++----
- drivers/infiniband/hw/mlx5/main.c             |  13 +-
- drivers/infiniband/hw/mthca/mthca_provider.c  |  33 ++--
- drivers/infiniband/hw/ocrdma/ocrdma_main.c    |   4 +-
- drivers/infiniband/hw/qedr/main.c             |  10 +-
- drivers/infiniband/hw/qib/qib_sysfs.c         |  91 +++++-----
- drivers/infiniband/hw/usnic/usnic_ib_sysfs.c  | 104 +++++-------
- .../infiniband/hw/vmw_pvrdma/pvrdma_main.c    |   6 +-
- drivers/infiniband/sw/rxe/rxe_verbs.c         |   2 +-
- drivers/infiniband/ulp/ipoib/ipoib_cm.c       |   4 +-
- drivers/infiniband/ulp/ipoib/ipoib_main.c     |   7 +-
- drivers/infiniband/ulp/ipoib/ipoib_vlan.c     |   2 +-
- drivers/infiniband/ulp/rtrs/rtrs-clt-sysfs.c  |  60 +++----
- drivers/infiniband/ulp/rtrs/rtrs-srv-sysfs.c  |  20 +--
- drivers/infiniband/ulp/srp/ib_srp.c           |  49 +++---
- drivers/infiniband/ulp/srpt/ib_srpt.c         |  14 +-
- 28 files changed, 423 insertions(+), 417 deletions(-)
-
--- 
-2.26.0
-
+Thanks
