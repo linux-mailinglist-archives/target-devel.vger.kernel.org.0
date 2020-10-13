@@ -2,81 +2,143 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7995928CD02
-	for <lists+target-devel@lfdr.de>; Tue, 13 Oct 2020 13:56:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAD3628D415
+	for <lists+target-devel@lfdr.de>; Tue, 13 Oct 2020 20:54:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727784AbgJML4O (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 13 Oct 2020 07:56:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58150 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727669AbgJMLyt (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Tue, 13 Oct 2020 07:54:49 -0400
-Received: from mail.kernel.org (ip5f5ad5b2.dynamic.kabel-deutschland.de [95.90.213.178])
+        id S1727994AbgJMSyN (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 13 Oct 2020 14:54:13 -0400
+Received: from pb-smtp2.pobox.com ([64.147.108.71]:61462 "EHLO
+        pb-smtp2.pobox.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727696AbgJMSyN (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Tue, 13 Oct 2020 14:54:13 -0400
+X-Greylist: delayed 469 seconds by postgrey-1.27 at vger.kernel.org; Tue, 13 Oct 2020 14:54:12 EDT
+Received: from pb-smtp2.pobox.com (unknown [127.0.0.1])
+        by pb-smtp2.pobox.com (Postfix) with ESMTP id BDF5E72F93;
+        Tue, 13 Oct 2020 14:46:22 -0400 (EDT)
+        (envelope-from nico@fluxnic.net)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=pobox.com; h=date:from:to
+        :cc:subject:in-reply-to:message-id:references:mime-version
+        :content-type; s=sasl; bh=1qdRcPgrMg9PaaTRWeHMHkWBgn4=; b=Epy+q5
+        ans9ahJwXxlQvxdjICPrBYTo3ECIn9AzWxzmuo835zX7Go5RA+la+QVdJswbYHqY
+        OA9uOWP+RHqwo1f/1Hjwskkbh9itwsmr5IKrZUme2Q4YRp5bQABuumhmd/Yh0NKM
+        sMhZUgbkZQs79wJJn2wtIPZ7EN0v5uRSG8bTQ=
+Received: from pb-smtp2.nyi.icgroup.com (unknown [127.0.0.1])
+        by pb-smtp2.pobox.com (Postfix) with ESMTP id B416672F92;
+        Tue, 13 Oct 2020 14:46:22 -0400 (EDT)
+        (envelope-from nico@fluxnic.net)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=fluxnic.net;
+ h=date:from:to:cc:subject:in-reply-to:message-id:references:mime-version:content-type; s=2016-12.pbsmtp; bh=/xoWviDLFg5PKRQ9rObRWDXVC++pmZtYhfbDb0DFq7E=; b=v5OoWtflZD131TYsBl2A9g0L/PCRe2nu6sy2IJY2ys8stI3sGPGydjk9hbVpZeTUKIjemrnRhLwKFlAM+dXEIGXz5t0LfwSiRA8m7hrB4WLH79+9F2ww8ICEhYu0fLjFgoDc1lKWqG4ZKNRDYjtbn/p6CJBipu1Te7ZvLuk/HMw=
+Received: from yoda.home (unknown [24.203.50.76])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4414821775;
-        Tue, 13 Oct 2020 11:54:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602590081;
-        bh=m2A+Rzm0QXUwCl96Bxiy3ZH3xuPHHZOxt+ALBjD9Gu0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MIuWPxCtV/U85BImd1p/O1jWCDfauLqsUOU1wBO4l9BqAWOdcBAovSXHjyLaKwk6G
-         trqECwQv7m2/tdh7krcIqtCPp6oAsTbLU2W5kIGYNrqRJ+ej0zo3ZBUOb/G7m/aL1O
-         lNKN+3jcy3UGTf0XeTHRKO+591CaOXMX/i4TucHI=
-Received: from mchehab by mail.kernel.org with local (Exim 4.94)
-        (envelope-from <mchehab@kernel.org>)
-        id 1kSIt5-006CWT-Nq; Tue, 13 Oct 2020 13:54:39 +0200
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        "Jonathan Corbet" <corbet@lwn.net>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Max Gurtovoy <maxg@mellanox.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Yamin Friedman <yaminf@mellanox.com>,
-        linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
-        target-devel@vger.kernel.org
-Subject: [PATCH v6 69/80] IB/srpt: docs: add a description for cq_size member
-Date:   Tue, 13 Oct 2020 13:54:24 +0200
-Message-Id: <d44a565b1638481c8dd282f01cae1fda3adf9fad.1602589096.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <cover.1602589096.git.mchehab+huawei@kernel.org>
-References: <cover.1602589096.git.mchehab+huawei@kernel.org>
+        by pb-smtp2.pobox.com (Postfix) with ESMTPSA id 3C74872F91;
+        Tue, 13 Oct 2020 14:46:22 -0400 (EDT)
+        (envelope-from nico@fluxnic.net)
+Received: from xanadu.home (xanadu.home [192.168.2.2])
+        by yoda.home (Postfix) with ESMTPSA id CF7492DA0BC7;
+        Tue, 13 Oct 2020 14:36:56 -0400 (EDT)
+Date:   Tue, 13 Oct 2020 14:36:56 -0400 (EDT)
+From:   Nicolas Pitre <nico@fluxnic.net>
+To:     Ira Weiny <ira.weiny@intel.com>
+cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
+        kexec@lists.infradead.org, linux-bcache@vger.kernel.org,
+        linux-mtd@lists.infradead.org, devel@driverdev.osuosl.org,
+        linux-efi@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-aio@kvack.org,
+        io-uring@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+        linux-um@lists.infradead.org, linux-ntfs-dev@lists.sourceforge.net,
+        reiserfs-devel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net,
+        linux-nilfs@vger.kernel.org, cluster-devel@redhat.com,
+        ecryptfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+        linux-btrfs@vger.kernel.org, linux-afs@lists.infradead.org,
+        linux-rdma@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-cachefs@redhat.com,
+        samba-technical@lists.samba.org, intel-wired-lan@lists.osuosl.org
+Subject: Re: [PATCH RFC PKS/PMEM 33/58] fs/cramfs: Utilize new
+ kmap_thread()
+In-Reply-To: <20201009195033.3208459-34-ira.weiny@intel.com>
+Message-ID: <nycvar.YSQ.7.78.906.2010131436200.2184@knanqh.ubzr>
+References: <20201009195033.3208459-1-ira.weiny@intel.com> <20201009195033.3208459-34-ira.weiny@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+X-Pobox-Relay-ID: 63974D0C-0D84-11EB-AE52-74DE23BA3BAF-78420484!pb-smtp2.pobox.com
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Changeset c804af2c1d31 ("IB/srpt: use new shared CQ mechanism")
-added a new member for struct srpt_rdma_ch, but didn't add the
-corresponding kernel-doc markup, as repoted when doing
-"make htmldocs":
-	./drivers/infiniband/ulp/srpt/ib_srpt.h:331: warning: Function parameter or member 'cq_size' not described in 'srpt_rdma_ch'
+On Fri, 9 Oct 2020, ira.weiny@intel.com wrote:
 
-Add a description for it.
+> From: Ira Weiny <ira.weiny@intel.com>
+> 
+> The kmap() calls in this FS are localized to a single thread.  To avoid
+> the over head of global PKRS updates use the new kmap_thread() call.
+> 
+> Cc: Nicolas Pitre <nico@fluxnic.net>
+> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 
-Fixes: c804af2c1d31 ("IB/srpt: use new shared CQ mechanism")
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- drivers/infiniband/ulp/srpt/ib_srpt.h | 1 +
- 1 file changed, 1 insertion(+)
+Acked-by: Nicolas Pitre <nico@fluxnic.net>
 
-diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.h b/drivers/infiniband/ulp/srpt/ib_srpt.h
-index 41435a699b53..e5d6af14d073 100644
---- a/drivers/infiniband/ulp/srpt/ib_srpt.h
-+++ b/drivers/infiniband/ulp/srpt/ib_srpt.h
-@@ -256,6 +256,7 @@ enum rdma_ch_state {
-  * @rdma_cm:	   See below.
-  * @rdma_cm.cm_id: RDMA CM ID associated with the channel.
-  * @cq:            IB completion queue for this channel.
-+ * @cq_size:	   Size of the @cq pool.
-  * @zw_cqe:	   Zero-length write CQE.
-  * @rcu:           RCU head.
-  * @kref:	   kref for this channel.
--- 
-2.26.2
-
+>  fs/cramfs/inode.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/fs/cramfs/inode.c b/fs/cramfs/inode.c
+> index 912308600d39..003c014a42ed 100644
+> --- a/fs/cramfs/inode.c
+> +++ b/fs/cramfs/inode.c
+> @@ -247,8 +247,8 @@ static void *cramfs_blkdev_read(struct super_block *sb, unsigned int offset,
+>  		struct page *page = pages[i];
+>  
+>  		if (page) {
+> -			memcpy(data, kmap(page), PAGE_SIZE);
+> -			kunmap(page);
+> +			memcpy(data, kmap_thread(page), PAGE_SIZE);
+> +			kunmap_thread(page);
+>  			put_page(page);
+>  		} else
+>  			memset(data, 0, PAGE_SIZE);
+> @@ -826,7 +826,7 @@ static int cramfs_readpage(struct file *file, struct page *page)
+>  
+>  	maxblock = (inode->i_size + PAGE_SIZE - 1) >> PAGE_SHIFT;
+>  	bytes_filled = 0;
+> -	pgdata = kmap(page);
+> +	pgdata = kmap_thread(page);
+>  
+>  	if (page->index < maxblock) {
+>  		struct super_block *sb = inode->i_sb;
+> @@ -914,13 +914,13 @@ static int cramfs_readpage(struct file *file, struct page *page)
+>  
+>  	memset(pgdata + bytes_filled, 0, PAGE_SIZE - bytes_filled);
+>  	flush_dcache_page(page);
+> -	kunmap(page);
+> +	kunmap_thread(page);
+>  	SetPageUptodate(page);
+>  	unlock_page(page);
+>  	return 0;
+>  
+>  err:
+> -	kunmap(page);
+> +	kunmap_thread(page);
+>  	ClearPageUptodate(page);
+>  	SetPageError(page);
+>  	unlock_page(page);
+> -- 
+> 2.28.0.rc0.12.gb6a658bd00c9
+> 
+> 
