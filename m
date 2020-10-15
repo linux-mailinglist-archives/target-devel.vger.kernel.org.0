@@ -2,91 +2,98 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A69228D682
-	for <lists+target-devel@lfdr.de>; Wed, 14 Oct 2020 00:43:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36B0B28EC49
+	for <lists+target-devel@lfdr.de>; Thu, 15 Oct 2020 06:32:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729064AbgJMWng (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 13 Oct 2020 18:43:36 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:34364 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728931AbgJMWnZ (ORCPT
+        id S1727531AbgJOEcG (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 15 Oct 2020 00:32:06 -0400
+Received: from mail-pj1-f66.google.com ([209.85.216.66]:34825 "EHLO
+        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725208AbgJOEcF (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 13 Oct 2020 18:43:25 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09DMYHRI023311;
-        Tue, 13 Oct 2020 22:43:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=BPXVhR8Zcz1sWINwPPKI15oRrSSfJmS7Dk7t6k2FBvc=;
- b=X98OMsUEJ6iXi28jlvGzIuUNtCUPCHKr9Y26mlldDvGV1tVg0rW4+z19ERv9nUm05fW2
- 7uLfRfkQC87plb6dqK0JgwDllNVeWHEr4KuohBovrquRB4Wp8Fn55mzzRhERGk86b1R8
- IUAHuFALM9P0nzG0SMad9VRc3S4BqwSCpX9uXbI7E8E4JWNs+M489BfaOy69s9tMy36o
- WsDINZk0QvR9KX7AD1uVtYIm858Ec1rCBrQM2cWhu74pWwQ4sERB2XP+p4QlG2a3ov36
- KsDceZW1Gf6MViMvswmWBcHmPujmAKdJrQLwx9ihpq7sGfN7gk8NuWumGIvUgBivX+8I Nw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 3434wkmr7r-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 13 Oct 2020 22:43:19 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09DMZeSv129581;
-        Tue, 13 Oct 2020 22:43:18 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by aserp3030.oracle.com with ESMTP id 343phntsx7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 13 Oct 2020 22:43:18 +0000
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 09DMhIGo146795;
-        Tue, 13 Oct 2020 22:43:18 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 343phntswf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 13 Oct 2020 22:43:18 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 09DMhFrt005717;
-        Tue, 13 Oct 2020 22:43:16 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 13 Oct 2020 15:43:15 -0700
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     linux-spi@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        dmaengine@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-media@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
-        linux-serial@vger.kernel.org, linux-nfs@vger.kernel.org,
-        linux-scsi@vger.kernel.org, Yossi Leybovich <sleybo@amazon.com>,
-        linux-block@vger.kernel.org, rds-devel@oss.oracle.com
-Subject: Re: [PATCH 00/14] drop double zeroing
-Date:   Tue, 13 Oct 2020 18:42:52 -0400
-Message-Id: <160262862433.3018.13907233755506910409.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <1600601186-7420-1-git-send-email-Julia.Lawall@inria.fr>
-References: <1600601186-7420-1-git-send-email-Julia.Lawall@inria.fr>
+        Thu, 15 Oct 2020 00:32:05 -0400
+Received: by mail-pj1-f66.google.com with SMTP id h4so1157352pjk.0;
+        Wed, 14 Oct 2020 21:32:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=K64GKhtw+rJqkS3SqXm3fRppZopgGb55fc2+FtOF5gQ=;
+        b=tWSfGlYQbcvmrtKPAS+cgouRRfSw4lO47PNj4sOLLtxbYK09dVCNPDclT9NyhMAPFK
+         P+2Ydv+MXh1csm9au1W7n3T+jjjqxIT6Wrm7HuLQD7vwRlQ4bqL9Js8ko+Y5ftdEjZ6i
+         eGr1DMl+ql9jdsue8QpezXqPanTJdHftZ28ATsO53yiGLAl/QWwnopU9+cku6AW6g7gn
+         +0CHixcINBal2/AkdwTO8iwUpUTyyMwutiHooNdRv5oXXcO4+ppVWjPpJFpeYkleaFsG
+         hUMVszCBLgvffnS7JlfFtg3T3J6yPLRxjUvB0pT5W/QtjT2BuhXnYl8WSnP0ZlUoSIuM
+         adpg==
+X-Gm-Message-State: AOAM533Aioho4YZ66eV+sCNOg0PPGUqSLwWeutxBghs/roWu9nqlBJp1
+        RBvxFRMg5EQ9MeVikEiLqksCIPFNOQCBIA==
+X-Google-Smtp-Source: ABdhPJxAHk/YzMqBEB5OL/UCNy2qUEkee/nT3sbO5NNRlDG85RqPqVpO35cLYkqneQeihGANHlLyOw==
+X-Received: by 2002:a17:90a:e107:: with SMTP id c7mr2333525pjz.27.1602736324170;
+        Wed, 14 Oct 2020 21:32:04 -0700 (PDT)
+Received: from [192.168.3.218] (c-73-241-217-19.hsd1.ca.comcast.net. [73.241.217.19])
+        by smtp.gmail.com with ESMTPSA id u14sm1282426pjf.53.2020.10.14.21.32.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Oct 2020 21:32:02 -0700 (PDT)
+Subject: Re: [PATCH v6 69/80] IB/srpt: docs: add a description for cq_size
+ member
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Max Gurtovoy <maxg@mellanox.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Yamin Friedman <yaminf@mellanox.com>,
+        linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+        target-devel@vger.kernel.org
+References: <cover.1602589096.git.mchehab+huawei@kernel.org>
+ <d44a565b1638481c8dd282f01cae1fda3adf9fad.1602589096.git.mchehab+huawei@kernel.org>
+From:   Bart Van Assche <bvanassche@acm.org>
+Message-ID: <f283f15e-073c-ee42-d022-5b543f041d0b@acm.org>
+Date:   Wed, 14 Oct 2020 21:32:01 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9773 signatures=668681
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 mlxscore=0
- malwarescore=0 phishscore=0 suspectscore=0 impostorscore=0 clxscore=1011
- spamscore=0 priorityscore=1501 bulkscore=0 adultscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010130158
+In-Reply-To: <d44a565b1638481c8dd282f01cae1fda3adf9fad.1602589096.git.mchehab+huawei@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Sun, 20 Sep 2020 13:26:12 +0200, Julia Lawall wrote:
+On 10/13/20 4:54 AM, Mauro Carvalho Chehab wrote:
+> Changeset c804af2c1d31 ("IB/srpt: use new shared CQ mechanism")
+> added a new member for struct srpt_rdma_ch, but didn't add the
+> corresponding kernel-doc markup, as repoted when doing
+> "make htmldocs":
+> 	./drivers/infiniband/ulp/srpt/ib_srpt.h:331: warning: Function parameter or member 'cq_size' not described in 'srpt_rdma_ch'
+> 
+> Add a description for it.
+> 
+> Fixes: c804af2c1d31 ("IB/srpt: use new shared CQ mechanism")
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> ---
+>  drivers/infiniband/ulp/srpt/ib_srpt.h | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.h b/drivers/infiniband/ulp/srpt/ib_srpt.h
+> index 41435a699b53..e5d6af14d073 100644
+> --- a/drivers/infiniband/ulp/srpt/ib_srpt.h
+> +++ b/drivers/infiniband/ulp/srpt/ib_srpt.h
+> @@ -256,6 +256,7 @@ enum rdma_ch_state {
+>   * @rdma_cm:	   See below.
+>   * @rdma_cm.cm_id: RDMA CM ID associated with the channel.
+>   * @cq:            IB completion queue for this channel.
+> + * @cq_size:	   Size of the @cq pool.
+>   * @zw_cqe:	   Zero-length write CQE.
+>   * @rcu:           RCU head.
+>   * @kref:	   kref for this channel.
 
-> sg_init_table zeroes its first argument, so the allocation of that argument
-> doesn't have to.
+That doesn't seem correct to me. My understanding is that cq_size is the
+number of CQEs in @cq. @cq is a completion queue and not a CQ pool.
 
-Applied to 5.10/scsi-queue, thanks!
+Bart.
 
-[02/14] scsi: target: rd: Drop double zeroing
-        https://git.kernel.org/mkp/scsi/c/4b217e015b75
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
