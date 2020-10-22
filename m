@@ -2,132 +2,119 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65D482955CE
-	for <lists+target-devel@lfdr.de>; Thu, 22 Oct 2020 02:51:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B5C429567B
+	for <lists+target-devel@lfdr.de>; Thu, 22 Oct 2020 04:42:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2894386AbgJVAv2 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 21 Oct 2020 20:51:28 -0400
-Received: from esa3.hgst.iphmx.com ([216.71.153.141]:10624 "EHLO
-        esa3.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2442801AbgJVAv2 (ORCPT
+        id S2895182AbgJVCm3 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 21 Oct 2020 22:42:29 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:38608 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2895180AbgJVCm3 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 21 Oct 2020 20:51:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1603327889; x=1634863889;
-  h=from:to:subject:date:message-id:references:
-   content-transfer-encoding:mime-version;
-  bh=clb5MlM+CXok+/xDSyuDCfYM1wmyJCpUebxR50WUymE=;
-  b=lgy5N1zr6+FzqmNImJY0csQSHu/0As2upIyfEoww0bo/OECCBy66wPTU
-   QwZr27Gl0p5zSmH8RuX3r3KwuELK/V4cKP45mySpdXzW+su/W8e5fhgl7
-   kxmGJxVyqO0/FMSpE2Xs9GpL0rQlpBH2X3GXZAH/u/EIFk6XEjYNLNo9I
-   PpUHJ3VPwqA7L3II8Ilc7pQpPzUJVrG3GnyJUXeX8UOInL5Vlb4/51Nzl
-   5fWcAgpUck8YiIDqUBshn23UmG2QauZBd/LTtDQj8FWhN/Js06ooWZTAC
-   DDbtxOLevwB+Cssh3cpnJdj2HkXn2EfONBoW3Hr3xQLPOHiecVCx2JAqQ
-   Q==;
-IronPort-SDR: 1mzjrhzHCyMe/DvZG3c8YUWuoWgFkmJUz3/Jd5j4SdTwW8ToXYWOs/FtuQFnZGrsmajkUfIMwl
- CyDznp75cRd+2Q9bh1ccYjjRg+N66iHZl+nRvCbM0PhBRGN6+Tcd71jLIlxvU2wRJS6u29s8c/
- YUWgTp4mpAaiDeYlhu1s8wlhH9kBgrA+bCvsgzM+Z9L9XSebD96m7UiDlwuZFxYWE/ex2PvE4D
- tCvFekbH7mjOATLOIduolUfec4Gwx+RM3TPA6E1Gs4EvuMW3YuoqHGRjhwJB6ENjxutLYKX1LM
- K70=
-X-IronPort-AV: E=Sophos;i="5.77,402,1596470400"; 
-   d="scan'208";a="155005387"
-Received: from mail-dm6nam11lp2174.outbound.protection.outlook.com (HELO NAM11-DM6-obe.outbound.protection.outlook.com) ([104.47.57.174])
-  by ob1.hgst.iphmx.com with ESMTP; 22 Oct 2020 08:51:28 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FCegf8YWPlWQ/yaTv9BxCwSLONMjvRDI7i+77XDWN8zsQK76WpqgIqDmB7iTxjYLqhJdO0Og5Rga2UtEmTn6pAuJYu9lttEU5IHkGL7wwhBu71Yzgn99NNVRYoIKar2r6re5wuIAspFYpt/hF1azW2kwnqy5s59mNLS56eLirtGOvcxSfoORWL4Jvn6q60v1vR1S59u67ULOGj3Ddk472jHecVhV0xC8hx+K1sQ5PXvirDvMJxf8gyoaKC5xrgXA3MBu2z3taQ+UqpM9kIyzcktgcgToqLDTVjINL1Q6IjRgEPb36yWmkRYoUc/r9MNEZEEv5Qi3jPvDVdjKtKnHyQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=clb5MlM+CXok+/xDSyuDCfYM1wmyJCpUebxR50WUymE=;
- b=OlMvY86+s3Y/VS35bNfS0mqI8dYSLeoaOUvcu++bB4wyCm5O5ts5NKtpPlPS8uXH+R7ZHbbqVQ5FNyQbGSOOXvl2x5SiW3cEW8GT9wtmDLKeLgyaaUA1ukdVrwb4oqJ3vxqxUxzOl4TKHX0KL0b5xlM9qfhfs3q7pNiZWKJ0S3Arie4np6oBlJ36peL2lMDhTV+3YrqFjOOZAw7BqE70FqheonTYGWNjlKSxhMCeXamdP1iUMSc6dSSkKTf0433iv7QGIJRurT99W5F+46154lhof+U3iFoH9S8N+Jilkys79jVOZMxZAX8fk0rqFINvyEIWkG45fPPJmByVjhEbnA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
- header.d=wdc.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=clb5MlM+CXok+/xDSyuDCfYM1wmyJCpUebxR50WUymE=;
- b=j7Zpq4hn53IADN1WmSCwp/OsmjyzWo+mngMgYAJSqEznm2/hipbXAYpSsM7gnRFGYPEo3kZeleU8cXyUFZTC4S+t1GOAm7sBSoTCCQUgV1Y3KjvoGrJTmaoBHYXATPvL5Dxrc9j11DyIuQMej/pGVIKE8WbuDFj//x4HmWauOb8=
-Received: from BYAPR04MB4965.namprd04.prod.outlook.com (2603:10b6:a03:4d::25)
- by BY5PR04MB6552.namprd04.prod.outlook.com (2603:10b6:a03:1d8::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.26; Thu, 22 Oct
- 2020 00:51:25 +0000
-Received: from BYAPR04MB4965.namprd04.prod.outlook.com
- ([fe80::99ae:ab95:7c27:99e4]) by BYAPR04MB4965.namprd04.prod.outlook.com
- ([fe80::99ae:ab95:7c27:99e4%7]) with mapi id 15.20.3477.029; Thu, 22 Oct 2020
- 00:51:25 +0000
-From:   Chaitanya Kulkarni <Chaitanya.Kulkarni@wdc.com>
-To:     Mike Christie <michael.christie@oracle.com>,
-        "martin.petersen@oracle.com" <martin.petersen@oracle.com>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>,
-        "mst@redhat.com" <mst@redhat.com>,
-        "jasowang@redhat.com" <jasowang@redhat.com>,
-        "pbonzini@redhat.com" <pbonzini@redhat.com>,
-        "stefanha@redhat.com" <stefanha@redhat.com>,
-        "virtualization@lists.linux-foundation.org" 
-        <virtualization@lists.linux-foundation.org>
-Subject: Re: [PATCH 02/17] vhost: remove work arg from vhost_work_flush
-Thread-Topic: [PATCH 02/17] vhost: remove work arg from vhost_work_flush
-Thread-Index: AQHWqAs6k3Dw2TcIYECQgg/ZbIRTxA==
-Date:   Thu, 22 Oct 2020 00:51:25 +0000
-Message-ID: <BYAPR04MB496583F88923E12239752032861D0@BYAPR04MB4965.namprd04.prod.outlook.com>
-References: <1603326903-27052-1-git-send-email-michael.christie@oracle.com>
- <1603326903-27052-3-git-send-email-michael.christie@oracle.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: oracle.com; dkim=none (message not signed)
- header.d=none;oracle.com; dmarc=none action=none header.from=wdc.com;
-x-originating-ip: [199.255.45.62]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 086729bb-e4c6-46f8-14bf-08d876249a92
-x-ms-traffictypediagnostic: BY5PR04MB6552:
-x-microsoft-antispam-prvs: <BY5PR04MB655232FBBE07AEE94D7F2BD1861D0@BY5PR04MB6552.namprd04.prod.outlook.com>
-wdcipoutbound: EOP-TRUE
-x-ms-oob-tlc-oobclassifiers: OLM:6790;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: TQryYoTMvkJBG62tMGs+cZ0e0aQyAAEOcmO42PgRhJcPtjBwQ0+Dya9y8k93Jfgh5A27yTZAwe7y7IOWwhMkBwvRXKSrkTuqtm6kQ28VpwOZomWz/z0Vf/OaBXnVfN7sJPVFJGPnCdoIpHUzjIpJWUKcxAHS/e3p5GV8IXdY/AS7qq/muWhnDSiepl+DKEhsaa/NXVvYSldtTD08ATu5NOavKOKM234w1eHEntgflc/ac6WoiEp/w0x7ssF6kb64kWQJhjjR2OIUvbnIxv5zufFLM+AgZevj8L+gv5QxGfdv9tbqfNY83DUA1u3hrTytafnjmBfab2LzU/y8YmV5Ag==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR04MB4965.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(346002)(396003)(39860400002)(376002)(366004)(4744005)(66446008)(66476007)(64756008)(55016002)(66556008)(478600001)(5660300002)(7696005)(8676002)(33656002)(186003)(26005)(316002)(2906002)(76116006)(66946007)(110136005)(9686003)(8936002)(53546011)(71200400001)(86362001)(6506007)(52536014);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata: OdOnDqj4ICC2K9rn75rUuSqciKTVCHOsNQFW3z1wwswKNbh9OYWWdbRMPj2KKcW5TIONIagv1mZORNQraHQ54MEtuE+cwWxJ8kcO+j+iMIwfIJeMJH0mvSlak2GVp0Tzs2kuv6OtD5J9WVeSbccfY+9qdv5PlIvBoj+awsaZT8e6KeNd2KXGwMbn9fUMsy/QGZu2SVfvlbfMoLNHzTZywCEqw5V7u2CfYDaG71Rb5sJPwuTsvJoosK3yKo6hJGgGAMx+eIRM8X5iFsU9JzhE8nIOFNbb/B8MzFqQeozeQQd4cdRyK4GWhZ5z5qAXEtfCq4rXF8LXbeTpfvL4hi8wto0G7ayISnKM+lSIuwTkxVFWZMdJ3rAMt3eEQX447B+Mj7KIXxyK5rUSmIl6ucjcjWEd1N1QuotWcm7BJy0DCxePHmPHCEtgRzRcMM/Uup0jjFbkYFw1fNnEVWaHvIpS2HsJvXx9QVUsxpb8bWuDLwLcYo80rWOo7m9wCLemxwQL1OaQuJZ5qwiEV4AbjoZaDbWBA3MFh7GRHcOKXK06JKFQLyQ6LluwJeJk/iHqhmNTU6beGM2TKdNWCPVAPRWjBJ4x+Nfb8Zyy4Be36vfjRlFFA0jadcwT0zPBlauYN/LPV/YM6l/cL98nkUeYNf0F2Q==
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        Wed, 21 Oct 2020 22:42:29 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09M2g2NC116641;
+        Thu, 22 Oct 2020 02:42:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=ID+MWcpfAgL/BolgPTt1XuoANirkm9tVdASOsjVwdnk=;
+ b=l4zHS5hWlnz4251npLbeaT7PaynC/DV3pr7Pkyuwuwr22W1y6dtdUAA7ErpLwDEws3xz
+ S+Hc1sX0/Ncm5g6LqO14OpWc2cn1XhJ6BcS3ozvQ5NYRxqcOI3eMEfmDO9+deE9EDfGH
+ EgYLgzw6ol5dA5XXVUpiBMr2yYy5EymGMZ9R3JLMa9VVDtyapFGKhR298+byd7WJmuiW
+ 1LOW9ZVr+DyLR9jWzdP7ASvP/nbDflpHv7TusIIxExHNIsXnD9n/8J05poulQO8yZ8JV
+ HOK5HqTZFnSbEREoPkywab5Zy+BbKZ2aXOAt3cKi4scCXcEhVQDa9JFfZjgfhwYvioQy MQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 349jrpuph8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 22 Oct 2020 02:42:25 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09M2TiTo029925;
+        Thu, 22 Oct 2020 02:42:25 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 348ah0b62e-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 22 Oct 2020 02:42:25 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 09M2gOqi004468;
+        Thu, 22 Oct 2020 02:42:24 GMT
+Received: from [20.15.0.202] (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 21 Oct 2020 19:42:24 -0700
+Subject: Re: [PATCH 2/2] target: iscsi: fix a race condition when aborting a
+ task
+To:     Maurizio Lombardi <mlombard@redhat.com>, martin.petersen@oracle.com
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        bvanassche@acm.org
+References: <20201007145326.56850-1-mlombard@redhat.com>
+ <20201007145326.56850-3-mlombard@redhat.com>
+From:   Mike Christie <michael.christie@oracle.com>
+Message-ID: <20daa17d-08e7-a412-4d33-bcf75587eca6@oracle.com>
+Date:   Wed, 21 Oct 2020 21:42:23 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-X-OriginatorOrg: wdc.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR04MB4965.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 086729bb-e4c6-46f8-14bf-08d876249a92
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Oct 2020 00:51:25.6140
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: dQm77/0z6P/qNJFG14UtJOQOM23sNQwl5MqwdH8180tJT8rKQQ/JlpfG6PZY/9d0VLLdlAjiUIobSmE7Dze2197Rk28E5dfIn1X4kDzW6ks=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR04MB6552
+In-Reply-To: <20201007145326.56850-3-mlombard@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9781 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 phishscore=0
+ malwarescore=0 spamscore=0 suspectscore=2 bulkscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2010220015
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9781 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 lowpriorityscore=0
+ priorityscore=1501 impostorscore=0 adultscore=0 bulkscore=0 malwarescore=0
+ mlxlogscore=999 mlxscore=0 spamscore=0 suspectscore=2 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2010220015
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 10/21/20 17:35, Mike Christie wrote:=0A=
-> vhost_work_flush doesn't do anything with the work arg. This patch drops=
-=0A=
-> it and then renames vhost_work_flush to vhost_work_dev_flush to reflect=
-=0A=
-> that the function flushes all the works in the dev and not just a=0A=
-> specific queue or work item.=0A=
->=0A=
-> Signed-off-by: Mike Christie <michael.christie@oracle.com>=0A=
-> Acked-by: Jason Wang <jasowang@redhat.com>=0A=
-=0A=
-Apparently it used local flush.work, not sure if it supposed to=0A=
-=0A=
-use work as an argument instead of local variable, if so looks good.=0A=
-=0A=
-Reviewed-by: Chaitanya Kulkarni <chaitanya.kulkarni@wdc.com>=0A=
-=0A=
+On 10/7/20 9:53 AM, Maurizio Lombardi wrote:
+> The iscsit_release_commands_from_conn() function does the following
+> operations:
+> 
+> 1) locks the cmd_lock spinlock
+> 2) Scans the list of commands and sets the CMD_T_FABRIC_STOP flag
+> 3) Releases the cmd_lock spinlock
+> 4) Rescans the list again and clears the i_conn_node link of each command
+> 
+> If an abort task timer is fired between 3) and 4), it will find
+> the CMD_T_FABRIC_STOP flag set and won't call list_del_init();
+> therefore it may end up calling __iscsit_free_cmd() with a
+> non-empty i_conn_node list, thus triggering the warning.
+> 
+> Considering that:
+> 
+> - we expect list_del_init() to be executed by
+>   iscsit_release_commands_from_conn() when the CMD_T_FABRIC_STOP is set.
+> - iscsit_aborted_task() is the only function that calls __iscsit_free_cmd()
+>   directly, while all the other functions call iscsit_free_cmd().
+> - the warning in __iscsit_free_cmd() is a duplicate (the same warning
+>   can be found in iscsit_free_cmd().
+> 
+
+For iscsi, what does the last put on the cmd for a successful abort. Ignore this conn stop case.
+
+If we abort a command successfully, the abort path does:
+
+target_handle_abort -> transport_cmd_check_stop_to_fabric -> lio_check_stop_free -> target_put_sess_cmd
+
+When we create the cmd we do transport_init_se_cmd and that sets the refcount=1. We do target_get_sess_cmd with ack_kref=true so that sets refcount=2.
+
+On the abort completion path, target_handle_abort does target_put_sess_cmd (refcount=1 after), check_stop_free ends up doing a put (refcount=0 after).
+
+If we free the cmd from the abort path, then for your conn stop plus abort race case, could we do:
+
+1. thread1 runs iscsit_release_commands_from_conn and sets CMD_T_FABRIC_STOP.
+2. thread2 runs iscsit_aborted_task and then does __iscsit_free_cmd. It then returns from the aborted_task callout and we finish target_handle_abort and do:
+
+target_handle_abort -> transport_cmd_check_stop_to_fabric -> lio_check_stop_free -> target_put_sess_cmd
+
+The cmd is now freed.
+3. thread1 now finishes iscsit_release_commands_from_conn and runs iscsit_free_cmd while accessing a command we just released.
+
+
