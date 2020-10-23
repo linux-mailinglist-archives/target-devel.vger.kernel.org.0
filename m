@@ -2,137 +2,99 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 956602963AF
-	for <lists+target-devel@lfdr.de>; Thu, 22 Oct 2020 19:29:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB4EF29729E
+	for <lists+target-devel@lfdr.de>; Fri, 23 Oct 2020 17:43:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2900100AbgJVR3f (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 22 Oct 2020 13:29:35 -0400
-Received: from mta-02.yadro.com ([89.207.88.252]:35592 "EHLO mta-01.yadro.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2899798AbgJVR3f (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 22 Oct 2020 13:29:35 -0400
-X-Greylist: delayed 533 seconds by postgrey-1.27 at vger.kernel.org; Thu, 22 Oct 2020 13:29:34 EDT
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id CA66541383;
-        Thu, 22 Oct 2020 17:20:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        content-type:content-type:content-transfer-encoding:mime-version
-        :references:in-reply-to:x-mailer:message-id:date:date:subject
-        :subject:from:from:received:received:received; s=mta-01; t=
-        1603387241; x=1605201642; bh=US3Q9GEiSZiER9sFlOyJzTMp2kVYp3dzXJQ
-        2iSrkMk8=; b=k72lWWrKGbzIPgl1dhqZQtUtGPaHucBwLMYYALKVFI9jlQbblPc
-        I1r0Oeef9+q80vVc8Qw+Lf8l/dvEyLXRL1uaQC8ZiBlVdQra13N6zyXUcgTLJ1n7
-        zznqEqNtdao77ebRwiHY95+BcCEWHj2gvDDGrRrUs9sTEypaKxZkfXVA=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id bn8tqel3mrwS; Thu, 22 Oct 2020 20:20:41 +0300 (MSK)
-Received: from T-EXCH-04.corp.yadro.com (t-exch-04.corp.yadro.com [172.17.100.104])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        id S463288AbgJWPnj (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 23 Oct 2020 11:43:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:57605 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S463279AbgJWPnj (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Fri, 23 Oct 2020 11:43:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1603467818;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=CNSGPrDZt0KFZ/gEfGLt+00ZQJB1j+rqXJsHwi7p7Tw=;
+        b=LtBq/dBAJJak5nh/gKY/rTuHkqmfUrCk8bvbTe94+EvUkBW8GGBlSyxN7YDiILsftkU9DR
+        Pd9mnUEzzl7FGJhNcicIISvHeGEnrfw9h2/Y8snh8z4jG/7983FKmJ7H5CXjK9gAYl1E3/
+        IfUCRfSnoybYDYppj6BUypONJMc5VAw=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-459-P7gkMaW6MZ6sGX5cfiMobA-1; Fri, 23 Oct 2020 11:43:27 -0400
+X-MC-Unique: P7gkMaW6MZ6sGX5cfiMobA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id 7B1F6413A7;
-        Thu, 22 Oct 2020 20:20:40 +0300 (MSK)
-Received: from localhost (172.17.204.63) by T-EXCH-04.corp.yadro.com
- (172.17.100.104) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Thu, 22
- Oct 2020 20:20:39 +0300
-From:   Anastasia Kovaleva <a.kovaleva@yadro.com>
-To:     <target-devel@vger.kernel.org>
-CC:     <linux-scsi@vger.kernel.org>, <linux@yadro.com>,
-        Anastasia Kovaleva <a.kovaleva@yadro.com>,
-        Roman Bolshakov <r.bolshakov@yadro.com>
-Subject: [PATCH 3/3] scsi: target: core: Change ASCQ for residual write
-Date:   Thu, 22 Oct 2020 20:20:11 +0300
-Message-ID: <20201022172011.42367-4-a.kovaleva@yadro.com>
-X-Mailer: git-send-email 2.24.3 (Apple Git-128)
-In-Reply-To: <20201022172011.42367-1-a.kovaleva@yadro.com>
-References: <20201022172011.42367-1-a.kovaleva@yadro.com>
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6999B86ABD9;
+        Fri, 23 Oct 2020 15:43:25 +0000 (UTC)
+Received: from redhat.com (ovpn-113-117.ams2.redhat.com [10.36.113.117])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id A19FA27CC2;
+        Fri, 23 Oct 2020 15:43:18 +0000 (UTC)
+Date:   Fri, 23 Oct 2020 11:43:14 -0400
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     kernel test robot <lkp@intel.com>
+Cc:     Mike Christie <michael.christie@oracle.com>,
+        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, jasowang@redhat.com,
+        pbonzini@redhat.com, stefanha@redhat.com,
+        virtualization@lists.linux-foundation.org, kbuild-all@lists.01.org
+Subject: Re: [PATCH 14/16] vhost: poll support support multiple workers
+Message-ID: <20201023114247-mutt-send-email-mst@kernel.org>
+References: <1602104101-5592-15-git-send-email-michael.christie@oracle.com>
+ <202010080822.dOGbzKC9-lkp@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [172.17.204.63]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-04.corp.yadro.com (172.17.100.104)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202010080822.dOGbzKC9-lkp@intel.com>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-According to FCP-4 (9.4.2):
+On Thu, Oct 08, 2020 at 08:46:42AM +0800, kernel test robot wrote:
+> Hi Mike,
+> 
+> Thank you for the patch! Yet something to improve:
+> 
+> [auto build test ERROR on vhost/linux-next]
+> [also build test ERROR on next-20201007]
+> [cannot apply to v5.9-rc8]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
+> 
+> url:    https://github.com/0day-ci/linux/commits/Mike-Christie/vhost-fix-scsi-cmd-handling-and-IOPs/20201008-045802
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git linux-next
+> config: m68k-allyesconfig (attached as .config)
+> compiler: m68k-linux-gcc (GCC) 9.3.0
+> reproduce (this is a W=1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # https://github.com/0day-ci/linux/commit/c9bcafefcac3c32ade0ba533609d7b1ddc343c54
+>         git remote add linux-review https://github.com/0day-ci/linux
+>         git fetch --no-tags linux-review Mike-Christie/vhost-fix-scsi-cmd-handling-and-IOPs/20201008-045802
+>         git checkout c9bcafefcac3c32ade0ba533609d7b1ddc343c54
+>         # save the attached .config to linux build tree
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0 make.cross ARCH=m68k 
+> 
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+> 
+> All errors (new ones prefixed by >>):
+> 
+> >> m68k-linux-ld: drivers/vhost/scsi.o:(.bss+0x0): multiple definition of `vq'; drivers/vhost/net.o:(.bss+0x0): first defined here
+>    m68k-linux-ld: drivers/vhost/vsock.o:(.bss+0x0): multiple definition of `vq'; drivers/vhost/net.o:(.bss+0x0): first defined here
+>    m68k-linux-ld: drivers/vhost/vdpa.o:(.bss+0x0): multiple definition of `vq'; drivers/vhost/net.o:(.bss+0x0): first defined here
+>    m68k-linux-ld: drivers/vhost/vhost.o:(.bss+0x0): multiple definition of `vq'; drivers/vhost/net.o:(.bss+0x0): first defined here
 
-  If the command requested that data beyond the length specified by the
-  FCP_DL field be transferred, then the device server shall set the
-  FCP_RESID_OVER bit (see 9.5.8) to one in the FCP_RSP IU and:
+Mike, what's going on with these failures?
+Can you figure it out pls?
 
-  a) process the command normally except that data beyond the FCP_DL
-  count shall not be requested or transferred;
+> ---
+> 0-DAY CI Kernel Test Service, Intel Corporation
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
-  b) transfer no data and return CHECK CONDITION status with the sense
-  key set to ILLEGAL REQUEST and the additional sense code set to INVALID
-  FIELD IN COMMAND INFORMATION UNIT; or
-
-  c) may transfer data and return CHECK CONDITION status with the sense
-  key set to ABORTED COMMAND and the additional sense code set to
-  INVALID FIELD IN COMMAND INFORMATION UNIT.
-
-TCM follows b) and transfers no data for residual writes but returns
-INVALID FIELD IN CDB instead of INVALID FIELD IN COMMAND INFORMATION
-UNIT.
-
-Change the ASCQ to INVALID FIELD IN COMMAND INFORMATION UNIT to meet the
-standart.
-
-Signed-off-by: Anastasia Kovaleva <a.kovaleva@yadro.com>
-Signed-off-by: Roman Bolshakov <r.bolshakov@yadro.com>
----
- drivers/target/target_core_transport.c | 8 +++++++-
- include/target/target_core_base.h      | 1 +
- 2 files changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
-index 8cb3012721d8..b225dab4deb9 100644
---- a/drivers/target/target_core_transport.c
-+++ b/drivers/target/target_core_transport.c
-@@ -1331,7 +1331,7 @@ target_cmd_size_check(struct se_cmd *cmd, unsigned int size)
- 			if (cmd->se_cmd_flags & SCF_SCSI_DATA_CDB) {
- 				pr_err_ratelimited("Rejecting underflow/overflow"
- 						   " for WRITE data CDB\n");
--				return TCM_INVALID_CDB_FIELD;
-+				return TCM_INVALID_FIELD_IN_COMMAND_IU;
- 			}
- 			/*
- 			 * Some fabric drivers like iscsi-target still expect to
-@@ -1904,6 +1904,7 @@ void transport_generic_request_failure(struct se_cmd *cmd,
- 	case TCM_UNSUPPORTED_TARGET_DESC_TYPE_CODE:
- 	case TCM_TOO_MANY_SEGMENT_DESCS:
- 	case TCM_UNSUPPORTED_SEGMENT_DESC_TYPE_CODE:
-+	case TCM_INVALID_FIELD_IN_COMMAND_IU:
- 		break;
- 	case TCM_OUT_OF_RESOURCES:
- 		cmd->scsi_status = SAM_STAT_TASK_SET_FULL;
-@@ -3240,6 +3241,11 @@ static const struct sense_info sense_info_table[] = {
- 		.asc = 0x55,
- 		.ascq = 0x04, /* INSUFFICIENT REGISTRATION RESOURCES */
- 	},
-+	[TCM_INVALID_FIELD_IN_COMMAND_IU] = {
-+		.key = ILLEGAL_REQUEST,
-+		.asc = 0x0e,
-+		.ascq = 0x03, /* INVALID FIELD IN COMMAND INFORMATION UNIT */
-+	},
- };
- 
- /**
-diff --git a/include/target/target_core_base.h b/include/target/target_core_base.h
-index 549947d407cf..01296d62ba5e 100644
---- a/include/target/target_core_base.h
-+++ b/include/target/target_core_base.h
-@@ -187,6 +187,7 @@ enum tcm_sense_reason_table {
- 	TCM_UNSUPPORTED_SEGMENT_DESC_TYPE_CODE	= R(0x1c),
- 	TCM_INSUFFICIENT_REGISTRATION_RESOURCES	= R(0x1d),
- 	TCM_LUN_BUSY				= R(0x1e),
-+	TCM_INVALID_FIELD_IN_COMMAND_IU         = R(0x1f),
- #undef R
- };
- 
--- 
-2.24.3 (Apple Git-128)
 
