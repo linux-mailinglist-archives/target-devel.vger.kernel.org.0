@@ -2,140 +2,102 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CAAA3297C3B
-	for <lists+target-devel@lfdr.de>; Sat, 24 Oct 2020 14:13:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA2DE297F53
+	for <lists+target-devel@lfdr.de>; Sat, 24 Oct 2020 23:51:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1761236AbgJXMNZ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 24 Oct 2020 08:13:25 -0400
-Received: from mta-02.yadro.com ([89.207.88.252]:50204 "EHLO mta-01.yadro.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1761233AbgJXMNY (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Sat, 24 Oct 2020 08:13:24 -0400
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 9AC4841315;
-        Sat, 24 Oct 2020 12:13:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        in-reply-to:content-disposition:content-type:content-type
-        :mime-version:references:message-id:subject:subject:from:from
-        :date:date:received:received:received; s=mta-01; t=1603541597;
-         x=1605355998; bh=07uzTTT8NaNO59x5cQLo4UEWwHepvtbpj2lCcR+ID28=; b=
-        L20rST8ia6f+QK1tKpWistETQabqMI84D9IGjUMnpmGRoEce19mc+Qs0UNYjCjqN
-        3MJzQlU68McZLc96Wpqm8NxSYwhFzj4WrKAbQe7t7PlkhDSlmF+HfrXlRPUvZnD1
-        krDlKpjg++0ruOI5k5Dgs8SI9mkAWRTNB6whISqfAY8=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id WZIKw7Vy2E0P; Sat, 24 Oct 2020 15:13:17 +0300 (MSK)
-Received: from T-EXCH-04.corp.yadro.com (t-exch-04.corp.yadro.com [172.17.100.104])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id F05F4412FC;
-        Sat, 24 Oct 2020 15:13:16 +0300 (MSK)
-Received: from localhost (172.17.204.212) by T-EXCH-04.corp.yadro.com
- (172.17.100.104) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Sat, 24
- Oct 2020 15:13:16 +0300
-Date:   Sat, 24 Oct 2020 15:13:15 +0300
-From:   Roman Bolshakov <r.bolshakov@yadro.com>
-To:     Bart Van Assche <bvanassche@acm.org>
-CC:     Anastasia Kovaleva <a.kovaleva@yadro.com>,
-        <target-devel@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-        <linux@yadro.com>
-Subject: Re: [PATCH 3/3] scsi: target: core: Change ASCQ for residual write
-Message-ID: <20201024121315.GA35317@SPB-NB-133.local>
-References: <20201022172011.42367-1-a.kovaleva@yadro.com>
- <20201022172011.42367-4-a.kovaleva@yadro.com>
- <e2b215ca-0aa8-bdae-e5bd-292a09d8282e@acm.org>
+        id S1765306AbgJXVvR (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 24 Oct 2020 17:51:17 -0400
+Received: from hqnvemgate26.nvidia.com ([216.228.121.65]:15571 "EHLO
+        hqnvemgate26.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1764656AbgJXVvR (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Sat, 24 Oct 2020 17:51:17 -0400
+Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
+        id <B5f94a1c00000>; Sat, 24 Oct 2020 14:50:56 -0700
+Received: from [172.27.0.17] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Sat, 24 Oct
+ 2020 21:50:55 +0000
+Subject: Re: [PATCH v3 14/56] IB: fix kernel-doc markups
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>
+CC:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        =?UTF-8?Q?H=c3=a5kon_Bugge?= <haakon.bugge@oracle.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        Danit Goldberg <danitg@mellanox.com>,
+        "Dennis Dalessandro" <dennis.dalessandro@cornelisnetworks.com>,
+        Divya Indi <divya.indi@oracle.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Gal Pressman <galpress@amazon.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>,
+        Maor Gottlieb <maorg@mellanox.com>,
+        Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>,
+        Moni Shoua <monis@mellanox.com>,
+        Parav Pandit <parav@mellanox.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        "Ursula Braun" <ubraun@linux.ibm.com>,
+        Xi Wang <wangxi11@huawei.com>,
+        Yamin Friedman <yaminf@mellanox.com>,
+        <linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+        <target-devel@vger.kernel.org>
+References: <cover.1603469755.git.mchehab+huawei@kernel.org>
+ <f201c81b58f7087425387672b24af5b85aa04b1a.1603469755.git.mchehab+huawei@kernel.org>
+From:   Max Gurtovoy <mgurtovoy@nvidia.com>
+Message-ID: <eec938e4-0a00-c35a-fc0d-8d0d4af30678@nvidia.com>
+Date:   Sun, 25 Oct 2020 00:50:23 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <e2b215ca-0aa8-bdae-e5bd-292a09d8282e@acm.org>
-X-Originating-IP: [172.17.204.212]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-04.corp.yadro.com (172.17.100.104)
+In-Reply-To: <f201c81b58f7087425387672b24af5b85aa04b1a.1603469755.git.mchehab+huawei@kernel.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1603576256; bh=Emn32IxixaWsl7kBQOXa8DNRipC33Bf2cppVn8UIwNw=;
+        h=Subject:To:CC:References:From:Message-ID:Date:User-Agent:
+         MIME-Version:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+         Content-Language:X-Originating-IP:X-ClientProxiedBy;
+        b=R3Y+v9EYFjOpNN2ihsQxxC6/4QnzJmwH32cc6MG6MG95WzmNKmqKD09UySA9+L7Mm
+         t4X71bz3h4v5lPjAO1e6sXuvg4NS889Ywpxopn4iR6iMefBpZ+H1FqummbNu9huIbS
+         Al9O464S7B4z1vzTGAElQz9Y7Lvmx086LaPq0PaMShJ9n5bxpux7ugexAlzSu9n1WY
+         vfkB3XQOYSFA9cZEZ/kJO222AImSgtFYyjEdKuj2UwThn/jmM0UtRWfayziURo3Vfd
+         Aldk+eJbOVGnjpDD9sQduNy39yOYy/SB0KrIGkurEfQqkWAevGQ0fGg7HgWthPjugs
+         Hqyp9H112QRhg==
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Fri, Oct 23, 2020 at 09:07:38PM -0700, Bart Van Assche wrote:
-> On 10/22/20 10:20 AM, Anastasia Kovaleva wrote:
-> > According to FCP-4 (9.4.2):
-> > 
-> >   If the command requested that data beyond the length specified by the
-> >   FCP_DL field be transferred, then the device server shall set the
-> >   FCP_RESID_OVER bit (see 9.5.8) to one in the FCP_RSP IU and:
-> > 
-> >   a) process the command normally except that data beyond the FCP_DL
-> >   count shall not be requested or transferred;
-> > 
-> >   b) transfer no data and return CHECK CONDITION status with the sense
-> >   key set to ILLEGAL REQUEST and the additional sense code set to INVALID
-> >   FIELD IN COMMAND INFORMATION UNIT; or
-> > 
-> >   c) may transfer data and return CHECK CONDITION status with the sense
-> >   key set to ABORTED COMMAND and the additional sense code set to
-> >   INVALID FIELD IN COMMAND INFORMATION UNIT.
-> > 
-> > TCM follows b) and transfers no data for residual writes but returns
-> > INVALID FIELD IN CDB instead of INVALID FIELD IN COMMAND INFORMATION
-> > UNIT.
-> > 
-> > Change the ASCQ to INVALID FIELD IN COMMAND INFORMATION UNIT to meet the
-> > standart.
-> 
-> Is FCP the only standard that requires to report INVALID FIELD IN COMMAND
-> INFORMATION UNIT for residual overflow? I haven't found any similar
-> requirement in the iSCSI RFC nor in the SRP standard.
-> 
+Thanks Mauro, small fix for iser
 
-Hi Bart,
+On 10/23/2020 7:33 PM, Mauro Carvalho Chehab wrote:
+> Some functions have different names between their prototypes
+> and the kernel-doc markup.
+>
+> Others need to be fixed, as kernel-doc markups should use this format:
+>          identifier - description
+>
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+>
+> diff --git a/drivers/infiniband/ulp/iser/iscsi_iser.c b/drivers/infiniband/ulp/iser/iscsi_iser.c
+> index 3690e28cc7ea..84cebf937680 100644
+> --- a/drivers/infiniband/ulp/iser/iscsi_iser.c
+> +++ b/drivers/infiniband/ulp/iser/iscsi_iser.c
+> @@ -739,7 +739,7 @@ iscsi_iser_set_param(struct iscsi_cls_conn *cls_conn,
+>   }
+>   
+>   /**
+> - * iscsi_iser_set_param() - set class connection parameter
+> + * iscsi_iser_conn_get_stats() - set class connection parameter
 
-iSCSI doesn't specify a specific code but mentions a possibility of CHECK
-CONDITION for residuals (11.4.5.1.  Field Semantics):
+iscsi_iser_conn_get_stats() - get iscsi connection statistics
 
-  Targets may set the residual count, and initiators may use it when the
-  response code is Command Completed at Target (even if the status
-  returned is not GOOD).
 
-I have skimmed over SRP and haven't found if it's explicitly disallowed
-to send CHECK CONDITION for READ/WRITEs with residuals.
-
-> Additionally, what benefits does it provide to report a CHECK CONDITION
-> upon residual overflow?
-
-Typical use case for CHECK CONDITION in case of Underflow/Overflow is
-extra robustness against buggy initiators [1][2]. Failing both READ and
-WRITE is the most solid approach in that sense [3][4][5] as it prevents
-data corruption at all costs.
-
-Suppose an initiator wants to WRITE 8 LBA. For 512-byte formatted LUN,
-8 LBAs need a buffer of 4K bytes. For 4096-byte formatted LUN the
-command would need 32K data buffer.
-
-An Overflow happens if initiator treats 4Kn device like 512n one but
-provides a buffer of 4K. i.e. to complete the WRITE target needs to
-consume 28K more data, otherwise only 1 LBA would be written and the
-rest 7 LBAs would have indeterminate content.
-
-An Underflow happens if initiator confuses 512n device with 4Kn one and
-provides a buffer of 32K, i.e. target doesn't utilize all buffer for the
-command.
-
-> The SCST QLogic FC target driver doesn't do this as far as I know, is
-> more than ten years old, is widely used and so far nobody complained
-> about this.
-> 
-
-It might be true but there are no public tests for FC. We're planning to
-extend libiscsi using SG_IO v4 to cover more corner cases, like FC
-residuals and aborts/error recovery. Also, SLER (Sequence level error
-recovery) is comming to FCP-5/FC-NVMe-2, it be useful to test it too.
-
-1. https://www.t10.org/pipermail/t10/2014-June/017369.html
-2. https://www.t10.org/pipermail/t10/2014-June/017370.html
-3. https://www.t10.org/pipermail/t10/2012-September/016340.html
-4. https://www.t10.org/pipermail/t10/2012-September/016350.html
-5. https://mailarchive.ietf.org/arch/msg/ips/PpMCMQw-HzKQ5gwteFD54CN_0EY/
-
-Regards,
-Roman
+>    * @cls_conn:    iscsi class connection
+>    * @stats:       iscsi stats to output
+>    *
+>   
