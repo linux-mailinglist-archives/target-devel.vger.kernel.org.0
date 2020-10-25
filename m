@@ -2,100 +2,89 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A77E297F96
-	for <lists+target-devel@lfdr.de>; Sun, 25 Oct 2020 02:25:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE80A2984DF
+	for <lists+target-devel@lfdr.de>; Mon, 26 Oct 2020 00:03:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1763075AbgJYAZV (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 24 Oct 2020 20:25:21 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:41286 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1763073AbgJYAZU (ORCPT
+        id S1419612AbgJYXDi (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 25 Oct 2020 19:03:38 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:55110 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1419406AbgJYXDh (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sat, 24 Oct 2020 20:25:20 -0400
-Received: by mail-pl1-f194.google.com with SMTP id w11so2887194pll.8;
-        Sat, 24 Oct 2020 17:25:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=PO+THV4TS79PQTIxnHf/bm4WKDnSkSebwXEEUdOUSuE=;
-        b=sQMiXlgQZlbE7uiUlVWXC1BgFpGTOJBe2Xj/dSULMngH2Jzo7kyBGe0GzM32Znu3lx
-         aFttVKp1OouK9jY/5DS9yAFTX4aDoW0PTPqipjbeVN0tXUEpwAflBjRKGf9d2JgnePMd
-         QZqmvZrglHdD/2WmEOiOUYFa5A11itP9s5oqOxOxWKgnXmMllD/2s+pR7Z9xRcf5pNQ1
-         P/OusukZBSOjvjL6A5RwJJGpte0VvdFX6NokRHOKXIynlsh0thjh4+0H98d5vZOJ+s3V
-         eqGJLiovJkKijxI57xpx4oteIRi+AjCd9Co7WDv8E/r1MJlDQyqFd0MIU5P4ZBkT/ror
-         3U9Q==
-X-Gm-Message-State: AOAM5309gBfGQj4nXS/nAXNeo0rd+AElyr8Sf/5E3QAbup0S39/sJNVm
-        vEtSyiNKS6G9GKxPOmRRYqcwKu/R8PhxPw==
-X-Google-Smtp-Source: ABdhPJzmYwMHhnAogfEhnmlsfF10TRVzM4AlYIcxeG7KwETjs18mBPZkHedu+ueMbbrKNgRLAXAwag==
-X-Received: by 2002:a17:902:8c8b:b029:d2:42fe:370a with SMTP id t11-20020a1709028c8bb02900d242fe370amr5443628plo.83.1603585519890;
-        Sat, 24 Oct 2020 17:25:19 -0700 (PDT)
-Received: from [192.168.3.218] (c-73-241-217-19.hsd1.ca.comcast.net. [73.241.217.19])
-        by smtp.gmail.com with ESMTPSA id u4sm7632892pjy.19.2020.10.24.17.25.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 24 Oct 2020 17:25:18 -0700 (PDT)
-Subject: Re: [PATCH 3/3] scsi: target: core: Change ASCQ for residual write
-To:     Roman Bolshakov <r.bolshakov@yadro.com>
-Cc:     Anastasia Kovaleva <a.kovaleva@yadro.com>,
-        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux@yadro.com
-References: <20201022172011.42367-1-a.kovaleva@yadro.com>
- <20201022172011.42367-4-a.kovaleva@yadro.com>
- <e2b215ca-0aa8-bdae-e5bd-292a09d8282e@acm.org>
- <20201024121315.GA35317@SPB-NB-133.local>
-From:   Bart Van Assche <bvanassche@acm.org>
-Message-ID: <b831a7db-1da2-c293-a8f6-d9c62f68c224@acm.org>
-Date:   Sat, 24 Oct 2020 17:25:17 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.2
-MIME-Version: 1.0
-In-Reply-To: <20201024121315.GA35317@SPB-NB-133.local>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        Sun, 25 Oct 2020 19:03:37 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09PMxmww014852;
+        Sun, 25 Oct 2020 23:03:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : subject :
+ date : message-id; s=corp-2020-01-29;
+ bh=7EeP3tf8AXm8+gH2Mh6ulwKE2rZTOm728vH+cUBDjqc=;
+ b=c+GumHq19Fv39eLJsrhW3LugAGUXqa0lVOPJLdhkO2Xh6H5ZuT7mt2ksQZn44lv27MSX
+ 4m5ca63cfUKaIEX3t8a7YWJ6QEbCBtKJmAOBdrxG43zXX8cfO/L+8ZT+Pir5F/wMd71s
+ dpcTWeCgxDyZ7KRuon/pizODitxgq5Ni9BGbH3ncx3s0QqFniGYRjfCWnoDqrF8ucRjC
+ bdjTiAENDEkC69GDV72aJ6Fo31KpRjJK6ince9acTOxuTLImwHiBncrsXlR4yQrorN7g
+ 3Vz9ZMFtnACZiJvQVyPMr4euG5rpPLvhqioIDUbXRzBjnNAEFmhbV83QWYDA8ZFPvDpl AQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 34cc7kjg6w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sun, 25 Oct 2020 23:03:25 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09PN0IDu032788;
+        Sun, 25 Oct 2020 23:03:25 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 34cwujrt6a-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 25 Oct 2020 23:03:25 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 09PN3OHN013495;
+        Sun, 25 Oct 2020 23:03:24 GMT
+Received: from ol2.localdomain (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sun, 25 Oct 2020 16:03:24 -0700
+From:   Mike Christie <michael.christie@oracle.com>
+To:     himanshu.madhani@oracle.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
+Subject: [RFC PATCH 0/7] target: fix up locking in IO paths
+Date:   Sun, 25 Oct 2020 18:03:11 -0500
+Message-Id: <1603666998-8086-1-git-send-email-michael.christie@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9785 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 bulkscore=0
+ spamscore=0 adultscore=0 malwarescore=0 mlxlogscore=999 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2010250174
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9785 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 adultscore=0
+ malwarescore=0 spamscore=0 clxscore=1015 mlxscore=0 suspectscore=0
+ priorityscore=1501 impostorscore=0 bulkscore=0 phishscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2010250174
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 10/24/20 5:13 AM, Roman Bolshakov wrote:
-> iSCSI doesn't specify a specific code but mentions a possibility of CHECK
-> CONDITION for residuals (11.4.5.1.  Field Semantics):
-> 
->   Targets may set the residual count, and initiators may use it when the
->   response code is Command Completed at Target (even if the status
->   returned is not GOOD).
+This patchset removes se_session sess_cmd_lock for every driver but
+tcm qla2xxx and moves the se_device execution lock to per CPU so
+we can run submissions from multiple CPUs without hammering on
+those locks.
 
-My interpretation of the above text is that it neither allows nor
-requires to change the status GOOD into something else if there is a
-residue.
+With the patches I'm seeing a 25% improvement in IOPs for small
+IO tests like:
 
->> Additionally, what benefits does it provide to report a CHECK CONDITION
->> upon residual overflow?
-> 
-> Typical use case for CHECK CONDITION in case of Underflow/Overflow is
-> extra robustness against buggy initiators [1][2]. Failing both READ and
-> WRITE is the most solid approach in that sense [3][4][5] as it prevents
-> data corruption at all costs.
-> 
-> Suppose an initiator wants to WRITE 8 LBA. For 512-byte formatted LUN,
-> 8 LBAs need a buffer of 4K bytes. For 4096-byte formatted LUN the
-> command would need 32K data buffer.
-> 
-> An Overflow happens if initiator treats 4Kn device like 512n one but
-> provides a buffer of 4K. i.e. to complete the WRITE target needs to
-> consume 28K more data, otherwise only 1 LBA would be written and the
-> rest 7 LBAs would have indeterminate content.
-> 
-> An Underflow happens if initiator confuses 512n device with 4Kn one and
-> provides a buffer of 32K, i.e. target doesn't utilize all buffer for the
-> command.
+fio  --filename=/dev/sdXYZ  --direct=1 --rw=randrw --bs=4k \
+--iodepth=128  --numjobs=16
 
-Thanks for the additional background information, this really helps. How
-about only rejecting SCSI commands for which the data buffer size is not
-a multiple of the block size? I'm concerned that flagging all SCSI
-commands that have a residue as invalid will break SCSI tape software.
+I'm sending this as RFC, because the qla2xxx patches are not
+tested and I'm hoping we can maybe just remove the session
+locking/list from that driver since it's only used to lookup
+commands for aborts when a specific model is used.
 
-Thanks,
+The following patches are made over Linus's tree. Some of Martin's
+branches are missing:
 
-Bart.
+commit 149415586243bd0ea729760fb6dd7b3c50601871
+Author: Sudhakar Panneerselvam <sudhakar.panneerselvam@oracle.com>
+Date:   Wed Sep 16 23:54:31 2020 +0000
+
+    scsi: target: Fix lun lookup for TARGET_SCF_LOOKUP_LUN_FROM_TAG case
+
+
