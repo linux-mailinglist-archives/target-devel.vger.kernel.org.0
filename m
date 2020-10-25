@@ -2,102 +2,100 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA2DE297F53
-	for <lists+target-devel@lfdr.de>; Sat, 24 Oct 2020 23:51:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A77E297F96
+	for <lists+target-devel@lfdr.de>; Sun, 25 Oct 2020 02:25:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1765306AbgJXVvR (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 24 Oct 2020 17:51:17 -0400
-Received: from hqnvemgate26.nvidia.com ([216.228.121.65]:15571 "EHLO
-        hqnvemgate26.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1764656AbgJXVvR (ORCPT
+        id S1763075AbgJYAZV (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 24 Oct 2020 20:25:21 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:41286 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1763073AbgJYAZU (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sat, 24 Oct 2020 17:51:17 -0400
-Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
-        id <B5f94a1c00000>; Sat, 24 Oct 2020 14:50:56 -0700
-Received: from [172.27.0.17] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Sat, 24 Oct
- 2020 21:50:55 +0000
-Subject: Re: [PATCH v3 14/56] IB: fix kernel-doc markups
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>
-CC:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        =?UTF-8?Q?H=c3=a5kon_Bugge?= <haakon.bugge@oracle.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Danit Goldberg <danitg@mellanox.com>,
-        "Dennis Dalessandro" <dennis.dalessandro@cornelisnetworks.com>,
-        Divya Indi <divya.indi@oracle.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Gal Pressman <galpress@amazon.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>,
-        Maor Gottlieb <maorg@mellanox.com>,
-        Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>,
-        Moni Shoua <monis@mellanox.com>,
-        Parav Pandit <parav@mellanox.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        "Ursula Braun" <ubraun@linux.ibm.com>,
-        Xi Wang <wangxi11@huawei.com>,
-        Yamin Friedman <yaminf@mellanox.com>,
-        <linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-        <target-devel@vger.kernel.org>
-References: <cover.1603469755.git.mchehab+huawei@kernel.org>
- <f201c81b58f7087425387672b24af5b85aa04b1a.1603469755.git.mchehab+huawei@kernel.org>
-From:   Max Gurtovoy <mgurtovoy@nvidia.com>
-Message-ID: <eec938e4-0a00-c35a-fc0d-8d0d4af30678@nvidia.com>
-Date:   Sun, 25 Oct 2020 00:50:23 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.1
+        Sat, 24 Oct 2020 20:25:20 -0400
+Received: by mail-pl1-f194.google.com with SMTP id w11so2887194pll.8;
+        Sat, 24 Oct 2020 17:25:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=PO+THV4TS79PQTIxnHf/bm4WKDnSkSebwXEEUdOUSuE=;
+        b=sQMiXlgQZlbE7uiUlVWXC1BgFpGTOJBe2Xj/dSULMngH2Jzo7kyBGe0GzM32Znu3lx
+         aFttVKp1OouK9jY/5DS9yAFTX4aDoW0PTPqipjbeVN0tXUEpwAflBjRKGf9d2JgnePMd
+         QZqmvZrglHdD/2WmEOiOUYFa5A11itP9s5oqOxOxWKgnXmMllD/2s+pR7Z9xRcf5pNQ1
+         P/OusukZBSOjvjL6A5RwJJGpte0VvdFX6NokRHOKXIynlsh0thjh4+0H98d5vZOJ+s3V
+         eqGJLiovJkKijxI57xpx4oteIRi+AjCd9Co7WDv8E/r1MJlDQyqFd0MIU5P4ZBkT/ror
+         3U9Q==
+X-Gm-Message-State: AOAM5309gBfGQj4nXS/nAXNeo0rd+AElyr8Sf/5E3QAbup0S39/sJNVm
+        vEtSyiNKS6G9GKxPOmRRYqcwKu/R8PhxPw==
+X-Google-Smtp-Source: ABdhPJzmYwMHhnAogfEhnmlsfF10TRVzM4AlYIcxeG7KwETjs18mBPZkHedu+ueMbbrKNgRLAXAwag==
+X-Received: by 2002:a17:902:8c8b:b029:d2:42fe:370a with SMTP id t11-20020a1709028c8bb02900d242fe370amr5443628plo.83.1603585519890;
+        Sat, 24 Oct 2020 17:25:19 -0700 (PDT)
+Received: from [192.168.3.218] (c-73-241-217-19.hsd1.ca.comcast.net. [73.241.217.19])
+        by smtp.gmail.com with ESMTPSA id u4sm7632892pjy.19.2020.10.24.17.25.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 24 Oct 2020 17:25:18 -0700 (PDT)
+Subject: Re: [PATCH 3/3] scsi: target: core: Change ASCQ for residual write
+To:     Roman Bolshakov <r.bolshakov@yadro.com>
+Cc:     Anastasia Kovaleva <a.kovaleva@yadro.com>,
+        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux@yadro.com
+References: <20201022172011.42367-1-a.kovaleva@yadro.com>
+ <20201022172011.42367-4-a.kovaleva@yadro.com>
+ <e2b215ca-0aa8-bdae-e5bd-292a09d8282e@acm.org>
+ <20201024121315.GA35317@SPB-NB-133.local>
+From:   Bart Van Assche <bvanassche@acm.org>
+Message-ID: <b831a7db-1da2-c293-a8f6-d9c62f68c224@acm.org>
+Date:   Sat, 24 Oct 2020 17:25:17 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.2
 MIME-Version: 1.0
-In-Reply-To: <f201c81b58f7087425387672b24af5b85aa04b1a.1603469755.git.mchehab+huawei@kernel.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20201024121315.GA35317@SPB-NB-133.local>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
- HQMAIL107.nvidia.com (172.20.187.13)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1603576256; bh=Emn32IxixaWsl7kBQOXa8DNRipC33Bf2cppVn8UIwNw=;
-        h=Subject:To:CC:References:From:Message-ID:Date:User-Agent:
-         MIME-Version:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-         Content-Language:X-Originating-IP:X-ClientProxiedBy;
-        b=R3Y+v9EYFjOpNN2ihsQxxC6/4QnzJmwH32cc6MG6MG95WzmNKmqKD09UySA9+L7Mm
-         t4X71bz3h4v5lPjAO1e6sXuvg4NS889Ywpxopn4iR6iMefBpZ+H1FqummbNu9huIbS
-         Al9O464S7B4z1vzTGAElQz9Y7Lvmx086LaPq0PaMShJ9n5bxpux7ugexAlzSu9n1WY
-         vfkB3XQOYSFA9cZEZ/kJO222AImSgtFYyjEdKuj2UwThn/jmM0UtRWfayziURo3Vfd
-         Aldk+eJbOVGnjpDD9sQduNy39yOYy/SB0KrIGkurEfQqkWAevGQ0fGg7HgWthPjugs
-         Hqyp9H112QRhg==
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Thanks Mauro, small fix for iser
+On 10/24/20 5:13 AM, Roman Bolshakov wrote:
+> iSCSI doesn't specify a specific code but mentions a possibility of CHECK
+> CONDITION for residuals (11.4.5.1.  Field Semantics):
+> 
+>   Targets may set the residual count, and initiators may use it when the
+>   response code is Command Completed at Target (even if the status
+>   returned is not GOOD).
 
-On 10/23/2020 7:33 PM, Mauro Carvalho Chehab wrote:
-> Some functions have different names between their prototypes
-> and the kernel-doc markup.
->
-> Others need to be fixed, as kernel-doc markups should use this format:
->          identifier - description
->
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
->
-> diff --git a/drivers/infiniband/ulp/iser/iscsi_iser.c b/drivers/infiniband/ulp/iser/iscsi_iser.c
-> index 3690e28cc7ea..84cebf937680 100644
-> --- a/drivers/infiniband/ulp/iser/iscsi_iser.c
-> +++ b/drivers/infiniband/ulp/iser/iscsi_iser.c
-> @@ -739,7 +739,7 @@ iscsi_iser_set_param(struct iscsi_cls_conn *cls_conn,
->   }
->   
->   /**
-> - * iscsi_iser_set_param() - set class connection parameter
-> + * iscsi_iser_conn_get_stats() - set class connection parameter
+My interpretation of the above text is that it neither allows nor
+requires to change the status GOOD into something else if there is a
+residue.
 
-iscsi_iser_conn_get_stats() - get iscsi connection statistics
+>> Additionally, what benefits does it provide to report a CHECK CONDITION
+>> upon residual overflow?
+> 
+> Typical use case for CHECK CONDITION in case of Underflow/Overflow is
+> extra robustness against buggy initiators [1][2]. Failing both READ and
+> WRITE is the most solid approach in that sense [3][4][5] as it prevents
+> data corruption at all costs.
+> 
+> Suppose an initiator wants to WRITE 8 LBA. For 512-byte formatted LUN,
+> 8 LBAs need a buffer of 4K bytes. For 4096-byte formatted LUN the
+> command would need 32K data buffer.
+> 
+> An Overflow happens if initiator treats 4Kn device like 512n one but
+> provides a buffer of 4K. i.e. to complete the WRITE target needs to
+> consume 28K more data, otherwise only 1 LBA would be written and the
+> rest 7 LBAs would have indeterminate content.
+> 
+> An Underflow happens if initiator confuses 512n device with 4Kn one and
+> provides a buffer of 32K, i.e. target doesn't utilize all buffer for the
+> command.
 
+Thanks for the additional background information, this really helps. How
+about only rejecting SCSI commands for which the data buffer size is not
+a multiple of the block size? I'm concerned that flagging all SCSI
+commands that have a residue as invalid will break SCSI tape software.
 
->    * @cls_conn:    iscsi class connection
->    * @stats:       iscsi stats to output
->    *
->   
+Thanks,
+
+Bart.
