@@ -2,145 +2,142 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4190298941
-	for <lists+target-devel@lfdr.de>; Mon, 26 Oct 2020 10:13:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 295AB298D90
+	for <lists+target-devel@lfdr.de>; Mon, 26 Oct 2020 14:13:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1772769AbgJZJNp (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 26 Oct 2020 05:13:45 -0400
-Received: from mx2.suse.de ([195.135.220.15]:53682 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1772767AbgJZJNn (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Mon, 26 Oct 2020 05:13:43 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id CF8E2AC35;
-        Mon, 26 Oct 2020 09:13:41 +0000 (UTC)
-Date:   Mon, 26 Oct 2020 10:13:40 +0100
-From:   David Disseldorp <ddiss@suse.de>
-To:     Mike Christie <michael.christie@oracle.com>
-Cc:     target-devel@vger.kernel.org, linux-scsi@vger.kernel.org
-Subject: Re: [PATCH 5/5] scsi: target: return COMPARE AND WRITE miscompare
- offsets
-Message-ID: <20201026101340.7c45b604@suse.de>
-In-Reply-To: <311cb7dd-2cdb-e653-ab97-41d644c0d293@oracle.com>
-References: <20201023205723.17880-1-ddiss@suse.de>
-        <20201023205723.17880-6-ddiss@suse.de>
-        <311cb7dd-2cdb-e653-ab97-41d644c0d293@oracle.com>
+        id S1731657AbgJZNNQ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 26 Oct 2020 09:13:16 -0400
+Received: from mta-02.yadro.com ([89.207.88.252]:56976 "EHLO mta-01.yadro.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2404269AbgJZNMb (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Mon, 26 Oct 2020 09:12:31 -0400
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id 43F004131A;
+        Mon, 26 Oct 2020 13:12:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        in-reply-to:content-disposition:content-type:content-type
+        :mime-version:references:message-id:subject:subject:from:from
+        :date:date:received:received:received; s=mta-01; t=1603717948;
+         x=1605532349; bh=/T03XNTjq07IFYLx+eb/uHDkrEwWsSaRhc+ySlfkuuU=; b=
+        opmOSRGdJYGCpke2hghvRKNOH4t6sgrsv4T0a4Z0wVeAyKBI1vx/B7q7hAQZxlPh
+        ZJqMrwJ67ikgNOhu16XIzWaPxWrYG4tazGcvIUhP5O8gpyoAMgBEuoPPS9poMY6H
+        MfF+4trBhgbIKqj7IxQoFTZ7ci8Oc7/KlFP5uzi5FCM=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id mqm3-bLaFuhx; Mon, 26 Oct 2020 16:12:28 +0300 (MSK)
+Received: from T-EXCH-04.corp.yadro.com (t-exch-04.corp.yadro.com [172.17.100.104])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mta-01.yadro.com (Postfix) with ESMTPS id 1D6CE412EB;
+        Mon, 26 Oct 2020 16:12:27 +0300 (MSK)
+Received: from localhost (172.17.204.212) by T-EXCH-04.corp.yadro.com
+ (172.17.100.104) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Mon, 26
+ Oct 2020 16:12:27 +0300
+Date:   Mon, 26 Oct 2020 16:12:26 +0300
+From:   Roman Bolshakov <r.bolshakov@yadro.com>
+To:     Bart Van Assche <bvanassche@acm.org>
+CC:     Anastasia Kovaleva <a.kovaleva@yadro.com>,
+        <target-devel@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
+        <linux@yadro.com>
+Subject: Re: [PATCH 3/3] scsi: target: core: Change ASCQ for residual write
+Message-ID: <20201026131226.GA88490@SPB-NB-133.local>
+References: <20201022172011.42367-1-a.kovaleva@yadro.com>
+ <20201022172011.42367-4-a.kovaleva@yadro.com>
+ <e2b215ca-0aa8-bdae-e5bd-292a09d8282e@acm.org>
+ <20201024121315.GA35317@SPB-NB-133.local>
+ <b831a7db-1da2-c293-a8f6-d9c62f68c224@acm.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <b831a7db-1da2-c293-a8f6-d9c62f68c224@acm.org>
+X-Originating-IP: [172.17.204.212]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-04.corp.yadro.com (172.17.100.104)
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Thanks for the feedback Mike...
-
-On Sun, 25 Oct 2020 20:14:42 -0500, Mike Christie wrote:
-
-> On 10/23/20 3:57 PM, David Disseldorp wrote:
-> > SBC-4 r15 5.3 COMPARE AND WRITE command states:
-> >    if the compare operation does not indicate a match, then terminate the
-> >    command with CHECK CONDITION status with the sense key set to
-> >    MISCOMPARE and the additional sense code set to MISCOMPARE DURING
-> >    VERIFY OPERATION. In the sense data (see 4.18 and SPC-5) the offset
-> >    from the start of the Data-Out Buffer to the first byte of data that
-> >    was not equal shall be reported in the INFORMATION field.
+On Sat, Oct 24, 2020 at 05:25:17PM -0700, Bart Van Assche wrote:
+> On 10/24/20 5:13 AM, Roman Bolshakov wrote:
+> >> Additionally, what benefits does it provide to report a CHECK CONDITION
+> >> upon residual overflow?
 > > 
-> > This change implements the missing logic to report the miscompare offset
-> > in the sense data INFORMATION field.
+> > Typical use case for CHECK CONDITION in case of Underflow/Overflow is
+> > extra robustness against buggy initiators [1][2]. Failing both READ and
+> > WRITE is the most solid approach in that sense [3][4][5] as it prevents
+> > data corruption at all costs.
 > > 
-> > Signed-off-by: David Disseldorp <ddiss@suse.de>
-> > ---
-> >   drivers/target/target_core_sbc.c       | 35 ++++++++++++++++++--------
-> >   drivers/target/target_core_transport.c |  1 +
-> >   2 files changed, 26 insertions(+), 10 deletions(-)
+> > Suppose an initiator wants to WRITE 8 LBA. For 512-byte formatted LUN,
+> > 8 LBAs need a buffer of 4K bytes. For 4096-byte formatted LUN the
+> > command would need 32K data buffer.
 > > 
-> > diff --git a/drivers/target/target_core_sbc.c b/drivers/target/target_core_sbc.c
-> > index 79216d0355e7..e40359e45726 100644
-> > --- a/drivers/target/target_core_sbc.c
-> > +++ b/drivers/target/target_core_sbc.c
-> > @@ -435,13 +435,13 @@ static sense_reason_t compare_and_write_post(struct se_cmd *cmd, bool success,
-> >   }
-> >   
-> >   /*
-> > - * compare @cmp_len bytes of @read_sgl with @cmp_sgl. On miscompare return
-> > - * TCM_MISCOMPARE_VERIFY.
-> > + * compare @cmp_len bytes of @read_sgl with @cmp_sgl. On miscompare, fill
-> > + * @miscmp_off and return TCM_MISCOMPARE_VERIFY.
-> >    */
-> >   static sense_reason_t
-> >   compare_and_write_do_cmp(struct scatterlist *read_sgl, unsigned int read_nents,
-> >   			 struct scatterlist *cmp_sgl, unsigned int cmp_nents,
-> > -			 unsigned int cmp_len)
-> > +			 unsigned int cmp_len, unsigned int *miscmp_off)
-> >   {
-> >   	unsigned char *buf = NULL;
-> >   	struct scatterlist *sg;
-> > @@ -468,17 +468,20 @@ compare_and_write_do_cmp(struct scatterlist *read_sgl, unsigned int read_nents,
-> >   	 */
-> >   	offset = 0;
-> >   	for_each_sg(read_sgl, sg, read_nents, i) {
-> > +		unsigned int i;
-> >   		unsigned int len = min(sg->length, cmp_len);
-> >   		unsigned char *addr = kmap_atomic(sg_page(sg));
-> >   
-> > -		if (memcmp(addr, buf + offset, len)) {
-> > -			pr_warn("Detected MISCOMPARE for addr: %p buf: %p\n",
-> > -				addr, buf + offset);
-> > -			kunmap_atomic(addr);
-> > +		for (i = 0; i < len && addr[i] == buf[offset + i]; i++);  
+> > An Overflow happens if initiator treats 4Kn device like 512n one but
+> > provides a buffer of 4K. i.e. to complete the WRITE target needs to
+> > consume 28K more data, otherwise only 1 LBA would be written and the
+> > rest 7 LBAs would have indeterminate content.
+> > 
+> > An Underflow happens if initiator confuses 512n device with 4Kn one and
+> > provides a buffer of 32K, i.e. target doesn't utilize all buffer for the
+> > command.
 > 
-> I think it's a little nicer to put the ";" on the next line. It's just 
-> not a common line of code so your eyes miss it. It should also make the 
-> checkpatch script happy.
-
-Sure, will change this.
-
-> > +
-> > +		kunmap_atomic(addr);
-> > +		if (i < len) {
-> > +			*miscmp_off = offset + i;
-> > +			pr_warn("Detected MISCOMPARE at offset %u\n",
-> > +				*miscmp_off);
-> >   			ret = TCM_MISCOMPARE_VERIFY;
-> >   			goto out;
-> >   		}
-> > -		kunmap_atomic(addr);
-> >   
-> >   		offset += len;
-> >   		cmp_len -= len;
-> > @@ -503,6 +506,7 @@ static sense_reason_t compare_and_write_callback(struct se_cmd *cmd, bool succes
-> >   	unsigned int nlbas = cmd->t_task_nolb;
-> >   	unsigned int block_size = dev->dev_attrib.block_size;
-> >   	unsigned int compare_len = (nlbas * block_size);
-> > +	unsigned int miscmp_off = 0;
-> >   	sense_reason_t ret = TCM_NO_SENSE;
-> >   	int i;
-> >   
-> > @@ -534,8 +538,19 @@ static sense_reason_t compare_and_write_callback(struct se_cmd *cmd, bool succes
-> >   				       cmd->t_bidi_data_nents,
-> >   				       cmd->t_data_sg,
-> >   				       cmd->t_data_nents,
-> > -				       compare_len);
-> > -	if (ret)
-> > +				       compare_len,
-> > +				       &miscmp_off);
-> > +	if (ret == TCM_MISCOMPARE_VERIFY) {
-> > +		/*
-> > +		 * SBC-4 r15: 5.3 COMPARE AND WRITE command
-> > +		 * In the sense data (see 4.18 and SPC-5) the offset from the
-> > +		 * start of the Data-Out Buffer to the first byte of data that
-> > +		 * was not equal shall be reported in the INFORMATION field.
-> > +		 */
-> > +		WARN_ON(miscmp_off >= compare_len);  
+> Thanks for the additional background information, this really helps. How
+> about only rejecting SCSI commands for which the data buffer size is not
+> a multiple of the block size? I'm concerned that flagging all SCSI
+> commands that have a residue as invalid will break SCSI tape software.
 > 
-> I'm not sure how useful this is. If we hit this then we went wild in 
-> compare_and_write_do_cmp since we only allocate the cmp buffer to be 
-> compare_len bytes. If we think it's possible to hit this due to a 
-> incorrectly setup cmd or buffer/sgl or something, I would be more 
-> defensive in compare_and_write_do_cmp.
 
-I don't think it's possible to hit, but figured it didn't harm
-readability. I'll drop it in the next round.
+Hi Bart,
 
-Cheers, David
+Could you please elaborate on how tape software will be broken?
+I have no experience with tapes but I've looked into SSC-5 draft.
+
+I haven't found anything concerning the writes but there are tape
+variants of overflow/underflow for reads (G.3 General read rules) called
+overlength and underlegth, respectively:
+
+  If the read command requests fewer bytes than are available for
+  transfer, then the read is an overlength read. If the read requests
+  more bytes than are available, then the read is an underlength read.
+
+  The amount of data returned is the smaller of the bytes available and
+  the allocation length.
+
+And the next paragraph defines cases where CHECK CONDITION should be
+reported for such reads. However, GOOD status is also possible, the next
+chapter of the annex (G.4 Examples from figure G.1 using variable-block
+transfers and various SILI and BLOCK LENGTH settings) refines many cases
+depending on SILI bit, whether block protection is enabled, if the
+transfer is FIXED or variable-length and if BLOCK LENGTH is
+zero/non-zero.
+
+As far as I understand underlength and overlength are always suppressed
+(status is GOOD) for devices where no "default" block size is defined
+per SPC (7.5.7.1 General block descriptor format):
+
+  For sequential access devices, a block length of zero indicates that the
+  logical block size written to the medium is specified by the TRANSFER
+  LENGTH field in the CDB (see SSC-4).
+
+The cases are also summarized in annex D (D.3 Summary of length error
+conditions on read type commands).
+
+Note, that if we talk about SSC over FCP, then "9.4.2 FCP_DATA IUs for
+read and write operations" does additionally apply. Perhaps a) from
+"9.4.2 FCP_DATA IUs for read and write operations" works well for SSC:
+
+  a) process the command normally except that data beyond the FCP_DL count
+  shall not be requested or transferred;
+
+The clause allows to accomodate variable-block tranfers from SSC.
+
+So, what if we return CHECK CONDITION only for SBC WRITEs with
+residuals?  Then it has no impact on SSC and other device types. In
+future, we might also add a patch that would fail SBC READs with
+residuals for sake of consistency. That behaviour would be beneficial
+for SBC devices as no host could corrupt data or itself by forming,
+requesting invalid data buffer.
+
+Thanks,
+Roman
