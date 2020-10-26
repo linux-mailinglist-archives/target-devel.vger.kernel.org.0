@@ -2,142 +2,126 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 295AB298D90
-	for <lists+target-devel@lfdr.de>; Mon, 26 Oct 2020 14:13:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42014298DD3
+	for <lists+target-devel@lfdr.de>; Mon, 26 Oct 2020 14:27:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731657AbgJZNNQ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 26 Oct 2020 09:13:16 -0400
-Received: from mta-02.yadro.com ([89.207.88.252]:56976 "EHLO mta-01.yadro.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2404269AbgJZNMb (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Mon, 26 Oct 2020 09:12:31 -0400
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 43F004131A;
-        Mon, 26 Oct 2020 13:12:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        in-reply-to:content-disposition:content-type:content-type
-        :mime-version:references:message-id:subject:subject:from:from
-        :date:date:received:received:received; s=mta-01; t=1603717948;
-         x=1605532349; bh=/T03XNTjq07IFYLx+eb/uHDkrEwWsSaRhc+ySlfkuuU=; b=
-        opmOSRGdJYGCpke2hghvRKNOH4t6sgrsv4T0a4Z0wVeAyKBI1vx/B7q7hAQZxlPh
-        ZJqMrwJ67ikgNOhu16XIzWaPxWrYG4tazGcvIUhP5O8gpyoAMgBEuoPPS9poMY6H
-        MfF+4trBhgbIKqj7IxQoFTZ7ci8Oc7/KlFP5uzi5FCM=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id mqm3-bLaFuhx; Mon, 26 Oct 2020 16:12:28 +0300 (MSK)
-Received: from T-EXCH-04.corp.yadro.com (t-exch-04.corp.yadro.com [172.17.100.104])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        id S1770583AbgJZN1p (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 26 Oct 2020 09:27:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34410 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1770558AbgJZN1m (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Mon, 26 Oct 2020 09:27:42 -0400
+Received: from localhost (unknown [213.57.247.131])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id 1D6CE412EB;
-        Mon, 26 Oct 2020 16:12:27 +0300 (MSK)
-Received: from localhost (172.17.204.212) by T-EXCH-04.corp.yadro.com
- (172.17.100.104) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Mon, 26
- Oct 2020 16:12:27 +0300
-Date:   Mon, 26 Oct 2020 16:12:26 +0300
-From:   Roman Bolshakov <r.bolshakov@yadro.com>
-To:     Bart Van Assche <bvanassche@acm.org>
-CC:     Anastasia Kovaleva <a.kovaleva@yadro.com>,
-        <target-devel@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-        <linux@yadro.com>
-Subject: Re: [PATCH 3/3] scsi: target: core: Change ASCQ for residual write
-Message-ID: <20201026131226.GA88490@SPB-NB-133.local>
-References: <20201022172011.42367-1-a.kovaleva@yadro.com>
- <20201022172011.42367-4-a.kovaleva@yadro.com>
- <e2b215ca-0aa8-bdae-e5bd-292a09d8282e@acm.org>
- <20201024121315.GA35317@SPB-NB-133.local>
- <b831a7db-1da2-c293-a8f6-d9c62f68c224@acm.org>
+        by mail.kernel.org (Postfix) with ESMTPSA id 53D81208E4;
+        Mon, 26 Oct 2020 13:27:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603718862;
+        bh=BaGxlou8wCAIvs8WOUa+hIQt0xRb0OUf/kp3YJdXiNw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=yJaKvws0cpwQDsoNHNvptafstF8xKicsSUWXivCDOnNBNNT91gU2+jt8WYoJ9mxzP
+         b4oPcCpsIHfST2GtBCY18wTXM+QI2bBMAUSmdLKS1Bk7ANdqarDzIZar9p7Y5zU7J8
+         F+iSeK9MxtATonRtZmLSGhtNaAxI0FBb7Y52sftc=
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@nvidia.com>
+Cc:     Maor Gottlieb <maorg@nvidia.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        linux-rdma@vger.kernel.org,
+        "Nicholas A. Bellinger" <nab@risingtidesystems.com>,
+        target-devel@vger.kernel.org
+Subject: [PATCH rdma-next] IB/srpt: Fix memory leak in srpt_add_one
+Date:   Mon, 26 Oct 2020 15:27:37 +0200
+Message-Id: <20201026132737.1338171-1-leon@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <b831a7db-1da2-c293-a8f6-d9c62f68c224@acm.org>
-X-Originating-IP: [172.17.204.212]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-04.corp.yadro.com (172.17.100.104)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Sat, Oct 24, 2020 at 05:25:17PM -0700, Bart Van Assche wrote:
-> On 10/24/20 5:13 AM, Roman Bolshakov wrote:
-> >> Additionally, what benefits does it provide to report a CHECK CONDITION
-> >> upon residual overflow?
-> > 
-> > Typical use case for CHECK CONDITION in case of Underflow/Overflow is
-> > extra robustness against buggy initiators [1][2]. Failing both READ and
-> > WRITE is the most solid approach in that sense [3][4][5] as it prevents
-> > data corruption at all costs.
-> > 
-> > Suppose an initiator wants to WRITE 8 LBA. For 512-byte formatted LUN,
-> > 8 LBAs need a buffer of 4K bytes. For 4096-byte formatted LUN the
-> > command would need 32K data buffer.
-> > 
-> > An Overflow happens if initiator treats 4Kn device like 512n one but
-> > provides a buffer of 4K. i.e. to complete the WRITE target needs to
-> > consume 28K more data, otherwise only 1 LBA would be written and the
-> > rest 7 LBAs would have indeterminate content.
-> > 
-> > An Underflow happens if initiator confuses 512n device with 4Kn one and
-> > provides a buffer of 32K, i.e. target doesn't utilize all buffer for the
-> > command.
-> 
-> Thanks for the additional background information, this really helps. How
-> about only rejecting SCSI commands for which the data buffer size is not
-> a multiple of the block size? I'm concerned that flagging all SCSI
-> commands that have a residue as invalid will break SCSI tape software.
-> 
+From: Maor Gottlieb <maorg@nvidia.com>
 
-Hi Bart,
+In case srpt_refresh_port failed for the second port, then
+we don't unregister the MAD agnet.
 
-Could you please elaborate on how tape software will be broken?
-I have no experience with tapes but I've looked into SSC-5 draft.
+Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
+Signed-off-by: Maor Gottlieb <maorg@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+---
+ drivers/infiniband/ulp/srpt/ib_srpt.c | 30 ++++++++++++++++++---------
+ 1 file changed, 20 insertions(+), 10 deletions(-)
 
-I haven't found anything concerning the writes but there are tape
-variants of overflow/underflow for reads (G.3 General read rules) called
-overlength and underlegth, respectively:
+diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
+index 0065eb17ae36..cfe38996ea91 100644
+--- a/drivers/infiniband/ulp/srpt/ib_srpt.c
++++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
+@@ -619,13 +619,7 @@ static int srpt_refresh_port(struct srpt_port *sport)
+ 	return 0;
+ }
+ 
+-/**
+- * srpt_unregister_mad_agent - unregister MAD callback functions
+- * @sdev: SRPT HCA pointer.
+- *
+- * Note: It is safe to call this function more than once for the same device.
+- */
+-static void srpt_unregister_mad_agent(struct srpt_device *sdev)
++static void __srpt_unregister_mad_agent(struct srpt_device *sdev, int port_cnt)
+ {
+ 	struct ib_port_modify port_modify = {
+ 		.clr_port_cap_mask = IB_PORT_DEVICE_MGMT_SUP,
+@@ -633,7 +627,10 @@ static void srpt_unregister_mad_agent(struct srpt_device *sdev)
+ 	struct srpt_port *sport;
+ 	int i;
+ 
+-	for (i = 1; i <= sdev->device->phys_port_cnt; i++) {
++	if (!port_cnt)
++		return;
++
++	for (i = 1; i <= port_cnt; i++) {
+ 		sport = &sdev->port[i - 1];
+ 		WARN_ON(sport->port != i);
+ 		if (sport->mad_agent) {
+@@ -644,6 +641,17 @@ static void srpt_unregister_mad_agent(struct srpt_device *sdev)
+ 	}
+ }
+ 
++/**
++ * srpt_unregister_mad_agent - unregister MAD callback functions
++ * @sdev: SRPT HCA pointer.
++ *
++ * Note: It is safe to call this function more than once for the same device.
++ */
++static void srpt_unregister_mad_agent(struct srpt_device *sdev)
++{
++	__srpt_unregister_mad_agent(sdev, sdev->device->phys_port_cnt);
++}
++
+ /**
+  * srpt_alloc_ioctx - allocate a SRPT I/O context structure
+  * @sdev: SRPT HCA pointer.
+@@ -3185,7 +3193,8 @@ static int srpt_add_one(struct ib_device *device)
+ 		if (ret) {
+ 			pr_err("MAD registration failed for %s-%d.\n",
+ 			       dev_name(&sdev->device->dev), i);
+-			goto err_event;
++			i--;
++			goto err_port;
+ 		}
+ 	}
+ 
+@@ -3197,7 +3206,8 @@ static int srpt_add_one(struct ib_device *device)
+ 	pr_debug("added %s.\n", dev_name(&device->dev));
+ 	return 0;
+ 
+-err_event:
++err_port:
++	__srpt_unregister_mad_agent(sdev, i);
+ 	ib_unregister_event_handler(&sdev->event_handler);
+ err_cm:
+ 	if (sdev->cm_id)
+-- 
+2.26.2
 
-  If the read command requests fewer bytes than are available for
-  transfer, then the read is an overlength read. If the read requests
-  more bytes than are available, then the read is an underlength read.
-
-  The amount of data returned is the smaller of the bytes available and
-  the allocation length.
-
-And the next paragraph defines cases where CHECK CONDITION should be
-reported for such reads. However, GOOD status is also possible, the next
-chapter of the annex (G.4 Examples from figure G.1 using variable-block
-transfers and various SILI and BLOCK LENGTH settings) refines many cases
-depending on SILI bit, whether block protection is enabled, if the
-transfer is FIXED or variable-length and if BLOCK LENGTH is
-zero/non-zero.
-
-As far as I understand underlength and overlength are always suppressed
-(status is GOOD) for devices where no "default" block size is defined
-per SPC (7.5.7.1 General block descriptor format):
-
-  For sequential access devices, a block length of zero indicates that the
-  logical block size written to the medium is specified by the TRANSFER
-  LENGTH field in the CDB (see SSC-4).
-
-The cases are also summarized in annex D (D.3 Summary of length error
-conditions on read type commands).
-
-Note, that if we talk about SSC over FCP, then "9.4.2 FCP_DATA IUs for
-read and write operations" does additionally apply. Perhaps a) from
-"9.4.2 FCP_DATA IUs for read and write operations" works well for SSC:
-
-  a) process the command normally except that data beyond the FCP_DL count
-  shall not be requested or transferred;
-
-The clause allows to accomodate variable-block tranfers from SSC.
-
-So, what if we return CHECK CONDITION only for SBC WRITEs with
-residuals?  Then it has no impact on SSC and other device types. In
-future, we might also add a patch that would fail SBC READs with
-residuals for sake of consistency. That behaviour would be beneficial
-for SBC devices as no host could corrupt data or itself by forming,
-requesting invalid data buffer.
-
-Thanks,
-Roman
