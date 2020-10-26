@@ -2,42 +2,82 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC006299767
-	for <lists+target-devel@lfdr.de>; Mon, 26 Oct 2020 20:51:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 232AA29984B
+	for <lists+target-devel@lfdr.de>; Mon, 26 Oct 2020 21:56:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729129AbgJZTvw (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 26 Oct 2020 15:51:52 -0400
-Received: from mail.hanmingtech.com ([122.193.27.132]:52932 "EHLO
-        mail.hanmingtech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729123AbgJZTvv (ORCPT
+        id S1728509AbgJZU4d (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 26 Oct 2020 16:56:33 -0400
+Received: from mail-1.ca.inter.net ([208.85.220.69]:39046 "EHLO
+        mail-1.ca.inter.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728475AbgJZU4c (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 26 Oct 2020 15:51:51 -0400
-Received: from User (unknown [64.235.38.47])
-        by mail.hanmingtech.com (Postfix) with ESMTPA id 597102E308C3;
-        Tue, 27 Oct 2020 03:00:01 +0800 (CST)
-Reply-To: <awesome.mariacarmen@yandex.com>
-From:   "Mariacarmen Gutierrez" <fernrodyup12@gmx.es>
-Subject: PLEASE TAKE NOTE!
-Date:   Mon, 26 Oct 2020 11:59:32 -0700
+        Mon, 26 Oct 2020 16:56:32 -0400
+X-Greylist: delayed 337 seconds by postgrey-1.27 at vger.kernel.org; Mon, 26 Oct 2020 16:56:32 EDT
+Received: from localhost (offload-3.ca.inter.net [208.85.220.70])
+        by mail-1.ca.inter.net (Postfix) with ESMTP id 1FC3A2EAB6F;
+        Mon, 26 Oct 2020 16:50:54 -0400 (EDT)
+Received: from mail-1.ca.inter.net ([208.85.220.69])
+        by localhost (offload-3.ca.inter.net [208.85.220.70]) (amavisd-new, port 10024)
+        with ESMTP id 3F+qMe1QX23Q; Mon, 26 Oct 2020 16:42:56 -0400 (EDT)
+Received: from [192.168.48.23] (host-104-157-204-209.dyn.295.ca [104.157.204.209])
+        (using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: dgilbert@interlog.com)
+        by mail-1.ca.inter.net (Postfix) with ESMTPSA id ABEA82EA190;
+        Mon, 26 Oct 2020 16:50:53 -0400 (EDT)
+Reply-To: dgilbert@interlog.com
+Subject: Re: [PATCH v2 1/5] lib/scatterlist: use consistent sg_copy_buffer()
+ return type
+To:     David Disseldorp <ddiss@suse.de>, target-devel@vger.kernel.org
+Cc:     linux-scsi@vger.kernel.org
+References: <20201026190646.8727-1-ddiss@suse.de>
+ <20201026190646.8727-2-ddiss@suse.de>
+From:   Douglas Gilbert <dgilbert@interlog.com>
+Message-ID: <08c0e425-d8c5-a950-f2a1-01bb6c9a5adf@interlog.com>
+Date:   Mon, 26 Oct 2020 16:50:53 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
+In-Reply-To: <20201026190646.8727-2-ddiss@suse.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-CA
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-Id: <20201026190001.597102E308C3@mail.hanmingtech.com>
-To:     undisclosed-recipients:;
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hello friend!
+On 2020-10-26 3:06 p.m., David Disseldorp wrote:
+> sg_copy_buffer() returns a size_t with the number of bytes copied.
+> Return 0 instead of false if the copy is skipped.
+> 
+> Signed-off-by: David Disseldorp <ddiss@suse.de>
+> ---
+>   lib/scatterlist.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/lib/scatterlist.c b/lib/scatterlist.c
+> index 0a482ef988e5..a59778946404 100644
+> --- a/lib/scatterlist.c
+> +++ b/lib/scatterlist.c
+> @@ -933,7 +933,7 @@ size_t sg_copy_buffer(struct scatterlist *sgl, unsigned int nents, void *buf,
+>   	sg_miter_start(&miter, sgl, nents, sg_flags);
+>   
+>   	if (!sg_miter_skip(&miter, skip))
+> -		return false;
+> +		return 0;
+>   
+>   	while ((offset < buflen) && sg_miter_next(&miter)) {
+>   		unsigned int len;
+> 
 
-I would like to contact you personally for an important proposal that could of interest to you.
-I send this email only to know if this email address is functional.
-I have something very important to discuss with you. Contact me for details by:  Email: fernrodyup1215@aol.com with your direct contacts.
+This one probably should be sent by itself as a fix to:
+    linux-block@vger.kernel.org
 
-Kind regards.
-Maria Carmen Gutierrez
+and cc-ed to:
+    axboe@kernel.dk
+
+on the assumption that Jens Axboe is the maintainer of lib/scatterlist.c .
+He put a fix of mine in sgl_alloc_order() into the kernel recently.
+
+Otherwise:
+Reviewed-by: Douglas Gilbert <dgilbert@interlog.com>
