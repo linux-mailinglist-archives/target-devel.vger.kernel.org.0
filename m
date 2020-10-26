@@ -2,73 +2,86 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A46E2299886
-	for <lists+target-devel@lfdr.de>; Mon, 26 Oct 2020 22:05:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D4662999AD
+	for <lists+target-devel@lfdr.de>; Mon, 26 Oct 2020 23:29:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730044AbgJZVFM (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 26 Oct 2020 17:05:12 -0400
-Received: from mx2.suse.de ([195.135.220.15]:59712 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730037AbgJZVFM (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Mon, 26 Oct 2020 17:05:12 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 8EC1CADE8;
-        Mon, 26 Oct 2020 21:05:10 +0000 (UTC)
-Date:   Mon, 26 Oct 2020 22:05:09 +0100
-From:   David Disseldorp <ddiss@suse.de>
-To:     Douglas Gilbert <dgilbert@interlog.com>
-Cc:     target-devel@vger.kernel.org, linux-scsi@vger.kernel.org
-Subject: Re: [PATCH v2 1/5] lib/scatterlist: use consistent sg_copy_buffer()
- return type
-Message-ID: <20201026220509.7f0a2abb@suse.de>
-In-Reply-To: <08c0e425-d8c5-a950-f2a1-01bb6c9a5adf@interlog.com>
-References: <20201026190646.8727-1-ddiss@suse.de>
-        <20201026190646.8727-2-ddiss@suse.de>
-        <08c0e425-d8c5-a950-f2a1-01bb6c9a5adf@interlog.com>
+        id S2394519AbgJZW3w (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 26 Oct 2020 18:29:52 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:51932 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2394447AbgJZW3v (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Mon, 26 Oct 2020 18:29:51 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09QMTAHl088023;
+        Mon, 26 Oct 2020 22:29:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : mime-version :
+ content-type; s=corp-2020-01-29;
+ bh=XHun9CyXGySLkxbDbRXvyEC8cqSsVIKOIGlFJ9EM0vo=;
+ b=aEOYwNJ3LIi/B4MGfNA8vndGz7Q6G0GMQo9OFsnMNKZB1nolWhqj3pIeeKMJEHG1/fkz
+ uX+diiKeLi8CDNptOhef0L0JeB+UzKqRGyKNBIs3B+/ACAZTI8zJLBbrAuo/VQC/chxt
+ PEOL5ZKm5Vv6F2VKHJJYks2SSDdSKe+0T7YpBjuGlcknlVv2I9v4EHkTG3KY48m7lksO
+ 99h+A3PyXHBCTtgaXeB6/vT5ZTgY35pPtDwUml/8BO1jmAsS4EzlVpQH8pgH63D3+hMC
+ 17AVa6oFd5YfpfwwXnyPIHtrW4uuzuue4jNlbxrLhTLoqiO90bduT/jELFkMlasJfaUn 5w== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 34c9saq7na-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 26 Oct 2020 22:29:49 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09QMKN4t092688;
+        Mon, 26 Oct 2020 22:29:49 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 34cwukpxqq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 26 Oct 2020 22:29:49 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 09QMTnMV017434;
+        Mon, 26 Oct 2020 22:29:49 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 26 Oct 2020 15:29:48 -0700
+To:     Bodo Stroesser <bostroesser@gmail.com>
+Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+Subject: Re: [PATCH v2] scsi: target: tcmu: scatter_/gather_data_area rework
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq1eelk7hbp.fsf@ca-mkp.ca.oracle.com>
+References: <20201019115118.11949-1-bostroesser@gmail.com>
+Date:   Mon, 26 Oct 2020 18:29:45 -0400
+In-Reply-To: <20201019115118.11949-1-bostroesser@gmail.com> (Bodo Stroesser's
+        message of "Mon, 19 Oct 2020 13:51:18 +0200")
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9786 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 bulkscore=0
+ spamscore=0 adultscore=0 malwarescore=0 mlxlogscore=977 suspectscore=1
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2010260145
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9786 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 malwarescore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 spamscore=0 phishscore=0 clxscore=1011 suspectscore=1
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2010260146
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Mon, 26 Oct 2020 16:50:53 -0400, Douglas Gilbert wrote:
 
-> On 2020-10-26 3:06 p.m., David Disseldorp wrote:
-> > sg_copy_buffer() returns a size_t with the number of bytes copied.
-> > Return 0 instead of false if the copy is skipped.
-> > 
-> > Signed-off-by: David Disseldorp <ddiss@suse.de>
-> > ---
-> >   lib/scatterlist.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/lib/scatterlist.c b/lib/scatterlist.c
-> > index 0a482ef988e5..a59778946404 100644
-> > --- a/lib/scatterlist.c
-> > +++ b/lib/scatterlist.c
-> > @@ -933,7 +933,7 @@ size_t sg_copy_buffer(struct scatterlist *sgl, unsigned int nents, void *buf,
-> >   	sg_miter_start(&miter, sgl, nents, sg_flags);
-> >   
-> >   	if (!sg_miter_skip(&miter, skip))
-> > -		return false;
-> > +		return 0;
-> >   
-> >   	while ((offset < buflen) && sg_miter_next(&miter)) {
-> >   		unsigned int len;
-> >   
-> 
-> This one probably should be sent by itself as a fix to:
->     linux-block@vger.kernel.org
-> 
-> and cc-ed to:
->     axboe@kernel.dk
-> 
-> on the assumption that Jens Axboe is the maintainer of lib/scatterlist.c .
-> He put a fix of mine in sgl_alloc_order() into the kernel recently.
-> 
-> Otherwise:
-> Reviewed-by: Douglas Gilbert <dgilbert@interlog.com>
+Bodo,
 
-Sent. Thanks Douglas!
+> This is made on top of the scsi-staging tree plus my previous
+> patch:
+> "scsi: target: tcmu: add compat mode for 32bit userspace on 64bit
+> kernel"
+
+Make sure to put all commentary below ---. Otherwise the tooling gets
+confused about what goes in the commit message.
+
+Applied to 5.11/scsi-staging, thanks!
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
