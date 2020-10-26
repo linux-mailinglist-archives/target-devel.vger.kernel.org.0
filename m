@@ -2,64 +2,68 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02B292992C4
-	for <lists+target-devel@lfdr.de>; Mon, 26 Oct 2020 17:46:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D63052993E7
+	for <lists+target-devel@lfdr.de>; Mon, 26 Oct 2020 18:34:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1786336AbgJZQq2 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 26 Oct 2020 12:46:28 -0400
-Received: from mail-ej1-f68.google.com ([209.85.218.68]:39343 "EHLO
-        mail-ej1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1780583AbgJZQoy (ORCPT
+        id S1780075AbgJZReB (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 26 Oct 2020 13:34:01 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:38517 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1780048AbgJZReB (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 26 Oct 2020 12:44:54 -0400
-Received: by mail-ej1-f68.google.com with SMTP id qh17so14581914ejb.6;
-        Mon, 26 Oct 2020 09:44:52 -0700 (PDT)
+        Mon, 26 Oct 2020 13:34:01 -0400
+Received: by mail-ed1-f65.google.com with SMTP id bc23so10283368edb.5;
+        Mon, 26 Oct 2020 10:34:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=rO9DdPM05b+m1oOhpt2IrGL5DQ3+ZBkSc2O7qG1+B8E=;
-        b=tt1jXI5AVG7zNWPHvloNCf0pf1Tohi+3CVUIm3F/uVslzh0PU4MG3LwvDBhzRqEOwQ
-         l7DVdaWqqcm593JYelCxWmBXhNJIOPVt7OHgtoDFpHMwJDsh0z5QOK50I5VO9j1Dxh+p
-         NkwxP7FIbvBrFagN7uyxQKamSFK6wgq/+cgBsaFM04vQPZ9AYTEDso+56yRtF0KVI7Xc
-         CHGd6VlK1FciWHLXxchsk4fxaPnfHYpP2lqGsVQk0QxG3ZPtQTUTsU2MsK7o71XaTbGz
-         r1pPsHaNQaGApRZxn63mS26UWsTwaXWmEVRezdipQ2UkQoaymxRG8a1cxo41mVpyvGXT
-         PfiA==
+        bh=f2dNymh7E0GHijfuDgIGRacM0bd+z9HBydO5b0EstHg=;
+        b=tNzgcegt+lBXWeNeyObc8UURknxITQbdYcb7umJtzynw8A5uoHMY6IGQdFVrTACrMR
+         +GHdr6PgkRXPn+q69e31+LLeCrfnGuB7Nw1KvfvIkbM8uWpR9mGU7b/xZ2G0i2Xu3MyF
+         pT6oqa06XA+hvgiljmKIP77l4yp1+3gSO4MJGRR56A1dAU7LBEvr7NRVCSZZYKFZUPTc
+         DZAZVqifpYtNboH9uHrQGemsg2NGMZOVWTOLxpoBwdg6PqItrkkUNvLbMbsJYvRoGljc
+         0Gxi7B8uijl3vYuArkpJnvXl/Ah2HIQb2FOX8CLGB/yN38gWgmMovjYs1yHDlk6RTd7H
+         NwJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=rO9DdPM05b+m1oOhpt2IrGL5DQ3+ZBkSc2O7qG1+B8E=;
-        b=bnCXyiewcv6VJe4N2Vt0HRt573C9soga70nEXRVQdH9Q+kMhDxn5CPN/24bbUPn+02
-         L05OXgj79Q13l6PCig1rPx1/+Jmxx3Xrdrkuloi+nGEjKC41A3LWR8aX+m2n2RJdEh+w
-         TEFh8n61Z62YmZiE7rFtGFBT0RHix0R+H+Frsra6Kp3EJHOolgrlifPmk5ev8hieb4iu
-         JPSQfsbno6VMEoihrFcNVsNQZnRjzFYCOgrKYqBA8Zvi5x+bPsVJ8HQKyLIV5lL6hUKH
-         gJYoeEWkRfx+zLVrff5UkRcABaIWPPB1JGk38rW2mc9i5yiq7cZj9MVrv1Yqkj3VTFX+
-         fy+w==
-X-Gm-Message-State: AOAM533HyAvM/1eZB8jd4Ms8qVex4rBJy7xGM/7QIQJtIvSrsZodPNtx
-        8UYsK+1uIJSUp9rMtqKElPzhQyyh/lk5+A==
-X-Google-Smtp-Source: ABdhPJwgjlmnNsKMqlRLpwMlbwsUGXDIskJoEDXSSiwFrXqaSz5wEO8n0vggIXgcq0/ilWH/4+sdpw==
-X-Received: by 2002:a17:906:539a:: with SMTP id g26mr17285079ejo.71.1603730691525;
-        Mon, 26 Oct 2020 09:44:51 -0700 (PDT)
+        bh=f2dNymh7E0GHijfuDgIGRacM0bd+z9HBydO5b0EstHg=;
+        b=Nj0gtqkEuz60Ufy8P6ctNNd4fXzT22x2DInUyt2BBZIqjtWkUqFC9XpfWG3kVumx2s
+         gMoiCwjpctpSpv7yPyjvad3rGcEVsptkbaIZE+RTeVe7jwjQB6aQT+9VI6SJR9K5YIZo
+         bHzim0SHLUD+cVvX5cgfKlQ10dOs4dHbcxj09fCZdtqxi0h1KMSQrJD43Rzl9baAzxxT
+         335YPSMhsAKm3JxzPxUgfdimZC8mHmT0kRWgZrSa2kseq4rt9SrO5z9M8Bf9h5zcwMJX
+         CAfv+CP09XKYJfJU3yu5kkU7MhAVT72an9f0J+4F4M9spOQ1/yCN4nIiBi4kTO9xB8U+
+         a56Q==
+X-Gm-Message-State: AOAM530RembncAKK8O4li5uaM4ET/qronsmm/pcFlyg5nOoIfCg67uyZ
+        7DhlgDHMUvnsttvGHcITKmrwdE/U2j6qGA==
+X-Google-Smtp-Source: ABdhPJy+HKpVfamiWvsdbFte1QkzY7ApLFhO7nU1JAg9rTL8dsIHcpRTAGq6gQk4pkWSk8hsTRGX6A==
+X-Received: by 2002:aa7:c792:: with SMTP id n18mr16854816eds.209.1603733639412;
+        Mon, 26 Oct 2020 10:33:59 -0700 (PDT)
 Received: from [192.168.178.40] (ipbcc08ad4.dynamic.kabel-deutschland.de. [188.192.138.212])
-        by smtp.gmail.com with ESMTPSA id c5sm5590027edx.58.2020.10.26.09.44.50
+        by smtp.gmail.com with ESMTPSA id g9sm5544700edv.81.2020.10.26.10.33.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Oct 2020 09:44:50 -0700 (PDT)
-Subject: Re: [PATCH 4/5] scsi: target: split out COMPARE AND WRITE memcmp into
- helper
-To:     David Disseldorp <ddiss@suse.de>, target-devel@vger.kernel.org,
-        Douglas Gilbert <dgilbert@interlog.com>
-Cc:     linux-scsi@vger.kernel.org
-References: <20201023205723.17880-1-ddiss@suse.de>
- <20201023205723.17880-5-ddiss@suse.de>
+        Mon, 26 Oct 2020 10:33:58 -0700 (PDT)
+Subject: Re: [PATCH 3/3] scsi: target: core: Change ASCQ for residual write
+To:     Bart Van Assche <bvanassche@acm.org>,
+        Roman Bolshakov <r.bolshakov@yadro.com>
+Cc:     Anastasia Kovaleva <a.kovaleva@yadro.com>,
+        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux@yadro.com
+References: <20201022172011.42367-1-a.kovaleva@yadro.com>
+ <20201022172011.42367-4-a.kovaleva@yadro.com>
+ <e2b215ca-0aa8-bdae-e5bd-292a09d8282e@acm.org>
+ <20201024121315.GA35317@SPB-NB-133.local>
+ <b831a7db-1da2-c293-a8f6-d9c62f68c224@acm.org>
 From:   Bodo Stroesser <bostroesser@gmail.com>
-Message-ID: <34b6d335-7f72-4ebc-f3b3-873d6d82e4bc@gmail.com>
-Date:   Mon, 26 Oct 2020 17:44:50 +0100
+Message-ID: <6cc811a4-65ca-529a-4578-c0eba0bdd102@gmail.com>
+Date:   Mon, 26 Oct 2020 18:33:58 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20201023205723.17880-5-ddiss@suse.de>
+In-Reply-To: <b831a7db-1da2-c293-a8f6-d9c62f68c224@acm.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -67,193 +71,54 @@ Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Am 23.10.20 um 22:57 schrieb David Disseldorp:
-> In preparation for finding and returning the miscompare offset.
+Am 25.10.20 um 02:25 schrieb Bart Van Assche:
+> On 10/24/20 5:13 AM, Roman Bolshakov wrote:
+>> iSCSI doesn't specify a specific code but mentions a possibility of CHECK
+>> CONDITION for residuals (11.4.5.1.  Field Semantics):
+>>
+>>    Targets may set the residual count, and initiators may use it when the
+>>    response code is Command Completed at Target (even if the status
+>>    returned is not GOOD).
 > 
-> Signed-off-by: David Disseldorp <ddiss@suse.de>
-> ---
->   drivers/target/target_core_sbc.c | 117 ++++++++++++++++++-------------
->   1 file changed, 67 insertions(+), 50 deletions(-)
+> My interpretation of the above text is that it neither allows nor
+> requires to change the status GOOD into something else if there is a
+> residue.
 > 
-> diff --git a/drivers/target/target_core_sbc.c b/drivers/target/target_core_sbc.c
-> index 5f77dd95f1b9..79216d0355e7 100644
-> --- a/drivers/target/target_core_sbc.c
-> +++ b/drivers/target/target_core_sbc.c
-> @@ -434,20 +434,77 @@ static sense_reason_t compare_and_write_post(struct se_cmd *cmd, bool success,
->   	return ret;
->   }
->   
-> +/*
-> + * compare @cmp_len bytes of @read_sgl with @cmp_sgl. On miscompare return
-> + * TCM_MISCOMPARE_VERIFY.
-> + */
-> +static sense_reason_t
-> +compare_and_write_do_cmp(struct scatterlist *read_sgl, unsigned int read_nents,
-> +			 struct scatterlist *cmp_sgl, unsigned int cmp_nents,
-> +			 unsigned int cmp_len)
-> +{
-> +	unsigned char *buf = NULL;
-> +	struct scatterlist *sg;
-> +	sense_reason_t ret;
-> +	unsigned int offset;
-> +	size_t rc;
-> +	int i;
-> +
-> +	buf = kzalloc(cmp_len, GFP_KERNEL);
-> +	if (!buf) {
-> +		pr_err("Unable to allocate compare_and_write buf\n");
-> +		ret = TCM_OUT_OF_RESOURCES;
-> +		goto out;
-> +	}
-> +
-> +	rc = sg_copy_to_buffer(cmp_sgl, cmp_nents, buf, cmp_len);
-> +	if (!rc) {
-> +		pr_err("sg_copy_to_buffer() failed for compare_and_write\n");
-> +		ret = TCM_OUT_OF_RESOURCES;
-> +		goto out;
-> +	}
-> +	/*
-> +	 * Compare SCSI READ payload against verify payload
-> +	 */
-> +	offset = 0;
-> +	for_each_sg(read_sgl, sg, read_nents, i) {
-> +		unsigned int len = min(sg->length, cmp_len);
-> +		unsigned char *addr = kmap_atomic(sg_page(sg));
-> +
-> +		if (memcmp(addr, buf + offset, len)) {
-> +			pr_warn("Detected MISCOMPARE for addr: %p buf: %p\n",
-> +				addr, buf + offset);
-> +			kunmap_atomic(addr);
-> +			ret = TCM_MISCOMPARE_VERIFY;
-> +			goto out;
-> +		}
-> +		kunmap_atomic(addr);
-> +
-> +		offset += len;
-> +		cmp_len -= len;
-> +		if (!cmp_len)
-> +			break;
-> +	}
-> +	pr_debug("COMPARE AND WRITE read data matches compare data\n");
-> +	ret = TCM_NO_SENSE;
-> +out:
-> +	kfree(buf);
-> +	return ret;
-> +}
-> +
+>>> Additionally, what benefits does it provide to report a CHECK CONDITION
+>>> upon residual overflow?
+>>
+>> Typical use case for CHECK CONDITION in case of Underflow/Overflow is
+>> extra robustness against buggy initiators [1][2]. Failing both READ and
+>> WRITE is the most solid approach in that sense [3][4][5] as it prevents
+>> data corruption at all costs.
+>>
+>> Suppose an initiator wants to WRITE 8 LBA. For 512-byte formatted LUN,
+>> 8 LBAs need a buffer of 4K bytes. For 4096-byte formatted LUN the
+>> command would need 32K data buffer.
+>>
+>> An Overflow happens if initiator treats 4Kn device like 512n one but
+>> provides a buffer of 4K. i.e. to complete the WRITE target needs to
+>> consume 28K more data, otherwise only 1 LBA would be written and the
+>> rest 7 LBAs would have indeterminate content.
+>>
+>> An Underflow happens if initiator confuses 512n device with 4Kn one and
+>> provides a buffer of 32K, i.e. target doesn't utilize all buffer for the
+>> command.
+> 
+> Thanks for the additional background information, this really helps. How
+> about only rejecting SCSI commands for which the data buffer size is not
+> a multiple of the block size? I'm concerned that flagging all SCSI
+> commands that have a residue as invalid will break SCSI tape software.
 
-Since you are going to split out a new helper, did you consider to re-write helper's code to avoid the intermediate buffer?
+AFAICS, there is no risk to break tape handling. target_cmd_size_check() is mainly used by sbc_parse_cdb(),
+while passthrough_parse_cdb() optionally calls it for PERSISTENT_RESERVFE_IN/_OUT and RESERVE(_10)/RELEASE(_10) only.
 
-Douglas Gilbert currently tries to add new functions to lib/scatterlist.c
-One of them is sgl_compare_sgl, which directly compares content of two sg lists:
-   https://patchwork.kernel.org/project/linux-block/patch/20201019191928.77845-4-dgilbert@interlog.com/
+sbc_parse_cdb is not usable for tape devices anyway, since CDB 'length' field in READ/WRITE for SSC devices needs special processing.
+Depending on current state of the device, length 1 can have the meaning 1 byte or 1 times the optionally set fixed block size.
+So the only way to set up a tape target LUN is to use tcmu or pscsi.
 
-This code - based on the sg_miter_* calls - works without intermediate buffer.
-Maybe your helper could use similar code or you could even call Douglas' helper, if he can enhance it to
-(optionally) return the miscompare offset.
-
-
->   static sense_reason_t compare_and_write_callback(struct se_cmd *cmd, bool success,
->   						 int *post_ret)
->   {
->   	struct se_device *dev = cmd->se_dev;
->   	struct sg_table write_tbl = { };
-> -	struct scatterlist *write_sg, *sg;
-> -	unsigned char *buf = NULL, *addr;
-> +	struct scatterlist *write_sg;
->   	struct sg_mapping_iter m;
-> -	unsigned int offset = 0, len;
-> +	unsigned int len;
->   	unsigned int nlbas = cmd->t_task_nolb;
->   	unsigned int block_size = dev->dev_attrib.block_size;
->   	unsigned int compare_len = (nlbas * block_size);
->   	sense_reason_t ret = TCM_NO_SENSE;
-> -	int rc, i;
-> +	int i;
->   
->   	/*
->   	 * Handle early failure in transport_generic_request_failure(),
-> @@ -473,12 +530,13 @@ static sense_reason_t compare_and_write_callback(struct se_cmd *cmd, bool succes
->   		goto out;
->   	}
->   
-> -	buf = kzalloc(cmd->data_length, GFP_KERNEL);
-> -	if (!buf) {
-> -		pr_err("Unable to allocate compare_and_write buf\n");
-> -		ret = TCM_OUT_OF_RESOURCES;
-> +	ret = compare_and_write_do_cmp(cmd->t_bidi_data_sg,
-> +				       cmd->t_bidi_data_nents,
-> +				       cmd->t_data_sg,
-> +				       cmd->t_data_nents,
-> +				       compare_len);
-> +	if (ret)
->   		goto out;
-> -	}
->   
->   	if (sg_alloc_table(&write_tbl, cmd->t_data_nents, GFP_KERNEL) < 0) {
->   		pr_err("Unable to allocate compare_and_write sg\n");
-> @@ -486,41 +544,6 @@ static sense_reason_t compare_and_write_callback(struct se_cmd *cmd, bool succes
->   		goto out;
->   	}
->   	write_sg = write_tbl.sgl;
-> -	/*
-> -	 * Setup verify and write data payloads from total NumberLBAs.
-> -	 */
-> -	rc = sg_copy_to_buffer(cmd->t_data_sg, cmd->t_data_nents, buf,
-> -			       cmd->data_length);
-> -	if (!rc) {
-> -		pr_err("sg_copy_to_buffer() failed for compare_and_write\n");
-> -		ret = TCM_OUT_OF_RESOURCES;
-> -		goto out;
-> -	}
-> -	/*
-> -	 * Compare against SCSI READ payload against verify payload
-> -	 */
-> -	for_each_sg(cmd->t_bidi_data_sg, sg, cmd->t_bidi_data_nents, i) {
-> -		addr = (unsigned char *)kmap_atomic(sg_page(sg));
-> -		if (!addr) {
-> -			ret = TCM_OUT_OF_RESOURCES;
-> -			goto out;
-> -		}
-> -
-> -		len = min(sg->length, compare_len);
-> -
-> -		if (memcmp(addr, buf + offset, len)) {
-> -			pr_warn("Detected MISCOMPARE for addr: %p buf: %p\n",
-> -				addr, buf + offset);
-> -			kunmap_atomic(addr);
-> -			goto miscompare;
-> -		}
-> -		kunmap_atomic(addr);
-> -
-> -		offset += len;
-> -		compare_len -= len;
-> -		if (!compare_len)
-> -			break;
-> -	}
->   
->   	i = 0;
->   	len = cmd->t_task_nolb * block_size;
-> @@ -568,13 +591,8 @@ static sense_reason_t compare_and_write_callback(struct se_cmd *cmd, bool succes
->   
->   	__target_execute_cmd(cmd, false);
->   
-> -	kfree(buf);
->   	return ret;
->   
-> -miscompare:
-> -	pr_warn("Target/%s: Send MISCOMPARE check condition and sense\n",
-> -		dev->transport->name);
-> -	ret = TCM_MISCOMPARE_VERIFY;
->   out:
->   	/*
->   	 * In the MISCOMPARE or failure case, unlock ->caw_sem obtained in
-> @@ -582,7 +600,6 @@ static sense_reason_t compare_and_write_callback(struct se_cmd *cmd, bool succes
->   	 */
->   	up(&dev->caw_sem);
->   	sg_free_table(&write_tbl);
-> -	kfree(buf);
->   	return ret;
->   }
->   
+> 
+> Thanks,
+> 
+> Bart.
 > 
