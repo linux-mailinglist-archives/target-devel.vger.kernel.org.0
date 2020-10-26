@@ -2,86 +2,110 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D4662999AD
-	for <lists+target-devel@lfdr.de>; Mon, 26 Oct 2020 23:29:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15E2B2999F4
+	for <lists+target-devel@lfdr.de>; Mon, 26 Oct 2020 23:55:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394519AbgJZW3w (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 26 Oct 2020 18:29:52 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:51932 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2394447AbgJZW3v (ORCPT
+        id S2394887AbgJZWzE (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 26 Oct 2020 18:55:04 -0400
+Received: from hqnvemgate25.nvidia.com ([216.228.121.64]:15214 "EHLO
+        hqnvemgate25.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2394885AbgJZWzE (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 26 Oct 2020 18:29:51 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09QMTAHl088023;
-        Mon, 26 Oct 2020 22:29:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : message-id : references : date : in-reply-to : mime-version :
- content-type; s=corp-2020-01-29;
- bh=XHun9CyXGySLkxbDbRXvyEC8cqSsVIKOIGlFJ9EM0vo=;
- b=aEOYwNJ3LIi/B4MGfNA8vndGz7Q6G0GMQo9OFsnMNKZB1nolWhqj3pIeeKMJEHG1/fkz
- uX+diiKeLi8CDNptOhef0L0JeB+UzKqRGyKNBIs3B+/ACAZTI8zJLBbrAuo/VQC/chxt
- PEOL5ZKm5Vv6F2VKHJJYks2SSDdSKe+0T7YpBjuGlcknlVv2I9v4EHkTG3KY48m7lksO
- 99h+A3PyXHBCTtgaXeB6/vT5ZTgY35pPtDwUml/8BO1jmAsS4EzlVpQH8pgH63D3+hMC
- 17AVa6oFd5YfpfwwXnyPIHtrW4uuzuue4jNlbxrLhTLoqiO90bduT/jELFkMlasJfaUn 5w== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2130.oracle.com with ESMTP id 34c9saq7na-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 26 Oct 2020 22:29:49 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09QMKN4t092688;
-        Mon, 26 Oct 2020 22:29:49 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 34cwukpxqq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 26 Oct 2020 22:29:49 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 09QMTnMV017434;
-        Mon, 26 Oct 2020 22:29:49 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 26 Oct 2020 15:29:48 -0700
-To:     Bodo Stroesser <bostroesser@gmail.com>
-Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Subject: Re: [PATCH v2] scsi: target: tcmu: scatter_/gather_data_area rework
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <yq1eelk7hbp.fsf@ca-mkp.ca.oracle.com>
-References: <20201019115118.11949-1-bostroesser@gmail.com>
-Date:   Mon, 26 Oct 2020 18:29:45 -0400
-In-Reply-To: <20201019115118.11949-1-bostroesser@gmail.com> (Bodo Stroesser's
-        message of "Mon, 19 Oct 2020 13:51:18 +0200")
+        Mon, 26 Oct 2020 18:55:04 -0400
+Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate25.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
+        id <B5f9753cc0000>; Mon, 26 Oct 2020 15:55:08 -0700
+Received: from HQMAIL101.nvidia.com (172.20.187.10) by HQMAIL109.nvidia.com
+ (172.20.187.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 26 Oct
+ 2020 22:55:03 +0000
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.102)
+ by HQMAIL101.nvidia.com (172.20.187.10) with Microsoft SMTP Server (TLS) id
+ 15.0.1473.3 via Frontend Transport; Mon, 26 Oct 2020 22:55:03 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=K2mxZiLY9qs5vd+ch90cWV7/1hUhvw7cIRQKNdaNLHVaMrKw8XfNyOlVcxOZuyu1iMaKnCeoav6DI84Id0RbqBdv9vPkIX5qR19XPnW2sVujLx0Fs6m0xV/09ejZ3MnX0O5Q296kUU8mGV9/nO6fMENKhWbNk0RtgjGbKldjVKHZLZBXAVyNPgzEyo7lqcaOYe2oU99F+1qa2h6edFwsOI2g73Vog8fEMSBiR0jrd0EjHHVG9yJWEAeVR2gJJNByLloPrpvzsNH+OtDtBobtst1sn0d3sK09R3O58VMnWQmMb3HtaPYUlpKjDd0suuQMuskziOWVzNV1mkNKrCRMtw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=H69dbHhG/k/Y5cAzLva6gR5uHaZUphun0pkvJKhQeWY=;
+ b=TUGsFFUr6KY/INwIBrFn0u1duqvvuiAKPSVLgsQwBCfyMT2wI1s5y+HA+qcGEtlDKiQrS+Z9R/8qgbA/LxQarPG5XdQmmH5/OAbOtk+JNjLRSF2528Up3jqx4kvAjAGKaMjmyu06wd4MOuMpq+QthXZMASmBjmfKBGJaHtd7ZDJ8OrC2q38zT5yQYLZuXWHYrLDj/bBGeCTuOLPkRVoy/1CDABnbJihPKHT5l+tH3XCPA/HI1wtzMc98QClvGLNY8hcp5lgMmGnhEaabgup5++VzgZIS+Kse9WPzALLJ+j60sjlOu9AFgNdjGspkv6lh3cvjtvPl7BNZmhZqslSGgA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
+ by DM5PR1201MB0204.namprd12.prod.outlook.com (2603:10b6:4:51::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.23; Mon, 26 Oct
+ 2020 22:55:01 +0000
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::cdbe:f274:ad65:9a78]) by DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::cdbe:f274:ad65:9a78%7]) with mapi id 15.20.3477.028; Mon, 26 Oct 2020
+ 22:55:01 +0000
+Date:   Mon, 26 Oct 2020 19:54:59 -0300
+From:   Jason Gunthorpe <jgg@nvidia.com>
+To:     Joe Perches <joe@perches.com>
+CC:     Doug Ledford <dledford@redhat.com>, <linux-rdma@vger.kernel.org>,
+        <target-devel@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH-next 0/4] RDMA: sprintf to sysfs_emit conversions
+Message-ID: <20201026225459.GA2152135@nvidia.com>
+References: <cover.1602122879.git.joe@perches.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <cover.1602122879.git.joe@perches.com>
+X-ClientProxiedBy: MN2PR22CA0017.namprd22.prod.outlook.com
+ (2603:10b6:208:238::22) To DM6PR12MB3834.namprd12.prod.outlook.com
+ (2603:10b6:5:14a::12)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9786 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 bulkscore=0
- spamscore=0 adultscore=0 malwarescore=0 mlxlogscore=977 suspectscore=1
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010260145
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9786 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 malwarescore=0 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 spamscore=0 phishscore=0 clxscore=1011 suspectscore=1
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2010260146
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from mlx.ziepe.ca (156.34.48.30) by MN2PR22CA0017.namprd22.prod.outlook.com (2603:10b6:208:238::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.18 via Frontend Transport; Mon, 26 Oct 2020 22:55:00 +0000
+Received: from jgg by mlx with local (Exim 4.94)        (envelope-from <jgg@nvidia.com>)        id 1kXBOF-0091ta-HQ; Mon, 26 Oct 2020 19:54:59 -0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1603752908; bh=H69dbHhG/k/Y5cAzLva6gR5uHaZUphun0pkvJKhQeWY=;
+        h=ARC-Seal:ARC-Message-Signature:ARC-Authentication-Results:Date:
+         From:To:CC:Subject:Message-ID:References:Content-Type:
+         Content-Disposition:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+         X-MS-Exchange-MessageSentRepresentingType;
+        b=Wy1ERsjVmRHE1nhLah6omYzPJOLytXxth5AxzFQgN0REuFyLV9s+wHydQ3llXyi6J
+         lkxsHI5V8P9flHoGD6bf41V42Mq35sysyXJ7eKeP6hB3lQyJiroyljhVglKTzMYDuU
+         aetCH+aprNfUi1c059e2MkfbGp6x+xtpSQv7FJLD17QKggJ3dmL2OZEqX0yobcAql2
+         DyxC4DG3IKtcMO5UyhuDjXFOY4qDid5VyE03ovdzElbdatr+3Z8B4I1SvuQcUuWFiQ
+         +m2q9cfpsXvSlI5hUp2InMZpAmjzlyTrvN1BUijPwE81mzk15ITawPANfJ+1s2tmEd
+         Pg4VviGP2Ggtw==
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+On Wed, Oct 07, 2020 at 07:36:23PM -0700, Joe Perches wrote:
+> A recent commit added a sysfs_emit and sysfs_emit_at to allow various
+> sysfs show functions to ensure that the PAGE_SIZE buffer argument is
+> never overrun and always NUL terminated.
+> 
+> Convert the RDMA/InfiniBand subsystem to use these new functions.
+> 
+> The first 2 patches exclusively used coccinelle to convert uses.
+> The third and fourth patches were done manually.
+> 
+> Compiled allyesconfig and defconfig with all infiniband options selected
+> no warnings, but untested, no hardward
+> 
+> Overall object size is reduced
+> 
+> total size: allyesconfig x86-64
+> new: 8364003	1680968	 131520	10176491 9b47eb	(TOTALS)
+> old: 8365883	1681032	 131520	10178435 9b4f83	(TOTALS)
+> 
+> total size: defconfig x86-64 with all infiniband selected
+> new; 1359153	 131228	   1910  1492291 16c543	(TOTALS)
+> old: 1359422	 131228	   1910  1492560 16c650	(TOTALS)
+> 
+> Joe Perches (4):
+>   RDMA: Convert sysfs device * show functions to use sysfs_emit()
+>   RDMA: Convert sysfs kobject * show functions to use sysfs_emit()
 
-Bodo,
+First two applied to for-next
 
-> This is made on top of the scsi-staging tree plus my previous
-> patch:
-> "scsi: target: tcmu: add compat mode for 32bit userspace on 64bit
-> kernel"
+>   RDMA: manual changes for sysfs_emit and neatening
+>   RDMA: Convert various random sprintf sysfs _show uses to sysfs_emit
 
-Make sure to put all commentary below ---. Otherwise the tooling gets
-confused about what goes in the commit message.
+Will probably do these two later this week/next
 
-Applied to 5.11/scsi-staging, thanks!
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Thanks,
+Jason
