@@ -2,54 +2,57 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4B3C29A2A8
-	for <lists+target-devel@lfdr.de>; Tue, 27 Oct 2020 03:22:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 603EA29A2BC
+	for <lists+target-devel@lfdr.de>; Tue, 27 Oct 2020 03:43:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2443763AbgJ0CWM (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 26 Oct 2020 22:22:12 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:44356 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2438662AbgJ0CWL (ORCPT
+        id S2390875AbgJ0Cm7 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 26 Oct 2020 22:42:59 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:35656 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390723AbgJ0Cm7 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 26 Oct 2020 22:22:11 -0400
-Received: by mail-pl1-f193.google.com with SMTP id h2so5665878pll.11;
-        Mon, 26 Oct 2020 19:22:11 -0700 (PDT)
+        Mon, 26 Oct 2020 22:42:59 -0400
+Received: by mail-pf1-f195.google.com with SMTP id b3so53069pfo.2;
+        Mon, 26 Oct 2020 19:42:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=1qe548AwnXNuPEjqrAM3SsypoEcJbrqy3/s6FtpJJ68=;
-        b=tXxXyAu58FC0P1poC4YYZFvYDfGXaiYxAbjHJn67Rk2o9L9c4My0n0blNx45wHuJHL
-         IWVePK05xFsxeAgIk3Uiuf+RbX8U+gPW6JU4ZbcOakS1b8z2ujfdSOD/+VZr4SYhvV8f
-         u2iEOGorI6YnhrmgmqWIN1enJ3ZCVMwKeP5i73VIAROdVtQ/LS4wYwlTnvY81yl2ZIUv
-         vkDEsezYjFiKCwxG7po9kZ5fpCFcJkT+pbL1lQ21p2TQBmt3U73u1cZe/6VuLRERZgYO
-         D0PJbE5hByLEtNXfwKBieLOAsaeye/VK8yNWlwFQb0+MmSywNlG64I0Xa+t/7EWVkp4Z
-         eHOg==
-X-Gm-Message-State: AOAM5319hU0hj7skQM3f+P4oGRw/dOiw0C1+3vRbtWPR9LFYYeogrLa/
-        kF+nN+DTeBZQjEK5L3R5l4xrx4mZZ+GEew==
-X-Google-Smtp-Source: ABdhPJyPUvdmmntjHVSr3YCP9K4Bg+584ZENuTLduMgH16FqbyvnGUkBYIQAYMMrindbDCsqNcVBSw==
-X-Received: by 2002:a17:90a:fb92:: with SMTP id cp18mr239895pjb.228.1603765330158;
-        Mon, 26 Oct 2020 19:22:10 -0700 (PDT)
+        bh=An4TvOhqUe52P41FYM/iDoXlcKhP2c2muSbjR3f0bZ8=;
+        b=Lrj/Nvku/yhu/tMmsE88D9MYgXS80EusEJiU7HO7NPUebGy/ieRZMrUgmRH0oNMvZI
+         E9Y3BdDXh1jF7AN+rbLUSbUkoqJBpmwohPvfGsGKY14fompZCXvU+J5LOChDHHVhT8Eo
+         AjlN3fz/OfyA+RN6mG2+jStxpszm5NHen18hm1blt9VmT7kcMpdavtClJg1ki6GFSkC2
+         eIgWVWa6kv7/LZLC/X9HQ1djGHgRjS1EM+9M8kvN3ONNiE7o/PPCKdp4Rtl30bWO4+1D
+         /AiX3Bv7rFZVS+/MHkykVe3i9HMVIqFn9diKaixk+QLWX1SlOioOBFBLkWe6rh+txjC5
+         zztg==
+X-Gm-Message-State: AOAM530nyJI+nVDu92wD8RZ4i7dUP5fQFyZRiHmaIbGFHh1Oi9sLdvth
+        3WWpXNsfq10PnZCGal/v2SDZ2MsYdtCtZw==
+X-Google-Smtp-Source: ABdhPJyeczwqtLLZHJNmCXfPRAkwaFDuTmgJP1vIB2R5tnQ7FO4tPKPWK+8abfENbtcRr4Qmu40JPQ==
+X-Received: by 2002:a62:2c8a:0:b029:160:d7a:d045 with SMTP id s132-20020a622c8a0000b02901600d7ad045mr56483pfs.65.1603766577881;
+        Mon, 26 Oct 2020 19:42:57 -0700 (PDT)
 Received: from [192.168.3.218] (c-73-241-217-19.hsd1.ca.comcast.net. [73.241.217.19])
-        by smtp.gmail.com with ESMTPSA id 13sm82347pfj.100.2020.10.26.19.22.08
+        by smtp.gmail.com with ESMTPSA id z6sm125112pfj.48.2020.10.26.19.42.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Oct 2020 19:22:09 -0700 (PDT)
-Subject: Re: [PATCH rdma-next] IB/srpt: Fix memory leak in srpt_add_one
-To:     Leon Romanovsky <leon@kernel.org>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@nvidia.com>
-Cc:     Maor Gottlieb <maorg@nvidia.com>, linux-rdma@vger.kernel.org,
-        "Nicholas A. Bellinger" <nab@risingtidesystems.com>,
-        target-devel@vger.kernel.org
-References: <20201026132737.1338171-1-leon@kernel.org>
+        Mon, 26 Oct 2020 19:42:56 -0700 (PDT)
+Subject: Re: [PATCH 3/3] scsi: target: core: Change ASCQ for residual write
+To:     Roman Bolshakov <r.bolshakov@yadro.com>
+Cc:     Anastasia Kovaleva <a.kovaleva@yadro.com>,
+        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux@yadro.com
+References: <20201022172011.42367-1-a.kovaleva@yadro.com>
+ <20201022172011.42367-4-a.kovaleva@yadro.com>
+ <e2b215ca-0aa8-bdae-e5bd-292a09d8282e@acm.org>
+ <20201024121315.GA35317@SPB-NB-133.local>
+ <b831a7db-1da2-c293-a8f6-d9c62f68c224@acm.org>
+ <20201026131226.GA88490@SPB-NB-133.local>
 From:   Bart Van Assche <bvanassche@acm.org>
-Message-ID: <93385ff4-cab7-05f2-e29a-82c9c71e47fa@acm.org>
-Date:   Mon, 26 Oct 2020 19:22:07 -0700
+Message-ID: <270e2edf-49c9-942f-ac3d-b6dfa0aca8f7@acm.org>
+Date:   Mon, 26 Oct 2020 19:42:55 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.3.2
 MIME-Version: 1.0
-In-Reply-To: <20201026132737.1338171-1-leon@kernel.org>
+In-Reply-To: <20201026131226.GA88490@SPB-NB-133.local>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -57,40 +60,69 @@ Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 10/26/20 6:27 AM, Leon Romanovsky wrote:
-> From: Maor Gottlieb <maorg@nvidia.com>
+On 10/26/20 6:12 AM, Roman Bolshakov wrote:
+> Could you please elaborate on how tape software will be broken?
+> I have no experience with tapes but I've looked into SSC-5 draft.
 > 
-> In case srpt_refresh_port failed for the second port, then
-> we don't unregister the MAD agnet.
-                              ^^^^^
-                              agent?
+> I haven't found anything concerning the writes but there are tape
+> variants of overflow/underflow for reads (G.3 General read rules) called
+> overlength and underlegth, respectively:
+> 
+>   If the read command requests fewer bytes than are available for
+>   transfer, then the read is an overlength read. If the read requests
+>   more bytes than are available, then the read is an underlength read.
+> 
+>   The amount of data returned is the smaller of the bytes available and
+>   the allocation length.
+> 
+> And the next paragraph defines cases where CHECK CONDITION should be
+> reported for such reads. However, GOOD status is also possible, the next
+> chapter of the annex (G.4 Examples from figure G.1 using variable-block
+> transfers and various SILI and BLOCK LENGTH settings) refines many cases
+> depending on SILI bit, whether block protection is enabled, if the
+> transfer is FIXED or variable-length and if BLOCK LENGTH is
+> zero/non-zero.
+> 
+> As far as I understand underlength and overlength are always suppressed
+> (status is GOOD) for devices where no "default" block size is defined
+> per SPC (7.5.7.1 General block descriptor format):
+> 
+>   For sequential access devices, a block length of zero indicates that the
+>   logical block size written to the medium is specified by the TRANSFER
+>   LENGTH field in the CDB (see SSC-4).
+> 
+> The cases are also summarized in annex D (D.3 Summary of length error
+> conditions on read type commands).
+> 
+> Note, that if we talk about SSC over FCP, then "9.4.2 FCP_DATA IUs for
+> read and write operations" does additionally apply. Perhaps a) from
+> "9.4.2 FCP_DATA IUs for read and write operations" works well for SSC:
+> 
+>   a) process the command normally except that data beyond the FCP_DL count
+>   shall not be requested or transferred;
+> 
+> The clause allows to accomodate variable-block tranfers from SSC.
+> 
+> So, what if we return CHECK CONDITION only for SBC WRITEs with
+> residuals?  Then it has no impact on SSC and other device types. In
+> future, we might also add a patch that would fail SBC READs with
+> residuals for sake of consistency. That behaviour would be beneficial
+> for SBC devices as no host could corrupt data or itself by forming,
+> requesting invalid data buffer.
 
-The commit message is incomplete. Why does this patch have a Fixes tag?
-The commit message should explain this but doesn't explain this.
+Hi Roman,
 
-What does this patch actually change? ib_unregister_mad_agent() is only
-called by the current code if sport->mad_agent != NULL.
+Maybe I'm overly concerned. I do not know for sure which applications
+rely on the current behavior of residual handling. All I know about
+these applications is based on what others wrote about these
+applications. An example from
+https://www.t10.org/pipermail/t10/2003-November/009317.html: "We have
+customers who also use overlength and underlength transfers as a normal
+mode of operation."
 
-> -static void srpt_unregister_mad_agent(struct srpt_device *sdev)
-> +static void __srpt_unregister_mad_agent(struct srpt_device *sdev, int port_cnt)
->  {
->  	struct ib_port_modify port_modify = {
->  		.clr_port_cap_mask = IB_PORT_DEVICE_MGMT_SUP,
-> @@ -633,7 +627,10 @@ static void srpt_unregister_mad_agent(struct srpt_device *sdev)
->  	struct srpt_port *sport;
->  	int i;
->  
-> -	for (i = 1; i <= sdev->device->phys_port_cnt; i++) {
-> +	if (!port_cnt)
-> +		return;
-> +
-> +	for (i = 1; i <= port_cnt; i++) {
->  		sport = &sdev->port[i - 1];
->  		WARN_ON(sport->port != i);
->  		if (sport->mad_agent) {
-
-If this patch is retained, please leave the if-test out if you agree
-that it is not necessary. I'm concerned that it will confuse readers.
+An additional question is what behavior other operating systems than
+Linux expect? There are probably setups in which another operating
+system than Linux communicates with a LIO SCSI target?
 
 Thanks,
 
