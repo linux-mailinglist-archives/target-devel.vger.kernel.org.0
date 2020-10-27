@@ -2,96 +2,134 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8176929A457
-	for <lists+target-devel@lfdr.de>; Tue, 27 Oct 2020 06:51:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31ADC29A45F
+	for <lists+target-devel@lfdr.de>; Tue, 27 Oct 2020 06:59:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2506120AbgJ0Fv3 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 27 Oct 2020 01:51:29 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:52906 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2506115AbgJ0Fv3 (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Tue, 27 Oct 2020 01:51:29 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09R5nAYK053951;
-        Tue, 27 Oct 2020 05:51:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=L6gDPqbDsOQ7HwaslcZdB53llGbJ4RQu93/cOd07F1w=;
- b=gYYMo0OgGBX/ANuqE+aFM62SY3jJHTtOdyn+YAf7R1YYyzm3+SYWI/CR826Pvq6pdKKW
- Gmgda5oCXddV5FR42F+A2na5FwxFS9IrkjouFS2FMMFoOeERWrfzpOXYm4s2zbTcvGA3
- rRLxzmJCc7pmf6zNaq3Te8c1LCkxw2u6FUoXtlIfhxmRQz5e4nbqWeCF+1UTwN2HbqUG
- /NbkTss/AOSqRvNyNcbv5+MptWiI6jukPvRIUCgWd64xpVjwX9hO76fjfX9aBoL25KNQ
- GQUF0VbMfRoZqTUvXbwyJHgkia6tf2SZE4JRTqgD9e7tNEXx3ImEPybyu+ID31RL6gNx Yw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2130.oracle.com with ESMTP id 34c9sar43m-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 27 Oct 2020 05:51:25 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09R5fH9p084241;
-        Tue, 27 Oct 2020 05:49:25 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 34cx6vj66s-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 27 Oct 2020 05:49:25 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 09R5nO9o031126;
-        Tue, 27 Oct 2020 05:49:24 GMT
-Received: from [20.15.0.8] (/73.88.28.6)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 26 Oct 2020 22:49:24 -0700
-Subject: Re: [PATCH v2 0/5] scsi: target: COMPARE AND WRITE miscompare sense
-To:     David Disseldorp <ddiss@suse.de>, target-devel@vger.kernel.org
-Cc:     linux-scsi@vger.kernel.org
-References: <20201026190646.8727-1-ddiss@suse.de>
-From:   Mike Christie <michael.christie@oracle.com>
-Message-ID: <ec78c756-6abd-32a8-a7d3-1c7788fa57d3@oracle.com>
-Date:   Tue, 27 Oct 2020 00:49:23 -0500
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.12.1
+        id S2506138AbgJ0F72 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 27 Oct 2020 01:59:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49970 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2506136AbgJ0F71 (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Tue, 27 Oct 2020 01:59:27 -0400
+Received: from localhost (unknown [213.57.247.131])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 195B5217A0;
+        Tue, 27 Oct 2020 05:59:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603778366;
+        bh=d/py5uqvbgb903RAH2V3wPiJRQmTTQD1Sesj4l3Fn+k=;
+        h=From:To:Cc:Subject:Date:From;
+        b=c2a775Z8OH8T3lnN3D7Ln52rbvHIe1+pHtxeMDTfAocHL5s69MXbZVPVg9WquAz2R
+         SopBAjd7RO5sEvR9KgGG9vWPX5c57xPqd+BZvKpy9FH2Oxm9ErPtLQUCxPW5DcvWD8
+         EicmB70oKN3gNP1vaKwMxMv380dKIBF5pUomxg3g=
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@nvidia.com>
+Cc:     Maor Gottlieb <maorg@nvidia.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        linux-rdma@vger.kernel.org,
+        "Nicholas A. Bellinger" <nab@risingtidesystems.com>,
+        target-devel@vger.kernel.org
+Subject: [PATCH rdma-next v1] IB/srpt: Fix memory leak in srpt_add_one
+Date:   Tue, 27 Oct 2020 07:59:20 +0200
+Message-Id: <20201027055920.1760663-1-leon@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <20201026190646.8727-1-ddiss@suse.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9786 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
- bulkscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010270038
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9786 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 malwarescore=0 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 spamscore=0 phishscore=0 clxscore=1015 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2010270039
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 10/26/20 2:06 PM, David Disseldorp wrote:
-> This patchset adds missing functionality to return the offset of
-> non-matching read/compare data in the sense INFORMATION field on
-> COMPARE AND WRITE miscompare.
-> 
-> The functionality can be tested using the libiscsi
-> CompareAndWrite.MiscompareSense test proposed via:
->    https://urldefense.com/v3/__https://github.com/sahlberg/libiscsi/pull/344__;!!GqivPVa7Brio!LJ-un7MDdHXhZgIK1qgvDgza2El16FK-T_4oDi6VqM0CzetAV9pGHDvLDrZUkITTHxhO$
-> 
-> Changes since v1:
-> - drop unnecessary WARN_ON()
-> - fix two checkpatch warnings
-> - drop single-use nlbas variable
-> - avoid compare_len recalculation
-> 
-> Cheers, David
-> 
->   drivers/target/target_core_sbc.c       | 137 +++++++++++++++----------
->   drivers/target/target_core_transport.c |  33 +++---
->   include/target/target_core_base.h      |   2 +-
->   lib/scatterlist.c                      |   2 +-
->   4 files changed, 102 insertions(+), 72 deletions(-)
+From: Maor Gottlieb <maorg@nvidia.com>
 
+Failure in srpt_refresh_port() for the second port will leave MAD
+registered for the first one, however, the srpt_add_one() will be
+marked as "failed" and SRPT will leak resources for that registered
+but not used and released first port.
 
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Unregister the MAD agent for all ports in case of failure.
+
+Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
+Signed-off-by: Maor Gottlieb <maorg@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+---
+Changelog:
+v1:
+ * Fixed and updated commit message.
+ * Remove port_cnt check from __srpt_unregister_mad_agent().
+v0: https://lore.kernel.org/linux-rdma/20201026132737.1338171-1-leon@kernel.org
+
+---
+ drivers/infiniband/ulp/srpt/ib_srpt.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
+index 0065eb17ae36..2747a3af545f 100644
+--- a/drivers/infiniband/ulp/srpt/ib_srpt.c
++++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
+@@ -619,13 +619,7 @@ static int srpt_refresh_port(struct srpt_port *sport)
+ 	return 0;
+ }
+
+-/**
+- * srpt_unregister_mad_agent - unregister MAD callback functions
+- * @sdev: SRPT HCA pointer.
+- *
+- * Note: It is safe to call this function more than once for the same device.
+- */
+-static void srpt_unregister_mad_agent(struct srpt_device *sdev)
++static void __srpt_unregister_mad_agent(struct srpt_device *sdev, int port_cnt)
+ {
+ 	struct ib_port_modify port_modify = {
+ 		.clr_port_cap_mask = IB_PORT_DEVICE_MGMT_SUP,
+@@ -633,7 +627,7 @@ static void srpt_unregister_mad_agent(struct srpt_device *sdev)
+ 	struct srpt_port *sport;
+ 	int i;
+
+-	for (i = 1; i <= sdev->device->phys_port_cnt; i++) {
++	for (i = 1; i <= port_cnt; i++) {
+ 		sport = &sdev->port[i - 1];
+ 		WARN_ON(sport->port != i);
+ 		if (sport->mad_agent) {
+@@ -644,6 +638,17 @@ static void srpt_unregister_mad_agent(struct srpt_device *sdev)
+ 	}
+ }
+
++/**
++ * srpt_unregister_mad_agent - unregister MAD callback functions
++ * @sdev: SRPT HCA pointer.
++ *
++ * Note: It is safe to call this function more than once for the same device.
++ */
++static void srpt_unregister_mad_agent(struct srpt_device *sdev)
++{
++	__srpt_unregister_mad_agent(sdev, sdev->device->phys_port_cnt);
++}
++
+ /**
+  * srpt_alloc_ioctx - allocate a SRPT I/O context structure
+  * @sdev: SRPT HCA pointer.
+@@ -3185,7 +3190,8 @@ static int srpt_add_one(struct ib_device *device)
+ 		if (ret) {
+ 			pr_err("MAD registration failed for %s-%d.\n",
+ 			       dev_name(&sdev->device->dev), i);
+-			goto err_event;
++			i--;
++			goto err_port;
+ 		}
+ 	}
+
+@@ -3197,7 +3203,8 @@ static int srpt_add_one(struct ib_device *device)
+ 	pr_debug("added %s.\n", dev_name(&device->dev));
+ 	return 0;
+
+-err_event:
++err_port:
++	__srpt_unregister_mad_agent(sdev, i);
+ 	ib_unregister_event_handler(&sdev->event_handler);
+ err_cm:
+ 	if (sdev->cm_id)
+--
+2.26.2
+
