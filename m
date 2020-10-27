@@ -2,176 +2,172 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82C3329ACC9
-	for <lists+target-devel@lfdr.de>; Tue, 27 Oct 2020 14:07:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 892A729ADD1
+	for <lists+target-devel@lfdr.de>; Tue, 27 Oct 2020 14:49:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1751837AbgJ0NHq (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 27 Oct 2020 09:07:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:42732 "EHLO
+        id S1752555AbgJ0Ntj (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 27 Oct 2020 09:49:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:44633 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1751683AbgJ0NHq (ORCPT
+        by vger.kernel.org with ESMTP id S1752556AbgJ0Nti (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 27 Oct 2020 09:07:46 -0400
+        Tue, 27 Oct 2020 09:49:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1603804064;
+        s=mimecast20190719; t=1603806576;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=pUGFV8Epd7vXcx8sg02eTabi/rVHE/rnCF+rnz+uE1E=;
-        b=SxIjkC10pdkNSjzuIH5eikq/PXVUMI1i16xA2H47cEX4wCCqO4TxFZBCMSUa7lEH0JTe4C
-        8DynKgUvsLO71Et0YwLse/o3yGrxIqhH4K8nU9MJ/yFVHkoYiEf3mtcqHCqm5OqW99cfJk
-        1Z6u31H/YpooNQg43FHRV3krt9HaSHk=
+        bh=2uMkOj1m0Lxxl6kPkJZ2FMiaGF9n+ZM1gvChUS+3i30=;
+        b=RGFaBqUbIip2EBv28qGEriwcvrgpLxyhVLky/jXeYTgx3WwZXWl267wagf3cSe5c0f1nMS
+        d4+nrFo6UcGwNPIWqGZlim2DTQONwdG4yp/gUNwHTn4pzcJmRjwTT/1S/Ub8gqX5sFn9Qp
+        OWQE1Ne11Un6LnXhPi8/90NyKOZa+5A=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-415-CsZFxLlnOKOv-4qGODkByw-1; Tue, 27 Oct 2020 09:07:39 -0400
-X-MC-Unique: CsZFxLlnOKOv-4qGODkByw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+ us-mta-26-LFjiWuiXOrmrfoo1nd9X-g-1; Tue, 27 Oct 2020 09:49:34 -0400
+X-MC-Unique: LFjiWuiXOrmrfoo1nd9X-g-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 940B580B714;
-        Tue, 27 Oct 2020 13:07:18 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7617A1020900;
+        Tue, 27 Oct 2020 13:49:32 +0000 (UTC)
 Received: from [10.35.206.125] (unknown [10.35.206.125])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id DF5D06EF67;
-        Tue, 27 Oct 2020 13:07:14 +0000 (UTC)
-Subject: Re: [PATCH 09/17] vhost scsi: fix cmd completion race
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 6FC7C5C1BB;
+        Tue, 27 Oct 2020 13:49:30 +0000 (UTC)
+Subject: Re: [PATCH 2/2] target: iscsi: fix a race condition when aborting a
+ task
 To:     Mike Christie <michael.christie@oracle.com>,
-        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, mst@redhat.com, jasowang@redhat.com,
-        pbonzini@redhat.com, stefanha@redhat.com,
-        virtualization@lists.linux-foundation.org
-References: <1603326903-27052-1-git-send-email-michael.christie@oracle.com>
- <1603326903-27052-10-git-send-email-michael.christie@oracle.com>
+        martin.petersen@oracle.com
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        bvanassche@acm.org
+References: <20201007145326.56850-1-mlombard@redhat.com>
+ <20201007145326.56850-3-mlombard@redhat.com>
+ <20daa17d-08e7-a412-4d33-bcf75587eca6@oracle.com>
 From:   Maurizio Lombardi <mlombard@redhat.com>
-Message-ID: <8662eb42-7632-a05f-cb55-5dc80b444612@redhat.com>
-Date:   Tue, 27 Oct 2020 14:07:13 +0100
+Message-ID: <1852a8bd-3edc-5c49-fa51-9afe52f125a8@redhat.com>
+Date:   Tue, 27 Oct 2020 14:49:28 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.3.1
 MIME-Version: 1.0
-In-Reply-To: <1603326903-27052-10-git-send-email-michael.christie@oracle.com>
-Content-Type: text/plain; charset=iso-8859-2
+In-Reply-To: <20daa17d-08e7-a412-4d33-bcf75587eca6@oracle.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+Hello Mike,
 
-
-Dne 22. 10. 20 v 2:34 Mike Christie napsal(a):
-> We might not do the final se_cmd put from vhost_scsi_complete_cmd_work.
-> When the last put happens a little later then we could race where
-> vhost_scsi_complete_cmd_work does vhost_signal, the guest runs and sends
-> more IO, and vhost_scsi_handle_vq runs but does not find any free cmds.
+Dne 22. 10. 20 v 4:42 Mike Christie napsal(a):
+> If we free the cmd from the abort path, then for your conn stop plus abort race case, could we do:
 > 
-> This patch has us delay completing the cmd until the last lio core ref
-> is dropped. We then know that once we signal to the guest that the cmd
-> is completed that if it queues a new command it will find a free cmd.
+> 1. thread1 runs iscsit_release_commands_from_conn and sets CMD_T_FABRIC_STOP.
+> 2. thread2 runs iscsit_aborted_task and then does __iscsit_free_cmd. It then returns from the aborted_task callout and we finish target_handle_abort and do:
 > 
-> Signed-off-by: Mike Christie <michael.christie@oracle.com>
-> ---
->  drivers/vhost/scsi.c | 42 +++++++++++++++---------------------------
->  1 file changed, 15 insertions(+), 27 deletions(-)
+> target_handle_abort -> transport_cmd_check_stop_to_fabric -> lio_check_stop_free -> target_put_sess_cmd
 > 
-> diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-> index f6b9010..2fa48dd 100644
-> --- a/drivers/vhost/scsi.c
-> +++ b/drivers/vhost/scsi.c
-> @@ -322,7 +322,7 @@ static u32 vhost_scsi_tpg_get_inst_index(struct se_portal_group *se_tpg)
->  	return 1;
->  }
->  
-> -static void vhost_scsi_release_cmd(struct se_cmd *se_cmd)
-> +static void vhost_scsi_release_cmd_res(struct se_cmd *se_cmd)
->  {
->  	struct vhost_scsi_cmd *tv_cmd = container_of(se_cmd,
->  				struct vhost_scsi_cmd, tvc_se_cmd);
-> @@ -344,6 +344,16 @@ static void vhost_scsi_release_cmd(struct se_cmd *se_cmd)
->  	vhost_scsi_put_inflight(inflight);
->  }
->  
-> +static void vhost_scsi_release_cmd(struct se_cmd *se_cmd)
-> +{
-> +	struct vhost_scsi_cmd *cmd = container_of(se_cmd,
-> +					struct vhost_scsi_cmd, tvc_se_cmd);
-> +	struct vhost_scsi *vs = cmd->tvc_vhost;
-> +
-> +	llist_add(&cmd->tvc_completion_list, &vs->vs_completion_list);
-> +	vhost_work_queue(&vs->dev, &vs->vs_completion_work);
-> +}
-> +
->  static u32 vhost_scsi_sess_get_index(struct se_session *se_sess)
->  {
->  	return 0;
-> @@ -366,28 +376,15 @@ static int vhost_scsi_get_cmd_state(struct se_cmd *se_cmd)
->  	return 0;
->  }
->  
-> -static void vhost_scsi_complete_cmd(struct vhost_scsi_cmd *cmd)
-> -{
-> -	struct vhost_scsi *vs = cmd->tvc_vhost;
-> -
-> -	llist_add(&cmd->tvc_completion_list, &vs->vs_completion_list);
-> -
-> -	vhost_work_queue(&vs->dev, &vs->vs_completion_work);
-> -}
-> -
->  static int vhost_scsi_queue_data_in(struct se_cmd *se_cmd)
->  {
-> -	struct vhost_scsi_cmd *cmd = container_of(se_cmd,
-> -				struct vhost_scsi_cmd, tvc_se_cmd);
-> -	vhost_scsi_complete_cmd(cmd);
-> +	transport_generic_free_cmd(se_cmd, 0);
->  	return 0;
->  }
->  
->  static int vhost_scsi_queue_status(struct se_cmd *se_cmd)
->  {
-> -	struct vhost_scsi_cmd *cmd = container_of(se_cmd,
-> -				struct vhost_scsi_cmd, tvc_se_cmd);
-> -	vhost_scsi_complete_cmd(cmd);
-> +	transport_generic_free_cmd(se_cmd, 0);
->  	return 0;
->  }
->  
-> @@ -433,15 +430,6 @@ static void vhost_scsi_free_evt(struct vhost_scsi *vs, struct vhost_scsi_evt *ev
->  	return evt;
->  }
->  
-> -static void vhost_scsi_free_cmd(struct vhost_scsi_cmd *cmd)
-> -{
-> -	struct se_cmd *se_cmd = &cmd->tvc_se_cmd;
-> -
-> -	/* TODO locking against target/backend threads? */
-> -	transport_generic_free_cmd(se_cmd, 0);
-> -
-> -}
-> -
->  static int vhost_scsi_check_stop_free(struct se_cmd *se_cmd)
->  {
->  	return target_put_sess_cmd(se_cmd);
-> @@ -560,7 +548,7 @@ static void vhost_scsi_complete_cmd_work(struct vhost_work *work)
->  		} else
->  			pr_err("Faulted on virtio_scsi_cmd_resp\n");
->  
-> -		vhost_scsi_free_cmd(cmd);
-> +		vhost_scsi_release_cmd_res(se_cmd);
->  	}
->  
->  	vq = -1;
-> @@ -1096,7 +1084,7 @@ static u16 vhost_buf_to_lun(u8 *lun_buf)
->  						      &prot_iter, exp_data_len,
->  						      &data_iter))) {
->  				vq_err(vq, "Failed to map iov to sgl\n");
-> -				vhost_scsi_release_cmd(&cmd->tvc_se_cmd);
-> +				vhost_scsi_release_cmd_res(&cmd->tvc_se_cmd);
->  				goto err;
->  			}
->  		}
+> The cmd is now freed.
+> 3. thread1 now finishes iscsit_release_commands_from_conn and runs iscsit_free_cmd while accessing a command we just released.
+> 
 > 
 
-Looks ok to me.
+Thanks for the review!
 
-Reviewed-by: Maurizio Lombardi <mlombard@redhat.com>
+There are definitely some problems with task aborts and commands' refcounting *
+but this is a different bug than the one this patch is trying to solve (a race to list_del_init());
+unless you are saying that abort tasks should never be executed when the connection 
+is going down and we have to prevent such cases from happening at all.
+
+* I did a test a few days ago: 
+1) blocked the backstore device on the target
+2) issued a write command on the initiator
+3) waited for abort task and connection shutdown
+4) switched the target backstore device to state "running"
+
+I triggered the following warnings in target_handle_abort():
+
+        } else {
+                /*
+                 * Allow the fabric driver to unmap any resources before
+                 * releasing the descriptor via TFO->release_cmd().
+                 */
+                cmd->se_tfo->aborted_task(cmd);
+                if (ack_kref)
+                        WARN_ON_ONCE(target_put_sess_cmd(cmd) != 0); <-----------------------
+                /*
+                 * To do: establish a unit attention condition on the I_T
+                 * nexus associated with cmd. See also the paragraph "Aborting
+                 * commands" in SAM.
+                 */
+        }
+
+        WARN_ON_ONCE(kref_read(&cmd->cmd_kref) == 0); <----------------------
+
+        transport_lun_remove_cmd(cmd);
+
+        transport_cmd_check_stop_to_fabric(cmd);
+}
+
+target_handle_abort() is executed against a command which has already been released.
+
+[  240.883865] iSCSI/iqn.1994-05.com.redhat:9489e049fb5e: Unsupported SCSI Opcode 0xa3, sending CHECK_CONDITION.
+[  353.848593] ABORT_TASK: Found referenced iSCSI task_tag: 101
+[  386.521582] iSCSI Login timeout on Network Portal 0.0.0.0:3260
+[  396.537133] WARNING: CPU: 1 PID: 2936 at drivers/target/target_core_transport.c:805 target_handle_abort+0xce/0x180 [target_core_mod]
+[  396.537139] Modules linked in: iscsi_target_mod target_core_user uio target_core_pscsi target_core_file target_core_iblock target_core_mod uinput nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables nfnetlink sunrpc bochs_drm drm_vram_helper drm_ttm_helper ttm drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops ppdev drm joydev pcspkr i2c_piix4 parport_pc parport xfs libcrc32c sr_mod cdrom sd_mod sg ata_generic ata_piix libata virtio_net net_failover failover serio_raw fuse [last unloaded: ip_tables]
+[  396.537302] CPU: 1 PID: 2936 Comm: kworker/1:2 Kdump: loaded Not tainted 4.18.0-240.7.el8.x86_64 #1
+[  396.537306] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-2.fc32 04/01/2014
+[  396.537353] Workqueue: target_completion target_abort_work [target_core_mod]
+[  396.537394] RIP: 0010:target_handle_abort+0xce/0x180 [target_core_mod]
+[  396.537399] Code: 00 e8 e6 db 00 f1 41 81 e4 00 00 40 00 74 9d 48 8d bb 0c 01 00 00 f0 ff 8b 0c 01 00 00 0f 88 ed cd 00 00 75 87 e8 32 ed ff ff <0f> 0b e9 7b ff ff ff c6 03 40 0f 1f 44 00 00 0f 1f 44 00 00 48 8b
+[  396.537402] RSP: 0018:ffffac1b818bbe80 EFLAGS: 00010286
+[  396.537407] RAX: 0000312f0022d690 RBX: ffff9aec21595350 RCX: 0000000000000000
+[  396.537410] RDX: 0000000000000000 RSI: 0000000000000282 RDI: 0000000000000282
+[  396.537413] RBP: 0000000000000000 R08: ffff9aebf4d65a00 R09: ffff9aebf4c12d98
+[  396.537416] R10: 0000000000000082 R11: 000000000000002e R12: 0000000000400000
+[  396.537418] R13: 0000000000000000 R14: ffff9aec02cd9c00 R15: ffff9aec21595488
+[  396.537423] FS:  0000000000000000(0000) GS:ffff9aec7fa80000(0000) knlGS:0000000000000000
+[  396.537427] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  396.537430] CR2: 000055bfa25e9110 CR3: 00000000614c6000 CR4: 00000000000006e0
+[  396.537444] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[  396.537447] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[  396.537449] Call Trace:
+[  396.537504]  process_one_work+0x1a7/0x360
+[  396.537525]  worker_thread+0x30/0x390
+[  396.537532]  ? create_worker+0x1a0/0x1a0
+[  396.537536]  kthread+0x112/0x130
+[  396.537542]  ? kthread_flush_work_fn+0x10/0x10
+[  396.537550]  ret_from_fork+0x35/0x40
+[  396.537570] ---[ end trace d6b5bf9aea218e55 ]---
+[  396.537734] WARNING: CPU: 1 PID: 2936 at drivers/target/target_core_transport.c:813 target_handle_abort+0x178/0x180 [target_core_mod]
+[  396.537737] Modules linked in: iscsi_target_mod target_core_user uio target_core_pscsi target_core_file target_core_iblock target_core_mod uinput nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables nfnetlink sunrpc bochs_drm drm_vram_helper drm_ttm_helper ttm drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops ppdev drm joydev pcspkr i2c_piix4 parport_pc parport xfs libcrc32c sr_mod cdrom sd_mod sg ata_generic ata_piix libata virtio_net net_failover failover serio_raw fuse [last unloaded: ip_tables]
+[  396.537811] CPU: 1 PID: 2936 Comm: kworker/1:2 Kdump: loaded Tainted: G        W        --------- -  - 4.18.0-240.7.el8.x86_64 #1
+[  396.537814] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-2.fc32 04/01/2014
+[  396.537860] Workqueue: target_completion target_abort_work [target_core_mod]
+[  396.537903] RIP: 0010:target_handle_abort+0x178/0x180 [target_core_mod]
+[  396.537909] Code: 67 03 00 48 85 ed 74 1d 48 8b 45 00 48 8b 7d 08 48 83 c5 18 48 89 de e8 26 db 00 f1 48 8b 45 00 48 85 c0 75 e7 e9 6a ff ff ff <0f> 0b e9 df fe ff ff 90 0f 1f 44 00 00 55 48 8d af 08 01 00 00 53
+[  396.537912] RSP: 0018:ffffac1b818bbe80 EFLAGS: 00010246
+[  396.537916] RAX: 0000000000000000 RBX: ffff9aec21595350 RCX: 0000000000000000
+[  396.537919] RDX: 0000000000000000 RSI: 0000000000000282 RDI: 0000000000000282
+[  396.537922] RBP: 0000000000000000 R08: ffff9aebf4d65a00 R09: ffff9aebf4c12d98
+[  396.537925] R10: 0000000000000082 R11: 000000000000002e R12: 0000000000400000
+[  396.537928] R13: 0000000000000000 R14: ffff9aec02cd9c00 R15: ffff9aec21595488
+[  396.537933] FS:  0000000000000000(0000) GS:ffff9aec7fa80000(0000) knlGS:0000000000000000
+[  396.537936] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  396.537939] CR2: 000055bfa25e9110 CR3: 00000000614c6000 CR4: 00000000000006e0
+[  396.537951] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[  396.537954] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[  396.537956] Call Trace:
+[  396.537971]  process_one_work+0x1a7/0x360
+[  396.537979]  worker_thread+0x30/0x390
+[  396.537985]  ? create_worker+0x1a0/0x1a0
+[  396.537989]  kthread+0x112/0x130
+[  396.537994]  ? kthread_flush_work_fn+0x10/0x10
+[  396.538009]  ret_from_fork+0x35/0x40
+[  396.538016] ---[ end trace d6b5bf9aea218e56 ]---
+[  396.538221] ABORT_TASK: Sending TMR_FUNCTION_COMPLETE for ref_tag: 101
+
+Maurizio
 
