@@ -2,199 +2,121 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0832929C960
-	for <lists+target-devel@lfdr.de>; Tue, 27 Oct 2020 21:03:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09F6C29CD04
+	for <lists+target-devel@lfdr.de>; Wed, 28 Oct 2020 02:39:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2443575AbgJ0UDh (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 27 Oct 2020 16:03:37 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:45020 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2411101AbgJ0UDg (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Tue, 27 Oct 2020 16:03:36 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09RJwx7c040838;
-        Tue, 27 Oct 2020 20:03:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to;
- s=corp-2020-01-29; bh=U9eOEiNHNi1VjcV2sq8/2t4BDxIW9LJWurDXeJw3EvU=;
- b=x5j24I53FM+CDonJ37JExqHAUKWit+lx7DZlcVZyeGYI0pyYTtOOBJ5iXZ3kh+5q0grn
- JWPorj00iViO5UZMywnOoc3hDs5Zi1SLi77Vsa9X5i2WpQX7An4bHpW/gKsLFH80ybWH
- k1Mx739WGe1ft2mJ/hqFws950BHfc1DfAj/88lZbFEdsWq0vTsQqqRkX6x/eWgfgSpZc
- YfHR8HT5RH4TMjePW1ztBVAI3kMriycNMONhdNpxEcfwF6DBj09ZdKGcm2F3L4OU1/5Y
- ElZujNca8WCXCYYaMZ/EZzE3rnRFTOtyXTKXylIn5nQfMYY4Vfdbq4bY/JF6h9cy3+wM Mw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 34dgm41r6n-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 27 Oct 2020 20:03:31 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09RK0M07076268;
-        Tue, 27 Oct 2020 20:03:31 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 34cx1r5fpp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 27 Oct 2020 20:03:31 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 09RK3Ut2007718;
-        Tue, 27 Oct 2020 20:03:30 GMT
-Received: from [20.15.0.8] (/73.88.28.6)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 27 Oct 2020 13:03:29 -0700
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.4\))
-Subject: Re: [PATCH 2/2] target: iscsi: fix a race condition when aborting a
- task
-From:   Michael Christie <michael.christie@oracle.com>
-In-Reply-To: <184667b1-032b-c36f-d1e7-5cfef961c763@oracle.com>
-Date:   Tue, 27 Oct 2020 15:03:28 -0500
-Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        bvanassche@acm.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <71691FED-C164-482C-B629-A8B89B81E566@oracle.com>
-References: <20201007145326.56850-1-mlombard@redhat.com>
- <20201007145326.56850-3-mlombard@redhat.com>
- <20daa17d-08e7-a412-4d33-bcf75587eca6@oracle.com>
- <1852a8bd-3edc-5c49-fa51-9afe52f125a8@redhat.com>
- <184667b1-032b-c36f-d1e7-5cfef961c763@oracle.com>
-To:     Maurizio Lombardi <mlombard@redhat.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-X-Mailer: Apple Mail (2.3608.120.23.2.4)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9787 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 bulkscore=0
- suspectscore=2 malwarescore=0 mlxlogscore=999 mlxscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010270115
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9787 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 impostorscore=0
- adultscore=0 bulkscore=0 spamscore=0 phishscore=0 mlxlogscore=999
- suspectscore=2 clxscore=1015 mlxscore=0 malwarescore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010270115
+        id S1726214AbgJ1Bio (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 27 Oct 2020 21:38:44 -0400
+Received: from mta-02.yadro.com ([89.207.88.252]:46032 "EHLO mta-01.yadro.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1833054AbgJ0Xqp (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Tue, 27 Oct 2020 19:46:45 -0400
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id 1A39C412F3;
+        Tue, 27 Oct 2020 23:46:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        in-reply-to:content-disposition:content-type:content-type
+        :mime-version:references:message-id:subject:subject:from:from
+        :date:date:received:received:received; s=mta-01; t=1603842400;
+         x=1605656801; bh=z1lAivyAWMVrhdFLfzNfi3hY5tnKbWtUjtmUI3M2EjE=; b=
+        M+1C+LC5dSvta1Qn1oUT0HmPktvDQ8OSsYzA1UBUZfQZW2huYII2kN8EcK+Eqrmn
+        Oaa6d9vxUO8STh2NQzF8CP0wrkb/D1kFfVzvGrjb9YAi9+tHOoJ+oFDz5V3OSw9T
+        dFSyre3QPSeW1iqYnsqgnVBchqPzzA73VtDM7KkvZ04=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id wbYx8PcnIBIm; Wed, 28 Oct 2020 02:46:40 +0300 (MSK)
+Received: from T-EXCH-04.corp.yadro.com (t-exch-04.corp.yadro.com [172.17.100.104])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mta-01.yadro.com (Postfix) with ESMTPS id B1E6841279;
+        Wed, 28 Oct 2020 02:46:40 +0300 (MSK)
+Received: from localhost (172.17.204.212) by T-EXCH-04.corp.yadro.com
+ (172.17.100.104) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Wed, 28
+ Oct 2020 02:46:39 +0300
+Date:   Wed, 28 Oct 2020 02:46:39 +0300
+From:   Roman Bolshakov <r.bolshakov@yadro.com>
+To:     Bart Van Assche <bvanassche@acm.org>
+CC:     Anastasia Kovaleva <a.kovaleva@yadro.com>,
+        <target-devel@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
+        <linux@yadro.com>
+Subject: Re: [PATCH 3/3] scsi: target: core: Change ASCQ for residual write
+Message-ID: <20201027234639.GB88490@SPB-NB-133.local>
+References: <20201022172011.42367-1-a.kovaleva@yadro.com>
+ <20201022172011.42367-4-a.kovaleva@yadro.com>
+ <e2b215ca-0aa8-bdae-e5bd-292a09d8282e@acm.org>
+ <20201024121315.GA35317@SPB-NB-133.local>
+ <b831a7db-1da2-c293-a8f6-d9c62f68c224@acm.org>
+ <20201026131226.GA88490@SPB-NB-133.local>
+ <270e2edf-49c9-942f-ac3d-b6dfa0aca8f7@acm.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <270e2edf-49c9-942f-ac3d-b6dfa0aca8f7@acm.org>
+X-Originating-IP: [172.17.204.212]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-04.corp.yadro.com (172.17.100.104)
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+On Mon, Oct 26, 2020 at 07:42:55PM -0700, Bart Van Assche wrote:
+> On 10/26/20 6:12 AM, Roman Bolshakov wrote:
+> > Note, that if we talk about SSC over FCP, then "9.4.2 FCP_DATA IUs for
+> > read and write operations" does additionally apply. Perhaps a) from
+> > "9.4.2 FCP_DATA IUs for read and write operations" works well for SSC:
+> > 
+> >   a) process the command normally except that data beyond the FCP_DL count
+> >   shall not be requested or transferred;
+> > 
+> > The clause allows to accomodate variable-block tranfers from SSC.
+> > 
+> > So, what if we return CHECK CONDITION only for SBC WRITEs with
+> > residuals?  Then it has no impact on SSC and other device types. In
+> > future, we might also add a patch that would fail SBC READs with
+> > residuals for sake of consistency. That behaviour would be beneficial
+> > for SBC devices as no host could corrupt data or itself by forming,
+> > requesting invalid data buffer.
+> 
+> Maybe I'm overly concerned. I do not know for sure which applications
+> rely on the current behavior of residual handling. All I know about
+> these applications is based on what others wrote about these
+> applications. An example from
+> https://www.t10.org/pipermail/t10/2003-November/009317.html: "We have
+> customers who also use overlength and underlength transfers as a normal
+> mode of operation."
+> 
 
+Hi Bart,
 
-> On Oct 27, 2020, at 12:54 PM, Mike Christie =
-<michael.christie@oracle.com> wrote:
->=20
-> On 10/27/20 8:49 AM, Maurizio Lombardi wrote:
->> Hello Mike,
->>=20
->> Dne 22. 10. 20 v 4:42 Mike Christie napsal(a):
->>> If we free the cmd from the abort path, then for your conn stop plus =
-abort race case, could we do:
->>>=20
->>> 1. thread1 runs iscsit_release_commands_from_conn and sets =
-CMD_T_FABRIC_STOP.
->>> 2. thread2 runs iscsit_aborted_task and then does __iscsit_free_cmd. =
-It then returns from the aborted_task callout and we finish =
-target_handle_abort and do:
->>>=20
->>> target_handle_abort -> transport_cmd_check_stop_to_fabric -> =
-lio_check_stop_free -> target_put_sess_cmd
->>>=20
->>> The cmd is now freed.
->>> 3. thread1 now finishes iscsit_release_commands_from_conn and runs =
-iscsit_free_cmd while accessing a command we just released.
->>>=20
->>>=20
->>=20
->> Thanks for the review!
->>=20
->> There are definitely some problems with task aborts and commands' =
-refcounting *
->> but this is a different bug than the one this patch is trying to =
-solve (a race to list_del_init());
->> unless you are saying that abort tasks should never be executed when =
-the connection=20
->> is going down and we have to prevent such cases from happening at =
-all.
->=20
-> Yeah, I think if we prevent the race then we fix the refcount issue =
-and your issue.
-> Here is a patch that is only compile tested:
->=20
-> =46rom 209709bcedd9a6ce6003e6bb86f3ebf547dca6af Mon Sep 17 00:00:00 =
-2001
-> From: Mike Christie <michael.christie@oracle.com>
-> Date: Tue, 27 Oct 2020 12:30:53 -0500
-> Subject: [PATCH] iscsi target: fix cmd abort vs fabric stop race
->=20
-> The abort and cmd stop paths can race where:
->=20
-> 1. thread1 runs iscsit_release_commands_from_conn and sets
-> CMD_T_FABRIC_STOP.
-> 2. thread2 runs iscsit_aborted_task and then does __iscsit_free_cmd. =
-It
-> then returns from the aborted_task callout and we finish
-> target_handle_abort and do:
->=20
-> target_handle_abort -> transport_cmd_check_stop_to_fabric ->
-> lio_check_stop_free -> target_put_sess_cmd
->=20
-> The cmd is now freed.
-> 3. thread1 now finishes iscsit_release_commands_from_conn and runs
-> iscsit_free_cmd while accessing a command we just released.
->=20
-> In __target_check_io_state we check for CMD_T_FABRIC_STOP and set the
-> CMD_T_ABORTED if the driver is not cleaning up the cmd because of
-> a session shutdown. However, iscsit_release_commands_from_conn only
-> sets the CMD_T_FABRIC_STOP and does not check to see if the abort path
-> has claimed completion ownership of the command.
->=20
-> This adds a check in iscsit_release_commands_from_conn so only the
-> abort or fabric stop path cleanup the command.
-> ---
-> drivers/target/iscsi/iscsi_target.c | 13 +++++++++++--
-> 1 file changed, 11 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/target/iscsi/iscsi_target.c =
-b/drivers/target/iscsi/iscsi_target.c
-> index f77e5ee..85027d3 100644
-> --- a/drivers/target/iscsi/iscsi_target.c
-> +++ b/drivers/target/iscsi/iscsi_target.c
-> @@ -483,8 +483,7 @@ int iscsit_queue_rsp(struct iscsi_conn *conn, =
-struct iscsi_cmd *cmd)
-> void iscsit_aborted_task(struct iscsi_conn *conn, struct iscsi_cmd =
-*cmd)
-> {
-> 	spin_lock_bh(&conn->cmd_lock);
-> -	if (!list_empty(&cmd->i_conn_node) &&
-> -	    !(cmd->se_cmd.transport_state & CMD_T_FABRIC_STOP))
-> +	if (!list_empty(&cmd->i_conn_node))
-> 		list_del_init(&cmd->i_conn_node);
-> 	spin_unlock_bh(&conn->cmd_lock);
->=20
-> @@ -4088,6 +4087,16 @@ static void =
-iscsit_release_commands_from_conn(struct iscsi_conn *conn)
->=20
-> 		if (se_cmd->se_tfo !=3D NULL) {
-> 			spin_lock_irq(&se_cmd->t_state_lock);
-> +			if (se_cmd->transport_state & CMD_T_ABORTED) {
-> +				/*
-> +				 * LIO's abort path owns the cleanup for =
-this,
-> +				 * so put it back on the list and let
-> +				 * aborted_task handle it.
-> +				 */
-> +				list_add_tail(&cmd->i_conn_node,
-> +					      &conn->conn_cmd_list);
+Thanks for raising the point about overlength/underlength. If you wish
+we can add an extra check that fails DMA_TO_DEVICE && DATA with
+residuals only for SBC devices but note that before the series,
+underflow/overflow for WRITE didn't return GOOD status. The particular
+patch only changes sense code to more meaningful from the former INVALID
+FIELD IN CDB.
 
+Theoretically, it could be good to have a configurable switch how LIO
+handles overflows/underflows for a LUN. Then it'd be possible to
+configure desired behaviour on a per-LUN basis. But there should be a
+clear need & demand for the feature to avoid maintenance of dead code.
 
-That should have been a move from the tmp list back to the =
-conn_cmd_list.
+> An additional question is what behavior other operating systems than
+> Linux expect? There are probably setups in which another operating
+> system than Linux communicates with a LIO SCSI target?
+> 
 
+TBH I don't know any hosts that do SBC WRITE with residuals as normal
+course of operation. They wouldn't be able to work with LIO because it
+never returns GOOD status on WRITE with residuals. I can send an update
+later if the series works fine with modern hosts (~1 month, after a few
+cycles of system testing).
 
-> +				continue;
-> +			}
-> 			se_cmd->transport_state |=3D CMD_T_FABRIC_STOP;
-> 			spin_unlock_irq(&se_cmd->t_state_lock);
-> 		}
-> --=20
-> 1.8.3.1
->=20
+Fun fact, ~60 years ago WRITE overflows were used to achieve behaviour
+similar to disk zeroing/WRITE SAME [1].
 
+1. https://mailarchive.ietf.org/arch/msg/ips/135ycRlgwUg1sb3gRrUQ3-lSXg0/
+
+Thanks,
+Roman
