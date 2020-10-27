@@ -2,110 +2,96 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15E2B2999F4
-	for <lists+target-devel@lfdr.de>; Mon, 26 Oct 2020 23:55:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4B3C29A2A8
+	for <lists+target-devel@lfdr.de>; Tue, 27 Oct 2020 03:22:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394887AbgJZWzE (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 26 Oct 2020 18:55:04 -0400
-Received: from hqnvemgate25.nvidia.com ([216.228.121.64]:15214 "EHLO
-        hqnvemgate25.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2394885AbgJZWzE (ORCPT
+        id S2443763AbgJ0CWM (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 26 Oct 2020 22:22:12 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:44356 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2438662AbgJ0CWL (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 26 Oct 2020 18:55:04 -0400
-Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate25.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
-        id <B5f9753cc0000>; Mon, 26 Oct 2020 15:55:08 -0700
-Received: from HQMAIL101.nvidia.com (172.20.187.10) by HQMAIL109.nvidia.com
- (172.20.187.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 26 Oct
- 2020 22:55:03 +0000
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.102)
- by HQMAIL101.nvidia.com (172.20.187.10) with Microsoft SMTP Server (TLS) id
- 15.0.1473.3 via Frontend Transport; Mon, 26 Oct 2020 22:55:03 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=K2mxZiLY9qs5vd+ch90cWV7/1hUhvw7cIRQKNdaNLHVaMrKw8XfNyOlVcxOZuyu1iMaKnCeoav6DI84Id0RbqBdv9vPkIX5qR19XPnW2sVujLx0Fs6m0xV/09ejZ3MnX0O5Q296kUU8mGV9/nO6fMENKhWbNk0RtgjGbKldjVKHZLZBXAVyNPgzEyo7lqcaOYe2oU99F+1qa2h6edFwsOI2g73Vog8fEMSBiR0jrd0EjHHVG9yJWEAeVR2gJJNByLloPrpvzsNH+OtDtBobtst1sn0d3sK09R3O58VMnWQmMb3HtaPYUlpKjDd0suuQMuskziOWVzNV1mkNKrCRMtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H69dbHhG/k/Y5cAzLva6gR5uHaZUphun0pkvJKhQeWY=;
- b=TUGsFFUr6KY/INwIBrFn0u1duqvvuiAKPSVLgsQwBCfyMT2wI1s5y+HA+qcGEtlDKiQrS+Z9R/8qgbA/LxQarPG5XdQmmH5/OAbOtk+JNjLRSF2528Up3jqx4kvAjAGKaMjmyu06wd4MOuMpq+QthXZMASmBjmfKBGJaHtd7ZDJ8OrC2q38zT5yQYLZuXWHYrLDj/bBGeCTuOLPkRVoy/1CDABnbJihPKHT5l+tH3XCPA/HI1wtzMc98QClvGLNY8hcp5lgMmGnhEaabgup5++VzgZIS+Kse9WPzALLJ+j60sjlOu9AFgNdjGspkv6lh3cvjtvPl7BNZmhZqslSGgA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-Received: from DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
- by DM5PR1201MB0204.namprd12.prod.outlook.com (2603:10b6:4:51::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.23; Mon, 26 Oct
- 2020 22:55:01 +0000
-Received: from DM6PR12MB3834.namprd12.prod.outlook.com
- ([fe80::cdbe:f274:ad65:9a78]) by DM6PR12MB3834.namprd12.prod.outlook.com
- ([fe80::cdbe:f274:ad65:9a78%7]) with mapi id 15.20.3477.028; Mon, 26 Oct 2020
- 22:55:01 +0000
-Date:   Mon, 26 Oct 2020 19:54:59 -0300
-From:   Jason Gunthorpe <jgg@nvidia.com>
-To:     Joe Perches <joe@perches.com>
-CC:     Doug Ledford <dledford@redhat.com>, <linux-rdma@vger.kernel.org>,
-        <target-devel@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH-next 0/4] RDMA: sprintf to sysfs_emit conversions
-Message-ID: <20201026225459.GA2152135@nvidia.com>
-References: <cover.1602122879.git.joe@perches.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <cover.1602122879.git.joe@perches.com>
-X-ClientProxiedBy: MN2PR22CA0017.namprd22.prod.outlook.com
- (2603:10b6:208:238::22) To DM6PR12MB3834.namprd12.prod.outlook.com
- (2603:10b6:5:14a::12)
+        Mon, 26 Oct 2020 22:22:11 -0400
+Received: by mail-pl1-f193.google.com with SMTP id h2so5665878pll.11;
+        Mon, 26 Oct 2020 19:22:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=1qe548AwnXNuPEjqrAM3SsypoEcJbrqy3/s6FtpJJ68=;
+        b=tXxXyAu58FC0P1poC4YYZFvYDfGXaiYxAbjHJn67Rk2o9L9c4My0n0blNx45wHuJHL
+         IWVePK05xFsxeAgIk3Uiuf+RbX8U+gPW6JU4ZbcOakS1b8z2ujfdSOD/+VZr4SYhvV8f
+         u2iEOGorI6YnhrmgmqWIN1enJ3ZCVMwKeP5i73VIAROdVtQ/LS4wYwlTnvY81yl2ZIUv
+         vkDEsezYjFiKCwxG7po9kZ5fpCFcJkT+pbL1lQ21p2TQBmt3U73u1cZe/6VuLRERZgYO
+         D0PJbE5hByLEtNXfwKBieLOAsaeye/VK8yNWlwFQb0+MmSywNlG64I0Xa+t/7EWVkp4Z
+         eHOg==
+X-Gm-Message-State: AOAM5319hU0hj7skQM3f+P4oGRw/dOiw0C1+3vRbtWPR9LFYYeogrLa/
+        kF+nN+DTeBZQjEK5L3R5l4xrx4mZZ+GEew==
+X-Google-Smtp-Source: ABdhPJyPUvdmmntjHVSr3YCP9K4Bg+584ZENuTLduMgH16FqbyvnGUkBYIQAYMMrindbDCsqNcVBSw==
+X-Received: by 2002:a17:90a:fb92:: with SMTP id cp18mr239895pjb.228.1603765330158;
+        Mon, 26 Oct 2020 19:22:10 -0700 (PDT)
+Received: from [192.168.3.218] (c-73-241-217-19.hsd1.ca.comcast.net. [73.241.217.19])
+        by smtp.gmail.com with ESMTPSA id 13sm82347pfj.100.2020.10.26.19.22.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Oct 2020 19:22:09 -0700 (PDT)
+Subject: Re: [PATCH rdma-next] IB/srpt: Fix memory leak in srpt_add_one
+To:     Leon Romanovsky <leon@kernel.org>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@nvidia.com>
+Cc:     Maor Gottlieb <maorg@nvidia.com>, linux-rdma@vger.kernel.org,
+        "Nicholas A. Bellinger" <nab@risingtidesystems.com>,
+        target-devel@vger.kernel.org
+References: <20201026132737.1338171-1-leon@kernel.org>
+From:   Bart Van Assche <bvanassche@acm.org>
+Message-ID: <93385ff4-cab7-05f2-e29a-82c9c71e47fa@acm.org>
+Date:   Mon, 26 Oct 2020 19:22:07 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.2
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from mlx.ziepe.ca (156.34.48.30) by MN2PR22CA0017.namprd22.prod.outlook.com (2603:10b6:208:238::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.18 via Frontend Transport; Mon, 26 Oct 2020 22:55:00 +0000
-Received: from jgg by mlx with local (Exim 4.94)        (envelope-from <jgg@nvidia.com>)        id 1kXBOF-0091ta-HQ; Mon, 26 Oct 2020 19:54:59 -0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1603752908; bh=H69dbHhG/k/Y5cAzLva6gR5uHaZUphun0pkvJKhQeWY=;
-        h=ARC-Seal:ARC-Message-Signature:ARC-Authentication-Results:Date:
-         From:To:CC:Subject:Message-ID:References:Content-Type:
-         Content-Disposition:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-         X-MS-Exchange-MessageSentRepresentingType;
-        b=Wy1ERsjVmRHE1nhLah6omYzPJOLytXxth5AxzFQgN0REuFyLV9s+wHydQ3llXyi6J
-         lkxsHI5V8P9flHoGD6bf41V42Mq35sysyXJ7eKeP6hB3lQyJiroyljhVglKTzMYDuU
-         aetCH+aprNfUi1c059e2MkfbGp6x+xtpSQv7FJLD17QKggJ3dmL2OZEqX0yobcAql2
-         DyxC4DG3IKtcMO5UyhuDjXFOY4qDid5VyE03ovdzElbdatr+3Z8B4I1SvuQcUuWFiQ
-         +m2q9cfpsXvSlI5hUp2InMZpAmjzlyTrvN1BUijPwE81mzk15ITawPANfJ+1s2tmEd
-         Pg4VviGP2Ggtw==
+In-Reply-To: <20201026132737.1338171-1-leon@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Wed, Oct 07, 2020 at 07:36:23PM -0700, Joe Perches wrote:
-> A recent commit added a sysfs_emit and sysfs_emit_at to allow various
-> sysfs show functions to ensure that the PAGE_SIZE buffer argument is
-> never overrun and always NUL terminated.
+On 10/26/20 6:27 AM, Leon Romanovsky wrote:
+> From: Maor Gottlieb <maorg@nvidia.com>
 > 
-> Convert the RDMA/InfiniBand subsystem to use these new functions.
-> 
-> The first 2 patches exclusively used coccinelle to convert uses.
-> The third and fourth patches were done manually.
-> 
-> Compiled allyesconfig and defconfig with all infiniband options selected
-> no warnings, but untested, no hardward
-> 
-> Overall object size is reduced
-> 
-> total size: allyesconfig x86-64
-> new: 8364003	1680968	 131520	10176491 9b47eb	(TOTALS)
-> old: 8365883	1681032	 131520	10178435 9b4f83	(TOTALS)
-> 
-> total size: defconfig x86-64 with all infiniband selected
-> new; 1359153	 131228	   1910  1492291 16c543	(TOTALS)
-> old: 1359422	 131228	   1910  1492560 16c650	(TOTALS)
-> 
-> Joe Perches (4):
->   RDMA: Convert sysfs device * show functions to use sysfs_emit()
->   RDMA: Convert sysfs kobject * show functions to use sysfs_emit()
+> In case srpt_refresh_port failed for the second port, then
+> we don't unregister the MAD agnet.
+                              ^^^^^
+                              agent?
 
-First two applied to for-next
+The commit message is incomplete. Why does this patch have a Fixes tag?
+The commit message should explain this but doesn't explain this.
 
->   RDMA: manual changes for sysfs_emit and neatening
->   RDMA: Convert various random sprintf sysfs _show uses to sysfs_emit
+What does this patch actually change? ib_unregister_mad_agent() is only
+called by the current code if sport->mad_agent != NULL.
 
-Will probably do these two later this week/next
+> -static void srpt_unregister_mad_agent(struct srpt_device *sdev)
+> +static void __srpt_unregister_mad_agent(struct srpt_device *sdev, int port_cnt)
+>  {
+>  	struct ib_port_modify port_modify = {
+>  		.clr_port_cap_mask = IB_PORT_DEVICE_MGMT_SUP,
+> @@ -633,7 +627,10 @@ static void srpt_unregister_mad_agent(struct srpt_device *sdev)
+>  	struct srpt_port *sport;
+>  	int i;
+>  
+> -	for (i = 1; i <= sdev->device->phys_port_cnt; i++) {
+> +	if (!port_cnt)
+> +		return;
+> +
+> +	for (i = 1; i <= port_cnt; i++) {
+>  		sport = &sdev->port[i - 1];
+>  		WARN_ON(sport->port != i);
+>  		if (sport->mad_agent) {
+
+If this patch is retained, please leave the if-test out if you agree
+that it is not necessary. I'm concerned that it will confuse readers.
 
 Thanks,
-Jason
+
+Bart.
