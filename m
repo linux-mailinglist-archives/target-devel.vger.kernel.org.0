@@ -2,181 +2,97 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA82829D5FD
-	for <lists+target-devel@lfdr.de>; Wed, 28 Oct 2020 23:11:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F166629D949
+	for <lists+target-devel@lfdr.de>; Wed, 28 Oct 2020 23:50:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730562AbgJ1WKh (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 28 Oct 2020 18:10:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:32299 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730551AbgJ1WKg (ORCPT
+        id S2389558AbgJ1Wug (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 28 Oct 2020 18:50:36 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:38276 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389610AbgJ1Wuf (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:10:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1603923034;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=DeXZH2CM/0JL0dV2e8UQ5dRCc4s7qSC0e1ICk1+6Htw=;
-        b=SdUu6nlNKXHLM6639ZdXo64xKhqxa+dYKy9d3pF7SUn5jP/0BxMif9wmm4lo6qWK2OAKgZ
-        uCxFMZTE64NhBIRMxMRFZLXisG7Xbofjsyg0aPQygl2RKT7oWMudRAFnL1ZrwpCB0szsgB
-        qOf7JSQhJFMrXw809k4DfWDpnDZekdY=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-203-Pl_IbCEiNHyU9M9lSXt-Ug-1; Wed, 28 Oct 2020 13:09:53 -0400
-X-MC-Unique: Pl_IbCEiNHyU9M9lSXt-Ug-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4F94F1016CE8;
-        Wed, 28 Oct 2020 17:09:52 +0000 (UTC)
-Received: from [10.35.206.112] (unknown [10.35.206.112])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 42C812C31E;
-        Wed, 28 Oct 2020 17:09:49 +0000 (UTC)
-Subject: Re: [PATCH 2/2] target: iscsi: fix a race condition when aborting a
- task
-To:     Michael Christie <michael.christie@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        bvanassche@acm.org
-References: <20201007145326.56850-1-mlombard@redhat.com>
- <20201007145326.56850-3-mlombard@redhat.com>
- <20daa17d-08e7-a412-4d33-bcf75587eca6@oracle.com>
- <1852a8bd-3edc-5c49-fa51-9afe52f125a8@redhat.com>
- <184667b1-032b-c36f-d1e7-5cfef961c763@oracle.com>
- <71691FED-C164-482C-B629-A8B89B81E566@oracle.com>
-From:   Maurizio Lombardi <mlombard@redhat.com>
-Message-ID: <a936cc4e-1610-5201-5960-107689b81820@redhat.com>
-Date:   Wed, 28 Oct 2020 18:09:48 +0100
+        Wed, 28 Oct 2020 18:50:35 -0400
+Received: by mail-oi1-f195.google.com with SMTP id 9so1295453oir.5;
+        Wed, 28 Oct 2020 15:50:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=94gWFWTQQr945dbvotr81WLIHlciBWGEJdlFTXsxNX0=;
+        b=FW3XZupD6RME05A6kvf1n17sCxFIYuQAFgrllE5K3Nyw8veNh5ORdC0fIsLswthaoY
+         d8HuuCJLZ1XMe4v/LzsmhwltGP17bq5IHUY3lVRVPAwRp+D+8yWR46XHqQzqE++BWaGe
+         I/n2ItJUo9lAMwexVmGIpA6HIQqA/d6empV/Sadv1tZt6B6IBxl5ArvfBXuYUIM80/Oh
+         L2E0aJ5/qr8ENazOky5AU4WTziaOn3f/VfpGypfErv1czf7YX+JOvLU4kccjBRvmJlmL
+         2jO0fJziT9bfhxCvSKDfuGHFZYAbAQoqQpiNR3yRj0OcpLvy+SRuXfQUpt5Gx3+RzZ8c
+         oQQQ==
+X-Gm-Message-State: AOAM533piZQDRgK8DNaV6v+NUNhLq2QE6TO+wrMjrmRUyvf0rGRFaLqS
+        oixaIYHTHlwi8Y/BXsXfQU03qdP7AC3dzg==
+X-Google-Smtp-Source: ABdhPJyYu1nxikKct93ZBfbAHHhX3RiaBcUADsl4+28JmKe4RvnXhqis7icDV2+Uc2pC+Y2zyi8OLA==
+X-Received: by 2002:a17:90a:bf03:: with SMTP id c3mr5090925pjs.65.1603856490288;
+        Tue, 27 Oct 2020 20:41:30 -0700 (PDT)
+Received: from [192.168.3.218] (c-73-241-217-19.hsd1.ca.comcast.net. [73.241.217.19])
+        by smtp.gmail.com with ESMTPSA id n16sm3884068pfo.150.2020.10.27.20.41.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Oct 2020 20:41:29 -0700 (PDT)
+Subject: Re: [PATCH 3/3] scsi: target: core: Change ASCQ for residual write
+To:     Roman Bolshakov <r.bolshakov@yadro.com>
+Cc:     Anastasia Kovaleva <a.kovaleva@yadro.com>,
+        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux@yadro.com
+References: <20201022172011.42367-1-a.kovaleva@yadro.com>
+ <20201022172011.42367-4-a.kovaleva@yadro.com>
+ <e2b215ca-0aa8-bdae-e5bd-292a09d8282e@acm.org>
+ <20201024121315.GA35317@SPB-NB-133.local>
+ <b831a7db-1da2-c293-a8f6-d9c62f68c224@acm.org>
+ <20201026131226.GA88490@SPB-NB-133.local>
+ <270e2edf-49c9-942f-ac3d-b6dfa0aca8f7@acm.org>
+ <20201027234639.GB88490@SPB-NB-133.local>
+From:   Bart Van Assche <bvanassche@acm.org>
+Message-ID: <c3dac124-301e-df94-9d64-b3c46d4eafb9@acm.org>
+Date:   Tue, 27 Oct 2020 20:41:27 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+ Thunderbird/78.3.2
 MIME-Version: 1.0
-In-Reply-To: <71691FED-C164-482C-B629-A8B89B81E566@oracle.com>
-Content-Type: text/plain; charset=iso-8859-2
+In-Reply-To: <20201027234639.GB88490@SPB-NB-133.local>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-
-
-Dne 27. 10. 20 v 21:03 Michael Christie napsal(a):
+On 10/27/20 4:46 PM, Roman Bolshakov wrote:
+> Thanks for raising the point about overlength/underlength. If you wish
+> we can add an extra check that fails DMA_TO_DEVICE && DATA with
+> residuals only for SBC devices but note that before the series,
+> underflow/overflow for WRITE didn't return GOOD status. The particular
+> patch only changes sense code to more meaningful from the former INVALID
+> FIELD IN CDB.
 > 
+> Theoretically, it could be good to have a configurable switch how LIO
+> handles overflows/underflows for a LUN. Then it'd be possible to
+> configure desired behaviour on a per-LUN basis. But there should be a
+> clear need & demand for the feature to avoid maintenance of dead code.
+>>> An additional question is what behavior other operating systems than
+>> Linux expect? There are probably setups in which another operating
+>> system than Linux communicates with a LIO SCSI target?
 > 
->> On Oct 27, 2020, at 12:54 PM, Mike Christie <michael.christie@oracle.com> wrote:
->>
->> On 10/27/20 8:49 AM, Maurizio Lombardi wrote:
->>> Hello Mike,
->>>
->>> Dne 22. 10. 20 v 4:42 Mike Christie napsal(a):
->>>> If we free the cmd from the abort path, then for your conn stop plus abort race case, could we do:
->>>>
->>>> 1. thread1 runs iscsit_release_commands_from_conn and sets CMD_T_FABRIC_STOP.
->>>> 2. thread2 runs iscsit_aborted_task and then does __iscsit_free_cmd. It then returns from the aborted_task callout and we finish target_handle_abort and do:
->>>>
->>>> target_handle_abort -> transport_cmd_check_stop_to_fabric -> lio_check_stop_free -> target_put_sess_cmd
->>>>
->>>> The cmd is now freed.
->>>> 3. thread1 now finishes iscsit_release_commands_from_conn and runs iscsit_free_cmd while accessing a command we just released.
->>>>
->>>>
->>>
->>> Thanks for the review!
->>>
->>> There are definitely some problems with task aborts and commands' refcounting *
->>> but this is a different bug than the one this patch is trying to solve (a race to list_del_init());
->>> unless you are saying that abort tasks should never be executed when the connection 
->>> is going down and we have to prevent such cases from happening at all.
->>
->> Yeah, I think if we prevent the race then we fix the refcount issue and your issue.
->> Here is a patch that is only compile tested:
->>
->> From 209709bcedd9a6ce6003e6bb86f3ebf547dca6af Mon Sep 17 00:00:00 2001
->> From: Mike Christie <michael.christie@oracle.com>
->> Date: Tue, 27 Oct 2020 12:30:53 -0500
->> Subject: [PATCH] iscsi target: fix cmd abort vs fabric stop race
->>
->> The abort and cmd stop paths can race where:
->>
->> 1. thread1 runs iscsit_release_commands_from_conn and sets
->> CMD_T_FABRIC_STOP.
->> 2. thread2 runs iscsit_aborted_task and then does __iscsit_free_cmd. It
->> then returns from the aborted_task callout and we finish
->> target_handle_abort and do:
->>
->> target_handle_abort -> transport_cmd_check_stop_to_fabric ->
->> lio_check_stop_free -> target_put_sess_cmd
->>
->> The cmd is now freed.
->> 3. thread1 now finishes iscsit_release_commands_from_conn and runs
->> iscsit_free_cmd while accessing a command we just released.
->>
->> In __target_check_io_state we check for CMD_T_FABRIC_STOP and set the
->> CMD_T_ABORTED if the driver is not cleaning up the cmd because of
->> a session shutdown. However, iscsit_release_commands_from_conn only
->> sets the CMD_T_FABRIC_STOP and does not check to see if the abort path
->> has claimed completion ownership of the command.
->>
->> This adds a check in iscsit_release_commands_from_conn so only the
->> abort or fabric stop path cleanup the command.
->> ---
->> drivers/target/iscsi/iscsi_target.c | 13 +++++++++++--
->> 1 file changed, 11 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
->> index f77e5ee..85027d3 100644
->> --- a/drivers/target/iscsi/iscsi_target.c
->> +++ b/drivers/target/iscsi/iscsi_target.c
->> @@ -483,8 +483,7 @@ int iscsit_queue_rsp(struct iscsi_conn *conn, struct iscsi_cmd *cmd)
->> void iscsit_aborted_task(struct iscsi_conn *conn, struct iscsi_cmd *cmd)
->> {
->> 	spin_lock_bh(&conn->cmd_lock);
->> -	if (!list_empty(&cmd->i_conn_node) &&
->> -	    !(cmd->se_cmd.transport_state & CMD_T_FABRIC_STOP))
->> +	if (!list_empty(&cmd->i_conn_node))
->> 		list_del_init(&cmd->i_conn_node);
->> 	spin_unlock_bh(&conn->cmd_lock);
->>
->> @@ -4088,6 +4087,16 @@ static void iscsit_release_commands_from_conn(struct iscsi_conn *conn)
->>
->> 		if (se_cmd->se_tfo != NULL) {
->> 			spin_lock_irq(&se_cmd->t_state_lock);
->> +			if (se_cmd->transport_state & CMD_T_ABORTED) {
->> +				/*
->> +				 * LIO's abort path owns the cleanup for this,
->> +				 * so put it back on the list and let
->> +				 * aborted_task handle it.
->> +				 */
->> +				list_add_tail(&cmd->i_conn_node,
->> +					      &conn->conn_cmd_list);
-> 
-> 
-> That should have been a move from the tmp list back to the conn_cmd_list.
+> TBH I don't know any hosts that do SBC WRITE with residuals as normal
+> course of operation. They wouldn't be able to work with LIO because it
+> never returns GOOD status on WRITE with residuals. I can send an update
+> later if the series works fine with modern hosts (~1 month, after a few
+> cycles of system testing).
 
-Nice, it looks simple and I will test it.
-I am a bit worried there could be other possible race conditions.
+Hi Roman,
 
-Example: 
+I'm not sure adding a new kernel switch is the best choice. That would
+be an additional parameter users have to know about and have to learn
+how to use.
 
-thread1: connection is going to be closed,
-iscsit_release_commands_from_conn() finds a command that is about
-to be aborted, re-adds it to conn_cmd_list and proceeds.
-iscsit_close_connection() decreases the conn usage count and finally calls iscsit_free_conn(conn)
-that destroys the conn structure.
+Bodo seems to be in favor of this patch series. Are there other people
+who want to share their opinion about this patch series?
 
-thread2: iscsit_aborted_task() gets called and tries to lock the conn->cmd_lock spinlock, dereferencing
-an invalid pointer.
+Thanks,
 
-Possible solutions that I can think of:
-
-- Make iscsit_release_commands_from_conn() wait for the abort task to finish
-or
-- abort handler could hold a reference to the conn structure so that iscsit_close_connection()
-will sleep when calling iscsit_check_conn_usage_count(conn) until abort finishes.
-
-
-Maurizio
-
+Bart.
