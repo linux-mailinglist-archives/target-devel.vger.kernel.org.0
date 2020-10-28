@@ -2,127 +2,181 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A0E8329D7FA
-	for <lists+target-devel@lfdr.de>; Wed, 28 Oct 2020 23:28:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA82829D5FD
+	for <lists+target-devel@lfdr.de>; Wed, 28 Oct 2020 23:11:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732558AbgJ1WYn (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 28 Oct 2020 18:24:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36802 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732649AbgJ1WWX (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:22:23 -0400
-Received: from localhost (unknown [213.57.247.131])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1730562AbgJ1WKh (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 28 Oct 2020 18:10:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:32299 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730551AbgJ1WKg (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Wed, 28 Oct 2020 18:10:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1603923034;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=DeXZH2CM/0JL0dV2e8UQ5dRCc4s7qSC0e1ICk1+6Htw=;
+        b=SdUu6nlNKXHLM6639ZdXo64xKhqxa+dYKy9d3pF7SUn5jP/0BxMif9wmm4lo6qWK2OAKgZ
+        uCxFMZTE64NhBIRMxMRFZLXisG7Xbofjsyg0aPQygl2RKT7oWMudRAFnL1ZrwpCB0szsgB
+        qOf7JSQhJFMrXw809k4DfWDpnDZekdY=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-203-Pl_IbCEiNHyU9M9lSXt-Ug-1; Wed, 28 Oct 2020 13:09:53 -0400
+X-MC-Unique: Pl_IbCEiNHyU9M9lSXt-Ug-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D25ED2222B;
-        Wed, 28 Oct 2020 06:50:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603867856;
-        bh=pdyqwookFdKHx/L0xEZjzidki8/nv150rb5h0kxgJiw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=G2bpjIzajqVgUG60F/FnIUdykqfIV1SwUhWDmUyvnS98XSOSdY+GyXp8PvWT/ukg1
-         XoUmrYVG+vqtx/l6H0ZjBruU1X8VrQMchTGdZVACc/cA7nnX11QoV0gdBN8xyeDZRN
-         KtfNVe+vJ9SVsk5x1qgsQVdR9KlhzZOwypVBu6/M=
-From:   Leon Romanovsky <leon@kernel.org>
-To:     Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@nvidia.com>
-Cc:     Maor Gottlieb <maorg@nvidia.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        linux-rdma@vger.kernel.org,
-        "Nicholas A. Bellinger" <nab@risingtidesystems.com>,
-        target-devel@vger.kernel.org
-Subject: [PATCH rdma-next v2] IB/srpt: Fix memory leak in srpt_add_one
-Date:   Wed, 28 Oct 2020 08:50:51 +0200
-Message-Id: <20201028065051.112430-1-leon@kernel.org>
-X-Mailer: git-send-email 2.28.0
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4F94F1016CE8;
+        Wed, 28 Oct 2020 17:09:52 +0000 (UTC)
+Received: from [10.35.206.112] (unknown [10.35.206.112])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 42C812C31E;
+        Wed, 28 Oct 2020 17:09:49 +0000 (UTC)
+Subject: Re: [PATCH 2/2] target: iscsi: fix a race condition when aborting a
+ task
+To:     Michael Christie <michael.christie@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        bvanassche@acm.org
+References: <20201007145326.56850-1-mlombard@redhat.com>
+ <20201007145326.56850-3-mlombard@redhat.com>
+ <20daa17d-08e7-a412-4d33-bcf75587eca6@oracle.com>
+ <1852a8bd-3edc-5c49-fa51-9afe52f125a8@redhat.com>
+ <184667b1-032b-c36f-d1e7-5cfef961c763@oracle.com>
+ <71691FED-C164-482C-B629-A8B89B81E566@oracle.com>
+From:   Maurizio Lombardi <mlombard@redhat.com>
+Message-ID: <a936cc4e-1610-5201-5960-107689b81820@redhat.com>
+Date:   Wed, 28 Oct 2020 18:09:48 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <71691FED-C164-482C-B629-A8B89B81E566@oracle.com>
+Content-Type: text/plain; charset=iso-8859-2
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-From: Maor Gottlieb <maorg@nvidia.com>
 
-Failure in srpt_refresh_port() for the second port will leave MAD
-registered for the first one, however, the srpt_add_one() will be
-marked as "failed" and SRPT will leak resources for that registered
-but not used and released first port.
 
-Unregister the MAD agent for all ports in case of failure.
+Dne 27. 10. 20 v 21:03 Michael Christie napsal(a):
+> 
+> 
+>> On Oct 27, 2020, at 12:54 PM, Mike Christie <michael.christie@oracle.com> wrote:
+>>
+>> On 10/27/20 8:49 AM, Maurizio Lombardi wrote:
+>>> Hello Mike,
+>>>
+>>> Dne 22. 10. 20 v 4:42 Mike Christie napsal(a):
+>>>> If we free the cmd from the abort path, then for your conn stop plus abort race case, could we do:
+>>>>
+>>>> 1. thread1 runs iscsit_release_commands_from_conn and sets CMD_T_FABRIC_STOP.
+>>>> 2. thread2 runs iscsit_aborted_task and then does __iscsit_free_cmd. It then returns from the aborted_task callout and we finish target_handle_abort and do:
+>>>>
+>>>> target_handle_abort -> transport_cmd_check_stop_to_fabric -> lio_check_stop_free -> target_put_sess_cmd
+>>>>
+>>>> The cmd is now freed.
+>>>> 3. thread1 now finishes iscsit_release_commands_from_conn and runs iscsit_free_cmd while accessing a command we just released.
+>>>>
+>>>>
+>>>
+>>> Thanks for the review!
+>>>
+>>> There are definitely some problems with task aborts and commands' refcounting *
+>>> but this is a different bug than the one this patch is trying to solve (a race to list_del_init());
+>>> unless you are saying that abort tasks should never be executed when the connection 
+>>> is going down and we have to prevent such cases from happening at all.
+>>
+>> Yeah, I think if we prevent the race then we fix the refcount issue and your issue.
+>> Here is a patch that is only compile tested:
+>>
+>> From 209709bcedd9a6ce6003e6bb86f3ebf547dca6af Mon Sep 17 00:00:00 2001
+>> From: Mike Christie <michael.christie@oracle.com>
+>> Date: Tue, 27 Oct 2020 12:30:53 -0500
+>> Subject: [PATCH] iscsi target: fix cmd abort vs fabric stop race
+>>
+>> The abort and cmd stop paths can race where:
+>>
+>> 1. thread1 runs iscsit_release_commands_from_conn and sets
+>> CMD_T_FABRIC_STOP.
+>> 2. thread2 runs iscsit_aborted_task and then does __iscsit_free_cmd. It
+>> then returns from the aborted_task callout and we finish
+>> target_handle_abort and do:
+>>
+>> target_handle_abort -> transport_cmd_check_stop_to_fabric ->
+>> lio_check_stop_free -> target_put_sess_cmd
+>>
+>> The cmd is now freed.
+>> 3. thread1 now finishes iscsit_release_commands_from_conn and runs
+>> iscsit_free_cmd while accessing a command we just released.
+>>
+>> In __target_check_io_state we check for CMD_T_FABRIC_STOP and set the
+>> CMD_T_ABORTED if the driver is not cleaning up the cmd because of
+>> a session shutdown. However, iscsit_release_commands_from_conn only
+>> sets the CMD_T_FABRIC_STOP and does not check to see if the abort path
+>> has claimed completion ownership of the command.
+>>
+>> This adds a check in iscsit_release_commands_from_conn so only the
+>> abort or fabric stop path cleanup the command.
+>> ---
+>> drivers/target/iscsi/iscsi_target.c | 13 +++++++++++--
+>> 1 file changed, 11 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
+>> index f77e5ee..85027d3 100644
+>> --- a/drivers/target/iscsi/iscsi_target.c
+>> +++ b/drivers/target/iscsi/iscsi_target.c
+>> @@ -483,8 +483,7 @@ int iscsit_queue_rsp(struct iscsi_conn *conn, struct iscsi_cmd *cmd)
+>> void iscsit_aborted_task(struct iscsi_conn *conn, struct iscsi_cmd *cmd)
+>> {
+>> 	spin_lock_bh(&conn->cmd_lock);
+>> -	if (!list_empty(&cmd->i_conn_node) &&
+>> -	    !(cmd->se_cmd.transport_state & CMD_T_FABRIC_STOP))
+>> +	if (!list_empty(&cmd->i_conn_node))
+>> 		list_del_init(&cmd->i_conn_node);
+>> 	spin_unlock_bh(&conn->cmd_lock);
+>>
+>> @@ -4088,6 +4087,16 @@ static void iscsit_release_commands_from_conn(struct iscsi_conn *conn)
+>>
+>> 		if (se_cmd->se_tfo != NULL) {
+>> 			spin_lock_irq(&se_cmd->t_state_lock);
+>> +			if (se_cmd->transport_state & CMD_T_ABORTED) {
+>> +				/*
+>> +				 * LIO's abort path owns the cleanup for this,
+>> +				 * so put it back on the list and let
+>> +				 * aborted_task handle it.
+>> +				 */
+>> +				list_add_tail(&cmd->i_conn_node,
+>> +					      &conn->conn_cmd_list);
+> 
+> 
+> That should have been a move from the tmp list back to the conn_cmd_list.
 
-Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
-Signed-off-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
----
-Changelog:
-v2:
- * Added an extra parameter to srpt_unregister_mad_agent() to eliminate
-   an extra obfuscation call.
-v1:
-https://lore.kernel.org/linux-rdma/20201027055920.1760663-1-leon@kernel.org
- * Fixed and updated commit message.
- * Remove port_cnt check from __srpt_unregister_mad_agent().
-v0:
-https://lore.kernel.org/linux-rdma/20201026132737.1338171-1-leon@kernel.org
----
- drivers/infiniband/ulp/srpt/ib_srpt.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+Nice, it looks simple and I will test it.
+I am a bit worried there could be other possible race conditions.
 
-diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-index 0065eb17ae36..1b096305de1a 100644
---- a/drivers/infiniband/ulp/srpt/ib_srpt.c
-+++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-@@ -622,10 +622,11 @@ static int srpt_refresh_port(struct srpt_port *sport)
- /**
-  * srpt_unregister_mad_agent - unregister MAD callback functions
-  * @sdev: SRPT HCA pointer.
-+ * #port_cnt: number of ports with registered MAD
-  *
-  * Note: It is safe to call this function more than once for the same device.
-  */
--static void srpt_unregister_mad_agent(struct srpt_device *sdev)
-+static void srpt_unregister_mad_agent(struct srpt_device *sdev, int port_cnt)
- {
- 	struct ib_port_modify port_modify = {
- 		.clr_port_cap_mask = IB_PORT_DEVICE_MGMT_SUP,
-@@ -633,7 +634,7 @@ static void srpt_unregister_mad_agent(struct srpt_device *sdev)
- 	struct srpt_port *sport;
- 	int i;
+Example: 
 
--	for (i = 1; i <= sdev->device->phys_port_cnt; i++) {
-+	for (i = 1; i <= port_cnt; i++) {
- 		sport = &sdev->port[i - 1];
- 		WARN_ON(sport->port != i);
- 		if (sport->mad_agent) {
-@@ -3185,7 +3186,8 @@ static int srpt_add_one(struct ib_device *device)
- 		if (ret) {
- 			pr_err("MAD registration failed for %s-%d.\n",
- 			       dev_name(&sdev->device->dev), i);
--			goto err_event;
-+			i--;
-+			goto err_port;
- 		}
- 	}
+thread1: connection is going to be closed,
+iscsit_release_commands_from_conn() finds a command that is about
+to be aborted, re-adds it to conn_cmd_list and proceeds.
+iscsit_close_connection() decreases the conn usage count and finally calls iscsit_free_conn(conn)
+that destroys the conn structure.
 
-@@ -3197,7 +3199,8 @@ static int srpt_add_one(struct ib_device *device)
- 	pr_debug("added %s.\n", dev_name(&device->dev));
- 	return 0;
+thread2: iscsit_aborted_task() gets called and tries to lock the conn->cmd_lock spinlock, dereferencing
+an invalid pointer.
 
--err_event:
-+err_port:
-+	srpt_unregister_mad_agent(sdev, i);
- 	ib_unregister_event_handler(&sdev->event_handler);
- err_cm:
- 	if (sdev->cm_id)
-@@ -3221,7 +3224,7 @@ static void srpt_remove_one(struct ib_device *device, void *client_data)
- 	struct srpt_device *sdev = client_data;
- 	int i;
+Possible solutions that I can think of:
 
--	srpt_unregister_mad_agent(sdev);
-+	srpt_unregister_mad_agent(sdev, sdev->device->phys_port_cnt);
+- Make iscsit_release_commands_from_conn() wait for the abort task to finish
+or
+- abort handler could hold a reference to the conn structure so that iscsit_close_connection()
+will sleep when calling iscsit_check_conn_usage_count(conn) until abort finishes.
 
- 	ib_unregister_event_handler(&sdev->event_handler);
 
---
-2.28.0
+Maurizio
 
