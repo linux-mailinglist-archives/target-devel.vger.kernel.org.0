@@ -2,60 +2,54 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3A4229D9D5
-	for <lists+target-devel@lfdr.de>; Thu, 29 Oct 2020 00:03:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1F5A29DBAE
+	for <lists+target-devel@lfdr.de>; Thu, 29 Oct 2020 01:11:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390030AbgJ1XC4 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 28 Oct 2020 19:02:56 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:38197 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390036AbgJ1XCy (ORCPT
+        id S1732379AbgJ2ALZ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 28 Oct 2020 20:11:25 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:42982 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731875AbgJ1Wqj (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 28 Oct 2020 19:02:54 -0400
-Received: by mail-oi1-f195.google.com with SMTP id 9so1325781oir.5;
-        Wed, 28 Oct 2020 16:02:53 -0700 (PDT)
+        Wed, 28 Oct 2020 18:46:39 -0400
+Received: by mail-pg1-f194.google.com with SMTP id s22so713067pga.9;
+        Wed, 28 Oct 2020 15:46:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=sagH2PC7EpAdxZ16EOxRiHafef79Ay2C4If7MRpdFD0=;
-        b=Nz0ttXFrHIcLoy97TmVDG7kAHkYFuo6+WSXIdmd04tIqm6uQCyK01QTkDoGxO4mtDc
-         GABXqBbzTeo82bYn0shcMol1SaiqkAQcwnP1zoYNvqoAILOUsJ+2VInPQA42DLFOu4br
-         4FkBADVJi4yX5Rdtw1HcJyxKIFUD33clieZZf94TwD7hjwxcKsV6fTUEh0HNP/9THWIV
-         wGdgfnRt6bfJPA33vwqCnrArxXeE0K+K5fCpmfjqY5TY+Ddla3a16IREtwyiPzypDqkR
-         jWnSVs4zl4fNfj8c9W5NDlUcEt4YTlEtqEkPe27I7qnXhriV5H4JmFjA2Tv55/FhJwlW
-         HV8A==
-X-Gm-Message-State: AOAM530X/rcZRLWud+4PoNwF/K85lQGwW4p+HO6Gnuq5TyoQuAZw6Shu
-        Ie0ebjPZqf/oh30SVZmG+MsjbU/IJMdOdg==
-X-Google-Smtp-Source: ABdhPJzwP4whIftiW07KfvAjZq1D49sITEhoT4+ERP5oeO9yebeFDCJZV91m0/iZE3SZH34ESlMiAQ==
-X-Received: by 2002:a17:90b:3798:: with SMTP id mz24mr4821149pjb.46.1603856924004;
-        Tue, 27 Oct 2020 20:48:44 -0700 (PDT)
+        bh=oatMflBbvtVoFbzfhbNEDvGH+eoG5r1OUVv4RU4nvk4=;
+        b=hcnkdHhtqWBL0kf4N9Pb2Hgam3t5OK9ORRmqjwwzzRUOOo0PN0wUj7Ki9/XMmZg8SO
+         GM4dvd1bE/UimigiqxNLIh7zLboAfaLyAgtCjL8IBbEjdlMrnlb3FEW3eS7i5OvHiB9B
+         boyOAu67VfdBQImB3D+lw7cgoJZMeuxzslGGfubVWkR8iWKCgEU+hf5a4DkRCUUEpAOH
+         C94S9W71s6hxII0B9ASEFFmQjVJLUOIV0weX9qIsYlzPKrLgUI0lhA49iEakr+B7u09q
+         rFKBwjIlGut/5M5imGud6BvbTp8FALVaH1U4x5b8EZujYndJwiylojF4WHpkNlCgXwo/
+         qqvg==
+X-Gm-Message-State: AOAM531kI6v4839qxIPMaKLzsBRoF///KBVkXRjGarCVR0C0STpgxhXd
+        qL1St8FRYDWBTA9yuJu9vZcB/GHQboPAvQ==
+X-Google-Smtp-Source: ABdhPJzy2uuO9GujIGNJL1JsizVekBJIiPMa5j0MOcXzQbtLtnddVMaI2cP33Pc3xmuN/SwUEeZNEQ==
+X-Received: by 2002:a05:6a00:16c7:b029:163:ce86:1d5d with SMTP id l7-20020a056a0016c7b0290163ce861d5dmr5239143pfc.80.1603856713993;
+        Tue, 27 Oct 2020 20:45:13 -0700 (PDT)
 Received: from [192.168.3.218] (c-73-241-217-19.hsd1.ca.comcast.net. [73.241.217.19])
-        by smtp.gmail.com with ESMTPSA id j19sm3867964pfn.107.2020.10.27.20.48.42
+        by smtp.gmail.com with ESMTPSA id q23sm3879617pfg.192.2020.10.27.20.45.12
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Oct 2020 20:48:43 -0700 (PDT)
-Subject: Re: [PATCH v3 20/32] IB/srpt: docs: add a description for cq_size
- member
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>
-Cc:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Max Gurtovoy <maxg@mellanox.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Yamin Friedman <yaminf@mellanox.com>,
-        linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
-        target-devel@vger.kernel.org,
-        Brendan Higgins <brendanhiggins@google.com>
-References: <cover.1603791716.git.mchehab+huawei@kernel.org>
- <df0e5f0e866b91724299ef569a2da8115e48c0cf.1603791716.git.mchehab+huawei@kernel.org>
+        Tue, 27 Oct 2020 20:45:13 -0700 (PDT)
+Subject: Re: [PATCH rdma-next v1] IB/srpt: Fix memory leak in srpt_add_one
+To:     Leon Romanovsky <leon@kernel.org>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@nvidia.com>
+Cc:     Maor Gottlieb <maorg@nvidia.com>, linux-rdma@vger.kernel.org,
+        "Nicholas A. Bellinger" <nab@risingtidesystems.com>,
+        target-devel@vger.kernel.org
+References: <20201027055920.1760663-1-leon@kernel.org>
 From:   Bart Van Assche <bvanassche@acm.org>
-Message-ID: <67ba1e15-87cc-18dd-48f1-6224cefe7105@acm.org>
-Date:   Tue, 27 Oct 2020 20:48:41 -0700
+Message-ID: <1bc9ef14-4d91-6b12-f396-222cb6775ce4@acm.org>
+Date:   Tue, 27 Oct 2020 20:45:11 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.3.2
 MIME-Version: 1.0
-In-Reply-To: <df0e5f0e866b91724299ef569a2da8115e48c0cf.1603791716.git.mchehab+huawei@kernel.org>
+In-Reply-To: <20201027055920.1760663-1-leon@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -63,10 +57,22 @@ Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 10/27/20 2:51 AM, Mauro Carvalho Chehab wrote:
-> Add a description for it.
+On 10/26/20 10:59 PM, Leon Romanovsky wrote:
+> +/**
+> + * srpt_unregister_mad_agent - unregister MAD callback functions
+> + * @sdev: SRPT HCA pointer.
+> + *
+> + * Note: It is safe to call this function more than once for the same device.
+> + */
+> +static void srpt_unregister_mad_agent(struct srpt_device *sdev)
+> +{
+> +	__srpt_unregister_mad_agent(sdev, sdev->device->phys_port_cnt);
+> +}
 
-It seems like my Reviewed-by tag is missing? See also
-https://lore.kernel.org/linux-rdma/cb5944e2-bdea-e320-d4d1-2f9bc9539a19@acm.org/
+As far as I can see with this patch applied srpt_unregister_mad_agent()
+has no callers. So please add an argument to srpt_unregister_mad_agent()
+instead of introducing __srpt_unregister_mad_agent().
+
+Thanks,
 
 Bart.
