@@ -2,97 +2,82 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F166629D949
-	for <lists+target-devel@lfdr.de>; Wed, 28 Oct 2020 23:50:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 543FA29D972
+	for <lists+target-devel@lfdr.de>; Wed, 28 Oct 2020 23:55:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389558AbgJ1Wug (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 28 Oct 2020 18:50:36 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:38276 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389610AbgJ1Wuf (ORCPT
+        id S2389731AbgJ1Wyv (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 28 Oct 2020 18:54:51 -0400
+Received: from hqnvemgate25.nvidia.com ([216.228.121.64]:16469 "EHLO
+        hqnvemgate25.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389709AbgJ1Wyq (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:50:35 -0400
-Received: by mail-oi1-f195.google.com with SMTP id 9so1295453oir.5;
-        Wed, 28 Oct 2020 15:50:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=94gWFWTQQr945dbvotr81WLIHlciBWGEJdlFTXsxNX0=;
-        b=FW3XZupD6RME05A6kvf1n17sCxFIYuQAFgrllE5K3Nyw8veNh5ORdC0fIsLswthaoY
-         d8HuuCJLZ1XMe4v/LzsmhwltGP17bq5IHUY3lVRVPAwRp+D+8yWR46XHqQzqE++BWaGe
-         I/n2ItJUo9lAMwexVmGIpA6HIQqA/d6empV/Sadv1tZt6B6IBxl5ArvfBXuYUIM80/Oh
-         L2E0aJ5/qr8ENazOky5AU4WTziaOn3f/VfpGypfErv1czf7YX+JOvLU4kccjBRvmJlmL
-         2jO0fJziT9bfhxCvSKDfuGHFZYAbAQoqQpiNR3yRj0OcpLvy+SRuXfQUpt5Gx3+RzZ8c
-         oQQQ==
-X-Gm-Message-State: AOAM533piZQDRgK8DNaV6v+NUNhLq2QE6TO+wrMjrmRUyvf0rGRFaLqS
-        oixaIYHTHlwi8Y/BXsXfQU03qdP7AC3dzg==
-X-Google-Smtp-Source: ABdhPJyYu1nxikKct93ZBfbAHHhX3RiaBcUADsl4+28JmKe4RvnXhqis7icDV2+Uc2pC+Y2zyi8OLA==
-X-Received: by 2002:a17:90a:bf03:: with SMTP id c3mr5090925pjs.65.1603856490288;
-        Tue, 27 Oct 2020 20:41:30 -0700 (PDT)
-Received: from [192.168.3.218] (c-73-241-217-19.hsd1.ca.comcast.net. [73.241.217.19])
-        by smtp.gmail.com with ESMTPSA id n16sm3884068pfo.150.2020.10.27.20.41.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Oct 2020 20:41:29 -0700 (PDT)
-Subject: Re: [PATCH 3/3] scsi: target: core: Change ASCQ for residual write
-To:     Roman Bolshakov <r.bolshakov@yadro.com>
-Cc:     Anastasia Kovaleva <a.kovaleva@yadro.com>,
-        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux@yadro.com
-References: <20201022172011.42367-1-a.kovaleva@yadro.com>
- <20201022172011.42367-4-a.kovaleva@yadro.com>
- <e2b215ca-0aa8-bdae-e5bd-292a09d8282e@acm.org>
- <20201024121315.GA35317@SPB-NB-133.local>
- <b831a7db-1da2-c293-a8f6-d9c62f68c224@acm.org>
- <20201026131226.GA88490@SPB-NB-133.local>
- <270e2edf-49c9-942f-ac3d-b6dfa0aca8f7@acm.org>
- <20201027234639.GB88490@SPB-NB-133.local>
-From:   Bart Van Assche <bvanassche@acm.org>
-Message-ID: <c3dac124-301e-df94-9d64-b3c46d4eafb9@acm.org>
-Date:   Tue, 27 Oct 2020 20:41:27 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.2
+        Wed, 28 Oct 2020 18:54:46 -0400
+Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate25.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
+        id <B5f99b80d0000>; Wed, 28 Oct 2020 11:27:25 -0700
+Received: from HQMAIL107.nvidia.com (172.20.187.13) by HQMAIL111.nvidia.com
+ (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 28 Oct
+ 2020 18:27:22 +0000
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.41) by
+ HQMAIL107.nvidia.com (172.20.187.13) with Microsoft SMTP Server (TLS) id
+ 15.0.1473.3 via Frontend Transport; Wed, 28 Oct 2020 18:27:22 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UDCt4gUnfcQeWpSX1yljF9tWqxMPYXosm3RAvoP2gTazlsogCVFaYAagfY57FZSc6afU932rzl0rXPbirdDdoMVFk6WprgwieDHyiermzrgv4mhF524Sz8Hzi8ef+iU6/5yTLgCb/NemQ3l0HSIuBit47lAzy6Ld2HjDzf9WT3FT5FocCdfn27Htz7BOjpE/P1S8n9BvZjSj9SxiIyIDLH7mkzibBLmZ/Y6202wdDsXmWMJFsO+wuDWcZI07O/GxaQwc/8Fbmiit+wSP/pzuF25CvXFIimtKY+Sypyxg7Y2cgvAZyXZ8EqjzpimKHsjvji5SAXrotu30QHPUCCdtlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FBMPHJuyCV1qEvghOQ9mNJcFcIJpFIEfKh71YUrL6qI=;
+ b=GG/N4B8f30I0h9lIxoKp1GoLA2HqAp1t1PVKoO1xQXFeweeG+TcyaCoY+LH/nBFT1m/9qqf7fLJrgUGxuaxnToLBwR3rCYTtqnQ+cbXAGuXCHTr9K0kWeituRcfsEjokgn5S6N+v2JdE9Nmj8Gfq4fcvjCN43+1RTDEuRulhzga7yCFjbE1qBYvNOKghVCmBjfSgy1pz5R6TCYJ+dqcnbPNxqNsE8kPjF87EUDDZ/XAGFLgUjUhqtO5yCTFLgqnEmu2y7J+yeI9fZAYZCKp76uZ3ZMj3hlJNsU7vFNmbC+mi0oSgI1qeqY53W7wS+dP+dk6xtlBvUk1aHGSuHtVSEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
+ by DM6PR12MB3018.namprd12.prod.outlook.com (2603:10b6:5:118::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.24; Wed, 28 Oct
+ 2020 18:27:21 +0000
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::cdbe:f274:ad65:9a78]) by DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::cdbe:f274:ad65:9a78%7]) with mapi id 15.20.3499.027; Wed, 28 Oct 2020
+ 18:27:21 +0000
+Date:   Wed, 28 Oct 2020 15:27:19 -0300
+From:   Jason Gunthorpe <jgg@nvidia.com>
+To:     Joe Perches <joe@perches.com>
+CC:     Doug Ledford <dledford@redhat.com>, <linux-rdma@vger.kernel.org>,
+        <target-devel@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH-next 0/4] RDMA: sprintf to sysfs_emit conversions
+Message-ID: <20201028182719.GA2481497@nvidia.com>
+References: <cover.1602122879.git.joe@perches.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <cover.1602122879.git.joe@perches.com>
+X-ClientProxiedBy: MN2PR17CA0033.namprd17.prod.outlook.com
+ (2603:10b6:208:15e::46) To DM6PR12MB3834.namprd12.prod.outlook.com
+ (2603:10b6:5:14a::12)
 MIME-Version: 1.0
-In-Reply-To: <20201027234639.GB88490@SPB-NB-133.local>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from mlx.ziepe.ca (156.34.48.30) by MN2PR17CA0033.namprd17.prod.outlook.com (2603:10b6:208:15e::46) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.18 via Frontend Transport; Wed, 28 Oct 2020 18:27:21 +0000
+Received: from jgg by mlx with local (Exim 4.94)        (envelope-from <jgg@nvidia.com>)        id 1kXqAJ-00APZ2-O2; Wed, 28 Oct 2020 15:27:19 -0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1603909645; bh=FBMPHJuyCV1qEvghOQ9mNJcFcIJpFIEfKh71YUrL6qI=;
+        h=ARC-Seal:ARC-Message-Signature:ARC-Authentication-Results:Date:
+         From:To:CC:Subject:Message-ID:References:Content-Type:
+         Content-Disposition:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+         X-MS-Exchange-MessageSentRepresentingType;
+        b=npFNQ9zQ2IjKyvaHIWaAEuzLE1Qc3GYbL3qo7p1f/EdYYRO93gJmzM6NTFjSRtFc1
+         1LzOVz0GKXWToKtIcdBjjNiiAZ52pZ8+KrzBctjlUq/qEd+LhW1uy0HFhS8QIPR3PY
+         6yNt/H/b5MPBqsIYftK7ysfNHjDOzC4yCfCKDzTYBUBBsdArMLPyoFsr/0rNwpUNMd
+         BMlW4FeCA85K93z4nRcEgugDcxofFJfIAy+WjeDoRYErK8rAlupWonAGDddAPccY64
+         J1jPnyXOeVGQ+/fpWDAUG0J9c3hr++gH9bGhF9JJn5LOsOzqqBxI702hN6MrZCfOAS
+         bQCjPbRQ6/KjQ==
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 10/27/20 4:46 PM, Roman Bolshakov wrote:
-> Thanks for raising the point about overlength/underlength. If you wish
-> we can add an extra check that fails DMA_TO_DEVICE && DATA with
-> residuals only for SBC devices but note that before the series,
-> underflow/overflow for WRITE didn't return GOOD status. The particular
-> patch only changes sense code to more meaningful from the former INVALID
-> FIELD IN CDB.
-> 
-> Theoretically, it could be good to have a configurable switch how LIO
-> handles overflows/underflows for a LUN. Then it'd be possible to
-> configure desired behaviour on a per-LUN basis. But there should be a
-> clear need & demand for the feature to avoid maintenance of dead code.
->>> An additional question is what behavior other operating systems than
->> Linux expect? There are probably setups in which another operating
->> system than Linux communicates with a LIO SCSI target?
-> 
-> TBH I don't know any hosts that do SBC WRITE with residuals as normal
-> course of operation. They wouldn't be able to work with LIO because it
-> never returns GOOD status on WRITE with residuals. I can send an update
-> later if the series works fine with modern hosts (~1 month, after a few
-> cycles of system testing).
+On Wed, Oct 07, 2020 at 07:36:23PM -0700, Joe Perches wrote:
+> Joe Perches (4):
+>   RDMA: manual changes for sysfs_emit and neatening
+>   RDMA: Convert various random sprintf sysfs _show uses to sysfs_emit
 
-Hi Roman,
+Applied to rdma for-next, thanks
 
-I'm not sure adding a new kernel switch is the best choice. That would
-be an additional parameter users have to know about and have to learn
-how to use.
-
-Bodo seems to be in favor of this patch series. Are there other people
-who want to share their opinion about this patch series?
-
-Thanks,
-
-Bart.
+Jason
