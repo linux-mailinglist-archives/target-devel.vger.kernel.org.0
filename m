@@ -2,162 +2,88 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E906A29F7BE
-	for <lists+target-devel@lfdr.de>; Thu, 29 Oct 2020 23:21:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7078E29FAEA
+	for <lists+target-devel@lfdr.de>; Fri, 30 Oct 2020 02:54:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725824AbgJ2WVQ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 29 Oct 2020 18:21:16 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:32774 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725372AbgJ2WVQ (ORCPT
+        id S1725800AbgJ3Byt (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 29 Oct 2020 21:54:49 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:35224 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725790AbgJ3Byt (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 29 Oct 2020 18:21:16 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09TMGkvo044550;
-        Thu, 29 Oct 2020 22:21:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=L4EC6wxl67K6Aocna8t+Vpj6CqjMLTykieP0eFECKUY=;
- b=ee4xmnPppAfXcJFr7vvFgFro7TCjKL1eM+CKMLdHs8BLB4e3J7qgmUDAq62hT3iuAjYF
- 3GfL49zQQxxHTgpBsqBIxzS1Gr9zjI5T9ibUNctnKd7+ETFRQJrtliFl1G9c9mamhjlX
- I/Gb2ck0eK2zUklNNkiYEyOA8Gz2mna53nshSFckbFR5oXsuGvxaJmWCzglLPUsBwjjs
- mwyUsTwjITpgNjhTfKhFy92maxjSdHT5m3KzXOaLx55JLJ5xae3aXwbwd9I+pNUHMSIf
- Y4jwKYEJvc5VOyHtG8taTMNbb6693vqzVYwUuVLs8+rE1fu8iFBDR/9B9HfikenFmbD5 xg== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2130.oracle.com with ESMTP id 34c9sb7fn8-1
+        Thu, 29 Oct 2020 21:54:49 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09U1p1mn195227;
+        Fri, 30 Oct 2020 01:54:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : mime-version :
+ content-type; s=corp-2020-01-29;
+ bh=9BwIeQoynB864aanJXPNY53QHQixtwGUBJ8VvBjvPy0=;
+ b=UGqKo3vYLw/Zyj51N8hNzIcI8Jmp7POHk+8JBD2SkijIKlRvun0D/r77Gec596/BwVLS
+ Gm1m1tN6B4E6vuibk3oF7O0pi6UXt1zha2PAeKx2tu1kStRyRId4JkQydEPq3lrk2FOb
+ 6DrCCgYW053Fxm6+ZNLg+bKhPzvhaCRj2Www4rXR+s4yYf0+eZDMclGg698UjhmvHOTv
+ usvaIqMgx+emHY/LP/yPw1pjB1Gs+jE5EOtBJd45MB+VNLdf+quPRssasLYOWQJnt6+X
+ uyBTTrAeZXKqhvOIukGSU6tMMOeA92Rn855Tj6vC5leBLGdEERZnAdLzMRi2wWEzAK+l Ig== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 34cc7m7pd2-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 29 Oct 2020 22:21:11 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09TMFSRI146954;
-        Thu, 29 Oct 2020 22:19:10 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 34cx700d70-1
+        Fri, 30 Oct 2020 01:54:39 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09U1oXsD189072;
+        Fri, 30 Oct 2020 01:52:39 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 34cwuqf0t5-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 29 Oct 2020 22:19:10 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 09TMJ9Ub032069;
-        Thu, 29 Oct 2020 22:19:09 GMT
-Received: from [20.15.0.202] (/73.88.28.6)
+        Fri, 30 Oct 2020 01:52:39 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 09U1qYLU031468;
+        Fri, 30 Oct 2020 01:52:35 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 29 Oct 2020 15:19:08 -0700
-Subject: Re: [PATCH 00/17 V3] vhost: fix scsi cmd handling and cgroup support
-To:     "Michael S. Tsirkin" <mst@redhat.com>
-Cc:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, jasowang@redhat.com,
-        pbonzini@redhat.com, stefanha@redhat.com,
-        virtualization@lists.linux-foundation.org
-References: <1603326903-27052-1-git-send-email-michael.christie@oracle.com>
- <20201029174719-mutt-send-email-mst@kernel.org>
-From:   Mike Christie <michael.christie@oracle.com>
-Message-ID: <c95612d5-104a-f8f5-d335-bd20e74e9ecc@oracle.com>
-Date:   Thu, 29 Oct 2020 17:19:07 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+        with ESMTP ; Thu, 29 Oct 2020 18:52:34 -0700
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Hannes Reinecke <hare@suse.de>, Arnd Bergmann <arnd@arndb.de>,
+        Saurav Kashyap <skashyap@marvell.com>,
+        Javed Hasan <jhasan@marvell.com>,
+        GR-QLogic-Storage-Upstream@marvell.com,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>, linux-scsi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, target-devel@vger.kernel.org
+Subject: Re: [PATCH 1/2] libfc: move scsi/fc_encode.h to libfc
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq1y2jo1nvx.fsf@ca-mkp.ca.oracle.com>
+References: <20201026160705.3706396-1-arnd@kernel.org>
+Date:   Thu, 29 Oct 2020 21:52:30 -0400
+In-Reply-To: <20201026160705.3706396-1-arnd@kernel.org> (Arnd Bergmann's
+        message of "Mon, 26 Oct 2020 17:06:12 +0100")
 MIME-Version: 1.0
-In-Reply-To: <20201029174719-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9789 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
- bulkscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0 suspectscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 bulkscore=0
+ spamscore=0 adultscore=0 malwarescore=0 mlxlogscore=999 suspectscore=1
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010290152
+ definitions=main-2010300011
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9789 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 malwarescore=0 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 spamscore=0 phishscore=0 clxscore=1015 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2010290152
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 adultscore=0
+ malwarescore=0 spamscore=0 clxscore=1015 mlxscore=0 suspectscore=1
+ priorityscore=1501 impostorscore=0 bulkscore=0 phishscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2010300011
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 10/29/20 4:47 PM, Michael S. Tsirkin wrote:
-> On Wed, Oct 21, 2020 at 07:34:46PM -0500, Mike Christie wrote:
->> In-Reply-To:
->>
->> The following patches were made over Michael's vhost branch here:
->>
->> https://urldefense.com/v3/__https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git/log/?h=vhost__;!!GqivPVa7Brio!ORlQVwL5FxDLtNmvh5l9nLqhQJOO6UexX4vl-NrAhagQG9dAGFNFCPXoSNU8rW75g3OH$
->>
->> They fix a couple issues with vhost-scsi when we hit the 256 cmd limit
->> that result in the guest getting IO errors, add LUN reset support so
->> devices are not offlined during transient errors, allow us to manage
->> vhost scsi IO with cgroups, and imrpove IOPs up to 2X.
->>
->> The following patches are a follow up to this post:
->> https://urldefense.com/v3/__https://patchwork.kernel.org/project/target-devel/cover/1600712588-9514-1-git-send-email-michael.christie@oracle.com/__;!!GqivPVa7Brio!ORlQVwL5FxDLtNmvh5l9nLqhQJOO6UexX4vl-NrAhagQG9dAGFNFCPXoSNU8rXJWM8fh$
->> which originally was fixing how vhost-scsi handled cmds so we would
->> not get IO errors when sending more than 256 cmds.
->>
->> In that patchset I needed to detect if a vq was in use and for this
->> patch:
->> https://urldefense.com/v3/__https://patchwork.kernel.org/project/target-devel/patch/1600712588-9514-3-git-send-email-michael.christie@oracle.com/__;!!GqivPVa7Brio!ORlQVwL5FxDLtNmvh5l9nLqhQJOO6UexX4vl-NrAhagQG9dAGFNFCPXoSNU8rbRNqMbK$
->> It was suggested to add support for VHOST_RING_ENABLE. While doing
->> that though I hit a couple problems:
->>
->> 1. The patches moved how vhost-scsi allocated cmds from per lio
->> session to per vhost vq. To support both VHOST_RING_ENABLE and
->> where userspace didn't support it, I would have to keep around the
->> old per session/device cmd allocator/completion and then also maintain
->> the new code. Or, I would still have to use this patch
->> patchwork.kernel.org/cover/11790763/ for the compat case so there
->> adding the new ioctl would not help much.
->>
->> 2. For vhost-scsi I also wanted to prevent where we allocate iovecs
->> for 128 vqs even though we normally use a couple. To do this, I needed
->> something similar to #1, but the problem is that the VHOST_RING_ENABLE
->> call would come too late.
->>
->> To try and balance #1 and #2, these patches just allow vhost-scsi
->> to setup a vq when userspace starts to config it. This allows the
->> driver to only fully setup (we still waste some memory to support older
->> setups but do not have to preallocate everything like before) what
->> is used plus I do not need to maintain 2 code paths.
-> 
-> 
-> OK, so could we get a patchset with just bugfixes for this release
-> please? > And features should go into next one ...
 
-Yeah, that sounds good.
+Arnd,
 
-Just to make sure I am on the same page as you and Jason about what 
-patches are features vs fixes/cleanups. I'm thinking patches 1 - 11 are 
-to resend in the fixes patchset?
+> Most of this file is only used inside of libfc, so move it to where it
+> is actually used, with only fc_fill_fc_hdr() left inside of the
+> header.
 
-0. Patches 1 - 2 are adding helpers I use later.
+Applied to 5.11/scsi-staging, thanks!
 
-1. Patches 3 - 8 are related to fixing IO errors due to the VM sending 
-virtqueue_size/cmd_per_lun commands but vhost-scsi having 256 hard coded.
-
-Patch:
-
-[PATCH 08/17] vhost scsi: alloc cmds per vq instead of session
-
-is what fixes the issue in vhost-scsi so we allocate enough resource to 
-match what the VM is going to send us, but is built on patches 3 - 7 
-which allow vhost-scsi to know which vqs to allocate cmd resrouces for.
-
-[PATCH 03/17] vhost net: use goto error handling in open
-[PATCH 04/17] vhost: prep vhost_dev_init users to handle failures
-[PATCH 05/17] vhost: move vq iovec allocation to dev init time
-[PATCH 06/17] vhost: support delayed vq creation
-[PATCH 07/17] vhost scsi: support delayed IO vq creation
-
-2. Patch 9 fixes a race where we signal userspace the cmd is done before 
-we were done with it. We can then get IO errors if the VM sends a new IO 
-before we free up the old cmd.
-
-
-3. Patch 10 adds LUN reset support. Currently, if the real/backing 
-device hits a temp issue, the VM's scsi/block layer cmd timer might fire 
-and send a reset. We don't implement this, so we just fail. The VM's 
-device goes offline and the app in the VM gets IO errors.
-
-4. Patch 11 removes extra flush calls.
-
-
-Patches 12 - 17 are adding support for the thread per VQ which is a perf 
-feature so resend them separately when we figure what is best.
+-- 
+Martin K. Petersen	Oracle Linux Engineering
