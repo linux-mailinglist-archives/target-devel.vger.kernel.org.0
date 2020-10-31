@@ -2,59 +2,62 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B1482A1548
-	for <lists+target-devel@lfdr.de>; Sat, 31 Oct 2020 11:38:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E2292A1B37
+	for <lists+target-devel@lfdr.de>; Sun,  1 Nov 2020 00:32:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726711AbgJaKiz (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 31 Oct 2020 06:38:55 -0400
-Received: from mx2.suse.de ([195.135.220.15]:50232 "EHLO mx2.suse.de"
+        id S1726069AbgJaXcZ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 31 Oct 2020 19:32:25 -0400
+Received: from mx2.suse.de ([195.135.220.15]:57498 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726697AbgJaKiz (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Sat, 31 Oct 2020 06:38:55 -0400
+        id S1725809AbgJaXcZ (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Sat, 31 Oct 2020 19:32:25 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id BB9B4AE09;
-        Sat, 31 Oct 2020 10:38:53 +0000 (UTC)
-Date:   Sat, 31 Oct 2020 11:38:52 +0100
+        by mx2.suse.de (Postfix) with ESMTP id 514D9ABD1;
+        Sat, 31 Oct 2020 23:32:23 +0000 (UTC)
 From:   David Disseldorp <ddiss@suse.de>
-To:     Douglas Gilbert <dgilbert@interlog.com>
-Cc:     target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
-        Mike Christie <michael.christie@oracle.com>,
-        "Dirk Hohndel (VMware)" <dirk@hohndel.org>
-Subject: Re: [PATCH v3 4/4] scsi: target: return COMPARE AND WRITE
- miscompare offsets
-Message-ID: <20201031113852.39110f4c@suse.de>
-In-Reply-To: <e475cbf3-6dc8-901f-b5e3-30228e9a03a4@interlog.com>
-References: <20201030213931.10720-1-ddiss@suse.de>
-        <20201030213931.10720-5-ddiss@suse.de>
-        <e475cbf3-6dc8-901f-b5e3-30228e9a03a4@interlog.com>
+To:     target-devel@vger.kernel.org
+Cc:     linux-scsi@vger.kernel.org
+Subject: [PATCH v4 0/4] scsi: target: COMPARE AND WRITE miscompare sense
+Date:   Sun,  1 Nov 2020 00:32:07 +0100
+Message-Id: <20201031233211.5207-1-ddiss@suse.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Fri, 30 Oct 2020 20:06:31 -0400, Douglas Gilbert wrote:
+This patchset adds missing functionality to return the offset of
+non-matching read/compare data in the sense INFORMATION field on
+COMPARE AND WRITE miscompare.
 
-> I believe the logic is correct (and scsi_debug doesn't set the INFO field
-> in its CAW, but should), but I wonder about performance.
-> 
-> If the probability of equality is high (e.g. like it is usually with
-> VERIFY(BytChk=1) ) and memcmp() is faster than that for-loop (which
-> could be optimized), then a better strategy might be to always do memcmp()
-> first and only if it fails go into the byte by byte for-loop to find the
-> offset of the first miscompare.
+The functionality can be tested using the libiscsi
+CompareAndWrite.MiscompareSense test proposed via:
+  https://github.com/sahlberg/libiscsi/pull/344
 
-While adding the INFO return to tgt I noticed that it had the same
-memcmp-with-miscompare-for-loop logic that you describe. I'm only aware
-of ESXi as a COMPARE AND WRITE consumer and I think probability of
-equality is quite high (@Dirk: perhaps you can confirm?).
+Changes since v3:
+- (4/4) optimize for equality, as suggested by Doug
+  + perform byte-by-byte offset check only after memcmp() failure
+  + drop Mike's RB tag due to this rework
 
-> IMO this should only be considered, if there is going to be a "v4" of
-> this patchset.
+Changes since v2:
+- perform bad_sector->sense_info rename in overlooked ib_isert
+- drop scatterlist change queued via Jens' tree
+- add Mike's reviewed-by tag
+- rebase against Martin's 5.11/scsi-queue branch
 
-I think this optimization wouldn't make the code much more complex, so
-I'll do a re-spin with this change. Thanks for the feedback.
+Changes since v1:
+- drop unnecessary WARN_ON()
+- fix two checkpatch warnings
+- drop single-use nlbas variable
+- avoid compare_len recalculation
 
 Cheers, David
+
+ drivers/infiniband/ulp/isert/ib_isert.c |   4 +-
+ drivers/target/target_core_sbc.c        | 138 ++++++++++++++----------
+ drivers/target/target_core_transport.c  |  33 +++---
+ include/target/target_core_base.h       |   2 +-
+ 4 files changed, 104 insertions(+), 73 deletions(-)
+
