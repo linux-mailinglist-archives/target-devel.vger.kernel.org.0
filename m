@@ -2,87 +2,59 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB3F92A12F9
-	for <lists+target-devel@lfdr.de>; Sat, 31 Oct 2020 03:39:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B1482A1548
+	for <lists+target-devel@lfdr.de>; Sat, 31 Oct 2020 11:38:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726298AbgJaCjN (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 30 Oct 2020 22:39:13 -0400
-Received: from server.msgroupspa.com ([185.149.113.111]:35286 "EHLO
-        server.msgroupspa.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725536AbgJaCjI (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Fri, 30 Oct 2020 22:39:08 -0400
-X-Greylist: delayed 66465 seconds by postgrey-1.27 at vger.kernel.org; Fri, 30 Oct 2020 22:38:58 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=msgroupspa.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=gOeEglh1DIJatPKqyvOsPs4e0Zw8Lzg9wwjnNfQdiM8=; b=nK3IDYT+DT+afspoRk1vnh030x
-        JBANriWCpwGFqkJTHXsxgXz4zPu7XOm+ROYW+1LhSp6Xws1Wm9Gxv0Soi++3fpbt9358vEM1Vilpv
-        5xlCNIs/Y8Yak5vs3SvhE9OTE/TC6Vf04ze0iphAaRgUliWRhAsWS8s68bwFyUv4tdChHxOH/JwR2
-        Vv+jWIv637j1UH3aZ6QLvXZrjdEmRucUTVxZtH4VnCDjrc4XZi9EwE5rzVsYDmyiNG+eYB+1QY+/8
-        bPWWeacOm9DyYRD9g3bLyiVv0uincEH4/sdJ6fuUSabQfGsi095GX6rsmNCONVo4/rhE4INecsjOZ
-        9QdrBN4A==;
-Received: from [::1] (port=55352 helo=server.msgroupspa.com)
-        by server.msgroupspa.com with esmtpa (Exim 4.93)
-        (envelope-from <no-reply@msgroupspa.com>)
-        id 1kYPRU-0006Ky-OT; Fri, 30 Oct 2020 16:07:24 +0800
+        id S1726711AbgJaKiz (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 31 Oct 2020 06:38:55 -0400
+Received: from mx2.suse.de ([195.135.220.15]:50232 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726697AbgJaKiz (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Sat, 31 Oct 2020 06:38:55 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id BB9B4AE09;
+        Sat, 31 Oct 2020 10:38:53 +0000 (UTC)
+Date:   Sat, 31 Oct 2020 11:38:52 +0100
+From:   David Disseldorp <ddiss@suse.de>
+To:     Douglas Gilbert <dgilbert@interlog.com>
+Cc:     target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        Mike Christie <michael.christie@oracle.com>,
+        "Dirk Hohndel (VMware)" <dirk@hohndel.org>
+Subject: Re: [PATCH v3 4/4] scsi: target: return COMPARE AND WRITE
+ miscompare offsets
+Message-ID: <20201031113852.39110f4c@suse.de>
+In-Reply-To: <e475cbf3-6dc8-901f-b5e3-30228e9a03a4@interlog.com>
+References: <20201030213931.10720-1-ddiss@suse.de>
+        <20201030213931.10720-5-ddiss@suse.de>
+        <e475cbf3-6dc8-901f-b5e3-30228e9a03a4@interlog.com>
 MIME-Version: 1.0
-Date:   Fri, 30 Oct 2020 16:07:24 +0800
-From:   "Mr. John Galvan" <no-reply@msgroupspa.com>
-To:     undisclosed-recipients:;
-Subject: Hello/Hallo
-Reply-To: galvan.johnny@outlook.com
-User-Agent: Roundcube Webmail/1.4.8
-Message-ID: <8970d4ac30f8022b0ae628d9b69a2d43@msgroupspa.com>
-X-Sender: no-reply@msgroupspa.com
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.msgroupspa.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - msgroupspa.com
-X-Get-Message-Sender-Via: server.msgroupspa.com: authenticated_id: no-reply@msgroupspa.com
-X-Authenticated-Sender: server.msgroupspa.com: no-reply@msgroupspa.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+On Fri, 30 Oct 2020 20:06:31 -0400, Douglas Gilbert wrote:
 
+> I believe the logic is correct (and scsi_debug doesn't set the INFO field
+> in its CAW, but should), but I wonder about performance.
+> 
+> If the probability of equality is high (e.g. like it is usually with
+> VERIFY(BytChk=1) ) and memcmp() is faster than that for-loop (which
+> could be optimized), then a better strategy might be to always do memcmp()
+> first and only if it fails go into the byte by byte for-loop to find the
+> offset of the first miscompare.
 
--- 
-Sir/Madam,
+While adding the INFO return to tgt I noticed that it had the same
+memcmp-with-miscompare-for-loop logic that you describe. I'm only aware
+of ESXi as a COMPARE AND WRITE consumer and I think probability of
+equality is quite high (@Dirk: perhaps you can confirm?).
 
-I have access to very vital information that can be used to move a huge 
-amount of money. I have done my homework very well and I have the 
-machineries in place to get it done since I am still in active service. 
-If it was possible for me to do it alone I would not have bothered 
-contacting you. Ultimately I need an honest foreigner to play an 
-important role in the completion of this business transaction. Send 
-responds to this email: galvan.johnny@outlook.com
+> IMO this should only be considered, if there is going to be a "v4" of
+> this patchset.
 
-Regards,
-John Galvan
+I think this optimization wouldn't make the code much more complex, so
+I'll do a re-spin with this change. Thanks for the feedback.
 
----------------------------------------------------------------
-
-Sir / Madam,
-
-Ich habe Zugang zu sehr wichtigen Informationen, mit denen ich eine 
-große Menge Geld bewegen kann. Ich habe meine Hausaufgaben sehr gut 
-gemacht und ich habe die Maschinen, um sie zu erledigen, da ich immer 
-noch im aktiven Dienst bin. Wenn es mir möglich gewesen wäre, es alleine 
-zu tun, hätte ich mich nicht darum gekümmert, Sie zu kontaktieren. 
-Letztendlich brauche ich einen ehrlichen Ausländer, der eine wichtige 
-Rolle beim Abschluss dieses Geschäftsvorgangs spielt. Senden Sie 
-Antworten auf diese E-Mail: galvan.johnny@outlook.com
-
-Grüße,
-John Galvan
+Cheers, David
