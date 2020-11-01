@@ -2,150 +2,97 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73EFD2A1B3B
-	for <lists+target-devel@lfdr.de>; Sun,  1 Nov 2020 00:32:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A6A42A20E3
+	for <lists+target-devel@lfdr.de>; Sun,  1 Nov 2020 19:59:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726060AbgJaXc0 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 31 Oct 2020 19:32:26 -0400
-Received: from mx2.suse.de ([195.135.220.15]:57544 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726068AbgJaXc0 (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Sat, 31 Oct 2020 19:32:26 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 54A6CB1B5;
-        Sat, 31 Oct 2020 23:32:24 +0000 (UTC)
-From:   David Disseldorp <ddiss@suse.de>
-To:     target-devel@vger.kernel.org
-Cc:     linux-scsi@vger.kernel.org, David Disseldorp <ddiss@suse.de>
-Subject: [PATCH v4 4/4] scsi: target: return COMPARE AND WRITE miscompare offsets
-Date:   Sun,  1 Nov 2020 00:32:11 +0100
-Message-Id: <20201031233211.5207-5-ddiss@suse.de>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20201031233211.5207-1-ddiss@suse.de>
-References: <20201031233211.5207-1-ddiss@suse.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1727291AbgKAS7w (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 1 Nov 2020 13:59:52 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:46386 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727264AbgKAS7v (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Sun, 1 Nov 2020 13:59:51 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A1ItOs8152790;
+        Sun, 1 Nov 2020 18:59:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : subject :
+ date : message-id; s=corp-2020-01-29;
+ bh=fzt5NevbQReMFhXiJ/Enlt2ogqCHwfGDL8t4GWsr4pc=;
+ b=zNjIo9p6UPxzc/kg0PobCZsa37kzqEPkFOQuqrm8//hcMNPIZ+nCEm6LAW8coQa31trK
+ kca9Gi9+xBo/4U50uTiqf4n8GhjwHPZ5eB74miWtpEKVC3Q05xTR1rDr/VL5LgVVaMkQ
+ eR8txznyob+niydSKJnCVhb8kF3659rQGQbXwQK+rI/x6he5NepE9NClTEJ6IoZR89Nm
+ z6OJFpHgHLebixsOlQ9eExTjzEsp5ExVgUmSDJ3MboY7RKOhK34GJT3aasS+XnirPBfs
+ M08BeQ9blMRn7C6eFQsR9FoENnFdWK+Bs61qrFVaE+99RPDtk+xp9Hhf+UTe9Y8lvUfU Og== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 34hhvc1arg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sun, 01 Nov 2020 18:59:46 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A1Isgux091271;
+        Sun, 1 Nov 2020 18:59:45 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 34hw0aprdg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 01 Nov 2020 18:59:45 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0A1Ixghe013094;
+        Sun, 1 Nov 2020 18:59:44 GMT
+Received: from ol2.localdomain (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sun, 01 Nov 2020 10:59:41 -0800
+From:   Mike Christie <michael.christie@oracle.com>
+To:     himanshu.madhani@oracle.com, njavali@marvell.com,
+        james.bottomley@hansenpartnership.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
+Subject: [PATCH 0/8 v3] target: fix up locking/refcounting in IO paths
+Date:   Sun,  1 Nov 2020 12:59:26 -0600
+Message-Id: <1604257174-4524-1-git-send-email-michael.christie@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9792 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=999
+ phishscore=0 bulkscore=0 spamscore=0 malwarescore=0 mlxscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011010154
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9792 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0
+ impostorscore=0 malwarescore=0 priorityscore=1501 mlxlogscore=999
+ bulkscore=0 phishscore=0 adultscore=0 mlxscore=0 lowpriorityscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011010154
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-SBC-4 r15 5.3 COMPARE AND WRITE command states:
-  if the compare operation does not indicate a match, then terminate the
-  command with CHECK CONDITION status with the sense key set to
-  MISCOMPARE and the additional sense code set to MISCOMPARE DURING
-  VERIFY OPERATION. In the sense data (see 4.18 and SPC-5) the offset
-  from the start of the Data-Out Buffer to the first byte of data that
-  was not equal shall be reported in the INFORMATION field.
+The following patches made over Martin's staging branch fix some
+ref counting issues I hit while testing and improves the locking
+in the IO paths. To do the latter, the patches:
 
-This change implements the missing logic to report the miscompare offset
-in the sense data INFORMATION field. As an optimization, byte-by-byte
-miscompare offset calculation is only performed after memcmp() mismatch.
+1. move the sess_cmd_lock to tcm_qla2xxx since it was the only
+driver using the sess_cmd_list.
 
-Signed-off-by: David Disseldorp <ddiss@suse.de>
----
- drivers/target/target_core_sbc.c       | 35 ++++++++++++++++++--------
- drivers/target/target_core_transport.c |  1 +
- 2 files changed, 26 insertions(+), 10 deletions(-)
+2. makes the execution lock/list per cpu'ish. I just allocate
+nr_cpu_ids's worth of lock/lists then make sure we complete
+the cmd on the cpu it was started on.
 
-diff --git a/drivers/target/target_core_sbc.c b/drivers/target/target_core_sbc.c
-index 22d0cbba6ff3..768c4878e0d3 100644
---- a/drivers/target/target_core_sbc.c
-+++ b/drivers/target/target_core_sbc.c
-@@ -435,13 +435,13 @@ static sense_reason_t compare_and_write_post(struct se_cmd *cmd, bool success,
- }
- 
- /*
-- * compare @cmp_len bytes of @read_sgl with @cmp_sgl. On miscompare return
-- * TCM_MISCOMPARE_VERIFY.
-+ * compare @cmp_len bytes of @read_sgl with @cmp_sgl. On miscompare, fill
-+ * @miscmp_off and return TCM_MISCOMPARE_VERIFY.
-  */
- static sense_reason_t
- compare_and_write_do_cmp(struct scatterlist *read_sgl, unsigned int read_nents,
- 			 struct scatterlist *cmp_sgl, unsigned int cmp_nents,
--			 unsigned int cmp_len)
-+			 unsigned int cmp_len, unsigned int *miscmp_off)
- {
- 	unsigned char *buf = NULL;
- 	struct scatterlist *sg;
-@@ -466,18 +466,23 @@ compare_and_write_do_cmp(struct scatterlist *read_sgl, unsigned int read_nents,
- 	 * Compare SCSI READ payload against verify payload
- 	 */
- 	offset = 0;
-+	ret = TCM_NO_SENSE;
- 	for_each_sg(read_sgl, sg, read_nents, i) {
- 		unsigned int len = min(sg->length, cmp_len);
- 		unsigned char *addr = kmap_atomic(sg_page(sg));
- 
- 		if (memcmp(addr, buf + offset, len)) {
--			pr_warn("Detected MISCOMPARE for addr: %p buf: %p\n",
--				addr, buf + offset);
--			kunmap_atomic(addr);
-+			unsigned int i;
-+			for (i = 0; i < len && addr[i] == buf[offset + i]; i++)
-+				;
-+			*miscmp_off = offset + i;
-+			pr_warn("Detected MISCOMPARE at offset %u\n",
-+				*miscmp_off);
- 			ret = TCM_MISCOMPARE_VERIFY;
--			goto out;
- 		}
- 		kunmap_atomic(addr);
-+		if (ret != TCM_NO_SENSE)
-+			goto out;
- 
- 		offset += len;
- 		cmp_len -= len;
-@@ -485,7 +490,6 @@ compare_and_write_do_cmp(struct scatterlist *read_sgl, unsigned int read_nents,
- 			break;
- 	}
- 	pr_debug("COMPARE AND WRITE read data matches compare data\n");
--	ret = TCM_NO_SENSE;
- out:
- 	kfree(buf);
- 	return ret;
-@@ -501,6 +505,7 @@ static sense_reason_t compare_and_write_callback(struct se_cmd *cmd, bool succes
- 	unsigned int len;
- 	unsigned int block_size = dev->dev_attrib.block_size;
- 	unsigned int compare_len = (cmd->t_task_nolb * block_size);
-+	unsigned int miscmp_off = 0;
- 	sense_reason_t ret = TCM_NO_SENSE;
- 	int i;
- 
-@@ -532,8 +537,18 @@ static sense_reason_t compare_and_write_callback(struct se_cmd *cmd, bool succes
- 				       cmd->t_bidi_data_nents,
- 				       cmd->t_data_sg,
- 				       cmd->t_data_nents,
--				       compare_len);
--	if (ret)
-+				       compare_len,
-+				       &miscmp_off);
-+	if (ret == TCM_MISCOMPARE_VERIFY) {
-+		/*
-+		 * SBC-4 r15: 5.3 COMPARE AND WRITE command
-+		 * In the sense data (see 4.18 and SPC-5) the offset from the
-+		 * start of the Data-Out Buffer to the first byte of data that
-+		 * was not equal shall be reported in the INFORMATION field.
-+		 */
-+		cmd->sense_info = miscmp_off;
-+		goto out;
-+	} else if (ret)
- 		goto out;
- 
- 	if (sg_alloc_table(&write_tbl, cmd->t_data_nents, GFP_KERNEL) < 0) {
-diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
-index c6f45c12d564..693ed3fe4388 100644
---- a/drivers/target/target_core_transport.c
-+++ b/drivers/target/target_core_transport.c
-@@ -3196,6 +3196,7 @@ static const struct sense_detail sense_detail_table[] = {
- 		.key = MISCOMPARE,
- 		.asc = 0x1d, /* MISCOMPARE DURING VERIFY OPERATION */
- 		.ascq = 0x00,
-+		.add_sense_info = true,
- 	},
- 	[TCM_LOGICAL_BLOCK_GUARD_CHECK_FAILED] = {
- 		.key = ABORTED_COMMAND,
--- 
-2.26.2
+With the patches I'm seeing a 25% improvement in IOPs for small
+IO tests like:
+
+fio  --filename=/dev/sdXYZ  --direct=1 --rw=randrw --bs=4k \
+--iodepth=128  --numjobs=16
+
+with drivers like vhost (with those other patches on the list to
+fix up multiple virtqueue support) and with the included loop
+patch when nr hw queues is increased.
+
+v3:
+- Fixed issue where qla2xxx's cpuid was overwritten.
+- Fixed up email submit prefix to have "qla2xxx".
+v2:
+- Got access to qla2xxx setup and tested patch. Fixed various issues.
+- Added fixes for issues found in the same code paths I was testing:
+        - target: fix lun ref count handling
+        - target: fix cmd_count ref leak
+v1/RFC
+- Initial posting.
+
 
