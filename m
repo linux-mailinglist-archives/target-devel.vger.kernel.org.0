@@ -2,116 +2,110 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 993A92A2FA2
-	for <lists+target-devel@lfdr.de>; Mon,  2 Nov 2020 17:21:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3C5E2A33FF
+	for <lists+target-devel@lfdr.de>; Mon,  2 Nov 2020 20:25:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726619AbgKBQVx (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 2 Nov 2020 11:21:53 -0500
-Received: from aserp2130.oracle.com ([141.146.126.79]:37496 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726473AbgKBQVx (ORCPT
+        id S1725806AbgKBTZZ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 2 Nov 2020 14:25:25 -0500
+Received: from hqnvemgate25.nvidia.com ([216.228.121.64]:15186 "EHLO
+        hqnvemgate25.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725791AbgKBTZY (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 2 Nov 2020 11:21:53 -0500
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A2GJTTo110610;
-        Mon, 2 Nov 2020 16:21:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=OzHLW0aKYKHM4iLF2/fpp6qlzP5WhLo6+5qk6Sw0U7A=;
- b=QYcsHmGFC4vMZQ7dpPxuJkwniedaIBkyWFCy7ZxwagX3GYofNQ03BukLsrx+8VF72Psi
- KeBEbCcSuqAPtyMX47fzDJ0MlP7QKFSCpWrAxaJ1vIpCew1/S0xyj6Fc4mFzfJtOut8y
- fVEfeWfccZtiR2oFl6YONL8TrI0eRUw3ALxV1VCOEe7jATQ6tkiblX30jKt64GXYUNn6
- nTUy9bdyJXUYkYEMZMlmUgLTFsYlTxhrmEX7BRgamgtC7akjjI36rGcO3Xp3qbQHvWSV
- m+RLEn9ec4DJjcLWpyetfq0aKKgjzYlMbrG6HyA2DQKBGVvncSwGE/c10Lw9+cyhm1Zw kQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2130.oracle.com with ESMTP id 34hhb1vv3r-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 02 Nov 2020 16:21:49 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A2GB0Zs057895;
-        Mon, 2 Nov 2020 16:19:48 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 34jf46r4yx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 02 Nov 2020 16:19:48 +0000
-Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0A2GJjhq009743;
-        Mon, 2 Nov 2020 16:19:45 GMT
-Received: from [10.154.171.115] (/10.154.171.115)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 02 Nov 2020 08:19:44 -0800
-Subject: Re: [PATCH 07/17] vhost scsi: support delayed IO vq creation
-To:     Jason Wang <jasowang@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>
-Cc:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        target-devel@vger.kernel.org, stefanha@redhat.com,
-        pbonzini@redhat.com
-References: <1603326903-27052-1-git-send-email-michael.christie@oracle.com>
- <1603326903-27052-8-git-send-email-michael.christie@oracle.com>
- <9e97ea2a-bc57-d4aa-4711-35dba20b3b9e@redhat.com>
- <49c2fc29-348c-06db-4823-392f7476d318@oracle.com>
- <20201030044402-mutt-send-email-mst@kernel.org>
- <688e46b6-77f1-1629-0c93-e3a27d582da5@redhat.com>
- <cf74844c-bfa6-e66c-fc3a-07dfd7af3092@redhat.com>
-From:   Mike Christie <michael.christie@oracle.com>
-Message-ID: <4add5334-e345-f7f1-4fe7-2fb66d86ae34@oracle.com>
-Date:   Mon, 2 Nov 2020 10:19:43 -0600
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.12.1
+        Mon, 2 Nov 2020 14:25:24 -0500
+Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate25.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
+        id <B5fa05d240002>; Mon, 02 Nov 2020 11:25:24 -0800
+Received: from HQMAIL107.nvidia.com (172.20.187.13) by HQMAIL111.nvidia.com
+ (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 2 Nov
+ 2020 19:25:24 +0000
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.108)
+ by HQMAIL107.nvidia.com (172.20.187.13) with Microsoft SMTP Server (TLS) id
+ 15.0.1473.3 via Frontend Transport; Mon, 2 Nov 2020 19:25:24 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jLi02G/Th36J5anSD/TQb01IQzGR2Y/ZwyHvYUY4PSHWSV+b9zmmY6Cy+zRTc4UbsN1rRWglR75R2+Ck2E4kbqTWqERwdgKDjgyK24vsIm9uEHGM4XSt5v+5to8kMwnkf3NmMzYAZsfddIO0ze0S/10mf+kBvgs0yI0SFUHEK/9xv6OCT5XaOu32bYuBL5q8q1/yE7wVcYPDeU/SOPmzXEcZdr1wVjr+c262tAR0eHFzJG0Haf+k6clbNFVIKqh4g3OriVEOyKFs9Eec7VvHEBmNpUc0WXANlRlWoIbvIjlxZvUSqwLFoKTLisqJ94B5J80tTkIwtVNuZEnCcBl7Gg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3Ne8MZvNPA4fKU0rQ40fueIRhdxwpN/ksoE7U7+rIUg=;
+ b=MWt0QVKwxELV+O/phoqocCErGnLgKZBh3BI2/5vj8sxsyRa/uGI56tT16wgKw+cRvXy5Y7JCmQo0OvGr3VeL9F0ZLQs6EdPRuZNpoAtL45/LYCUAgLZ2N/2UBmySXlMobBmcBTgzeNxTpIuzqorqa4jmeLIzCIeLESBOaODXsvE6rMVtqXXMHum0Q3cL8e6HvkYFN6199hAYahAH/FGF+ki0P9YlxZX/GxbwuHtMXO/gSgp/lUqvngX9wvVKoWZCq6yoeNK/aRJI2bP3yoXmpdXG+LRDwy+lolu2CXFKT+KnhVYwIA5OrMqi8452/0cvjbjFfYJY6zA9cvHL7mivRg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
+ by DM6PR12MB4299.namprd12.prod.outlook.com (2603:10b6:5:223::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.18; Mon, 2 Nov
+ 2020 19:25:22 +0000
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::cdbe:f274:ad65:9a78]) by DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::cdbe:f274:ad65:9a78%7]) with mapi id 15.20.3499.030; Mon, 2 Nov 2020
+ 19:25:22 +0000
+Date:   Mon, 2 Nov 2020 15:25:21 -0400
+From:   Jason Gunthorpe <jgg@nvidia.com>
+To:     Leon Romanovsky <leon@kernel.org>
+CC:     Doug Ledford <dledford@redhat.com>,
+        Maor Gottlieb <maorg@nvidia.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        <linux-rdma@vger.kernel.org>,
+        "Nicholas A. Bellinger" <nab@risingtidesystems.com>,
+        <target-devel@vger.kernel.org>
+Subject: Re: [PATCH rdma-next v2] IB/srpt: Fix memory leak in srpt_add_one
+Message-ID: <20201102192521.GA3710231@nvidia.com>
+References: <20201028065051.112430-1-leon@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20201028065051.112430-1-leon@kernel.org>
+X-ClientProxiedBy: BL1PR13CA0194.namprd13.prod.outlook.com
+ (2603:10b6:208:2be::19) To DM6PR12MB3834.namprd12.prod.outlook.com
+ (2603:10b6:5:14a::12)
 MIME-Version: 1.0
-In-Reply-To: <cf74844c-bfa6-e66c-fc3a-07dfd7af3092@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9793 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 mlxscore=0
- bulkscore=0 malwarescore=0 mlxlogscore=999 phishscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011020125
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9793 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 suspectscore=0
- clxscore=1015 mlxlogscore=999 impostorscore=0 malwarescore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 priorityscore=1501 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011020126
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from mlx.ziepe.ca (156.34.48.30) by BL1PR13CA0194.namprd13.prod.outlook.com (2603:10b6:208:2be::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3541.10 via Frontend Transport; Mon, 2 Nov 2020 19:25:22 +0000
+Received: from jgg by mlx with local (Exim 4.94)        (envelope-from <jgg@nvidia.com>)        id 1kZfSD-00FZD7-Is; Mon, 02 Nov 2020 15:25:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1604345124; bh=3Ne8MZvNPA4fKU0rQ40fueIRhdxwpN/ksoE7U7+rIUg=;
+        h=ARC-Seal:ARC-Message-Signature:ARC-Authentication-Results:Date:
+         From:To:CC:Subject:Message-ID:References:Content-Type:
+         Content-Disposition:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+         X-MS-Exchange-MessageSentRepresentingType;
+        b=DDH5kOzq4CMKGpUAiMZpXeflgo/awOJ3YYxfexzwDY69cFg1f8Id/WufRXqzrVqJa
+         U0b++PM0g0yPqC1l83xB1oPJgAJgUko5kNnvqQo44eIB5yIaFaIs/1H+QBPkcObSEN
+         7X/xo/062/zneA33s7tL4plRrE5U9R5OMNCsEx3WejMC99gFGAYYG5mgVQBMPSBfnB
+         6WAJ0Acq/hBj3zMi/OyrVnNK+D4bayQYn20+MBMwc8BF++mUBFNQzFlIdUQ+BBSOQY
+         4UBMHLPQJLyt3l0ENxEUNnB6vZhtplPfBAznjA4X5ue62jM4PJuEn8RWpP1Ajthll4
+         n3ZsBMpBSzj3Q==
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 11/2/20 12:49 AM, Jason Wang wrote:
+On Wed, Oct 28, 2020 at 08:50:51AM +0200, Leon Romanovsky wrote:
+> From: Maor Gottlieb <maorg@nvidia.com>
 > 
-> On 2020/11/2 下午2:36, Jason Wang wrote:
->>>
->>> The need to share event/control vqs between devices is a problem though,
->>> and sending lots of ioctls on things like reset is also not that 
->>> elegant.
->>> Jason, did you have a good solution in mind?
->>
->>
->> Nope, I'm not familiar with SCSI so I don't even know sharing evt/cvq 
->> is possible. Consider VHOST_SCSI_MAX_VQ is already 128 per device. 
->> Mike's proposal seems to be better.
-
-Hey, which proposal are you saying was best?
-
-1. Add on to the current scsi mq design where we are doing a single 
-device and multiple vqs already. So basically just fix what we have and 
-add in patches 12 - 16 to do a thread per VQ?
-
-2. The proposal I stated to hack up over the weekend to try and support 
-the current design and then add in support for your multiple device 
-single vq design:
-
-http://archive.lwn.net:8080/linux-scsi/292879d9-915d-8587-0678-8677a800c613@oracle.com/
-
->>
->> Thanks 
+> Failure in srpt_refresh_port() for the second port will leave MAD
+> registered for the first one, however, the srpt_add_one() will be
+> marked as "failed" and SRPT will leak resources for that registered
+> but not used and released first port.
 > 
+> Unregister the MAD agent for all ports in case of failure.
 > 
-> Btw, it looks to me vhost_scsi_do_evt_work() has the assumption of iovec 
-> layout which needs to be fixed.
+> Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
+> Signed-off-by: Maor Gottlieb <maorg@nvidia.com>
+> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+> ---
+> Changelog:
+> v2:
+>  * Added an extra parameter to srpt_unregister_mad_agent() to eliminate
+>    an extra obfuscation call.
+> v1:
+> https://lore.kernel.org/linux-rdma/20201027055920.1760663-1-leon@kernel.org
+>  * Fixed and updated commit message.
+>  * Remove port_cnt check from __srpt_unregister_mad_agent().
+> v0:
+> https://lore.kernel.org/linux-rdma/20201026132737.1338171-1-leon@kernel.org
+> ---
+>  drivers/infiniband/ulp/srpt/ib_srpt.c | 13 ++++++++-----
+>  1 file changed, 8 insertions(+), 5 deletions(-)
 
-I wanted to be clear, because I thought you meant #1, but this comment 
-seems like it would only be for #2.
+Applied to for-rc, thanks
+
+Jason
