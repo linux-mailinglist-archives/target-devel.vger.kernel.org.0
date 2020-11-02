@@ -2,42 +2,48 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9816D2A24E3
-	for <lists+target-devel@lfdr.de>; Mon,  2 Nov 2020 07:49:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 993A92A2FA2
+	for <lists+target-devel@lfdr.de>; Mon,  2 Nov 2020 17:21:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727652AbgKBGt4 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 2 Nov 2020 01:49:56 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:43389 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727306AbgKBGt4 (ORCPT
+        id S1726619AbgKBQVx (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 2 Nov 2020 11:21:53 -0500
+Received: from aserp2130.oracle.com ([141.146.126.79]:37496 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726473AbgKBQVx (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 2 Nov 2020 01:49:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1604299795;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=C7K4jgC+Vx55SiPAes+d1icJNBJZqTlzcr28+KO7H0E=;
-        b=ZBIO8VmNIsNDMqMu1PUOkJGKzvSNioillYQ1ZyxIUE1B73a7xvvb0E60z9W/9bq98QLjFR
-        qxgKpMIIUuOt/Xf1iI7INdgJwQclNd627+OPgNX7h7DbbeC+d+aValat8JTR1l21QlH90u
-        2M/uerA9adFBUYVz631avcdo1khObYQ=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-33-IFKll4nFNgq9855A5-ewGg-1; Mon, 02 Nov 2020 01:49:53 -0500
-X-MC-Unique: IFKll4nFNgq9855A5-ewGg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2B0D21006C88;
-        Mon,  2 Nov 2020 06:49:52 +0000 (UTC)
-Received: from [10.72.13.42] (ovpn-13-42.pek2.redhat.com [10.72.13.42])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id AF6A355761;
-        Mon,  2 Nov 2020 06:49:43 +0000 (UTC)
+        Mon, 2 Nov 2020 11:21:53 -0500
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A2GJTTo110610;
+        Mon, 2 Nov 2020 16:21:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=OzHLW0aKYKHM4iLF2/fpp6qlzP5WhLo6+5qk6Sw0U7A=;
+ b=QYcsHmGFC4vMZQ7dpPxuJkwniedaIBkyWFCy7ZxwagX3GYofNQ03BukLsrx+8VF72Psi
+ KeBEbCcSuqAPtyMX47fzDJ0MlP7QKFSCpWrAxaJ1vIpCew1/S0xyj6Fc4mFzfJtOut8y
+ fVEfeWfccZtiR2oFl6YONL8TrI0eRUw3ALxV1VCOEe7jATQ6tkiblX30jKt64GXYUNn6
+ nTUy9bdyJXUYkYEMZMlmUgLTFsYlTxhrmEX7BRgamgtC7akjjI36rGcO3Xp3qbQHvWSV
+ m+RLEn9ec4DJjcLWpyetfq0aKKgjzYlMbrG6HyA2DQKBGVvncSwGE/c10Lw9+cyhm1Zw kQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 34hhb1vv3r-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 02 Nov 2020 16:21:49 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A2GB0Zs057895;
+        Mon, 2 Nov 2020 16:19:48 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 34jf46r4yx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 02 Nov 2020 16:19:48 +0000
+Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0A2GJjhq009743;
+        Mon, 2 Nov 2020 16:19:45 GMT
+Received: from [10.154.171.115] (/10.154.171.115)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 02 Nov 2020 08:19:44 -0800
 Subject: Re: [PATCH 07/17] vhost scsi: support delayed IO vq creation
-From:   Jason Wang <jasowang@redhat.com>
-To:     "Michael S. Tsirkin" <mst@redhat.com>,
-        Mike Christie <michael.christie@oracle.com>
+To:     Jason Wang <jasowang@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>
 Cc:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
         virtualization@lists.linux-foundation.org,
         target-devel@vger.kernel.org, stefanha@redhat.com,
@@ -48,38 +54,64 @@ References: <1603326903-27052-1-git-send-email-michael.christie@oracle.com>
  <49c2fc29-348c-06db-4823-392f7476d318@oracle.com>
  <20201030044402-mutt-send-email-mst@kernel.org>
  <688e46b6-77f1-1629-0c93-e3a27d582da5@redhat.com>
-Message-ID: <cf74844c-bfa6-e66c-fc3a-07dfd7af3092@redhat.com>
-Date:   Mon, 2 Nov 2020 14:49:42 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <cf74844c-bfa6-e66c-fc3a-07dfd7af3092@redhat.com>
+From:   Mike Christie <michael.christie@oracle.com>
+Message-ID: <4add5334-e345-f7f1-4fe7-2fb66d86ae34@oracle.com>
+Date:   Mon, 2 Nov 2020 10:19:43 -0600
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.12.1
 MIME-Version: 1.0
-In-Reply-To: <688e46b6-77f1-1629-0c93-e3a27d582da5@redhat.com>
+In-Reply-To: <cf74844c-bfa6-e66c-fc3a-07dfd7af3092@redhat.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9793 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 mlxscore=0
+ bulkscore=0 malwarescore=0 mlxlogscore=999 phishscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011020125
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9793 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 suspectscore=0
+ clxscore=1015 mlxlogscore=999 impostorscore=0 malwarescore=0
+ lowpriorityscore=0 adultscore=0 spamscore=0 priorityscore=1501 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011020126
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-
-On 2020/11/2 下午2:36, Jason Wang wrote:
+On 11/2/20 12:49 AM, Jason Wang wrote:
+> 
+> On 2020/11/2 下午2:36, Jason Wang wrote:
+>>>
+>>> The need to share event/control vqs between devices is a problem though,
+>>> and sending lots of ioctls on things like reset is also not that 
+>>> elegant.
+>>> Jason, did you have a good solution in mind?
 >>
->> The need to share event/control vqs between devices is a problem though,
->> and sending lots of ioctls on things like reset is also not that 
->> elegant.
->> Jason, did you have a good solution in mind?
->
->
-> Nope, I'm not familiar with SCSI so I don't even know sharing evt/cvq 
-> is possible. Consider VHOST_SCSI_MAX_VQ is already 128 per device. 
-> Mike's proposal seems to be better.
->
-> Thanks 
+>>
+>> Nope, I'm not familiar with SCSI so I don't even know sharing evt/cvq 
+>> is possible. Consider VHOST_SCSI_MAX_VQ is already 128 per device. 
+>> Mike's proposal seems to be better.
 
+Hey, which proposal are you saying was best?
 
-Btw, it looks to me vhost_scsi_do_evt_work() has the assumption of iovec 
-layout which needs to be fixed.
+1. Add on to the current scsi mq design where we are doing a single 
+device and multiple vqs already. So basically just fix what we have and 
+add in patches 12 - 16 to do a thread per VQ?
 
-Thanks
+2. The proposal I stated to hack up over the weekend to try and support 
+the current design and then add in support for your multiple device 
+single vq design:
 
+http://archive.lwn.net:8080/linux-scsi/292879d9-915d-8587-0678-8677a800c613@oracle.com/
+
+>>
+>> Thanks 
+> 
+> 
+> Btw, it looks to me vhost_scsi_do_evt_work() has the assumption of iovec 
+> layout which needs to be fixed.
+
+I wanted to be clear, because I thought you meant #1, but this comment 
+seems like it would only be for #2.
