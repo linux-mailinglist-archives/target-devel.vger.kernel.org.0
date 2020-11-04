@@ -2,56 +2,104 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE3242A50CC
-	for <lists+target-devel@lfdr.de>; Tue,  3 Nov 2020 21:19:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93D5F2A6EB7
+	for <lists+target-devel@lfdr.de>; Wed,  4 Nov 2020 21:30:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729002AbgKCUTH (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 3 Nov 2020 15:19:07 -0500
-Received: from mail-wr1-f49.google.com ([209.85.221.49]:40026 "EHLO
-        mail-wr1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727688AbgKCUTH (ORCPT
+        id S1731720AbgKDUaE (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 4 Nov 2020 15:30:04 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:36844 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728305AbgKDUaE (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 3 Nov 2020 15:19:07 -0500
-Received: by mail-wr1-f49.google.com with SMTP id 33so9019038wrl.7;
-        Tue, 03 Nov 2020 12:19:06 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=nWpDQmZNg8zKVk12QskQ7NNS05C4fI/JmZBKLdKyu8Q=;
-        b=ilV3HNTdX+GLDstbn1VwLquy0/jbMbZvmjeVTmb6ha/WqYd8lVMA3KFXBPjgOyp4Bo
-         +mkQWzYSXLNElGn5n8NV+a+GiGPZptv5UeWyenyRgBgSXIfUqD5ePebXQv1WI7gyONFe
-         4P7y7cL189uI7k+90THtHBpMbl6VOwpQQN3jxLZJWbP0yaMI+kmGGkFsP/Lz5qBnCvdH
-         sZ8VBK1EoyDtDKVlY66e5Y1zzWylb18Tx1etpJ48TpY9eHCzTRgcKK9rnJWaGxyBBf3j
-         nNZQFLOIfgAZ8iFNh+tv5AWSDHuvPRHWNpvlJ1OyvleOwhDmrWG6iOOW0OEA/aYqUy9p
-         zaNw==
-X-Gm-Message-State: AOAM532DmqwDPXTnem3sbeFFgqU/+Mg/9WBNoKtxzDI+4u+Purr2QNi/
-        BObir5IHVcNCtFRx6/Ho5yR1kfB+4/c=
-X-Google-Smtp-Source: ABdhPJxXbSaOju7of9eJvVACmCUBk4tzsHvKH4iLsIN5EnDxZtct5Z+EjSLUYy1/VDlZgeW2fu5zxQ==
-X-Received: by 2002:a5d:4083:: with SMTP id o3mr26287094wrp.44.1604434745546;
-        Tue, 03 Nov 2020 12:19:05 -0800 (PST)
-Received: from ?IPv6:2601:647:4802:9070:a1e3:53cb:84b3:6393? ([2601:647:4802:9070:a1e3:53cb:84b3:6393])
-        by smtp.gmail.com with ESMTPSA id y200sm4538638wmc.23.2020.11.03.12.19.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Nov 2020 12:19:05 -0800 (PST)
-Subject: Re: [PATCH -next] IB/isert: Fix warning Comparison to bool
-To:     Zou Wei <zou_wei@huawei.com>, dledford@redhat.com, jgg@ziepe.ca
-Cc:     linux-rdma@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <1604404674-32998-1-git-send-email-zou_wei@huawei.com>
-From:   Sagi Grimberg <sagi@grimberg.me>
-Message-ID: <bdb9f12a-cac4-fb88-882e-7e0c16a66c75@grimberg.me>
-Date:   Tue, 3 Nov 2020 12:19:02 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <1604404674-32998-1-git-send-email-zou_wei@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        Wed, 4 Nov 2020 15:30:04 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A4KSuV1138411;
+        Wed, 4 Nov 2020 20:29:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id; s=corp-2020-01-29;
+ bh=FToGzsZPwqjkfY/+asvzjJUVdhP15ggBp9VvJTBHik4=;
+ b=W2vCjdCMdU+/CI4KVIzJOopMI0VPxIxKP3vohkHjeSKoX9fLF8TOCSv1CYnZZvDtmjHA
+ qE1xguDCJI69pQGpTaTe4JeyMOHrF00AoItHnoqoOPvF5fQ9FSXKfFFduZvBJpVzKuRC
+ JDd4oTAeoyYEtR+xTotsA+oCQStHYs02lFIg6EdFCelt0ckjrPWsqaOxMSvYmHmEMt4q
+ IhX8SR0dBjAyYGSZDMR1KqSCU4CmM1/zaTrd815wlIFzdXBRxDfx1xZIPf2f4n/IeArh
+ db+ptbYnGPMSBU+LszXWVquM14ZT7oqZds3WBfoRYW8Rm7a7AlbvJg8FuLyp1q9VBYnP tw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 34hhw2rr8h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 04 Nov 2020 20:29:57 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A4KOjNN039852;
+        Wed, 4 Nov 2020 20:27:57 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 34hw0g37pu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 04 Nov 2020 20:27:57 +0000
+Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0A4KRsV3024907;
+        Wed, 4 Nov 2020 20:27:56 GMT
+Received: from ol2.localdomain (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 04 Nov 2020 12:27:53 -0800
+From:   Mike Christie <michael.christie@oracle.com>
+To:     martin.petersen@oracle.com, james.bottomley@hansenpartnership.com,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+Cc:     Bodo Stroesser <bostroesser@gmail.com>
+Subject: [PATCH 1/1] target_core_user: make Bodo maintainer
+Date:   Wed,  4 Nov 2020 14:27:46 -0600
+Message-Id: <1604521666-16573-1-git-send-email-michael.christie@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9795 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=999
+ phishscore=0 bulkscore=0 spamscore=0 malwarescore=0 mlxscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011040148
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9795 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0 mlxscore=0
+ suspectscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
+ spamscore=0 lowpriorityscore=0 mlxlogscore=999 phishscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011040148
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Bodo knows the code better than me now, has time to review
+patches and is excellent at it, and has lots of ideas for how to
+make the driver better, so this patch adds him as the maintainer.
+
+There was no entry in there already. Andy had posted on the
+list here:
+https://www.spinics.net/lists/target-devel/msg14690.html
+when it got transitioned to me. I added an entry because
+several companies used it and I thought it would be easy for
+them to find Bodo.
+
+Cc: Bodo Stroesser <bostroesser@gmail.com>
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+---
+ MAINTAINERS | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b43b595..65e7814 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -15585,6 +15585,15 @@ F:	Documentation/scsi/st.rst
+ F:	drivers/scsi/st.*
+ F:	drivers/scsi/st_*.h
+ 
++SCSI TARGET CORE USER DRIVER
++M:	Bodo Stroesser <bostroesser@gmail.com>
++L:	linux-scsi@vger.kernel.org
++L:	target-devel@vger.kernel.org
++S:	Supported
++F:	Documentation/target/tcmu-design.rst
++F:	drivers/target/target_core_user.c
++F:	include/uapi/linux/target_core_user.h
++
+ SCSI TARGET SUBSYSTEM
+ M:	"Martin K. Petersen" <martin.petersen@oracle.com>
+ L:	linux-scsi@vger.kernel.org
+-- 
+1.8.3.1
+
