@@ -2,104 +2,98 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93D5F2A6EB7
-	for <lists+target-devel@lfdr.de>; Wed,  4 Nov 2020 21:30:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B78EC2A705E
+	for <lists+target-devel@lfdr.de>; Wed,  4 Nov 2020 23:26:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731720AbgKDUaE (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 4 Nov 2020 15:30:04 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:36844 "EHLO
+        id S1730051AbgKDW05 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 4 Nov 2020 17:26:57 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:48466 "EHLO
         userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728305AbgKDUaE (ORCPT
+        with ESMTP id S1726777AbgKDW04 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 4 Nov 2020 15:30:04 -0500
+        Wed, 4 Nov 2020 17:26:56 -0500
 Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A4KSuV1138411;
-        Wed, 4 Nov 2020 20:29:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id; s=corp-2020-01-29;
- bh=FToGzsZPwqjkfY/+asvzjJUVdhP15ggBp9VvJTBHik4=;
- b=W2vCjdCMdU+/CI4KVIzJOopMI0VPxIxKP3vohkHjeSKoX9fLF8TOCSv1CYnZZvDtmjHA
- qE1xguDCJI69pQGpTaTe4JeyMOHrF00AoItHnoqoOPvF5fQ9FSXKfFFduZvBJpVzKuRC
- JDd4oTAeoyYEtR+xTotsA+oCQStHYs02lFIg6EdFCelt0ckjrPWsqaOxMSvYmHmEMt4q
- IhX8SR0dBjAyYGSZDMR1KqSCU4CmM1/zaTrd815wlIFzdXBRxDfx1xZIPf2f4n/IeArh
- db+ptbYnGPMSBU+LszXWVquM14ZT7oqZds3WBfoRYW8Rm7a7AlbvJg8FuLyp1q9VBYnP tw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 34hhw2rr8h-1
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A4MPWVT178794;
+        Wed, 4 Nov 2020 22:26:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : subject :
+ date : message-id; s=corp-2020-01-29;
+ bh=tTNnVnp+XdTImqrLS0WLlmWMJi1Zi9uv4dziywxFHZw=;
+ b=0D6DpQJ3llVTc4DLbAkuTbzJLWEjSntmxNC42ZjQQHuv1lLAH7RvfG79RaDU0waE5/uB
+ pTlVtWZ7VqffWbTX4gqMNT2JPK/sok0kDCak/Qa5WvJnp32bphz06hHU96hYJKDvNs1c
+ DtO4xW0Rh9N17nAzLQYDflRbFjKfi8eam+MKPY8e+AH6Mea+GUGWNeTGtx689puOexQ7
+ w2Xx8Xe7ZT1wCFCRvjzw9PS8QgFSsLmFqrZsQO8AVn1nk3QmlO/lQoA4Gr/jo3nqQjUu
+ T+nVRzrtm05pltyLimtQsRuZSSfFTi5ZfhFJmII6a0XxYWlV2rmWktSMUgtLNTD4UkAG yA== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 34hhw2s6p6-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 04 Nov 2020 20:29:57 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A4KOjNN039852;
-        Wed, 4 Nov 2020 20:27:57 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 34hw0g37pu-1
+        Wed, 04 Nov 2020 22:26:52 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A4MJnVC082840;
+        Wed, 4 Nov 2020 22:26:51 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 34hvryj70u-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 04 Nov 2020 20:27:57 +0000
-Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0A4KRsV3024907;
-        Wed, 4 Nov 2020 20:27:56 GMT
+        Wed, 04 Nov 2020 22:26:51 +0000
+Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0A4MQohg027558;
+        Wed, 4 Nov 2020 22:26:50 GMT
 Received: from ol2.localdomain (/73.88.28.6)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 04 Nov 2020 12:27:53 -0800
+        with ESMTP ; Wed, 04 Nov 2020 14:26:50 -0800
 From:   Mike Christie <michael.christie@oracle.com>
-To:     martin.petersen@oracle.com, james.bottomley@hansenpartnership.com,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Cc:     Bodo Stroesser <bostroesser@gmail.com>
-Subject: [PATCH 1/1] target_core_user: make Bodo maintainer
-Date:   Wed,  4 Nov 2020 14:27:46 -0600
-Message-Id: <1604521666-16573-1-git-send-email-michael.christie@oracle.com>
+To:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, mst@redhat.com, jasowang@redhat.com,
+        pbonzini@redhat.com, stefanha@redhat.com,
+        virtualization@lists.linux-foundation.org
+Subject: [PATCH 00/11 V4] vhost: vhost-scsi bug fixes
+Date:   Wed,  4 Nov 2020 16:26:33 -0600
+Message-Id: <1604528804-2878-1-git-send-email-michael.christie@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9795 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=999
- phishscore=0 bulkscore=0 spamscore=0 malwarescore=0 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011040148
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0 mlxscore=0
+ malwarescore=0 mlxlogscore=999 suspectscore=0 spamscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011040159
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9795 signatures=668682
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0 mlxscore=0
  suspectscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
  spamscore=0 lowpriorityscore=0 mlxlogscore=999 phishscore=0 bulkscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011040148
+ definitions=main-2011040159
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Bodo knows the code better than me now, has time to review
-patches and is excellent at it, and has lots of ideas for how to
-make the driver better, so this patch adds him as the maintainer.
+The following patches made over Michael's vhost branch
+https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git/log/?h=vhost
 
-There was no entry in there already. Andy had posted on the
-list here:
-https://www.spinics.net/lists/target-devel/msg14690.html
-when it got transitioned to me. I added an entry because
-several companies used it and I thought it would be easy for
-them to find Bodo.
+The patches fix issues with vhost-scsi's 256 cmd limit
+where if the guest sends more than 256 cmds it will get IO
+errors, or even if exactly 256 are being sent then we can race and
+get IO errors. The patches also add LUN RESET support so guests
+that do not support resetting command timers will not get IO
+errors and offlined devices when the physical device hits temp
+issues.
 
-Cc: Bodo Stroesser <bostroesser@gmail.com>
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
----
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Jason, you reviewed ever non scsi patch but 2 of them. I was not
+sure if that was an oversight or you were ok with them. I'm sending
+this out hoping you were ok with them and forgot to reply (or I guess
+will be ok with them if you just missed them last time).
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b43b595..65e7814 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15585,6 +15585,15 @@ F:	Documentation/scsi/st.rst
- F:	drivers/scsi/st.*
- F:	drivers/scsi/st_*.h
- 
-+SCSI TARGET CORE USER DRIVER
-+M:	Bodo Stroesser <bostroesser@gmail.com>
-+L:	linux-scsi@vger.kernel.org
-+L:	target-devel@vger.kernel.org
-+S:	Supported
-+F:	Documentation/target/tcmu-design.rst
-+F:	drivers/target/target_core_user.c
-+F:	include/uapi/linux/target_core_user.h
-+
- SCSI TARGET SUBSYSTEM
- M:	"Martin K. Petersen" <martin.petersen@oracle.com>
- L:	linux-scsi@vger.kernel.org
--- 
-1.8.3.1
+V4:
+- really really fix compile errors
+- dropped threading patches so we can figure that out separately.
+
+V3:
+- fix compile errors
+- fix possible crash where cmd could be freed while adding it to
+completion list
+- fix issue where we added the worker thread to the blk cgroup but
+the blk IO was submitted by a driver workqueue.
+
+V2:
+- fix use before set cpu var errors
+- drop vhost_vq_is_setup
+- include patches to do a worker thread per scsi IO vq
+
 
