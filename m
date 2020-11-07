@@ -2,95 +2,71 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80EE72AD19F
-	for <lists+target-devel@lfdr.de>; Tue, 10 Nov 2020 09:48:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 412C82AD8EC
+	for <lists+target-devel@lfdr.de>; Tue, 10 Nov 2020 15:37:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728741AbgKJIsd (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 10 Nov 2020 03:48:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35680 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727001AbgKJIsd (ORCPT
+        id S1730850AbgKJOhf (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 10 Nov 2020 09:37:35 -0500
+Received: from server.hostvarna.com ([185.219.69.50]:55179 "EHLO
+        mail.hostvarna.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730958AbgKJOhd (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 10 Nov 2020 03:48:33 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71028C0613CF;
-        Tue, 10 Nov 2020 00:48:33 -0800 (PST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1604998111;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=+lFM+Dy1hrzRRrrrA3qnbGkxEtyVqIh0g4peYrriLeU=;
-        b=iuo8f+7vFglLggVRQElkiZ2WEkqCMbTG8xoMGtVyBk3DBfZOlzK9bn4iYE9n5TJlXEeyiw
-        mK2AsUoeE727uJ+eyVgbEeyt2qz1CsngbkfMTC30zg6BSGbxrFxVJV/nTlcmtj9NHSMsJn
-        sU38ljGJ30NJ8ooIZ53QTax6dO6NfnLLpRxklxBphTMVejdacYZZqkmCK8e4gkxhfN2Hq9
-        zuGNw+h8VUH3NFZO14JlYgbkNPH833xVYFQ2lmqEAC35a4/baTqfi6uG7ey36+HQyygrEi
-        Jy4I41umlX4stejJrRBLu7awPrfWhbLcelHNMzqQQSqRZrKTpO34TDntXU+02A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1604998111;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=+lFM+Dy1hrzRRrrrA3qnbGkxEtyVqIh0g4peYrriLeU=;
-        b=y7osrUd/437dzM5/Hc5G9cQ/HuZ2jh7vgX8EDHSswmJuPLkHyLG6iEX8rrCl2sg3XohELe
-        1aQhUu8PTNjq+DAw==
-To:     Ira Weiny <ira.weiny@intel.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Randy Dunlap <rdunlap@infradead.org>, x86@kernel.org,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
-        kexec@lists.infradead.org, linux-bcache@vger.kernel.org,
-        linux-mtd@lists.infradead.org, devel@driverdev.osuosl.org,
-        linux-efi@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-aio@kvack.org,
-        io-uring@vger.kernel.org, linux-erofs@lists.ozlabs.org,
-        linux-um@lists.infradead.org, linux-ntfs-dev@lists.sourceforge.net,
-        reiserfs-devel@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net,
-        linux-nilfs@vger.kernel.org, cluster-devel@redhat.com,
-        ecryptfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-        linux-btrfs@vger.kernel.org, linux-afs@lists.infradead.org,
-        linux-rdma@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-cachefs@redhat.com,
-        samba-technical@lists.samba.org, intel-wired-lan@lists.osuosl.org
-Subject: Re: [PATCH RFC PKS/PMEM 05/58] kmap: Introduce k[un]map_thread
-In-Reply-To: <20201110045954.GL3976735@iweiny-DESK2.sc.intel.com>
-References: <20201009195033.3208459-1-ira.weiny@intel.com> <20201009195033.3208459-6-ira.weiny@intel.com> <87h7pyhv3f.fsf@nanos.tec.linutronix.de> <20201110045954.GL3976735@iweiny-DESK2.sc.intel.com>
-Date:   Tue, 10 Nov 2020 09:48:31 +0100
-Message-ID: <87eel1iom8.fsf@nanos.tec.linutronix.de>
+        Tue, 10 Nov 2020 09:37:33 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by mail.hostvarna.com (Postfix) with ESMTP id 971D4D68541;
+        Sat,  7 Nov 2020 18:29:06 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=hostvarna.com; h=
+        x-mailer:content-transfer-encoding:content-type:content-type
+        :mime-version:date:date:subject:subject:from:from:reply-to; s=
+        dkim; t=1604766543; x=1606580944; bh=m3pASy53GgfFwHppvIPHJghbzAH
+        QviKN6bgk+M/PrtE=; b=AfHlt/Oz/P6BiXL65xdbJOnDq/gNN2O28r0Ka87Ezeb
+        N5/NBiTn4mbx6cqABZ3ksrIyYnq5iBMXbh7pYyzrwgryeunKr11U0KmV9Xa8JSma
+        r62ZFXY/9VXG3Szd48SGljcKi7t7WRcK3cibjo4X8Ru8vV26FtGMA65YipfpOpeA
+        =
+X-Virus-Scanned: Debian amavisd-new at server.hostvarna.com
+Received: from mail.hostvarna.com ([127.0.0.1])
+        by localhost (mail.hostvarna.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id JJRVuAKxnr-H; Sat,  7 Nov 2020 18:29:03 +0200 (EET)
+Received: from User (unknown [176.32.23.85])
+        (Authenticated sender: simona@hostvarna.com)
+        by mail.hostvarna.com (Postfix) with ESMTPA id 7432CD6C326;
+        Sat,  7 Nov 2020 11:25:07 +0200 (EET)
+Reply-To: <maviswanczyko@aol.com>
+From:   "L.  Wanczyk." <simona@hostvarna.com>
+Subject:  DONATION                                                                 .50
+Date:   Sat, 7 Nov 2020 10:24:01 -0800
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1081
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1081
+Message-Id: <20201107162906.971D4D68541@mail.hostvarna.com>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Mon, Nov 09 2020 at 20:59, Ira Weiny wrote:
-> On Tue, Nov 10, 2020 at 02:13:56AM +0100, Thomas Gleixner wrote:
-> Also, we can convert the new memcpy_*_page() calls to kmap_local() as well.
-> [For now my patch just uses kmap_atomic().]
->
-> I've not looked at all of the patches in your latest version.  Have you
-> included converting any of the kmap() call sites?  I thought you were more
-> focused on converting the kmap_atomic() to kmap_local()?
+Hello,
 
-I did not touch any of those yet, but it's a logical consequence to
-convert all kmap() instances which are _not_ creating a global mapping
-over to it.
+I'm Mrs. Mavis Wanczyk, the mega winner of $758 Million in Mega Millions
+Jackpot, I am donating to 5 random individuals if you get this email then
+your email was selected after a spin ball. I have spread most of my wealth
+over a number of charities and organizations. I have voluntarily decided to
+donate the sum of $ 10 Million USD to you as one of the selected , to verify
+my
+winnings via YouTube page below.
 
-Thanks,
+WATCH ME HERE: https://www.youtube.com/watch?v=7kWnqvJM1mM
 
-        tglx
+THIS IS YOUR DONATION CODE: F207162
+Kindly send your direct telephone and fax number to enable me to reach you
 
+Reply with the DONATION CODE to this email: maviswanczykoo@aol.com
+
+Hope to make you and your family happy.
+
+Regards,
+Mrs. Mavis L. Wanczyk.
