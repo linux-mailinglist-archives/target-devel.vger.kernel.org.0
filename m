@@ -2,93 +2,204 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29EF12A7656
-	for <lists+target-devel@lfdr.de>; Thu,  5 Nov 2020 05:24:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 161CF2AB005
+	for <lists+target-devel@lfdr.de>; Mon,  9 Nov 2020 04:41:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730630AbgKEEYE (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 4 Nov 2020 23:24:04 -0500
-Received: from aserp2130.oracle.com ([141.146.126.79]:48470 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726225AbgKEEYE (ORCPT
+        id S1729293AbgKIDle (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 8 Nov 2020 22:41:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:24868 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728038AbgKIDld (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 4 Nov 2020 23:24:04 -0500
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A54NsDq137512;
-        Thu, 5 Nov 2020 04:23:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=cLU+aPQrXxMBN/Q0Z/TiVWZEFD/5yd4UUpsD/rKMLGc=;
- b=uNhv1C+a57AlUoSfv9FcyS76/YEqaXDFSCWN6KY1OAC9HgcJxEcBTIREB4DUaGaT1d2m
- iKG9MMpBnyHPJL8VLWq3mcQoghICIs6Vroh3xkgTRSTnQIWlsWzHMHDp+IrVLAtA6tYd
- 3oF89QUUm9UqAuevtFRvEChkYnDwVBRlwKyEsu264PiNiniEraqccLr6yAtg5DeGCER1
- Cy2kP/LFr4VlA+kp64BHrMK1/DH+bt4nzoGGBUpFwrinJLYvCS23CSkyJdVkHLyaUkBz
- aRqG1OS5yNni8oFJWC3ViX32059LY0WUd9skCsPhgiYX2X2R/+Fab7Ozo4AcpXW36Y/S Bg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2130.oracle.com with ESMTP id 34hhb29xxa-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 05 Nov 2020 04:23:54 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0A54L8c3141005;
-        Thu, 5 Nov 2020 04:21:54 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 34jf4bfh8e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 05 Nov 2020 04:21:54 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0A54Lm3t005041;
-        Thu, 5 Nov 2020 04:21:48 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 04 Nov 2020 20:21:47 -0800
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     Hannes Reinecke <hare@suse.de>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Arnd Bergmann <arnd@kernel.org>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        GR-QLogic-Storage-Upstream@marvell.com,
-        target-devel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Lee Jones <lee.jones@linaro.org>, linux-scsi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Javed Hasan <jhasan@marvell.com>,
-        Saurav Kashyap <skashyap@marvell.com>
-Subject: Re: [PATCH 1/2] libfc: move scsi/fc_encode.h to libfc
-Date:   Wed,  4 Nov 2020 23:21:43 -0500
-Message-Id: <160455005255.26277.5936613179662668851.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201026160705.3706396-1-arnd@kernel.org>
-References: <20201026160705.3706396-1-arnd@kernel.org>
+        Sun, 8 Nov 2020 22:41:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1604893291;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=HRUOskoa94Uh3kioUg71hmE2ZG0LYjxl0LleZC6OzXQ=;
+        b=XtjJHmqa2zJgeN7W5hwje1Sdhl3UB4itNVAialNVGM1ZgOgzyTMxHLmOZ/Mw+kDrhGcbWB
+        0zrVxo5Q44oBBWC9/wtxdJ7bVMHvp60zxHq9orQkIeaW9yiI9pZ1ZCwdFkNWNO2U2RxFiX
+        Iy5FWTDZvy+TPHqjL/3XEONTpjDBZ7A=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-44-s1z3KCySM8eFabxhqcUzmA-1; Sun, 08 Nov 2020 22:41:30 -0500
+X-MC-Unique: s1z3KCySM8eFabxhqcUzmA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 298D81009455;
+        Mon,  9 Nov 2020 03:41:29 +0000 (UTC)
+Received: from [10.72.12.244] (ovpn-12-244.pek2.redhat.com [10.72.12.244])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 4B7405B4CD;
+        Mon,  9 Nov 2020 03:41:20 +0000 (UTC)
+Subject: Re: [PATCH 05/11] vhost: move vq iovec allocation to dev init time
+To:     Mike Christie <michael.christie@oracle.com>,
+        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, mst@redhat.com, pbonzini@redhat.com,
+        stefanha@redhat.com, virtualization@lists.linux-foundation.org
+References: <1604528804-2878-1-git-send-email-michael.christie@oracle.com>
+ <1604528804-2878-6-git-send-email-michael.christie@oracle.com>
+From:   Jason Wang <jasowang@redhat.com>
+Message-ID: <347657f8-7f2a-0e47-bab7-015ad4290684@redhat.com>
+Date:   Mon, 9 Nov 2020 11:41:18 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <1604528804-2878-6-git-send-email-michael.christie@oracle.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9795 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 mlxscore=0
- bulkscore=0 malwarescore=0 mlxlogscore=999 phishscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011050030
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9795 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 suspectscore=0
- clxscore=1015 mlxlogscore=999 impostorscore=0 malwarescore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 priorityscore=1501 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011050031
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Mon, 26 Oct 2020 17:06:12 +0100, Arnd Bergmann wrote:
 
-> Most of this file is only used inside of libfc, so move
-> it to where it is actually used, with only fc_fill_fc_hdr()
-> left inside of the header.
+On 2020/11/5 上午6:26, Mike Christie wrote:
+> The next patches allow us to create vqs on demand after vhost_dev_init
+> and vhost_dev_set_owner have been called. For vhost-scsi we don't
+> know the number of vqs we really want until the vring/vq setup
+> operations have started up. For other devices we know the number of vqs
+> at vhost_dev_init time, so for those devs we init the vq and allocate
+> the needed iovecs. For vhost-scsi we will do it later when userspace has
+> indicated to us that it's going to use a vq.
+>
+> Signed-off-by: Mike Christie <michael.christie@oracle.com>
+> ---
+>   drivers/vhost/vhost.c | 71 +++++++++++++++++++++++++++------------------------
+>   1 file changed, 38 insertions(+), 33 deletions(-)
+>
+> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+> index b35229e..a4a4450 100644
+> --- a/drivers/vhost/vhost.c
+> +++ b/drivers/vhost/vhost.c
+> @@ -383,29 +383,27 @@ static void vhost_vq_free_iovecs(struct vhost_virtqueue *vq)
+>   	vq->heads = NULL;
+>   }
+>   
+> -/* Helper to allocate iovec buffers for all vqs. */
+> -static long vhost_dev_alloc_iovecs(struct vhost_dev *dev)
+> +static int vhost_vq_alloc_iovecs(struct vhost_dev *dev,
+> +				 struct vhost_virtqueue *vq)
+>   {
+> -	struct vhost_virtqueue *vq;
+> -	int i;
+> +	vq->indirect = kmalloc_array(UIO_MAXIOV, sizeof(*vq->indirect),
+> +				     GFP_KERNEL);
+> +	if (!vq->indirect)
+> +		return -ENOMEM;
+> +
+> +	if (!dev->iov_limit)
+> +		return 0;
 
-Applied to 5.11/scsi-queue, thanks!
 
-[1/2] scsi: libfc: Move scsi/fc_encode.h to libfc
-      https://git.kernel.org/mkp/scsi/c/e31ac898ac29
-[2/2] scsi: libfc: Work around -Warray-bounds warning
-      https://git.kernel.org/mkp/scsi/c/8fd9efca86d0
+This looks like an optimization. Let's try to defer this into another patch.
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+
+> +
+> +	vq->log = kmalloc_array(dev->iov_limit, sizeof(*vq->log), GFP_KERNEL);
+> +	vq->heads = kmalloc_array(dev->iov_limit, sizeof(*vq->heads),
+> +				  GFP_KERNEL);
+> +	if (!vq->log || !vq->heads)
+> +		goto err_nomem;
+>   
+> -	for (i = 0; i < dev->nvqs; ++i) {
+> -		vq = dev->vqs[i];
+> -		vq->indirect = kmalloc_array(UIO_MAXIOV,
+> -					     sizeof(*vq->indirect),
+> -					     GFP_KERNEL);
+> -		vq->log = kmalloc_array(dev->iov_limit, sizeof(*vq->log),
+> -					GFP_KERNEL);
+> -		vq->heads = kmalloc_array(dev->iov_limit, sizeof(*vq->heads),
+> -					  GFP_KERNEL);
+> -		if (!vq->indirect || !vq->log || !vq->heads)
+> -			goto err_nomem;
+> -	}
+>   	return 0;
+>   
+>   err_nomem:
+> -	for (; i >= 0; --i)
+> -		vhost_vq_free_iovecs(dev->vqs[i]);
+> +	vhost_vq_free_iovecs(vq);
+>   	return -ENOMEM;
+>   }
+>   
+> @@ -458,6 +456,21 @@ static size_t vhost_get_desc_size(struct vhost_virtqueue *vq,
+>   	return sizeof(*vq->desc) * num;
+>   }
+>   
+> +static int vhost_vq_init(struct vhost_dev *dev, struct vhost_virtqueue *vq)
+> +{
+> +	vq->log = NULL;
+> +	vq->indirect = NULL;
+> +	vq->heads = NULL;
+> +	vq->dev = dev;
+> +	mutex_init(&vq->mutex);
+> +	vhost_vq_reset(dev, vq);
+> +
+> +	if (vq->handle_kick)
+> +		vhost_poll_init(&vq->poll, vq->handle_kick, EPOLLIN, dev);
+> +
+> +	return vhost_vq_alloc_iovecs(dev, vq);
+> +}
+
+
+If it's possible, I would do a patch to introduce vhost_vq_init() and 
+then add vhost_vq_alloc_iovecs() on top.
+
+Thanks
+
+
+> +
+>   int vhost_dev_init(struct vhost_dev *dev,
+>   		   struct vhost_virtqueue **vqs, int nvqs,
+>   		   int iov_limit, int weight, int byte_weight,
+> @@ -465,7 +478,6 @@ int vhost_dev_init(struct vhost_dev *dev,
+>   		   int (*msg_handler)(struct vhost_dev *dev,
+>   				      struct vhost_iotlb_msg *msg))
+>   {
+> -	struct vhost_virtqueue *vq;
+>   	int i;
+>   
+>   	dev->vqs = vqs;
+> @@ -489,19 +501,16 @@ int vhost_dev_init(struct vhost_dev *dev,
+>   
+>   
+>   	for (i = 0; i < dev->nvqs; ++i) {
+> -		vq = dev->vqs[i];
+> -		vq->log = NULL;
+> -		vq->indirect = NULL;
+> -		vq->heads = NULL;
+> -		vq->dev = dev;
+> -		mutex_init(&vq->mutex);
+> -		vhost_vq_reset(dev, vq);
+> -		if (vq->handle_kick)
+> -			vhost_poll_init(&vq->poll, vq->handle_kick,
+> -					EPOLLIN, dev);
+> +		if (vhost_vq_init(dev, dev->vqs[i]))
+> +			goto err_vq_init;
+>   	}
+>   
+>   	return 0;
+> +
+> +err_vq_init:
+> +	for (--i; i >= 0; --i)
+> +		vhost_vq_free_iovecs(dev->vqs[i]);
+> +	return -ENOMEM;
+>   }
+>   EXPORT_SYMBOL_GPL(vhost_dev_init);
+>   
+> @@ -606,10 +615,6 @@ long vhost_dev_set_owner(struct vhost_dev *dev)
+>   			goto err_cgroup;
+>   	}
+>   
+> -	err = vhost_dev_alloc_iovecs(dev);
+> -	if (err)
+> -		goto err_cgroup;
+> -
+>   	return 0;
+>   err_cgroup:
+>   	if (dev->worker) {
+
