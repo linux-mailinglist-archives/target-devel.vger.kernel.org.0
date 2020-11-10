@@ -2,117 +2,160 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCA5F2ADC83
-	for <lists+target-devel@lfdr.de>; Tue, 10 Nov 2020 17:57:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15DA82AE1C0
+	for <lists+target-devel@lfdr.de>; Tue, 10 Nov 2020 22:29:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726307AbgKJQ5W (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 10 Nov 2020 11:57:22 -0500
-Received: from mta-02.yadro.com ([89.207.88.252]:41440 "EHLO mta-01.yadro.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726152AbgKJQ5W (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Tue, 10 Nov 2020 11:57:22 -0500
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id E29F741276;
-        Tue, 10 Nov 2020 16:57:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        mime-version:content-transfer-encoding:content-id:content-type
-        :content-type:content-language:accept-language:in-reply-to
-        :references:message-id:date:date:subject:subject:from:from
-        :received:received:received:received; s=mta-01; t=1605027436; x=
-        1606841837; bh=lyyCQd61cTHyfkB6+pOWirRKcJczrnPDZV7NOfvCBZw=; b=W
-        2qHrwbou8w/VqwuaTCJNgq3Oe4fNliW7q9x9CeSmPdHQLMzUshjGLzprAAJMs4L7
-        lYhhG3FJhZMaWtEP5o053QNylOPcCAdEBWBn2lKKssHbJOeaVGjh0rUXkM6HptzE
-        ASs3RLJCEK9VBy+3pzNK9XVLQ0LmM8HZ9JAregEWnI=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Jvnyh2Avl7Sh; Tue, 10 Nov 2020 19:57:16 +0300 (MSK)
-Received: from T-EXCH-03.corp.yadro.com (t-exch-03.corp.yadro.com [172.17.100.103])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        id S1731772AbgKJV3p (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 10 Nov 2020 16:29:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:45979 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726462AbgKJV3p (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Tue, 10 Nov 2020 16:29:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1605043783;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=1kc+ZhU9ws//7PzGXJeqUYAOEvQWX0tFw9KDWrcTSRo=;
+        b=eXAj6VsBGESFPYItDxVsa65D3VMOA9wtljnaZR/4Z/bVX3DY/1mjbRe3BLI1htnUzgWcpG
+        E+7UgngdLaPwOM6N3EOyVzk6J/o4NeDzziaJOOXL/QRDTvh9ch8yixBS0gEyp9+j9maYXM
+        jXSMHq+JbqGPU0GDeLd4WtcXuEY7ROo=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-132-UXVzcuCMMjG4dwGD7vqdmg-1; Tue, 10 Nov 2020 16:29:39 -0500
+X-MC-Unique: UXVzcuCMMjG4dwGD7vqdmg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id E232641206;
-        Tue, 10 Nov 2020 19:57:16 +0300 (MSK)
-Received: from T-EXCH-04.corp.yadro.com (172.17.100.104) by
- T-EXCH-03.corp.yadro.com (172.17.100.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.669.32; Tue, 10 Nov 2020 19:57:16 +0300
-Received: from T-EXCH-04.corp.yadro.com ([fe80::d8c5:6f0a:3d48:18df]) by
- T-EXCH-04.corp.yadro.com ([fe80::d8c5:6f0a:3d48:18df%15]) with mapi id
- 15.01.0669.032; Tue, 10 Nov 2020 19:57:15 +0300
-From:   Anastasia Kovaleva <a.kovaleva@yadro.com>
-To:     Bart Van Assche <bvanassche@acm.org>
-CC:     Roman Bolshakov <r.bolshakov@yadro.com>,
-        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux@yadro.com" <linux@yadro.com>,
-        "Bodo Stroesser" <bostroesser@gmail.com>
-Subject: Re: [PATCH 3/3] scsi: target: core: Change ASCQ for residual write
-Thread-Topic: [PATCH 3/3] scsi: target: core: Change ASCQ for residual write
-Thread-Index: AQHWqJer8uRmzb6rtkKkiM47xnEK3Kml8vEAgACHroCAAMyHgIACaKwAgADicoCAAWEVgIAAQZuAgBVMpoA=
-Date:   Tue, 10 Nov 2020 16:57:15 +0000
-Message-ID: <45E2175E-EE3A-473C-93DD-8ED3168198CA@yadro.com>
-References: <20201022172011.42367-1-a.kovaleva@yadro.com>
- <20201022172011.42367-4-a.kovaleva@yadro.com>
- <e2b215ca-0aa8-bdae-e5bd-292a09d8282e@acm.org>
- <20201024121315.GA35317@SPB-NB-133.local>
- <b831a7db-1da2-c293-a8f6-d9c62f68c224@acm.org>
- <20201026131226.GA88490@SPB-NB-133.local>
- <270e2edf-49c9-942f-ac3d-b6dfa0aca8f7@acm.org>
- <20201027234639.GB88490@SPB-NB-133.local>
- <c3dac124-301e-df94-9d64-b3c46d4eafb9@acm.org>
-In-Reply-To: <c3dac124-301e-df94-9d64-b3c46d4eafb9@acm.org>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [172.17.204.63]
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1FD59EA1F212CD4B82679523F5CDC097@yadro.com>
-Content-Transfer-Encoding: quoted-printable
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C2D3359;
+        Tue, 10 Nov 2020 21:29:37 +0000 (UTC)
+Received: from [10.35.206.163] (unknown [10.35.206.163])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 736285B4A0;
+        Tue, 10 Nov 2020 21:29:35 +0000 (UTC)
+Subject: Re: [PATCH 2/2] target: iscsi: fix a race condition when aborting a
+ task
+To:     Mike Christie <michael.christie@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        bvanassche@acm.org, m.lombardi85@gmail.com
+References: <20201007145326.56850-1-mlombard@redhat.com>
+ <20201007145326.56850-3-mlombard@redhat.com>
+ <20daa17d-08e7-a412-4d33-bcf75587eca6@oracle.com>
+ <1852a8bd-3edc-5c49-fa51-9afe52f125a8@redhat.com>
+ <184667b1-032b-c36f-d1e7-5cfef961c763@oracle.com>
+ <71691FED-C164-482C-B629-A8B89B81E566@oracle.com>
+ <a936cc4e-1610-5201-5960-107689b81820@redhat.com>
+ <d7107857-ef7a-3c88-8146-a5e7abce5ce6@oracle.com>
+From:   Maurizio Lombardi <mlombard@redhat.com>
+Message-ID: <840cb2fe-5642-78d0-e700-d3652021cb5d@redhat.com>
+Date:   Tue, 10 Nov 2020 22:29:33 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.1
 MIME-Version: 1.0
+In-Reply-To: <d7107857-ef7a-3c88-8146-a5e7abce5ce6@oracle.com>
+Content-Type: text/plain; charset=iso-8859-2
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 28 Oct 2020, at 06:41, Bart Van Assche <bvanassche@acm.org> wrote:
-> On 10/27/20 4:46 PM, Roman Bolshakov wrote:
->> Thanks for raising the point about overlength/underlength. If you wish
->> we can add an extra check that fails DMA_TO_DEVICE && DATA with
->> residuals only for SBC devices but note that before the series,
->> underflow/overflow for WRITE didn't return GOOD status. The particular
->> patch only changes sense code to more meaningful from the former INVALID
->> FIELD IN CDB.
->>=20
->> Theoretically, it could be good to have a configurable switch how LIO
->> handles overflows/underflows for a LUN. Then it'd be possible to
->> configure desired behaviour on a per-LUN basis. But there should be a
->> clear need & demand for the feature to avoid maintenance of dead code.
->>>> An additional question is what behavior other operating systems than
->>> Linux expect? There are probably setups in which another operating
->>> system than Linux communicates with a LIO SCSI target?
->>=20
->> TBH I don't know any hosts that do SBC WRITE with residuals as normal
->> course of operation. They wouldn't be able to work with LIO because it
->> never returns GOOD status on WRITE with residuals. I can send an update
->> later if the series works fine with modern hosts (~1 month, after a few
->> cycles of system testing).
->=20
-> Hi Roman,
->=20
-> I'm not sure adding a new kernel switch is the best choice. That would
-> be an additional parameter users have to know about and have to learn
-> how to use.
->=20
-> Bodo seems to be in favor of this patch series. Are there other people
-> who want to share their opinion about this patch series?
 
-Hi Bart,
 
-Is this patch series good enough to be accepted in this form, without
-the kernel switch? As far as i can see, no one has shared their opinion
-about this changes.=20
+Dne 28. 10. 20 v 21:37 Mike Christie napsal(a):
+>>
+>> Possible solutions that I can think of:
+>>
+>> - Make iscsit_release_commands_from_conn() wait for the abort task to finish
+> 
+> Yeah you could set a completion in there then have aborted_task do the complete() call maybe?
+> 
 
-Thanks,
+We could do something like this, what do you think?
 
-Anastasia
+diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
+index 067074ef50818..ffd3dbc53a42f 100644
+--- a/drivers/target/iscsi/iscsi_target.c
++++ b/drivers/target/iscsi/iscsi_target.c
+@@ -490,13 +490,16 @@ EXPORT_SYMBOL(iscsit_queue_rsp);
+ 
+ void iscsit_aborted_task(struct iscsi_conn *conn, struct iscsi_cmd *cmd)
+ {
++	struct se_cmd *se_cmd = cmd->se_cmd.se_tfo ? &cmd->se_cmd : NULL;
++
+ 	spin_lock_bh(&conn->cmd_lock);
+-	if (!list_empty(&cmd->i_conn_node) &&
+-	    !(cmd->se_cmd.transport_state & CMD_T_FABRIC_STOP))
++	if (!list_empty(&cmd->i_conn_node))
+ 		list_del_init(&cmd->i_conn_node);
+ 	spin_unlock_bh(&conn->cmd_lock);
+ 
+ 	__iscsit_free_cmd(cmd, true);
++	if (se_cmd && se_cmd->abrt_task_compl)
++		complete(se_cmd->abrt_task_compl);
+ }
+ EXPORT_SYMBOL(iscsit_aborted_task);
+ 
+@@ -4080,6 +4083,7 @@ int iscsi_target_rx_thread(void *arg)
+ 
+ static void iscsit_release_commands_from_conn(struct iscsi_conn *conn)
+ {
++	DECLARE_COMPLETION_ONSTACK(compl);
+ 	LIST_HEAD(tmp_list);
+ 	struct iscsi_cmd *cmd = NULL, *cmd_tmp = NULL;
+ 	struct iscsi_session *sess = conn->sess;
+@@ -4096,8 +4100,24 @@ static void iscsit_release_commands_from_conn(struct iscsi_conn *conn)
+ 
+ 		if (se_cmd->se_tfo != NULL) {
+ 			spin_lock_irq(&se_cmd->t_state_lock);
++			if (se_cmd->transport_state & CMD_T_ABORTED) {
++				/*
++				 * LIO's abort path owns the cleanup for this,
++				 * so put it back on the list and let
++				 * aborted_task handle it.
++				 */
++				list_move_tail(&cmd->i_conn_node, &conn->conn_cmd_list);
++				WARN_ON_ONCE(se_cmd->abrt_task_compl);
++				se_cmd->abrt_task_compl = &compl;
++			}
+ 			se_cmd->transport_state |= CMD_T_FABRIC_STOP;
+ 			spin_unlock_irq(&se_cmd->t_state_lock);
++
++			if (se_cmd->abrt_task_compl) {
++				spin_unlock_bh(&conn->cmd_lock);
++				wait_for_completion(&compl);
++				spin_lock_bh(&conn->cmd_lock);
++			}
+ 		}
+ 	}
+ 	spin_unlock_bh(&conn->cmd_lock);
+diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
+index db53a0d649da7..5611e6c00f18c 100644
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -1391,6 +1391,7 @@ void transport_init_se_cmd(
+ 	init_completion(&cmd->t_transport_stop_comp);
+ 	cmd->free_compl = NULL;
+ 	cmd->abrt_compl = NULL;
++	cmd->abrt_task_compl = NULL;
+ 	spin_lock_init(&cmd->t_state_lock);
+ 	INIT_WORK(&cmd->work, NULL);
+ 	kref_init(&cmd->cmd_kref);
+diff --git a/include/target/target_core_base.h b/include/target/target_core_base.h
+index 549947d407cfd..25cc451930281 100644
+--- a/include/target/target_core_base.h
++++ b/include/target/target_core_base.h
+@@ -491,6 +491,7 @@ struct se_cmd {
+ 	struct list_head	se_cmd_list;
+ 	struct completion	*free_compl;
+ 	struct completion	*abrt_compl;
++	struct completion	*abrt_task_compl;
+ 	const struct target_core_fabric_ops *se_tfo;
+ 	sense_reason_t		(*execute_cmd)(struct se_cmd *);
+ 	sense_reason_t (*transport_complete_callback)(struct se_cmd *, bool, int *);
+-- 
+2.26.2
+
