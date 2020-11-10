@@ -2,71 +2,117 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 412C82AD8EC
-	for <lists+target-devel@lfdr.de>; Tue, 10 Nov 2020 15:37:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCA5F2ADC83
+	for <lists+target-devel@lfdr.de>; Tue, 10 Nov 2020 17:57:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730850AbgKJOhf (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 10 Nov 2020 09:37:35 -0500
-Received: from server.hostvarna.com ([185.219.69.50]:55179 "EHLO
-        mail.hostvarna.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730958AbgKJOhd (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Tue, 10 Nov 2020 09:37:33 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by mail.hostvarna.com (Postfix) with ESMTP id 971D4D68541;
-        Sat,  7 Nov 2020 18:29:06 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=hostvarna.com; h=
-        x-mailer:content-transfer-encoding:content-type:content-type
-        :mime-version:date:date:subject:subject:from:from:reply-to; s=
-        dkim; t=1604766543; x=1606580944; bh=m3pASy53GgfFwHppvIPHJghbzAH
-        QviKN6bgk+M/PrtE=; b=AfHlt/Oz/P6BiXL65xdbJOnDq/gNN2O28r0Ka87Ezeb
-        N5/NBiTn4mbx6cqABZ3ksrIyYnq5iBMXbh7pYyzrwgryeunKr11U0KmV9Xa8JSma
-        r62ZFXY/9VXG3Szd48SGljcKi7t7WRcK3cibjo4X8Ru8vV26FtGMA65YipfpOpeA
-        =
-X-Virus-Scanned: Debian amavisd-new at server.hostvarna.com
-Received: from mail.hostvarna.com ([127.0.0.1])
-        by localhost (mail.hostvarna.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id JJRVuAKxnr-H; Sat,  7 Nov 2020 18:29:03 +0200 (EET)
-Received: from User (unknown [176.32.23.85])
-        (Authenticated sender: simona@hostvarna.com)
-        by mail.hostvarna.com (Postfix) with ESMTPA id 7432CD6C326;
-        Sat,  7 Nov 2020 11:25:07 +0200 (EET)
-Reply-To: <maviswanczyko@aol.com>
-From:   "L.  Wanczyk." <simona@hostvarna.com>
-Subject:  DONATION                                                                 .50
-Date:   Sat, 7 Nov 2020 10:24:01 -0800
+        id S1726307AbgKJQ5W (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 10 Nov 2020 11:57:22 -0500
+Received: from mta-02.yadro.com ([89.207.88.252]:41440 "EHLO mta-01.yadro.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726152AbgKJQ5W (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Tue, 10 Nov 2020 11:57:22 -0500
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id E29F741276;
+        Tue, 10 Nov 2020 16:57:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        mime-version:content-transfer-encoding:content-id:content-type
+        :content-type:content-language:accept-language:in-reply-to
+        :references:message-id:date:date:subject:subject:from:from
+        :received:received:received:received; s=mta-01; t=1605027436; x=
+        1606841837; bh=lyyCQd61cTHyfkB6+pOWirRKcJczrnPDZV7NOfvCBZw=; b=W
+        2qHrwbou8w/VqwuaTCJNgq3Oe4fNliW7q9x9CeSmPdHQLMzUshjGLzprAAJMs4L7
+        lYhhG3FJhZMaWtEP5o053QNylOPcCAdEBWBn2lKKssHbJOeaVGjh0rUXkM6HptzE
+        ASs3RLJCEK9VBy+3pzNK9XVLQ0LmM8HZ9JAregEWnI=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Jvnyh2Avl7Sh; Tue, 10 Nov 2020 19:57:16 +0300 (MSK)
+Received: from T-EXCH-03.corp.yadro.com (t-exch-03.corp.yadro.com [172.17.100.103])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mta-01.yadro.com (Postfix) with ESMTPS id E232641206;
+        Tue, 10 Nov 2020 19:57:16 +0300 (MSK)
+Received: from T-EXCH-04.corp.yadro.com (172.17.100.104) by
+ T-EXCH-03.corp.yadro.com (172.17.100.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
+ 15.1.669.32; Tue, 10 Nov 2020 19:57:16 +0300
+Received: from T-EXCH-04.corp.yadro.com ([fe80::d8c5:6f0a:3d48:18df]) by
+ T-EXCH-04.corp.yadro.com ([fe80::d8c5:6f0a:3d48:18df%15]) with mapi id
+ 15.01.0669.032; Tue, 10 Nov 2020 19:57:15 +0300
+From:   Anastasia Kovaleva <a.kovaleva@yadro.com>
+To:     Bart Van Assche <bvanassche@acm.org>
+CC:     Roman Bolshakov <r.bolshakov@yadro.com>,
+        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>,
+        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "linux@yadro.com" <linux@yadro.com>,
+        "Bodo Stroesser" <bostroesser@gmail.com>
+Subject: Re: [PATCH 3/3] scsi: target: core: Change ASCQ for residual write
+Thread-Topic: [PATCH 3/3] scsi: target: core: Change ASCQ for residual write
+Thread-Index: AQHWqJer8uRmzb6rtkKkiM47xnEK3Kml8vEAgACHroCAAMyHgIACaKwAgADicoCAAWEVgIAAQZuAgBVMpoA=
+Date:   Tue, 10 Nov 2020 16:57:15 +0000
+Message-ID: <45E2175E-EE3A-473C-93DD-8ED3168198CA@yadro.com>
+References: <20201022172011.42367-1-a.kovaleva@yadro.com>
+ <20201022172011.42367-4-a.kovaleva@yadro.com>
+ <e2b215ca-0aa8-bdae-e5bd-292a09d8282e@acm.org>
+ <20201024121315.GA35317@SPB-NB-133.local>
+ <b831a7db-1da2-c293-a8f6-d9c62f68c224@acm.org>
+ <20201026131226.GA88490@SPB-NB-133.local>
+ <270e2edf-49c9-942f-ac3d-b6dfa0aca8f7@acm.org>
+ <20201027234639.GB88490@SPB-NB-133.local>
+ <c3dac124-301e-df94-9d64-b3c46d4eafb9@acm.org>
+In-Reply-To: <c3dac124-301e-df94-9d64-b3c46d4eafb9@acm.org>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [172.17.204.63]
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1FD59EA1F212CD4B82679523F5CDC097@yadro.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1081
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1081
-Message-Id: <20201107162906.971D4D68541@mail.hostvarna.com>
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hello,
+On 28 Oct 2020, at 06:41, Bart Van Assche <bvanassche@acm.org> wrote:
+> On 10/27/20 4:46 PM, Roman Bolshakov wrote:
+>> Thanks for raising the point about overlength/underlength. If you wish
+>> we can add an extra check that fails DMA_TO_DEVICE && DATA with
+>> residuals only for SBC devices but note that before the series,
+>> underflow/overflow for WRITE didn't return GOOD status. The particular
+>> patch only changes sense code to more meaningful from the former INVALID
+>> FIELD IN CDB.
+>>=20
+>> Theoretically, it could be good to have a configurable switch how LIO
+>> handles overflows/underflows for a LUN. Then it'd be possible to
+>> configure desired behaviour on a per-LUN basis. But there should be a
+>> clear need & demand for the feature to avoid maintenance of dead code.
+>>>> An additional question is what behavior other operating systems than
+>>> Linux expect? There are probably setups in which another operating
+>>> system than Linux communicates with a LIO SCSI target?
+>>=20
+>> TBH I don't know any hosts that do SBC WRITE with residuals as normal
+>> course of operation. They wouldn't be able to work with LIO because it
+>> never returns GOOD status on WRITE with residuals. I can send an update
+>> later if the series works fine with modern hosts (~1 month, after a few
+>> cycles of system testing).
+>=20
+> Hi Roman,
+>=20
+> I'm not sure adding a new kernel switch is the best choice. That would
+> be an additional parameter users have to know about and have to learn
+> how to use.
+>=20
+> Bodo seems to be in favor of this patch series. Are there other people
+> who want to share their opinion about this patch series?
 
-I'm Mrs. Mavis Wanczyk, the mega winner of $758 Million in Mega Millions
-Jackpot, I am donating to 5 random individuals if you get this email then
-your email was selected after a spin ball. I have spread most of my wealth
-over a number of charities and organizations. I have voluntarily decided to
-donate the sum of $ 10 Million USD to you as one of the selected , to verify
-my
-winnings via YouTube page below.
+Hi Bart,
 
-WATCH ME HERE: https://www.youtube.com/watch?v=7kWnqvJM1mM
+Is this patch series good enough to be accepted in this form, without
+the kernel switch? As far as i can see, no one has shared their opinion
+about this changes.=20
 
-THIS IS YOUR DONATION CODE: F207162
-Kindly send your direct telephone and fax number to enable me to reach you
+Thanks,
 
-Reply with the DONATION CODE to this email: maviswanczykoo@aol.com
-
-Hope to make you and your family happy.
-
-Regards,
-Mrs. Mavis L. Wanczyk.
+Anastasia
