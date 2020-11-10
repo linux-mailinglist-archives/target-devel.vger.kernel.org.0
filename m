@@ -2,105 +2,95 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36BEE2AD04F
-	for <lists+target-devel@lfdr.de>; Tue, 10 Nov 2020 08:21:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80EE72AD19F
+	for <lists+target-devel@lfdr.de>; Tue, 10 Nov 2020 09:48:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728827AbgKJHVA (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 10 Nov 2020 02:21:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:30947 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726213AbgKJHU7 (ORCPT
+        id S1728741AbgKJIsd (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 10 Nov 2020 03:48:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35680 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727001AbgKJIsd (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 10 Nov 2020 02:20:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1604992857;
+        Tue, 10 Nov 2020 03:48:33 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71028C0613CF;
+        Tue, 10 Nov 2020 00:48:33 -0800 (PST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1604998111;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=3QOTDZeraTDO7qssTdQxdHgHxw/ERqq7xNQOpRhF6WU=;
-        b=T0OF0AKqc+Fd/wVH4HoJ5r8hM/++/XjLGurRV0gwh9T5Y64VNv6IQv3OeOfCoqkpj6q7Cx
-        CLFMhJFtEbPWSRX80+4MG3MT46FIDdZrsOOETy4lNrC4p47A29n/l3epehYf/OjPvNNyqm
-        wnGI8iKo6xyR4WD0H0Sns+eVu9afHDA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-53-Uf3eP6YrNEmVx5Vilrz5FQ-1; Tue, 10 Nov 2020 02:20:56 -0500
-X-MC-Unique: Uf3eP6YrNEmVx5Vilrz5FQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D22771E5CA0;
-        Tue, 10 Nov 2020 07:20:46 +0000 (UTC)
-Received: from [10.72.13.94] (ovpn-13-94.pek2.redhat.com [10.72.13.94])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 945B376666;
-        Tue, 10 Nov 2020 07:20:44 +0000 (UTC)
-Subject: Re: [PATCH 1/5] vhost: add helper to check if a vq has been setup
-To:     Mike Christie <michael.christie@oracle.com>,
+        bh=+lFM+Dy1hrzRRrrrA3qnbGkxEtyVqIh0g4peYrriLeU=;
+        b=iuo8f+7vFglLggVRQElkiZ2WEkqCMbTG8xoMGtVyBk3DBfZOlzK9bn4iYE9n5TJlXEeyiw
+        mK2AsUoeE727uJ+eyVgbEeyt2qz1CsngbkfMTC30zg6BSGbxrFxVJV/nTlcmtj9NHSMsJn
+        sU38ljGJ30NJ8ooIZ53QTax6dO6NfnLLpRxklxBphTMVejdacYZZqkmCK8e4gkxhfN2Hq9
+        zuGNw+h8VUH3NFZO14JlYgbkNPH833xVYFQ2lmqEAC35a4/baTqfi6uG7ey36+HQyygrEi
+        Jy4I41umlX4stejJrRBLu7awPrfWhbLcelHNMzqQQSqRZrKTpO34TDntXU+02A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1604998111;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=+lFM+Dy1hrzRRrrrA3qnbGkxEtyVqIh0g4peYrriLeU=;
+        b=y7osrUd/437dzM5/Hc5G9cQ/HuZ2jh7vgX8EDHSswmJuPLkHyLG6iEX8rrCl2sg3XohELe
+        1aQhUu8PTNjq+DAw==
+To:     Ira Weiny <ira.weiny@intel.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Randy Dunlap <rdunlap@infradead.org>, x86@kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
+        kexec@lists.infradead.org, linux-bcache@vger.kernel.org,
+        linux-mtd@lists.infradead.org, devel@driverdev.osuosl.org,
+        linux-efi@vger.kernel.org, linux-mmc@vger.kernel.org,
         linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        mst@redhat.com, pbonzini@redhat.com, stefanha@redhat.com,
-        virtualization@lists.linux-foundation.org
-References: <1604986403-4931-1-git-send-email-michael.christie@oracle.com>
- <1604986403-4931-2-git-send-email-michael.christie@oracle.com>
-From:   Jason Wang <jasowang@redhat.com>
-Message-ID: <8ca030cf-593b-3b43-1551-7de37ebe4187@redhat.com>
-Date:   Tue, 10 Nov 2020 15:20:42 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-aio@kvack.org,
+        io-uring@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+        linux-um@lists.infradead.org, linux-ntfs-dev@lists.sourceforge.net,
+        reiserfs-devel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net,
+        linux-nilfs@vger.kernel.org, cluster-devel@redhat.com,
+        ecryptfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+        linux-btrfs@vger.kernel.org, linux-afs@lists.infradead.org,
+        linux-rdma@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-cachefs@redhat.com,
+        samba-technical@lists.samba.org, intel-wired-lan@lists.osuosl.org
+Subject: Re: [PATCH RFC PKS/PMEM 05/58] kmap: Introduce k[un]map_thread
+In-Reply-To: <20201110045954.GL3976735@iweiny-DESK2.sc.intel.com>
+References: <20201009195033.3208459-1-ira.weiny@intel.com> <20201009195033.3208459-6-ira.weiny@intel.com> <87h7pyhv3f.fsf@nanos.tec.linutronix.de> <20201110045954.GL3976735@iweiny-DESK2.sc.intel.com>
+Date:   Tue, 10 Nov 2020 09:48:31 +0100
+Message-ID: <87eel1iom8.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <1604986403-4931-2-git-send-email-michael.christie@oracle.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-
-On 2020/11/10 下午1:33, Mike Christie wrote:
-> This adds a helper check if a vq has been setup. The next patches
-> will use this when we move the vhost scsi cmd preallocation from per
-> session to per vq. In the per vq case, we only want to allocate cmds
-> for vqs that have actually been setup and not for all the possible
-> vqs.
+On Mon, Nov 09 2020 at 20:59, Ira Weiny wrote:
+> On Tue, Nov 10, 2020 at 02:13:56AM +0100, Thomas Gleixner wrote:
+> Also, we can convert the new memcpy_*_page() calls to kmap_local() as well.
+> [For now my patch just uses kmap_atomic().]
 >
-> Signed-off-by: Mike Christie <michael.christie@oracle.com>
-> ---
->   drivers/vhost/vhost.c | 6 ++++++
->   drivers/vhost/vhost.h | 1 +
->   2 files changed, 7 insertions(+)
->
-> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> index 5c835a2..a262e12 100644
-> --- a/drivers/vhost/vhost.c
-> +++ b/drivers/vhost/vhost.c
-> @@ -304,6 +304,12 @@ static void vhost_vring_call_reset(struct vhost_vring_call *call_ctx)
->   	memset(&call_ctx->producer, 0x0, sizeof(struct irq_bypass_producer));
->   }
->   
-> +bool vhost_vq_is_setup(struct vhost_virtqueue *vq)
-> +{
-> +	return vq->avail && vq->desc && vq->used && vhost_vq_access_ok(vq);
-> +}
-> +EXPORT_SYMBOL_GPL(vhost_vq_is_setup);
-> +
->   static void vhost_vq_reset(struct vhost_dev *dev,
->   			   struct vhost_virtqueue *vq)
->   {
-> diff --git a/drivers/vhost/vhost.h b/drivers/vhost/vhost.h
-> index e016cd3..b063324 100644
-> --- a/drivers/vhost/vhost.h
-> +++ b/drivers/vhost/vhost.h
-> @@ -190,6 +190,7 @@ int vhost_get_vq_desc(struct vhost_virtqueue *,
->   		      struct vhost_log *log, unsigned int *log_num);
->   void vhost_discard_vq_desc(struct vhost_virtqueue *, int n);
->   
-> +bool vhost_vq_is_setup(struct vhost_virtqueue *vq);
->   int vhost_vq_init_access(struct vhost_virtqueue *);
->   int vhost_add_used(struct vhost_virtqueue *, unsigned int head, int len);
->   int vhost_add_used_n(struct vhost_virtqueue *, struct vring_used_elem *heads,
+> I've not looked at all of the patches in your latest version.  Have you
+> included converting any of the kmap() call sites?  I thought you were more
+> focused on converting the kmap_atomic() to kmap_local()?
 
+I did not touch any of those yet, but it's a logical consequence to
+convert all kmap() instances which are _not_ creating a global mapping
+over to it.
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+Thanks,
 
+        tglx
 
