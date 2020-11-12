@@ -2,81 +2,63 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B7782AF56B
-	for <lists+target-devel@lfdr.de>; Wed, 11 Nov 2020 16:48:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 569812B07E0
+	for <lists+target-devel@lfdr.de>; Thu, 12 Nov 2020 15:55:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727100AbgKKPsr (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 11 Nov 2020 10:48:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:37692 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727340AbgKKPsq (ORCPT
+        id S1728479AbgKLOzF (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 12 Nov 2020 09:55:05 -0500
+Received: from szxga07-in.huawei.com ([45.249.212.35]:7892 "EHLO
+        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728486AbgKLOzE (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 11 Nov 2020 10:48:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1605109726;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ve3o5+sQEc7bSeoJK6A9FCOfDF3MDLOEkdQyVi3FknE=;
-        b=c1GoTALbr4WB9FwTTSrFULaTVsZjDgO3oWElW38GVy93dduM36C9vEvO9TYoZCNJz4asQL
-        avQUm1W9Iye3Ku6w2Jlre+pa67BUlbdaio4rqunSjG4WJrKteceQg/c3MwsH2s6iRvqDDT
-        GwmjgHvwrVIv5vl6mWdRM7CmEpf6PUE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-595-FtJohrB8NX-b56Qo5frC-g-1; Wed, 11 Nov 2020 10:48:44 -0500
-X-MC-Unique: FtJohrB8NX-b56Qo5frC-g-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 023EECEC64;
-        Wed, 11 Nov 2020 15:48:43 +0000 (UTC)
-Received: from [10.35.206.45] (unknown [10.35.206.45])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0DCD773675;
-        Wed, 11 Nov 2020 15:48:40 +0000 (UTC)
-Subject: Re: [PATCH 2/2] target: iscsi: fix a race condition when aborting a
- task
-To:     Michael Christie <michael.christie@oracle.com>
-Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        bvanassche@acm.org, m.lombardi85@gmail.com
-References: <20201007145326.56850-1-mlombard@redhat.com>
- <20201007145326.56850-3-mlombard@redhat.com>
- <20daa17d-08e7-a412-4d33-bcf75587eca6@oracle.com>
- <1852a8bd-3edc-5c49-fa51-9afe52f125a8@redhat.com>
- <184667b1-032b-c36f-d1e7-5cfef961c763@oracle.com>
- <71691FED-C164-482C-B629-A8B89B81E566@oracle.com>
- <a936cc4e-1610-5201-5960-107689b81820@redhat.com>
- <68e77a2c-c868-669f-0c4f-0a5bb0259249@oracle.com>
- <5111dcb0-ef0d-fc11-ee1a-ae2a9b30150a@redhat.com>
- <5D26782D-1249-4A2C-8BF9-7176D5B85F55@oracle.com>
-From:   Maurizio Lombardi <mlombard@redhat.com>
-Message-ID: <4268d61b-89f2-ce74-200b-d5fc21a207bd@redhat.com>
-Date:   Wed, 11 Nov 2020 16:48:39 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+        Thu, 12 Nov 2020 09:55:04 -0500
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4CX4Pz0jYGz72kG;
+        Thu, 12 Nov 2020 22:54:47 +0800 (CST)
+Received: from localhost (10.174.176.180) by DGGEMS413-HUB.china.huawei.com
+ (10.3.19.213) with Microsoft SMTP Server id 14.3.487.0; Thu, 12 Nov 2020
+ 22:54:48 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <bvanassche@acm.org>, <dledford@redhat.com>, <jgg@ziepe.ca>
+CC:     <linux-rdma@vger.kernel.org>, <target-devel@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
+Subject: [PATCH] IB/srpt: Fix passing zero to 'PTR_ERR'
+Date:   Thu, 12 Nov 2020 22:54:43 +0800
+Message-ID: <20201112145443.17832-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-In-Reply-To: <5D26782D-1249-4A2C-8BF9-7176D5B85F55@oracle.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Content-Type: text/plain
+X-Originating-IP: [10.174.176.180]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+Fix smatch warning:
 
+drivers/infiniband/ulp/srpt/ib_srpt.c:2341 srpt_cm_req_recv() warn: passing zero to 'PTR_ERR'
 
-Dne 11. 11. 20 v 16:37 Michael Christie napsal(a):
-> If the SCSI R/W has the CMD_T_ABORTED bit set, we move it it back to the conn_cmd_list and the abort code path cleans it up. But then we still have the ABORT’s se_cmd on the tmp_list. We will then call 
-> 
-> transport_generic_free_cmd(wait_for_tasks=true) -> __transport_wait_for_tasks(fabric_stop=true)
-> 
-> And wait for the ABORT to complete, and the ABORT does not complete until the last ref on the command it’s aborting completes.
+Use PTR_ERR_OR_ZERO instead of PTR_ERR
 
+Fixes: 847462de3a0a ("IB/srpt: Fix srpt_cm_req_recv() error path (1/2)")
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/infiniband/ulp/srpt/ib_srpt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Right. now I understand it.
-Thanks.
-
-Maurizio
+diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
+index 6be60aa5ffe2..3ff24b5048ac 100644
+--- a/drivers/infiniband/ulp/srpt/ib_srpt.c
++++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
+@@ -2338,7 +2338,7 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
+ 
+ 	if (IS_ERR_OR_NULL(ch->sess)) {
+ 		WARN_ON_ONCE(ch->sess == NULL);
+-		ret = PTR_ERR(ch->sess);
++		ret = PTR_ERR_OR_ZERO(ch->sess);
+ 		ch->sess = NULL;
+ 		pr_info("Rejected login for initiator %s: ret = %d.\n",
+ 			ch->sess_name, ret);
+-- 
+2.17.1
 
