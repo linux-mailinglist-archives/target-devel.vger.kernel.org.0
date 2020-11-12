@@ -2,140 +2,116 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6ED882B0B2C
-	for <lists+target-devel@lfdr.de>; Thu, 12 Nov 2020 18:20:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF4F72B0C87
+	for <lists+target-devel@lfdr.de>; Thu, 12 Nov 2020 19:25:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726189AbgKLRUP (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 12 Nov 2020 12:20:15 -0500
-Received: from nat-hk.nvidia.com ([203.18.50.4]:18647 "EHLO nat-hk.nvidia.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725987AbgKLRUO (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 12 Nov 2020 12:20:14 -0500
-Received: from HKMAIL103.nvidia.com (Not Verified[10.18.92.100]) by nat-hk.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
-        id <B5fad6ecd0000>; Fri, 13 Nov 2020 01:20:13 +0800
-Received: from HKMAIL103.nvidia.com (10.18.16.12) by HKMAIL103.nvidia.com
- (10.18.16.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 12 Nov
- 2020 17:20:12 +0000
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.169)
- by HKMAIL103.nvidia.com (10.18.16.12) with Microsoft SMTP Server (TLS) id
- 15.0.1473.3 via Frontend Transport; Thu, 12 Nov 2020 17:20:11 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YQCIBs6nsFkcqOyA4TyQnnKNhAoQxPsNDkgt3Tacta5ad6UgnU7udyQuQCLueq9KIAGHayhTnjgvtbUXzuRay/Q40IIqWvtCefYrsxo1vNtlLwmqmFRjHByjqtC/nASEjwQolTJcMjjLAOlLEthZXmJ1q9jlu88g9Dg40kIG6TlfLMU9jNE/ApEcoYR800k7fKFe+W/v/nY4YyjaykeUSUzVv42HsmxPmYZlb0SVaFJyY+RGcB2b7RFb2gZN1tKT/B7Y7Jtm8TEPuQwGlFCb1CCpnB47JpphOPx0D4VKuawB6A2xYmCoByeHcf7bUreSnRd1NN6kztYXt/yuvLvUkg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2NszQLOkdarnes/OhkUXNEL/ZRSspSme2uHVUqTtH68=;
- b=Yw/17F4mC33GpmixvBI0Wx7Js5F4ZZrczmvvsyiHzsonAyEp0+HZyo3jSXuNaR73YuRLebXmTYOM3WY30HbsGFyr1GF1tGxD+dm0vS3zQ4tyafE8TnJujLJkWX4XY7DH8vkQl+WgN2plSDlnBaP4EhAyneuiXsuJsj3wCA64u8XPWygpfb4IN0nDGcRjP2XbsMmCGWArEuczkKFhpVHNaqJ79BATW8P6Rk7VyYlZ3NHwwtJ4URdJV/K++gRf25vyaQzW5Hr5F1DlSY/7CchA0Lo7fu1GB5e06dUHUi7ZeGn95/F8HzXIHx71RujQ9mguNL0V4avGVPDM1fMdzBjLqw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-Received: from DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
- by DM6PR12MB4041.namprd12.prod.outlook.com (2603:10b6:5:210::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3541.21; Thu, 12 Nov
- 2020 17:20:09 +0000
-Received: from DM6PR12MB3834.namprd12.prod.outlook.com
- ([fe80::cdbe:f274:ad65:9a78]) by DM6PR12MB3834.namprd12.prod.outlook.com
- ([fe80::cdbe:f274:ad65:9a78%7]) with mapi id 15.20.3499.032; Thu, 12 Nov 2020
- 17:20:09 +0000
-Date:   Thu, 12 Nov 2020 13:20:08 -0400
-From:   Jason Gunthorpe <jgg@nvidia.com>
-To:     YueHaibing <yuehaibing@huawei.com>
-CC:     <bvanassche@acm.org>, <dledford@redhat.com>,
-        <linux-rdma@vger.kernel.org>, <target-devel@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
+        id S1726181AbgKLSZx (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 12 Nov 2020 13:25:53 -0500
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:41614 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726151AbgKLSZw (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Thu, 12 Nov 2020 13:25:52 -0500
+Received: by mail-pl1-f193.google.com with SMTP id w11so3226171pll.8;
+        Thu, 12 Nov 2020 10:25:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=QvplDTvTZnay/C4NlrXwy3WiT/KqaqbHVC2O6qZP0hg=;
+        b=BEVpDlTFXLoANApF0cRFqmy6gV0y/SJOBbHU7JX1BducnTiNzPyKnZL6YxAQCFSRML
+         /fX64mGqyrtV1YtRE/vbR3T9/qOhLYT7foyzh7dTZn2YClS5E4Ad69R6udajOs/wgR37
+         twn3NyQPNNTexniJcF6Pc4l/itV3Ffrca3doB+dDR84lCByL5We0Q2lozsA3/yMNo7/d
+         Qg46WQQaYxRpb1kcxJnBfNumGL5QZuIWuCr/M2ZhrvmNm6EMLYbfIK3OJGGZk45TgCZ9
+         +44SAc4W75EgIH/N5q8IH5fzxvQnk8vLPNQ2KEcNLrEMpdjXlS8XqU4CFbe6lr/BADdr
+         5K0A==
+X-Gm-Message-State: AOAM530pGKL1KvLQDwsfFB3sgm+Ola+ShLGXQoaW5WGLifqRAcM2+eD3
+        MyF+zil4hGN1ye1Rbr9OjVCIcdjOb6Y=
+X-Google-Smtp-Source: ABdhPJwmwJ9oyvDBaHX1IV3z0OBdcR8Y0E0H9te5SVdVx2RNM/0cqbEnX6LvSYcE87EuemmXdGKyxw==
+X-Received: by 2002:a17:902:e788:b029:d6:dc69:80a8 with SMTP id cp8-20020a170902e788b02900d6dc6980a8mr881007plb.59.1605205551213;
+        Thu, 12 Nov 2020 10:25:51 -0800 (PST)
+Received: from [192.168.50.110] (c-73-241-217-19.hsd1.ca.comcast.net. [73.241.217.19])
+        by smtp.gmail.com with ESMTPSA id k6sm7162512pfd.169.2020.11.12.10.25.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Nov 2020 10:25:50 -0800 (PST)
 Subject: Re: [PATCH] IB/srpt: Fix passing zero to 'PTR_ERR'
-Message-ID: <20201112172008.GA944848@nvidia.com>
+To:     Jason Gunthorpe <jgg@nvidia.com>,
+        YueHaibing <yuehaibing@huawei.com>
+Cc:     dledford@redhat.com, linux-rdma@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20201112145443.17832-1-yuehaibing@huawei.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20201112145443.17832-1-yuehaibing@huawei.com>
-X-ClientProxiedBy: BL1PR13CA0197.namprd13.prod.outlook.com
- (2603:10b6:208:2be::22) To DM6PR12MB3834.namprd12.prod.outlook.com
- (2603:10b6:5:14a::12)
+ <20201112172008.GA944848@nvidia.com>
+From:   Bart Van Assche <bvanassche@acm.org>
+Message-ID: <c73d9be0-0bd8-634a-e3d1-c81fe4c30482@acm.org>
+Date:   Thu, 12 Nov 2020 10:25:48 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from mlx.ziepe.ca (156.34.48.30) by BL1PR13CA0197.namprd13.prod.outlook.com (2603:10b6:208:2be::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3564.13 via Frontend Transport; Thu, 12 Nov 2020 17:20:09 +0000
-Received: from jgg by mlx with local (Exim 4.94)        (envelope-from <jgg@nvidia.com>)        id 1kdGGW-003xoN-4J; Thu, 12 Nov 2020 13:20:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1605201613; bh=2NszQLOkdarnes/OhkUXNEL/ZRSspSme2uHVUqTtH68=;
-        h=ARC-Seal:ARC-Message-Signature:ARC-Authentication-Results:Date:
-         From:To:CC:Subject:Message-ID:References:Content-Type:
-         Content-Disposition:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-         X-MS-Exchange-MessageSentRepresentingType;
-        b=LuNN6WDqq4V5EXxqOlzozj0ZaRO6DW/I5JebHsknkQWOhSOdXlCu73wG/lxvKFw5Z
-         cUP7fgq/84NxQGACcYTiFvR7vF/LhyGXc7u1C551nC89eEQXZtpE8qqubdmVkYvRRb
-         fcyZf0m7FpXLlqzYZOd0FVgFZAC08KMT0bE4ZNNVV9tDDXLsb9Do2x2ORmB/8gjIKp
-         HbHSlPFhQWDEt+y6qbdZw3jilwdK7BJZJPQINGyMH16nmsKBidNKe7FahnLRrQUaNZ
-         oa83ou4yzwx0/DwmiKvqMuu8nrNGEuOD/R+TEv6S2zK5mhnFW4qGXK9raGcIG2KtE/
-         rkaSVgQkXVwMg==
+In-Reply-To: <20201112172008.GA944848@nvidia.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Thu, Nov 12, 2020 at 10:54:43PM +0800, YueHaibing wrote:
-> Fix smatch warning:
-> 
-> drivers/infiniband/ulp/srpt/ib_srpt.c:2341 srpt_cm_req_recv() warn: passing zero to 'PTR_ERR'
-> 
-> Use PTR_ERR_OR_ZERO instead of PTR_ERR
-> 
-> Fixes: 847462de3a0a ("IB/srpt: Fix srpt_cm_req_recv() error path (1/2)")
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
->  drivers/infiniband/ulp/srpt/ib_srpt.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On 11/12/20 9:20 AM, Jason Gunthorpe wrote:
+> I think it should be like this, Bart?
 > 
 > diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-> index 6be60aa5ffe2..3ff24b5048ac 100644
+> index 6017d525084a0c..80f9673956ced2 100644
+> --- a/drivers/infiniband/ulp/srpt/ib_srpt.c
 > +++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-> @@ -2338,7 +2338,7 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
->  
->  	if (IS_ERR_OR_NULL(ch->sess)) {
->  		WARN_ON_ONCE(ch->sess == NULL);
-> -		ret = PTR_ERR(ch->sess);
-> +		ret = PTR_ERR_OR_ZERO(ch->sess);
->  		ch->sess = NULL;
->  		pr_info("Rejected login for initiator %s: ret = %d.\n",
->  			ch->sess_name, ret);
+> @@ -2311,7 +2311,7 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
+>   
+>   	mutex_lock(&sport->port_guid_id.mutex);
+>   	list_for_each_entry(stpg, &sport->port_guid_id.tpg_list, entry) {
+> -		if (!IS_ERR_OR_NULL(ch->sess))
+> +		if (ch->sess)
+>   			break;
+>   		ch->sess = target_setup_session(&stpg->tpg, tag_num,
+>   						tag_size, TARGET_PROT_NORMAL,
+> @@ -2321,12 +2321,12 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
+>   
+>   	mutex_lock(&sport->port_gid_id.mutex);
+>   	list_for_each_entry(stpg, &sport->port_gid_id.tpg_list, entry) {
+> -		if (!IS_ERR_OR_NULL(ch->sess))
+> +		if (ch->sess)
+>   			break;
+>   		ch->sess = target_setup_session(&stpg->tpg, tag_num,
+>   					tag_size, TARGET_PROT_NORMAL, i_port_id,
+>   					ch, NULL);
+> -		if (!IS_ERR_OR_NULL(ch->sess))
+> +		if (ch->sess)
+>   			break;
+>   		/* Retry without leading "0x" */
+>   		ch->sess = target_setup_session(&stpg->tpg, tag_num,
+> @@ -2335,7 +2335,9 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
+>   	}
+>   	mutex_unlock(&sport->port_gid_id.mutex);
+>   
+> -	if (IS_ERR_OR_NULL(ch->sess)) {
+> +	if (!ch->sess)
+> +		ch->sess = ERR_PTR(-ENOENT);
+> +	if (IS_ERR(ch->sess)) {
+>   		WARN_ON_ONCE(ch->sess == NULL);
+>   		ret = PTR_ERR(ch->sess);
+>   		ch->sess = NULL;
+> 
 
-I think it should be like this, Bart?
+Hi Jason,
 
-diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-index 6017d525084a0c..80f9673956ced2 100644
---- a/drivers/infiniband/ulp/srpt/ib_srpt.c
-+++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-@@ -2311,7 +2311,7 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
- 
- 	mutex_lock(&sport->port_guid_id.mutex);
- 	list_for_each_entry(stpg, &sport->port_guid_id.tpg_list, entry) {
--		if (!IS_ERR_OR_NULL(ch->sess))
-+		if (ch->sess)
- 			break;
- 		ch->sess = target_setup_session(&stpg->tpg, tag_num,
- 						tag_size, TARGET_PROT_NORMAL,
-@@ -2321,12 +2321,12 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
- 
- 	mutex_lock(&sport->port_gid_id.mutex);
- 	list_for_each_entry(stpg, &sport->port_gid_id.tpg_list, entry) {
--		if (!IS_ERR_OR_NULL(ch->sess))
-+		if (ch->sess)
- 			break;
- 		ch->sess = target_setup_session(&stpg->tpg, tag_num,
- 					tag_size, TARGET_PROT_NORMAL, i_port_id,
- 					ch, NULL);
--		if (!IS_ERR_OR_NULL(ch->sess))
-+		if (ch->sess)
- 			break;
- 		/* Retry without leading "0x" */
- 		ch->sess = target_setup_session(&stpg->tpg, tag_num,
-@@ -2335,7 +2335,9 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
- 	}
- 	mutex_unlock(&sport->port_gid_id.mutex);
- 
--	if (IS_ERR_OR_NULL(ch->sess)) {
-+	if (!ch->sess)
-+		ch->sess = ERR_PTR(-ENOENT);
-+	if (IS_ERR(ch->sess)) {
- 		WARN_ON_ONCE(ch->sess == NULL);
- 		ret = PTR_ERR(ch->sess);
- 		ch->sess = NULL;
+The ib_srpt driver accepts three different formats for the initiator 
+ACL. Up to two of the three target_setup_session() calls will fail if 
+the fifth argument of target_setup_session() does not use the format of 
+the initiator ID in configfs. If the first or the second 
+target_setup_session() call fails it is essential that later 
+target_setup_session() calls happen. Hence the IS_ERR_OR_NULL(ch->sess) 
+checks in the above loops.
+
+In other words, I like YueHaibing's patch better.
+
+Thanks,
+
+Bart.
