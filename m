@@ -2,132 +2,89 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AFC52B0CA6
-	for <lists+target-devel@lfdr.de>; Thu, 12 Nov 2020 19:30:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D79C52B1293
+	for <lists+target-devel@lfdr.de>; Fri, 13 Nov 2020 00:19:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726352AbgKLSac (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 12 Nov 2020 13:30:32 -0500
-Received: from nat-hk.nvidia.com ([203.18.50.4]:23614 "EHLO nat-hk.nvidia.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726104AbgKLSab (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 12 Nov 2020 13:30:31 -0500
-Received: from HKMAIL104.nvidia.com (Not Verified[10.18.92.9]) by nat-hk.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
-        id <B5fad7f450001>; Fri, 13 Nov 2020 02:30:29 +0800
-Received: from HKMAIL101.nvidia.com (10.18.16.10) by HKMAIL104.nvidia.com
- (10.18.16.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 12 Nov
- 2020 18:30:28 +0000
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.174)
- by HKMAIL101.nvidia.com (10.18.16.10) with Microsoft SMTP Server (TLS) id
- 15.0.1473.3 via Frontend Transport; Thu, 12 Nov 2020 18:30:27 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jnKvLpjFEnQ/zZ6q9dmaFBpO+RD79wiPUzgxFvGnxWJrtfXy6+D0PvBTD70AX0bPpMbmJY8j8eoTao1bEhPwREvdaJleG+FKItvOeOmuEQSIoFPyvDNGL/7hKoKrWWRyLY3wDB09VCHneENyVrenQCzKp3ZJnw7c9DX7V/l4PTkvgBdbbTT5wY6CDPJwADY5M7P9/Yuwb/yFfSBtLSHyqrCscFvfUpFEQqrmyhZBq4L3ht5bkoAnn6fyKdaOCwHpnXxjLFH01U9Dbeg21C+J9Y+6wLIXjfjyENwwD0Q4ig1TIIhyXBsY2bOzQyFd0BnUMFmMvaMPVeBA4ji4sk+sgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o+lpMfkomTSa0aFeezrHssGhBPCHSZ86NONmAxbWk+k=;
- b=myJf8XQCwh/4KNiLMks5W6+bAoAgUniWOrv1Y3PWNFKqPV74cDrBPEB1EN7xZSeTjkc+X2Kjo2wWFKrZVR04bH3AYyK2Oz6+w38ZLylEGtZ0P3Y5R4J1LpD7jIZHi7/swh2JQzn8VQmYrtNRaVY8L1NlWlw312ZHfdoe2wu/TJXPpLouAXIjNEiFk1fyn39ZED0SM+dC/Z6lHR9Gvv16MZsjs4VElYE0sV+JDrhREqTWfoXOdaruNpxesPYUjC08TVB6okbgZNxwZg6t3nbYqUMv/GbBizIJKXnkEv/bbPGO7UvAJFuDO06pXZIFIUDl1mubZb+bkiyhLH5Rnbxp0w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-Received: from DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
- by DM5PR12MB1753.namprd12.prod.outlook.com (2603:10b6:3:10d::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3541.21; Thu, 12 Nov
- 2020 18:30:25 +0000
-Received: from DM6PR12MB3834.namprd12.prod.outlook.com
- ([fe80::cdbe:f274:ad65:9a78]) by DM6PR12MB3834.namprd12.prod.outlook.com
- ([fe80::cdbe:f274:ad65:9a78%7]) with mapi id 15.20.3499.032; Thu, 12 Nov 2020
- 18:30:25 +0000
-Date:   Thu, 12 Nov 2020 14:30:23 -0400
-From:   Jason Gunthorpe <jgg@nvidia.com>
-To:     Bart Van Assche <bvanassche@acm.org>
-CC:     YueHaibing <yuehaibing@huawei.com>, <dledford@redhat.com>,
-        <linux-rdma@vger.kernel.org>, <target-devel@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] IB/srpt: Fix passing zero to 'PTR_ERR'
-Message-ID: <20201112183023.GB917484@nvidia.com>
-References: <20201112145443.17832-1-yuehaibing@huawei.com>
- <20201112172008.GA944848@nvidia.com>
- <c73d9be0-0bd8-634a-e3d1-c81fe4c30482@acm.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <c73d9be0-0bd8-634a-e3d1-c81fe4c30482@acm.org>
-X-ClientProxiedBy: BL1PR13CA0298.namprd13.prod.outlook.com
- (2603:10b6:208:2bc::33) To DM6PR12MB3834.namprd12.prod.outlook.com
- (2603:10b6:5:14a::12)
-MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from mlx.ziepe.ca (156.34.48.30) by BL1PR13CA0298.namprd13.prod.outlook.com (2603:10b6:208:2bc::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3564.24 via Frontend Transport; Thu, 12 Nov 2020 18:30:24 +0000
-Received: from jgg by mlx with local (Exim 4.94)        (envelope-from <jgg@nvidia.com>)        id 1kdHMV-0042jQ-Ot; Thu, 12 Nov 2020 14:30:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1605205829; bh=o+lpMfkomTSa0aFeezrHssGhBPCHSZ86NONmAxbWk+k=;
-        h=ARC-Seal:ARC-Message-Signature:ARC-Authentication-Results:Date:
-         From:To:CC:Subject:Message-ID:References:Content-Type:
-         Content-Disposition:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-         X-MS-Exchange-MessageSentRepresentingType;
-        b=UBzxnA9Bm40zYg/M00ls6xCMPE0dFEjecLM/7eixNE+Ddi6VlrIPD+zgDHtzYycFY
-         Zlhhu2uDtz6b3PGRV6bwYWkhaMPqW4l62FAELXYNvEAtQTnMmiHjfqA34fov7n8/SP
-         W2aU5g8VhHrV9vYdpAVRtBr3Rg9s8DzaZMDn3u1JJYLLn6oFVqcYRL9nMEwK8ClS9Z
-         lj7tnNAIjWEgs0IS+aNzMcUN02sd1Ugrm/oO4q87KrmVdXnyUvfJeIt6LqaYXlvVcA
-         CpsOv93YSsLNy2RspIV+V7jT9ljAOvMPS0vxVzSb+eyrhfLGl31/1pKzh2fugMN42d
-         wbSl8eMQmYPGQ==
+        id S1726050AbgKLXTk (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 12 Nov 2020 18:19:40 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:33614 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725929AbgKLXTk (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Thu, 12 Nov 2020 18:19:40 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0ACN9sRO118600;
+        Thu, 12 Nov 2020 23:19:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : subject :
+ date : message-id; s=corp-2020-01-29;
+ bh=zkd61/tba/h2odvP0fuyY9lA39g2B4FPo68/2n7cZQ0=;
+ b=NFV3M+9XhIfMAGZwDUA+eZc3za2cVBT9z/U9iR+cXh3S++ZKGSTGipMrKeK3ACyL4k2H
+ vukmoxPsuIpor1bVPxigI7Ga4xesUwnOcvOjfGsvVm9ZtOk1zxS5WDnabmQweX1L27r0
+ CH/koP60dwqgV9U1pwBAnQkiZbJQA2zybkzX9SOAm/TmgdUhbWOdGkiKocVxVMJlhXOq
+ /TFmaHT8+FE8yrWVmMeuyTjS7nZyUVRXMyPM1um4SzNFHhu7FRGNiWvG/h1GgS0SZ0AA
+ fkDqYJZhzS/5DdmM+CZeEmEweh3oFoShItgh2xNvjxbXI3QU67RhXLaFojriaSlO9SKS NQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 34nkhm83v4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 12 Nov 2020 23:19:22 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0ACNAH2k075845;
+        Thu, 12 Nov 2020 23:19:21 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 34rtksk4xm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 12 Nov 2020 23:19:21 +0000
+Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0ACNJJwk011448;
+        Thu, 12 Nov 2020 23:19:20 GMT
+Received: from ol2.localdomain (/73.88.28.6)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 12 Nov 2020 15:19:19 -0800
+From:   Mike Christie <michael.christie@oracle.com>
+To:     stefanha@redhat.com, qemu-devel@nongnu.org, fam@euphon.net,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        mst@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
+        virtualization@lists.linux-foundation.org
+Subject: [PATCH 00/10] vhost/qemu: thread per IO SCSI vq 
+Date:   Thu, 12 Nov 2020 17:18:59 -0600
+Message-Id: <1605223150-10888-1-git-send-email-michael.christie@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9803 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 phishscore=0
+ suspectscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011120130
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9803 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 priorityscore=1501
+ mlxscore=0 suspectscore=0 mlxlogscore=999 lowpriorityscore=0 spamscore=0
+ malwarescore=0 adultscore=0 clxscore=1011 bulkscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011120130
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Thu, Nov 12, 2020 at 10:25:48AM -0800, Bart Van Assche wrote:
-> On 11/12/20 9:20 AM, Jason Gunthorpe wrote:
-> > I think it should be like this, Bart?
-> > 
-> > diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-> > index 6017d525084a0c..80f9673956ced2 100644
-> > +++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-> > @@ -2311,7 +2311,7 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
-> >   	mutex_lock(&sport->port_guid_id.mutex);
-> >   	list_for_each_entry(stpg, &sport->port_guid_id.tpg_list, entry) {
-> > -		if (!IS_ERR_OR_NULL(ch->sess))
-> > +		if (ch->sess)
-> >   			break;
-> >   		ch->sess = target_setup_session(&stpg->tpg, tag_num,
-> >   						tag_size, TARGET_PROT_NORMAL,
-> > @@ -2321,12 +2321,12 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
-> >   	mutex_lock(&sport->port_gid_id.mutex);
-> >   	list_for_each_entry(stpg, &sport->port_gid_id.tpg_list, entry) {
-> > -		if (!IS_ERR_OR_NULL(ch->sess))
-> > +		if (ch->sess)
-> >   			break;
-> >   		ch->sess = target_setup_session(&stpg->tpg, tag_num,
-> >   					tag_size, TARGET_PROT_NORMAL, i_port_id,
-> >   					ch, NULL);
-> > -		if (!IS_ERR_OR_NULL(ch->sess))
-> > +		if (ch->sess)
-> >   			break;
-> >   		/* Retry without leading "0x" */
-> >   		ch->sess = target_setup_session(&stpg->tpg, tag_num,
-> > @@ -2335,7 +2335,9 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
-> >   	}
-> >   	mutex_unlock(&sport->port_gid_id.mutex);
-> > -	if (IS_ERR_OR_NULL(ch->sess)) {
-> > +	if (!ch->sess)
-> > +		ch->sess = ERR_PTR(-ENOENT);
-> > +	if (IS_ERR(ch->sess)) {
-> >   		WARN_ON_ONCE(ch->sess == NULL);
-> >   		ret = PTR_ERR(ch->sess);
-> >   		ch->sess = NULL;
-> > 
-> 
-> Hi Jason,
-> 
-> The ib_srpt driver accepts three different formats for the initiator ACL. Up
-> to two of the three target_setup_session() calls will fail if the fifth
-> argument of target_setup_session() does not use the format of the initiator
-> ID in configfs. If the first or the second target_setup_session() call fails
-> it is essential that later target_setup_session() calls happen. Hence the
-> IS_ERR_OR_NULL(ch->sess) checks in the above loops.
+The following kernel patches were made over Michael's vhost branch:
 
-IS_ERR_OR_NULL is an abomination, it should not be used.
+https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git/log/?h=vhost
 
-I see I didn't quite get it right, but that is still closer to sane,
-probably target_setup_session() should return NULL not err_ptr
+and the vhost-scsi bug fix patchset:
 
-Jason
+https://lore.kernel.org/linux-scsi/20201112170008.GB1555653@stefanha-x1.localdomain/T/#t
+
+And the qemu patch was made over the qemu master branch.
+
+vhost-scsi currently supports multiple queues with the num_queues
+setting, but we end up with a setup where the guest's scsi/block
+layer can do a queue per vCPU and the layers below vhost can do
+a queue per CPU. vhost-scsi will then do a num_queue virtqueues,
+but all IO gets set on and completed on a single vhost-scsi thread.
+After 2 - 4 vqs this becomes a bottleneck.
+
+This patchset allows us to create a worker thread per IO vq, so we
+can better utilize multiple CPUs with the multiple queues. It
+implments Jason's suggestion to create the initial worker like
+normal, then create the extra workers for IO vqs with the
+VHOST_SET_VRING_ENABLE ioctl command added in this patchset.
+
+
