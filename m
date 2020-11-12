@@ -2,89 +2,122 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F32372B0A36
-	for <lists+target-devel@lfdr.de>; Thu, 12 Nov 2020 17:38:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 22C122B0AE1
+	for <lists+target-devel@lfdr.de>; Thu, 12 Nov 2020 18:00:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728872AbgKLQiq (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 12 Nov 2020 11:38:46 -0500
-Received: from nat-hk.nvidia.com ([203.18.50.4]:7207 "EHLO nat-hk.nvidia.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728086AbgKLQip (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 12 Nov 2020 11:38:45 -0500
-Received: from HKMAIL103.nvidia.com (Not Verified[10.18.92.77]) by nat-hk.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
-        id <B5fad65130002>; Fri, 13 Nov 2020 00:38:43 +0800
-Received: from HKMAIL102.nvidia.com (10.18.16.11) by HKMAIL103.nvidia.com
- (10.18.16.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 12 Nov
- 2020 16:38:39 +0000
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.171)
- by HKMAIL102.nvidia.com (10.18.16.11) with Microsoft SMTP Server (TLS) id
- 15.0.1473.3 via Frontend Transport; Thu, 12 Nov 2020 16:38:39 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Jr8dW4eis32u6WyUiqRsWXP472mU2GBxeA/WYggJDrQeLe1C5zWIHGICNtK7qVlxeTKnL9l1d8W/QUPe1Ebk5s6aTYyZZnFuB8vQT/qlclF3vV59qMb/A9lklVVBlucFqGliJeqUHR6kfxzwn8gQAGrJU9DHtEutv4CowApD0638/vwdJs3pC1dbdZolp6BgfJBjFfSzWpm90lNXfxwMXZpOpVKn4wiKd1aRxvH+mRz0F0cM0VooilG/4MKoHsOEIhXH57NNfktApq4nxKRMvuVxKRZbbbIoUREAx+hxmP4VmNwZ6k0JsL3fvQYJrbyrCWhwDXsVQUSyEaoUvgYdeQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GcTG2IcE1Hb9XQM+imSj69ZypnT/1I6k6eML/+1ITjg=;
- b=KnCWxCBLVx16z4QVV/TTX8QYj+WH9q2WS9CveIT+92CEvukh2introSF6Lp7OCk5YUIWKH2y+efNsxKhOgyNVANgERKxvDao13zPZOBckZleM+SFk9I4WSVG3bmZtpQpSGj4ShYdxLPq2ME4SvYRblC2GJAe6VPMiaUT/S2JHHKW1FqzZuTbUJGk0ZWkI4IA7ftqmhYiDyZ3LrB9yGq6QxUA7/dvKordKURcDNzf3dY0EhCk3ErRf3dyUUCOTWcBH5SGbNjbVQfgapjea4KqMfyvpI0IBzy+BPbfFLNOKTU3TqPPMydo/3Q238urhWZhQvr7b/HktWQS3okCoRGhWg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-Received: from DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
- by DM6PR12MB3212.namprd12.prod.outlook.com (2603:10b6:5:186::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3541.21; Thu, 12 Nov
- 2020 16:38:37 +0000
-Received: from DM6PR12MB3834.namprd12.prod.outlook.com
- ([fe80::cdbe:f274:ad65:9a78]) by DM6PR12MB3834.namprd12.prod.outlook.com
- ([fe80::cdbe:f274:ad65:9a78%7]) with mapi id 15.20.3499.032; Thu, 12 Nov 2020
- 16:38:36 +0000
-Date:   Thu, 12 Nov 2020 12:38:34 -0400
-From:   Jason Gunthorpe <jgg@nvidia.com>
-To:     Zou Wei <zou_wei@huawei.com>
-CC:     <sagi@grimberg.me>, <dledford@redhat.com>,
-        <linux-rdma@vger.kernel.org>, <target-devel@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH -next] IB/isert: Fix warning Comparison to bool
-Message-ID: <20201112163834.GA917430@nvidia.com>
-References: <1604404674-32998-1-git-send-email-zou_wei@huawei.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <1604404674-32998-1-git-send-email-zou_wei@huawei.com>
-X-ClientProxiedBy: BL1PR13CA0065.namprd13.prod.outlook.com
- (2603:10b6:208:2b8::10) To DM6PR12MB3834.namprd12.prod.outlook.com
- (2603:10b6:5:14a::12)
+        id S1726149AbgKLRAW (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 12 Nov 2020 12:00:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:23557 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725965AbgKLRAW (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Thu, 12 Nov 2020 12:00:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1605200420;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=8WtHXC8mKlk3syV9475opWWmZkifxuDIS56d7hfYA+k=;
+        b=IAAmFC7HghmJdmsTjPWn9/6gwmzSvifnnYQ4ft/VWLps2FvIXrl/BBJTsNzKZhqiJSAxEz
+        4n+bKF0S5KZHYWTdS3Bk8kb0y7+P3SheZGADIcCa4PE8rhymjEXA6K013M3uSevH79LWRU
+        ErJ8FJFz9XpvPAGfSWP5xw9SsFk8tuI=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-405-m8IZqujcOuig-QSbHXoMFw-1; Thu, 12 Nov 2020 12:00:16 -0500
+X-MC-Unique: m8IZqujcOuig-QSbHXoMFw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 34FA9100E349;
+        Thu, 12 Nov 2020 17:00:10 +0000 (UTC)
+Received: from localhost (ovpn-115-122.ams2.redhat.com [10.36.115.122])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id C22525577D;
+        Thu, 12 Nov 2020 17:00:09 +0000 (UTC)
+Date:   Thu, 12 Nov 2020 17:00:08 +0000
+From:   Stefan Hajnoczi <stefanha@redhat.com>
+To:     Mike Christie <michael.christie@oracle.com>
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        mst@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
+        virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH 0/5 V5] vhost-scsi: IO error fixups
+Message-ID: <20201112170008.GB1555653@stefanha-x1.localdomain>
+References: <1604986403-4931-1-git-send-email-michael.christie@oracle.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from mlx.ziepe.ca (156.34.48.30) by BL1PR13CA0065.namprd13.prod.outlook.com (2603:10b6:208:2b8::10) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3564.21 via Frontend Transport; Thu, 12 Nov 2020 16:38:35 +0000
-Received: from jgg by mlx with local (Exim 4.94)        (envelope-from <jgg@nvidia.com>)        id 1kdFcI-003qgV-FJ; Thu, 12 Nov 2020 12:38:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1605199123; bh=GcTG2IcE1Hb9XQM+imSj69ZypnT/1I6k6eML/+1ITjg=;
-        h=ARC-Seal:ARC-Message-Signature:ARC-Authentication-Results:Date:
-         From:To:CC:Subject:Message-ID:References:Content-Type:
-         Content-Disposition:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-         X-MS-Exchange-MessageSentRepresentingType;
-        b=Ep2SaKfHIYMJRpjMoXvvW583Z1GiEsgWiG+WcjXxVb1dA1TNBT6Y0/F9sQ/JghhY0
-         PoPi4D95MllY2KexDQUtRdXZejiHRIoW4xed5nFQJ2y7I0kPlyAiWSK4LRsaS3R4pu
-         t5WIpxKv8kRa4nCh+GuCnxy6N5Kb+PaPNfsNYtedm/i2qwOG003EKRQDrL1ejrP7ig
-         XyKqTxFdA+s2d0aOd5bHTYDBZREccS3fEKrotod1zUlDBn75unvMVmFGI0REpoHBHA
-         fuKMWmeZR67rcXO/YLLjsmXiyQaszxN07mXMfz0e/3v6SDdpv7zEp2eKzr4XWp8yj8
-         9YzeFUK/rukaw==
+In-Reply-To: <1604986403-4931-1-git-send-email-michael.christie@oracle.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=stefanha@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="xXmbgvnjoT4axfJE"
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Tue, Nov 03, 2020 at 07:57:54PM +0800, Zou Wei wrote:
-> Fix below warning reported by coccicheck:
-> 
-> ./ib_isert.c:1104:12-24: WARNING: Comparison to bool
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Zou Wei <zou_wei@huawei.com>
-> Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-> ---
->  drivers/infiniband/ulp/isert/ib_isert.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+--xXmbgvnjoT4axfJE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Applied to for-next, thanks
+On Mon, Nov 09, 2020 at 11:33:18PM -0600, Mike Christie wrote:
+> The following patches were made over Michael's vhost branch:
+>=20
+> https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git/log/?h=3Dvh=
+ost
+>=20
+> They fixe a couple issues where the guest is getting IO errors:
+> 1. The admin may set num_queues and cmd_per_lun/virtqueue_size
+> in a way that allows the guest to send more IO that vhost-scsi
+> was coded for.
+>=20
+> 2. A race where vhost-scsi completes the cmd to the guest before
+> it's fully completed in the target/vhost-scsi layers so if the
+> guest sends a new IO too quicky we fail it.
+>=20
+> 3. If the real/physical storage (lio backend device) hits a transient
+> error then vhost-scsi would fail commands instead of relying on
+> the lower levels error recovery to do what the admin had set up.
+>=20
+> V5:
+> - Bring back V1 but move flush patches to a separate clean up set
+> - Modify test in vhost_vq_is_setup
+>=20
+> V4:
+> - really really fix compile errors
+> - dropped threading patches so we can figure that out separately.
+>=20
+> V3:
+> - fix compile errors
+> - fix possible crash where cmd could be freed while adding it to
+> completion list
+> - fix issue where we added the worker thread to the blk cgroup but
+> the blk IO was submitted by a driver workqueue.
+>=20
+> V2:
+> - fix use before set cpu var errors
+> - drop vhost_vq_is_setup
+> - include patches to do a worker thread per scsi IO vq
+>=20
+>=20
 
-Jason
+Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+--xXmbgvnjoT4axfJE
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAl+tahgACgkQnKSrs4Gr
+c8itSwf9GVyHTRV2sAUjFG8BDBKEP3l/jOvX8Fd3PEaYkAfmmX+WgGtTbq1JHFLU
+5YpudBKY56GIhQv2gQtzy6yG0IGZLgRfgNSJMIbD3OEdRIfXiwqZXqtmPGyDG8mh
+yLK98M0I1dkEV0UTtyMDizZHlJGvDierunEbtAgw0gijw2tZZ4siWtPkvHRUKPX+
+vFLB14FoAOEX88ykHQYoN/AgfS4WM4FPhRZ3jy67IK5HwrS5uK/rdGy/bkVx+V0R
+NQDlP1FsYGABk6rFD/yK5zFwuJNIqSS+vSxFhdcZkVYczlJkxrY38XCQZTgEmSb/
+uMx/xfUfsNad2GEOLlz3rAa3gJUCwQ==
+=ERi/
+-----END PGP SIGNATURE-----
+
+--xXmbgvnjoT4axfJE--
+
