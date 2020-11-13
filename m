@@ -2,38 +2,38 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C6E62B8FD9
-	for <lists+target-devel@lfdr.de>; Thu, 19 Nov 2020 11:06:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B33E2B90BA
+	for <lists+target-devel@lfdr.de>; Thu, 19 Nov 2020 12:15:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725888AbgKSKEr convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+target-devel@lfdr.de>); Thu, 19 Nov 2020 05:04:47 -0500
-Received: from tigeramira.ro ([88.158.78.30]:47087 "EHLO mail.tigeramira.ro"
+        id S1727040AbgKSLLm convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+target-devel@lfdr.de>); Thu, 19 Nov 2020 06:11:42 -0500
+Received: from tigeramira.ro ([88.158.78.30]:38546 "EHLO mail.tigeramira.ro"
         rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S1727244AbgKSKEr (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 19 Nov 2020 05:04:47 -0500
+        id S1726854AbgKSLLl (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Thu, 19 Nov 2020 06:11:41 -0500
 Received: from localhost (localhost [127.0.0.1])
-        by mail.tigeramira.ro (Postfix) with ESMTP id 22DDFC74161
-        for <target-devel@vger.kernel.org>; Mon, 16 Nov 2020 03:28:19 +0200 (EET)
+        by mail.tigeramira.ro (Postfix) with ESMTP id 90811CBBA79
+        for <target-devel@vger.kernel.org>; Tue, 17 Nov 2020 11:12:51 +0200 (EET)
 Received: from mail.tigeramira.ro ([127.0.0.1])
         by localhost (mail.tigeramira.ro [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id L1A8Q9pPehM9 for <target-devel@vger.kernel.org>;
-        Mon, 16 Nov 2020 03:28:03 +0200 (EET)
+        with ESMTP id WEv__lg3XlKd for <target-devel@vger.kernel.org>;
+        Tue, 17 Nov 2020 11:12:47 +0200 (EET)
 Received: from mail.tigeramira.ro (localhost [127.0.0.1])
-        by mail.tigeramira.ro (Postfix) with ESMTP id B2979AF3D3F
-        for <target-devel@vger.kernel.org>; Sat, 14 Nov 2020 14:29:55 +0200 (EET)
+        by mail.tigeramira.ro (Postfix) with ESMTP id 66BA0C03680
+        for <target-devel@vger.kernel.org>; Sat, 14 Nov 2020 20:46:11 +0200 (EET)
 Received: from [156.96.44.214] (unknown [192.168.12.254])
-        by mail.tigeramira.ro (Postfix) with ESMTP id F36EBD3FDF1
-        for <target-devel@vger.kernel.org>; Tue, 10 Nov 2020 17:09:51 +0200 (EET)
+        by mail.tigeramira.ro (Postfix) with ESMTP id 0700E914383
+        for <target-devel@vger.kernel.org>; Fri, 13 Nov 2020 13:31:27 +0200 (EET)
 Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8BIT
 Content-Description: Mail message body
-Subject: Corporate and Personal Loan/
+Subject: Corporate and Personal Loan::,
 To:     target-devel@vger.kernel.org
 From:   "Investment  Corporate" <financialcapability6@gmail.com>
-Date:   Tue, 10 Nov 2020 06:10:20 -0800
+Date:   Fri, 13 Nov 2020 02:31:42 -0800
 Reply-To: hmurrah39@gmail.com
-Message-Id: <20201110150952.F36EBD3FDF1@mail.tigeramira.ro>
+Message-Id: <20201113113129.0700E914383@mail.tigeramira.ro>
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
