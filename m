@@ -2,172 +2,56 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D42C32B7CB7
-	for <lists+target-devel@lfdr.de>; Wed, 18 Nov 2020 12:33:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B1E52B7D8E
+	for <lists+target-devel@lfdr.de>; Wed, 18 Nov 2020 13:23:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726164AbgKRLbg (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 18 Nov 2020 06:31:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:39143 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725970AbgKRLbg (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Wed, 18 Nov 2020 06:31:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1605699095;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=4klu/6VLPeehKC0MRm/Zpkk011aelEzsRD3uMBe14/8=;
-        b=Gv2s9pL8SaUL8wiw+WKoGgyIs9TRzoBtnZFi8iXYIzgUfMCPiCYu5KXYzOH/MyPe19oraA
-        Wo0iRvOp92it7T0+E1S5nZ63ScQFrWHcdddeW+VgGbQpo0YEtZdgd+4ZLlg0WIZAaea7e6
-        nd3XpmbBFESeLh+HiDm8LokGSX+0bnE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-583-S28dO65_M5iUYAS-Hqtjyw-1; Wed, 18 Nov 2020 06:31:30 -0500
-X-MC-Unique: S28dO65_M5iUYAS-Hqtjyw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7FFFF107B293;
-        Wed, 18 Nov 2020 11:31:28 +0000 (UTC)
-Received: from localhost (ovpn-114-60.ams2.redhat.com [10.36.114.60])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id BDEE560C43;
-        Wed, 18 Nov 2020 11:31:18 +0000 (UTC)
-Date:   Wed, 18 Nov 2020 11:31:17 +0000
-From:   Stefan Hajnoczi <stefanha@redhat.com>
-To:     Mike Christie <michael.christie@oracle.com>
-Cc:     qemu-devel@nongnu.org, fam@euphon.net, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, mst@redhat.com, jasowang@redhat.com,
-        pbonzini@redhat.com, virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH 00/10] vhost/qemu: thread per IO SCSI vq
-Message-ID: <20201118113117.GF182763@stefanha-x1.localdomain>
-References: <1605223150-10888-1-git-send-email-michael.christie@oracle.com>
- <20201117164043.GS131917@stefanha-x1.localdomain>
- <b3343762-bb11-b750-46ec-43b5556f2b8e@oracle.com>
+        id S1726044AbgKRMWW convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+target-devel@lfdr.de>); Wed, 18 Nov 2020 07:22:22 -0500
+Received: from tigeramira.ro ([88.158.78.30]:32751 "EHLO mail.tigeramira.ro"
+        rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org with ESMTP
+        id S1726576AbgKRMWW (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Wed, 18 Nov 2020 07:22:22 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by mail.tigeramira.ro (Postfix) with ESMTP id 517F8C08B2C
+        for <target-devel@vger.kernel.org>; Wed, 18 Nov 2020 09:59:20 +0200 (EET)
+Received: from mail.tigeramira.ro ([127.0.0.1])
+        by localhost (mail.tigeramira.ro [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id nuhLk1EyrXVJ for <target-devel@vger.kernel.org>;
+        Wed, 18 Nov 2020 09:59:17 +0200 (EET)
+Received: from mail.tigeramira.ro (localhost [127.0.0.1])
+        by mail.tigeramira.ro (Postfix) with ESMTP id 3BEEEC4AA96
+        for <target-devel@vger.kernel.org>; Sun, 15 Nov 2020 14:40:29 +0200 (EET)
+Received: from [156.96.44.214] (unknown [192.168.12.254])
+        by mail.tigeramira.ro (Postfix) with ESMTP id E2B1D998D7A
+        for <target-devel@vger.kernel.org>; Fri, 13 Nov 2020 19:08:12 +0200 (EET)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-In-Reply-To: <b3343762-bb11-b750-46ec-43b5556f2b8e@oracle.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=stefanha@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="DEueqSqTbz/jWVG1"
-Content-Disposition: inline
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Corporate and Personal Loan::,
+To:     target-devel@vger.kernel.org
+From:   "Investment  Corporate" <financialcapability6@gmail.com>
+Date:   Fri, 13 Nov 2020 08:08:26 -0800
+Reply-To: hmurrah39@gmail.com
+Message-Id: <20201113170813.E2B1D998D7A@mail.tigeramira.ro>
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
---DEueqSqTbz/jWVG1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hello target-devel@vger.kernel.org
 
-On Tue, Nov 17, 2020 at 01:13:14PM -0600, Mike Christie wrote:
-> On 11/17/20 10:40 AM, Stefan Hajnoczi wrote:
-> > On Thu, Nov 12, 2020 at 05:18:59PM -0600, Mike Christie wrote:
-> >> The following kernel patches were made over Michael's vhost branch:
-> >>
-> >> https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git/log/?h=
-=3Dvhost
-> >>
-> >> and the vhost-scsi bug fix patchset:
-> >>
-> >> https://lore.kernel.org/linux-scsi/20201112170008.GB1555653@stefanha-x=
-1.localdomain/T/#t
-> >>
-> >> And the qemu patch was made over the qemu master branch.
-> >>
-> >> vhost-scsi currently supports multiple queues with the num_queues
-> >> setting, but we end up with a setup where the guest's scsi/block
-> >> layer can do a queue per vCPU and the layers below vhost can do
-> >> a queue per CPU. vhost-scsi will then do a num_queue virtqueues,
-> >> but all IO gets set on and completed on a single vhost-scsi thread.
-> >> After 2 - 4 vqs this becomes a bottleneck.
-> >>
-> >> This patchset allows us to create a worker thread per IO vq, so we
-> >> can better utilize multiple CPUs with the multiple queues. It
-> >> implments Jason's suggestion to create the initial worker like
-> >> normal, then create the extra workers for IO vqs with the
-> >> VHOST_SET_VRING_ENABLE ioctl command added in this patchset.
-> >=20
-> > How does userspace find out the tids and set their CPU affinity?
-> >=20
->=20
-> When we create the worker thread we add it to the device owner's cgroup,
-> so we end up inheriting those settings like affinity.
->=20
-> However, are you more asking about finer control like if the guest is
-> doing mq, and the mq hw queue is bound to cpu0, it would perform
-> better if we could bind vhost vq's worker thread to cpu0? I think the
-> problem might is if you are in the cgroup then we can't set a specific
-> threads CPU affinity to just one specific CPU. So you can either do
-> cgroups or not.
->=20
->=20
-> > What is the meaning of the new VHOST_SET_VRING_ENABLE ioctl? It doesn't
-> > really "enable" or "disable" the vq, requests are processed regardless.
-> >=20
->=20
-> Yeah, I agree. The problem I've mentioned before is:
->=20
-> 1. For net and vsock, it's not useful because the vqs are hard coded in
-> the kernel and userspace, so you can't disable a vq and you never need
-> to enable one.
->=20
-> 2. vdpa has it's own enable ioctl.
->=20
-> 3. For scsi, because we already are doing multiple vqs based on the
-> num_queues value, we have to have some sort of compat support and
-> code to detect if userspace is even going to send the new ioctl.
-> In this patchset, compat just meant enable/disable the extra functionalit=
-y
-> of extra worker threads for a vq. We will still use the vq if
-> userspace set it up.
->=20
->=20
-> > The purpose of the ioctl isn't clear to me because the kernel could
-> > automatically create 1 thread per vq without a new ioctl. On the other
-> > hand, if userspace is supposed to control worker threads then a
-> > different interface would be more powerful:
-> >=20
 
-The main request I have is to clearly define the meaning of the
-VHOST_SET_VRING_ENABLE ioctl. If you want to keep it as-is for now and
-the vhost maintainers are happy with then, that's okay. It should just
-be documented so that userspace and other vhost driver authors
-understand what it's supposed to do.
+We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
 
-> My preference has been:
->=20
-> 1. If we were to ditch cgroups, then add a new interface that would allow
-> us to bind threads to a specific CPU, so that it lines up with the guest'=
-s
-> mq to CPU mapping.
 
-A 1:1 vCPU/vq->CPU mapping isn't desirable in all cases.
+We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
 
-The CPU affinity is a userspace policy decision. The host kernel should
-provide a mechanism but not the policy. That way userspace can decide
-which workers are shared by multiple vqs and on which physical CPUs they
-should run.
 
-Stefan
+Please get back to me if you are interested for more
 
---DEueqSqTbz/jWVG1
-Content-Type: application/pgp-signature; name="signature.asc"
+details.
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAl+1BgUACgkQnKSrs4Gr
-c8gQ8gf/W0FT+4mtlnBc1yI9COd4MhYzjWL16Evq9DEgWquUzme1kaqRI7BlJytk
-WTMMYhgdHP6+ema9RCf4p53nO5wG+mordaLuyYBiXt0KmhZjZll+rbi/X+FkazQ/
-PBTy38MCHBUY0aqtbtLSvEUSWmzDmPsNPGN+QdXbDmYL41n9J8nXlFwhFF+oKAtZ
-GnSwDNaMssjd9pQetIQ8voNXguTkfpifUYYpSRZ5nKtrtzT3eQxFUA8Xe6GXE1Rd
-1Nx4SjBo7EiQQ4WI83cjGIP8gjX2TQ21dlybNRal1sd++To0lpRy1j1qlm875DVg
-WR0YSP5J+YGIAdY/BRQ2w2SY9SBoLg==
-=/BhM
------END PGP SIGNATURE-----
+Yours faithfully,
 
---DEueqSqTbz/jWVG1--
-
+Hashim Murrah
