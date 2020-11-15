@@ -2,136 +2,79 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AA7E2B2A9E
-	for <lists+target-devel@lfdr.de>; Sat, 14 Nov 2020 02:46:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3EBB2B320C
+	for <lists+target-devel@lfdr.de>; Sun, 15 Nov 2020 04:18:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726272AbgKNBq0 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 13 Nov 2020 20:46:26 -0500
-Received: from aserp2130.oracle.com ([141.146.126.79]:41734 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726255AbgKNBq0 (ORCPT
+        id S1726477AbgKODR5 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 14 Nov 2020 22:17:57 -0500
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:38730 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726433AbgKODR5 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 13 Nov 2020 20:46:26 -0500
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AE1e4G5145860;
-        Sat, 14 Nov 2020 01:46:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : subject :
- date : message-id; s=corp-2020-01-29;
- bh=/2m2gO1LRsM80qE10O6GutROnzRvFFHi4jXaKj1ylkM=;
- b=NpRNcpwUD6983ogwRPuS0LhMBYV+57ocpOg7s0lCbgN4gzZBs9d7L3o/nidNokZIBxV7
- 9Kf0NutI4kQGytos5vlKFZMmc9cfv7bz3VEcg37NRW9pxw8JbzS08blfqZyUT5Q3Cgvq
- kdZAGRmIMmOnVnnH0E5aUKm/IHlkdn+6xHb3uWl4PSHd1Ao0qmoC0QAnkRAJJBDB9Ode
- NA9pcn6KAQNn+bDID7BpjqvBmQeFdk3ZJhs0/48X2PRDwfq0wqVeIDRM51UdXm76J/5x
- 7UEaFpM+CiLPQAjlAN7mdJSUH5s75gdI3cBusEGjRtw3+YmhPlvIVh0Li3D2imWnzk9p vw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2130.oracle.com with ESMTP id 34t4rag2g9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sat, 14 Nov 2020 01:46:24 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AE1jPrh065709;
-        Sat, 14 Nov 2020 01:46:23 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 34t598sb9p-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 14 Nov 2020 01:46:23 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0AE1kNgq008263;
-        Sat, 14 Nov 2020 01:46:23 GMT
-Received: from ol2.localdomain (/73.88.28.6)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 13 Nov 2020 17:46:23 -0800
-From:   Mike Christie <michael.christie@oracle.com>
-To:     martin.petersen@oracle.com, mlombard@redhat.com,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Subject: [PATCH] iscsi target: fix cmd abort fabric stop race
-Date:   Fri, 13 Nov 2020 19:46:18 -0600
-Message-Id: <1605318378-9269-1-git-send-email-michael.christie@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9804 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
- mlxlogscore=999 suspectscore=2 malwarescore=0 mlxscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011140009
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9804 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 clxscore=1015
- malwarescore=0 impostorscore=0 lowpriorityscore=0 priorityscore=1501
- mlxlogscore=999 adultscore=0 phishscore=0 suspectscore=2 spamscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011140008
+        Sat, 14 Nov 2020 22:17:57 -0500
+Received: by mail-pl1-f194.google.com with SMTP id d17so4925745plr.5;
+        Sat, 14 Nov 2020 19:17:56 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=K4XQTrFFgS4uWnCwvVsRlx27hTvPlp91RdZDml2p1Dk=;
+        b=pf2tZ/7PDoLjVDClycDuoN/ErSr8/Zrv1MCla3EHbusFppCzborEqn+t2oVfds+4sF
+         l95I9Cma1vyy4N4ASJRQtTzQ3ZVg6wfa/L2lgfUFBHsU+imi/tYMn10/nbhi4qSXJBIg
+         xnVVjOR/8bNW4mxydJLNuJmHTgXmMB2VcIw6t4qpLEFCFQyYX/ThAmWh4NjARvuetK67
+         C+Ytm0+D2cXSW9j9rdE2YwiqLPFvWB00iemh94GOEmNCUcBojNEy/zkYw+HAEHsk1L6g
+         jm/Zyy9Tkkw+6fgjzoF5CHinrv5jRJ73XSK6vS/8Yx2/CDElIdvg14CgvIFFrvGEllZK
+         XDBw==
+X-Gm-Message-State: AOAM5326S6s4S4s0BfuhbQUGi1CTlUmngSOW/72gnitGfbEzFQH7TXnz
+        +X2IXc5Xnn05il9fQDxRkbR9IilD2GY=
+X-Google-Smtp-Source: ABdhPJzmsGzZXe4lQR5L1tHX7eWznXyXHuHdzcv8ghefC6y8E4qaxYFMB2/baJ5fiitM3R492FGHyA==
+X-Received: by 2002:a17:902:402:b029:d5:ac47:c33f with SMTP id 2-20020a1709020402b02900d5ac47c33fmr7892401ple.60.1605410276042;
+        Sat, 14 Nov 2020 19:17:56 -0800 (PST)
+Received: from [192.168.3.218] (c-73-241-217-19.hsd1.ca.comcast.net. [73.241.217.19])
+        by smtp.gmail.com with ESMTPSA id z22sm15382024pje.16.2020.11.14.19.17.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 14 Nov 2020 19:17:54 -0800 (PST)
+Subject: Re: [PATCH 3/3] scsi: target: core: Change ASCQ for residual write
+To:     Anastasia Kovaleva <a.kovaleva@yadro.com>
+Cc:     Roman Bolshakov <r.bolshakov@yadro.com>,
+        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>,
+        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "linux@yadro.com" <linux@yadro.com>,
+        Bodo Stroesser <bostroesser@gmail.com>
+References: <20201022172011.42367-1-a.kovaleva@yadro.com>
+ <20201022172011.42367-4-a.kovaleva@yadro.com>
+ <e2b215ca-0aa8-bdae-e5bd-292a09d8282e@acm.org>
+ <20201024121315.GA35317@SPB-NB-133.local>
+ <b831a7db-1da2-c293-a8f6-d9c62f68c224@acm.org>
+ <20201026131226.GA88490@SPB-NB-133.local>
+ <270e2edf-49c9-942f-ac3d-b6dfa0aca8f7@acm.org>
+ <20201027234639.GB88490@SPB-NB-133.local>
+ <c3dac124-301e-df94-9d64-b3c46d4eafb9@acm.org>
+ <45E2175E-EE3A-473C-93DD-8ED3168198CA@yadro.com>
+From:   Bart Van Assche <bvanassche@acm.org>
+Message-ID: <359169eb-f904-24ff-f899-d383df070822@acm.org>
+Date:   Sat, 14 Nov 2020 19:17:52 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
+MIME-Version: 1.0
+In-Reply-To: <45E2175E-EE3A-473C-93DD-8ED3168198CA@yadro.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Maurizio Lombardi <mlombard@redhat.com> found a race where the abort
-and cmd stop paths can race as follows:
+On 11/10/20 8:57 AM, Anastasia Kovaleva wrote:
+> Is this patch series good enough to be accepted in this form, without
+> the kernel switch? As far as i can see, no one has shared their opinion
+> about this changes. 
 
-1. thread1 runs iscsit_release_commands_from_conn and sets
-CMD_T_FABRIC_STOP.
-2. thread2 runs iscsit_aborted_task and then does __iscsit_free_cmd. It
-then returns from the aborted_task callout and we finish
-target_handle_abort and do:
+Hi Anastasia,
 
-target_handle_abort -> transport_cmd_check_stop_to_fabric ->
-lio_check_stop_free -> target_put_sess_cmd
+I will leave it to others to review this patch series.
 
-The cmd is now freed.
-3. thread1 now finishes iscsit_release_commands_from_conn and runs
-iscsit_free_cmd while accessing a command we just released.
+Thanks,
 
-In __target_check_io_state we check for CMD_T_FABRIC_STOP and set the
-CMD_T_ABORTED if the driver is not cleaning up the cmd because of
-a session shutdown. However, iscsit_release_commands_from_conn only
-sets the CMD_T_FABRIC_STOP and does not check to see if the abort path
-has claimed completion ownership of the command.
-
-This adds a check in iscsit_release_commands_from_conn so only the
-abort or fabric stop path cleanup the command.
-
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-
----
- drivers/target/iscsi/iscsi_target.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
-index f77e5ee..518fac4 100644
---- a/drivers/target/iscsi/iscsi_target.c
-+++ b/drivers/target/iscsi/iscsi_target.c
-@@ -483,8 +483,7 @@ int iscsit_queue_rsp(struct iscsi_conn *conn, struct iscsi_cmd *cmd)
- void iscsit_aborted_task(struct iscsi_conn *conn, struct iscsi_cmd *cmd)
- {
- 	spin_lock_bh(&conn->cmd_lock);
--	if (!list_empty(&cmd->i_conn_node) &&
--	    !(cmd->se_cmd.transport_state & CMD_T_FABRIC_STOP))
-+	if (!list_empty(&cmd->i_conn_node))
- 		list_del_init(&cmd->i_conn_node);
- 	spin_unlock_bh(&conn->cmd_lock);
- 
-@@ -4083,12 +4082,22 @@ static void iscsit_release_commands_from_conn(struct iscsi_conn *conn)
- 	spin_lock_bh(&conn->cmd_lock);
- 	list_splice_init(&conn->conn_cmd_list, &tmp_list);
- 
--	list_for_each_entry(cmd, &tmp_list, i_conn_node) {
-+	list_for_each_entry_safe(cmd, cmd_tmp, &tmp_list, i_conn_node) {
- 		struct se_cmd *se_cmd = &cmd->se_cmd;
- 
- 		if (se_cmd->se_tfo != NULL) {
- 			spin_lock_irq(&se_cmd->t_state_lock);
--			se_cmd->transport_state |= CMD_T_FABRIC_STOP;
-+			if (se_cmd->transport_state & CMD_T_ABORTED) {
-+				/*
-+				 * LIO's abort path owns the cleanup for this,
-+				 * so put it back on the list and let
-+				 * aborted_task handle it.
-+				 */
-+				list_move_tail(&cmd->i_conn_node,
-+					       &conn->conn_cmd_list);
-+			} else {
-+				se_cmd->transport_state |= CMD_T_FABRIC_STOP;
-+			}
- 			spin_unlock_irq(&se_cmd->t_state_lock);
- 		}
- 	}
--- 
-1.8.3.1
-
+Bart.
