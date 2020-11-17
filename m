@@ -2,61 +2,76 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A7BE2B44DF
-	for <lists+target-devel@lfdr.de>; Mon, 16 Nov 2020 14:39:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 869452B5989
+	for <lists+target-devel@lfdr.de>; Tue, 17 Nov 2020 07:07:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726615AbgKPNie (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 16 Nov 2020 08:38:34 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:22861 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729352AbgKPNie (ORCPT
+        id S1726716AbgKQGGr (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 17 Nov 2020 01:06:47 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:37046 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726628AbgKQGGr (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 16 Nov 2020 08:38:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1605533912;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=TUCExb2Myfed67dyXicBK4o1FCf+8g+t7D84qw1NisQ=;
-        b=QhPGYePavlc6nWW/AUhyBSobMro3R1VpXS2i7GHXeD3EXoGnJR1/tFqutZb/PWx45pJvLJ
-        MtmaT8Ctcr7j/iYBdWtLl5uf0Sr/9s9kOi2hORkltXPB9JoFEL3Kvxc2V2wxyhXYpk+RUo
-        oO48A7dKkrn8/8UNw4YV+l0gYV4Gtk0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-265-PrBKkYCLMHGc4WdFIim1UQ-1; Mon, 16 Nov 2020 08:38:28 -0500
-X-MC-Unique: PrBKkYCLMHGc4WdFIim1UQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7664B186DD21;
-        Mon, 16 Nov 2020 13:38:27 +0000 (UTC)
-Received: from [10.35.206.131] (unknown [10.35.206.131])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0F1CA5C3E3;
-        Mon, 16 Nov 2020 13:38:25 +0000 (UTC)
+        Tue, 17 Nov 2020 01:06:47 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AH648Gb172904;
+        Tue, 17 Nov 2020 06:06:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=5x60dfneffxPJgWPh4rhQWm76JVXcCXrIsW/mFCREs4=;
+ b=qj08sUi/cbVICROdFkeXrwiywrE2ZaaYOjK4deAOjsXZrt5420vlxRE2KBlfkmXwWSGK
+ yHtFmE4ldSnGvNQORtPr7659z72H8h7itAOha1oTYvyvdD6cEl4LDzwrJo2cghDoC1X+
+ mogez+ng9uopElbr4WRhLdYjqjPjX/nGx539Feqsg+pU4TFCU7VlGdyZKl6q5VZVtN1f
+ ipeuI9mUjgozecUzzVigvQUk7DKWU4XbJgudLWEHc1JeXgCrXBaGPPw7/L3OCG0EmvzA
+ 99xT2Yx4IYno8qaErkVmSI/fM1kQ/ZQxVjALH4qB9yNyVGuJwMvSSZfBAwN1MzVnvbk9 Sg== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 34t76krq7v-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 17 Nov 2020 06:06:42 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AH65ExO161464;
+        Tue, 17 Nov 2020 06:06:42 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 34umcxr8cw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 17 Nov 2020 06:06:42 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0AH66eef019678;
+        Tue, 17 Nov 2020 06:06:40 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 16 Nov 2020 22:06:39 -0800
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        Mike Christie <michael.christie@oracle.com>,
+        mlombard@redhat.com
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>
 Subject: Re: [PATCH] iscsi target: fix cmd abort fabric stop race
-To:     Mike Christie <michael.christie@oracle.com>,
-        martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org
-References: <1605318378-9269-1-git-send-email-michael.christie@oracle.com>
-From:   Maurizio Lombardi <mlombard@redhat.com>
-Message-ID: <4c55f623-9347-ead7-0f5b-6cf1f7687584@redhat.com>
-Date:   Mon, 16 Nov 2020 14:38:24 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
-MIME-Version: 1.0
+Date:   Tue, 17 Nov 2020 01:06:38 -0500
+Message-Id: <160559316817.969.3374643719447006512.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.28.0
 In-Reply-To: <1605318378-9269-1-git-send-email-michael.christie@oracle.com>
-Content-Type: text/plain; charset=iso-8859-2
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+References: <1605318378-9269-1-git-send-email-michael.christie@oracle.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9807 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0 phishscore=0
+ spamscore=0 bulkscore=0 mlxlogscore=782 malwarescore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011170044
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9807 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 phishscore=0
+ adultscore=0 priorityscore=1501 bulkscore=0 clxscore=1015 mlxlogscore=796
+ malwarescore=0 mlxscore=0 spamscore=0 lowpriorityscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011170044
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+On Fri, 13 Nov 2020 19:46:18 -0600, Mike Christie wrote:
 
-
-Dne 14. 11. 20 v 2:46 Mike Christie napsal(a):
 > Maurizio Lombardi <mlombard@redhat.com> found a race where the abort
 > and cmd stop paths can race as follows:
 > 
@@ -66,68 +81,12 @@ Dne 14. 11. 20 v 2:46 Mike Christie napsal(a):
 > then returns from the aborted_task callout and we finish
 > target_handle_abort and do:
 > 
-> target_handle_abort -> transport_cmd_check_stop_to_fabric ->
-> lio_check_stop_free -> target_put_sess_cmd
-> 
-> The cmd is now freed.
-> 3. thread1 now finishes iscsit_release_commands_from_conn and runs
-> iscsit_free_cmd while accessing a command we just released.
-> 
-> In __target_check_io_state we check for CMD_T_FABRIC_STOP and set the
-> CMD_T_ABORTED if the driver is not cleaning up the cmd because of
-> a session shutdown. However, iscsit_release_commands_from_conn only
-> sets the CMD_T_FABRIC_STOP and does not check to see if the abort path
-> has claimed completion ownership of the command.
-> 
-> This adds a check in iscsit_release_commands_from_conn so only the
-> abort or fabric stop path cleanup the command.
-> 
-> Signed-off-by: Mike Christie <michael.christie@oracle.com>
-> 
-> ---
->  drivers/target/iscsi/iscsi_target.c | 17 +++++++++++++----
->  1 file changed, 13 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
-> index f77e5ee..518fac4 100644
-> --- a/drivers/target/iscsi/iscsi_target.c
-> +++ b/drivers/target/iscsi/iscsi_target.c
-> @@ -483,8 +483,7 @@ int iscsit_queue_rsp(struct iscsi_conn *conn, struct iscsi_cmd *cmd)
->  void iscsit_aborted_task(struct iscsi_conn *conn, struct iscsi_cmd *cmd)
->  {
->  	spin_lock_bh(&conn->cmd_lock);
-> -	if (!list_empty(&cmd->i_conn_node) &&
-> -	    !(cmd->se_cmd.transport_state & CMD_T_FABRIC_STOP))
-> +	if (!list_empty(&cmd->i_conn_node))
->  		list_del_init(&cmd->i_conn_node);
->  	spin_unlock_bh(&conn->cmd_lock);
->  
-> @@ -4083,12 +4082,22 @@ static void iscsit_release_commands_from_conn(struct iscsi_conn *conn)
->  	spin_lock_bh(&conn->cmd_lock);
->  	list_splice_init(&conn->conn_cmd_list, &tmp_list);
->  
-> -	list_for_each_entry(cmd, &tmp_list, i_conn_node) {
-> +	list_for_each_entry_safe(cmd, cmd_tmp, &tmp_list, i_conn_node) {
->  		struct se_cmd *se_cmd = &cmd->se_cmd;
->  
->  		if (se_cmd->se_tfo != NULL) {
->  			spin_lock_irq(&se_cmd->t_state_lock);
-> -			se_cmd->transport_state |= CMD_T_FABRIC_STOP;
-> +			if (se_cmd->transport_state & CMD_T_ABORTED) {
-> +				/*
-> +				 * LIO's abort path owns the cleanup for this,
-> +				 * so put it back on the list and let
-> +				 * aborted_task handle it.
-> +				 */
-> +				list_move_tail(&cmd->i_conn_node,
-> +					       &conn->conn_cmd_list);
-> +			} else {
-> +				se_cmd->transport_state |= CMD_T_FABRIC_STOP;
-> +			}
->  			spin_unlock_irq(&se_cmd->t_state_lock);
->  		}
->  	}
-> 
+> [...]
 
-Reviewed-by: Maurizio Lombardi <mlombard@redhat.com>
+Applied to 5.10/scsi-fixes, thanks!
 
+[1/1] scsi: target: iscsi: Fix cmd abort fabric stop race
+      https://git.kernel.org/mkp/scsi/c/f36199355c64
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
