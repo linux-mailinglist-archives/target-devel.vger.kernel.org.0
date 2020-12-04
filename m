@@ -2,141 +2,55 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B988C2CF328
-	for <lists+target-devel@lfdr.de>; Fri,  4 Dec 2020 18:34:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C00CB2CF798
+	for <lists+target-devel@lfdr.de>; Sat,  5 Dec 2020 00:39:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731219AbgLDReA (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 4 Dec 2020 12:34:00 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:37872 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731091AbgLDReA (ORCPT
+        id S1726479AbgLDXfo (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 4 Dec 2020 18:35:44 -0500
+Received: from vsm-gw.hyogo-dai.ac.jp ([202.244.76.12]:34962 "EHLO
+        vsm-gw.hyogo-dai.ac.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725985AbgLDXfn (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 4 Dec 2020 12:34:00 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B4HNoiY080330;
-        Fri, 4 Dec 2020 17:33:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : from : to :
- cc : references : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=L+iDa6dDlhvm7pe18W12bCuY2sZwDkK6QTofv8pLkyQ=;
- b=mtLNojK6B/QKxOpDu2gh/+6YpAHoM2HN3mYXKtcqncigh622PoU5PBcTMp0oOznWpxun
- AKN3pcEqOWA/oqk1mqZ8hSOjbGhLUFMa8sJWDegeqFIthedDbrmlxjpN3P5skqKRsolJ
- tGMiwop7h+oerIBYX5BrLOeUGsO7SW1XjhiB1CqXVHEttAJ1X0G9T77QSUqLRTy1P+Yr
- 4QOYckKeND5LaqGEeTFriSsOuvAqFJBKOgsRCVIyDikgOCoBCuO+qwMA6kWFvle70Iqe
- v0oIDTxPJoyu/QrkMa6oGOka19/U3tDtEVuJN0jHAtcKUO2MyU+gu0+rRHsDhaLCp7Iv Yg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 353dyr4cey-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 04 Dec 2020 17:33:15 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B4HOaQF054057;
-        Fri, 4 Dec 2020 17:33:14 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 35404skbhk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 04 Dec 2020 17:33:14 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0B4HXD7Q012977;
-        Fri, 4 Dec 2020 17:33:13 GMT
-Received: from [20.15.0.5] (/73.88.28.6)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 04 Dec 2020 09:33:12 -0800
-Subject: Re: [RFC PATCH 0/8] vhost: allow userspace to control vq cpu affinity
-From:   Mike Christie <michael.christie@oracle.com>
-To:     Stefano Garzarella <sgarzare@redhat.com>
-Cc:     stefanha@redhat.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, mst@redhat.com, jasowang@redhat.com,
-        pbonzini@redhat.com, virtualization@lists.linux-foundation.org
-References: <1607068593-16932-1-git-send-email-michael.christie@oracle.com>
- <20201204160651.7wlselx4jm6k66mb@steredhat>
- <40b22c4a-f9db-1389-aed1-b3d33678cfda@oracle.com>
-Message-ID: <73defee7-2c9b-7a2b-a532-3c297fc56ca6@oracle.com>
-Date:   Fri, 4 Dec 2020 11:33:11 -0600
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.5.1
+        Fri, 4 Dec 2020 18:35:43 -0500
+X-Greylist: delayed 12196 seconds by postgrey-1.27 at vger.kernel.org; Fri, 04 Dec 2020 18:35:43 EST
+Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [202.244.77.11])
+        by vsm-gw.hyogo-dai.ac.jp (Postfix) with ESMTP id 721431A294D;
+        Sat,  5 Dec 2020 04:31:47 +0900 (JST)
+Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [127.0.0.1])
+        by postfix.imss71 (Postfix) with ESMTP id 2CAC8482052;
+        Sat,  5 Dec 2020 04:31:47 +0900 (JST)
+Received: from hyogo-dai.ac.jp (unknown [202.244.77.11])
+        by humans-kc.hyogo-dai.ac.jp (Postfix) with SMTP id 01586838260;
+        Sat,  5 Dec 2020 04:31:47 +0900 (JST)
 MIME-Version: 1.0
-In-Reply-To: <40b22c4a-f9db-1389-aed1-b3d33678cfda@oracle.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9825 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 bulkscore=0
- malwarescore=0 mlxscore=0 mlxlogscore=999 phishscore=0 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012040099
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9825 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0
- clxscore=1015 mlxscore=0 spamscore=0 priorityscore=1501 mlxlogscore=999
- suspectscore=0 lowpriorityscore=0 phishscore=0 adultscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012040099
+Message-ID: <20201204193147.0000E32D.0502@hyogo-dai.ac.jp>
+Date:   Sat, 05 Dec 2020 04:31:47 +0900
+From:   "Dr.Raymond" <tabata@hyogo-dai.ac.jp>
+To:     <infocarferr1@aim.com>
+Reply-To: <infocarfer@aim.com>
+Subject: I am Vice Chairman of Hang Seng Bank, Dr. Raymond Chien
+         Kuo Fung I have Important Matter to Discuss with you concerning
+         my late client. Died without a NEXT OF KIN. Send me your private
+         email for full details information. 
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MAILER: Active! mail
+X-TM-AS-MML: disable
+X-TM-AS-Product-Ver: IMSS-7.1.0.1808-8.2.0.1013-25446.007
+X-TM-AS-Result: No--4.326-5.0-31-10
+X-imss-scan-details: No--4.326-5.0-31-10
+X-TM-AS-User-Approved-Sender: No
+X-TMASE-MatchedRID: +T4Z3mpR0x5ITndh1lLRASsOycAMAhSTkCM77ifYafsBLhz6t76Ce/bj
+        Enpjm61/Gf23dqZJjE4Erxo5p8V1/E1+zyfzlN7y/sToY2qzpx7w5nZ/qYg41XEWw1TkKAjcYff
+        qdBtG2ocgOkCKsW/kbuunGEBqPil++coAzulIP8gMTyJMXCOBhj9BWL7GG0LsKrauXd3MZDUZaR
+        NzIP3XI5u3uLPgwbAMH5RdHnhWfwyq9gpuf+A6coDeeVSgzszVDx5n520Z3eZyT7DDRtYlKaWBy
+        ZE9nSaC/rhfyjvqkZu/pNa4BidtZEMMprcbiest
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 12/4/20 11:10 AM, Mike Christie wrote:
-> On 12/4/20 10:06 AM, Stefano Garzarella wrote:
->> Hi Mike,
->>
->> On Fri, Dec 04, 2020 at 01:56:25AM -0600, Mike Christie wrote:
->>> These patches were made over mst's vhost branch.
->>>
->>> The following patches, made over mst's vhost branch, allow userspace
->>> to set each vq's cpu affinity. Currently, with cgroups the worker thread
->>> inherits the affinity settings, but we are at the mercy of the CPU
->>> scheduler for where the vq's IO will be executed on. This can result in
->>> the scheduler sometimes hammering a couple queues on the host instead of
->>> spreading it out like how the guest's app might have intended if it was
->>> mq aware.
->>>
->>> This version of the patches is not what you guys were talking about
->>> initially like with the interface that was similar to nbd's old
->>> (3.x kernel days) NBD_DO_IT ioctl where userspace calls down to the
->>> kernel and we run from that context. These patches instead just
->>> allow userspace to tell the kernel which CPU a vq should run on.
->>> We then use the kernel's workqueue code to handle the thread
->>> management.
->>
->> I agree that reusing kernel's workqueue code would be a good strategy.
->>
->> One concern is how easy it is to implement an adaptive polling 
->> strategy using workqueues. From what I've seen, adding some polling of 
->> both backend and virtqueue helps to eliminate interrupts and reduce 
->> latency.
->>
-> Would the polling you need to do be similar to the vhost net poll code 
-> like in vhost_net_busy_poll (different algorithm though)? But, we want 
-> to be able to poll multiple devs/vqs from the same CPU right? Something 
-> like:
-> 
-> retry:
-> 
-> for each poller on CPU N
->      if poller has work
->          driver->run work fn
-> 
-> if (poll limit hit)
->      return
-> else
->      cpu_relax();
-> goto retry:
-> 
-> ?
-> 
-> If so, I had an idea for it. Let me send an additional patch on top of 
-> this set.
+infocarfer@aim.com
 
-Oh yeah, just to make sure I am on the same page for vdpa, because scsi 
-and net work so differnetly.
 
-Were you thinking that you would initially run from
 
-vhost_poll_wakeup -> work->fn
-
-then in the vdpa work->fn you would do the kick_vq still, but then also 
-kick off a group backend/vq poller. This would then poll the vqs/devs 
-that were bound to that CPU from the worker/wq thread.
-
-So I was thinking you want something similar to network's NAPI. Here our 
-work->fn is the hard irq, and then the worker is like their softirq we 
-poll from.
