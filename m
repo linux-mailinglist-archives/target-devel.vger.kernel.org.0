@@ -2,27 +2,27 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D09DB2E1763
-	for <lists+target-devel@lfdr.de>; Wed, 23 Dec 2020 04:11:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D2152E170E
+	for <lists+target-devel@lfdr.de>; Wed, 23 Dec 2020 04:11:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731481AbgLWDJn (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 22 Dec 2020 22:09:43 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46404 "EHLO mail.kernel.org"
+        id S1731648AbgLWDFS (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 22 Dec 2020 22:05:18 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45430 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728156AbgLWCSe (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Tue, 22 Dec 2020 21:18:34 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0FA962333E;
-        Wed, 23 Dec 2020 02:17:03 +0000 (UTC)
+        id S1728519AbgLWCTK (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Tue, 22 Dec 2020 21:19:10 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1EBFF22202;
+        Wed, 23 Dec 2020 02:18:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608689824;
-        bh=jgDMhoTyoK1/RUr17XYy22VC/nKPC37Of8t6WeoISOs=;
+        s=k20201202; t=1608689907;
+        bh=MuCTss8gWjCF+n3zxjeYSjAVyq7+gciHkrm6lonSMY0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nqG+dsfC9Ofl2+ljQCSngOy93WDGawdcuGKhoX7l98EnpRUQj5eyc+zBuYPUbeMYq
-         smrVP12l4EmTSNUndHkmTnePLhtiXxUJMQDoLlwWeDAXOZhZPW9wiW4aA8jMQ9VuMA
-         xd0XDvJGExoZUakHyLltf7E5h0jFk04SJN77tJClODV/XSM64GfwJ/mj4kOb5lq69g
-         vZJWifh44iEaPwO2dKWEpbtPDG5lkvzmgAYxG+T1LNhCztdJ+IpHBNEKofBKjd1gLQ
-         giorogI4//ZYgvVhgVJyXvNhvpmoTEPyrLBQlnaqru+JNLx8QeWhXWJBHMV4x5a9a/
-         jPQG+9FvKSAuw==
+        b=KPz91yGMYjS5FhZS43mRK5hEB+gL072HqDIKkT1pj6GKUHUGD3nGsmBa1sQCCbu9e
+         ZozmzaZFRyESHQOlPENPplzGdzkNxuuX8+S5vwot0DrvxNECqlSlWrsaiIQpDMSsv9
+         YqEa5VCzIxKCyrkGjQDmv2zyo2SirukACfO6uvl79mVejhHPiEneZFQYus/UvORqcw
+         L7K5RZ+9wSpBkxO5i2r8GdMfReUBM0dijJQ+YcDAjzLEPyFPAlced4b6qs2IhkyL/v
+         z55hAqeMTKmurRjtnNwJ6YbHbt8EtSWQLn5oOwp6ocziM64SI3o8edY1FSw80cTu2w
+         6CkYqco57H/pQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Mike Christie <michael.christie@oracle.com>,
@@ -30,12 +30,12 @@ Cc:     Mike Christie <michael.christie@oracle.com>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
         target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 029/217] scsi: target: Fix cmd_count ref leak
-Date:   Tue, 22 Dec 2020 21:13:18 -0500
-Message-Id: <20201223021626.2790791-29-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 010/130] scsi: target: Fix cmd_count ref leak
+Date:   Tue, 22 Dec 2020 21:16:13 -0500
+Message-Id: <20201223021813.2791612-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20201223021626.2790791-1-sashal@kernel.org>
-References: <20201223021626.2790791-1-sashal@kernel.org>
+In-Reply-To: <20201223021813.2791612-1-sashal@kernel.org>
+References: <20201223021813.2791612-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -63,7 +63,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+)
 
 diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
-index ff26ab0a5f600..d47619a5d172e 100644
+index b1f4be055f838..c43e907eeba8e 100644
 --- a/drivers/target/target_core_transport.c
 +++ b/drivers/target/target_core_transport.c
 @@ -238,6 +238,14 @@ EXPORT_SYMBOL(transport_init_session);
