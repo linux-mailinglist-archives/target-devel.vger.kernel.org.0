@@ -2,135 +2,65 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D60B2ED5FA
-	for <lists+target-devel@lfdr.de>; Thu,  7 Jan 2021 18:47:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 638372EF0DC
+	for <lists+target-devel@lfdr.de>; Fri,  8 Jan 2021 11:51:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728687AbhAGRrM (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 7 Jan 2021 12:47:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58946 "EHLO
+        id S1727105AbhAHKu3 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 8 Jan 2021 05:50:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727734AbhAGRrL (ORCPT
+        with ESMTP id S1726901AbhAHKu3 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 7 Jan 2021 12:47:11 -0500
-Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 679F8C0612F5
-        for <target-devel@vger.kernel.org>; Thu,  7 Jan 2021 09:46:31 -0800 (PST)
-Received: by mail-qk1-x734.google.com with SMTP id d14so6108927qkc.13
-        for <target-devel@vger.kernel.org>; Thu, 07 Jan 2021 09:46:31 -0800 (PST)
+        Fri, 8 Jan 2021 05:50:29 -0500
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD4C6C0612F4
+        for <target-devel@vger.kernel.org>; Fri,  8 Jan 2021 02:49:48 -0800 (PST)
+Received: by mail-lf1-x136.google.com with SMTP id x20so21803987lfe.12
+        for <target-devel@vger.kernel.org>; Fri, 08 Jan 2021 02:49:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=CNK3GvEL4U8HNz+MK8A+YotA76v+OyTJ7DMDgcIh4hA=;
-        b=K845TS0CJJvuvFjUj0/sOIf8ijCuVcy9Rrl8aFb3820OKBUWOcx+gm8R4Go8dLn4k7
-         10usGfYNKrO3Dn7k10RIjdXiBYhbGLFYuuVaxFPvW44RQCk+hmBONOLVCwN3ooyzcxnZ
-         TjTxetXJakVoUOQ5iFjr608k+SiM4Xf4dr968ZRG+nJn2CNhIn0g0LTo64NQVlhO5VC1
-         xBJ4FqAtnsca75tRq3wez0V3QiAhd/j17TM8ryuO3S8hnxU1iWvGtYnFOFQuMeMzOZ3H
-         sJ17/FpXL5LIIG8fydoHgoWmOhNvAfw/urnEq+3WwWrKeoO3vlTfqI/PNdKtRWhff3BO
-         a4OQ==
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=ik6B+6lkNc+iFrIPLOlH6nyfA0JsJ4cRGzVhof+Ll8w=;
+        b=sDAcSKfDqT8GDOZ+wnwT5fwZjsYhKjvvfGvb7zGzn+C2KeEXlD7c5kIolcGXhhna4m
+         6sGCVQzLeROCbISdOeWfxMf/7RK96YIzqiCOFeJoKxtMxBfmnJ1KvsJyoNmTrVNhzdJy
+         z0O6H0nolJtZDUykNfjABJnVmyaVefO85V3o+fLf0WZaUlUHDBcYepcbF9tAy3QxFzDG
+         OWjCQD6qYe8qsMLBQYl0CJro07Vmvyk/iOz6zj6Tf9bRq02aX6APvrx7gdtQrGQeTy1f
+         X3sru/vlTY09iaWIHl5Gi1HsOHrLlfzHr5pHNcZzJa8NE8puQXSuZAot/Bgpi2bczE/0
+         vzTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=CNK3GvEL4U8HNz+MK8A+YotA76v+OyTJ7DMDgcIh4hA=;
-        b=gh2OUf2UUFlcN4XFoW3vVFl3C1JkkIWtfR/Fa1/EZFuaef75HU3e01R6brzS0HIiVA
-         fPve0a0AVOGhtZLdqCeHLqb7zI2UQc9wLFZux+NySrZUkkKUygRESMc4aclfOrnXYZgk
-         qrnP67Cwlh4qyW3Kmct5SL1Z1gHY8NLAjDV6YGpBFRFf6L8R0ysg+S+Y6LACwQUEfynA
-         Q0I5gDbaZRtDe86cY0VVDWlA15ay6seRV/iKy7HiFewCRar2DOznyN0S8Z545c6gSH8Z
-         09eapkphxkmvkD160axsVVb/2QrMI7VNspY0CdrKPKZFXGXNj3F3Iw05D/vD9+aWZobP
-         l8PQ==
-X-Gm-Message-State: AOAM5327xsJFtCF6ABFaJZ2s4pu7e4VMDvuFGAuPcfThzzTXQLbpKFv4
-        zXBuv6PwxKelkEB9vH14uapoPap3n5qlBA==
-X-Google-Smtp-Source: ABdhPJz9vaq8bg7IjIElCsf54gkPa23NreE78PAjXOcXgIgk1qq0jaVgdhKg55lZfp/2GgHu7fk7og==
-X-Received: by 2002:a37:584:: with SMTP id 126mr5587qkf.332.1610041590660;
-        Thu, 07 Jan 2021 09:46:30 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-162-115-133.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.115.133])
-        by smtp.gmail.com with ESMTPSA id j142sm3555681qke.117.2021.01.07.09.46.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Jan 2021 09:46:30 -0800 (PST)
-Received: from jgg by mlx with local (Exim 4.94)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1kxZMj-003lto-I9; Thu, 07 Jan 2021 13:46:29 -0400
-Date:   Thu, 7 Jan 2021 13:46:29 -0400
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Douglas Gilbert <dgilbert@interlog.com>
-Cc:     linux-scsi@vger.kernel.org, linux-block@vger.kernel.org,
-        target-devel@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-kernel@vger.kernel.org, martin.petersen@oracle.com,
-        jejb@linux.vnet.ibm.com, bostroesser@gmail.com, bvanassche@acm.org,
-        ddiss@suse.de
-Subject: Re: [PATCH v5 4/4] scatterlist: add sgl_memset()
-Message-ID: <20210107174629.GC504133@ziepe.ca>
-References: <20201228234955.190858-1-dgilbert@interlog.com>
- <20201228234955.190858-5-dgilbert@interlog.com>
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:content-transfer-encoding;
+        bh=ik6B+6lkNc+iFrIPLOlH6nyfA0JsJ4cRGzVhof+Ll8w=;
+        b=Pf2OqDp/RtNYHiDAdg52o7MuC5wZP298iMLskb4W7a9lxbaiNs8K58Dz9NY4Mr+lzo
+         HPlsXto09c8+ZTE+zL5U564ZWQr6j3O+U/4v/0N+ETBxZF3zqxvBh4OASZRjiHzoVN9h
+         qJoZz8q4+MJhgznyZ4eKWBQVfq8Y3tSJlu6/isSMGFWlCRwW9p5D8z1QXe8tW+Ci7s2B
+         N0ZamlTVnUQlQibhg4KDhOMldRCVl45qlEMhoBLU4rDYO8BsURvpyKSz85DqgXbtpE58
+         O9YFb/1OpwzaDdx2EkkyCDipBSYkx4nyzm3Y00wpeIlcJ9cIV8iHTqJwIM7Bib9A9QgA
+         YJUA==
+X-Gm-Message-State: AOAM532Bivi0Vs/3ph7snex6Lk1vnHjRTo4E7fok0UgJNeb7dKLzQYXK
+        pGtpNg0Ldvq6KG5LVwNpgGjHrLHUQUEoXTVzDQ==
+X-Google-Smtp-Source: ABdhPJz8yp2C3BmeKI7ogTkYbyQ5+WTVtzuiFNO7bH9UFExBBm9weZPeG9cYe+nRVpFEofwWbco3A0NhyVpgDUsc/kM=
+X-Received: by 2002:a19:a405:: with SMTP id q5mr1505285lfc.503.1610102987327;
+ Fri, 08 Jan 2021 02:49:47 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201228234955.190858-5-dgilbert@interlog.com>
+Sender: kossibrewena@gmail.com
+Received: by 2002:ab3:680e:0:0:0:0:0 with HTTP; Fri, 8 Jan 2021 02:49:46 -0800 (PST)
+In-Reply-To: <CALKsWkgg0AquqOk4RcCsrUm-LjsRFV00m76ds94HDPOV8UZuwA@mail.gmail.com>
+References: <CALKsWkgg0AquqOk4RcCsrUm-LjsRFV00m76ds94HDPOV8UZuwA@mail.gmail.com>
+From:   camille <camillejackson021@gmail.com>
+Date:   Fri, 8 Jan 2021 10:49:46 +0000
+X-Google-Sender-Auth: sqg8-n7kV0Vugo5LUzFNnnrsTgo
+Message-ID: <CALKsWkj63TTg-fGidoyPU-+5Y2YcUjpFMq828sRUysMccB2+Zg@mail.gmail.com>
+Subject: =?UTF-8?B?0JfQtNGA0LDQstGB0YLQstGD0LnRgtC1LA==?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Mon, Dec 28, 2020 at 06:49:55PM -0500, Douglas Gilbert wrote:
-> The existing sg_zero_buffer() function is a bit restrictive. For
-> example protection information (PI) blocks are usually initialized
-> to 0xff bytes. As its name suggests sgl_memset() is modelled on
-> memset(). One difference is the type of the val argument which is
-> u8 rather than int. Plus it returns the number of bytes (over)written.
-> 
-> Change implementation of sg_zero_buffer() to call this new function.
-> 
-> Reviewed-by: Bodo Stroesser <bostroesser@gmail.com>
-> Signed-off-by: Douglas Gilbert <dgilbert@interlog.com>
->  include/linux/scatterlist.h |  3 ++
->  lib/scatterlist.c           | 65 +++++++++++++++++++++++++------------
->  2 files changed, 48 insertions(+), 20 deletions(-)
-> 
-> diff --git a/include/linux/scatterlist.h b/include/linux/scatterlist.h
-> index 71be65f9ebb5..70d3f1f73df1 100644
-> +++ b/include/linux/scatterlist.h
-> @@ -333,6 +333,9 @@ bool sgl_compare_sgl_idx(struct scatterlist *x_sgl, unsigned int x_nents, off_t
->  			 struct scatterlist *y_sgl, unsigned int y_nents, off_t y_skip,
->  			 size_t n_bytes, size_t *miscompare_idx);
->  
-> +size_t sgl_memset(struct scatterlist *sgl, unsigned int nents, off_t skip,
-> +		  u8 val, size_t n_bytes);
-> +
->  /*
->   * Maximum number of entries that will be allocated in one piece, if
->   * a list larger than this is required then chaining will be utilized.
-> diff --git a/lib/scatterlist.c b/lib/scatterlist.c
-> index 9332365e7eb6..f06614a880c8 100644
-> +++ b/lib/scatterlist.c
-> @@ -1038,26 +1038,7 @@ EXPORT_SYMBOL(sg_pcopy_to_buffer);
->  size_t sg_zero_buffer(struct scatterlist *sgl, unsigned int nents,
->  		       size_t buflen, off_t skip)
->  {
-> -	unsigned int offset = 0;
-> -	struct sg_mapping_iter miter;
-> -	unsigned int sg_flags = SG_MITER_ATOMIC | SG_MITER_TO_SG;
-> -
-> -	sg_miter_start(&miter, sgl, nents, sg_flags);
-> -
-> -	if (!sg_miter_skip(&miter, skip))
-> -		return false;
-> -
-> -	while (offset < buflen && sg_miter_next(&miter)) {
-> -		unsigned int len;
-> -
-> -		len = min(miter.length, buflen - offset);
-> -		memset(miter.addr, 0, len);
-> -
-> -		offset += len;
-> -	}
-> -
-> -	sg_miter_stop(&miter);
-> -	return offset;
-> +	return sgl_memset(sgl, nents, skip, 0, buflen);
->  }
->  EXPORT_SYMBOL(sg_zero_buffer);
-
-May as well make this one liner a static inline in the header. Just
-rename this function to sgl_memset so the diff is clearer
-
-Jason
+0J/RgNC40LLQtdGC0YHRgtCy0YPRjiDRgtC10LHRjywg0LzQvtC5INC00YDRg9CzLCDQvdCw0LTQ
+tdGO0YHRjCwg0YLRiyDQsiDQv9C+0YDRj9C00LrQtSwg0L/QvtC20LDQu9GD0LnRgdGC0LAsINC+
+0YLQstC10YLRjCDQvNC90LUNCtCx0LvQsNCz0L7QtNCw0YDRjywNCg==
