@@ -2,226 +2,154 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0DE92F0154
-	for <lists+target-devel@lfdr.de>; Sat,  9 Jan 2021 17:10:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D1642F0354
+	for <lists+target-devel@lfdr.de>; Sat,  9 Jan 2021 21:10:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727016AbhAIQIM (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 9 Jan 2021 11:08:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38062 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726913AbhAIQII (ORCPT
+        id S1726006AbhAIUK1 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 9 Jan 2021 15:10:27 -0500
+Received: from esa6.hgst.iphmx.com ([216.71.154.45]:57441 "EHLO
+        esa6.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726001AbhAIUK0 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sat, 9 Jan 2021 11:08:08 -0500
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1482C0617A7;
-        Sat,  9 Jan 2021 08:06:55 -0800 (PST)
-Received: by mail-wm1-x329.google.com with SMTP id e25so11051015wme.0;
-        Sat, 09 Jan 2021 08:06:55 -0800 (PST)
+        Sat, 9 Jan 2021 15:10:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1610223026; x=1641759026;
+  h=from:to:cc:subject:date:message-id:references:
+   content-transfer-encoding:mime-version;
+  bh=Bk9lUQCYupF734/lhgtxpHmXmn1Ziqs2QWxOkWDGMXg=;
+  b=HHNjoi4CaXz9lyETj3QN7u8IvT13+P4JADVjjo3Z1EPs0FJHGL0OqK0p
+   mSgXsrvrfBBtOGnKoe659Bp7CCVIC3dQCjSsZKbXjFOlBJmEY/rNqWV2A
+   wEgpta86o0c8d0iCOjyLiqL+LAL0/pWewc1UYZvnkNG+FQ3AGS7LSxCgB
+   H0opfo8fG8EuRREDCzd/yq7sAy4006masWwSCOxha7XjbhOZxjSaczGdD
+   HiAeahERrAyU0eK4BlQ2z+VBCfFVZzMhJ/P9bYCKEqTe4guZtojLQSig+
+   J6EpfSSCSLx/Mdvlg5LoKYxA5Bsb79WCRHAe4lcR7jLF8Q41S0W5/kayg
+   A==;
+IronPort-SDR: 2KxUSU2ZIk9iKRgJ5W4NbpdlUpjC/38EHfV1byQ2s797Nn5XpOgszEDRr1LmVPUQGRQ8iwQ4CO
+ nK3MfDc4IktvGCLsWAKm/WDasUeCRXnhOoY8H/k2S34jtuuTasSoAMragnMnBaRYveDBJ617tA
+ 1wp8IT6l/N/8bOld55244reX+HsL1LawN4EVlvNi/lrWwtkBCuLYTDTD0STerR0JcQn+PeMf4v
+ LbY4j+96RcmUSApEWZppKng0Q8BZtfT9hzmJBdL25rB/zYJFWPYF0cnw0Yq5UiKpu4xMkT7ha2
+ BP8=
+X-IronPort-AV: E=Sophos;i="5.79,334,1602518400"; 
+   d="scan'208";a="158219453"
+Received: from mail-bn8nam11lp2168.outbound.protection.outlook.com (HELO NAM11-BN8-obe.outbound.protection.outlook.com) ([104.47.58.168])
+  by ob1.hgst.iphmx.com with ESMTP; 10 Jan 2021 04:09:19 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JNBQJl6VPyIvGwPyKfF5mt+WDTpQNpXJ3VlVjnCW4MBWCQm2m5980gKd+I5edNVU6A4YrmqOGYTHX2R8LaVE3xgz1n4DeMUOGsMsqZOEwK7g7N0YYQpbjAgf1/IMTnY+8mrSM4gIJ80knaxDlu2LxbRHPysc6837EcALC+gprFBsiP1Y+mHCg6PmtTq0oKjZ8oJeVci5jJbXVJuaSMk2m34AdyI5BJo0dRnWnJ00v+32fTx2Fo1W9wbFwR/xUbztpqu/EEKayTJp+dXdZIeJfXeAz0xMv8sXI2brBEac4sne94Y/MrupXjdFuIMY4oTe6mO9vfdegu2S2jc/ykdjOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mPcefCLaSKQVGIFgUFg3ZO2Y1j5IklevmWOVMjX6Ic0=;
+ b=kJTcapoqpNsh4hQfvtiNTYcjb3S89YTNGw5/Q1YACiix+IkazWgcNKhGdAQ6iOSduMS0zohIf80XZNRUTUxbqw/FAVQmEtLfatE8ZpJujGAhQujTj147T3DSobNsU96etaSbGWK9C//l/hQL/CztAG/430JmFxQGW8Prwf+4iVLUUtt2hSl+ZmzqSIKJuQZZtHucmJjjJyaAOpO2HRe8g/vR8JLOpTqRJHDijqHOic5ICzMgbXT/lcjMV5b+FNBGJdoL03YOc0+HBUwfAlVPETIK/DxAF83UJazwq4A8NWxz52ZoDsoDsIy6BQJdB6C90tFdXoyemNOG0MyJDXi0lA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
+ header.d=wdc.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=yD8zYkali7maLviDx2WTi8i72ihDIWnJKSJbAu6xfJ0=;
-        b=Ts4OoM5bqISNbtmG5sPDsmpk3BTHhh/QjboJ9FjJbTRW6os44a6JWrPaQeIq9a4gzB
-         ytPoZ/GW+c8ZRLyy3+gy3UFzrpFfiklRK34zsaVHar6VPLoh+t6didLQ79On2YaXPI61
-         pJYMvy+biZXWpv873DXVw0VcAA4BWzd8gzcFFTJKXfdRrqQ5DS5I/WBs9CIv7jzQeFMI
-         Hq3iECPsMcVtJgXRMv4wn1o2Hlj3wnnkuWosFYpHehQe35KojPpv+ALObFOb9wY8RLyx
-         lHcnE4uGyPIaA5yYJvbSruf6mQkaPTFCw8BRrqy91Lzpf7zZilpiDzluyMd0xwOv21xY
-         uFYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=yD8zYkali7maLviDx2WTi8i72ihDIWnJKSJbAu6xfJ0=;
-        b=oeBGYqW+EAhOqFqgxPFX6WJCGqHZ+JDX1EsheS3j67f4MhBWYTIiiTY9KB5CDWa/QG
-         X+tXP0vw+Jncwg8KrXpIyQnb4lt5YS+30VHVVA883M0jTkIx1ylyXFndEK92PXxam2mq
-         sCQazQVcFUsJ9XgJ0vNrCpwmdleYMqeMHpiR1PAYODWze1ntqKMj8qGR8DnRuDBvmueD
-         h+1WEhQUDR/P0eYGfBRM/7rMEMAwPgvy77c/dnRVcR/3RSuMOAv+efWW3nuxMJABSosr
-         Jo9i+rJIFBmAbkkGea5ZPEDIjrkHS3mQQRyyHOhdCFY6PxTDvlsK4cR7sao3APTZcicS
-         hjSQ==
-X-Gm-Message-State: AOAM53204fXKCtpTwPObRcJPb2FH/gWzxkmLYwDz8CGiVqwcdkYXJbfX
-        P8dhy1JfCBMUi8UkTmutV+aBbiqLyusg13AY
-X-Google-Smtp-Source: ABdhPJyDJ7ivMuFntSJFW5N+/HuavTp+fJKVSfLb/Mv/WA3X5yhkivHrCndukCuTwkfjMzb7+EAADg==
-X-Received: by 2002:a1c:1d1:: with SMTP id 200mr7900279wmb.98.1610208414381;
-        Sat, 09 Jan 2021 08:06:54 -0800 (PST)
-Received: from localhost.localdomain ([185.69.144.125])
-        by smtp.gmail.com with ESMTPSA id j9sm17403866wrm.14.2021.01.09.08.06.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 Jan 2021 08:06:53 -0800 (PST)
-From:   Pavel Begunkov <asml.silence@gmail.com>
-To:     linux-block@vger.kernel.org
-Cc:     Jens Axboe <axboe@kernel.dk>,
-        Christoph Hellwig <hch@infradead.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Ming Lei <ming.lei@redhat.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        "Darrick J . Wong" <darrick.wong@oracle.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Jonathan Corbet <corbet@lwn.net>, linux-xfs@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, io-uring@vger.kernel.org,
-        linux-kernel@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-doc@vger.kernel.org,
-        Christoph Hellwig <hch@lst.de>
-Subject: [PATCH v3 7/7] bio: don't copy bvec for direct IO
-Date:   Sat,  9 Jan 2021 16:03:03 +0000
-Message-Id: <69fef253b37fc44dd28c43398715e27cee5e0fe0.1610170479.git.asml.silence@gmail.com>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <cover.1610170479.git.asml.silence@gmail.com>
-References: <cover.1610170479.git.asml.silence@gmail.com>
+ d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mPcefCLaSKQVGIFgUFg3ZO2Y1j5IklevmWOVMjX6Ic0=;
+ b=Kmn5sKWPA3XEJ6EGGnPEn3mZF8YmK/v/xBOORaNu9bCAZNYlMoCd6r06+fSGRxmO7djHMmOOoY9bx2ib+AAAqXa+HIbWIQoP9Q5lixYmUtWYYJPmmp45lVBTBVV4qhBI9A7ru87ShwxmfpjBdk8lutP86uEf2B1NOoe3cNtR0SA=
+Received: from BYAPR04MB4965.namprd04.prod.outlook.com (2603:10b6:a03:4d::25)
+ by BYAPR04MB4871.namprd04.prod.outlook.com (2603:10b6:a03:4e::32) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3742.12; Sat, 9 Jan
+ 2021 20:09:16 +0000
+Received: from BYAPR04MB4965.namprd04.prod.outlook.com
+ ([fe80::716c:4e0c:c6d1:298a]) by BYAPR04MB4965.namprd04.prod.outlook.com
+ ([fe80::716c:4e0c:c6d1:298a%6]) with mapi id 15.20.3742.009; Sat, 9 Jan 2021
+ 20:09:16 +0000
+From:   Chaitanya Kulkarni <Chaitanya.Kulkarni@wdc.com>
+To:     Pavel Begunkov <asml.silence@gmail.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>
+CC:     "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] target/file: don't zero iter before iov_iter_bvec
+Thread-Topic: [PATCH] target/file: don't zero iter before iov_iter_bvec
+Thread-Index: AQHW5qBkaWm3Wnjfmk+XiYs/GS5+eQ==
+Date:   Sat, 9 Jan 2021 20:09:15 +0000
+Message-ID: <BYAPR04MB4965F4DCF59E5225CF17322D86AD0@BYAPR04MB4965.namprd04.prod.outlook.com>
+References: <34cd22d6cec046e3adf402accb1453cc255b9042.1610207523.git.asml.silence@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=wdc.com;
+x-originating-ip: [199.255.45.62]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 7233df04-2f24-48b9-1efb-08d8b4da70c7
+x-ms-traffictypediagnostic: BYAPR04MB4871:
+x-microsoft-antispam-prvs: <BYAPR04MB4871CC108DBF68A86BB02B2086AD0@BYAPR04MB4871.namprd04.prod.outlook.com>
+wdcipoutbound: EOP-TRUE
+x-ms-oob-tlc-oobclassifiers: OLM:5516;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: H45skPl+S03Koge4SshfddwlakZjek0PXEsDXJ2yNyxy41U4S/zuyBYbZFeVApShypd0FPu+YX/hVkEoqRC4YDCBiSIhiemF3ldpwPbEqRJuZV3erg9iYIJvIO+R1oVe0SBoHQv1rN1q8uho8pdG/GteeloQHHaRfOMtg863k/0o2dnrVzR5mz14JOcfVX2mWWdI51o3fP2ciFz2hz/7Ec/qpOGy/qVnRqkw1jcK7d5dAD9tMhtYgVThOiq328KJk34NpuUtXzK9n3rOc6NNytOK8hjSFIAGYG4rei582B6p8q6MDx9QHXoh87PQNLDMmPe5ikbwYuVvvgiHuoXyg8kOBjt2yWQy5GTbFfwqwAe1ncL6FgL/WtFwgjjVYLp/csU8tv2PZS5lRZwzQ17dxQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR04MB4965.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(346002)(396003)(136003)(39860400002)(366004)(52536014)(8676002)(2906002)(316002)(110136005)(66556008)(66446008)(66476007)(54906003)(64756008)(66946007)(83380400001)(5660300002)(478600001)(9686003)(7696005)(26005)(6506007)(4326008)(53546011)(76116006)(8936002)(33656002)(55016002)(86362001)(71200400001)(186003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: =?us-ascii?Q?0o8ZchHg/cU7s3PeoV4KLo5jz6jjmT0UIK055g6WeQ9cqwkhQhzEcyJMdDyp?=
+ =?us-ascii?Q?WMHLk/KHXqd0iJkoWWKEY0t0KwD0jEewhQkA6KnBAMTCYut5ACOWtmsviwma?=
+ =?us-ascii?Q?IW4r6WoPPmavVT9120pdc0mgLLwcSHtr3MfwdVyOo5Ph9Mv+O6HRhFGPJGvD?=
+ =?us-ascii?Q?XGSJDFXajYC7/ivnc6GF6Kplvdstf6yJSDZzXV90ocS691AWmx4LHK7JIlU2?=
+ =?us-ascii?Q?eB0e9+ZvQ3rmIeAqq+qc9mE98GEbicpUKzc+s9ibEX6OCC3tdgY7j62r5Qha?=
+ =?us-ascii?Q?Uay0I/5f0K0FhvmFkMI4pTQuPxtrkXMgvO0waA+C2ed2qd+YbbWqT9i6Mzcu?=
+ =?us-ascii?Q?I4ZCniw793HFL+cJ1OeicagVHMLAEFLZJWNBfUIJVRngC3YKGFliEdE15SgU?=
+ =?us-ascii?Q?LQuz+/xYgCwz6d9WPOJ/aPdHcBYOHfATOgsCA/hza/WiPuL86XM+UgQ8+1J8?=
+ =?us-ascii?Q?LQIyyicWQP/0Fgppdx2jzF6uClaUQaBvfTDL+wuLUXKdFoWgBNjMXX1PFcqZ?=
+ =?us-ascii?Q?/XcB6j4cGqxrqg3KWJ6c+yAMH1RRFetX0NcOsdWnzVWRveNKx34SwD7RMPxU?=
+ =?us-ascii?Q?OO6C9FbVN5JemW146AuN8YTeBLNQRkl8jdebrCHFHZ2Ne+hbyDsANeOvYDXa?=
+ =?us-ascii?Q?rY2mVbZpIzHhPguJL2OsGy5VE03LOhzRSAIRlBy0xR26/1nfcvU8dMv04VDm?=
+ =?us-ascii?Q?UYHwASNospGOr2/dVBrvuBf34RuKkfGhKbVTUYvquAEUguuYrkkhTyN8Zlzl?=
+ =?us-ascii?Q?ovlqZ4+gnwdXegD2MagDxX9mTHq8Mwopk4pMn9cWo2nu9s1peWdnSAnPAWYz?=
+ =?us-ascii?Q?afoOaWhaRj54QGznn4Fyi7yJ+Ne4aD6J9l+ucxNhvR7GTodwGJQX0gW1kSp2?=
+ =?us-ascii?Q?fmppw3SqMEXqQHxkXbkXdjVjHepKeIgxmBQ0wZ7B9NxLsHecJ7/ynwAcaDZI?=
+ =?us-ascii?Q?P7QZyV3+ypnvjpFiMybj1dpVHKlZss1vtmSY6RVdZas+qo7vbAGju9/HQGg1?=
+ =?us-ascii?Q?uYCW?=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: wdc.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR04MB4965.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7233df04-2f24-48b9-1efb-08d8b4da70c7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jan 2021 20:09:15.9645
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: E9hJwFVATk8GPm8tBhApZ/WqnBjCEfPVasMz+iY8CmGqhHz4y/DB2GTtrL1LsG2cathB60aIV2+Thd8UvhuwVB93M4baDNnhi9JDTBt5DsM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR04MB4871
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-The block layer spends quite a while in blkdev_direct_IO() to copy and
-initialise bio's bvec. However, if we've already got a bvec in the input
-iterator it might be reused in some cases, i.e. when new
-ITER_BVEC_FLAG_FIXED flag is set. Simple tests show considerable
-performance boost, and it also reduces memory footprint.
-
-Suggested-by: Matthew Wilcox <willy@infradead.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
----
- Documentation/filesystems/porting.rst |  9 ++++
- block/bio.c                           | 67 ++++++++++++---------------
- include/linux/bio.h                   |  5 +-
- 3 files changed, 42 insertions(+), 39 deletions(-)
-
-diff --git a/Documentation/filesystems/porting.rst b/Documentation/filesystems/porting.rst
-index c722d94f29ea..1f8cf8e10b34 100644
---- a/Documentation/filesystems/porting.rst
-+++ b/Documentation/filesystems/porting.rst
-@@ -872,3 +872,12 @@ its result is kern_unmount() or kern_unmount_array().
- 
- zero-length bvec segments are disallowed, they must be filtered out before
- passed on to an iterator.
-+
-+---
-+
-+**mandatory**
-+
-+For bvec based itererators bio_iov_iter_get_pages() now doesn't copy bvecs but
-+uses the one provided. Anyone issuing kiocb-I/O should ensure that the bvec and
-+page references stay until I/O has completed, i.e. until ->ki_complete() has
-+been called or returned with non -EIOCBQUEUED code.
-diff --git a/block/bio.c b/block/bio.c
-index 9f26984af643..6f031a04b59a 100644
---- a/block/bio.c
-+++ b/block/bio.c
-@@ -960,21 +960,17 @@ void bio_release_pages(struct bio *bio, bool mark_dirty)
- }
- EXPORT_SYMBOL_GPL(bio_release_pages);
- 
--static int __bio_iov_bvec_add_pages(struct bio *bio, struct iov_iter *iter)
-+static int bio_iov_bvec_set(struct bio *bio, struct iov_iter *iter)
- {
--	const struct bio_vec *bv = iter->bvec;
--	unsigned int len;
--	size_t size;
--
--	if (WARN_ON_ONCE(iter->iov_offset > bv->bv_len))
--		return -EINVAL;
--
--	len = min_t(size_t, bv->bv_len - iter->iov_offset, iter->count);
--	size = bio_add_page(bio, bv->bv_page, len,
--				bv->bv_offset + iter->iov_offset);
--	if (unlikely(size != len))
--		return -EINVAL;
--	iov_iter_advance(iter, size);
-+	WARN_ON_ONCE(BVEC_POOL_IDX(bio) != 0);
-+
-+	bio->bi_vcnt = iter->nr_segs;
-+	bio->bi_max_vecs = iter->nr_segs;
-+	bio->bi_io_vec = (struct bio_vec *)iter->bvec;
-+	bio->bi_iter.bi_bvec_done = iter->iov_offset;
-+	bio->bi_iter.bi_size = iter->count;
-+
-+	iov_iter_advance(iter, iter->count);
- 	return 0;
- }
- 
-@@ -1088,12 +1084,12 @@ static int __bio_iov_append_get_pages(struct bio *bio, struct iov_iter *iter)
-  * This takes either an iterator pointing to user memory, or one pointing to
-  * kernel pages (BVEC iterator). If we're adding user pages, we pin them and
-  * map them into the kernel. On IO completion, the caller should put those
-- * pages. If we're adding kernel pages, and the caller told us it's safe to
-- * do so, we just have to add the pages to the bio directly. We don't grab an
-- * extra reference to those pages (the user should already have that), and we
-- * don't put the page on IO completion. The caller needs to check if the bio is
-- * flagged BIO_NO_PAGE_REF on IO completion. If it isn't, then pages should be
-- * released.
-+ * pages. For bvec based iterators bio_iov_iter_get_pages() uses the provided
-+ * bvecs rather than copying them. Hence anyone issuing kiocb based IO needs
-+ * to ensure the bvecs and pages stay referenced until the submitted I/O is
-+ * completed by a call to ->ki_complete() or returns with an error other than
-+ * -EIOCBQUEUED. The caller needs to check if the bio is flagged BIO_NO_PAGE_REF
-+ * on IO completion. If it isn't, then pages should be released.
-  *
-  * The function tries, but does not guarantee, to pin as many pages as
-  * fit into the bio, or are requested in @iter, whatever is smaller. If
-@@ -1105,27 +1101,22 @@ static int __bio_iov_append_get_pages(struct bio *bio, struct iov_iter *iter)
-  */
- int bio_iov_iter_get_pages(struct bio *bio, struct iov_iter *iter)
- {
--	const bool is_bvec = iov_iter_is_bvec(iter);
--	int ret;
--
--	if (WARN_ON_ONCE(bio->bi_vcnt))
--		return -EINVAL;
-+	int ret = 0;
- 
--	do {
--		if (bio_op(bio) == REQ_OP_ZONE_APPEND) {
--			if (WARN_ON_ONCE(is_bvec))
--				return -EINVAL;
--			ret = __bio_iov_append_get_pages(bio, iter);
--		} else {
--			if (is_bvec)
--				ret = __bio_iov_bvec_add_pages(bio, iter);
-+	if (iov_iter_is_bvec(iter)) {
-+		if (WARN_ON_ONCE(bio_op(bio) == REQ_OP_ZONE_APPEND))
-+			return -EINVAL;
-+		bio_iov_bvec_set(bio, iter);
-+		bio_set_flag(bio, BIO_NO_PAGE_REF);
-+		return 0;
-+	} else {
-+		do {
-+			if (bio_op(bio) == REQ_OP_ZONE_APPEND)
-+				ret = __bio_iov_append_get_pages(bio, iter);
- 			else
- 				ret = __bio_iov_iter_get_pages(bio, iter);
--		}
--	} while (!ret && iov_iter_count(iter) && !bio_full(bio, 0));
--
--	if (is_bvec)
--		bio_set_flag(bio, BIO_NO_PAGE_REF);
-+		} while (!ret && iov_iter_count(iter) && !bio_full(bio, 0));
-+	}
- 
- 	/* don't account direct I/O as memory stall */
- 	bio_clear_flag(bio, BIO_WORKINGSET);
-diff --git a/include/linux/bio.h b/include/linux/bio.h
-index d8f9077c43ef..1d30572a8c53 100644
---- a/include/linux/bio.h
-+++ b/include/linux/bio.h
-@@ -444,10 +444,13 @@ static inline void bio_wouldblock_error(struct bio *bio)
- 
- /*
-  * Calculate number of bvec segments that should be allocated to fit data
-- * pointed by @iter.
-+ * pointed by @iter. If @iter is backed by bvec it's going to be reused
-+ * instead of allocating a new one.
-  */
- static inline int bio_iov_vecs_to_alloc(struct iov_iter *iter, int max_segs)
- {
-+	if (iov_iter_is_bvec(iter))
-+		return 0;
- 	return iov_iter_npages(iter, max_segs);
- }
- 
--- 
-2.24.0
-
+On 1/9/21 07:59, Pavel Begunkov wrote:=0A=
+> iov_iter_bvec() initialises iterators well, no need to pre-zero it=0A=
+> beforehand as done in fd_execute_rw_aio(). Compilers can't optimise it=0A=
+> out and generate extra code for that (confirmed with assembly).=0A=
+It will be great if we can quantify this optimization with the actual=0A=
+performance=0A=
+numbers.=0A=
+> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>=0A=
+> ---=0A=
+>  drivers/target/target_core_file.c | 2 +-=0A=
+>  1 file changed, 1 insertion(+), 1 deletion(-)=0A=
+>=0A=
+> diff --git a/drivers/target/target_core_file.c b/drivers/target/target_co=
+re_file.c=0A=
+> index cce455929778..5a66854def95 100644=0A=
+> --- a/drivers/target/target_core_file.c=0A=
+> +++ b/drivers/target/target_core_file.c=0A=
+> @@ -267,7 +267,7 @@ fd_execute_rw_aio(struct se_cmd *cmd, struct scatterl=
+ist *sgl, u32 sgl_nents,=0A=
+>  	struct fd_dev *fd_dev =3D FD_DEV(dev);=0A=
+>  	struct file *file =3D fd_dev->fd_file;=0A=
+>  	struct target_core_file_cmd *aio_cmd;=0A=
+> -	struct iov_iter iter =3D {};=0A=
+> +	struct iov_iter iter;=0A=
+>  	struct scatterlist *sg;=0A=
+>  	ssize_t len =3D 0;=0A=
+>  	int ret =3D 0, i;=0A=
+=0A=
