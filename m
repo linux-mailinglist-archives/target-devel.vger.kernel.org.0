@@ -2,65 +2,88 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 638372EF0DC
-	for <lists+target-devel@lfdr.de>; Fri,  8 Jan 2021 11:51:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BCCC2F0107
+	for <lists+target-devel@lfdr.de>; Sat,  9 Jan 2021 16:58:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727105AbhAHKu3 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 8 Jan 2021 05:50:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49062 "EHLO
+        id S1726267AbhAIP5t (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 9 Jan 2021 10:57:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726901AbhAHKu3 (ORCPT
+        with ESMTP id S1726059AbhAIP5s (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 8 Jan 2021 05:50:29 -0500
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD4C6C0612F4
-        for <target-devel@vger.kernel.org>; Fri,  8 Jan 2021 02:49:48 -0800 (PST)
-Received: by mail-lf1-x136.google.com with SMTP id x20so21803987lfe.12
-        for <target-devel@vger.kernel.org>; Fri, 08 Jan 2021 02:49:48 -0800 (PST)
+        Sat, 9 Jan 2021 10:57:48 -0500
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6374EC061786;
+        Sat,  9 Jan 2021 07:57:08 -0800 (PST)
+Received: by mail-wr1-x430.google.com with SMTP id t30so11920416wrb.0;
+        Sat, 09 Jan 2021 07:57:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:sender:in-reply-to:references:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=ik6B+6lkNc+iFrIPLOlH6nyfA0JsJ4cRGzVhof+Ll8w=;
-        b=sDAcSKfDqT8GDOZ+wnwT5fwZjsYhKjvvfGvb7zGzn+C2KeEXlD7c5kIolcGXhhna4m
-         6sGCVQzLeROCbISdOeWfxMf/7RK96YIzqiCOFeJoKxtMxBfmnJ1KvsJyoNmTrVNhzdJy
-         z0O6H0nolJtZDUykNfjABJnVmyaVefO85V3o+fLf0WZaUlUHDBcYepcbF9tAy3QxFzDG
-         OWjCQD6qYe8qsMLBQYl0CJro07Vmvyk/iOz6zj6Tf9bRq02aX6APvrx7gdtQrGQeTy1f
-         X3sru/vlTY09iaWIHl5Gi1HsOHrLlfzHr5pHNcZzJa8NE8puQXSuZAot/Bgpi2bczE/0
-         vzTw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=4HHQ9RGvj6Z9FZXDkRGAkIAp92S56tPsxAgDh/4OaCc=;
+        b=u/sYmc5c/Cu8NO4mrleoXIANn1/0yWcpS5qVSuu9Ej40Pg6cIb1W2VHcLIVSdoCM6+
+         092goA2x2vIMKwi5Ke5VYmmG1GErTTCvTzbEfpYmZBw4jtkaelBK82s76kGcemq31HOA
+         xfqL7O2GggO3X/Ddxew5rZQWgIubw+JiMPgcApNTL6KGhsV4T6KP0ofhksy5GlO29DSX
+         3x8b9IwI+DBc3+WIhiMmrbwg3efHOI6dZAB6maG8BDBVlsKpLv9P1C5z6mpef39lCJis
+         0mv4jFNZirOzb331PwKpD4f0JkL7vaf2PnqQsVwR8hEhsXQFFi6ewCYBqwVzo15sxcHx
+         QYwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
-         :date:message-id:subject:to:content-transfer-encoding;
-        bh=ik6B+6lkNc+iFrIPLOlH6nyfA0JsJ4cRGzVhof+Ll8w=;
-        b=Pf2OqDp/RtNYHiDAdg52o7MuC5wZP298iMLskb4W7a9lxbaiNs8K58Dz9NY4Mr+lzo
-         HPlsXto09c8+ZTE+zL5U564ZWQr6j3O+U/4v/0N+ETBxZF3zqxvBh4OASZRjiHzoVN9h
-         qJoZz8q4+MJhgznyZ4eKWBQVfq8Y3tSJlu6/isSMGFWlCRwW9p5D8z1QXe8tW+Ci7s2B
-         N0ZamlTVnUQlQibhg4KDhOMldRCVl45qlEMhoBLU4rDYO8BsURvpyKSz85DqgXbtpE58
-         O9YFb/1OpwzaDdx2EkkyCDipBSYkx4nyzm3Y00wpeIlcJ9cIV8iHTqJwIM7Bib9A9QgA
-         YJUA==
-X-Gm-Message-State: AOAM532Bivi0Vs/3ph7snex6Lk1vnHjRTo4E7fok0UgJNeb7dKLzQYXK
-        pGtpNg0Ldvq6KG5LVwNpgGjHrLHUQUEoXTVzDQ==
-X-Google-Smtp-Source: ABdhPJz8yp2C3BmeKI7ogTkYbyQ5+WTVtzuiFNO7bH9UFExBBm9weZPeG9cYe+nRVpFEofwWbco3A0NhyVpgDUsc/kM=
-X-Received: by 2002:a19:a405:: with SMTP id q5mr1505285lfc.503.1610102987327;
- Fri, 08 Jan 2021 02:49:47 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=4HHQ9RGvj6Z9FZXDkRGAkIAp92S56tPsxAgDh/4OaCc=;
+        b=bVbNa+kkp/3isdgMGG1VhEBaK3l9RhX679qN1hq+PmWVXVQW4LVewz8i8oPrwzk1QH
+         sim7m4LovsCBERMWFnqd57AjomJl4NRPr/AeVKqhjs5T+uhhlz9KwvqQe3NX9/xWq7lT
+         IQ3U9vJv2ph506vIpU+9Sx8KmEwsFtjsWQcDcRdIX0+VaFwNnNpeFGIsxlhXmQ2dtyTC
+         hTiy33iQnYV/yD7bULfgGYGnePLJHOMfNvUjrHWcpK6ZmOpdkJQu7MvTMtoe1b2GCW7h
+         mwISWkVyBC9k70L/87NfmX6A5B2p17NwY+iAvnL/w3Rq2hdxVkag39UR0jNRx54brIuA
+         uu7A==
+X-Gm-Message-State: AOAM532MS4HNYR8bD3unNJ41EGQIgtVCpIYzC6FxQSzBrfQM6obJ3oL+
+        3uIYupty3eR4xRA5kYOwVNQ=
+X-Google-Smtp-Source: ABdhPJzu3MTQCx9PGGHDjGtBcArNIBFP5vEbHEdINlX+Fuik0EPOehbsiOXBuocEkmu9WGSU1L04IA==
+X-Received: by 2002:a5d:56c3:: with SMTP id m3mr8671869wrw.419.1610207827145;
+        Sat, 09 Jan 2021 07:57:07 -0800 (PST)
+Received: from localhost.localdomain ([185.69.144.125])
+        by smtp.gmail.com with ESMTPSA id g78sm15563568wme.33.2021.01.09.07.57.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 09 Jan 2021 07:57:06 -0800 (PST)
+From:   Pavel Begunkov <asml.silence@gmail.com>
+To:     "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] target/file: don't zero iter before iov_iter_bvec
+Date:   Sat,  9 Jan 2021 15:53:27 +0000
+Message-Id: <34cd22d6cec046e3adf402accb1453cc255b9042.1610207523.git.asml.silence@gmail.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Sender: kossibrewena@gmail.com
-Received: by 2002:ab3:680e:0:0:0:0:0 with HTTP; Fri, 8 Jan 2021 02:49:46 -0800 (PST)
-In-Reply-To: <CALKsWkgg0AquqOk4RcCsrUm-LjsRFV00m76ds94HDPOV8UZuwA@mail.gmail.com>
-References: <CALKsWkgg0AquqOk4RcCsrUm-LjsRFV00m76ds94HDPOV8UZuwA@mail.gmail.com>
-From:   camille <camillejackson021@gmail.com>
-Date:   Fri, 8 Jan 2021 10:49:46 +0000
-X-Google-Sender-Auth: sqg8-n7kV0Vugo5LUzFNnnrsTgo
-Message-ID: <CALKsWkj63TTg-fGidoyPU-+5Y2YcUjpFMq828sRUysMccB2+Zg@mail.gmail.com>
-Subject: =?UTF-8?B?0JfQtNGA0LDQstGB0YLQstGD0LnRgtC1LA==?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-0J/RgNC40LLQtdGC0YHRgtCy0YPRjiDRgtC10LHRjywg0LzQvtC5INC00YDRg9CzLCDQvdCw0LTQ
-tdGO0YHRjCwg0YLRiyDQsiDQv9C+0YDRj9C00LrQtSwg0L/QvtC20LDQu9GD0LnRgdGC0LAsINC+
-0YLQstC10YLRjCDQvNC90LUNCtCx0LvQsNCz0L7QtNCw0YDRjywNCg==
+iov_iter_bvec() initialises iterators well, no need to pre-zero it
+beforehand as done in fd_execute_rw_aio(). Compilers can't optimise it
+out and generate extra code for that (confirmed with assembly).
+
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+---
+ drivers/target/target_core_file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/target/target_core_file.c b/drivers/target/target_core_file.c
+index cce455929778..5a66854def95 100644
+--- a/drivers/target/target_core_file.c
++++ b/drivers/target/target_core_file.c
+@@ -267,7 +267,7 @@ fd_execute_rw_aio(struct se_cmd *cmd, struct scatterlist *sgl, u32 sgl_nents,
+ 	struct fd_dev *fd_dev = FD_DEV(dev);
+ 	struct file *file = fd_dev->fd_file;
+ 	struct target_core_file_cmd *aio_cmd;
+-	struct iov_iter iter = {};
++	struct iov_iter iter;
+ 	struct scatterlist *sg;
+ 	ssize_t len = 0;
+ 	int ret = 0, i;
+-- 
+2.24.0
+
