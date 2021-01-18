@@ -2,176 +2,68 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E8FF2F9A58
-	for <lists+target-devel@lfdr.de>; Mon, 18 Jan 2021 08:07:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DAA8B2F9E11
+	for <lists+target-devel@lfdr.de>; Mon, 18 Jan 2021 12:26:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731791AbhARHH1 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 18 Jan 2021 02:07:27 -0500
-Received: from mta-02.yadro.com ([89.207.88.252]:48144 "EHLO mta-01.yadro.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730433AbhARHH0 (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Mon, 18 Jan 2021 02:07:26 -0500
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 214A8412ED;
-        Mon, 18 Jan 2021 07:06:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        content-type:content-type:content-transfer-encoding:mime-version
-        :x-mailer:message-id:date:date:subject:subject:from:from
-        :received:received:received; s=mta-01; t=1610953602; x=
-        1612768003; bh=hhle16S0/J3MZmEVmyrK/xm9DzNqb3MgPk5rabZDex0=; b=U
-        Xvwg3qvDczeeI/1WZGc6RBJ3vRm22yga7bYGD1LzVDK9mKrbTSaKaM7puX9IHste
-        EntVldZN9YTbItnG84mmg/2hrJIZWXiO2yUKwJSdYY6irlY1hsv6a+J9h6ayS7A4
-        ifbfnmps5UD12Ng8VDH/kaed1ab+JPVAU/tGegAX/U=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id ocS7ykBsy4jB; Mon, 18 Jan 2021 10:06:42 +0300 (MSK)
-Received: from T-EXCH-03.corp.yadro.com (t-exch-03.corp.yadro.com [172.17.100.103])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id 3C8A841273;
-        Mon, 18 Jan 2021 10:06:42 +0300 (MSK)
-Received: from localhost (172.17.204.212) by T-EXCH-03.corp.yadro.com
- (172.17.100.103) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Mon, 18
- Jan 2021 10:06:42 +0300
-From:   Roman Bolshakov <r.bolshakov@yadro.com>
-To:     <target-devel@vger.kernel.org>
-CC:     <linux-scsi@vger.kernel.org>, <linux@yadro.com>,
-        Roman Bolshakov <r.bolshakov@yadro.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        Andrew Vasquez <andrewv@marvell.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH] Revert "scsi: qla2xxx: Use a dedicated interrupt handler for 'handshake-required' ISPs"
-Date:   Mon, 18 Jan 2021 10:06:38 +0300
-Message-ID: <20210118070638.9250-1-r.bolshakov@yadro.com>
-X-Mailer: git-send-email 2.30.0
+        id S2389462AbhARL0P (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 18 Jan 2021 06:26:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40978 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389979AbhARLRy (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Mon, 18 Jan 2021 06:17:54 -0500
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4063C061573
+        for <target-devel@vger.kernel.org>; Mon, 18 Jan 2021 03:17:13 -0800 (PST)
+Received: by mail-pj1-x1043.google.com with SMTP id kx7so40941pjb.2
+        for <target-devel@vger.kernel.org>; Mon, 18 Jan 2021 03:17:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=zkv0Q58PPvkSvJu6d30h6KYA2gvkC/VcWaVEKk6ruOk=;
+        b=uSdErltwFhLoimLW9nJvKGj4nqbqHO5TGeUjM8OrWwTe/IjtsTxyKvOZOWLCDnYguF
+         /fhrbjNwtrkiCmVypllERIIyl/Kb/5DIXcwWcl88q1EZjSj9oHGyLt9Cig1msjsNKjIi
+         /rZjk6D1mCZJagI4WzGVU1Lk4kSDIk9GM9zRubri0JYYruWI2Zo8MLxKgs1umK9QXeF4
+         0NmEv6sOiBmoJ5Xh7VjiULisNY99+fjkBLNlkDdf0QNpKlvU6ucaSDTDMuOpQ6L5uOMB
+         5l5m/IlZUtA7N5pqYZ1joEV2fio57vGuKBMpixFm4zJVIrUp6xV+CLWcQhz+tq9KZkeC
+         dgmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=zkv0Q58PPvkSvJu6d30h6KYA2gvkC/VcWaVEKk6ruOk=;
+        b=VT2Pw1UlfxvmweJqwMKd4SBmacT44luYhkK/XY3yWpB3Dkty0/laA2vq1QffNGrykk
+         nqin1nLJ2fOyzIG1nnysTdFJT+wpuelBFKNMYTmcPVvCv67R9SXt+mNtIBawvEzeM6UX
+         wF/QKNt3jZIrcJwCBjR9uDGK/nDEYtryNAzuPuwMyrKcel1Clo+Dy0pc2D/8smMRe4I/
+         ccoOnr4m3LkSaKlgs386iRvR1LXmu10VROt32JzP3UfvolQryY4/8UZz0X/HLIveERPN
+         iWXFC5Gjz/v/V8opFPk+JPl5qeyjvX5Gy9b6SOL+gcjxHheT1rlqshF7w/nJHXeVz5qc
+         6GuQ==
+X-Gm-Message-State: AOAM533RVYmqMNYPFuCVnAsJrHW+rCglzhwfB2v3aBCaEQ4F3Lmt+LFH
+        vU1+y5gpBHm0osjAa8w1LsUR00hO9oeFn/se0VM=
+X-Google-Smtp-Source: ABdhPJxSxwudcxwr2ECfJmD2dOjX/BVy8Kae3ZNTsq+iL9HDBfpqiOkLFJrXTblkmvAocttYUtHEVZYVnAAODUSFLpo=
+X-Received: by 2002:a17:90b:1b4f:: with SMTP id nv15mr25226206pjb.105.1610968633459;
+ Mon, 18 Jan 2021 03:17:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [172.17.204.212]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-03.corp.yadro.com (172.17.100.103)
+Received: by 2002:a17:90a:bb04:0:0:0:0 with HTTP; Mon, 18 Jan 2021 03:17:12
+ -0800 (PST)
+Reply-To: jerrykloubarlyngessan@gmail.com
+From:   Jerry Kloubarly Ngessan <franciscawilliams669@gmail.com>
+Date:   Mon, 18 Jan 2021 11:17:12 +0000
+Message-ID: <CAN2EdmnuDDHLex8drTmTdbCEc9D7UnaMX5v5MLQ-wYv_u+Jeug@mail.gmail.com>
+Subject: Mr.Jerry Kloubarly Ngessan
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-This reverts commit 7b2a73963c91cf6bad6b8f58636560cd1f3cf319.
-
-The offending commit is setting up interrupt handlers in
-qla25xx_create_rsp_que() before disable_msix_handshake is set up for
-pure target mode in qla24xx_config_rings(). That leads to a case when
-host always clears interrupt bit in HCCR despite that's not needed.
-Shortly afterwards firmware stops sending interrupts.
-
-Cc: Himanshu Madhani <himanshu.madhani@oracle.com>
-Cc: Andrew Vasquez <andrewv@marvell.com>
-Cc: Martin K. Petersen <martin.petersen@oracle.com>
-Cc: stable@vger.kernel.org # >= v5.7
-Signed-off-by: Roman Bolshakov <r.bolshakov@yadro.com>
----
- drivers/scsi/qla2xxx/qla_def.h |  1 -
- drivers/scsi/qla2xxx/qla_gbl.h |  2 --
- drivers/scsi/qla2xxx/qla_isr.c | 31 +++++++------------------------
- drivers/scsi/qla2xxx/qla_mid.c |  3 +--
- 4 files changed, 8 insertions(+), 29 deletions(-)
-
-diff --git a/drivers/scsi/qla2xxx/qla_def.h b/drivers/scsi/qla2xxx/qla_def.h
-index 30c7e5e63851..8490b41d2353 100644
---- a/drivers/scsi/qla2xxx/qla_def.h
-+++ b/drivers/scsi/qla2xxx/qla_def.h
-@@ -3328,7 +3328,6 @@ struct isp_operations {
- #define QLA_MSIX_RSP_Q			0x01
- #define QLA_ATIO_VECTOR		0x02
- #define QLA_MSIX_QPAIR_MULTIQ_RSP_Q	0x03
--#define QLA_MSIX_QPAIR_MULTIQ_RSP_Q_HS	0x04
- 
- #define QLA_MIDX_DEFAULT	0
- #define QLA_MIDX_RSP_Q		1
-diff --git a/drivers/scsi/qla2xxx/qla_gbl.h b/drivers/scsi/qla2xxx/qla_gbl.h
-index e39b4f2da73a..0f626e212e8b 100644
---- a/drivers/scsi/qla2xxx/qla_gbl.h
-+++ b/drivers/scsi/qla2xxx/qla_gbl.h
-@@ -570,8 +570,6 @@ qla2x00_process_completed_request(struct scsi_qla_host *, struct req_que *,
- 	uint32_t);
- extern irqreturn_t
- qla2xxx_msix_rsp_q(int irq, void *dev_id);
--extern irqreturn_t
--qla2xxx_msix_rsp_q_hs(int irq, void *dev_id);
- fc_port_t *qla2x00_find_fcport_by_loopid(scsi_qla_host_t *, uint16_t);
- fc_port_t *qla2x00_find_fcport_by_wwpn(scsi_qla_host_t *, u8 *, u8);
- fc_port_t *qla2x00_find_fcport_by_nportid(scsi_qla_host_t *, port_id_t *, u8);
-diff --git a/drivers/scsi/qla2xxx/qla_isr.c b/drivers/scsi/qla2xxx/qla_isr.c
-index f9142dbec112..f18d46b0efe0 100644
---- a/drivers/scsi/qla2xxx/qla_isr.c
-+++ b/drivers/scsi/qla2xxx/qla_isr.c
-@@ -3895,25 +3895,6 @@ qla24xx_msix_default(int irq, void *dev_id)
- 
- irqreturn_t
- qla2xxx_msix_rsp_q(int irq, void *dev_id)
--{
--	struct qla_hw_data *ha;
--	struct qla_qpair *qpair;
--
--	qpair = dev_id;
--	if (!qpair) {
--		ql_log(ql_log_info, NULL, 0x505b,
--		    "%s: NULL response queue pointer.\n", __func__);
--		return IRQ_NONE;
--	}
--	ha = qpair->hw;
--
--	queue_work_on(smp_processor_id(), ha->wq, &qpair->q_work);
--
--	return IRQ_HANDLED;
--}
--
--irqreturn_t
--qla2xxx_msix_rsp_q_hs(int irq, void *dev_id)
- {
- 	struct qla_hw_data *ha;
- 	struct qla_qpair *qpair;
-@@ -3928,10 +3909,13 @@ qla2xxx_msix_rsp_q_hs(int irq, void *dev_id)
- 	}
- 	ha = qpair->hw;
- 
--	reg = &ha->iobase->isp24;
--	spin_lock_irqsave(&ha->hardware_lock, flags);
--	wrt_reg_dword(&reg->hccr, HCCRX_CLR_RISC_INT);
--	spin_unlock_irqrestore(&ha->hardware_lock, flags);
-+	/* Clear the interrupt, if enabled, for this response queue */
-+	if (unlikely(!ha->flags.disable_msix_handshake)) {
-+		reg = &ha->iobase->isp24;
-+		spin_lock_irqsave(&ha->hardware_lock, flags);
-+		wrt_reg_dword(&reg->hccr, HCCRX_CLR_RISC_INT);
-+		spin_unlock_irqrestore(&ha->hardware_lock, flags);
-+	}
- 
- 	queue_work_on(smp_processor_id(), ha->wq, &qpair->q_work);
- 
-@@ -3950,7 +3934,6 @@ static const struct qla_init_msix_entry msix_entries[] = {
- 	{ "rsp_q", qla24xx_msix_rsp_q },
- 	{ "atio_q", qla83xx_msix_atio_q },
- 	{ "qpair_multiq", qla2xxx_msix_rsp_q },
--	{ "qpair_multiq_hs", qla2xxx_msix_rsp_q_hs },
- };
- 
- static const struct qla_init_msix_entry qla82xx_msix_entries[] = {
-diff --git a/drivers/scsi/qla2xxx/qla_mid.c b/drivers/scsi/qla2xxx/qla_mid.c
-index c7caf322f445..7e15dc358f04 100644
---- a/drivers/scsi/qla2xxx/qla_mid.c
-+++ b/drivers/scsi/qla2xxx/qla_mid.c
-@@ -893,8 +893,7 @@ qla25xx_create_rsp_que(struct qla_hw_data *ha, uint16_t options,
- 	    rsp->rsp_q_out);
- 
- 	ret = qla25xx_request_irq(ha, qpair, qpair->msix,
--		ha->flags.disable_msix_handshake ?
--		QLA_MSIX_QPAIR_MULTIQ_RSP_Q : QLA_MSIX_QPAIR_MULTIQ_RSP_Q_HS);
-+	    QLA_MSIX_QPAIR_MULTIQ_RSP_Q);
- 	if (ret)
- 		goto que_failed;
- 
--- 
-2.30.0
-
+Hello Please
+I am Mr. Jerry Kloubarly Ngessan, I stopped at your email from our
+international business directory in my research for a reliable person
+to partner with, I have a business that will profit us both that I
+want us to discuss. You can contact me for more details for convenient
+business discussion if you are interested.
+My email is   (jerrykloubarlyngessan@gmail.com)  I will be glad to
+hear from you soon for more  details
+Thanks for your time and waiting for your response
+Mr.Jerry Kloubarly Ngessan
