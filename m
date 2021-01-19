@@ -2,91 +2,111 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 644562FBA92
-	for <lists+target-devel@lfdr.de>; Tue, 19 Jan 2021 15:58:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E4D02FBD9C
+	for <lists+target-devel@lfdr.de>; Tue, 19 Jan 2021 18:29:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391644AbhASOys (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 19 Jan 2021 09:54:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33476 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2393638AbhASNA4 (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Tue, 19 Jan 2021 08:00:56 -0500
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48403C06179B
-        for <target-devel@vger.kernel.org>; Tue, 19 Jan 2021 04:59:07 -0800 (PST)
-Received: by mail-qt1-x835.google.com with SMTP id e15so13527063qte.9
-        for <target-devel@vger.kernel.org>; Tue, 19 Jan 2021 04:59:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=B3Cy0Hm6xTRsmff/JkHOzD1P8m+ZaMSZbwZ78cwq0GQ=;
-        b=ZGSI5bxWjU+x6vpwy6aJhb0H6QN8FxL1hxmj/KVTU1+omQptO3f8ci9LDt5IMdmEm1
-         c4v/0lgymC7G0E3l+2BOtcBk1DueLIbZR8J5cxMMLK3Yi0npvu/r/IIOp2wnIuuEiMOE
-         DrJjzANZhdQ53CfuySR1LOimnUnSIDo4FGY/QmSEA0+i1UEodaNTu5jJ1/O7oInHnfdm
-         qtOg4X7Kif7h5aJ2gi3ToQZLQMqsAQcD3DKwsenq41fiLGO26hoqLlrhFHOsM+1Ha+/8
-         g1zHKQfTf/f2IFzFEdXrbT2v96nn6w01sjb/AslAOhGMjo1PLV9/0FdTcZ/CTpaHjkXR
-         P6zQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=B3Cy0Hm6xTRsmff/JkHOzD1P8m+ZaMSZbwZ78cwq0GQ=;
-        b=RKkR2mSU/46d/Ck4fRBCk6jB1i0xX/yEJCJWFf0HSZS9uSVI/JaNdgno5edPKTvxi6
-         o7RHhowBuT8TWoVDos18ruj6/Oujr+NCTC2VehustKizB2iR2SucgR5bxekZjTsjeeT4
-         POWDfRd80X05tIkk0pPJAXhuv5B9QWO+Q15xNqaofr7v7545w4EuNnM51yURC7STTKbj
-         FTgR99izDD14it93SX+BFGIZBLTogc1jO+NK+TzXbNl20qsq/B4rZhVEPNgZy0sPrZ1/
-         H0G/hO5dZ1pdKiOKRULYtjbzJMW/IHAK3l3B63bVrlehiWh1jBakVgYNkV5BdzDrDIJG
-         sl8g==
-X-Gm-Message-State: AOAM531nfLoy1Bl0lNtfO9oaA1dPq9pLUHO5TeE9zJSG4z2EgiNXhuwQ
-        pCN9u0Xr0YQNraAJUVxUvnfAjg==
-X-Google-Smtp-Source: ABdhPJwlbXLZsM8EZ3zbiuP95L7daX8Gjcn61F+rGmL6G3gAj59bCjoRgpcQVVChw0oLTnlsG4kHzA==
-X-Received: by 2002:a05:622a:4d1:: with SMTP id q17mr4030813qtx.272.1611061145938;
-        Tue, 19 Jan 2021 04:59:05 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-162-115-133.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.115.133])
-        by smtp.gmail.com with ESMTPSA id k64sm13021228qkc.110.2021.01.19.04.59.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Jan 2021 04:59:05 -0800 (PST)
-Received: from jgg by mlx with local (Exim 4.94)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1l1qbA-003bfs-PA; Tue, 19 Jan 2021 08:59:04 -0400
-Date:   Tue, 19 Jan 2021 08:59:04 -0400
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Douglas Gilbert <dgilbert@interlog.com>
-Cc:     Bodo Stroesser <bostroesser@gmail.com>, linux-scsi@vger.kernel.org,
-        linux-block@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-        martin.petersen@oracle.com, jejb@linux.vnet.ibm.com, ddiss@suse.de,
-        bvanassche@acm.org
-Subject: Re: [PATCH v6 1/4] sgl_alloc_order: remove 4 GiB limit, sgl_free()
- warning
-Message-ID: <20210119125904.GR4605@ziepe.ca>
-References: <20210118163006.61659-1-dgilbert@interlog.com>
- <20210118163006.61659-2-dgilbert@interlog.com>
- <20210118182854.GJ4605@ziepe.ca>
- <59707b66-0b6c-b397-82fe-5ad6a6f99ba1@interlog.com>
- <20210118202431.GO4605@ziepe.ca>
- <7f443666-b210-6f99-7b50-6c26d87fa7ca@gmail.com>
- <20210118234818.GP4605@ziepe.ca>
- <770a562e-52b9-ba93-59d3-1026340bf4f3@interlog.com>
+        id S2390125AbhASR24 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 19 Jan 2021 12:28:56 -0500
+Received: from smtp.infotech.no ([82.134.31.41]:59521 "EHLO smtp.infotech.no"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2389631AbhASRKv (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Tue, 19 Jan 2021 12:10:51 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by smtp.infotech.no (Postfix) with ESMTP id BF9CE2041AC;
+        Tue, 19 Jan 2021 18:09:39 +0100 (CET)
+X-Virus-Scanned: by amavisd-new-2.6.6 (20110518) (Debian) at infotech.no
+Received: from smtp.infotech.no ([127.0.0.1])
+        by localhost (smtp.infotech.no [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id zpIfBtn7j-PD; Tue, 19 Jan 2021 18:09:33 +0100 (CET)
+Received: from xtwo70.bingwo.ca (host-104-157-204-209.dyn.295.ca [104.157.204.209])
+        by smtp.infotech.no (Postfix) with ESMTPA id B534220418D;
+        Tue, 19 Jan 2021 18:09:31 +0100 (CET)
+From:   Douglas Gilbert <dgilbert@interlog.com>
+To:     linux-scsi@vger.kernel.org, linux-block@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     martin.petersen@oracle.com, jejb@linux.vnet.ibm.com,
+        bostroesser@gmail.com, ddiss@suse.de, bvanassche@acm.org
+Subject: [PATCH 0/3] scatterlist: sgl-sgl ops: copy, equal
+Date:   Tue, 19 Jan 2021 12:09:25 -0500
+Message-Id: <20210119170928.79805-1-dgilbert@interlog.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <770a562e-52b9-ba93-59d3-1026340bf4f3@interlog.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Mon, Jan 18, 2021 at 08:27:09PM -0500, Douglas Gilbert wrote:
+Scatter-gather lists (sgl_s) are frequently used as data carriers in
+the block layer. For example the SCSI and NVMe subsystems interchange
+data with the block layer using sgl_s. The sgl API is declared in
+<linux/scatterlist.h>
 
-> To protect against the "unsigned long long" length being too big why
-> not pick a large power of two and if someone can justify a larger
-> value, they can send a patch.
-> 
->         if (length > 64ULL * 1024 * 1024 * 1024)
-> 		return NULL;
+The author has extended these transient sgl use cases to a store (i.e.
+a ramdisk) in the scsi_debug driver. Other new potential uses of sgl_s
+could be for the target subsystem. When this extra step is taken, the
+need to copy between sgl_s becomes apparent. The patchset adds
+sgl_copy_sgl(), sgl_equal_sgl() and sgl_memset().
 
-That is not how we protect against arithemetic overflows in the kernel
+Changes since v6 [posted 20210118]:
+  - restarted with new patchset name, was "scatterlist: add new
+    capabilities"
+  - drop correction patch "sgl_alloc_order: remove 4 GiB limit,
+    sgl_free() warning"; could be sent separately as a fix
+  - rename sgl_compare_sgl() to sg_equal_sgl() and the helper
+    to sg_equal_sgl_idx()
 
-Jason
+Changes since v5 [posted 20201228]:
+  - incorporate review requests from Jason Gunthorpe
+  - replace integer overflow detection code in sgl_alloc_order()
+    with a pre-condition statement
+  - rebase on lk 5.11.0-rc4
+
+Changes since v4 [posted 20201105]:
+  - rebase on lk 5.10.0-rc2
+
+Changes since v3 [posted 20201019]:
+  - re-instate check on integer overflow of nent calculation in
+    sgl_alloc_order(). Do it in such a way as to not limit the
+    overall sgl size to 4  GiB
+  - introduce sgl_compare_sgl_idx() helper function that, if
+    requested and if a miscompare is detected, will yield the byte
+    index of the first miscompare.
+  - add Reviewed-by tags from Bodo Stroesser
+  - rebase on lk 5.10.0-rc2 [was on lk 5.9.0]
+
+Changes since v2 [posted 20201018]:
+  - remove unneeded lines from sgl_memset() definition.
+  - change sg_zero_buffer() to call sgl_memset() as the former
+    is a subset.
+
+Changes since v1 [posted 20201016]:
+  - Bodo Stroesser pointed out a problem with the nesting of
+    kmap_atomic() [called via sg_miter_next()] and kunmap_atomic()
+    calls [called via sg_miter_stop()] and proposed a solution that
+    simplifies the previous code.
+
+  - the new implementation of the three functions has shorter periods
+    when pre-emption is disabled (but has more them). This should
+    make operations on large sgl_s more pre-emption "friendly" with
+    a relatively small performance hit.
+
+  - sgl_memset return type changed from void to size_t and is the
+    number of bytes actually (over)written. That number is needed
+    anyway internally so may as well return it as it may be useful to
+    the caller.
+
+This patchset is against lk 5.11.0-rc4
+
+Douglas Gilbert (3):
+  scatterlist: add sgl_copy_sgl() function
+  scatterlist: add sgl_equal_sgl() function
+  scatterlist: add sgl_memset()
+
+ include/linux/scatterlist.h |  32 ++++-
+ lib/scatterlist.c           | 233 ++++++++++++++++++++++++++++++++----
+ 2 files changed, 243 insertions(+), 22 deletions(-)
+
+-- 
+2.25.1
+
