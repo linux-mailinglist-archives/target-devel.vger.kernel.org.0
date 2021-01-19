@@ -2,108 +2,69 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C908B2FB1D5
-	for <lists+target-devel@lfdr.de>; Tue, 19 Jan 2021 07:46:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 08C512FBA88
+	for <lists+target-devel@lfdr.de>; Tue, 19 Jan 2021 15:57:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390926AbhASFiJ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 19 Jan 2021 00:38:09 -0500
-Received: from esa4.hgst.iphmx.com ([216.71.154.42]:51835 "EHLO
-        esa4.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389840AbhASFPY (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Tue, 19 Jan 2021 00:15:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1611033324; x=1642569324;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=7vt16PAj1e5r0qMNupRL0U4T3eLDEFSlTSo46YPqSAM=;
-  b=GDQJVCZTBwXcPjv1RdwSi2yVINbHIZ+aFdYJalPM3TPZIH8OpPuiYpEi
-   YqacQA5F5HqMnHH1qOV7+vbWnOFuuaEV4xpuK8T2kyvVdwzK6sAoNKz+D
-   YGBBkppZrqG97SRpuqkh8Oz1dLNDpAYwfRD8Lu9hyFGB6YWh1W00Kiamy
-   487YmLaa1bY/6I31qE1OvzyoHPlxUh7KNlhDH5Hxqe1/kKLnpUeOwXxb4
-   0XQpoYQXvnGzy3c+evleRvEMqGtX02QoTUQXjcmOVaPZW/MPoscPm7CSA
-   0GS9JYUEngtkbQlp9CPV8ws14am0gsQ0gfvyzJSSvtw3UsquxBhFYSw4y
-   w==;
-IronPort-SDR: /lt97+fSfzNGesrGlpa798p3tsYkBJLz++x6b7k8BP/l7NCEFMZQ60qJE+eAhekMEmhiNLGa8D
- 8h1kNBptR9qTGAkhZWoM/Dj4ZLmQdrKodnmqdT9qCMXg7LTZ3wTXrpNs2zAi8cArsoDmiPMLd+
- Eb13gXq0PQwekKaxA4+fGSzKQHjdRkDeq4sX00687Fkynq7b9apf0QG3ebet/E3DsgR1OixgtR
- odFNBsifiRFKym5ucU3/B+8NLdxZcljnR3EJhWQOB35Gc0HJdeXeVQpWbGs6EvaN5OGOp2/N+R
- UyA=
-X-IronPort-AV: E=Sophos;i="5.79,357,1602518400"; 
-   d="scan'208";a="157764109"
-Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 19 Jan 2021 13:10:58 +0800
-IronPort-SDR: 1MUmC29YfeWLN0P2AdC/XQlwfAhcurVLfpQpZrOXtQIMW3Iu8XZ1LQG0lVwsyKKNPKjaTC3iAO
- ptU5uDbZG/EH/WwqmRcBEM03B+ih8ai6HGfLWtzwLmDvSduPGw86Bb8cWyFdAsf4qivGBPrfu+
- tHgn5QxHfLUbWpggz7rkjhj0DT6TswLStwuRIdlNQ7xL1P6ceemlImTobSwT1V1GHbLcGlvK5x
- QNQrKzqzsUUNeBcL7JSEOadptSkB+hUyZ4wahEbd7Ctf6W90Tei1jtkHegHHJRxFfK/zGmMHTr
- 4G6rTk6cEJzHqOFiurDhkqWS
-Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2021 20:55:35 -0800
-IronPort-SDR: YVg4oetj669oXGPyen5Yz7/4lwwknpBuwOHqtYisxWomXA6swBTRl0Q6a9GaHjktx9T2m6JStb
- CDvwa7TZCZ4M9GVWSo4RbtmgfurnOujjvD4svcphbEiZT+7y+gglJ9ZlIF/tnwxqJkfJFxncIx
- g5wm4nu8oJyzJ24M9klTWymj61zMdpHfpxs6XcMjZOa3vIqm+lJQ5C0tB3xkI9dYlB+E3Ul943
- D49b5EPSkdl17MTuiUi4ULzuOqSv9X94gCd9MvAo2Xb2yDb8OLgPVo7IBgCR+uA44u4+72LP4B
- OSs=
-WDCIronportException: Internal
-Received: from vm.labspan.wdc.com (HELO vm.sc.wdc.com) ([10.6.137.102])
-  by uls-op-cesaip02.wdc.com with ESMTP; 18 Jan 2021 21:10:58 -0800
-From:   Chaitanya Kulkarni <chaitanya.kulkarni@wdc.com>
-To:     linux-block@vger.kernel.org, linux-xfs@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        drbd-dev@lists.linbit.com, linux-bcache@vger.kernel.org,
-        linux-raid@vger.kernel.org, linux-nvme@lists.infradead.org,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
-        cluster-devel@redhat.com
-Cc:     jfs-discussion@lists.sourceforge.net, dm-devel@redhat.com,
-        axboe@kernel.dk, philipp.reisner@linbit.com,
-        lars.ellenberg@linbit.com, efremov@linux.com, colyli@suse.de,
-        kent.overstreet@gmail.com, agk@redhat.com, snitzer@redhat.com,
-        song@kernel.org, hch@lst.de, sagi@grimberg.me,
-        martin.petersen@oracle.com, viro@zeniv.linux.org.uk, clm@fb.com,
-        josef@toxicpanda.com, dsterba@suse.com, tytso@mit.edu,
-        adilger.kernel@dilger.ca, rpeterso@redhat.com, agruenba@redhat.com,
-        darrick.wong@oracle.com, shaggy@kernel.org, damien.lemoal@wdc.com,
-        naohiro.aota@wdc.com, jth@kernel.org, tj@kernel.org,
-        osandov@fb.com, bvanassche@acm.org, gustavo@embeddedor.com,
-        asml.silence@gmail.com, jefflexu@linux.alibaba.com,
-        Chaitanya Kulkarni <chaitanya.kulkarni@wdc.com>
-Subject: [RFC PATCH 36/37] xfs: use bio_init_fields in xfs_buf
-Date:   Mon, 18 Jan 2021 21:06:30 -0800
-Message-Id: <20210119050631.57073-37-chaitanya.kulkarni@wdc.com>
-X-Mailer: git-send-email 2.22.1
-In-Reply-To: <20210119050631.57073-1-chaitanya.kulkarni@wdc.com>
-References: <20210119050631.57073-1-chaitanya.kulkarni@wdc.com>
+        id S2391637AbhASOyq (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 19 Jan 2021 09:54:46 -0500
+Received: from mx2.suse.de ([195.135.220.15]:60670 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2389055AbhASLvJ (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Tue, 19 Jan 2021 06:51:09 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id AE34BAC7B;
+        Tue, 19 Jan 2021 11:50:16 +0000 (UTC)
+Date:   Tue, 19 Jan 2021 12:50:15 +0100
+From:   David Disseldorp <ddiss@suse.de>
+To:     Douglas Gilbert <dgilbert@interlog.com>
+Cc:     linux-scsi@vger.kernel.org, linux-block@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-kernel@vger.kernel.org, martin.petersen@oracle.com,
+        jejb@linux.vnet.ibm.com, bostroesser@gmail.com, bvanassche@acm.org,
+        jgg@ziepe.ca
+Subject: Re: [PATCH v6 3/4] scatterlist: add sgl_compare_sgl() function
+Message-ID: <20210119125015.2f063af5@suse.de>
+In-Reply-To: <d0b8312b-5dbf-6196-d962-40851c5cbbf7@interlog.com>
+References: <20210118163006.61659-1-dgilbert@interlog.com>
+        <20210118163006.61659-4-dgilbert@interlog.com>
+        <20210119002741.4dbc290e@suse.de>
+        <d0b8312b-5dbf-6196-d962-40851c5cbbf7@interlog.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Signed-off-by: Chaitanya Kulkarni <chaitanya.kulkarni@wdc.com>
----
- fs/xfs/xfs_buf.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+On Mon, 18 Jan 2021 20:04:20 -0500, Douglas Gilbert wrote:
 
-diff --git a/fs/xfs/xfs_buf.c b/fs/xfs/xfs_buf.c
-index f8400bbd6473..1c157cfc5f8f 100644
---- a/fs/xfs/xfs_buf.c
-+++ b/fs/xfs/xfs_buf.c
-@@ -1508,10 +1508,8 @@ xfs_buf_ioapply_map(
- 	nr_pages = min(total_nr_pages, BIO_MAX_PAGES);
- 
- 	bio = bio_alloc(GFP_NOIO, nr_pages);
--	bio_set_dev(bio, bp->b_target->bt_bdev);
--	bio->bi_iter.bi_sector = sector;
--	bio->bi_end_io = xfs_buf_bio_end_io;
--	bio->bi_private = bp;
-+	bio_init_fields(bio, bp->b_target->bt_bdev, sector, bp,
-+			xfs_buf_bio_end_io, 0, 0);
- 	bio->bi_opf = op;
- 
- 	for (; size && nr_pages; nr_pages--, page_index++) {
--- 
-2.22.1
+> >> +bool sgl_compare_sgl(struct scatterlist *x_sgl, unsigned int x_nents, off_t x_skip,
+> >> +		     struct scatterlist *y_sgl, unsigned int y_nents, off_t y_skip,
+> >> +		     size_t n_bytes);
+> >> +
+> >> +bool sgl_compare_sgl_idx(struct scatterlist *x_sgl, unsigned int x_nents, off_t x_skip,
+> >> +			 struct scatterlist *y_sgl, unsigned int y_nents, off_t y_skip,
+> >> +			 size_t n_bytes, size_t *miscompare_idx);  
+> > 
+> > 
+> > This patch looks good and works fine as a replacement for
+> > compare_and_write_do_cmp(). One minor suggestion would be to name it
+> > sgl_equal() or similar, to perhaps better reflect the bool return and
+> > avoid memcmp() confusion. Either way:
+> > Reviewed-by: David Disseldorp <ddiss@suse.de>  
+> 
+> Thanks. NVMe calls the command that does this Compare and SCSI uses
+> COMPARE AND WRITE (and VERIFY(BYTCHK=1) ) but "equal" is fine with me.
+> There will be another patchset version (at least) so there is time
+> to change.
+> 
+> Do you want:
+>    - sgl_equal(...), or
+>    - sgl_equal_sgl(...) ?
 
+I'd probably prefer the former as it's shorter, but I don't feel
+strongly about it. The latter would make sense if you expect sgl compare
+helpers for other buffer types.
+
+Cheers, David
