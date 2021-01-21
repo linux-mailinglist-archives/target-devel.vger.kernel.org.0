@@ -2,97 +2,60 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FF3B2FEE8F
-	for <lists+target-devel@lfdr.de>; Thu, 21 Jan 2021 16:26:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FE072FF17A
+	for <lists+target-devel@lfdr.de>; Thu, 21 Jan 2021 18:12:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732740AbhAUP0Z (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 21 Jan 2021 10:26:25 -0500
-Received: from mta-02.yadro.com ([89.207.88.252]:42970 "EHLO mta-01.yadro.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1732345AbhAUPZT (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 21 Jan 2021 10:25:19 -0500
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 43E3241364;
-        Thu, 21 Jan 2021 15:24:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        mime-version:content-transfer-encoding:content-id:content-type
-        :content-type:content-language:accept-language:in-reply-to
-        :references:message-id:date:date:subject:subject:from:from
-        :received:received:received:received; s=mta-01; t=1611242673; x=
-        1613057074; bh=mfnnHUBis89XQEwFI+ZjsP8ISLbJZer+HpOVTE+4EWc=; b=S
-        Ce3+S9ZFGfUpMs0t7eXIUxUwSLODtHsMd4zwFGOe11wTHHOPGI+UEvx8qK68QS26
-        lsAbcmSDo4rwNeqh1ljsHGjgzie3KD1mpHyYhBmMJNgwDXBwpp2HetFZ22LLUCQ6
-        soRGm2yExz+VmKaqE1o7CjeirWROQUawNKlhPWd0uQ=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id JfylFlvp_xFO; Thu, 21 Jan 2021 18:24:33 +0300 (MSK)
-Received: from T-EXCH-03.corp.yadro.com (t-exch-03.corp.yadro.com [172.17.100.103])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id DA7254135E;
-        Thu, 21 Jan 2021 18:24:33 +0300 (MSK)
-Received: from T-EXCH-03.corp.yadro.com (172.17.100.103) by
- T-EXCH-03.corp.yadro.com (172.17.100.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.669.32; Thu, 21 Jan 2021 18:24:33 +0300
-Received: from T-EXCH-03.corp.yadro.com ([fe80::39f4:7b05:b1d3:5272]) by
- T-EXCH-03.corp.yadro.com ([fe80::39f4:7b05:b1d3:5272%14]) with mapi id
- 15.01.0669.032; Thu, 21 Jan 2021 18:24:33 +0300
-From:   Anastasia Kovaleva <a.kovaleva@yadro.com>
-To:     "martin.petersen@oracle.com" <martin.petersen@oracle.com>
-CC:     "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux@yadro.com" <linux@yadro.com>
-Subject: Re: [RESEND PATCH 0/3] scsi: target: Set correct residual data
-Thread-Topic: [RESEND PATCH 0/3] scsi: target: Set correct residual data
-Thread-Index: AQHWyU0/4PeqapwhvkiV8Nbm2ITN9aoygG2A
-Date:   Thu, 21 Jan 2021 15:24:33 +0000
-Message-ID: <D7B55F16-12CB-42BE-9ED7-B5E7577E71C2@yadro.com>
-References: <20201203082035.54566-1-a.kovaleva@yadro.com>
-In-Reply-To: <20201203082035.54566-1-a.kovaleva@yadro.com>
-Accept-Language: ru-RU, en-US
-Content-Language: en-GB
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [10.199.1.12]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <D8A915FFC7E8934D8D1A9B46C43BDE41@yadro.com>
-Content-Transfer-Encoding: base64
+        id S2388379AbhAURLa (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 21 Jan 2021 12:11:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57880 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388298AbhAURE5 (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Thu, 21 Jan 2021 12:04:57 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EABDDC0613D6;
+        Thu, 21 Jan 2021 09:03:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=QzyNyEp1YsTE5vSV+3cDru2rTzeX2CsFjS3xBz6a990=; b=m/sCpkjOMCVgP4VoWYhFT+pNFA
+        XsN5cp/1QMUAEvRGYKVrcCWtT0K0Qc1rUYrY8tnWtvRBGAzYQF1aJcWF3PjXrGGN5DB6crvK52Uhq
+        VmNi8hTrqhlV+i2i9NAfj+R5YQr9uVin10+P+GGGvl4s+Wro8U/2/QQy8nAXo/5hPnH9AZL+NWlnM
+        toPoiBaqrmygPeFA0pi51swSnxTXmB2rXAaBa2z16O2JBwXvSZdc+MGy9skDIY3SNinDpyuqYtJ3N
+        cyelbC61FxOX5f44I6+AYEzvIq/k8mhEfUgaLp9Knoar2TChae7OQQlHwtAFdMat/0mm5SWvcQ2ZF
+        9pImn9Kw==;
+Received: from hch by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
+        id 1l2dMH-00HI8V-2u; Thu, 21 Jan 2021 17:03:07 +0000
+Date:   Thu, 21 Jan 2021 17:02:57 +0000
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Guoqing Jiang <guoqing.jiang@cloud.ionos.com>
+Cc:     axboe@kernel.dk, linux-block@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        linux-ide@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-nvme@lists.infradead.org, linux-nfs@vger.kernel.org
+Subject: Re: [PATCH 1/2] block: remove unnecessary argument from
+ blk_execute_rq_nowait
+Message-ID: <20210121170257.GA4120717@infradead.org>
+References: <20210121142905.13089-1-guoqing.jiang@cloud.ionos.com>
+ <20210121142905.13089-2-guoqing.jiang@cloud.ionos.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210121142905.13089-2-guoqing.jiang@cloud.ionos.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-SGksDQoNCkNvdWxkIHlvdSBwbGVhc2UgdGVsbCBtZSBpZiB0aGVyZSBhcmUgYW55IG9iamVjdGlv
-bnMgdG8gdGhlc2UgY2hhbmdlcz8NClRoZXNlIHBhdGNoZXMgYXJlIGFwcGxpY2FibGUgdG8gNS4x
-Mi9zY3NpLXF1ZXVlLg0KDQpUaGFua3MsDQpBbmFzdGFzaWENCg0K77u/T24gMDMuMTIuMjAyMCwg
-MTE6MjEsICJBbmFzdGFzaWEgS292YWxldmEiIDxhLmtvdmFsZXZhQHlhZHJvLmNvbT4gd3JvdGU6
-DQoNCiAgICBIaSBNYXJ0aW4sDQogICAgUGxlYXNlIGFwcGx5IHRoZSBjaGFuZ2VzIHRvIDUuMTEv
-c2NzaS1xdWV1ZSBhdCB5b3VyIGVhcmxpZXN0DQogICAgY29udmVuaWVuY2UuDQoNCiAgICBUaGUg
-c2VyaWVzIGNoYW5nZXMgdGhlIGJlaGF2aW9yIG9mIHRoZSB0YXJnZXQgaW4gcmVnYXJkIHRvIHBy
-b2Nlc3NpbmcNCiAgICBjb21tYW5kcyB3aXRoIG92ZXJmbG93L3VuZGVyZmxvdyBpbiBhY2NvcmRh
-bmNlIHdpdGggdGhlIHN0YW5kYXJ0cy4NCg0KICAgIFRoZSB0YXJnZXQgZHJpdmVyIHVzZWQgdG8g
-cHJvY2VzcyB0aGUgRE1BX1RPX0RFVklDRSBjb21tYW5kcyB3aXRoDQogICAgcmVzaWR1YWxzIChp
-biBwYXJ0aWN1bGFyLCBXUklURSBjb21tYW5kKSBpbmNvcnJlY3RseS4gVGhlIHRhcmdldA0KICAg
-IHJlc3BvbnNlIGNvbnRhaW5lZCBuZWl0aGVyIGEgcmVzaWR1YWwgY291bnQsIG5vciBhbiBPVkVS
-RkxPVy9VTkRFUkZMT1cNCiAgICBiaXQuIFN1Y2ggYmVoYXZpb3IgZGlkIG5vdCBjb21wbHkgd2l0
-aCB0aGUgUkZDIDcxNDMuIEFsc28gdGhlDQogICAgcmV0dXJuZWQgQVNDIGFuZCBBU0NRIHdlcmUg
-aW5jb3JyZWN0IGFjY29yZGluZyB0byBGQ1AtNCwNCiAgICBhbmQgcmVzaWR1YWxzIHdlcmUgbm90
-IHNldCBmb3IgdGhlIDRLbiBkZXZpY2VzLg0KDQogICAgVGhpcyBwYXRjaGVzIGZpeCB0aGUgbWFq
-b3IgaW5jb25zaXN0YW5jZXMgaW4gcHJvY2Vzc2luZyB0aGVzZSBraW5kIG9mDQogICAgY29tbWFu
-ZHMuDQoNCiAgICBUaGlzIHBhdGNoIHNlcmllcyBoYXMgYmVlbiB0ZXN0ZWQgd2l0aCBhIG1vZGlm
-aWVkIGxpYmlzY3NpIHRlc3RpbmcNCiAgICBsaWJyYXJ5Lg0KICAgIFRoZSBsaW5rIHRvIHRoZSBw
-dWxsIHJlcXVlc3Q6DQogICAgaHR0cHM6Ly9naXRodWIuY29tL3NhaGxiZXJnL2xpYmlzY3NpL3B1
-bGwvMzQ1DQoNCiAgICBXcml0ZTEwUmVzaWR1YWxzLCBXcml0ZTEyUmVzaWR1YWxzLCBXcml0ZTE2
-UmVzaWR1YWxzIHRlc3RzIGhhdmUgcGFzc2VkLg0KDQogICAgVGhhbmtzLA0KICAgIEFuYXN0YXNp
-YQ0KDQogICAgQW5hc3Rhc2lhIEtvdmFsZXZhICgyKToNCiAgICAgIHNjc2k6IHRhcmdldDogY29y
-ZTogU2lnbmFsIFdSSVRFIHJlc2lkdWFscw0KICAgICAgc2NzaTogdGFyZ2V0OiBjb3JlOiBDaGFu
-Z2UgQVNDUSBmb3IgcmVzaWR1YWwgd3JpdGUNCg0KICAgIFJvbWFuIEJvbHNoYWtvdiAoMSk6DQog
-ICAgICBzY3NpOiB0YXJnZXQ6IGNvcmU6IFNldCByZXNpZHVhbHMgZm9yIDRLbiBkZXZpY2VzDQoN
-CiAgICAgZHJpdmVycy90YXJnZXQvdGFyZ2V0X2NvcmVfdHJhbnNwb3J0LmMgfCA1MyArKysrKysr
-KysrKysrLS0tLS0tLS0tLS0tLQ0KICAgICBpbmNsdWRlL3RhcmdldC90YXJnZXRfY29yZV9iYXNl
-LmggICAgICB8ICAxICsNCiAgICAgMiBmaWxlcyBjaGFuZ2VkLCAyOCBpbnNlcnRpb25zKCspLCAy
-NiBkZWxldGlvbnMoLSkNCg0KICAgIC0tIA0KICAgIDIuMjQuMyAoQXBwbGUgR2l0LTEyOCkNCg0K
-DQo=
+On Thu, Jan 21, 2021 at 03:29:04PM +0100, Guoqing Jiang wrote:
+> The 'q' is not used since commit a1ce35fa4985 ("block: remove dead
+> elevator code"), also update the comment of the function.
+
+And more importantly it never really was needed to start with given
+that we can triviall derive it from struct request.
+
+> -extern void blk_execute_rq_nowait(struct request_queue *, struct gendisk *,
+> +extern void blk_execute_rq_nowait(struct gendisk *,
+>  				  struct request *, int, rq_end_io_fn *);
