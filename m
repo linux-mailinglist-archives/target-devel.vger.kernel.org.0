@@ -2,81 +2,64 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B8563120DD
-	for <lists+target-devel@lfdr.de>; Sun,  7 Feb 2021 03:22:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BFB73122DE
+	for <lists+target-devel@lfdr.de>; Sun,  7 Feb 2021 09:49:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229681AbhBGCVu (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 6 Feb 2021 21:21:50 -0500
-Received: from mail-pg1-f173.google.com ([209.85.215.173]:45154 "EHLO
-        mail-pg1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229537AbhBGCVr (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Sat, 6 Feb 2021 21:21:47 -0500
-Received: by mail-pg1-f173.google.com with SMTP id o21so6570233pgn.12;
-        Sat, 06 Feb 2021 18:21:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=vRl839H4B+mxYDenDA16eRhD9TENdd+1sYt4/bsdS5E=;
-        b=dRzFnHqUYDC55t75C2B+5oiQw44Ie8edmgIbFIFas+mq8Ks6dzTV5c5A0OdXbXRNHO
-         JxxmgLlTZCtUrQuQyT6PO34Vnh8jVIi5S5jzeNo3yA1YJMKNxqp+BLfM0s4mEfVpahuO
-         pmMgaXx2Va4PczfPhJWyQNCog1kTAeHIojjVgg6DUJO6aQRCggWcqp4meyeDwEqU3tfD
-         kfz0OZ8eEu+dLMoPsDIDEmYumFIK2j3EJ4Y05NDukcnhN8DO1bAKO2QjB9WEkrVR1J83
-         IP2cIH2ItmqkBOYSI2OrMKsgaX5JZ1msGr8Iy0V4N4mU+oo+Hs5WXAxrWdOsty0OQJhX
-         6Hbw==
-X-Gm-Message-State: AOAM533C2/JSwfkiAuMYpV+VJhaZIdTSI1BaVNhv1m7SnTy9tnl6ChLH
-        M6T68pQPXWTszxvMTiB0wdj8MIuHSdc=
-X-Google-Smtp-Source: ABdhPJx6vTQo7mESg+A9IbIFkQIw9J3WMrk2kfxnrZBw3pzABcHGC7foI/5nrEimPKT3KQwSMxMHqA==
-X-Received: by 2002:aa7:961b:0:b029:1db:532c:9030 with SMTP id q27-20020aa7961b0000b02901db532c9030mr2566771pfg.30.1612664466124;
-        Sat, 06 Feb 2021 18:21:06 -0800 (PST)
-Received: from ?IPv6:2601:647:4000:d7:7d2:d17b:df07:7747? ([2601:647:4000:d7:7d2:d17b:df07:7747])
-        by smtp.gmail.com with ESMTPSA id r68sm3415446pfc.49.2021.02.06.18.21.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 06 Feb 2021 18:21:05 -0800 (PST)
-Subject: Re: [PATCH 08/11] target iblock: add backend plug/unplug callouts
-To:     Chaitanya Kulkarni <Chaitanya.Kulkarni@wdc.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        "martin.petersen@oracle.com" <martin.petersen@oracle.com>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>,
-        "mst@redhat.com" <mst@redhat.com>,
-        "jasowang@redhat.com" <jasowang@redhat.com>,
-        "stefanha@redhat.com" <stefanha@redhat.com>,
-        "virtualization@lists.linux-foundation.org" 
-        <virtualization@lists.linux-foundation.org>
-References: <20210204113513.93204-1-michael.christie@oracle.com>
- <20210204113513.93204-9-michael.christie@oracle.com>
- <BYAPR04MB496546E04938C9B78B71401586B09@BYAPR04MB4965.namprd04.prod.outlook.com>
-From:   Bart Van Assche <bvanassche@acm.org>
-Message-ID: <19d5fe27-cf06-72b0-5351-5b41f711d2b5@acm.org>
-Date:   Sat, 6 Feb 2021 18:21:03 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        id S229561AbhBGItc (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 7 Feb 2021 03:49:32 -0500
+Received: from [20.39.40.203] ([20.39.40.203]:51347 "EHLO optinix.in"
+        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
+        id S229548AbhBGIta (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Sun, 7 Feb 2021 03:49:30 -0500
+dkim-signature: v=1; a=rsa-sha256; d=digitalsol.in; s=dkim;
+        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+        bh=wK2neTcOXNiSQ+RBxrnFed+mRrGUU/ndLGEgvo8IMCc=;
+        b=HJpdCB3wbEEIU907AhieZpzSo9FRue91wZMGwzbSZTGXeHXta5BSbGTOpO5wFVSuamuMhzTGqQo0H2XphZFTv+moPuWihQqyCQjWqgtDMuRlgtKlN3PaL1ccaNdD3T9rGLlgM17i+eb8FpPNsAi5CPjf74F+V9YQfx98wYLSmEvWV/cQsJR1jLQHQHAaDJG5qboLpfa1MVC3FxNJ8x34e8f1dv4cMJrOTqNTVu1xmbYM4grNBhv3KsKNpW
+        D3crYUGC9KYowdI+P/aQ+4GVhFs39WxDIn9GqpSCTuZPWqaB2+azb3uvIFDHmOkfvcYb1lhuKbfEaCmmLNuVc9ZWIOCw==
+Received: from User (Unknown [52.231.31.5])
+        by optinix.in with ESMTP
+        ; Mon, 1 Feb 2021 21:46:38 +0000
+Message-ID: <FF13FB17-4F1F-4705-9B93-830705146B08@optinix.in>
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <support@digitalsol.in>
+Subject: Re:read
+Date:   Mon, 1 Feb 2021 21:46:37 -0000
 MIME-Version: 1.0
-In-Reply-To: <BYAPR04MB496546E04938C9B78B71401586B09@BYAPR04MB4965.namprd04.prod.outlook.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain;
+        charset="Windows-1251"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 2/6/21 5:06 PM, Chaitanya Kulkarni wrote:
-> On 2/4/21 03:40, Mike Christie wrote:
->>  
->> +	ib_dev->ibd_plug = kcalloc(nr_cpu_ids, sizeof(*ib_dev->ibd_plug),
->> +				   GFP_KERNEL);
-> I'd actually prefer struct xxx in sizeof, but maybe that is just my
-> preference.
-> Not sure what is the standard practice in target code.
+Hello,
 
-The above code is easier to verify than the suggested alternative. With
-the alternative one has to look up the definition of ibd_plug to verify
-correctness of the code. The above code can be verified without having
-to look up the definition of the ibd_plug member.
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-Bart.
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
+
+Regards,
+Ms. Reem.
 
