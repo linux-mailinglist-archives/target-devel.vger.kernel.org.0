@@ -2,64 +2,56 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 886C330B04C
-	for <lists+target-devel@lfdr.de>; Mon,  1 Feb 2021 20:24:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F253830D10B
+	for <lists+target-devel@lfdr.de>; Wed,  3 Feb 2021 02:53:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229831AbhBATXP (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 1 Feb 2021 14:23:15 -0500
-Received: from [20.39.40.203] ([20.39.40.203]:59574 "EHLO optinix.in"
-        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S229717AbhBATXN (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Mon, 1 Feb 2021 14:23:13 -0500
-dkim-signature: v=1; a=rsa-sha256; d=digitalsol.in; s=dkim;
-        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        bh=wK2neTcOXNiSQ+RBxrnFed+mRrGUU/ndLGEgvo8IMCc=;
-        b=m9FCN2KJaAh5GPK9edFUt35wFGrdCEuIA5dPQxCBNX5cdhgJB1Vg+axuz6g2PqDgIT90Uwor+5gxAWk3HUbtQXxhvhKQS+4eGUMQTvAk+2B3qMvD94dancWNGxuLm4NDAqmDhfiE0lbAG1pj1GVrbYRGTA6B9be8YQs+/AckknmNT6aKkoPem1HEDLjyTjGYcLEvAhbor5zuHTzyyqP967MuP2jd+c2hH9vfIo5TpCeWvvxSlWtfXaepsv
-        SeVbOnsrfZmKUXGvK1v4papWMwn5Ck26OxKj2ODhmXjU8UnUbcFRyboa27rWMlb1ovY9uajK+lhUUOAVBtP2OA75m5Aw==
-Received: from User (Unknown [52.231.31.5])
-        by optinix.in with ESMTP
-        ; Sat, 30 Jan 2021 15:05:02 +0000
-Message-ID: <D66DE25A-8702-486F-BD25-4E81B06D4AF6@optinix.in>
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <support@digitalsol.in>
-Subject: Re:read
-Date:   Sat, 30 Jan 2021 15:05:00 -0000
-MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-To:     unlisted-recipients:; (no To-header on input)
+        id S231261AbhBCBuk (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 2 Feb 2021 20:50:40 -0500
+Received: from out30-42.freemail.mail.aliyun.com ([115.124.30.42]:38016 "EHLO
+        out30-42.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230369AbhBCBuj (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Tue, 2 Feb 2021 20:50:39 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R881e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0UNiznmg_1612316993;
+Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0UNiznmg_1612316993)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Wed, 03 Feb 2021 09:49:53 +0800
+From:   Yang Li <yang.lee@linux.alibaba.com>
+To:     bootc@bootc.net
+Cc:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org,
+        linux1394-devel@lists.sourceforge.net,
+        linux-kernel@vger.kernel.org, Yang Li <yang.lee@linux.alibaba.com>
+Subject: [PATCH] scsi: target: remove unneeded semicolon
+Date:   Wed,  3 Feb 2021 09:49:52 +0800
+Message-Id: <1612316992-71443-1-git-send-email-yang.lee@linux.alibaba.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hello,
+Eliminate the following coccicheck warning:
+./drivers/target/sbp/sbp_target.c:1009:2-3: Unneeded semicolon
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+---
+ drivers/target/sbp/sbp_target.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
-
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
-
-Regards,
-Ms. Reem.
+diff --git a/drivers/target/sbp/sbp_target.c b/drivers/target/sbp/sbp_target.c
+index e4a9b9f..2a6165f 100644
+--- a/drivers/target/sbp/sbp_target.c
++++ b/drivers/target/sbp/sbp_target.c
+@@ -1006,7 +1006,7 @@ static void tgt_agent_fetch_work(struct work_struct *work)
+ 			agent->state = AGENT_STATE_SUSPENDED;
+ 
+ 		spin_unlock_bh(&agent->lock);
+-	};
++	}
+ }
+ 
+ static struct sbp_target_agent *sbp_target_agent_register(
+-- 
+1.8.3.1
 
