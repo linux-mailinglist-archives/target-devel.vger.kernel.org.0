@@ -2,93 +2,70 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63E0B3114B9
-	for <lists+target-devel@lfdr.de>; Fri,  5 Feb 2021 23:14:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 620AF311DFB
+	for <lists+target-devel@lfdr.de>; Sat,  6 Feb 2021 15:52:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232795AbhBEWNH (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 5 Feb 2021 17:13:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:51101 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232784AbhBEOkd (ORCPT
+        id S229537AbhBFOwQ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 6 Feb 2021 09:52:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54662 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229539AbhBFOwP (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 5 Feb 2021 09:40:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1612541862;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=khNEiGi3gSDvPl4eGhmwPqK2s3UCa52HPIkP8Eu2Bsc=;
-        b=f1AvbxEA+aRL3pgsPvGVDU5UIAX2MQI/TiF66W6iNeCgDiZ0JTl1OnAs2ayd+JbWdlzAvz
-        yEAtThwzp+5oV92q7huQp6voZr3rZmHx4hxzBpmHxC2AJszshkVKOcRXb9ADsgdLE7iIAt
-        GLHaJuJ9xeiXqheWXBQgL3LwjuTkRNw=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-574-PJh25U_cNWqAwsa0qLpCAA-1; Fri, 05 Feb 2021 11:17:24 -0500
-X-MC-Unique: PJh25U_cNWqAwsa0qLpCAA-1
-Received: by mail-ej1-f72.google.com with SMTP id p1so6928439ejo.4
-        for <target-devel@vger.kernel.org>; Fri, 05 Feb 2021 08:17:23 -0800 (PST)
+        Sat, 6 Feb 2021 09:52:15 -0500
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5357AC061756
+        for <target-devel@vger.kernel.org>; Sat,  6 Feb 2021 06:51:34 -0800 (PST)
+Received: by mail-ej1-x633.google.com with SMTP id w2so17559181ejk.13
+        for <target-devel@vger.kernel.org>; Sat, 06 Feb 2021 06:51:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=sY4fgq/DSyThalwU7QX+pWYKs/8sGH7ZznMUn5qQ1EY=;
+        b=s8lW6YZWnvUK7Tvlt1e2xFgpS0A6CWOUAqjS+VtrtIak+UPdQ+7l+J3tP9UY5/KPS+
+         KEWFn4n6pllGZyrmGfSKElYIwDAKdjc2fmkMPe3ult5JJeZRuMDXiNsKbmA9mOrO+1Ow
+         V7G4xUZDBnJ1aF8lRuT9QFBbuDAyoV826qXGwnR1cPhR1hUo5PlVP7FHbHVjqnpB1GNP
+         eliTpXHEcIvx4uKGmK0JVzb3zQtQqfYXrL9q0JL/YTDEwu9TpmPAzNKmjQcQLlJ35puk
+         IpQ0mnN3Y5fPfNw5DevPEtHyquTKjCJI6MS758lOeTIDhLZl9lewdpZFN272Iq+rLlU2
+         +Now==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=khNEiGi3gSDvPl4eGhmwPqK2s3UCa52HPIkP8Eu2Bsc=;
-        b=dv/4cQlcpPrjQU16QPJxSlTYuzbnPG7zLok6D0yfMJhtbcQm9d2ck5ThFpsU3pXyXR
-         O2c9fDtVju0F3ZKXPPN0BGWE/IId51urhOLeztJGJZY7+Wv0gTTXz9Wijq9VfiIrBbpV
-         lmRlIvX4jfJWqrnUVfC4NzJcejT67wz+Wm21gknXqjIlYX6WHtswXcmfxErHAN0/kOJ0
-         R7pEED59vE0UcDCFnKaTTPMhrUjpRuymXxqppv0PCXY2TGCQyzrXhMV33EBO1oXOdV1Y
-         DE0vLKDK0PnSGydDTrYNcclVGLJ2hEqvewtJUaqeWjg1icvLy4BfV6AU8HzHGD/pETcy
-         6iTQ==
-X-Gm-Message-State: AOAM5332V9jjYj04B64Douind/873fZHQnECSSYP9CGtxfTq4v5yybjV
-        9+VyVU3DyYoUa3o+Rtpzy3eLzVT/PlaE3Q6sSUmrrlwd/8Gbsr/O1hdB+hkg9URxr+TIlbOYoDg
-        bwp7IpCGU5rsxcsKCjEEGlqQb
-X-Received: by 2002:a17:906:169b:: with SMTP id s27mr343274ejd.396.1612541842913;
-        Fri, 05 Feb 2021 08:17:22 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxASMO+xswfNgpQwV8wyefPe1EMyJevJ53IOHaWEyDD08C7S3RPlbtBmcuhKVYuF8c/fBWAdQ==
-X-Received: by 2002:a17:906:169b:: with SMTP id s27mr343257ejd.396.1612541842771;
-        Fri, 05 Feb 2021 08:17:22 -0800 (PST)
-Received: from redhat.com (bzq-79-180-2-31.red.bezeqint.net. [79.180.2.31])
-        by smtp.gmail.com with ESMTPSA id 94sm2442486edq.91.2021.02.05.08.17.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Feb 2021 08:17:22 -0800 (PST)
-Date:   Fri, 5 Feb 2021 11:17:19 -0500
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     Mike Christie <michael.christie@oracle.com>
-Cc:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, jasowang@redhat.com,
-        stefanha@redhat.com, virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH 05/11] vhost scsi: use lio wq cmd submission helper
-Message-ID: <20210205111638-mutt-send-email-mst@kernel.org>
-References: <20210204113513.93204-1-michael.christie@oracle.com>
- <20210204113513.93204-6-michael.christie@oracle.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=sY4fgq/DSyThalwU7QX+pWYKs/8sGH7ZznMUn5qQ1EY=;
+        b=pMygGdGBKEjSMYN4MuBxYvmQ53bm/kztiIhnJSAihm9Ial6iLNTIFuXMjOU/w07umg
+         HMKfSlKfwweJxUPEv3Uk8nbiEE0MC3MT43KIRmA63MmEVdA+1+AsJbF1rFYej+jCPUXm
+         fnJw29aFbSc+X0ESyB2Ur7lb1u3Qf8NYaREGt1rJ0N/s8utudGZ+noueHNc6FeK2F8eV
+         1UVk5KHmX4+/ne0ym/e8k9CXm7xfoxC9mJEX1NOchtfrHNQWd6wg3vwrCb0g3HSvvMlu
+         NJHsGbZLQs2QjJ8vE1CN21/8BjCpQy0zpIySO7punhjZ9rzcGy78WycYsaGXmt8/RbN7
+         vPJQ==
+X-Gm-Message-State: AOAM533ub2RZAkYL3bqfD3/jWKL2lr+7DaQeJjmsEPfGz7tANvynmWz8
+        pLF56eFLJSsReSZYbhRiU6/P6NoDfLIOI9wuZ+0=
+X-Google-Smtp-Source: ABdhPJwKEibhtua8jTuLbkBXVOL+X0gFUYDNhWkJcrYB4bgtGKQCxUaLyaNWtnL7GvNWrjzndLfBs0zluDayTyISYGM=
+X-Received: by 2002:a17:906:af41:: with SMTP id ly1mr8910361ejb.525.1612623093139;
+ Sat, 06 Feb 2021 06:51:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210204113513.93204-6-michael.christie@oracle.com>
+Received: by 2002:a17:906:25d0:0:0:0:0 with HTTP; Sat, 6 Feb 2021 06:51:32
+ -0800 (PST)
+Reply-To: lawyer.nba@gmail.com
+From:   Barrister Daven Bango <stephennbada9@gmail.com>
+Date:   Sat, 6 Feb 2021 15:51:32 +0100
+Message-ID: <CAGSHw-CwdZ7cob1JzomFz5dqEbMJRqn_+22Z35dNjvLGM3a-tg@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Thu, Feb 04, 2021 at 05:35:07AM -0600, Mike Christie wrote:
-> @@ -1132,14 +1127,8 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
->  		 * vhost_scsi_queue_data_in() and vhost_scsi_queue_status()
->  		 */
->  		cmd->tvc_vq_desc = vc.head;
-> -		/*
-> -		 * Dispatch cmd descriptor for cmwq execution in process
-> -		 * context provided by vhost_scsi_workqueue.  This also ensures
-> -		 * cmd is executed on the same kworker CPU as this vhost
-> -		 * thread to gain positive L2 cache locality effects.
-> -		 */
-> -		INIT_WORK(&cmd->work, vhost_scsi_submission_work);
-> -		queue_work(vhost_scsi_workqueue, &cmd->work);
-> +		target_queue_cmd_submit(tpg->tpg_nexus->tvn_se_sess,
-> +					&cmd->tvc_se_cmd);
->  		ret = 0;
->  err:
->  		/*
+--=20
+Korisnik fonda =C4=8Destitanja, Va=C5=A1a sredstva za naknadu od 850.000,00
+ameri=C4=8Dkih dolara odobrila je Me=C4=91unarodna monetarna organizacija (=
+MMF)
+u suradnji s (FBI) nakon mnogo istraga. =C4=8Cekamo da se obratimo za
+dodatne informacije
 
-What about this aspect? Will things still stay on the same CPU?
-
--- 
-MST
-
+Advokat: Daven Bango
+Telefon: +22891667276
+(URED MMF-a LOME TOGO)
