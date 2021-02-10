@@ -2,58 +2,70 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F902316145
-	for <lists+target-devel@lfdr.de>; Wed, 10 Feb 2021 09:46:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 34E1131616F
+	for <lists+target-devel@lfdr.de>; Wed, 10 Feb 2021 09:49:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230234AbhBJIlv (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 10 Feb 2021 03:41:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50848 "EHLO
+        id S229736AbhBJIsZ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 10 Feb 2021 03:48:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229670AbhBJIi4 (ORCPT
+        with ESMTP id S230198AbhBJIng (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 10 Feb 2021 03:38:56 -0500
+        Wed, 10 Feb 2021 03:43:36 -0500
 Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A25DDC06174A;
-        Wed, 10 Feb 2021 00:38:16 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61EE8C061756;
+        Wed, 10 Feb 2021 00:42:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
         References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=+qITOZrYF9no2ix1twH+0IKQ9x3nOOUKSCIAW2uGldE=; b=MY0asvwIRHDHQ0ram3Yrv8oNk1
-        dSLt8cO/rUXS0U52qUuy2gDw3WrzB6aSVobMHASsXXrYdqKy9CHS5hMjk+Xrp+hfJOCnh30zKYEEC
-        /z9Lr8awLTuJ53vgAKKFkmC6IYCrV37DIF5LLBpItqLdwaLjX3ujYOwFVUvlXEEJXpkFMiDBRzNuQ
-        j7SRaaFsargX/QngCdI30a8UA9JJduYM7K771DaUhGFmpuBF1yg13P+fGpmgrgpasnMMxKlI0vhvz
-        54NJ2ceLmNgW8kpDmeTcxstUK/i8sWfZsmzLdWscptZHO9pWyzzog+64jeoadEpDD2P8EvMHgMsR7
-        vOxJb4Zg==;
+        bh=Z4Mk8otGK+jpyE+StMgkefLnz/H6FEtC0tGXbTOrCcA=; b=ht2N0i/MJmJfUxBYS4DSB0ToA4
+        AvVXqyhKHoWzR8bgAT/uWcESaqTCYQJw+YeBO0xEVsPP8biT2qJ3rWFLVHlx/hLEpZTBe2dVkSJ8a
+        9+D3zum/+F0m9f7AhSIDddf13HqpregqTEKZ53DOKZDn7Mb9ieDzeBSqvhnLV9aY8ianrP9IL4yus
+        OPaXZf2YLZc8FPI0sMrEaZzAxUsHeZMeOTsO7SU+mFcraO3Negnc9cFneXej01FbRqYizMB7LT5NH
+        FJ6OZvwl0HCqECaYhxKaJ+AjeAMg4jHGDwFyhLIgAO6OyL1gAuQBHNaTxRYAqp5HYVmqONTQ84aMP
+        C7iQIXsg==;
 Received: from hch by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
-        id 1l9l0i-008anH-7V; Wed, 10 Feb 2021 08:38:08 +0000
-Date:   Wed, 10 Feb 2021 08:38:08 +0000
+        id 1l9l57-008b7U-Gt; Wed, 10 Feb 2021 08:42:41 +0000
+Date:   Wed, 10 Feb 2021 08:42:41 +0000
 From:   Christoph Hellwig <hch@infradead.org>
 To:     Mike Christie <michael.christie@oracle.com>
 Cc:     Chaitanya.Kulkarni@wdc.com, loberman@redhat.com,
         martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
         target-devel@vger.kernel.org, mst@redhat.com, stefanha@redhat.com,
         virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH 07/13] target: cleanup cmd flag bits
-Message-ID: <20210210083808.GD2045726@infradead.org>
+Subject: Re: [PATCH 11/13] target: replace work per cmd in completion path
+Message-ID: <20210210084241.GE2045726@infradead.org>
 References: <20210209123845.4856-1-michael.christie@oracle.com>
- <20210209123845.4856-8-michael.christie@oracle.com>
+ <20210209123845.4856-12-michael.christie@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210209123845.4856-8-michael.christie@oracle.com>
+In-Reply-To: <20210209123845.4856-12-michael.christie@oracle.com>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Tue, Feb 09, 2021 at 06:38:39AM -0600, Mike Christie wrote:
-> We have a couple holes in the cmd flags definitions. This cleans
-> up the definitions to fix that and make it easier to read.
-> 
-> Signed-off-by: Mike Christie <michael.christie@oracle.com>
-> Reviewed-by: Chaitanya Kulkarni <chaitanya.kulkarni@wdc.com>
+On Tue, Feb 09, 2021 at 06:38:43AM -0600, Mike Christie wrote:
+> Doing a work per cmd can lead to lots of threads being created.
+> This patch just replaces the completion work per cmd with a per cpu
+> list. Combined with the first patches this allows tcm loop on top of
+> initiators like iser to go from around 700K IOPs to 1000K and reduces
+> the number of threads that get created when the system is under heavy
+> load and hitting the initiator drivers tagging limits.
 
-Looks good,
+OTOH it does increase completion latency, which might be the preference
+for some workloads.  Do we need a tunable here?
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+> +static void target_queue_cmd_work(struct se_cmd_queue *q, struct se_cmd *se_cmd,
+> +				  int cpu, struct workqueue_struct *wq)
+>  {
+> -	struct se_cmd *cmd = container_of(work, struct se_cmd, work);
+> +	llist_add(&se_cmd->se_cmd_list, &q->cmd_list);
+> +	queue_work_on(cpu, wq, &q->work);
+> +}
+
+Do we need this helper at all?  Having it open coded in the two callers
+would seem easier to follow to me.
+
