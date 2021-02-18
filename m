@@ -2,60 +2,60 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FD5331E75F
-	for <lists+target-devel@lfdr.de>; Thu, 18 Feb 2021 09:24:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD06331EA33
+	for <lists+target-devel@lfdr.de>; Thu, 18 Feb 2021 14:05:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230357AbhBRIWS (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 18 Feb 2021 03:22:18 -0500
-Received: from mx2.suse.de ([195.135.220.15]:44672 "EHLO mx2.suse.de"
+        id S231272AbhBRNCM (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 18 Feb 2021 08:02:12 -0500
+Received: from mail.jvpinto.com ([65.49.11.60]:11175 "EHLO mail.JVPinto.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230434AbhBRITw (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 18 Feb 2021 03:19:52 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id C000EAFA0;
-        Thu, 18 Feb 2021 08:19:10 +0000 (UTC)
-Subject: Re: Can LIO configfs handle concurrent changes independently
-To:     tasleson@redhat.com, target-devel@vger.kernel.org
-References: <94b1290f-4713-460a-43b8-ff00402c64dd@redhat.com>
-From:   Hannes Reinecke <hare@suse.de>
-Message-ID: <1044e9fe-f5ec-d7d8-b6f6-2f0ee9cc0fd7@suse.de>
-Date:   Thu, 18 Feb 2021 09:19:10 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        id S231805AbhBRKpa (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Thu, 18 Feb 2021 05:45:30 -0500
+Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
+ RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Thu, 18 Feb 2021 02:09:48 -0800
+Received: from User (52.231.198.195) by RW-EXC1.JVPinto.com (172.32.1.13) with
+ Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Thu, 18 Feb 2021
+ 02:09:34 -0800
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <johnpinto@jvpinto.com>
+Subject: Hello okay
+Date:   Thu, 18 Feb 2021 10:09:47 +0000
 MIME-Version: 1.0
-In-Reply-To: <94b1290f-4713-460a-43b8-ff00402c64dd@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <8904f7c7197d4160b4e4e8dd53298796@RW-EXC1.JVPinto.com>
+To:     Undisclosed recipients:;
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 2/17/21 5:10 PM, Tony Asleson wrote:
-> Can configfs for lio can handle multiple containers making changes
-> concurrently and independently?
-> 
-> ref. https://github.com/open-iscsi/targetd/issues/77#issuecomment-757087879
-> 
-> Thanks!
-> 
-Not to my knowledge. Neither sysfs nor configfs are namespace aware.
+Hello,
 
-Should be doable for configfs, as this is a stand-along 'filesystem' 
-which could be made namespace-aware.
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-The implications of this, however, will be challenging as quite some 
-internal structures using configfs are currently programmed for a
-single user.
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
-Still, interesting project, and one should be looking into it.
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
 
-Cheers,
-
-Hannes
--- 
-Dr. Hannes Reinecke                Kernel Storage Architect
-hare@suse.de                              +49 911 74053 688
-SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), Geschäftsführer: Felix Imendörffer
+Regards,
+Ms. Reem.
