@@ -2,143 +2,213 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CF1A32B428
-	for <lists+target-devel@lfdr.de>; Wed,  3 Mar 2021 05:43:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80B4132CB40
+	for <lists+target-devel@lfdr.de>; Thu,  4 Mar 2021 05:18:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352944AbhCCEgW (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 2 Mar 2021 23:36:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49018 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1350706AbhCBMX7 (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Tue, 2 Mar 2021 07:23:59 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8499A64FB2;
-        Tue,  2 Mar 2021 11:59:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614686342;
-        bh=K4vyjDvJkOiFpKehndvIVftXvjX2fL9eJ71G9Im5Xd4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RqoZVQ1Y2dDfD0Ggy8sy6J/ScSCktjaPFMWZ2JBkScTt24xwiY9t5xzjROG3uSZX7
-         90DM36dsQZfYjbRpVm5XNtVmC3uvsiWp0VtulO7fJPaLZ2vtorHLH7ySsBkegc3tG8
-         vj5x7C/XbUBJihDd1L9u0OBbSxjYPMQdglEexudAVFu7pWSA+2eDn8tMqKxIj9QMjg
-         Gtg8TZidGHbfydqJKMsi5PvoHxc7UTS3mmtKeQetF61KQgB20duYhzO6FJOgPU9Sbp
-         mcKjfMxFnvLglICquASWzAa2TTV5A1EdvRk0+cgW4dvGhnQtavYlf61/+3ylSEsHcx
-         psP6M0JjKrXFA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Aleksandr Miloserdov <a.miloserdov@yadro.com>,
-        Roman Bolshakov <r.bolshakov@yadro.com>,
-        Bodo Stroesser <bostroesser@gmail.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 21/21] scsi: target: core: Prevent underflow for service actions
-Date:   Tue,  2 Mar 2021 06:58:35 -0500
-Message-Id: <20210302115835.63269-21-sashal@kernel.org>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210302115835.63269-1-sashal@kernel.org>
-References: <20210302115835.63269-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+        id S233263AbhCDERM (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 3 Mar 2021 23:17:12 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:50854 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233260AbhCDEQm (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Wed, 3 Mar 2021 23:16:42 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12440vxi050252;
+        Thu, 4 Mar 2021 04:15:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=corp-2020-01-29;
+ bh=2hD/+EUFteD6yc5FJ+6KcbxWMu2IsspIFGvWOZp3Tz0=;
+ b=TzRJ59spurhwliWOaYir+/LxpWKZEuqbboInNCSkWVkQEOrqRvl2/eSKFADQ+NDEdKJW
+ ZX5AGGcJhXtWk57vogrflVOkE3usC8wiHypTkB099W0gWKpE0xM/p7QEPjW1FU0mO3XU
+ bMzx4Xx4df/oXEzWVCCuW60mQ6YdQGKJfFIm+9Fxz6JGp5bpMcIOtQ4mpGNVdMoGdeHn
+ sard6x5eoKBJMQR8iZiysiUKyuyniStKYv/m1D+QkbcdEe3AYg+LAdszyZnGuUunxFVx
+ R1aOFwU2KUmskExa5t5truoRbbNJDPL21F/ThK309dRvlpb0CcFH3Pn3I9W+9CpQEjSW QQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 3726v7b7p0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 04 Mar 2021 04:15:53 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1243t5p7084028;
+        Thu, 4 Mar 2021 04:15:53 GMT
+Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2171.outbound.protection.outlook.com [104.47.57.171])
+        by aserp3020.oracle.com with ESMTP id 3700024m5t-2
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 04 Mar 2021 04:15:53 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UOrP1bFpZCghkSjZ63ZgFCY+Ht7T3yegPOucIg1ysvJ9JNfDFn0z422Nus956HH2/114v2UmVD12lewwrtnjw2/xehkAsJ8iRLaGcZ5Nx+Xk4LwOI5hhvPXhUod32rE7G0eLYzSJEgB9z5bvuY4EZR/lAr84t20/QF7ESgJl5JL6hGmKIP5OfcuIOIzAoviY0R3ISRm7b/SK/lsJLWHXxLPSUuUPXrZXS4+c+LvwyaVvkDvk6LSudDVEqJGiZeyDq2PAFMOC+8xV+/eT6VsFWeIKSCHxIeEiSNGNwZaULZ9rnTibpuCJCrjxvKcQAyAOKlRknth68UtgQ9tvgGul2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2hD/+EUFteD6yc5FJ+6KcbxWMu2IsspIFGvWOZp3Tz0=;
+ b=ItnCt0WCmSSYigoXnKCoPMyDdNOLIwyWwCPTLV9J5/8YB+ku6A0O7urm7X/6Ev+IcSdK9Rsbn7Ngdl2YfTUWujIMMP1flasY0zCR/2i7/q/9WyCL6xauaSh9pdCqqCKJvatfEPMAKR3mbbgdMhUt7CPuFZwCatJoMguMUF4JDEENtnYq69P1VVUvRvwhb5QTlV/5qA4WH/6xpsiWp2r0GG4zXm9C9B4NDAfieJwZrIwJ+CaHZB1uCd1wxvsjOesy728ShaNE/tKEYuTolQisXQazPNuZpRLYMmKknZri6Eopb76RcIeBhOudBwAWtvWGmtrkolX2Taq62+1v5AOATw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2hD/+EUFteD6yc5FJ+6KcbxWMu2IsspIFGvWOZp3Tz0=;
+ b=iVRMoAHDQULXEzyJ/dl7ozZe2TFPPbpojbEguMET240bnSwjZpFAmCa+GC3/LYCdEZ74AIZAzV471U2+Qt7ZAKXXidFBoFPW6KI6MoY2aTdP621LPF9fHdUwwsYvMsZ3qnO2dkT8sJmZnB4AnDkqt4n7cVbCBaGZCHeergBzVb8=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=oracle.com;
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
+ by PH0PR10MB4552.namprd10.prod.outlook.com (2603:10b6:510:42::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3890.19; Thu, 4 Mar
+ 2021 04:15:51 +0000
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::dc39:c9fa:7365:8c8e]) by PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::dc39:c9fa:7365:8c8e%5]) with mapi id 15.20.3912.018; Thu, 4 Mar 2021
+ 04:15:51 +0000
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     linux-scsi@vger.kernel.org, loberman@redhat.com, hch@lst.de,
+        Mike Christie <michael.christie@oracle.com>,
+        Chaitanya.Kulkarni@wdc.com, bostroesser@gmail.com,
+        target-devel@vger.kernel.org, mst@redhat.com, stefanha@redhat.com
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>
+Subject: Re: [PATCH 01/25] target: move t_task_cdb initialization
+Date:   Wed,  3 Mar 2021 23:15:44 -0500
+Message-Id: <161482822407.30323.7273252063928870022.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210227170006.5077-2-michael.christie@oracle.com>
+References: <20210227170006.5077-1-michael.christie@oracle.com> <20210227170006.5077-2-michael.christie@oracle.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [138.3.200.9]
+X-ClientProxiedBy: BYAPR03CA0011.namprd03.prod.outlook.com
+ (2603:10b6:a02:a8::24) To PH0PR10MB4759.namprd10.prod.outlook.com
+ (2603:10b6:510:3d::12)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from ca-mkp.mkp.ca.oracle.com (138.3.200.9) by BYAPR03CA0011.namprd03.prod.outlook.com (2603:10b6:a02:a8::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.17 via Frontend Transport; Thu, 4 Mar 2021 04:15:50 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 252011d8-27b8-46ba-2ca7-08d8dec4327f
+X-MS-TrafficTypeDiagnostic: PH0PR10MB4552:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <PH0PR10MB4552485042A6D37737988CE48E979@PH0PR10MB4552.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: DrG5sSVjUSyRGb+XlY55aT+cjhhkamisvR3saR/979+cz78wCyYWXrumyGhgYzO5aCDPVWhiTIzx/mykoZmIQqEQcJJl8NQvszQH5Rp2Rlemp31BO8fSk6PfBmsD291evH7D3FcFC/N1Xcahn0PW1EqgFzlT3+0+7YkHT3yZKRcyCnLGTqJtDAoADDeJtL2VbEtXXNWgo0tPLdg2Fw90EK/ev/N0qT0oUPf8slqKTVUm8Scr7twY77cVd2UWdgqYkHWkpKiJXt8qo5RESXGsxSfOqbsnAmNpzJ+wvVV4oHo1azCPlP1oviverkO/hLZvl5RSSqR7Xe9H5rFhWIgCgyIXaXqWNb6hmdy3dAG0m8nqMYyXSy2bSiMkYXJ9FidzxaiZniBCfRoeYncVaPwA2R0TOnqr/UMffxVLmucGu5D8/1mAcNg9OzF5z7lW8ZVIjyxJQsacOQMw1J0COOS1T7tkJLK/XJkyGYCOlR/dTRN112EwxLjF1MoKvoY7ijqz2xhMUqgkPwqHClZbVXig4o8BydzDijtOUJ2YwsL4O1GlkTY3K9uooCxHu4vm7LJlIqIk2RgAYnDD04DL1NitXfjrqNNsbnYjPaRmycm+jR0=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4759.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(136003)(396003)(39860400002)(366004)(346002)(376002)(26005)(66946007)(6666004)(16526019)(316002)(6486002)(66476007)(478600001)(966005)(7696005)(66556008)(86362001)(2906002)(83380400001)(186003)(103116003)(956004)(2616005)(36756003)(8936002)(4326008)(54906003)(8676002)(107886003)(52116002)(5660300002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?UGI5VGN3b0hVck1XRzNIaHRKYWdVUHZ4aVE5SHMvVzJCL0tLNkREK1JxL2Rn?=
+ =?utf-8?B?WTl5OUJWVGFlU0NtdTBtQXFaTldiYnExVmlkQy9HYzQ0VEF2WnU4ejRMemV1?=
+ =?utf-8?B?TzB1TXZlNjZVME5tQmo2T29zNnpHTDVDZGpkckp3MkNhU0xqUHhrYVR4RVpz?=
+ =?utf-8?B?bXU2QTRrMDJtZUIyQ3lUaEhqdzZ2d0R4NkRFdTVuYkJoaXpJZ045VjNCb2JW?=
+ =?utf-8?B?WHRna2hiQU53cmZtNGZaSkNwRTg2Y0dQSVRKclBTNk1UcWRIeGdPcGFHRUtv?=
+ =?utf-8?B?d3FZM0NXTWN5Q09HS3REYjRUSnBacTM5bmdJaEdzZkhMRDI5eHVtNWEzR0M4?=
+ =?utf-8?B?TTJkTjNuNm1oNW03Wkw3NHRLRzF6YUpQRW15a0hMVXZYaUFnejBEOTlHWjB1?=
+ =?utf-8?B?TDhuOHFPVkswQXd6UWxuVnJZVmt2OE5MNUpWbVRQQkY4cFNIMjFWVnd0R1ZU?=
+ =?utf-8?B?L2V6ckZobmJqY1c2SW52RUFxZHFPeGsrNzRlU2tVZ3MxekErMlhyWEFrTG41?=
+ =?utf-8?B?WERLbWNFUnIyclErWXlBZzFhMmZqQ3ViaEV3RE5PMHVPaTJQOE12clBtUGx5?=
+ =?utf-8?B?azRhS29XRzZock9UL3ljY3gzbkMrVENxWlA5eUMwWHlxODMrOTlRY1ErT2JO?=
+ =?utf-8?B?REgwcG16RWh4QlNuM3h6eUxyL0c3UGxPSHFTOG1JMGc2R0JITnFIK3ZLRDFX?=
+ =?utf-8?B?Y3g0SnBFWitNRzJRNDMwUG11Y0cyZUhFM1Q4Z3RTVEw0b3JGQlY2Ym1qMHgz?=
+ =?utf-8?B?eGVMVm05S0tZMFlOMEFiN082dkdtTVJteTNoYzNOclFoU2JWNnhQbHRlQ2k0?=
+ =?utf-8?B?MWtQbll4ZGNsSWhVaUhkY3ZzT2k5K2RheHFlUEpnVlpyOXQrVDdNL254M0g2?=
+ =?utf-8?B?MUtGQllFRFZIb0FrTVk1OXRlZXFvQndNN3BrUGFsaWtYRFZFL09MTWg0N1p2?=
+ =?utf-8?B?blc3Tmh2QzVSbFhPdDBmb3RvNXZ4cVBlbVJmMWNsQS92aFlOaXA3TlhwNmVM?=
+ =?utf-8?B?VHZYVGlkQjVTOUx3YTZIem90a0xyYis3aXBRQWhqa0ZxUUxsVFZuZkJtVjRB?=
+ =?utf-8?B?eTRPQkwwUEpOYWpMU2RHT3pKYUlnWlV2KzI1YUJsclBtWTQzRDZLZWpEb2FR?=
+ =?utf-8?B?alpWaDMrSEtWWHVBMmFVb21GakZ1SWlHNklFMW5ibGpTdTNCbmlNeFFMajVT?=
+ =?utf-8?B?OUFrVlRScVNqRnJJeUlueVQrS2hGc1VuMURxYnIzOGJZYnA0VzB5NDgyOXN0?=
+ =?utf-8?B?ZmNBVHB6ZlQvemRUZml3SlkyTm94bGk1WUtLRWJBeENhamdzS2xsYzhubjc5?=
+ =?utf-8?B?WlZYUG9BV3RMRkxHbTNJUVgzOWRYbnFiNWVMeGExbDFJMkNoOW5sd2V1cTFB?=
+ =?utf-8?B?NGhFSXlieWpEd0UvaS9YVy9WNjRrLzJTMEQrS3BUZ0lSRm5pVTNWSjRzSXJ3?=
+ =?utf-8?B?SFZxVGE4bkg1UEhUUFVJZ3FGNVR6a050Y3J4RHQyajlEUWY2S3IwZWcreUV0?=
+ =?utf-8?B?S0tQQktNUXRBSGFPaWQwTTRqZVE3ZWVRWW9pbjdMUm1tRkRpTTAwZkpzdUlM?=
+ =?utf-8?B?bU5IbjFPck1yVkM1M1hIVUY5T2pTWndtdTJYWllDQ0RlNmordzJPZk4xWnBP?=
+ =?utf-8?B?dWE3bEpxVnRjbi93c2hzVXU5ekxSM0tYamRzQTJ0cEZZNkc0bS9SL3ZES1hY?=
+ =?utf-8?B?Z3E1Y3NhN1ZtRFZNekxmZjNnY0JCR3k0S3ZOWXJGeGxVVTJYN05vSWw0Rmt3?=
+ =?utf-8?Q?sI2xckWNfjWTWsz3//NTYC0qMVqHeRWIk9w8F4f?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 252011d8-27b8-46ba-2ca7-08d8dec4327f
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2021 04:15:51.6868
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Bunn1F6KkJoz8WaesRG0uSPkQx+/g+DorBQlTnhg+6jKyzVbZZ6SDwFAAO8uyIf6ikvTb72GALXwxyutVo7XHZ2Sr2DVVkNTabB8ivQImk8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4552
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9912 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
+ phishscore=0 bulkscore=0 mlxscore=0 spamscore=0 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103040014
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9912 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0 phishscore=0 mlxscore=0
+ suspectscore=0 adultscore=0 malwarescore=0 priorityscore=1501 bulkscore=0
+ lowpriorityscore=0 spamscore=0 mlxlogscore=999 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2103040014
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-From: Aleksandr Miloserdov <a.miloserdov@yadro.com>
+On Sat, 27 Feb 2021 10:59:42 -0600, Mike Christie wrote:
 
-[ Upstream commit 14d24e2cc77411301e906a8cf41884739de192de ]
+> The next patch splits target_submit_cmd_map_sgls so the initialization
+> and submission part can be called at different times. If the init part
+> fails we can reference the t_task_cdb early in some of the logging
+> and tracing code. This moves it to transport_init_se_cmd so we don't
+> hit NULL pointer crashes.
 
-TCM buffer length doesn't necessarily equal 8 + ADDITIONAL LENGTH which
-might be considered an underflow in case of Data-In size being greater than
-8 + ADDITIONAL LENGTH. So truncate buffer length to prevent underflow.
+Applied to 5.13/scsi-queue, thanks!
 
-Link: https://lore.kernel.org/r/20210209072202.41154-3-a.miloserdov@yadro.com
-Reviewed-by: Roman Bolshakov <r.bolshakov@yadro.com>
-Reviewed-by: Bodo Stroesser <bostroesser@gmail.com>
-Signed-off-by: Aleksandr Miloserdov <a.miloserdov@yadro.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/target/target_core_pr.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+[01/25] target: move t_task_cdb initialization
+        https://git.kernel.org/mkp/scsi/c/eccc70ccfb15
+[02/25] target: drop kref_get_unless_zero in target_get_sess_cmd
+        https://git.kernel.org/mkp/scsi/c/14e025be793e
+[03/25] target: rename transport_init_se_cmd
+        https://git.kernel.org/mkp/scsi/c/ed58729a69f4
+[04/25] target: break up target_submit_cmd_map_sgls
+        https://git.kernel.org/mkp/scsi/c/4a3f993e79db
+[05/25] srpt: Convert to new submission API
+        https://git.kernel.org/mkp/scsi/c/834e8c13acc9
+[06/25] ibmvscsi_tgt: Convert to new submission API
+        https://git.kernel.org/mkp/scsi/c/3b168220e479
+[07/25] qla2xxx: Convert to new submission API
+        https://git.kernel.org/mkp/scsi/c/9e54e530349a
+[08/25] tcm_loop: Convert to new submission API
+        https://git.kernel.org/mkp/scsi/c/5f3e979db0ef
+[09/25] sbp_target: Convert to new submission API
+        https://git.kernel.org/mkp/scsi/c/207c30be067c
+[10/25] usb gadget: Convert to new submission API
+        https://git.kernel.org/mkp/scsi/c/1edc02440bde
+[11/25] vhost-scsi: Convert to new submission API
+        https://git.kernel.org/mkp/scsi/c/e4edee8ac14a
+[12/25] xen-scsiback: Convert to new submission API
+        https://git.kernel.org/mkp/scsi/c/4d1d39e3a2e7
+[13/25] tcm_fc: Convert to new submission API
+        https://git.kernel.org/mkp/scsi/c/bde30acd9bd6
+[14/25] target: remove target_submit_cmd_map_sgls
+        https://git.kernel.org/mkp/scsi/c/4d3a1c529373
+[15/25] target: add gfp_t arg to target_cmd_init_cdb
+        https://git.kernel.org/mkp/scsi/c/22be5fc090a1
+[16/25] target: add workqueue based cmd submission
+        https://git.kernel.org/mkp/scsi/c/1a8ce8031c2c
+[17/25] vhost scsi: use lio wq cmd submission helper
+        https://git.kernel.org/mkp/scsi/c/f4e69b337bd5
+[18/25] tcm loop: use blk cmd allocator for se_cmds
+        https://git.kernel.org/mkp/scsi/c/93239a54b60d
+[19/25] tcm loop: use lio wq cmd submission helper
+        https://git.kernel.org/mkp/scsi/c/3f335d8914bb
+[20/25] target: cleanup cmd flag bits
+        https://git.kernel.org/mkp/scsi/c/74493992906f
+[21/25] target: fix backend plugging
+        https://git.kernel.org/mkp/scsi/c/1518827a9c95
+[22/25] target iblock: add backend plug/unplug callouts
+        https://git.kernel.org/mkp/scsi/c/18a45511925b
+[23/25] target_core_user: add backend plug/unplug callouts
+        https://git.kernel.org/mkp/scsi/c/dfe49a322758
+[24/25] target: flush submission work during TMR processing
+        https://git.kernel.org/mkp/scsi/c/b0ab4acf2df8
+[25/25] target: make completion affinity configurable
+        https://git.kernel.org/mkp/scsi/c/100d21c4ff29
 
-diff --git a/drivers/target/target_core_pr.c b/drivers/target/target_core_pr.c
-index 10db5656fd5d..949879f2f1d1 100644
---- a/drivers/target/target_core_pr.c
-+++ b/drivers/target/target_core_pr.c
-@@ -3742,6 +3742,7 @@ core_scsi3_pri_read_keys(struct se_cmd *cmd)
- 	spin_unlock(&dev->t10_pr.registration_lock);
- 
- 	put_unaligned_be32(add_len, &buf[4]);
-+	target_set_cmd_data_length(cmd, 8 + add_len);
- 
- 	transport_kunmap_data_sg(cmd);
- 
-@@ -3760,7 +3761,7 @@ core_scsi3_pri_read_reservation(struct se_cmd *cmd)
- 	struct t10_pr_registration *pr_reg;
- 	unsigned char *buf;
- 	u64 pr_res_key;
--	u32 add_len = 16; /* Hardcoded to 16 when a reservation is held. */
-+	u32 add_len = 0;
- 
- 	if (cmd->data_length < 8) {
- 		pr_err("PRIN SA READ_RESERVATIONS SCSI Data Length: %u"
-@@ -3778,8 +3779,9 @@ core_scsi3_pri_read_reservation(struct se_cmd *cmd)
- 	pr_reg = dev->dev_pr_res_holder;
- 	if (pr_reg) {
- 		/*
--		 * Set the hardcoded Additional Length
-+		 * Set the Additional Length to 16 when a reservation is held
- 		 */
-+		add_len = 16;
- 		put_unaligned_be32(add_len, &buf[4]);
- 
- 		if (cmd->data_length < 22)
-@@ -3815,6 +3817,8 @@ core_scsi3_pri_read_reservation(struct se_cmd *cmd)
- 			  (pr_reg->pr_res_type & 0x0f);
- 	}
- 
-+	target_set_cmd_data_length(cmd, 8 + add_len);
-+
- err:
- 	spin_unlock(&dev->dev_reservation_lock);
- 	transport_kunmap_data_sg(cmd);
-@@ -3833,7 +3837,7 @@ core_scsi3_pri_report_capabilities(struct se_cmd *cmd)
- 	struct se_device *dev = cmd->se_dev;
- 	struct t10_reservation *pr_tmpl = &dev->t10_pr;
- 	unsigned char *buf;
--	u16 add_len = 8; /* Hardcoded to 8. */
-+	u16 len = 8; /* Hardcoded to 8. */
- 
- 	if (cmd->data_length < 6) {
- 		pr_err("PRIN SA REPORT_CAPABILITIES SCSI Data Length:"
-@@ -3845,7 +3849,7 @@ core_scsi3_pri_report_capabilities(struct se_cmd *cmd)
- 	if (!buf)
- 		return TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE;
- 
--	put_unaligned_be16(add_len, &buf[0]);
-+	put_unaligned_be16(len, &buf[0]);
- 	buf[2] |= 0x10; /* CRH: Compatible Reservation Hanlding bit. */
- 	buf[2] |= 0x08; /* SIP_C: Specify Initiator Ports Capable bit */
- 	buf[2] |= 0x04; /* ATP_C: All Target Ports Capable bit */
-@@ -3874,6 +3878,8 @@ core_scsi3_pri_report_capabilities(struct se_cmd *cmd)
- 	buf[4] |= 0x02; /* PR_TYPE_WRITE_EXCLUSIVE */
- 	buf[5] |= 0x01; /* PR_TYPE_EXCLUSIVE_ACCESS_ALLREG */
- 
-+	target_set_cmd_data_length(cmd, len);
-+
- 	transport_kunmap_data_sg(cmd);
- 
- 	return 0;
-@@ -4034,6 +4040,7 @@ core_scsi3_pri_read_full_status(struct se_cmd *cmd)
- 	 * Set ADDITIONAL_LENGTH
- 	 */
- 	put_unaligned_be32(add_len, &buf[4]);
-+	target_set_cmd_data_length(cmd, 8 + add_len);
- 
- 	transport_kunmap_data_sg(cmd);
- 
 -- 
-2.30.1
-
+Martin K. Petersen	Oracle Linux Engineering
