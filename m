@@ -2,95 +2,79 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1508A340168
-	for <lists+target-devel@lfdr.de>; Thu, 18 Mar 2021 09:59:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1DC0340255
+	for <lists+target-devel@lfdr.de>; Thu, 18 Mar 2021 10:47:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229640AbhCRI7M (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 18 Mar 2021 04:59:12 -0400
-Received: from mta-02.yadro.com ([89.207.88.252]:51226 "EHLO mta-01.yadro.com"
+        id S229883AbhCRJqz (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 18 Mar 2021 05:46:55 -0400
+Received: from mta-02.yadro.com ([89.207.88.252]:58580 "EHLO mta-01.yadro.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229558AbhCRI6r (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 18 Mar 2021 04:58:47 -0400
+        id S229785AbhCRJqd (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Thu, 18 Mar 2021 05:46:33 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id DAEC841207;
-        Thu, 18 Mar 2021 08:58:45 +0000 (UTC)
+        by mta-01.yadro.com (Postfix) with ESMTP id 3FE0C4139D;
+        Thu, 18 Mar 2021 09:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        mime-version:content-transfer-encoding:content-type:content-type
-        :content-language:accept-language:in-reply-to:references
-        :message-id:date:date:subject:subject:from:from:received
-        :received:received:received; s=mta-01; t=1616057924; x=
-        1617872325; bh=Ark6wA2FA35KNvDzpfm0UvI1cDCCNXs05DHauoMogoc=; b=o
-        GYxzSATpvAeAPq4EUODiG7cgjzRb8OWkbh63nD0tn1jLqtB2RISR7kz5alzqxuh8
-        LJSTyi/vR22yIwcfp1xO4bU+U1eSMekVdFTWeq8QW2CSZ8vbp/axLWpbmO1iPTRU
-        73lLkpGJ4paPDMjIpQGT91k9T+nXfI1Abf0exnieEk=
+        content-type:content-type:content-transfer-encoding:mime-version
+        :x-mailer:message-id:date:date:subject:subject:from:from
+        :received:received:received; s=mta-01; t=1616060791; x=
+        1617875192; bh=zfdGDthEaEk9NA6wBLkTzRGaAS3tetMN4i7pXY6/qUk=; b=K
+        79Q1qdjdWQxz/yWV0sTdZFHYDDZs6mpYH3z9Ak2KR+jj+H92eqdGxWbUPWPYYTMs
+        KEG0HxPqFUwwLmaJTCPyZH1WRdP6tPyJYlauQ2beNNES6+CIYIU3G+o1oBJ8MNSK
+        y3hyZdfVU1+4ClVbIxauQvMlYwfLMNvxTeNIe9HV04=
 X-Virus-Scanned: amavisd-new at yadro.com
 Received: from mta-01.yadro.com ([127.0.0.1])
         by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id K1kvFnn9K5zo; Thu, 18 Mar 2021 11:58:44 +0300 (MSK)
+        with ESMTP id 7vZpPoDFbtM1; Thu, 18 Mar 2021 12:46:31 +0300 (MSK)
 Received: from T-EXCH-03.corp.yadro.com (t-exch-03.corp.yadro.com [172.17.100.103])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id B9D86411FB;
-        Thu, 18 Mar 2021 11:58:43 +0300 (MSK)
-Received: from T-EXCH-03.corp.yadro.com (172.17.100.103) by
- T-EXCH-03.corp.yadro.com (172.17.100.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.669.32; Thu, 18 Mar 2021 11:58:43 +0300
-Received: from T-EXCH-03.corp.yadro.com ([fe80::39f4:7b05:b1d3:5272]) by
- T-EXCH-03.corp.yadro.com ([fe80::39f4:7b05:b1d3:5272%14]) with mapi id
- 15.01.0669.032; Thu, 18 Mar 2021 11:58:43 +0300
-From:   Dmitriy Bogdanov <d.bogdanov@yadro.com>
-To:     Mike Christie <michael.christie@oracle.com>,
-        Martin Petersen <martin.petersen@oracle.com>,
-        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>
-CC:     "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux@yadro.com" <linux@yadro.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Chris Boot <bootc@bootc.net>
-Subject: RE: [PATCH 0/4] target: make tpg/enable attribute
-Thread-Topic: [PATCH 0/4] target: make tpg/enable attribute
-Thread-Index: AQHXGxrIW3vuprwTb0igO+tWtrRpzqqILbgAgAEyTKA=
-Date:   Thu, 18 Mar 2021 08:58:43 +0000
-Message-ID: <2b099689cee84bd4b27509425c8139b4@yadro.com>
-References: <20210317104609.25236-1-d.bogdanov@yadro.com>
- <03cdc625-98de-7c41-d8cf-74143b2b7446@oracle.com>
-In-Reply-To: <03cdc625-98de-7c41-d8cf-74143b2b7446@oracle.com>
-Accept-Language: ru-RU, en-US
-Content-Language: ru-RU
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.199.0.171]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        by mta-01.yadro.com (Postfix) with ESMTPS id 66A2941308;
+        Thu, 18 Mar 2021 12:44:17 +0300 (MSK)
+Received: from yadro.com (10.199.0.137) by T-EXCH-03.corp.yadro.com
+ (172.17.100.103) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Thu, 18
+ Mar 2021 12:44:17 +0300
+From:   Konstantin Shelekhin <k.shelekhin@yadro.com>
+To:     Martin Petersen <martin.petersen@oracle.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        <target-devel@vger.kernel.org>
+CC:     <linux@yadro.com>, <linux-scsi@vger.kernel.org>,
+        Konstantin Shelekhin <k.shelekhin@yadro.com>
+Subject: [PATCH 0/2] target: Introduce dummy devices
+Date:   Thu, 18 Mar 2021 12:42:23 +0300
+Message-ID: <20210318094224.17524-1-k.shelekhin@yadro.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.199.0.137]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-03.corp.yadro.com (172.17.100.103)
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-SGkgTWlrZSwNCg0KVGhhbmsgeW91IGZvciBxdWljayByZXNwb25zZS4NCg0KSSBnb3QgbXkgbWlz
-dGFrZXMuDQpXaWxsIHRyeSB0byBjb21lIHVwIHdpdGggYSBuZXcgc29sdXRpb24uDQoNCkJSLA0K
-IERtaXRyeQ0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogTWlrZSBDaHJpc3Rp
-ZSA8bWljaGFlbC5jaHJpc3RpZUBvcmFjbGUuY29tPiANClNlbnQ6IFdlZG5lc2RheSwgTWFyY2gg
-MTcsIDIwMjEgNzozMiBQTQ0KVG86IERtaXRyaXkgQm9nZGFub3YgPGQuYm9nZGFub3ZAeWFkcm8u
-Y29tPjsgTWFydGluIFBldGVyc2VuIDxtYXJ0aW4ucGV0ZXJzZW5Ab3JhY2xlLmNvbT47IHRhcmdl
-dC1kZXZlbEB2Z2VyLmtlcm5lbC5vcmcNCkNjOiBsaW51eC1zY3NpQHZnZXIua2VybmVsLm9yZzsg
-bGludXhAeWFkcm8uY29tOyBOaWxlc2ggSmF2YWxpIDxuamF2YWxpQG1hcnZlbGwuY29tPjsgQ2hy
-aXMgQm9vdCA8Ym9vdGNAYm9vdGMubmV0Pg0KU3ViamVjdDogUmU6IFtQQVRDSCAwLzRdIHRhcmdl
-dDogbWFrZSB0cGcvZW5hYmxlIGF0dHJpYnV0ZQ0KDQpPbiAzLzE3LzIxIDU6NDYgQU0sIERtaXRy
-eSBCb2dkYW5vdiB3cm90ZToNCj4gQWxsIHRhcmdldCB0cmFuc3BvcnQgZHJpdmVycyBoYXZlIGl0
-cyBvd24gJ3RwZy9lbmFibGUnIGF0dHJpYnV0ZSANCj4gaW1wbGVtZW50YXRpb24uIFRoaXMgcHJv
-ZHVjZXMgdW5uZWNlc3NhcnkgY29kZSBkdXBsaWNhdGlvbg0KSSBkb24ndCB0aGluayB0aGF0IGlz
-IGNvcnJlY3QuIFNvbWUgZHJpdmVycyBkb24ndCBoYXZlIGVuIGVuYWJsZSBhdHRyOg0KDQotIHZo
-b3N0LXNjc2ksIHhlbiBhbmQgbG9vcCBoYXZlIGEgbmV4dXMgYXR0ciB0aGF0IHNvcnQgb2YgbGVh
-dmVzIGl0IGluIHRoZSBlcXVpdmFsZW50IG9mIGVuYWJsZWQuDQoNCi0gdXNiIGhhcyBhIG5leHVz
-IGZpbGUgbGlrZSBhYm92ZSwgYnV0IGFmdGVyIHlvdSB3cml0ZSB0byBpdCB5b3Ugc3RpbGwgaGF2
-ZSB0byB3cml0ZSB0byB0aGUgZW5hYmxlIGF0dHIuDQoNCi0gdGNtX2ZjIGRvZXMgbm90IGhhdmUg
-YW4gZW5hYmxlIGFuZCBoYXMgaXQncyBvd24gaW5pdGlhbGl6YXRpb24gc3RyYXRlZ3kuDQoNCkZv
-ciBkcml2ZXJzIHRoYXQgaGF2ZSBhbiBlbmFibGUgZmlsZSB5b3VyIHBhdGNoZXMgbWlzc2VkIHVz
-Yiwgc3JwdCBhbmQgaWJtX3ZzY3NpLg0KDQo+IEFsc28gaXQgbWFrZXMgZGlmZmljdWx0IHRvIGNv
-bnRyb2wgdGhhdCBhdHRyaWJ1dGUgYW5kIHRvIGRlcGVuZCBvbiANCj4gdGhhdCBhdHRyaWJ1dGUg
-aW5zaWRlIG9mIHRhcmdldCBjb3JlIG1vZHVsZS4NCg0KSSBhZ3JlZSB3aXRoIHRoaXMgOikgSXQn
-cyBhIGJpdCBvZiBtZXNzLCBidXQgSSB0aGluayBpdCdzIHNvbWV0aW1lcyBkdWUgdG8gaG93IHRo
-ZSBkcml2ZXIgaXMgaW1wbGVtZW50ZWQgYW5kIGhvdyB1c2Vyc3BhY2UgaGFzIHRvIHNldCBpdCB1
-cCwgc28gaXQncyBub3QgYXMgc2ltcGxlIGFzIGluIHRoaXMgcGF0Y2hzZXQgZHVlIHRvIGhhdmlu
-ZyB0byBzdXBwb3J0IGV4aXN0aW5nIHRvb2xzLg0K
+This patch series (inspired by SCST) adds support for the dummy devices
+via the new DUMMY flag of rd_mcp. The rationale behind the change is to
+give a user the ability to create conifgurable devices for LUN 0 with
+custom WWN values (like vendor, product or revision) as some tools like
+QConvergeGUI use LUN 0 to identify the whole storage.
+
+The advantage over simply creating a NULLIO rd_mcp device is that the
+DUMMY device will not be seen as a block device, hence less confusion
+for the system administrator.
+
+Konstantin Shelekhin (2):
+  target: Add the DUMMY flag to rd_mcp
+  target: Make the virtual LUN 0 device dummy
+
+ drivers/target/target_core_device.c |  2 +-
+ drivers/target/target_core_rd.c     | 27 +++++++++++++++++++++++----
+ drivers/target/target_core_rd.h     |  1 +
+ drivers/target/target_core_spc.c    |  6 +-----
+ 4 files changed, 26 insertions(+), 10 deletions(-)
+
+-- 
+2.30.2
+
