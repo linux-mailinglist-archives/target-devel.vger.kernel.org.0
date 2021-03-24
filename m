@@ -2,46 +2,60 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C13A34722C
-	for <lists+target-devel@lfdr.de>; Wed, 24 Mar 2021 08:15:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 34AD2347471
+	for <lists+target-devel@lfdr.de>; Wed, 24 Mar 2021 10:22:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235722AbhCXHOs (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 24 Mar 2021 03:14:48 -0400
-Received: from verein.lst.de ([213.95.11.211]:35712 "EHLO verein.lst.de"
+        id S234625AbhCXJVi (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 24 Mar 2021 05:21:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55382 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232018AbhCXHOq (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Wed, 24 Mar 2021 03:14:46 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 7EB6368B02; Wed, 24 Mar 2021 08:14:44 +0100 (CET)
-Date:   Wed, 24 Mar 2021 08:14:44 +0100
-From:   Christoph Hellwig <hch@lst.de>
-To:     mwilck@suse.com
-Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Christoph Hellwig <hch@lst.de>, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, David Disseldorp <ddiss@suse.com>,
-        =?iso-8859-1?Q?J=FCrgen_Gro=DF?= <jgross@suse.com>,
-        Chaitanya Kulkarni <Chaitanya.Kulkarni@wdc.com>
-Subject: Re: [PATCH v2 2/2] target: pscsi: cleanup after failure in
- pscsi_map_sg()
-Message-ID: <20210324071444.GD647@lst.de>
-References: <20210323212431.15306-1-mwilck@suse.com> <20210323212431.15306-2-mwilck@suse.com>
+        id S231992AbhCXJVf (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Wed, 24 Mar 2021 05:21:35 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 06DB961A01;
+        Wed, 24 Mar 2021 09:21:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1616577694;
+        bh=Z8Xi7Q8XrtT4F7FmogpqExj0J3gLxfayNYnPLUO4ciw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=IX8HIiJcOggHfRNa7iDGiJ00dV3Dhn50tyxXMh6sG9pKDdFrygcQGGTXaYgrj14LD
+         TRihOGZHrFKSV0NYKKlnMJUbzKzp/NkHIc02qgB8f8X1xUBrCYWpN195h85QgPzbxp
+         9DJbFxGTPsFk2YTzXVyIIKamwwJK4xgp/R3omLKfXCTkA566OvtEjE3nfcYFqT2GtB
+         46zH5pnRi2J169CxexKsMg+/2vj/pesvX0N9iZpz/4EhA4e/xbNdgqMom01x0l67L7
+         6AE8Pii5l4t7gLcnhrsDnITah7aIYIruTqgyurLdBArHGcFXsKjk/v1HnWu0JW8wuB
+         MWc65FGkOBW7w==
+Date:   Wed, 24 Mar 2021 11:21:30 +0200
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Lv Yunlong <lyl2019@mail.ustc.edu.cn>
+Cc:     sagi@grimberg.me, dledford@redhat.com, jgg@ziepe.ca,
+        linux-rdma@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] infiniband: Fix a use after free in
+ isert_connect_request
+Message-ID: <YFsEmqAdFNxEYK7J@unreal>
+References: <20210322161325.7491-1-lyl2019@mail.ustc.edu.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210323212431.15306-2-mwilck@suse.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20210322161325.7491-1-lyl2019@mail.ustc.edu.cn>
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Tue, Mar 23, 2021 at 10:24:31PM +0100, mwilck@suse.com wrote:
-> From: Martin Wilck <mwilck@suse.com>
+On Mon, Mar 22, 2021 at 09:13:25AM -0700, Lv Yunlong wrote:
+> The device is got by isert_device_get() with refcount is 1,
+> and is assigned to isert_conn by isert_conn->device = device.
+> When isert_create_qp() failed, device will be freed with
+> isert_device_put().
 > 
-> If pscsi_map_sg() fails, make sure to drop references to already
-> allocated bios.
+> Later, the device is used in isert_free_login_buf(isert_conn)
+> by the isert_conn->device->ib_device statement. This patch
+> free the device in the correct order.
 > 
-> Signed-off-by: Martin Wilck <mwilck@suse.com>
+> Signed-off-by: Lv Yunlong <lyl2019@mail.ustc.edu.cn>
+> ---
+>  drivers/infiniband/ulp/isert/ib_isert.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+> 
 
-Looks good,
-
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Thanks,
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
