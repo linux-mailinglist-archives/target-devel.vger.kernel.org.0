@@ -2,178 +2,336 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65C443487B8
-	for <lists+target-devel@lfdr.de>; Thu, 25 Mar 2021 04:54:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 014DC3487C6
+	for <lists+target-devel@lfdr.de>; Thu, 25 Mar 2021 04:58:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229868AbhCYDyO (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 24 Mar 2021 23:54:14 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:53470 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230029AbhCYDyH (ORCPT
+        id S229651AbhCYD57 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 24 Mar 2021 23:57:59 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:52698 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229461AbhCYD5w (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 24 Mar 2021 23:54:07 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12P3oWIr040400;
-        Thu, 25 Mar 2021 03:54:00 GMT
+        Wed, 24 Mar 2021 23:57:52 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12P3n58L192651;
+        Thu, 25 Mar 2021 03:54:21 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : content-type :
  content-transfer-encoding : mime-version; s=corp-2020-01-29;
- bh=ZVe32DO7gVwLU6D4NUsbg577M7BSXlNYjw0azzzIWTU=;
- b=nJYLDU6AksPhS8mRGt2UmqXHYG2VcH4uR3SHM3P6sK1KOmZ63BDCBT8BZHAwmnH8VySB
- fxhGhVlniChxoWrza1SuvRiEvAkZASWj3jhB4UJNo6kxvQ5oK2Uqwe4IbD73i2/dKhf4
- UffkoV+4B/sP345rK1vEC7t45WnmK32nu7j+476h/2wlr7YQJzg+T5/fRr8T2zW6035/
- X7YqFY83k3zxR5PW7zLXXP2KtkSe6WMWqc7t35rYgnsoXl+X+xcJNmvaFOFtB+rZfCvF
- jSJxbduZwtJgHbABLIj3UQ4gumTvTotVVutaMYwiXBwyMKovnq23upftCb/Q0Xyaiq58 2Q== 
+ bh=XEzcBYN5EVuuly5bAZXj1aJMU77+78DYkP4J08kRRMA=;
+ b=vLJPWTWr7GgTj9/9girDliJmlnLkFazpR3eUACfWIDbIpv5bKf42asW5ExwsUJME8Qzv
+ iuokPLua4fKme4xHuAifegOBwN9VaR0VhjeJb7r/Azuq3zGfrCfJgMoCsEiPUORwAEWK
+ rJ4DGaLt0v2LQ+NJe8W09AvFEu5/zTVmiBkWt1VDKLsLKCXGI/pT3s8Ek4nHDq1l7K/U
+ 3uHF2Oqya202r8TJxmrYS0Y4EDx/904ZiQqap+KEWjFjg11V55dQvf97yJ6e9+S6Ifw/
+ NrOzaBEsXjrO6IZJ2pd0P4Krwz7wlmba8SnN2s4odUC+79NgTHUHVu18uR2AqA2w3ta7 fA== 
 Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 37d9pn4ubu-1
+        by userp2130.oracle.com with ESMTP id 37d8frcwfe-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 25 Mar 2021 03:54:00 +0000
+        Thu, 25 Mar 2021 03:54:21 +0000
 Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12P3pFgw134348;
-        Thu, 25 Mar 2021 03:53:59 GMT
-Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2177.outbound.protection.outlook.com [104.47.55.177])
-        by aserp3030.oracle.com with ESMTP id 37dtmrmunn-1
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12P3pFh5134348;
+        Thu, 25 Mar 2021 03:54:20 GMT
+Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2168.outbound.protection.outlook.com [104.47.56.168])
+        by aserp3030.oracle.com with ESMTP id 37dtmrmuua-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 25 Mar 2021 03:53:59 +0000
+        Thu, 25 Mar 2021 03:54:20 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=N434yZyq45rRkYMwwBtM0AoJ0/XtaJ96sPMm6PYbw+xsQQNgNFqCxIb3R5dzTRpNDYrXRu1zxad+yqEE+Gn34RSE+ADtAPFCx56zuPcnZVr7u444S7stSaQzAxriksAw8lEfVYMAY/VXqJB7oJHUGomIKXA3abIb/VP463F3sG5SwqFECt8rEbzwZugXrH4UY3SNoyS4YYleI5kvv3pK22AarGsgCzJQSqWLsoFf/St9D2vSQtebcPev+bbQBrtcOIQHIFe7ddWCLFR0XU4ZLbJGD/aj5eGM5F/544H2xCgD8cSZjIfPNLxh+wJEFfPj959RvWJB0ngRannHvySeVg==
+ b=L5C4d6DbKc0hVDHdsmeDJVDlUcejYnPc4D4cLuZR88mdIksuYQLfu+L5ZA9iUQQryy6Z3xhz0qWgQg2JhtYgW1qGGemgpo0hVtAfghQsd8/WdahhdeZ/pE9z7FYcqgvX95KTGTfOYA+q4XshTz9wCExERNZrji03GXFcCldjvv8sRRLNPlTphmWG0tEPDWrgTlRXPGOVe91hr+9VlsDa4sOQ011IGXQqsc5Bs1TItNF4zBq3lXj79/M6/Pqn960FjcN21MQPAk4z+1dgCnt3KX7aZ1k4QrQd86IADYoqwcqvWhylC89a5xymYK5l8V5MNivN6pGKuu9FkVvjoJU9Zw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZVe32DO7gVwLU6D4NUsbg577M7BSXlNYjw0azzzIWTU=;
- b=mMuKSm9PTRvC2AGsH958EaiLyd8X2bTP7rwHF6breHr8tOvxmo1Nx1F81pQTM8yhh1WKv3Z8Oy9W2qrEf1bwktFPMnsxSHreSBGcI0aD98QBlpRpRrLH7eoz4LekGFbXxMPysMQH6w24RdU7djI4AWQAJcRufCw5ZIVD1qoxT1UIdDV5Q9EN0+fpZ/hkxA73VO0ud5BOr74PFrU7PCwLjWko7/jiSSy+xieLDCOn39eFyC1NKlTsVp8jfyBsK+4BWRzXuU8U1t27VlK69fP7xbKa6MaMj8joQf65hPHnoFDzcXxkPQGbvV8cOikJlXg4xtjj2EjmH2ZkMQ0mTnuP7w==
+ bh=XEzcBYN5EVuuly5bAZXj1aJMU77+78DYkP4J08kRRMA=;
+ b=mvZpNLVCBAppuUESt03nlSaSeLofpqyuKw6kg6D46Gcq+Q2qBWwddNOxa80Xj5/U5KYSLdwF3Dhrji4y+4szBReYL4TZnvGkrfaDxU/FCZgcm8wYlt5yKLkTIKgm/JSQ3hBHCsbtunyFlPDxW0XkL4onXa6f1RJBduG9X6nQR/6dvqf6DFmfVjwlVCJg72OkaF0xy44jeNYlSnSuMXESb5u/sg1MsZKwujlUS2whZIYxw7Nv0I22JjBHBlG9N4O3KZ3CVRWn/jeOn7U+Mm9y/5Qe1xPiw1/undoa7VIRXZugk8zgNndBOeI7l0zdzhCL3gu+OHIp4zx0c5GMLPhNuQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZVe32DO7gVwLU6D4NUsbg577M7BSXlNYjw0azzzIWTU=;
- b=Cvg3GNi3AB/TAUZYLRaKOU3N1JsUGnOrLBLW/YTtG+79TQytKBpn41C8v74W6wMfk6bUvffkp84zhCaYWmVUIXS8gyUSZIBdSbwCInwh+bLJCOOeh4kh1jMkIEaOw+CU3VreEAJswIrIe73Ji+Tuk7tt579FCyTH8O1x0XBI6U0=
-Authentication-Results: lst.de; dkim=none (message not signed)
- header.d=none;lst.de; dmarc=none action=none header.from=oracle.com;
+ bh=XEzcBYN5EVuuly5bAZXj1aJMU77+78DYkP4J08kRRMA=;
+ b=mpAFQGnEU/CLZQtftWmod4cOpfVJkFkNrbyHlLcB7lSLzfx7lDw4c/Lg/bnJ+79INpt/I6vPYrjzqVKmZVbL5CMh6G3NyO9HrphH4OcXqeR/5SoCX4P24gFU7dVzc2tco9CDAXjgwJCkrxjA/mhMJqgT2T1D/xKslz1sIEuRHEg=
+Authentication-Results: linaro.org; dkim=none (message not signed)
+ header.d=none;linaro.org; dmarc=none action=none header.from=oracle.com;
 Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
  by PH0PR10MB4774.namprd10.prod.outlook.com (2603:10b6:510:3b::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3977.24; Thu, 25 Mar
- 2021 03:53:58 +0000
+ 2021 03:54:17 +0000
 Received: from PH0PR10MB4759.namprd10.prod.outlook.com
  ([fe80::dc39:c9fa:7365:8c8e]) by PH0PR10MB4759.namprd10.prod.outlook.com
  ([fe80::dc39:c9fa:7365:8c8e%5]) with mapi id 15.20.3977.025; Thu, 25 Mar 2021
- 03:53:58 +0000
+ 03:54:17 +0000
 From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     Christoph Hellwig <hch@lst.de>, mwilck@suse.com
+To:     Lee Jones <lee.jones@linaro.org>
 Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        David Disseldorp <ddiss@suse.com>,
-        Chaitanya Kulkarni <Chaitanya.Kulkarni@wdc.com>,
-        linux-scsi@vger.kernel.org,
-        =?UTF-8?q?J=C3=BCrgen=20Gro=C3=9F?= <jgross@suse.com>,
-        target-devel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] target: pscsi: avoid OOM in pscsi_map_sg()
-Date:   Wed, 24 Mar 2021 23:53:48 -0400
-Message-Id: <161664413900.21300.16395947495735872708.b4-ty@oracle.com>
+        Alex Davis <letmein@erols.com>,
+        "Manoj N. Kumar" <manoj@linux.ibm.com>,
+        linux-kernel@vger.kernel.org, Erich Chen <erich@tekram.com.tw>,
+        Drew Eckhardt <drew@colorado.edu>, linux-drivers@broadcom.com,
+        Tyrel Datwyler <tyreld@linux.ibm.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Ketan Mukadam <ketan.mukadam@broadcom.com>,
+        MPT-FusionLinux.pdl@avagotech.com,
+        Satish Kharat <satishkh@cisco.com>,
+        Shaun Tancheff <shaun.tancheff@seagate.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        MPT-FusionLinux.pdl@broadcom.com, Ali Akcaagac <aliakc@web.de>,
+        "Nicholas A. Bellinger" <nab@kernel.org>,
+        Richard Gooch <rgooch@atnf.csiro.au>,
+        Brian Macy <bmacy@sunshinecomputing.com>,
+        Colin DeVilbiss <devilbis@us.ibm.com>,
+        Linda Xie <lxie@us.ibm.com>,
+        Douglas Gilbert <dgilbert@interlog.com>,
+        Christoph Hellwig <hch@lst.de>, Jirka Hanika <geo@ff.cuni.cz>,
+        Luben Tuikov <luben_tuikov@adaptec.com>,
+        Badari Pulavarty <pbadari@us.ibm.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Brian King <brking@us.ibm.com>,
+        Santiago Leon <santil@us.ibm.com>, Marvell <jyli@marvell.com>,
+        Linux GmbH <hare@suse.com>,
+        Suganath Prabu Subramani 
+        <suganath-prabu.subramani@broadcom.com>,
+        linux-scsi@vger.kernel.org, Le Moal <damien.lemoal@hgst.com>,
+        Uma Krishnan <ukrishn@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, Hannes Reinecke <hare@suse.de>,
+        dc395x@twibble.org, Sathya Prakash <sathya.prakash@broadcom.com>,
+        Dave Boutcher <sleddog@us.ibm.com>,
+        Sesidhar Baddela <sebaddel@cisco.com>,
+        Brian King <brking@linux.vnet.ibm.com>,
+        Alan Cox <alan@lxorguk.ukuu.org.uk>,
+        David Chaw <david_chaw@adaptec.com>,
+        "Leonard N. Zubkoff" <lnz@dandelion.com>,
+        Jitendra Bhivare <jitendra.bhivare@broadcom.com>,
+        Kurt Garloff <garloff@suse.de>,
+        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+        Michael Cyr <mikecyr@linux.ibm.com>,
+        Artur Paszkiewicz <artur.paszkiewicz@intel.com>,
+        "C.L. Huang" <ching@tekram.com.tw>,
+        Jamie Lenehan <lenehan@twibble.org>,
+        Dave Boutcher <boutcher@us.ibm.com>, willy@debian.org,
+        Eric Youngdale <eric@andante.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Bryant G. Ly" <bryantly@linux.vnet.ibm.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Oliver Neukum <oliver@neukum.org>,
+        Hannes Reinecke <hare@kernel.org>,
+        Karan Tilak Kumar <kartilak@cisco.com>,
+        "Matthew R. Ochs" <mrochs@linux.ibm.com>,
+        target-devel@vger.kernel.org, Torben Mathiasen <tmm@image.dk>,
+        Anil Ravindranath <anil_ravindranath@pmc-sierra.com>,
+        FUJITA Tomonori <tomof@acm.org>,
+        Subbu Seetharaman <subbu.seetharaman@broadcom.com>,
+        Bas Vermeulen <bvermeul@blackstar.xs4all.nl>
+Subject: Re: [PATCH 00/36] [Set 4] Rid W=1 warnings in SCSI
+Date:   Wed, 24 Mar 2021 23:53:59 -0400
+Message-Id: <161664421199.21435.4256343253687572354.b4-ty@oracle.com>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210323212431.15306-1-mwilck@suse.com>
-References: <20210323212431.15306-1-mwilck@suse.com>
+In-Reply-To: <20210317091230.2912389-1-lee.jones@linaro.org>
+References: <20210317091230.2912389-1-lee.jones@linaro.org>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Originating-IP: [138.3.201.9]
-X-ClientProxiedBy: CH2PR05CA0053.namprd05.prod.outlook.com
- (2603:10b6:610:38::30) To PH0PR10MB4759.namprd10.prod.outlook.com
+X-ClientProxiedBy: MW3PR05CA0029.namprd05.prod.outlook.com
+ (2603:10b6:303:2b::34) To PH0PR10MB4759.namprd10.prod.outlook.com
  (2603:10b6:510:3d::12)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from ca-mkp.mkp.ca.oracle.com (138.3.201.9) by CH2PR05CA0053.namprd05.prod.outlook.com (2603:10b6:610:38::30) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3977.10 via Frontend Transport; Thu, 25 Mar 2021 03:53:56 +0000
+Received: from ca-mkp.mkp.ca.oracle.com (138.3.201.9) by MW3PR05CA0029.namprd05.prod.outlook.com (2603:10b6:303:2b::34) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3999.14 via Frontend Transport; Thu, 25 Mar 2021 03:54:07 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ddacb175-e32f-43aa-d2be-08d8ef419e2f
+X-MS-Office365-Filtering-Correlation-Id: bb61a6a8-9201-44a6-ba11-08d8ef41a941
 X-MS-TrafficTypeDiagnostic: PH0PR10MB4774:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <PH0PR10MB477499F4509A08DBB0C6B62F8E629@PH0PR10MB4774.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-Microsoft-Antispam-PRVS: <PH0PR10MB4774ED8FC99321F0013A53448E629@PH0PR10MB4774.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:663;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: N3kOfU4DszhzsMgj53BU83WLsD7obYrh2krwFFHY0/e+0WSzptyLN8ZqPCnu2GDPez5q2M1xdDhWR4byLjXFdjduyG12y9Akf18zh5rIVFjeAW4pC0h63yNwLrcb5yINfQzUn7eGwl1GoCUI4yfLuRcEtnDppFwWiYoMB/+g1/HSFJUAe1KU0X+GoQZFtaeYb8iN694OQLi6AlcmFNBwzEsNar+sVdS1Q1YgFDaepWv4bNroa+F8kjlsw0pZfhkjP8NJ5To5/Rz255URMQqX9Q1s+b9LdTX9MN5msT2N5TNnY6KV1l481d1k37RAf79+UaOYjzOXH/35NvydJwNJ/1fI+W+D1ibc+6AysUlzWtYyR1HBetLB0X3O1A6Hu0ooFAZJfC0uI4O522tqldMlQ8NGil/M2s3ry2Fc5L/LcqaBgUuBjG03p1uKzBoZWVD1bt3gRJDGLx5vPeuOqYclFBsUCPConpQFPCgO3eunJJbDieKYRfQ1ib7kWBvHVh1zYjqGNT5VEM3rfppf+aOWpOKTiN1RZ3Da3U9lkwNSHBNpDm+X6y4+Anfs4FFsexb2EADhCAJeYxTJDcWdQUdW0bD3iO8PNG7I1q9ycOpFaqVPhRYoLLAgHUN2nzQHGWFthu/orLH7gQA4qarIr2Xg2vnQwCbdJpWDq2nUZP+fgrkOwSxkl9fSF8vhqwYigD4WBAiHQdktcJRUE7oEJ+yFOy7CAUuF5zIQWix24lvCs6U=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4759.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(376002)(346002)(396003)(366004)(39860400002)(136003)(54906003)(8676002)(4326008)(86362001)(103116003)(6666004)(36756003)(966005)(38100700001)(8936002)(2616005)(2906002)(16526019)(186003)(66946007)(956004)(66556008)(26005)(316002)(52116002)(7696005)(83380400001)(66476007)(478600001)(5660300002)(6486002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?ejZuTnFRb3BmeTByVHdtVTdDbGlpNnZxZWh3cUgvdFNBTGNvRDNtU0hFTHdH?=
- =?utf-8?B?SlZxclIzSUNyekwzM1BZbEtjL0kybExiL0JmcWRIQlBCUjVaM04rOEkzb1Jw?=
- =?utf-8?B?amI0ZW1YTGxROG80TmNwL2xlRHo5aXRXc2VwRmRUTG1wMkszZnc5dUVHdEFY?=
- =?utf-8?B?WjNrRk1PeXl2NlVkQkw4WDkxSmo3Z294ZlY1cVo3RkQreTNTYnZiNlJEbHdI?=
- =?utf-8?B?OFBCbXRmVnhGYWIzZ1FJWnpLWHcyci9jZ2U0WXFkTGZIdzNZWjdFWGVoaFdK?=
- =?utf-8?B?d1JzN0xZVzR2Y1FHamFOYlcydFhKaE80cWhmVDMwUWtDa1dZYnZ4VThhKzg0?=
- =?utf-8?B?MXlTdzRtYm1VcmhsR3ZQVzdNcDZDK3Bkd1FNQXlYNU9GZ3JMK05xaHFlZWg2?=
- =?utf-8?B?WTh2cHVmdllkem85WG1nMEZHM3pjd3J1WlJJSmZaQmZsbVU4bmlFTGJaVDBN?=
- =?utf-8?B?c3BGSHRVMkNBYVArM24yOXRjMGV4WTVBSjRycEN6U3Z5VCttZmxEQmNwUmFP?=
- =?utf-8?B?Q2YwaHlGaElvelJiY2xnTVM0Y2xtMjRXTloreThZcjhLN0J6eTRZOU1zdEd0?=
- =?utf-8?B?MXNLNURxWlFFNjROa25ad2cyVkx6TGI2WFdFY2QvYy90cmZaYitnTzBVODcx?=
- =?utf-8?B?ZzduSWRnSy9FWGgzZ3pINnV6Qjc1KzBQYjlCUEY3bTFqeE9xa3BHaVJKcFd5?=
- =?utf-8?B?amg1VEt6WTdmcTRiU2JuaUw4cWd5REtwdjNyVDdGcktqZ29MSEZBVkRUOHRL?=
- =?utf-8?B?SzVhSGdiVjR4ZzZ3MEJJSTdMZW5FLzJYZmRwRnljZ3h2RGJrYll6UmNST2JE?=
- =?utf-8?B?WGhLTytENktHYWZCVkd4VXRnM0RkOUJBYTF6VE9TcTlDdFYrOG9wUEh2WnIr?=
- =?utf-8?B?a0pNSm1HUERsbkJMT0d6cjFKa0hqNDFIcXZBb3VtckE1TThXakxSQXVLbHlE?=
- =?utf-8?B?NlVySlZ5TU9Uam1YT2FQRUVtSnZHY2lISnd3bmtEUW5xckJRWGFURTg4TVNa?=
- =?utf-8?B?M1kvby9NMStKWTY1OFRaYTZZMGlzU2p6TE1uTmlsbTZxTkxsdStiWklubUJa?=
- =?utf-8?B?blNyV1hvKzdxMXRJbzBYMThQYTNXT20vcStRQ1ZZNzlLeXhONTZ2dm1Xd21j?=
- =?utf-8?B?U3ljdjR1alBaVlJQcUpuVzI3cEphT3I3dGxyOStUZWhxVy9ITTZKVllTUEhZ?=
- =?utf-8?B?SlQvWEt5N2xPanRCMXRla2RqdVI3N3R0UEVBUi9HclZBS1JEaGJZNmMwQ2Iw?=
- =?utf-8?B?TlBzZlhzRTljVnJRTzBqWkhtb1ZLWmVhZXhyYUFvdysyQ1BhOUtBaktDRTVp?=
- =?utf-8?B?TU8vWC9lTE5MTi81a0F4VGdSa3RIS3l5dUtIRXM0OGRjZXBNamZ6QjU4cHNq?=
- =?utf-8?B?cjd0Mk5KcWVCUEJndk5DdDFCTTBJNC9hTXM5ckR1bjlTdHpxTDVRZEZuUndT?=
- =?utf-8?B?NnF5Ky9XV2t4bnl6UTFpMUMwRWdZcGhiUkpkeVFHaDRtWmJpMFUwYklWampI?=
- =?utf-8?B?bFdxNjVpWUtVTHRDVHprSTZENmI1ZFZGVEtMR3RsTzJYRUVNaThPSklCbFUw?=
- =?utf-8?B?WlVBUk9aMk1vcU1HL0JRZnRjVWVlYkV1UWFCNlNvMXYvNHd0dzYwTXVZTUpi?=
- =?utf-8?B?eXZIV3hFanQwa3R5cnFpUkZoR2NGR2dPVmF3SHBXZTNlSHRJb2loZjYxNWw3?=
- =?utf-8?B?YVdLR1hLQnZIQ2NHc01Oc2NXenRJa21EWFU2dHNxWkc5ZHhBdjlRSWZDZE85?=
- =?utf-8?Q?huXDlhS1C9avVLqMs3iMYCLVpYZhBHhWXA1iQ/c?=
+X-Microsoft-Antispam-Message-Info: NCnpHrUfkBZXfw9LMgbjk5T+3ZkL48WNgT/MzcfJkeSOPFdBxDuffW9bBMVYYjZNhBoqbwat9cxDNJwv3/a5AIP88zrlNMHNj2lcgp9y/HEkysFM8H5QTzf92QKuV9FtR5nLd1nrmXGXK7uweWiREgqsRuXZVwwWGUVi6lzBGYvFNm/jEcU6kv5P65BMMXFWxOrtwnmgociOt8X/0oslkWfMybMl3qwXIBw3Eqp8e0j0WObDeiiGaahzmTGlWPopqOA78WoU6Y8z6SglMIYoxdNAKRmLpKXL2QR1gmY8mEfrvZ6X3QEfIUsXY0klNtERPID6xWowA5tZkZBXD9QdW4CKAvVbpT0DSCtrPVb4kh+zeYBj62s24EzUqUEnUbqQAJzPzHX4srLOQZfvJgIBy8uCagjdImd/zdr4ExjSNNzHhPlumnusvoTlOrEhOugLwxo+gSt7LQhSxlmR2Nr3XVg9EYuJWQmY5/kYztVyMltjvTStj74+PsAcIgKiFt71ZweybLc6u9Qfazx3Mos/U2XM0/QIqLuWVkfXC6sTxaOhLgjCkXEFQi8XcjIl4YDY2NHZuuXOl9TI4E8y+xOUrYdOqEWXDOGFGqqoWZhUG2B9SmanWh3wxMX5UVrKcrJ7rAvXszVMzkSIrxbw8pQlQhdVNgcAAycPeCIn6onryO+Gw7jOLI2MLihvvBxtw+GnJaPPMMgAAXa8zma0dCLOMEM8EMSMkvUpaqFMVyNCUZk=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4759.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(376002)(346002)(396003)(366004)(39860400002)(136003)(54906003)(8676002)(4326008)(86362001)(103116003)(6666004)(36756003)(966005)(38100700001)(6916009)(8936002)(2616005)(2906002)(16526019)(7416002)(7366002)(7406005)(186003)(66946007)(956004)(66556008)(26005)(316002)(52116002)(7696005)(83380400001)(66476007)(478600001)(5660300002)(6486002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?N1lXRTc1L093VmcwazVKaFFWamdkdWttZWVnODd3TUFwMU1uUHJnVW1yOUpq?=
+ =?utf-8?B?bkhLR1VoNnYzUjBFYUl3T256U3pzUXJDNzcwZllHa2xGb0twZ2V6d1M1b3NF?=
+ =?utf-8?B?b3Exd2diSDQ3SXF3Z29YbmZTL2ZZUTdsYU1mS24zQzJZWGFzTFd6TlU2d0l1?=
+ =?utf-8?B?dy8ybG5LTmhDTlptdndWWnBhQnNYR2RVdG55aUFBaVQ2enBycEtOT29sS0dz?=
+ =?utf-8?B?TUFMZDZLTFV0M3hpaGdXSUtKMnB3eC81d1ZDWUMxQmVja0FqVGp4cnluWjVw?=
+ =?utf-8?B?T2dwalZtOU85VVNoMDF2NXpHL0k2VVQrVXBZYjNWSWFHQi81RkRScW8xc3Fu?=
+ =?utf-8?B?ejRXMWV4N0pCSDBNV20zWlk3dHNiblBBd0VUL3lVYVQwTXRPRC83UHhHaHh6?=
+ =?utf-8?B?MHdQcFN3RGFEZnRsbEhJZnFTNzBWdGJ1eU1JSVNtZ1laSTR4c1lNQkw4bmxU?=
+ =?utf-8?B?RDRlSGtWODF1Y0p5clJSM1Bzdjh6MjcvdDJrUm03c0NUeWpiOE1WaGtUUkVX?=
+ =?utf-8?B?YnhlRndGa3FIS2Q0aisvMDVvODVQQVNRRjltbmI4MzlQbGdoSjVDZk1VR09s?=
+ =?utf-8?B?MnU4MUJBNFd2WUtmeHhkQ3hTT1cwd0NQeWc4SFp1eFY3MmJYY2tybEwrWHVL?=
+ =?utf-8?B?aENORUF0QkZ3TlZWeVB5MU9VSlk4MklHK3RacjhMa2JabVBhcGlBcVhTK1BG?=
+ =?utf-8?B?cnEzT1VFYWEvUXB1UXlYZnFXRjVxWklwb2ljTTYzWTB1b3NqZjNZaUVPZUlF?=
+ =?utf-8?B?SjFWMjEwdmNFcWN6OU5vVUlEWUpaMWRRamJkc0JTVDJGNGlxZ3JwUW5QL0Vp?=
+ =?utf-8?B?MUt4WWpMMjVPb3lBL2g1MTAxNE9hMEU4ZjdPVUxReVJ1TXgveGkyTmdCOUIz?=
+ =?utf-8?B?Z0cyamRWejUvUTI4OGE4NkV3aVFEYy9mb0lZRWtmelZVaHNhNnQra01DaWZL?=
+ =?utf-8?B?ck9TTDNDcVRhTXNlVFpobHdQOGkxbWxJZDd0eUVwdEx0c25JbVdhZ25IdWwy?=
+ =?utf-8?B?M29vaGFqT01VenJRRnM4dnE2eHJyRFEzMDZZTHgxRTVqdVBERnFkemxrMFpQ?=
+ =?utf-8?B?YU9qd1BXdFhOUmxuV3prN3NHcHpjeDdSV08xSC95c3l5OXlkTy9tSDVoRTBj?=
+ =?utf-8?B?ZXhaV1QvYnQvellXbnA0Zyt3MW9NNWVwTFdBWjJ3dWJaM1FiMkRycDduQ2th?=
+ =?utf-8?B?dFI1WUc1RUQzT25HVVZEYkcwZ2NaVTNLTTE1VHd1R0YvOGJFRGtVbmdUcVpS?=
+ =?utf-8?B?OGpIcU9abzcwVFEzaVptdmZaQWhId0xjT0VSRVN4WnI5RVk2MWdvNnY1eGtF?=
+ =?utf-8?B?R1VxTzZteEtoc2N2TFo4K1paRHpjWW8vNlExbGU4VGJQZm9COEltMjFJQmVz?=
+ =?utf-8?B?VklucW1IemtLVkd0UTkrTDloYVJMb1ZCTDh3bVBGQ2RyWVlNVlpib0tCNWhT?=
+ =?utf-8?B?MlJpMStMVUhCS0d6UCtNRDR6K1lzV3h2WEZhSUJibk1iS3hWVmp6by84SFUz?=
+ =?utf-8?B?cHRIWTI2cXFrbVlaMDA1Z25vdnIrM2diSUwyRmd5bTlzV3dzMldmbDlvK0Fq?=
+ =?utf-8?B?TjdOSFBLZUFWem51eExxUnhaYlFzYTVWZ3lLb013NkxwaVdBSzQrR05CbWw3?=
+ =?utf-8?B?dkEvRUNsVEliU3N4NzdvT08zNWJka0JBZ1V2ZnQySVpLUDRuNm5IUk1iVGFM?=
+ =?utf-8?B?ZzJ1ZWh2ODRiWVQ1USt1NnVteDZiR0hJQnd3MEZOdnNjcEFnbkF0akFwVUt4?=
+ =?utf-8?Q?k7FS8rt6jL4QM0oVrKj44DpZyF8TkN0J28zwGFh?=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ddacb175-e32f-43aa-d2be-08d8ef419e2f
+X-MS-Exchange-CrossTenant-Network-Message-Id: bb61a6a8-9201-44a6-ba11-08d8ef41a941
 X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2021 03:53:58.0773
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2021 03:54:16.8686
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tvd5kTekLs2Bekgjf5Y15wNxhtrOuYWyAPP1St6anuoUHSmWNevdjiUh/KdJRd0Wc1Ge7BWpmuiILZZw5tUh/3IsETKoMN/fO9BfHNjLkao=
+X-MS-Exchange-CrossTenant-UserPrincipalName: bcef2pl3DPl0DdR1YI1XPBZtaQ8Hd+9cT89AyVLAxeKYfLSUPbHbghw50TSocnF1cW+4VZiI839oZRqDgsN4YbVeDtRXnX0tk8PdylwsDuo=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4774
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9933 signatures=668683
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 phishscore=0
- bulkscore=0 suspectscore=0 malwarescore=0 mlxlogscore=982 spamscore=0
+ bulkscore=0 suspectscore=0 malwarescore=0 mlxlogscore=999 spamscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
  definitions=main-2103250026
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9933 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 phishscore=0
- mlxlogscore=999 priorityscore=1501 impostorscore=0 bulkscore=0 spamscore=0
- adultscore=0 clxscore=1011 malwarescore=0 mlxscore=0 suspectscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 priorityscore=1501
+ impostorscore=0 spamscore=0 mlxscore=0 suspectscore=0 mlxlogscore=999
+ phishscore=0 bulkscore=0 adultscore=0 malwarescore=0 clxscore=1011
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
  definitions=main-2103250026
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Tue, 23 Mar 2021 22:24:30 +0100, mwilck@suse.com wrote:
+On Wed, 17 Mar 2021 09:11:54 +0000, Lee Jones wrote:
 
-> pscsi_map_sg() uses the variable nr_pages as a hint for bio_kmalloc()
-> how many vector elements to allocate. If nr_pages is < BIO_MAX_PAGES,
-> it will be reset to 0 after successful allocation of the bio.
+> This set is part of a larger effort attempting to clean-up W=1
+> kernel builds, which are currently overwhelmingly riddled with
+> niggly little warnings.
 > 
-> If bio_add_pc_page() fails later for whatever reason, pscsi_map_sg()
-> tries to allocate another bio, passing nr_vecs=0. This causes
-> bio_add_pc_page() to fail immediately in the next call. pci_map_sg()
-> continues to allocate zero-length bios until memory is exhausted and
-> the kernel crashes with OOM. This can be easily observed by exporting
-> a SATA DVD drive via pscsi. The target crashes as soon as the client
-> tries to access the DVD LUN. In the case I analyzed, bio_add_pc_page()
-> would fail because the DVD device's max_sectors_kb (128) was
-> exceeded.
+> Lee Jones (36):
+>   scsi: myrb: Demote non-conformant kernel-doc headers and fix others
+>   scsi: ipr: Fix incorrect function names in their headers
+>   scsi: mvumi: Fix formatting and doc-rot issues
+>   scsi: sd_zbc: Place function name into header
+>   scsi: pmcraid: Fix a whole host of kernel-doc issues
+>   scsi: sd: Fix function name in header
+>   scsi: aic94xx: aic94xx_dump: Correct misspelling of function
+>     asd_dump_seq_state()
+>   scsi: be2iscsi: be_main: Ensure function follows directly after its
+>     header
+>   scsi: dc395x: Fix some function param descriptions
+>   scsi: initio: Fix a few kernel-doc misdemeanours
+>   scsi: a100u2w: Fix some misnaming and formatting issues
+>   scsi: myrs: Add missing ':' to make the kernel-doc checker happy
+>   scsi: pmcraid: Correct function name pmcraid_show_adapter_id() in
+>     header
+>   scsi: mpt3sas: mpt3sas_scs: Fix a few kernel-doc issues
+>   scsi: be2iscsi: be_main: Demote incomplete/non-conformant kernel-doc
+>     header
+>   scsi: isci: phy: Fix a few different kernel-doc related issues
+>   scsi: fnic: fnic_scsi: Demote non-conformant kernel-doc headers
+>   scsi: fnic: fnic_fcs: Kernel-doc headers must contain the function
+>     name
+>   scsi: isci: phy: Provide function name and demote non-conforming
+>     header
+>   scsi: isci: request: Fix a myriad of kernel-doc issues
+>   scsi: isci: host: Fix bunch of kernel-doc related issues
+>   scsi: isci: task: Demote non-conformant header and remove superfluous
+>     param
+>   scsi: isci: remote_node_table: Fix a bunch of kernel-doc misdemeanours
+>   scsi: isci: remote_node_context: Fix one function header and demote a
+>     couple more
+>   scsi: isci: port_config: Fix a bunch of doc-rot and demote abuses
+>   scsi: isci: remote_device: Fix a bunch of doc-rot issues
+>   scsi: isci: request: Fix doc-rot issue relating to 'ireq' param
+>   scsi: isci: port: Fix a bunch of kernel-doc issues
+>   scsi: isci: remote_node_context: Demote kernel-doc abuse
+>   scsi: isci: remote_node_table: Provide some missing params and remove
+>     others
+>   scsi: cxlflash: main: Fix a little do-rot
+>   scsi: cxlflash: superpipe: Fix a few misnaming issues
+>   scsi: ibmvscsi: Fix a bunch of kernel-doc related issues
+>   scsi: ibmvscsi: ibmvfc: Fix a bunch of misdocumentation
+>   scsi: ibmvscsi_tgt: ibmvscsi_tgt: Remove duplicate section 'NOTE'
+>   scsi: cxlflash: vlun: Fix some misnaming related doc-rot
 > 
 > [...]
 
-Applied to 5.12/scsi-fixes, thanks!
+Applied to 5.13/scsi-queue, thanks!
 
-[1/2] target: pscsi: avoid OOM in pscsi_map_sg()
-      https://git.kernel.org/mkp/scsi/c/077ce028b8e0
-[2/2] target: pscsi: cleanup after failure in pscsi_map_sg()
-      https://git.kernel.org/mkp/scsi/c/36fa766faa0c
+[01/36] scsi: myrb: Demote non-conformant kernel-doc headers and fix others
+        https://git.kernel.org/mkp/scsi/c/12a1b740f225
+[02/36] scsi: ipr: Fix incorrect function names in their headers
+        https://git.kernel.org/mkp/scsi/c/637b5c3ebc1c
+[03/36] scsi: mvumi: Fix formatting and doc-rot issues
+        https://git.kernel.org/mkp/scsi/c/5ccd626516e1
+[04/36] scsi: sd_zbc: Place function name into header
+        https://git.kernel.org/mkp/scsi/c/59863cb53d80
+[05/36] scsi: pmcraid: Fix a whole host of kernel-doc issues
+        https://git.kernel.org/mkp/scsi/c/3673b7b0007b
+[06/36] scsi: sd: Fix function name in header
+        https://git.kernel.org/mkp/scsi/c/ad907c54e36f
+[07/36] scsi: aic94xx: aic94xx_dump: Correct misspelling of function asd_dump_seq_state()
+        https://git.kernel.org/mkp/scsi/c/3e2f4679ea03
+[08/36] scsi: be2iscsi: be_main: Ensure function follows directly after its header
+        https://git.kernel.org/mkp/scsi/c/f1d50e8ee5c9
+[09/36] scsi: dc395x: Fix some function param descriptions
+        https://git.kernel.org/mkp/scsi/c/33c8ef953ece
+[10/36] scsi: initio: Fix a few kernel-doc misdemeanours
+        https://git.kernel.org/mkp/scsi/c/100ec495e01e
+[11/36] scsi: a100u2w: Fix some misnaming and formatting issues
+        https://git.kernel.org/mkp/scsi/c/c548a6250627
+[12/36] scsi: myrs: Add missing ':' to make the kernel-doc checker happy
+        https://git.kernel.org/mkp/scsi/c/9eb292eb2ef7
+[13/36] scsi: pmcraid: Correct function name pmcraid_show_adapter_id() in header
+        https://git.kernel.org/mkp/scsi/c/a364a147b1dc
+[14/36] scsi: mpt3sas: mpt3sas_scs: Fix a few kernel-doc issues
+        https://git.kernel.org/mkp/scsi/c/a8d548b0b3ee
+[15/36] scsi: be2iscsi: be_main: Demote incomplete/non-conformant kernel-doc header
+        https://git.kernel.org/mkp/scsi/c/a90a8c607570
+[16/36] scsi: isci: phy: Fix a few different kernel-doc related issues
+        https://git.kernel.org/mkp/scsi/c/6af1d9bd9051
+[17/36] scsi: fnic: fnic_scsi: Demote non-conformant kernel-doc headers
+        https://git.kernel.org/mkp/scsi/c/c7eab0704c30
+[18/36] scsi: fnic: fnic_fcs: Kernel-doc headers must contain the function name
+        https://git.kernel.org/mkp/scsi/c/2efd8631d6a5
+[19/36] scsi: isci: phy: Provide function name and demote non-conforming header
+        https://git.kernel.org/mkp/scsi/c/6ab7ca5139b7
+[20/36] scsi: isci: request: Fix a myriad of kernel-doc issues
+        https://git.kernel.org/mkp/scsi/c/db35a0835357
+[21/36] scsi: isci: host: Fix bunch of kernel-doc related issues
+        https://git.kernel.org/mkp/scsi/c/44b7ca966128
+[22/36] scsi: isci: task: Demote non-conformant header and remove superfluous param
+        https://git.kernel.org/mkp/scsi/c/0afdee03f2e7
+[23/36] scsi: isci: remote_node_table: Fix a bunch of kernel-doc misdemeanours
+        https://git.kernel.org/mkp/scsi/c/103d61927ed3
+[24/36] scsi: isci: remote_node_context: Fix one function header and demote a couple more
+        https://git.kernel.org/mkp/scsi/c/ad276048f1bc
+[25/36] scsi: isci: port_config: Fix a bunch of doc-rot and demote abuses
+        https://git.kernel.org/mkp/scsi/c/29faa5ce26ae
+[26/36] scsi: isci: remote_device: Fix a bunch of doc-rot issues
+        https://git.kernel.org/mkp/scsi/c/242e15d7a4f4
+[27/36] scsi: isci: request: Fix doc-rot issue relating to 'ireq' param
+        https://git.kernel.org/mkp/scsi/c/a8604e44514d
+[28/36] scsi: isci: port: Fix a bunch of kernel-doc issues
+        https://git.kernel.org/mkp/scsi/c/7292a8b039c5
+[29/36] scsi: isci: remote_node_context: Demote kernel-doc abuse
+        https://git.kernel.org/mkp/scsi/c/d2d480f132e8
+[30/36] scsi: isci: remote_node_table: Provide some missing params and remove others
+        https://git.kernel.org/mkp/scsi/c/188f513dd22c
+[31/36] scsi: cxlflash: main: Fix a little do-rot
+        https://git.kernel.org/mkp/scsi/c/cf0ad7a15ac5
+[32/36] scsi: cxlflash: superpipe: Fix a few misnaming issues
+        https://git.kernel.org/mkp/scsi/c/32b3edfd28f8
+[33/36] scsi: ibmvscsi: Fix a bunch of kernel-doc related issues
+        https://git.kernel.org/mkp/scsi/c/841d7df0d416
+[34/36] scsi: ibmvscsi: ibmvfc: Fix a bunch of misdocumentation
+        https://git.kernel.org/mkp/scsi/c/dd9c77297148
+[35/36] scsi: ibmvscsi_tgt: ibmvscsi_tgt: Remove duplicate section 'NOTE'
+        https://git.kernel.org/mkp/scsi/c/cba3ebfc008e
+[36/36] scsi: cxlflash: vlun: Fix some misnaming related doc-rot
+        https://git.kernel.org/mkp/scsi/c/a690baa47fd1
 
 -- 
 Martin K. Petersen	Oracle Linux Engineering
