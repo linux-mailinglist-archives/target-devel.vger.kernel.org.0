@@ -2,57 +2,49 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 45D67361BEE
-	for <lists+target-devel@lfdr.de>; Fri, 16 Apr 2021 11:00:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20F85361D43
+	for <lists+target-devel@lfdr.de>; Fri, 16 Apr 2021 12:09:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239950AbhDPIlQ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 16 Apr 2021 04:41:16 -0400
-Received: from mta-02.yadro.com ([89.207.88.252]:42074 "EHLO mta-01.yadro.com"
+        id S235102AbhDPJYe (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 16 Apr 2021 05:24:34 -0400
+Received: from mta-02.yadro.com ([89.207.88.252]:45242 "EHLO mta-01.yadro.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S239633AbhDPIlN (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Fri, 16 Apr 2021 04:41:13 -0400
+        id S231666AbhDPJYd (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Fri, 16 Apr 2021 05:24:33 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 1F7794137A;
-        Fri, 16 Apr 2021 08:40:41 +0000 (UTC)
+        by mta-01.yadro.com (Postfix) with ESMTP id B848041382;
+        Fri, 16 Apr 2021 09:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
         content-type:content-type:content-transfer-encoding:mime-version
-        :references:in-reply-to:x-mailer:message-id:date:date:subject
-        :subject:from:from:received:received:received; s=mta-01; t=
-        1618562439; x=1620376840; bh=A025upTuld58YH45pt2WsREDXARyHVvjHGG
-        /wptfod4=; b=f9ecdkXhXmjaYcK5Je8cuhmnZR/A//d75AjUiYqz2SdFL3/l0pz
-        n76AlR6N9C+cjS3aDS1OrZ67TckBzsffmomawWdWOjI0HvNKaf65yLQVyr1E8uDU
-        /BoNE0F2adqyjQubfTthL74cpXtphUVh3Y7VXmtHqM6qo/ijuZZN0c3A=
+        :x-mailer:message-id:date:date:subject:subject:from:from
+        :received:received:received; s=mta-01; t=1618565046; x=
+        1620379447; bh=3E/N8Yl7sMh4DIsxbIMnDUl+FD2WKryJLBm6JaJ5imY=; b=R
+        ma6pC7pViY8tHSbdC4rVfLxbT70fQ+DONTHSFYjLDLygrq5Ul7NAwO6NQRPvpobZ
+        2iY3we1SztVNo7Xi76ia5G5Sf0mmaocnsSyTWPs2filHAgqSP9fg0z/F47Yn/RmH
+        4dvRIBXcZuKQ0Z/IVatdVX3fTRpBfbEHLYObtIgtE8=
 X-Virus-Scanned: amavisd-new at yadro.com
 Received: from mta-01.yadro.com ([127.0.0.1])
         by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id zVXetGQkPnqD; Fri, 16 Apr 2021 11:40:39 +0300 (MSK)
+        with ESMTP id ePuH44Am-GyD; Fri, 16 Apr 2021 12:24:06 +0300 (MSK)
 Received: from T-EXCH-03.corp.yadro.com (t-exch-03.corp.yadro.com [172.17.100.103])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id 196F441389;
-        Fri, 16 Apr 2021 11:40:39 +0300 (MSK)
+        by mta-01.yadro.com (Postfix) with ESMTPS id 0245341377;
+        Fri, 16 Apr 2021 12:24:05 +0300 (MSK)
 Received: from NB-591.corp.yadro.com (10.199.0.63) by T-EXCH-03.corp.yadro.com
  (172.17.100.103) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Fri, 16
- Apr 2021 11:40:38 +0300
+ Apr 2021 12:24:05 +0300
 From:   Dmitry Bogdanov <d.bogdanov@yadro.com>
 To:     Martin Petersen <martin.petersen@oracle.com>,
         <target-devel@vger.kernel.org>
 CC:     <linux-scsi@vger.kernel.org>, <linux@yadro.com>,
-        Konstantin Shelekhin <k.shelekhin@yadro.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Chris Boot <bootc@bootc.net>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Michael Cyr <mikecyr@linux.ibm.com>,
-        Felipe Balbi <balbi@kernel.org>,
         Dmitry Bogdanov <d.bogdanov@yadro.com>,
         Roman Bolshakov <r.bolshakov@yadro.com>
-Subject: [PATCH v4 7/7] target: usb: replace enable attr to ops.enable
-Date:   Fri, 16 Apr 2021 11:26:32 +0300
-Message-ID: <20210416082632.2000-8-d.bogdanov@yadro.com>
+Subject: [PATCH v2] target: core: remove from tmr_list at lun unlink
+Date:   Fri, 16 Apr 2021 12:21:46 +0300
+Message-ID: <20210416092146.3201-1-d.bogdanov@yadro.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210416082632.2000-1-d.bogdanov@yadro.com>
-References: <20210416082632.2000-1-d.bogdanov@yadro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -63,90 +55,160 @@ Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Remove tpg/enable attribute.
-Add fabric ops enable_tpg implementation instead.
+Currently TMF commands are removed from de_device.dev_tmf_list at
+the very end of se_cmd lifecycle. But se_lun unlinks from se_cmd
+up on a command status (response) is queued in transport layer.
+It means that LUN and backend device can be deleted meantime and at
+the moment of repsonse completion a panic is occured:
 
+target_tmr_work()
+	cmd->se_tfo->queue_tm_rsp(cmd); // send abort_rsp to a wire
+	transport_lun_remove_cmd(cmd) // unlink se_cmd from se_lun
+- // - // - // -
+<<<--- lun remove
+<<<--- core backend device remove
+- // - // - // -
+qlt_handle_abts_completion()
+  tfo->free_mcmd()
+    transport_generic_free_cmd()
+      target_put_sess_cmd()
+        core_tmr_release_req() {
+          if (dev) { // backend device, can not be null
+            spin_lock_irqsave(&dev->se_tmr_lock, flags); //<<<--- CRASH
+
+Call Trace:
+NIP [c000000000e1683c] _raw_spin_lock_irqsave+0x2c/0xc0
+LR [c00800000e433338] core_tmr_release_req+0x40/0xa0 [target_core_mod]
+Call Trace:
+(unreliable)
+0x0
+target_put_sess_cmd+0x2a0/0x370 [target_core_mod]
+transport_generic_free_cmd+0x6c/0x1b0 [target_core_mod]
+tcm_qla2xxx_complete_mcmd+0x28/0x50 [tcm_qla2xxx]
+process_one_work+0x2c4/0x5c0
+worker_thread+0x88/0x690
+
+For FC protocol it is a race condition, but for iSCSI protocol it is
+easyly reproduced by manual sending iSCSI commands:
+- Send some SCSI sommand
+- Send Abort of that command over iSCSI
+- Remove LUN on target
+- Send next iSCSI command to acknowledge the Abort_Response
+- target panics
+
+There is no sense to keep the command in tmr_list until response
+completion, so move the removal from tmr_list from the response
+completion to the response queueing when lun is unlinked.
+Move the removal from state list too as it is a subject to the same
+race condition.
+
+Fixes: c66ac9db8d4a ("[SCSI] target: Add LIO target core v4.0.0-rc6")
 Reviewed-by: Roman Bolshakov <r.bolshakov@yadro.com>
 Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
----
-v4:
- fix uninitialized use of ret variable
----
- drivers/usb/gadget/function/f_tcm.c | 31 ++++++-----------------------
- 1 file changed, 6 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/f_tcm.c b/drivers/usb/gadget/function/f_tcm.c
-index 410fa89eae8f..0e6beb9e86b4 100644
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -1499,42 +1499,24 @@ static struct configfs_attribute *usbg_wwn_attrs[] = {
- 	NULL,
- };
+---
+v2:
+ fix cmd stuck in tmr list in error case in iscsi
+ move clearing cmd->se_lun to transport_lun_remove_cmd
+
+The issue exists from the very begining.
+I uploaded a scapy script that helps to reproduce the issue at
+https://gist.github.com/logost/cb93df41dd2432454324449b390403c4
+---
+ drivers/target/iscsi/iscsi_target.c    |  2 +-
+ drivers/target/target_core_tmr.c       |  9 --------
+ drivers/target/target_core_transport.c | 29 +++++++++++++++++++-------
+ 3 files changed, 23 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
+index d0e7ed8f28cc..3311b031a812 100644
+--- a/drivers/target/iscsi/iscsi_target.c
++++ b/drivers/target/iscsi/iscsi_target.c
+@@ -2142,7 +2142,7 @@ iscsit_handle_task_mgt_cmd(struct iscsi_conn *conn, struct iscsi_cmd *cmd,
+ 	 * TMR TASK_REASSIGN.
+ 	 */
+ 	iscsit_add_cmd_to_response_queue(cmd, conn, cmd->i_state);
+-	target_put_sess_cmd(&cmd->se_cmd);
++	transport_generic_free_cmd(&cmd->se_cmd, false);
+ 	return 0;
+ }
+ EXPORT_SYMBOL(iscsit_handle_task_mgt_cmd);
+diff --git a/drivers/target/target_core_tmr.c b/drivers/target/target_core_tmr.c
+index 7347285471fa..323a173010c1 100644
+--- a/drivers/target/target_core_tmr.c
++++ b/drivers/target/target_core_tmr.c
+@@ -50,15 +50,6 @@ EXPORT_SYMBOL(core_tmr_alloc_req);
  
--static ssize_t tcm_usbg_tpg_enable_show(struct config_item *item, char *page)
--{
--	struct se_portal_group *se_tpg = to_tpg(item);
--	struct usbg_tpg  *tpg = container_of(se_tpg, struct usbg_tpg, se_tpg);
--
--	return snprintf(page, PAGE_SIZE, "%u\n", tpg->gadget_connect);
--}
--
- static int usbg_attach(struct usbg_tpg *);
- static void usbg_detach(struct usbg_tpg *);
- 
--static ssize_t tcm_usbg_tpg_enable_store(struct config_item *item,
--		const char *page, size_t count)
-+static int usbg_enable_tpg(struct se_portal_group *se_tpg, bool enable)
+ void core_tmr_release_req(struct se_tmr_req *tmr)
  {
--	struct se_portal_group *se_tpg = to_tpg(item);
- 	struct usbg_tpg  *tpg = container_of(se_tpg, struct usbg_tpg, se_tpg);
--	bool op;
--	ssize_t ret;
+-	struct se_device *dev = tmr->tmr_dev;
+-	unsigned long flags;
 -
--	ret = strtobool(page, &op);
--	if (ret)
--		return ret;
+-	if (dev) {
+-		spin_lock_irqsave(&dev->se_tmr_lock, flags);
+-		list_del_init(&tmr->tmr_list);
+-		spin_unlock_irqrestore(&dev->se_tmr_lock, flags);
+-	}
 -
--	if ((op && tpg->gadget_connect) || (!op && !tpg->gadget_connect))
--		return -EINVAL;
-+	int ret = 0;
- 
--	if (op)
-+	if (enable)
- 		ret = usbg_attach(tpg);
- 	else
- 		usbg_detach(tpg);
- 	if (ret)
- 		return ret;
- 
--	tpg->gadget_connect = op;
-+	tpg->gadget_connect = enable;
- 
--	return count;
-+	return 0;
+ 	kfree(tmr);
  }
  
- static ssize_t tcm_usbg_tpg_nexus_show(struct config_item *item, char *page)
-@@ -1677,11 +1659,9 @@ static ssize_t tcm_usbg_tpg_nexus_store(struct config_item *item,
- 	return count;
+diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
+index 5ecb9f18a53d..34b20c0646ab 100644
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -667,6 +667,20 @@ static void target_remove_from_state_list(struct se_cmd *cmd)
+ 	spin_unlock_irqrestore(&dev->queues[cmd->cpuid].lock, flags);
  }
  
--CONFIGFS_ATTR(tcm_usbg_tpg_, enable);
- CONFIGFS_ATTR(tcm_usbg_tpg_, nexus);
++static void target_remove_from_tmr_list(struct se_cmd *cmd)
++{
++	struct se_device *dev = NULL;
++	unsigned long flags;
++
++	if (cmd->se_cmd_flags & SCF_SCSI_TMR_CDB)
++		dev = cmd->se_tmr_req->tmr_dev;
++
++	if (dev) {
++		spin_lock_irqsave(&dev->se_tmr_lock, flags);
++		list_del_init(&cmd->se_tmr_req->tmr_list);
++		spin_unlock_irqrestore(&dev->se_tmr_lock, flags);
++	}
++}
+ /*
+  * This function is called by the target core after the target core has
+  * finished processing a SCSI command or SCSI TMF. Both the regular command
+@@ -678,13 +692,6 @@ static int transport_cmd_check_stop_to_fabric(struct se_cmd *cmd)
+ {
+ 	unsigned long flags;
  
- static struct configfs_attribute *usbg_base_attrs[] = {
--	&tcm_usbg_tpg_attr_enable,
- 	&tcm_usbg_tpg_attr_nexus,
- 	NULL,
- };
-@@ -1734,6 +1714,7 @@ static const struct target_core_fabric_ops usbg_ops = {
- 	.fabric_make_wwn		= usbg_make_tport,
- 	.fabric_drop_wwn		= usbg_drop_tport,
- 	.fabric_make_tpg		= usbg_make_tpg,
-+	.fabric_enable_tpg		= usbg_enable_tpg,
- 	.fabric_drop_tpg		= usbg_drop_tpg,
- 	.fabric_post_link		= usbg_port_link,
- 	.fabric_pre_unlink		= usbg_port_unlink,
+-	target_remove_from_state_list(cmd);
+-
+-	/*
+-	 * Clear struct se_cmd->se_lun before the handoff to FE.
+-	 */
+-	cmd->se_lun = NULL;
+-
+ 	spin_lock_irqsave(&cmd->t_state_lock, flags);
+ 	/*
+ 	 * Determine if frontend context caller is requesting the stopping of
+@@ -719,8 +726,16 @@ static void transport_lun_remove_cmd(struct se_cmd *cmd)
+ 	if (!lun)
+ 		return;
+ 
++	target_remove_from_state_list(cmd);
++	target_remove_from_tmr_list(cmd);
++
+ 	if (cmpxchg(&cmd->lun_ref_active, true, false))
+ 		percpu_ref_put(&lun->lun_ref);
++
++	/*
++	 * Clear struct se_cmd->se_lun before the handoff to FE.
++	 */
++	cmd->se_lun = NULL;
+ }
+ 
+ static void target_complete_failure_work(struct work_struct *work)
 -- 
 2.25.1
 
