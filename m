@@ -2,110 +2,79 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98E4D362EEF
-	for <lists+target-devel@lfdr.de>; Sat, 17 Apr 2021 11:39:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08D3C3638DC
+	for <lists+target-devel@lfdr.de>; Mon, 19 Apr 2021 02:47:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235952AbhDQJkC (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 17 Apr 2021 05:40:02 -0400
-Received: from mta-02.yadro.com ([89.207.88.252]:44938 "EHLO mta-01.yadro.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229972AbhDQJkC (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Sat, 17 Apr 2021 05:40:02 -0400
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id CEDC7413D2;
-        Sat, 17 Apr 2021 09:39:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        in-reply-to:content-disposition:content-type:content-type
-        :mime-version:references:message-id:subject:subject:from:from
-        :date:date:received:received:received; s=mta-01; t=1618652373;
-         x=1620466774; bh=nNLbfatnt9znI+gpSdF8GgAQ2dxWCosWkubC/S0bxQc=; b=
-        nVZqGR0VCxsEwpBFH1I0LwmxQl12167oWJKDtT49NPH5q160JDjSh3dzbDwMSiz8
-        h7aC/1pV9yguXsK4BhFe/nzcUg4SGh9Cy5wVjxgP4wO9wq0t54fnGilW6YKsMSyg
-        GhZwBPhTEEDWk+VDdjT+EimTZhaBu6gvlYbOO8hEe/k=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id M6vuVwMTIk2N; Sat, 17 Apr 2021 12:39:33 +0300 (MSK)
-Received: from T-EXCH-03.corp.yadro.com (t-exch-03.corp.yadro.com [172.17.100.103])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id BC196413C8;
-        Sat, 17 Apr 2021 12:39:33 +0300 (MSK)
-Received: from yadro.com (10.199.0.198) by T-EXCH-03.corp.yadro.com
- (172.17.100.103) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Sat, 17
- Apr 2021 12:39:32 +0300
-Date:   Sat, 17 Apr 2021 12:39:31 +0300
-From:   Konstantin Shelekhin <k.shelekhin@yadro.com>
-To:     Dmitry Bogdanov <d.bogdanov@yadro.com>
-CC:     Martin Petersen <martin.petersen@oracle.com>,
-        <target-devel@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-        <linux@yadro.com>, Roman Bolshakov <r.bolshakov@yadro.com>
-Subject: Re: [PATCH v2] target: core: remove from tmr_list at lun unlink
-Message-ID: <YHqs0xUAP/AbOhgY@yadro.com>
-References: <20210416092146.3201-1-d.bogdanov@yadro.com>
+        id S233117AbhDSAsE (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 18 Apr 2021 20:48:04 -0400
+Received: from mbox.abcom.al ([217.73.143.249]:41914 "EHLO mbox.abcom.al"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232973AbhDSAsE (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Sun, 18 Apr 2021 20:48:04 -0400
+X-Greylist: delayed 1266 seconds by postgrey-1.27 at vger.kernel.org; Sun, 18 Apr 2021 20:48:04 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by mbox.abcom.al (Postfix) with ESMTP id 2C4DF109355E7;
+        Mon, 19 Apr 2021 02:22:08 +0200 (CEST)
+Received: from mbox.abcom.al ([127.0.0.1])
+        by localhost (mbox.abcom.al [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id b-dKojy3iplL; Mon, 19 Apr 2021 02:22:08 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by mbox.abcom.al (Postfix) with ESMTP id 2D2F711BCF181;
+        Mon, 19 Apr 2021 02:22:07 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mbox.abcom.al 2D2F711BCF181
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=abcom.al;
+        s=0F3BA0EE-D5D4-11E8-9596-F9115129F2F4; t=1618791727;
+        bh=p2Sn/5BeV1TeOpE0g2OnXyVNOPHFXRN2kak+hb1GY3o=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=p63sNDSfyhAQ/VyPDte9x5jzEFED6w/E26eBwN/y9S56VYTO9lBUZAYq8+BGq2I5+
+         Mzd/3NCPEfvrZ4s6ji9KWxaYPx8iD9zmSd/sQpttg0G0yIKe09Dkv4sLbukBJOW+Q4
+         su4Q0JLt/C8ge0jIWEZT1OAXCAir/vmOJjekKg8JdrFMsATw6xZBlNQ08Ya68zA0Qu
+         Q0oDL7WoZqPTqzsbs2RfaucQ+zZNb6Urruci1E8hYCe9YAiNUVMuJQp6UEFIQqJCZ3
+         goNMTZK1tCAzF3NReLY7XU5AuAw5+Rbe1OTzfHCCDOLlHatMQQIDeqD0qnu+Mhd3pk
+         LAJfyVJ4KKj4Q==
+X-Virus-Scanned: amavisd-new at mbox.abcom.al
+Received: from mbox.abcom.al ([127.0.0.1])
+        by localhost (mbox.abcom.al [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id wtcyvlrK7RqW; Mon, 19 Apr 2021 02:22:07 +0200 (CEST)
+Received: from [192.168.43.60] (unknown [105.4.4.115])
+        by mbox.abcom.al (Postfix) with ESMTPSA id AE52B6DF6F6C;
+        Mon, 19 Apr 2021 02:21:59 +0200 (CEST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20210416092146.3201-1-d.bogdanov@yadro.com>
-X-Originating-IP: [10.199.0.198]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-03.corp.yadro.com (172.17.100.103)
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Hallo=2C_Sie_haben_eine_Spende_von_=E2=82=AC_2=2E000=2E000=2C00?=
+To:     Recipients <abashi@abcom.al>
+From:   <abashi@abcom.al>
+Date:   Mon, 19 Apr 2021 02:21:23 +0200
+Reply-To: billlawrencedonationorg@yahoo.com
+Message-Id: <20210419002159.AE52B6DF6F6C@mbox.abcom.al>
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Fri, Apr 16, 2021 at 12:21:46PM +0300, Dmitry Bogdanov wrote:
-> @@ -719,8 +726,16 @@ static void transport_lun_remove_cmd(struct se_cmd *cmd)
->  	if (!lun)
->  		return;
->  
-> +	target_remove_from_state_list(cmd);
-> +	target_remove_from_tmr_list(cmd);
-> +
->  	if (cmpxchg(&cmd->lun_ref_active, true, false))
->  		percpu_ref_put(&lun->lun_ref);
-> +
-> +	/*
-> +	 * Clear struct se_cmd->se_lun before the handoff to FE.
-> +	 */
-> +	cmd->se_lun = NULL;
->  }
+Sehr geehrter Herr / Frau
+Ich gr=C3=BC=C3=9Fe Sie im Namen des Herrn. Diese Nachricht wird Ihnen als =
+Benachrichtigung gesendet, dass Sie ausgew=C3=A4hlt wurden, um von meinem W=
+ohlt=C3=A4tigkeitsprojekt zu profitieren, das darauf abzielt, Leben zu ber=
+=C3=BChren und denen zu helfen, die ich auf der ganzen Welt kann, wie Gott =
+mich gesegnet hat.
+Ich habe die Powerball-Lotterie in H=C3=B6he von 150 Millionen USD am 16. D=
+ezember 2019 gewonnen und ich habe mich freiwillig entschlossen, Ihnen eine=
+n Betrag von (2.000.000,00 =E2=82=AC) als Wohlt=C3=A4tigkeitsorganisation z=
+u spenden. Ich versuche, zuf=C3=A4llige Menschen aus verschiedenen Quellen =
+und Moden zu erreichen, um das Leben aus verschiedenen Quellen zu ber=C3=BC=
+hren Winkel. Deshalb erhalten Sie hier die Nachricht.
+Sie wurden als einer der gl=C3=BCcklichen Empf=C3=A4nger registriert, die 2=
+ Millionen Euro erhalten haben. Diese Spende wird Ihnen gegeben, damit Sie =
+Ihre pers=C3=B6nlichen Probleme versch=C3=A4rfen und uns zum gro=C3=9Fen Te=
+il gro=C3=9Fz=C3=BCgig dabei helfen k=C3=B6nnen, die weniger gl=C3=BCcklich=
+en Waisen und gemeinn=C3=BCtzigen Organisationen in Ihrem Land zu unterst=
+=C3=BCtzen Nachbarschaftslokalit=C3=A4t
+Zur =C3=9Cberpr=C3=BCfung: //www.powerball.com/winner-story/150-million-pow=
+erball-ticket-claimed
 
-Sadly we just found out that this code is racing with
-core_tmr_drain_tmr_list(). If LUN RESET comes in while there are still
-some outstanding ABORT TASK functions left, the following sequence is
-possible:
+Kontaktieren Sie mich erneut, um Spenden zu erhalten. E-Mail: billlawrenced=
+onationorg@yahoo.com
 
-  1. During LUN RESET processing core_tmr_drain_tmr_list() is called
-  2. During ABORT TASK processing transport_lun_remove_cmd() is called
-     at the sime time
-  3. core_tmr_drain_tmr_list() acquires &dev->se_tmr_lock lock and moves
-     TMRs to the on-stack drain_tmr_list
-  4. core_tmr_drain_tmr_list() releases &dev->se_tmr_lock and starts
-     working on the drain_tmr_list
-  5. At the same moment target_remove_from_tmr_list() is called
-  6. It acquires &dev->se_tmr_lock, removes TMR from the list by
-     list_del_init() and releases &dev->se_tmr_lock
-
-What happens next is this:
-
-  [  391.438244] LUN_RESET:  releasing TMR 00000000e2ee2634 Function: 0x01, Response: 0x05, t_state: 11
-  [  391.438246] LUN_RESET:  releasing TMR 00000000e2ee2634 Function: 0x01, Response: 0x05, t_state: 11
-
-The same TMR is being pulled out twice out of the drain_tmr_list. This
-happens because there are no locks that prevent the list traversal in
-core_tmr_drain_tmr_list() and the list element removal in
-target_remove_from_tmr_list() from being executed concurrently. So
-list_del_init() in target_remove_from_tmr_list() calls INIT_LIST_HEAD()
-and tmr_p->next now points to tmr_p.
-
-Hence the following warnings:
-
-  [  391.438300] WARNING: CPU: 12 PID: 20064 at ../drivers/target/target_core_transport.c:2785
-  ...
-  [  391.438448] WARNING: CPU: 12 PID: 20064 at ../lib/refcount.c:28 refcount_warn_saturate+0x224/0x240
-
-This issue also prevents other TMRs from being released, resulting in a
-stuck session. Not always, since sometimes drain_tmr_list only contains
-one element, but still possible.
+Vielen Dank, Bill Lawrence
