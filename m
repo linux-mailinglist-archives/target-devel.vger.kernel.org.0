@@ -2,213 +2,106 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E364365FE8
-	for <lists+target-devel@lfdr.de>; Tue, 20 Apr 2021 21:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4893366EC2
+	for <lists+target-devel@lfdr.de>; Wed, 21 Apr 2021 17:07:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233498AbhDTTAt (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 20 Apr 2021 15:00:49 -0400
-Received: from mta-02.yadro.com ([89.207.88.252]:52998 "EHLO mta-01.yadro.com"
+        id S243814AbhDUPHy (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 21 Apr 2021 11:07:54 -0400
+Received: from mta-02.yadro.com ([89.207.88.252]:36760 "EHLO mta-01.yadro.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233541AbhDTTAm (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Tue, 20 Apr 2021 15:00:42 -0400
+        id S238067AbhDUPHw (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Wed, 21 Apr 2021 11:07:52 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 572CE413A2;
-        Tue, 20 Apr 2021 19:00:09 +0000 (UTC)
+        by mta-01.yadro.com (Postfix) with ESMTP id 9155441268;
+        Wed, 21 Apr 2021 15:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        content-type:content-type:content-transfer-encoding:mime-version
-        :references:in-reply-to:x-mailer:message-id:date:date:subject
-        :subject:from:from:received:received:received; s=mta-01; t=
-        1618945208; x=1620759609; bh=c1tS4oeh7lbe3X2QVse23nsU2MfIanOAt/b
-        YyhlsNbg=; b=u7mYeDR7E2nX3+hcTpaxvWpm5cC0rsVmbFHltMGCpwsHPtm1Dh+
-        gW/4LSCk7DUpsVvSVyI1Q0YtnvvMWwDGDjMmgp20CRZj44O35GIXiucMQ5q9KbZI
-        bYkPJoOotdsK6g4u07uZpIA3SeC2xi8dagSj9OR6v6nDeueE0YQOUj6I=
+        mime-version:content-transfer-encoding:content-type:content-type
+        :content-language:accept-language:in-reply-to:references
+        :message-id:date:date:subject:subject:from:from:received
+        :received:received:received; s=mta-01; t=1619017630; x=
+        1620832031; bh=naHOwxO5PGhnqzxlQmROUBcliJeUHo+BMhLRonTpiyY=; b=W
+        2yXwKaIcUO4utwYHpR0qffNbifuhO7sNgRY7OK/cWuLsNDbqhehldmUzNbjY5sdM
+        UymUIceJB0CU0WaCTPpx+KbYbhnygBiTARC8nNPw3fzTS50V0R59PnInxguT3Uv0
+        K+Eb5yFzK+vtFB/f65M3iNlD66W1cXnjIQgN533YAA=
 X-Virus-Scanned: amavisd-new at yadro.com
 Received: from mta-01.yadro.com ([127.0.0.1])
         by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 6BL9g7FJGqtb; Tue, 20 Apr 2021 22:00:08 +0300 (MSK)
+        with ESMTP id CWNMFbOLoUnq; Wed, 21 Apr 2021 18:07:10 +0300 (MSK)
 Received: from T-EXCH-03.corp.yadro.com (t-exch-03.corp.yadro.com [172.17.100.103])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id 0846A41318;
-        Tue, 20 Apr 2021 22:00:08 +0300 (MSK)
-Received: from yadro.com (10.199.0.227) by T-EXCH-03.corp.yadro.com
- (172.17.100.103) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Tue, 20
- Apr 2021 22:00:07 +0300
-From:   Sergey Samoylenko <s.samoylenko@yadro.com>
-To:     Martin Petersen <martin.petersen@oracle.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        <target-devel@vger.kernel.org>
-CC:     David Disseldorp <ddiss@suse.de>, <linux-scsi@vger.kernel.org>,
-        <linux@yadro.com>, Sergey Samoylenko <s.samoylenko@yadro.com>,
+        by mta-01.yadro.com (Postfix) with ESMTPS id 1CCAE41241;
+        Wed, 21 Apr 2021 18:07:09 +0300 (MSK)
+Received: from T-EXCH-03.corp.yadro.com (172.17.100.103) by
+ T-EXCH-03.corp.yadro.com (172.17.100.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
+ 15.1.669.32; Wed, 21 Apr 2021 18:07:09 +0300
+Received: from T-EXCH-03.corp.yadro.com ([fe80::39f4:7b05:b1d3:5272]) by
+ T-EXCH-03.corp.yadro.com ([fe80::39f4:7b05:b1d3:5272%14]) with mapi id
+ 15.01.0669.032; Wed, 21 Apr 2021 18:07:09 +0300
+From:   Dmitriy Bogdanov <d.bogdanov@yadro.com>
+To:     Mike Christie <michael.christie@oracle.com>,
+        Martin Petersen <martin.petersen@oracle.com>,
+        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>
+CC:     "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "linux@yadro.com" <linux@yadro.com>,
         Roman Bolshakov <r.bolshakov@yadro.com>
-Subject: [PATCH RESEND 2/2] scsi: target: core: Add IEEE Company ID attribute
-Date:   Tue, 20 Apr 2021 21:59:20 +0300
-Message-ID: <20210420185920.42431-3-s.samoylenko@yadro.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210420185920.42431-1-s.samoylenko@yadro.com>
-References: <20210420185920.42431-1-s.samoylenko@yadro.com>
+Subject: RE: [PATCH v2] target: core: remove from tmr_list at lun unlink
+Thread-Topic: [PATCH v2] target: core: remove from tmr_list at lun unlink
+Thread-Index: AQHXMqI/H57DoNH3mkWn7Ff2D9R1+qq3iwkAgAADNACAByTakA==
+Date:   Wed, 21 Apr 2021 15:07:09 +0000
+Message-ID: <39c7c7c7671742c183cfddd4a4a68ee9@yadro.com>
+References: <20210416092146.3201-1-d.bogdanov@yadro.com>
+ <d4a19bc6-a89a-7572-b726-31df86fc84fd@oracle.com>
+ <a91500ce-5ff8-8f97-03dc-74ae097d22e2@oracle.com>
+In-Reply-To: <a91500ce-5ff8-8f97-03dc-74ae097d22e2@oracle.com>
+Accept-Language: ru-RU, en-US
+Content-Language: ru-RU
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.199.0.213]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.199.0.227]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-03.corp.yadro.com (172.17.100.103)
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-The attribute provides a way to set a company specific WWN
-in configfs via:
-
-  target/core/$backstore/$name/wwn/company_id
-
-001405h remains default value for company id.
-
-Signed-off-by: Sergey Samoylenko <s.samoylenko@yadro.com>
-Signed-off-by: Roman Bolshakov <r.bolshakov@yadro.com>
----
- drivers/target/target_core_configfs.c | 50 +++++++++++++++++++++++++++
- drivers/target/target_core_device.c   |  5 +++
- drivers/target/target_core_spc.c      | 14 ++++----
- include/target/target_core_base.h     |  1 +
- 4 files changed, 63 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
-index 4b2e49341ad6..d6fd2779355a 100644
---- a/drivers/target/target_core_configfs.c
-+++ b/drivers/target/target_core_configfs.c
-@@ -1479,6 +1479,54 @@ static ssize_t target_wwn_revision_store(struct config_item *item,
- 	return count;
- }
- 
-+static ssize_t
-+target_wwn_company_id_show(struct config_item *item,
-+				char *page)
-+{
-+	return snprintf(page, PAGE_SIZE, "%#08x\n",
-+			to_t10_wwn(item)->company_id);
-+}
-+
-+static ssize_t
-+target_wwn_company_id_store(struct config_item *item,
-+				 const char *page, size_t count)
-+{
-+	struct t10_wwn *t10_wwn = to_t10_wwn(item);
-+	struct se_device *dev = t10_wwn->t10_dev;
-+	u32 val;
-+	int ret;
-+
-+	/*
-+	 * The IEEE COMPANY_ID field should contain a 24-bit canonical
-+	 * form OUI assigned by the IEEE.
-+	 */
-+	ret = kstrtou32(page, 0, &val);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (val >= 0x1000000)
-+		return -EOVERFLOW;
-+
-+	/*
-+	 * Check to see if any active exports exist. If they do exist, fail
-+	 * here as changing this information on the fly (underneath the
-+	 * initiator side OS dependent multipath code) could cause negative
-+	 * effects.
-+	 */
-+	if (dev->export_count) {
-+		pr_err("Unable to set Company ID while %d exports exist\n",
-+		       dev->export_count);
-+		return -EINVAL;
-+	}
-+
-+	t10_wwn->company_id = val;
-+
-+	pr_debug("Target_Core_ConfigFS: Set IEEE Company ID: %#08x\n",
-+		 t10_wwn->company_id);
-+
-+	return count;
-+}
-+
- /*
-  * VPD page 0x80 Unit serial
-  */
-@@ -1625,6 +1673,7 @@ DEF_DEV_WWN_ASSOC_SHOW(vpd_assoc_scsi_target_device, 0x20);
- CONFIGFS_ATTR(target_wwn_, vendor_id);
- CONFIGFS_ATTR(target_wwn_, product_id);
- CONFIGFS_ATTR(target_wwn_, revision);
-+CONFIGFS_ATTR(target_wwn_, company_id);
- CONFIGFS_ATTR(target_wwn_, vpd_unit_serial);
- CONFIGFS_ATTR_RO(target_wwn_, vpd_protocol_identifier);
- CONFIGFS_ATTR_RO(target_wwn_, vpd_assoc_logical_unit);
-@@ -1635,6 +1684,7 @@ static struct configfs_attribute *target_core_dev_wwn_attrs[] = {
- 	&target_wwn_attr_vendor_id,
- 	&target_wwn_attr_product_id,
- 	&target_wwn_attr_revision,
-+	&target_wwn_attr_company_id,
- 	&target_wwn_attr_vpd_unit_serial,
- 	&target_wwn_attr_vpd_protocol_identifier,
- 	&target_wwn_attr_vpd_assoc_logical_unit,
-diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
-index a8df9f0a82fa..8cb1fa0c0585 100644
---- a/drivers/target/target_core_device.c
-+++ b/drivers/target/target_core_device.c
-@@ -773,6 +773,11 @@ struct se_device *target_alloc_device(struct se_hba *hba, const char *name)
- 	spin_lock_init(&dev->t10_alua.lba_map_lock);
- 
- 	dev->t10_wwn.t10_dev = dev;
-+	/*
-+	 * Use OpenFabrics IEEE Company ID: 00 14 05
-+	 */
-+	dev->t10_wwn.company_id = 0x001405;
-+
- 	dev->t10_alua.t10_dev = dev;
- 
- 	dev->dev_attrib.da_dev = dev;
-diff --git a/drivers/target/target_core_spc.c b/drivers/target/target_core_spc.c
-index b2d19493a994..fe5d5ce4099c 100644
---- a/drivers/target/target_core_spc.c
-+++ b/drivers/target/target_core_spc.c
-@@ -136,20 +136,20 @@ void spc_gen_naa_6h_vendor_specific(struct se_device *dev,
- 				    unsigned char *buf)
- {
- 	unsigned char *p = &dev->t10_wwn.unit_serial[0];
-+	u32 company_id = dev->t10_wwn.company_id;
- 	int cnt, off = 0;
- 	bool next = true;
- 
- 	/*
- 	 * Start NAA IEEE Registered Extended Identifier/Designator
- 	 */
--	buf[off++] = 0x6 << 4;
-+	buf[off] = 0x6 << 4;
- 
--	/*
--	 * Use OpenFabrics IEEE Company ID: 00 14 05
--	 */
--	buf[off++] = 0x01;
--	buf[off++] = 0x40;
--	buf[off] = (0x5 << 4);
-+	/* IEEE COMPANY_ID */
-+	buf[off++] |= (company_id >> 20) & 0xf;
-+	buf[off++] = (company_id >> 12) & 0xff;
-+	buf[off++] = (company_id >> 4) & 0xff;
-+	buf[off] = (company_id & 0xf) << 4;
- 
- 	/*
- 	 * Generate up to 36 bits of VENDOR SPECIFIC IDENTIFIER starting on
-diff --git a/include/target/target_core_base.h b/include/target/target_core_base.h
-index d1f7d2a45354..85c16c266eac 100644
---- a/include/target/target_core_base.h
-+++ b/include/target/target_core_base.h
-@@ -326,6 +326,7 @@ struct t10_wwn {
- 	char model[INQUIRY_MODEL_LEN + 1];
- 	char revision[INQUIRY_REVISION_LEN + 1];
- 	char unit_serial[INQUIRY_VPD_SERIAL_LEN];
-+	u32 company_id;
- 	spinlock_t t10_vpd_lock;
- 	struct se_device *t10_dev;
- 	struct config_group t10_wwn_group;
--- 
-2.27.0
-
+SGkgTWlrZSwNCg0KPj4+IC0tLSBhL2RyaXZlcnMvdGFyZ2V0L2lzY3NpL2lzY3NpX3RhcmdldC5j
+DQo+Pj4gKysrIGIvZHJpdmVycy90YXJnZXQvaXNjc2kvaXNjc2lfdGFyZ2V0LmMNCj4+PiBAQCAt
+MjE0Miw3ICsyMTQyLDcgQEAgaXNjc2l0X2hhbmRsZV90YXNrX21ndF9jbWQoc3RydWN0IGlzY3Np
+X2Nvbm4gKmNvbm4sIHN0cnVjdCBpc2NzaV9jbWQgKmNtZCwNCj4+PiAgCSAqIFRNUiBUQVNLX1JF
+QVNTSUdOLg0KPj4+ICAJICovDQo+Pj4gIAlpc2NzaXRfYWRkX2NtZF90b19yZXNwb25zZV9xdWV1
+ZShjbWQsIGNvbm4sIGNtZC0+aV9zdGF0ZSk7DQo+Pj4gLQl0YXJnZXRfcHV0X3Nlc3NfY21kKCZj
+bWQtPnNlX2NtZCk7DQo+Pj4gKwl0cmFuc3BvcnRfZ2VuZXJpY19mcmVlX2NtZCgmY21kLT5zZV9j
+bWQsIGZhbHNlKTsNCj4+PiAgCXJldHVybiAwOw0KPj4+ICB9DQo+PiANCj4+IERvaC4gSSBzZWUg
+aG93IEkgZ290IGFsbCBjb25mdXNlZC4gSSBndWVzcyB0aGlzIHBhdGggbGVha3MgdGhlIGx1bl9y
+ZWYgDQo+PiB0YWtlbiBieSB0cmFuc3BvcnRfbG9va3VwX3Rtcl9sdW4uIEl0IGxvb2tzIGxpa2Ug
+YW4gb2xkIGlzc3VlIGFuZCANCj4+IG5vdGhpbmcgdG8gZG8gd2l0aCB5b3VyIHBhdGNoLg0KDQo+
+PiBJJ20gbm90IHN1cmUgaWYgd2UgYXJlIHN1cHBvc2VkIHRvIGJlIGNhbGxpbmcgDQo+PiB0cmFu
+c3BvcnRfZ2VuZXJpY19mcmVlX2NtZCB0d2ljZS4gSXQgbG9va3MgbGlrZSBpdCB3b3JrcyBvaywg
+YmVjYXVzZSB5b3VyIHBhdGNoIGFkZGVkIHRoZSAiY21kLT5zZV9sdW4gPSBOVUxMIg0KPj4gaW4g
+dHJhbnNwb3J0X2x1bl9yZW1vdmVfY21kLCBzbyB3ZSB3b24ndCBkbyBhIGRvdWJsZSBsaXN0IGRl
+bGV0aW9uLg0KPj4gSXQgZmVlbHMgZGlydHkgdGhvdWdoLiBJIGNhbiBmZWVsIEJhcnQgc2F5aW5n
+LCAiTWlrZSBkaWQgeW91IHNlZSB0aGUgDQo+PiBjb21tZW50IGF0IHRoZSB0b3Agb2YgdGhlIGZ1
+bmN0aW9uIi4gOikNCj4+IA0KPj4gTWF5YmUgaXQncyBiZXN0IHRvIG1vcmUgY2xlYW5seSB1bndp
+bmQgd2hhdCB3YXMgc2V0dXAgaW4gdGhlIHJyb3IgDQo+PiBwYXRoLiBJIHRoaW5rIHdlIGNhbiBm
+aXggbHVuX3JlZiBsZWFrIHRvby4NCj4+IA0KPj4gU28gaW5zdGVhZCBvZiBkb2luZyB0cmFuc3Bv
+cnRfZ2VuZXJpY19mcmVlX2NtZCBhYm92ZSBkbyANCj4+IHRyYW5zcG9ydF9sdW5fcmVtb3ZlX2Nt
+ZCB0byBtYXRjaC91bmRvIHRoZSB0cmFuc3BvcnRfbG9va3VwX3Rtcl9sdW4gY2FsbCBpbiBpc2Nz
+aXRfaGFuZGxlX3Rhc2tfbWd0X2NtZD8NCj4NCj5TaG9vdC4gSSdtIGFsbCBvdmVyIHRoZSBwbGFj
+ZS4gSSB0aGluayB0aGUgcm9vdCBpc3N1ZSBpcyBteSBvcmlnaW5hbCBjb21tZW50IG9uIHRoZSB2
+MSBwYXRjaCB3YXMgd3JvbmcuDQo+T24gYSBmYWlsdXJlIHdlIHdvdWxkIHN0aWxsIGRvOg0KPmlz
+Y3NpdF9mcmVlX2NtZCAtPiB0cmFuc3BvcnRfZ2VuZXJpY19mcmVlX2NtZCAtPiB0cmFuc3BvcnRf
+bHVuX3JlbW92ZV9jbWQNCj5yaWdodD8gU28gd2UgZG9uJ3QgbmVlZCBhbnkgY2hhbmdlIGluIHRo
+ZSBpc2NzaSB0YXJnZXQuIEl0IHNob3VsZCBhbGwganVzdCB3b3JrLg0KDQppc2NzaXRfZnJlZV9j
+bWQgd2lsbCBiZSBjYWxsZWQgb25seSBhdCByZXNwb25zZSBjb21wbGV0aW9uKG5leHQgaW5jb21p
+bmcgaXNjc2kgY29tbWFuZCk6IGlzY3NpdF9hY2tfZnJvbV9leHBzdGF0c24gLT4gaXNjc2l0X2Zy
+ZWVfY21kLg0KVGhhdCBwcm9kdWNlcyBzb21lIHVuYWNjZXB0YWJsZSBkZWxheSBvZiBsdW4gdW5s
+aW5raW5nIGZyb20gY21kLiBUaGVyZSBpcyBhIGJ1ZyByZXBvcnQgdG8gdGhlIHNpbWlsYXIgYmVo
+YXZpb3I6DQpodHRwOi8vbGttbC5pdS5lZHUvaHlwZXJtYWlsL2xpbnV4L2tlcm5lbC8yMDAyLjAv
+MDUyNzIuaHRtbA0KQmVjYXVzZSBvZiB0aGF0IGNvbXBsYWluLCB0aGUgY29tbWl0IDgzZjg1Yjhl
+YzMwNSwgdGhhdCBzb2x2ZXMgdGhlIHNhbWUgY3Jhc2ggYXMgSSBhbSBmaXhpbmcsICB3YXMgcmV2
+ZXJ0ZWQuDQoNClNvLCB0aGlzIHBpZWNlIG9mIHBhdGNoIGhhcyBzb21lIGluZGlyZWN0IHJlbGF0
+aW9uIDopDQpJIHdpbGwgZXh0cmFjdCBpdCB0byBhIHNlcGFyYXRlIHBhdGNoIGluIHRoZSBjb21p
+bmcgcGF0Y2hzZXQgb24gVE1GIGhhbmRsaW5nLg0KDQpCUiwNCiBEbWl0cnkNCg==
