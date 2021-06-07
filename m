@@ -2,27 +2,27 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DEC0839E285
-	for <lists+target-devel@lfdr.de>; Mon,  7 Jun 2021 18:17:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3710139E312
+	for <lists+target-devel@lfdr.de>; Mon,  7 Jun 2021 18:39:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232657AbhFGQRc (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 7 Jun 2021 12:17:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48738 "EHLO mail.kernel.org"
+        id S233194AbhFGQUt (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 7 Jun 2021 12:20:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49406 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231971AbhFGQQM (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Mon, 7 Jun 2021 12:16:12 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 16F5361466;
-        Mon,  7 Jun 2021 16:13:45 +0000 (UTC)
+        id S232433AbhFGQSp (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Mon, 7 Jun 2021 12:18:45 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8043161601;
+        Mon,  7 Jun 2021 16:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623082425;
-        bh=/48tEIiycQisQE3B2621vevj4juoOruldivOFAm/uX4=;
+        s=k20201202; t=1623082471;
+        bh=MfSr33OQR/3F0MHvDf2x2DbxuNCQgTef2ELFZ8C5Lg0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UZ1sodpNapUmpBWpF+kQerdBB2YLbzMpGXja1xzgtPrmPYZyzi2Kv8xLJreEQcdYz
-         PCSWWYX3YQTBHC5nesU7LEzQ2gja6BuOT3k2A0Kid9J0k5lHGk07BgDv6tdbdpEfnN
-         QGuwcvojm+dpza6WxWidMcF9ntqfVH+yCbw5OQknoA6CxLSCcoEX5Y3QeEMb7Ue9xC
-         4mGYhiyxABboI0VLw+rfZDs9qEkBnaQklTG4UgWNbcuezbSsY47y5D4PT/sp9Gdcf6
-         C4M2nrmhH9anmxO6vhDnhbV0/pqQl2UB3VdXtUzQ8fbM7TskKcvsPe8Nx5nLOnRFN+
-         dDH6ZXZqxqVCg==
+        b=iDSF1w4F7OXl+AoulCMtQKuBzWc3YdRGCPd58dLb2RMYwSoh7/hihxC8I38zOuSRj
+         U9woEoukcSwkJ+JLxbF3UEGpj8VjF4QgMINE+strz+ZJOHU4eU96EpQx3RGrbyQ8ja
+         nMpkw+h6eoYOea4aNuVWYsROPJYFEDfrHYrZ9cqBXD8EjkMw9lAF891tacBTyHtwCS
+         ij3t5ghYWmdQHC2I2hqaDeI911M6S9za34sd5QeURzACyt37eKSs6Ltpq78V5HU6eF
+         EIOIMMaDr0MrUdwAW/D5+qlT7WvjNbkO+TSeE7yGdLZDAxKvPKhJA+u46rci6hZZjg
+         PWouFdmvIATJw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Maurizio Lombardi <mlombard@redhat.com>,
@@ -30,12 +30,12 @@ Cc:     Maurizio Lombardi <mlombard@redhat.com>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
         target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 21/39] scsi: target: core: Fix warning on realtime kernels
-Date:   Mon,  7 Jun 2021 12:13:00 -0400
-Message-Id: <20210607161318.3583636-21-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 16/29] scsi: target: core: Fix warning on realtime kernels
+Date:   Mon,  7 Jun 2021 12:13:57 -0400
+Message-Id: <20210607161410.3584036-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210607161318.3583636-1-sashal@kernel.org>
-References: <20210607161318.3583636-1-sashal@kernel.org>
+In-Reply-To: <20210607161410.3584036-1-sashal@kernel.org>
+References: <20210607161410.3584036-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -65,10 +65,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
-index 484f0ba0a65b..61b79804d462 100644
+index a16835c0bb1d..5cf9e7677926 100644
 --- a/drivers/target/target_core_transport.c
 +++ b/drivers/target/target_core_transport.c
-@@ -3038,9 +3038,7 @@ __transport_wait_for_tasks(struct se_cmd *cmd, bool fabric_stop,
+@@ -2993,9 +2993,7 @@ __transport_wait_for_tasks(struct se_cmd *cmd, bool fabric_stop,
  	__releases(&cmd->t_state_lock)
  	__acquires(&cmd->t_state_lock)
  {
