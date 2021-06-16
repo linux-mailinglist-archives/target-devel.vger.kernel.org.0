@@ -2,125 +2,84 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65CF53A96B6
-	for <lists+target-devel@lfdr.de>; Wed, 16 Jun 2021 11:56:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6691C3A9B72
+	for <lists+target-devel@lfdr.de>; Wed, 16 Jun 2021 15:04:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231698AbhFPJ66 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 16 Jun 2021 05:58:58 -0400
-Received: from mta-02.yadro.com ([89.207.88.252]:55570 "EHLO mta-01.yadro.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231686AbhFPJ65 (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Wed, 16 Jun 2021 05:58:57 -0400
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 5548841283;
-        Wed, 16 Jun 2021 09:56:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        content-type:content-type:content-transfer-encoding:mime-version
-        :x-mailer:message-id:date:date:subject:subject:from:from
-        :received:received:received; s=mta-01; t=1623837409; x=
-        1625651810; bh=+zQOLcrGUh4fPJOW6zKFZChRo/zCRAvrw4TJ0W0CTQU=; b=U
-        8dbxdMW7reqPU2skEIzuPG3J3yRrsbjBc9YvNl4e7iKH08p1AieG3RgA8oprQxDf
-        ecPO53CZ8y1kfEk1Ao5h+o+k3qdDSBG5EWAyp0VGMlgweMzafB+tYkaoRRW2IM1W
-        cQFnpTDpN929eJmv//6E8C9mPCWeacmEhQ+kGMrmtM=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id tgsoqwpgQWGh; Wed, 16 Jun 2021 12:56:49 +0300 (MSK)
-Received: from T-EXCH-03.corp.yadro.com (t-exch-03.corp.yadro.com [172.17.100.103])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id 0DCBA41278;
-        Wed, 16 Jun 2021 12:56:48 +0300 (MSK)
-Received: from NB-591.corp.yadro.com (10.199.0.174) by
- T-EXCH-03.corp.yadro.com (172.17.100.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.669.32; Wed, 16 Jun 2021 12:56:47 +0300
-From:   Dmitry Bogdanov <d.bogdanov@yadro.com>
-To:     Martin Petersen <martin.petersen@oracle.com>,
-        <target-devel@vger.kernel.org>
-CC:     <linux-scsi@vger.kernel.org>, <linux@yadro.com>,
-        Dmitry Bogdanov <d.bogdanov@yadro.com>
-Subject: [PATCH] scsi: target: fix prot handling in WRITE SAME 32
-Date:   Wed, 16 Jun 2021 12:56:32 +0300
-Message-ID: <20210616095632.16775-1-d.bogdanov@yadro.com>
-X-Mailer: git-send-email 2.25.1
+        id S232949AbhFPNGO (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 16 Jun 2021 09:06:14 -0400
+Received: from mail.consorciolp.com.pe ([161.132.100.45]:39770 "EHLO
+        mail.consorciolp.com.pe" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232842AbhFPNGN (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Wed, 16 Jun 2021 09:06:13 -0400
+X-Greylist: delayed 21251 seconds by postgrey-1.27 at vger.kernel.org; Wed, 16 Jun 2021 09:06:13 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by mail.consorciolp.com.pe (Postfix) with ESMTP id C396E33DD727A;
+        Wed, 16 Jun 2021 01:36:28 -0500 (-05)
+Received: from mail.consorciolp.com.pe ([127.0.0.1])
+        by localhost (mail.consorciolp.com.pe [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 2SYs1OcNfp4t; Wed, 16 Jun 2021 01:36:28 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.consorciolp.com.pe (Postfix) with ESMTP id 2D41C348D3F2D;
+        Wed, 16 Jun 2021 01:34:53 -0500 (-05)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.consorciolp.com.pe 2D41C348D3F2D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oss.com.pe;
+        s=675A380C-4679-11E8-96E4-C0788CA36BC0; t=1623825293;
+        bh=7Y6RtNhSVAIVHdJEU2gHHWYvaP8LRgEAhMNj0EoKaAA=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=q3RG+zy8vFLe2uOiekDmK6T6tf0IzJJFWZxU/ba7Zw6ke423OhR3mNGQdTXEN0Apg
+         1KbryUr3v+qajtiIQZLcoyB80D5Qh5rYLqyHpQpmjXaohV+4mUpVY/8OkNmaS6yfpC
+         hwtE/NWJRp3DoRx8vFUO9E51B3IEN2ezeEBCFh3OixOsc1OsI0X0GhLAg1cuImv2AG
+         DPC7S0oMioqU/kTkarBGZLRz8oTOP+the7wEXq8HCUMBvSjPkaUWfbuEenJygMc8T6
+         0jlVyUtDolIgixCCiw3l7ccvFGAN5jQvk6kG7In+5GDdO9aMfN/8hylmBdmPNErr6t
+         poNx2wbyOtkXQ==
+X-Virus-Scanned: amavisd-new at consorciolp.com.pe
+Received: from mail.consorciolp.com.pe ([127.0.0.1])
+        by localhost (mail.consorciolp.com.pe [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id dUOQxA-vBfFX; Wed, 16 Jun 2021 01:34:53 -0500 (-05)
+Received: from cris-PC.wifi (unknown [105.9.118.225])
+        by mail.consorciolp.com.pe (Postfix) with ESMTPSA id 1BE883455FA82;
+        Wed, 16 Jun 2021 01:33:28 -0500 (-05)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.199.0.174]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-03.corp.yadro.com (172.17.100.103)
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: spende von 2,000,000 euro
+To:     Recipients <sechegaray@oss.com.pe>
+From:   ''Tayeb souami'' <sechegaray@oss.com.pe>
+Date:   Wed, 16 Jun 2021 08:35:05 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20210616063329.1BE883455FA82@mail.consorciolp.com.pe>
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-WRITE SAME 32 command handling reads WRPROTECT at the wrong offset
-in 1st octet instead of 10th octet.
+Lieber Freund,
 
-Fixes: afd73f1b60fc ("target: Perform PROTECT sanity checks for WRITE_SAME")
-Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
----
- drivers/target/target_core_sbc.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der =
+Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zu=
+f=C3=A4llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Ma=
+il nach einem Spinball ausgew=C3=A4hlt.Ich habe den gr=C3=B6=C3=9Ften Teil =
+meines Verm=C3=B6gens auf eine Reihe von Wohlt=C3=A4tigkeitsorganisationen =
+und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die =
+Summe von =E2=82=AC 2.000.000,00 an Sie als eine der ausgew=C3=A4hlten 5 zu=
+ spenden, um meine Gewinne zu =C3=BCberpr=C3=BCfen, sehen Sie bitte meine Y=
+ou Tube Seite unten.
 
-diff --git a/drivers/target/target_core_sbc.c b/drivers/target/target_core_sbc.c
-index f7c527a826fd..309aae33c358 100644
---- a/drivers/target/target_core_sbc.c
-+++ b/drivers/target/target_core_sbc.c
-@@ -286,7 +286,7 @@ sbc_setup_write_same(struct se_cmd *cmd, unsigned char *flags, struct sbc_ops *o
- 	unsigned int sectors = sbc_get_write_same_sectors(cmd);
- 	sense_reason_t ret;
- 
--	if ((flags[0] & 0x04) || (flags[0] & 0x02)) {
-+	if ((flags[1] & 0x04) || (flags[1] & 0x02)) {
- 		pr_err("WRITE_SAME PBDATA and LBDATA"
- 			" bits not supported for Block Discard"
- 			" Emulation\n");
-@@ -308,7 +308,7 @@ sbc_setup_write_same(struct se_cmd *cmd, unsigned char *flags, struct sbc_ops *o
- 	}
- 
- 	/* We always have ANC_SUP == 0 so setting ANCHOR is always an error */
--	if (flags[0] & 0x10) {
-+	if (flags[1] & 0x10) {
- 		pr_warn("WRITE SAME with ANCHOR not supported\n");
- 		return TCM_INVALID_CDB_FIELD;
- 	}
-@@ -316,7 +316,7 @@ sbc_setup_write_same(struct se_cmd *cmd, unsigned char *flags, struct sbc_ops *o
- 	 * Special case for WRITE_SAME w/ UNMAP=1 that ends up getting
- 	 * translated into block discard requests within backend code.
- 	 */
--	if (flags[0] & 0x08) {
-+	if (flags[1] & 0x08) {
- 		if (!ops->execute_unmap)
- 			return TCM_UNSUPPORTED_SCSI_OPCODE;
- 
-@@ -331,7 +331,7 @@ sbc_setup_write_same(struct se_cmd *cmd, unsigned char *flags, struct sbc_ops *o
- 	if (!ops->execute_write_same)
- 		return TCM_UNSUPPORTED_SCSI_OPCODE;
- 
--	ret = sbc_check_prot(dev, cmd, &cmd->t_task_cdb[0], sectors, true);
-+	ret = sbc_check_prot(dev, cmd, flags, sectors, true);
- 	if (ret)
- 		return ret;
- 
-@@ -980,7 +980,7 @@ sbc_parse_cdb(struct se_cmd *cmd, struct sbc_ops *ops)
- 			size = sbc_get_size(cmd, 1);
- 			cmd->t_task_lba = get_unaligned_be64(&cdb[12]);
- 
--			ret = sbc_setup_write_same(cmd, &cdb[10], ops);
-+			ret = sbc_setup_write_same(cmd, &cdb[9], ops);
- 			if (ret)
- 				return ret;
- 			break;
-@@ -1079,7 +1079,7 @@ sbc_parse_cdb(struct se_cmd *cmd, struct sbc_ops *ops)
- 		size = sbc_get_size(cmd, 1);
- 		cmd->t_task_lba = get_unaligned_be64(&cdb[2]);
- 
--		ret = sbc_setup_write_same(cmd, &cdb[1], ops);
-+		ret = sbc_setup_write_same(cmd, cdb, ops);
- 		if (ret)
- 			return ret;
- 		break;
--- 
-2.25.1
+UHR MICH HIER: https://www.youtube.com/watch?v=3DZ6ui8ZDQ6Ks
 
+
+
+Das ist dein Spendencode: [TS530342018]
+
+
+
+Antworten Sie mit dem SPENDE-CODE an diese
+
+E-Mail:Tayebsouam.spende@gmail.com
+
+
+Ich hoffe, Sie und Ihre Familie gl=C3=BCcklich zu machen.
+
+Gr=C3=BC=C3=9Fe
+Herr Tayeb Souami
