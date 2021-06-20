@@ -2,95 +2,104 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 623A33ADAB5
-	for <lists+target-devel@lfdr.de>; Sat, 19 Jun 2021 17:46:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FBDA3ADEA6
+	for <lists+target-devel@lfdr.de>; Sun, 20 Jun 2021 15:35:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231972AbhFSPsk (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 19 Jun 2021 11:48:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41036 "EHLO
+        id S229650AbhFTNiC (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 20 Jun 2021 09:38:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231680AbhFSPsk (ORCPT
+        with ESMTP id S229606AbhFTNiB (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sat, 19 Jun 2021 11:48:40 -0400
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 377C7C061574;
-        Sat, 19 Jun 2021 08:46:29 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id 69so6224360plc.5;
-        Sat, 19 Jun 2021 08:46:29 -0700 (PDT)
+        Sun, 20 Jun 2021 09:38:01 -0400
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD885C061768
+        for <target-devel@vger.kernel.org>; Sun, 20 Jun 2021 06:35:46 -0700 (PDT)
+Received: by mail-io1-xd42.google.com with SMTP id l64so12634117ioa.7
+        for <target-devel@vger.kernel.org>; Sun, 20 Jun 2021 06:35:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=b0K8HSAqOAgzoJk09xtqO95f4D/akP/DcQsZH563JKY=;
-        b=TuPm5T2vE34LrYNmzepdpUqwjK8MpRQNmhFeOP1xqMp3pWWca74FHaAqMtguYvHEQg
-         JrIgH23kfRh+u0D/IH6qg/iro6Jtco4SxOLVYNj6rwp/lQSsRbY9N72/I8vKod0gMvTI
-         nXvYEpqvrTxa1gojdnZggVOsp+lmxUmGHoQjhqMjmSxXkkWGxK31UTluRS9KNKyaRZoV
-         x6y5QOWbyzzCxqleVYDHD064+ShUXjvqs1b+AaqWMwvcTyHS7/4WhX/Jl8PkBEklViSY
-         YRrcf58Oeq5oz5YHbsq16DIdCaFpJ+SbLZbq62DrXDcsXxomgA+zYTzBpeWXaYEPCbUk
-         zgOA==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=sec9fLKaTeyUvI3U/9cH5uXh5khwaRmiJ3Slq1YZSCexwKlBLvi58L8DBu55CdJDji
+         U+HuEZd9onOgJ+OTF2rj1+rkaNRkmc9mUKozs32zG54utaQ749Tn8dwDfGRCa86Y13h3
+         aTPzQqGcbZM/EAbe2+YYkP8IzEtm7OFmKWqXTdVfNhb2VSah4cfQXUGVQ0X59BkXxqUT
+         4pZGErCa13JdLdCIRor4r89BUHwblkmYb4cwi8/7Nzr0zyCOHjauEmAl4PRZ8S1C6dv6
+         acCJLW1ZaLruky9plyyHKip4E8d31xV8uUpmSHsk2ZsjBfcQBVTL2OilqasULeboqC8n
+         0h/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=b0K8HSAqOAgzoJk09xtqO95f4D/akP/DcQsZH563JKY=;
-        b=cXKctdnBZqfkb0opkURmNXx4XCQGmP0f/CqdyYCuAG840sXwl6Gj2xPo6kmAI4VAwO
-         e6P3QXODFx0iQMctsz3nM1kq1EC2WOJJyu49HaBpcmP7wc/qIsJBB0XcYui63OH48Rmj
-         DymAv3ZlT6dHd8JSNXQyG8w1LWXLxdmAqxI9GJmaevEyfz0Vw2r2lSaELwyk6RdCM6fS
-         cEVkgr5gqx95Kwf4Jc2DzRG9UHnXWMYS0TYXX1xLUBUu94zEl2vRHv221z7tUuani4hE
-         h2JlgK/qIa+DAKPu/QEbdc7PlArD0Vh3Oyu4AD9ldcjV9Im2bb6xFrYK+WY9sBQ00Ah7
-         SgnQ==
-X-Gm-Message-State: AOAM532NuDzqc0WSCR/HBT2kJ7SwJnaKIhsKEPK563gTo6ilwlkNK8O2
-        w7RVaNSgz4KYBYi1f3rI3z2B/BfxBpU=
-X-Google-Smtp-Source: ABdhPJxeLCgKu43N6SH9B2StFApUiyVm5/CK27TIBXxf4z5tJHFNJLJxXY1cXXtSzV2v7pJJ2uOBEg==
-X-Received: by 2002:a17:902:ab88:b029:11d:20fa:8ca6 with SMTP id f8-20020a170902ab88b029011d20fa8ca6mr9737530plr.67.1624117588705;
-        Sat, 19 Jun 2021 08:46:28 -0700 (PDT)
-Received: from [10.230.185.151] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id e24sm11926205pgi.17.2021.06.19.08.46.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 19 Jun 2021 08:46:28 -0700 (PDT)
-Subject: Re: [PATCH][next] scsi: elx: libefc: Fix less than zero comparison of
- a unsigned int
-To:     Colin King <colin.king@canonical.com>,
-        James Smart <james.smart@broadcom.com>,
-        Ram Vegesna <ram.vegesna@broadcom.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Hannes Reinecke <hare@suse.de>, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210616170401.15831-1-colin.king@canonical.com>
-From:   James Smart <jsmart2021@gmail.com>
-Message-ID: <b1fbaad3-972b-53f5-817c-9b6ee14a02ce@gmail.com>
-Date:   Sat, 19 Jun 2021 08:46:22 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.2
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=ZYqgf2WtFClOOsjjrjjYiqx4d5e5OhLXvP6X7tv+WLSzFgf4J/AEpYeWkfKm7Iq4F9
+         jZPBpTiYuKkQoYljX9QxUD2XmaRGrjOGEbCd3f/Q5mplXEm76kQRz39FOJEVTo80j9ov
+         BA3Mx1dk++IP0xLAQqtEkbMcE8vJbDXkgyBCIVggPWIxJciOqr34L8FfXN+UHMZc8Y9z
+         dJRwrRF+4XM+AuAH8VYJ335a0Hyn71P8VljOONEryTJdrRAJn49Rvn4RgreUxy8OmpR+
+         ef8aXZCVj24yQD+ct5GACJR18vo3Wzju1a+i/Lfs6q4NL8cWEjFdxNqGBRNvgCV69XvL
+         gnWw==
+X-Gm-Message-State: AOAM533zU7wH4673TYv2bftVgn1S3mMV8swGV50VVXYpGkSOdZP/GTo0
+        GO9/ZHTwDtF0hPpbaSOaAOT5H4qVoUXMZmwFNcY=
+X-Google-Smtp-Source: ABdhPJwO76FoleXtHusTIesxM2cuIvE9VdIlMyNt5WPTfvQkSUUR8O1MTtP/waIv/m9vsUoacT9Q2gT5SJ41poXCB/Q=
+X-Received: by 2002:a05:6602:1810:: with SMTP id t16mr15654363ioh.48.1624196145888;
+ Sun, 20 Jun 2021 06:35:45 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210616170401.15831-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:6e02:1baf:0:0:0:0 with HTTP; Sun, 20 Jun 2021 06:35:45
+ -0700 (PDT)
+Reply-To: sarahkoffi389@yahoo.co.jp
+From:   Sarah Koffi <sarah.koffi101@gmail.com>
+Date:   Sun, 20 Jun 2021 15:35:45 +0200
+Message-ID: <CA+ifgLGSH5KW9J+Z85axgUznJEQcab5mED6rZZnS3OBzXTnaxw@mail.gmail.com>
+Subject: Greetings From Mrs. Sarah Koffi
+To:     sarahkoffi389@yahoo.co.jp
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 6/16/2021 10:04 AM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The comparison of the u32 variable rc to less than zero always
-> false because it is unsigned. Fix this by making it an int.
-> 
-> Addresses-Coverity: ("Unsigned compared against 0")
-> Fixes: 202bfdffae27 ("scsi: elx: libefc: FC node ELS and state handling")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->   drivers/scsi/elx/libefc/efc_device.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+Greetings From Mrs. Sarah Koffi
 
-Thanks!
+I'm contacting you based on your good profiles I read and for a good
+reasons, I am in search of a property to buy in your country as I
+intended to come over to your
+country for investment, Though I have not meet with you before but I
+believe that one has to risk confiding in someone to succeed sometimes
+in life.
 
-Reviewed-by: James Smart <jsmart2021@gmail.com>
+My name is Mrs. Sarah Koffi. My late husband deals on Crude Oil with
+Federal Government of Sudan and he has a personal Oil firm in Bentiu
+Oil zone town and Upper
+Nile city. What I have experience physically, I don't wish to
+experience it again in my life due to the recent civil Ethnic war
+cause by our President Mr. Salva Kiir
+and the rebel leader Mr Riek Machar, I have been Under United Nation
+refuge camp in chad to save my life and that of my little daughter.
 
--- james
+Though, I do not know how you will feel to my proposal, but the truth
+is that I sneaked into Chad our neighboring country where I am living
+now as a refugee.
+I escaped with my little daughter when the rebels bust into our house
+and killed my husband as one of the big oil dealers in the country,
+ever since then, I have being on the run.
 
+I left my country and move to Chad our neighboring country with the
+little ceasefire we had, due to the face to face peace meeting accord
+coordinated by the US Secretary of State, Mr John Kerry and United
+Nations in Ethiopia (Addis Ababa) between our President Mr Salva Kiir
+and the rebel leader Mr Riek Machar to stop this war.
 
+I want to solicit for your partnership with trust to invest the $8
+million dollars deposited by my late husband in Bank because my life
+is no longer safe in our country, since the rebels are looking for the
+families of all the oil business men in the country to kill, saying
+that they are they one that is milking the country dry.
+
+I will offer you 20% of the total fund for your help while I will
+partner with you for the investment in your country.
+If I get your reply.
+
+I will wait to hear from you so as to give you details.With love from
+
+ i need you to contact me here sarahkoffi389@yahoo.co.jp
+
+Mrs. Sarah Koffi
