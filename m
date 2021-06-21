@@ -2,104 +2,94 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FBDA3ADEA6
-	for <lists+target-devel@lfdr.de>; Sun, 20 Jun 2021 15:35:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A76FE3AEA40
+	for <lists+target-devel@lfdr.de>; Mon, 21 Jun 2021 15:41:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229650AbhFTNiC (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sun, 20 Jun 2021 09:38:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40328 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229606AbhFTNiB (ORCPT
+        id S230087AbhFUNnb (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 21 Jun 2021 09:43:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:51420 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229708AbhFUNnb (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sun, 20 Jun 2021 09:38:01 -0400
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD885C061768
-        for <target-devel@vger.kernel.org>; Sun, 20 Jun 2021 06:35:46 -0700 (PDT)
-Received: by mail-io1-xd42.google.com with SMTP id l64so12634117ioa.7
-        for <target-devel@vger.kernel.org>; Sun, 20 Jun 2021 06:35:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
-        b=sec9fLKaTeyUvI3U/9cH5uXh5khwaRmiJ3Slq1YZSCexwKlBLvi58L8DBu55CdJDji
-         U+HuEZd9onOgJ+OTF2rj1+rkaNRkmc9mUKozs32zG54utaQ749Tn8dwDfGRCa86Y13h3
-         aTPzQqGcbZM/EAbe2+YYkP8IzEtm7OFmKWqXTdVfNhb2VSah4cfQXUGVQ0X59BkXxqUT
-         4pZGErCa13JdLdCIRor4r89BUHwblkmYb4cwi8/7Nzr0zyCOHjauEmAl4PRZ8S1C6dv6
-         acCJLW1ZaLruky9plyyHKip4E8d31xV8uUpmSHsk2ZsjBfcQBVTL2OilqasULeboqC8n
-         0h/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
-        b=ZYqgf2WtFClOOsjjrjjYiqx4d5e5OhLXvP6X7tv+WLSzFgf4J/AEpYeWkfKm7Iq4F9
-         jZPBpTiYuKkQoYljX9QxUD2XmaRGrjOGEbCd3f/Q5mplXEm76kQRz39FOJEVTo80j9ov
-         BA3Mx1dk++IP0xLAQqtEkbMcE8vJbDXkgyBCIVggPWIxJciOqr34L8FfXN+UHMZc8Y9z
-         dJRwrRF+4XM+AuAH8VYJ335a0Hyn71P8VljOONEryTJdrRAJn49Rvn4RgreUxy8OmpR+
-         ef8aXZCVj24yQD+ct5GACJR18vo3Wzju1a+i/Lfs6q4NL8cWEjFdxNqGBRNvgCV69XvL
-         gnWw==
-X-Gm-Message-State: AOAM533zU7wH4673TYv2bftVgn1S3mMV8swGV50VVXYpGkSOdZP/GTo0
-        GO9/ZHTwDtF0hPpbaSOaAOT5H4qVoUXMZmwFNcY=
-X-Google-Smtp-Source: ABdhPJwO76FoleXtHusTIesxM2cuIvE9VdIlMyNt5WPTfvQkSUUR8O1MTtP/waIv/m9vsUoacT9Q2gT5SJ41poXCB/Q=
-X-Received: by 2002:a05:6602:1810:: with SMTP id t16mr15654363ioh.48.1624196145888;
- Sun, 20 Jun 2021 06:35:45 -0700 (PDT)
+        Mon, 21 Jun 2021 09:43:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1624282876;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=9QPtVyM3DHK6LzpFdTxuxCdYlW2bJr3j+UgwCyDNveA=;
+        b=PRFxKC00sM6e+RiysKl+N+EvqCL8Qn51s1DdVv3QYRX8tIyxhZXUEiGyDt1zyjYCZFcud4
+        Q04nJJi5nY7AzicNz5wPGmvWARzx4t7FaZZXUgA3dgZWhpdB6ElI1MwR7LW6pEPQgDIa80
+        Az/+W4eVnt0N9HIu5ucmYClrM4gllAk=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-480-41FiQ0ZPM726h4u7NBFUJQ-1; Mon, 21 Jun 2021 09:41:12 -0400
+X-MC-Unique: 41FiQ0ZPM726h4u7NBFUJQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9F72B100C662;
+        Mon, 21 Jun 2021 13:41:11 +0000 (UTC)
+Received: from localhost (ovpn-114-233.ams2.redhat.com [10.36.114.233])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id BCE1717B4C;
+        Mon, 21 Jun 2021 13:41:07 +0000 (UTC)
+Date:   Mon, 21 Jun 2021 14:41:06 +0100
+From:   Stefan Hajnoczi <stefanha@redhat.com>
+To:     Mike Christie <michael.christie@oracle.com>
+Cc:     target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        pbonzini@redhat.com, jasowang@redhat.com, mst@redhat.com,
+        sgarzare@redhat.com, virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH 7/9] vhost: allow userspace to create workers
+Message-ID: <YNCW8ipev/vjfZHW@stefanha-x1.localdomain>
+References: <20210525180600.6349-1-michael.christie@oracle.com>
+ <20210525180600.6349-8-michael.christie@oracle.com>
+ <YLjnk5GpFaCCOqCU@stefanha-x1.localdomain>
+ <0c1aef53-4850-8c46-0706-9b7276716e68@oracle.com>
+ <YL45CfpHyzSEcAJv@stefanha-x1.localdomain>
+ <6882ef4d-8382-5b0d-272e-779e6fa9e7da@oracle.com>
+ <YMHH+das0nmMBbt5@stefanha-x1.localdomain>
+ <c98dd627-f330-b49c-6716-1caf737c73da@oracle.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6e02:1baf:0:0:0:0 with HTTP; Sun, 20 Jun 2021 06:35:45
- -0700 (PDT)
-Reply-To: sarahkoffi389@yahoo.co.jp
-From:   Sarah Koffi <sarah.koffi101@gmail.com>
-Date:   Sun, 20 Jun 2021 15:35:45 +0200
-Message-ID: <CA+ifgLGSH5KW9J+Z85axgUznJEQcab5mED6rZZnS3OBzXTnaxw@mail.gmail.com>
-Subject: Greetings From Mrs. Sarah Koffi
-To:     sarahkoffi389@yahoo.co.jp
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="I0LHcjb+o7BPR6nT"
+Content-Disposition: inline
+In-Reply-To: <c98dd627-f330-b49c-6716-1caf737c73da@oracle.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Greetings From Mrs. Sarah Koffi
 
-I'm contacting you based on your good profiles I read and for a good
-reasons, I am in search of a property to buy in your country as I
-intended to come over to your
-country for investment, Though I have not meet with you before but I
-believe that one has to risk confiding in someone to succeed sometimes
-in life.
+--I0LHcjb+o7BPR6nT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-My name is Mrs. Sarah Koffi. My late husband deals on Crude Oil with
-Federal Government of Sudan and he has a personal Oil firm in Bentiu
-Oil zone town and Upper
-Nile city. What I have experience physically, I don't wish to
-experience it again in my life due to the recent civil Ethnic war
-cause by our President Mr. Salva Kiir
-and the rebel leader Mr Riek Machar, I have been Under United Nation
-refuge camp in chad to save my life and that of my little daughter.
+On Thu, Jun 17, 2021 at 09:49:07PM -0500, Mike Christie wrote:
+> Again it's io_uring. Check out fs/io_uring.c:__io_account_mem(). For RLIMIT_MEMLOCK
+> it just does the check and increments the user's counter itself. It's simple like
+> option 2, and it handles the issue where the process doing the ioctl wasn't having
+> its RLIMIT_NPROC checked/updated.
 
-Though, I do not know how you will feel to my proposal, but the truth
-is that I sneaked into Chad our neighboring country where I am living
-now as a refugee.
-I escaped with my little daughter when the rebels bust into our house
-and killed my husband as one of the big oil dealers in the country,
-ever since then, I have being on the run.
+This can work too. It doesn't cover cases where code called indirectly
+acquires resources, but that's probably fine for the vhost worker thread
+case.
 
-I left my country and move to Chad our neighboring country with the
-little ceasefire we had, due to the face to face peace meeting accord
-coordinated by the US Secretary of State, Mr John Kerry and United
-Nations in Ethiopia (Addis Ababa) between our President Mr Salva Kiir
-and the rebel leader Mr Riek Machar to stop this war.
+Stefan
 
-I want to solicit for your partnership with trust to invest the $8
-million dollars deposited by my late husband in Bank because my life
-is no longer safe in our country, since the rebels are looking for the
-families of all the oil business men in the country to kill, saying
-that they are they one that is milking the country dry.
+--I0LHcjb+o7BPR6nT
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I will offer you 20% of the total fund for your help while I will
-partner with you for the investment in your country.
-If I get your reply.
+-----BEGIN PGP SIGNATURE-----
 
-I will wait to hear from you so as to give you details.With love from
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmDQlvIACgkQnKSrs4Gr
+c8hrMQgApIZoel70cxrnsWve344wJ86e71dzAJ7IgIyQPXMxS1dQKBLDwe3PDUzX
+S/F+YpRfuVRpzpjN0ZrLWDR/ybvbpfx5sC71AyQtPbpBeeKEG+6VfeARWOdCL7PW
+S+unE6FGodF7zc2hL4RBslnMJtJvo0hUcD8GVr71geGvkldImDzviMFuielMK5RA
+5oZuvRh2Sh/NGqioFShB/8+2WHMPKYiiz+W0oa9up+sWZMRV70x59iUw/KMV7ArS
+vQAQU7yRHkG8M8zqQSnfT4aTmCCO0+jzYhD3VShjeqz4vlOk5OI0Cubc3gdNcKN8
+LRCc6Al6ZM2aCvam/XHVzWQJgLvaZg==
+=ZFlv
+-----END PGP SIGNATURE-----
 
- i need you to contact me here sarahkoffi389@yahoo.co.jp
+--I0LHcjb+o7BPR6nT--
 
-Mrs. Sarah Koffi
