@@ -2,137 +2,45 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D08563D5CCC
-	for <lists+target-devel@lfdr.de>; Mon, 26 Jul 2021 17:17:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D430B3D6BEB
+	for <lists+target-devel@lfdr.de>; Tue, 27 Jul 2021 04:23:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235012AbhGZOhG (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 26 Jul 2021 10:37:06 -0400
-Received: from mta-02.yadro.com ([89.207.88.252]:44238 "EHLO mta-01.yadro.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S234941AbhGZOhE (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Mon, 26 Jul 2021 10:37:04 -0400
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 452BC48EBC;
-        Mon, 26 Jul 2021 15:17:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        content-type:content-type:content-transfer-encoding:mime-version
-        :references:in-reply-to:x-mailer:message-id:date:date:subject
-        :subject:from:from:received:received:received; s=mta-01; t=
-        1627312651; x=1629127052; bh=PXbKZB+ReRYrdxv/kfaQPbo6yUy4XvDW665
-        ytPV6Ndk=; b=K8mQcHwqd7BmkbqwY+swmZlseathCbq8fvSe+acpoS3fsCfKzhE
-        vjhgBVAUkakbkmuD2EfRVDhJqWIHjeCjH3dfj5vBYprVapf9xFSyF5xZTaLP9wFe
-        ifujsGp81UZK+0qmj3NWLXvfrs6A31YbdpiOIb6hL8XSEbU1JJu4tx40=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 8wUCBJ6FAn81; Mon, 26 Jul 2021 18:17:31 +0300 (MSK)
-Received: from T-EXCH-04.corp.yadro.com (t-exch-04.corp.yadro.com [172.17.100.104])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id 057ED412C6;
-        Mon, 26 Jul 2021 18:17:31 +0300 (MSK)
-Received: from yadro.com (10.199.0.6) by T-EXCH-04.corp.yadro.com
- (172.17.100.104) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Mon, 26
- Jul 2021 18:17:30 +0300
-From:   Sergey Samoylenko <s.samoylenko@yadro.com>
-To:     <martin.petersen@oracle.com>, <michael.christie@oracle.com>,
-        <ddiss@suse.de>, <bvanassche@acm.org>,
-        <target-devel@vger.kernel.org>
-CC:     <linux-scsi@vger.kernel.org>, <linux@yadro.com>,
-        Sergey Samoylenko <s.samoylenko@yadro.com>,
-        Roman Bolshakov <r.bolshakov@yadro.com>,
-        Konstantin Shelekhin <k.shelekhin@yadro.com>
-Subject: [v2 2/2] target: core: Fix sense key for invalid XCOPY request
-Date:   Mon, 26 Jul 2021 18:16:46 +0300
-Message-ID: <20210726151646.32631-3-s.samoylenko@yadro.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210726151646.32631-1-s.samoylenko@yadro.com>
-References: <20210726151646.32631-1-s.samoylenko@yadro.com>
+        id S234092AbhG0BnQ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 26 Jul 2021 21:43:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52092 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233731AbhG0BnP (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Mon, 26 Jul 2021 21:43:15 -0400
+Received: from 68-252-206-104.staticrdns.eonix.net (unknown [IPv6:2607:ff28:b005:2a:ec52:75ff:fe50:d321])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E864BC061757
+        for <target-devel@vger.kernel.org>; Mon, 26 Jul 2021 19:23:42 -0700 (PDT)
+Received: from User (localhost [IPv6:::1])
+        by 68-252-206-104.staticrdns.eonix.net (Postfix) with SMTP id 3E8FD9667F6;
+        Tue, 20 Jul 2021 00:24:48 -0400 (EDT)
+Reply-To: <mrs_hannah@rediffmail.com>
+From:   "Mrs. Hajia Hannah Ahmed" <info@247vidz.com>
+Subject: Re: I WANT TO INVESTMENT IN YOUR COUNTRY?
+Date:   Tue, 20 Jul 2021 07:14:15 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.199.0.6]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-04.corp.yadro.com (172.17.100.104)
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20210720042449.3E8FD9667F6@68-252-206-104.staticrdns.eonix.net>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-TCM fails to pass the following tests in libiscsi:
-
-  SCSI.ExtendedCopy.DescrType
-  SCSI.ExtendedCopy.DescrLimits
-  SCSI.ExtendedCopy.ParamHdr
-  SCSI.ExtendedCopy.ValidSegDescr
-  SCSI.ExtendedCopy.ValidTgtDescr
-
-XCOPY always returns the same NOT READY sense key for all
-detected errors. It changes a sense key for invalid requests
-to ILLEGAL REQUEST sense key, for aborted transferring data
-(IO error and etc.) to COPY ABORTED.
-
-Fixes: d877d7275be34ad ("target: Fix a deadlock between the XCOPY code and iSCSI session shutdown")
-Reviewed-by: Roman Bolshakov <r.bolshakov@yadro.com>
-Reviewed-by: Konstantin Shelekhin <k.shelekhin@yadro.com>
-Signed-off-by: Sergey Samoylenko <s.samoylenko@yadro.com>
----
- drivers/target/target_core_xcopy.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/target/target_core_xcopy.c b/drivers/target/target_core_xcopy.c
-index 0f1319336f3e..64baf3e8c079 100644
---- a/drivers/target/target_core_xcopy.c
-+++ b/drivers/target/target_core_xcopy.c
-@@ -674,12 +674,16 @@ static void target_xcopy_do_work(struct work_struct *work)
- 	unsigned int max_sectors;
- 	int rc = 0;
- 	unsigned short nolb, max_nolb, copied_nolb = 0;
-+	sense_reason_t sense_rc;
+Attn:
  
--	if (target_parse_xcopy_cmd(xop) != TCM_NO_SENSE)
-+	sense_rc = target_parse_xcopy_cmd(xop);
-+	if (sense_rc != TCM_NO_SENSE)
- 		goto err_free;
+I am Mrs. Hajia Hannah Ahmed I am a Widow and member of the contract award committee and 14 project allocation manager, of the Department of Minerals and Natural Resources in Syria;
  
--	if (WARN_ON_ONCE(!xop->src_dev) || WARN_ON_ONCE(!xop->dst_dev))
-+	if (WARN_ON_ONCE(!xop->src_dev) || WARN_ON_ONCE(!xop->dst_dev)) {
-+		sense_rc = TCM_INVALID_PARAMETER_LIST;
- 		goto err_free;
-+	}
+Due to the war in Syria, I am in search of an agent or company to assist me to invest my fund  (USD$35Million) and subsequent investment in properties in your country. You will be required to. If you decide to render your service to me in this regard, 30% of the total sum of USD$35M will be given to you for your service. 
  
- 	src_dev = xop->src_dev;
- 	dst_dev = xop->dst_dev;
-@@ -762,20 +766,20 @@ static void target_xcopy_do_work(struct work_struct *work)
- 	return;
- 
- out:
-+	/*
-+	 * The XCOPY command was aborted after some data was transferred.
-+	 * Terminate command with CHECK CONDITION status, with the sense key
-+	 * set to COPY ABORTED.
-+	 */
-+	sense_rc = TCM_COPY_TARGET_DEVICE_NOT_REACHABLE;
- 	xcopy_pt_undepend_remotedev(xop);
- 	target_free_sgl(xop->xop_data_sg, xop->xop_data_nents);
- 
- err_free:
- 	kfree(xop);
--	/*
--	 * Don't override an error scsi status if it has already been set
--	 */
--	if (ec_cmd->scsi_status == SAM_STAT_GOOD) {
--		pr_warn_ratelimited("target_xcopy_do_work: rc: %d, Setting X-COPY"
--			" CHECK_CONDITION -> sending response\n", rc);
--		ec_cmd->scsi_status = SAM_STAT_CHECK_CONDITION;
--	}
--	target_complete_cmd(ec_cmd, ec_cmd->scsi_status);
-+	pr_warn_ratelimited("target_xcopy_do_work: rc: %d, sense: %u,"
-+		" XCOPY operation failed\n", rc, sense_rc);
-+	target_complete_cmd_with_sense(ec_cmd, sense_rc);
- }
- 
- /*
--- 
-2.25.1
-
+Yours Faithfully,
+Mrs. Hajia Hannah Ahmed
