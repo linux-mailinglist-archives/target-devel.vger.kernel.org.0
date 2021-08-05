@@ -2,74 +2,64 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A1E13E01DE
-	for <lists+target-devel@lfdr.de>; Wed,  4 Aug 2021 15:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 463F33E121F
+	for <lists+target-devel@lfdr.de>; Thu,  5 Aug 2021 12:08:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238399AbhHDNZH (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 4 Aug 2021 09:25:07 -0400
-Received: from smtp-relay-canonical-0.canonical.com ([185.125.188.120]:53642
-        "EHLO smtp-relay-canonical-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S238061AbhHDNZG (ORCPT
+        id S240215AbhHEKId (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 5 Aug 2021 06:08:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38402 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240341AbhHEKI2 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 4 Aug 2021 09:25:06 -0400
-Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 1B9AD3F048;
-        Wed,  4 Aug 2021 13:24:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1628083492;
-        bh=mNny2UeZ7EC33QeUY4d+BcD45KNxvsJvrlo9CuSGuJM=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
-        b=M2+wnNjXXnjEIRbvy795fDakdp+JGEWk6fyhvs5o9o8DBiR90N4VJo01gzPSNH6H4
-         cu7CHCLaAog7vGmAG5Cp6cxUzt6rvwCt9qYv15MBCzZb5Dx7kwnFOBrh8UBqJveBER
-         htSLE7slj2JhnAiKj+vRfTa9OGDhpjot3ZZj+nWDFuyoVCBX3FKvtAW/r0JWf40e7b
-         zk2lqLke6WzX3KFmAkLl/12bb/umDuuT7RfEZfoLEsmH4E0nekGBxVQ6sk5LNa41py
-         HDdyyVIkjK6hIIBMjNsKUNwfyhGS/KCgRP74yisUzYU2qtOYlSMelhqHD+Y0XxSUda
-         pwaSmZZAyQGcQ==
-From:   Colin King <colin.king@canonical.com>
-To:     James Smart <james.smart@broadcom.com>,
-        Ram Vegesna <ram.vegesna@broadcom.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] scsi: elx: efct: Remove redundant initialization of variable ret
-Date:   Wed,  4 Aug 2021 14:24:51 +0100
-Message-Id: <20210804132451.113086-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.31.1
+        Thu, 5 Aug 2021 06:08:28 -0400
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5EBEC0613D5
+        for <target-devel@vger.kernel.org>; Thu,  5 Aug 2021 03:08:14 -0700 (PDT)
+Received: by mail-yb1-xb2a.google.com with SMTP id b133so8156279ybg.4
+        for <target-devel@vger.kernel.org>; Thu, 05 Aug 2021 03:08:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=IXiF0cE8iLdsKXBHXuqgd6kWlwigyuOCyyGf/zSHAKo=;
+        b=pdNJV22hEKUkr2wA+Dw7b0HK5p+fKD7oi9ms73/NQBq4byh0+9pB1A6oe1xCXysupS
+         vT4ZgNrd/iDydeaITAzgCWnvJ1T8DzO9Ikue0eh2028J3bvM5/nV9CmcQHIWzzF2i+mX
+         /sg0lMiy+hw6Gvldm32hnzhxHNIZ3+sg/LpGT95hdfcE2C1+CpQnpZJcHKLwQp4sX3cM
+         fVqfexzZBPzvGUcimtdAPr3QQtqUMw9B7bRNUxrN6Y7mpkt3HH0BSk5A+iJOJO2gEQRY
+         drwgDCakbhJ9+GbQpfUQ9EJCisqQqw73Q2cN3zdtfbHNShRLJrFU59HOzPVqqfS6ENTI
+         xSyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=IXiF0cE8iLdsKXBHXuqgd6kWlwigyuOCyyGf/zSHAKo=;
+        b=W6M1abfH6qMg5sAMjj9WSMmpVhnVHG3QlavnDVliiMDuhsu2yR8Gmb1rXr4/+9B7Js
+         omBf8knJjwYuj/nNvwCmhQJry8J82nVPSrUJDP3+0I4R358MWxXRySfxCYG80jLStbyR
+         bOL809nf7nWfZmSAl+enKgVI5FUyamuLusjSft9Z+mSqt65LY+3fmCXHMidGztaBS/vb
+         U8rqb8jdfKAlmgSKkhnz7MMnJFU46+GakESghkMdqZT5UTmynFMAv3lnKE4FyFdq/MTA
+         rZeyipyAlkfOJ0vEGDbYtDtlrx6VhFNevzLak2Ev86DSn0IciJUP2QmOt7kbBe19EU9R
+         d8BQ==
+X-Gm-Message-State: AOAM5311/9KisPmpFPTvHjwBG9fuWmsrK9TVdHvU2+f6rZVaq228mwX2
+        e6OqECNoX9AR1DtDh/v+QYWCV7Fw0HChkt+S/wU=
+X-Google-Smtp-Source: ABdhPJy6VyomjzZA7FzL2YAykxMaSEH2FbkM8+spFBukZHbLNwTOeY7OBuFr7jJq9kzHGjfNz0QbSoO2ZvIS8b1T9E0=
+X-Received: by 2002:a25:ad57:: with SMTP id l23mr5146843ybe.303.1628158094076;
+ Thu, 05 Aug 2021 03:08:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:7010:330b:b029:db:4f3a:6691 with HTTP; Thu, 5 Aug 2021
+ 03:08:13 -0700 (PDT)
+Reply-To: rihabmanyang07@yahoo.com
+From:   Rihab Manyang <diamakaire48@gmail.com>
+Date:   Thu, 5 Aug 2021 11:08:13 +0100
+Message-ID: <CAJq20O=9kXZZhN9x-CTs6piokkzkxiwXwVNxHWpQhvfUgDzb5A@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
-
-The variable ret is being initialized with a value that is never
-read, it is being updated later on. The assignment is redundant and
-can be removed.
-
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/scsi/elx/efct/efct_lio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/scsi/elx/efct/efct_lio.c b/drivers/scsi/elx/efct/efct_lio.c
-index e0d798d6baee..bb3b460dc0bc 100644
---- a/drivers/scsi/elx/efct/efct_lio.c
-+++ b/drivers/scsi/elx/efct/efct_lio.c
-@@ -780,7 +780,7 @@ efct_lio_npiv_make_nport(struct target_fabric_configfs *tf,
- {
- 	struct efct_lio_vport *lio_vport;
- 	struct efct *efct;
--	int ret = -1;
-+	int ret;
- 	u64 p_wwpn, npiv_wwpn, npiv_wwnn;
- 	char *p, *pbuf, tmp[128];
- 	struct efct_lio_vport_list_t *vport_list;
 -- 
-2.31.1
 
+Hello,
+
+i am trying to reach you hope this message get to
+you.from Rihab Manyang
