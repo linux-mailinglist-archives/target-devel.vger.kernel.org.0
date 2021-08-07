@@ -2,71 +2,116 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EE7F3E2CA9
-	for <lists+target-devel@lfdr.de>; Fri,  6 Aug 2021 16:34:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F197A3E359A
+	for <lists+target-devel@lfdr.de>; Sat,  7 Aug 2021 15:47:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240243AbhHFOe7 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 6 Aug 2021 10:34:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60382 "EHLO
+        id S232265AbhHGNrn (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 7 Aug 2021 09:47:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240131AbhHFOe7 (ORCPT
+        with ESMTP id S232210AbhHGNrm (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 6 Aug 2021 10:34:59 -0400
-Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7210FC061798
-        for <target-devel@vger.kernel.org>; Fri,  6 Aug 2021 07:34:43 -0700 (PDT)
-Received: by mail-il1-x134.google.com with SMTP id a14so9135317ila.1
-        for <target-devel@vger.kernel.org>; Fri, 06 Aug 2021 07:34:43 -0700 (PDT)
+        Sat, 7 Aug 2021 09:47:42 -0400
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 766BAC0613CF;
+        Sat,  7 Aug 2021 06:47:24 -0700 (PDT)
+Received: by mail-pj1-x102d.google.com with SMTP id a8so20890285pjk.4;
+        Sat, 07 Aug 2021 06:47:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/oMubRmlLM5EZ/UdY6Fj3wsfS2kyoMzN9ASXgZ3xneY=;
-        b=WwtirH+AN5QEGc+PsYDg7GPmicCeAO3NPEqhZC74A3+cGIN9TIFUSUQWVdp/dEeJ0X
-         ++0akNbjsW/3xJMMbrUcWsaDb/Yt8FhArvnBGhYYupKONjpXh07T85TTJ6z/R14UeK25
-         VfrKT4PbBRG9FpAA5mPltqAa33Oy6oNBbUHIMXxZ8Pb8DDymDVISOJ0z/+FU283l+PC4
-         CL/S0Mt/1jGAvk934eTBfkPJMYFqxNe9DmuvxRe6nTQgDgkYbQOxTC8k7gZ9Je0QkKHX
-         pj04+ieraICgLCEIDsM+PSxXHeP7MukFzwmFuXJEWjT/gtCn4i9C831/d3PQ2UrLasbD
-         Q6dQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ZMFTuQL4XCv0rc6vS643hPfckJse4ED4dcB9MFxryLI=;
+        b=HSSjpVcOrBSkXxvrGMNszf1jTujgdJsnJypdiKYbb45gl3/tFrtk0oL+9RUiC3RZ8q
+         m4StoJLry5Q043GaW7MMiZCfujNN6jwoFLLN3NT/yykYh0kM7kNsNb/85NBpy++xpfQ6
+         62k3kL1029qP8Ftx4tWDe12kMEwBdnJN/zJSHfWTvt39MZ3DrFdLIeLh+OuvnKHmh/Gz
+         b9OE+rsTmPNk/icz/UKMWm1/cB0bnx7OaGVyjOnZ1emLdLRbJ5MntCctBIizFYkgNs29
+         AtIGl6kFgYACRh3+/j1kQaqgUWItnWLOviMz1eEHWOMLHuT2OQcSJPwoCqMfeE/l+gr4
+         w82A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/oMubRmlLM5EZ/UdY6Fj3wsfS2kyoMzN9ASXgZ3xneY=;
-        b=Bk4ZZwM8jJBh+rQ+k2KnD49+VA+GkoGcmcl2f18n77RAwJeZKEoBXR+uiTGPaz9S2/
-         91csaZ5j/JngHMUa84++SGhwoQymGqqauf7mwdvshyvFJcLTsvEMWhETgMO7aX0Oi2RC
-         UkyN+JDF2i+VfYWoUz2VTZt2PFs2AM3hkXGLpu8tN3q9P2c8k2+ZalBM3UwcYJtY2DIi
-         NPRrYB/+uC1c3u4HupN1Lo2F33HQCH0IF9wV7eDrCQL/ghZjiMYfsmabvADZ/ltQn81/
-         JSy8Y9+ujK9YMCX/OJ+jF71BtLw6riwG8/2oWWtXT7cLz5fctJzPCaxE+WoRROkhpkff
-         1mCg==
-X-Gm-Message-State: AOAM533Hlu2agZTK/hYW/LJlEjPTl8u+TKaWcIgIhg7+B3qK7YvG4hGC
-        s5PyUKQmYSQmgRySxpa3NTGNYA6XYlA7NlFRr0I=
-X-Google-Smtp-Source: ABdhPJxp5ET5L2YTA3wanMtEqCHLczOyx36yHFnFg6UZI0mLKFWZaADmnk+VVmvj6+SDnpgqRgA+ZQp8fhbmG7dX2Io=
-X-Received: by 2002:a92:d088:: with SMTP id h8mr67865ilh.165.1628260482824;
- Fri, 06 Aug 2021 07:34:42 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ZMFTuQL4XCv0rc6vS643hPfckJse4ED4dcB9MFxryLI=;
+        b=GTe78ELVdXrlPF//QJJW72mg8zQhXaYqnwDU6LB+hWedcML6MxPHhyb9wX1buZEDk7
+         3GeKO5YARmtyrkZV+3a34O6H53hDGGrIWoJYalBUF6LC62VHmCcAd7TJANF1C3lva1VB
+         ZmLf0qUM+ymvR8yJ55NZBSJgelPCQBDH7ZNL3Hsjwmj4qVXSmAs849qtC/OwEzArjPkL
+         gJ1lVWfgEyMeynU2k5S4IdinJwgd8euGVoaXWsunzkomnQmIiyZXdgqPP30B4uIw4J9q
+         GCGL5xXPz4LL2BIqN1Sq7w5dQqqv4OZUrcwzPVCE0BFFXnLCsZL8YUHVdsfAQgo2pNK6
+         fBVw==
+X-Gm-Message-State: AOAM533tNbVsxWdy42kAM/EiOeveXMwushiflZyNij0WwYiNtucfQm2n
+        O+1AQW/Zo6fZFocwgs/mWYI=
+X-Google-Smtp-Source: ABdhPJwKf7wveW3mv3Hsx+FRzuBF07e9vF3DKGLpwloGVQheIxNqEXH+yvWW5sAOI/DbjgNJvFnMpw==
+X-Received: by 2002:a62:e50c:0:b029:2f9:b9b1:d44f with SMTP id n12-20020a62e50c0000b02902f9b9b1d44fmr15981967pff.42.1628344043999;
+        Sat, 07 Aug 2021 06:47:23 -0700 (PDT)
+Received: from localhost.localdomain ([45.135.186.87])
+        by smtp.gmail.com with ESMTPSA id bj6sm15849521pjb.53.2021.08.07.06.47.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Aug 2021 06:47:23 -0700 (PDT)
+From:   Tuo Li <islituo@gmail.com>
+To:     martin.petersen@oracle.com
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, baijiaju1990@gmail.com,
+        Tuo Li <islituo@gmail.com>, TOTE Robot <oslab@tsinghua.edu.cn>
+Subject: [PATCH] scsi: target: pscsi: Fix possible null-pointer dereference in pscsi_complete_cmd()
+Date:   Sat,  7 Aug 2021 06:46:51 -0700
+Message-Id: <20210807134651.245436-1-islituo@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:a02:6384:0:0:0:0:0 with HTTP; Fri, 6 Aug 2021 07:34:42 -0700 (PDT)
-Reply-To: mrmaxwellwatford@gmail.com
-From:   "Mr.Maxwell Watford" <matinmiller89@gmail.com>
-Date:   Fri, 6 Aug 2021 14:34:42 +0000
-Message-ID: <CABQ=EucNt8T50SyY_xMhf4eA-+FY+vTpH5-ztzQHBLq2ww-40w@mail.gmail.com>
-Subject: i need your reply
-To:     matinmiller89@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Greetings,
+The return value of transport_kmap_data_sg() is assigned to the variable
+buf:
+  buf = transport_kmap_data_sg(cmd);
 
-We are writing to you from Ecowas Finance Controller Office Lome Togo,
-because we have received a file from the Ministry of Finance Lome-
-Togo, concerning an Inherited Fund bearing your name on it, And after
-our verifications, we found out that the funds belong to you.
+And then it is checked:
+  if (!buf) {
 
-It has been awarded and I will like to guide you to claim the funds.
-Please contact me at my private email address
-(mrmaxwellwatford@gmail.com) for more information and directive
+This indicates that buf can be NULL. However, it is dereferenced in the
+following statements:
+  if (!(buf[3] & 0x80))
+    buf[3] |= 0x80;
+  if (!(buf[2] & 0x80))
+	buf[2] |= 0x80;
 
-I am looking forward to your urgent reply,
-Best regards
-Mr Maxwell Watford
+To fix these possible null-pointer dereferences, dereference buf only when
+it is not NULL.
+
+Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
+Signed-off-by: Tuo Li <islituo@gmail.com>
+---
+ drivers/target/target_core_pscsi.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/target/target_core_pscsi.c b/drivers/target/target_core_pscsi.c
+index 2629d2ef3970..560815729182 100644
+--- a/drivers/target/target_core_pscsi.c
++++ b/drivers/target/target_core_pscsi.c
+@@ -620,14 +620,14 @@ static void pscsi_complete_cmd(struct se_cmd *cmd, u8 scsi_status,
+ 			buf = transport_kmap_data_sg(cmd);
+ 			if (!buf) {
+ 				; /* XXX: TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE */
+-			}
+-
+-			if (cdb[0] == MODE_SENSE_10) {
+-				if (!(buf[3] & 0x80))
+-					buf[3] |= 0x80;
+ 			} else {
+-				if (!(buf[2] & 0x80))
+-					buf[2] |= 0x80;
++				if (cdb[0] == MODE_SENSE_10) {
++					if (!(buf[3] & 0x80))
++						buf[3] |= 0x80;
++				} else {
++					if (!(buf[2] & 0x80))
++						buf[2] |= 0x80;
++				}
+ 			}
+ 
+ 			transport_kunmap_data_sg(cmd);
+-- 
+2.25.1
+
