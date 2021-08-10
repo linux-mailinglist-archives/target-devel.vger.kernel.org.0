@@ -2,136 +2,64 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A26C93E542F
-	for <lists+target-devel@lfdr.de>; Tue, 10 Aug 2021 09:18:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B581D3E5B26
+	for <lists+target-devel@lfdr.de>; Tue, 10 Aug 2021 15:22:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231346AbhHJHTG (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 10 Aug 2021 03:19:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47194 "EHLO
+        id S241246AbhHJNWb (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 10 Aug 2021 09:22:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbhHJHTG (ORCPT
+        with ESMTP id S241239AbhHJNW2 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 10 Aug 2021 03:19:06 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23BD9C0613D3;
-        Tue, 10 Aug 2021 00:18:44 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id r6so2626157wrt.4;
-        Tue, 10 Aug 2021 00:18:44 -0700 (PDT)
+        Tue, 10 Aug 2021 09:22:28 -0400
+Received: from mail-vs1-xe2a.google.com (mail-vs1-xe2a.google.com [IPv6:2607:f8b0:4864:20::e2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ACE7C06179C
+        for <target-devel@vger.kernel.org>; Tue, 10 Aug 2021 06:22:04 -0700 (PDT)
+Received: by mail-vs1-xe2a.google.com with SMTP id h17so7571318vsu.0
+        for <target-devel@vger.kernel.org>; Tue, 10 Aug 2021 06:22:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=gWww76GCF5bdJ3wwOyrVrOe81eD6ccbw3CbNhzGl6sA=;
-        b=NZkGabqAvmYmZUO16jJsqhjL/CVU0Sj7skB8PuJhN/s7osQ3QymAZOFTma81Cnb1gT
-         gyTR2VraTsCp515ookPa3CDbMKBwIZF6CDbBRp9+yA9YQm6QJ8VhaAzGEBv+tRZKt6J+
-         bMdoQyA0GtZ87GGhT2cO8yvSXHBpjWqax6Sdl4mGfTpyV0O8LSqbRK9FHeC9J24mCXsk
-         uXti+uGGUSHGAAJPfwbtGGszxhLiNkkaHLBLXnYidNI+9GnrH/qH08ouH5pgtoWwxT02
-         +dCFV7bh6Cq6DDvneOO5EEhh6zzjUwc2/wWY3isQD2YQSL/HO/sBie9U48PTfn2w5+x7
-         cIig==
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=2tvLhkad0w+Mh63WhnFJkmRFgYsLXsJmUqGVjzUAFIo=;
+        b=dDSNLx3NUP5oxG58KdSoVrFSUwpDzmROtok2H52Y3e+uXnhqJGHnJ1JX9lPiN6l1Q+
+         p//w5g6T8pc1VH21vteXOXD+W4dy4Rd85NoKDUxmetCEAaZT6TanHEzSrsHTgpmUV8vl
+         605G2EWKirKV8XfVw+5n8bcuNlSFJ2NxHocXkhoYSrXPo5LIVn6jl+nmmO+lJ2crTn9B
+         NhwkU00WcvH+2OooKGNyr9diwqr1+nxbwQ0UlnT4ok+ByxIul5vSn1IUZSl1mYEYm85J
+         Zcd0fWZj0nEFSxKbbI3kQuaJrzsbtlcGkUDV/eSHM2Ga+tmMMFvGlsTSnLNOCeFi+N3T
+         JaAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=gWww76GCF5bdJ3wwOyrVrOe81eD6ccbw3CbNhzGl6sA=;
-        b=eweDzgqKh4sUcNpEuLEJZ47OM4weXu0FeIwDkMQTo4HEe7DDM+iyt4Q0u0xOsU3niJ
-         RmY3zG4vD0hmcu4DvLEsY0gd8x1bcq8jzt9UobtopVdezTEi/HXJnyOofCAmYnSxS+6b
-         aD2fasKahjubd+6Wry6nbvFUq8d2Gldu2uv1+VOdGOTa5Ir42eqtRLmiLn2NN0/Q6pKw
-         6qAVVEYEWlqmbOGb1EQvOUEjapH1cPUhfDhZmI7AKnuSJnwaDsFPaOYwuT1zXj/XoIqo
-         J+rIg1rx3E3XF8ChYdAZHTf4ycT3QzbVAxFhs3FJ/ZgIoha8poOPKg4VDui4IVPcNzK5
-         mRPg==
-X-Gm-Message-State: AOAM532bKvVYDJG/6yikB5GhKIMUvA8+yliMs2tBwOZfQGqURTsCfJMv
-        GhEIibpfUZBWosgQsNspu/k=
-X-Google-Smtp-Source: ABdhPJzeEI+6Wv48bLWllrtYVIG0GxMW7kOVFVZN/f/T4Pmfr25NEsZMy6wo5bmChExdxlHB+PCWKA==
-X-Received: by 2002:a05:6000:18c2:: with SMTP id w2mr29071731wrq.282.1628579922602;
-        Tue, 10 Aug 2021 00:18:42 -0700 (PDT)
-Received: from [192.168.178.40] (ipbcc187b7.dynamic.kabel-deutschland.de. [188.193.135.183])
-        by smtp.gmail.com with ESMTPSA id d8sm22313152wrv.20.2021.08.10.00.18.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Aug 2021 00:18:42 -0700 (PDT)
-Subject: Re: [PATCH v2] scsi: target: pscsi: Fix possible null-pointer
- dereference in pscsi_complete_cmd()
-To:     Tuo Li <islituo@gmail.com>, martin.petersen@oracle.com
-Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, baijiaju1990@gmail.com,
-        TOTE Robot <oslab@tsinghua.edu.cn>
-References: <20210810040414.248167-1-islituo@gmail.com>
-From:   Bodo Stroesser <bostroesser@gmail.com>
-Message-ID: <e45b6019-0ccd-cb8a-20cd-80f8f26146d9@gmail.com>
-Date:   Tue, 10 Aug 2021 09:18:41 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=2tvLhkad0w+Mh63WhnFJkmRFgYsLXsJmUqGVjzUAFIo=;
+        b=mFk2bx68boWV34CIHF3rr8IH2jRIjRmQDaXXGSSos9EWuPv2yA28SghS4AlWbXBWv8
+         ehprZxlZXiowqO43wboDHQMmcwBvKDpneiBgQW7mgQ3AhIz2HmaeFZJEarzhX6Z8ONgT
+         d0WU8LEcMMyNMAfli3mSc4fmuW+JcizVGWmmTTafJBTw/tzIJ+FJ5ebmOitv48xWiuwV
+         ZfYCW8UiktMtaqCRegKa5cauyEWJVIFfV1SAN9kU6Bc1/ThnaWiAUtXED/6EWiG3zJAN
+         Wo5uRLZ8W0ujfOgkm8en0G6XvPn6HA1UCcleqLdoZTqInroASpLqAVcLiK8Pv6olBCFY
+         549g==
+X-Gm-Message-State: AOAM533A709EX/Ptfsfk1bcmMqyTnWjH41pMekttlo33RIS1W5Ca3wDf
+        MWqnj24xjsQ/i+bMtgO+xqxlrkYB9sZg8xXIF8M=
+X-Google-Smtp-Source: ABdhPJwcOAv25JXC8CMe8X96emxkX6xx+mWypycxstov1r0epANB7g0McIjCL002aeaBfHD4hqKEdOm6g/SgsPckacQ=
+X-Received: by 2002:a67:dc97:: with SMTP id g23mr20796167vsk.53.1628601723382;
+ Tue, 10 Aug 2021 06:22:03 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210810040414.248167-1-islituo@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Sender: immeublesourou@gmail.com
+Received: by 2002:ab0:3903:0:0:0:0:0 with HTTP; Tue, 10 Aug 2021 06:22:03
+ -0700 (PDT)
+From:   John Kumor <owo219901@gmail.com>
+Date:   Wed, 11 Aug 2021 01:22:03 +1200
+X-Google-Sender-Auth: LV4o9i_hxzzCxHYRuF64hP_-oXE
+Message-ID: <CAHdg_cRZhE1uiU6L3+zUQBq3c97zuyPeqAS9Qa6kRxCNuZnDwQ@mail.gmail.com>
+Subject: Urgent
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 10.08.21 06:04, Tuo Li wrote:
-> The return value of transport_kmap_data_sg() is assigned to the variable
-> buf:
->    buf = transport_kmap_data_sg(cmd);
-> 
-> And then it is checked:
->    if (!buf) {
-> 
-> This indicates that buf can be NULL. However, it is dereferenced in the
-> following statements:
->    if (!(buf[3] & 0x80))
->      buf[3] |= 0x80;
->    if (!(buf[2] & 0x80))
->      buf[2] |= 0x80;
-> 
-> To fix these possible null-pointer dereferences, dereference buf and call
-> transport_kunmap_data_sg() only when buf is not NULL.
-> 
-> Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
-> Signed-off-by: Tuo Li <islituo@gmail.com>
-> ---
-> v2:
-> * Put transport_kunmap_data_sg() into the else-branch of the if (!bug).
->    Thank Bodo Stroesser for helpful advice.
-> ---
->   drivers/target/target_core_pscsi.c | 18 +++++++++---------
->   1 file changed, 9 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/target/target_core_pscsi.c b/drivers/target/target_core_pscsi.c
-> index 2629d2ef3970..75ef52f008ff 100644
-> --- a/drivers/target/target_core_pscsi.c
-> +++ b/drivers/target/target_core_pscsi.c
-> @@ -620,17 +620,17 @@ static void pscsi_complete_cmd(struct se_cmd *cmd, u8 scsi_status,
->   			buf = transport_kmap_data_sg(cmd);
->   			if (!buf) {
->   				; /* XXX: TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE */
-> -			}
-> -
-> -			if (cdb[0] == MODE_SENSE_10) {
-> -				if (!(buf[3] & 0x80))
-> -					buf[3] |= 0x80;
->   			} else {
-> -				if (!(buf[2] & 0x80))
-> -					buf[2] |= 0x80;
-> -			}
-> +				if (cdb[0] == MODE_SENSE_10) {
-> +					if (!(buf[3] & 0x80))
-> +						buf[3] |= 0x80;
-> +				} else {
-> +					if (!(buf[2] & 0x80))
-> +						buf[2] |= 0x80;
-> +				}
->   
-> -			transport_kunmap_data_sg(cmd);
-> +				transport_kunmap_data_sg(cmd);
-> +			}
->   		}
->   	}
->   after_mode_sense:
-> 
-
-Reviewed-by: Bodo Stroesser <bostroesser@gmail.com>
-
-Regards,
-Bodo
+My dear,
+Greetings! I trust that all is well with you and your family. Did you
+receive my previous email?
+Regards
+John Kumor.
