@@ -2,61 +2,134 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77CFE3E915D
-	for <lists+target-devel@lfdr.de>; Wed, 11 Aug 2021 14:32:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F6043EB703
+	for <lists+target-devel@lfdr.de>; Fri, 13 Aug 2021 16:53:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231172AbhHKMcp (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 11 Aug 2021 08:32:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55972 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231661AbhHKMcf (ORCPT
+        id S240849AbhHMOxZ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 13 Aug 2021 10:53:25 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29]:51288 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239145AbhHMOxZ (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 11 Aug 2021 08:32:35 -0400
-Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24E72C08E9B0
-        for <target-devel@vger.kernel.org>; Wed, 11 Aug 2021 05:30:34 -0700 (PDT)
-Received: by mail-oi1-x235.google.com with SMTP id o185so4227262oih.13
-        for <target-devel@vger.kernel.org>; Wed, 11 Aug 2021 05:30:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=77BwqRII9XCweQU8IJul6unijI/BEL+vUJmVmCRLxH4=;
-        b=nFX2iyV8Qzv5VsUpkp+XCZa2rMildRgp4rmfs3/i85r3diZKl8jKG090hSg6ULd5u0
-         wIUSHLA1AmXndyReLtv1chzdu754A+Ph1wh/vfIxRjmTWJBsEDXYNbyV2L9uurl7rygw
-         3BEum9dkaxKey+Q+UMRctjDwuKQ1YXcRTKc1UUkneSCjfxqWrboBTOfNkJIzK5BsdQWa
-         4ApOxxKRhIhdaQEWowgLF5+CTQczgHFusP4oeusQUd6ved7FHPiMHEi1ZA8iFV2rLfKi
-         fjv9vsAR1EzF12CgxEwzjmHIzUqCG96Sjm8KNwWILsHtKg9/nTHJHDOvwQ9NbYqFW4uy
-         uTIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=77BwqRII9XCweQU8IJul6unijI/BEL+vUJmVmCRLxH4=;
-        b=UX/AfwJ5aqGbZN53UF9XJBZ7HoI+eub02swNL6j0QnY6Nhiqd7VqPpFscMkKnuSWOZ
-         3GeW9UvB2jEV5TTgi0WDEVEeb9kOHlS2VBwW9IY+Rda9z3ID8dOrryGFfHni+jkG3FR1
-         ACIU4ZK+eSKiALggiFdv+DzZH6Wesuhy0cmcoshGNqADjXZ3d8Ol2a5+lXeTlHL5EDun
-         OlP5klAq6BuBNzXh942mRKBdgZAKAgD2s7SU/6AnEpfjU+QSWiNB3obUW+BLgvE8n91v
-         7w4UMySYo/3sOrP9ezqY+ZWRHpUhyH2ro+1jJz4AcKLBrPiTxTiu981Hu1ubb+gxwNbh
-         yeTw==
-X-Gm-Message-State: AOAM530MS6hiy3czyrccrYx2ZIaD3Tg/2CJ7AqqezlLqeSShGFaO1dJd
-        TeEgR0Enm0TRIXJqdlKbtFP+M9uSpN6Ok1kOBhI=
-X-Google-Smtp-Source: ABdhPJxSi33xoEoIXQryMK7AlPvsXum9+Uhn2FA5SmsaT4s7SDGDeViE6wxc5zRdGly1PhBzYc0n/cZJtjhPnV2BKH4=
-X-Received: by 2002:aca:f306:: with SMTP id r6mr23008947oih.165.1628685033420;
- Wed, 11 Aug 2021 05:30:33 -0700 (PDT)
+        Fri, 13 Aug 2021 10:53:25 -0400
+Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 49330201E3;
+        Fri, 13 Aug 2021 14:52:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1628866377; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=mCbvlNAE/XCCePf2KtRtVGsFAqd9edK7rNW6LfivHNo=;
+        b=1cRQRhOhx/KQkAp7bLFA70GT0BNGlvG3x/mm0twST+Zsb6Nj2f44rs1BBDlcENeLigeWRS
+        ht4pN3enbbcYDuTNUrxre8HmgGpRbaGsgeM6bHCrq1iUpjoqk5JQd2uINwJclhjtWpT0DI
+        KTuIu639r/5J0HX9gPHJ67x8GqO1On8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1628866377;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=mCbvlNAE/XCCePf2KtRtVGsFAqd9edK7rNW6LfivHNo=;
+        b=PSESSqk875+8LxbRQRzv6Pf70TjQtr8ywahA2iY2wpnul/H5j5CiBODRL9e14iXWrwKAZh
+        xn6HkAa/vG8DG4Dw==
+Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap1.suse-dmz.suse.de (Postfix) with ESMTPS id EB46513806;
+        Fri, 13 Aug 2021 14:52:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap1.suse-dmz.suse.de with ESMTPSA
+        id I+nZN0iHFmFSEQAAGKfGzw
+        (envelope-from <ddiss@suse.de>); Fri, 13 Aug 2021 14:52:56 +0000
+Date:   Fri, 13 Aug 2021 16:52:55 +0200
+From:   David Disseldorp <ddiss@suse.de>
+To:     Sergey Samoylenko <s.samoylenko@yadro.com>
+Cc:     <martin.petersen@oracle.com>, <michael.christie@oracle.com>,
+        <bvanassche@acm.org>, <target-devel@vger.kernel.org>,
+        <linux-scsi@vger.kernel.org>, <linux@yadro.com>,
+        Konstantin Shelekhin <k.shelekhin@yadro.com>,
+        Dmitry Bogdanov <d.bogdanov@yadro.com>,
+        Anastasia Kovaleva <a.kovaleva@yadro.com>
+Subject: Re: [PATCH 1/1] scsi: target: core: Add 8Fh VPD page
+Message-ID: <20210813165255.650257ce@suse.de>
+In-Reply-To: <20210729201943.40222-2-s.samoylenko@yadro.com>
+References: <20210729201943.40222-1-s.samoylenko@yadro.com>
+        <20210729201943.40222-2-s.samoylenko@yadro.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6830:23a5:0:0:0:0 with HTTP; Wed, 11 Aug 2021 05:30:32
- -0700 (PDT)
-Reply-To: rihabmanyang07@yahoo.com
-From:   Rihab Manyang <ndourandiogou1@gmail.com>
-Date:   Wed, 11 Aug 2021 13:30:32 +0100
-Message-ID: <CAP5_mB4O7JPQr86GPAep=Ynd-Yb8pks_-mRAKZxGu6O8ZzfAKA@mail.gmail.com>
-Subject: hi
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
--- 
-How are you?I am miss.Rihab Manyang i will like to be your friend
-please write me back on my email for more details, Thanks.
+Hi Sergey,
+
+On Thu, 29 Jul 2021 23:19:43 +0300, Sergey Samoylenko wrote:
+
+> The 8Fh VPD page announces the capabilities supported by
+> the TCM XCOPY manager. It helps to expand the coverage of
+> the third-party copy manager with SCSI testing utilities.
+
+Please list which initiators use this VPD page, if you know of any.
+Also, is there any test coverage for this? I don't see anything in
+libiscsi...
+
+> Reviewed-by: Konstantin Shelekhin <k.shelekhin@yadro.com>
+> Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+> Reviewed-by: Anastasia Kovaleva <a.kovaleva@yadro.com>
+> Signed-off-by: Sergey Samoylenko <s.samoylenko@yadro.com>
+> ---
+>  drivers/target/target_core_spc.c | 230 ++++++++++++++++++++++++++++++-
+>  1 file changed, 226 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/target/target_core_spc.c b/drivers/target/target_core_spc.c
+> index 22703a0dbd07..169341712b10 100644
+> --- a/drivers/target/target_core_spc.c
+> +++ b/drivers/target/target_core_spc.c
+...
+> +/* Third-party Copy VPD page */
+> +static sense_reason_t
+> +spc_emulate_evpd_8f(struct se_cmd *cmd, unsigned char *buf)
+> +{
+> +	struct se_device *dev = cmd->se_dev;
+> +	int off;
+> +	u16 page_len;
+> +
+> +	if (!dev->dev_attrib.emulate_3pc)
+> +		return TCM_INVALID_CDB_FIELD;
+> +
+> +	/*
+> +	 * Since the Third-party copy manager in TCM is quite simple
+> +	 * and supports only two commands, the function sets
+> +	 * many descriptor parameters as constants.
+> +	 *
+> +	 * As the Copy manager supports the EXTENDED COPY(LID1) command,
+> +	 * the Third-party Copy VPD page should include five mandatory
+> +	 * Third-party copy descriptors. Its are:
+> +	 *   0001h - Supported Commands
+> +	 *   0004h - Parameter Data
+> +	 *   0008h - Supported Descriptors
+> +	 *   000Ch - Supported CSCD Descriptor IDs
+> +	 *   8001h - General Copy Operations
+> +	 *
+> +	 * See spc4 section 7.8.17
+> +	 */
+> +
+> +	off = 4;
+> +
+> +	/* fill descriptors */
+> +	off += spc_evpd_8f_encode_supp_cmds(&buf[off]);
+> +	off += spc_evpd_8f_encode_param_data(&buf[off]);
+> +	off += spc_evpd_8f_encode_supp_descrs(&buf[off]);
+> +	off += spc_evpd_8f_encode_supp_cscd_descr_id(&buf[off]);
+> +	off += spc_evpd_8f_encode_general_copy_ops(&buf[off]);
+
+This looks risky in terms of buf overrun. I think it'd be good to pass
+a @remaining or @buf_end param to these helper functions.
+
+Cheers, David
