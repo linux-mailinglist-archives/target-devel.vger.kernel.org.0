@@ -2,27 +2,27 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90B1E4062E5
-	for <lists+target-devel@lfdr.de>; Fri, 10 Sep 2021 02:45:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36FE94062BF
+	for <lists+target-devel@lfdr.de>; Fri, 10 Sep 2021 02:45:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242136AbhIJAqU (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 9 Sep 2021 20:46:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48788 "EHLO mail.kernel.org"
+        id S232424AbhIJAqV (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 9 Sep 2021 20:46:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49290 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234398AbhIJAXS (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 9 Sep 2021 20:23:18 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id F10B0610A3;
-        Fri, 10 Sep 2021 00:22:06 +0000 (UTC)
+        id S230281AbhIJAX7 (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Thu, 9 Sep 2021 20:23:59 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4662E611BF;
+        Fri, 10 Sep 2021 00:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631233327;
-        bh=1s48qfc84dtCcoBzLsBwjVjE0Ybz2OhWliyLTBOc5FI=;
+        s=k20201202; t=1631233369;
+        bh=iyiWDqkGT+mpmIOdYTzF8FXnSBTE57Zj9vaOfTGcxV8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X51R0cjWx6vgEUFzER6q9gf+Kfw4WqCXdxdqKA4R/4MK0XWGIq6eInb3Ex8WbpaPx
-         hYHOwWUwvDeDXVbjPWHZtrcd3UfoOj2Luwf8V8ycDTvSkyopizcW4O9ccUrca0cvWR
-         qZOaRQLaN4zDBou7kbDwI8pv2KZUEdnAab2eW7uoIlV1MHybsO+abhgmae+qQeYeeZ
-         G/DBpLpJF3QKeWAPyCJ8QZvhcBjMR9TfR0Ee4KSD6tJzqtsZWcuIwjDbdS8m7GtjRt
-         jURZXQULTb0xZQYC9J9Y5Hj9XmOwFeooR0DGTlSAnzkJCDlmMqZeyGHM8f520FPzmm
-         UYLkyVUn0Jy1g==
+        b=GWcJm664OAH1l+jR5fuEgde8miWDeq1xM3tKEClr48GJMC0JB2WLCmvVxNWLn+RAh
+         kkUH8lB8AUKCNFhmqlZ0hlYoa7kvAxPR3dczPR8iWkFZYBW4PSvsk2716YKkfaERmy
+         U3J3nVo/6inRjsAwNnVKC1NNv6eI4NUGCxpG6Yhg3cjNuvNkuRrfbRqFMrwb+vX83B
+         l2hjbZwdX3U7RwEoRGfgch9XqOY8VkTszrYrM+WsQN3OYN4DXeULKHTnpVnP78mxfe
+         UqOsUXt9t8YtkLRfR2PixlBskbyvohbiOTBGbJ00pe6BMOoZ6/Sd1nvn5JYOf7gQVa
+         zltCgHFGjd6dQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tuo Li <islituo@gmail.com>, TOTE Robot <oslab@tsinghua.edu.cn>,
@@ -30,12 +30,12 @@ Cc:     Tuo Li <islituo@gmail.com>, TOTE Robot <oslab@tsinghua.edu.cn>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
         target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 18/37] scsi: target: pscsi: Fix possible null-pointer dereference in pscsi_complete_cmd()
-Date:   Thu,  9 Sep 2021 20:21:23 -0400
-Message-Id: <20210910002143.175731-18-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 11/25] scsi: target: pscsi: Fix possible null-pointer dereference in pscsi_complete_cmd()
+Date:   Thu,  9 Sep 2021 20:22:19 -0400
+Message-Id: <20210910002234.176125-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210910002143.175731-1-sashal@kernel.org>
-References: <20210910002143.175731-1-sashal@kernel.org>
+In-Reply-To: <20210910002234.176125-1-sashal@kernel.org>
+References: <20210910002234.176125-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -79,10 +79,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/target/target_core_pscsi.c b/drivers/target/target_core_pscsi.c
-index 55fe93296deb..17811bb07e9f 100644
+index 1b52cd4d793f..a3617829107d 100644
 --- a/drivers/target/target_core_pscsi.c
 +++ b/drivers/target/target_core_pscsi.c
-@@ -622,17 +622,17 @@ static void pscsi_complete_cmd(struct se_cmd *cmd, u8 scsi_status,
+@@ -635,17 +635,17 @@ static void pscsi_complete_cmd(struct se_cmd *cmd, u8 scsi_status,
  			buf = transport_kmap_data_sg(cmd);
  			if (!buf) {
  				; /* XXX: TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE */
