@@ -2,88 +2,72 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A0FA3414E44
-	for <lists+target-devel@lfdr.de>; Wed, 22 Sep 2021 18:44:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 695BC41527B
+	for <lists+target-devel@lfdr.de>; Wed, 22 Sep 2021 23:12:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236640AbhIVQpa (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 22 Sep 2021 12:45:30 -0400
-Received: from mta-02.yadro.com ([89.207.88.252]:58464 "EHLO mta-01.yadro.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231925AbhIVQp3 (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Wed, 22 Sep 2021 12:45:29 -0400
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 780B943EDB;
-        Wed, 22 Sep 2021 16:43:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        mime-version:content-transfer-encoding:content-type:content-type
-        :content-language:accept-language:in-reply-to:references
-        :message-id:date:date:subject:subject:from:from:received
-        :received:received:received; s=mta-01; t=1632329033; x=
-        1634143434; bh=jEcF9jrFFknizQXVio793eWQQQtI0Q3SBQaN/X5YYig=; b=Y
-        1Tqz+bzeGPnqWKjIqv/gTg8FxcGL8MxEUQn20KrUANqQ3n9EAxtQ+HUteYA9HdBe
-        mwzlIXE9LYBfK/Oxv5Pjxf1cHY8QscELnaDLFOPf25Hmdj2IbVxU8EsJ583ev94h
-        dUXbuinsvRCJLmMjQD32Js+SJ8o2VJcyfP1PSNLbkQ=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id gwaOAUDTVQMw; Wed, 22 Sep 2021 19:43:53 +0300 (MSK)
-Received: from T-EXCH-03.corp.yadro.com (t-exch-03.corp.yadro.com [172.17.100.103])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id 45C6043EB8;
-        Wed, 22 Sep 2021 19:43:52 +0300 (MSK)
-Received: from T-EXCH-04.corp.yadro.com (172.17.100.104) by
- T-EXCH-03.corp.yadro.com (172.17.100.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.669.32; Wed, 22 Sep 2021 19:43:52 +0300
-Received: from T-EXCH-04.corp.yadro.com ([fe80::d8c5:6f0a:3d48:18df]) by
- T-EXCH-04.corp.yadro.com ([fe80::d8c5:6f0a:3d48:18df%15]) with mapi id
- 15.01.0669.032; Wed, 22 Sep 2021 19:43:52 +0300
-From:   Dmitriy Bogdanov <d.bogdanov@yadro.com>
-To:     Mike Christie <michael.christie@oracle.com>,
-        Martin Petersen <martin.petersen@oracle.com>,
-        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>
-CC:     "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux@yadro.com" <linux@yadro.com>,
-        Konstantin Shelekhin <k.shelekhin@yadro.com>,
-        Roman Bolshakov <r.bolshakov@yadro.com>
-Subject: RE: [PATCH v3] target: core: remove from tmr_list at lun unlink
-Thread-Topic: [PATCH v3] target: core: remove from tmr_list at lun unlink
-Thread-Index: AQHXqjxsRxjpgHbtYEm89uYUDNcxt6uoQ5KAgATA8DCAAwqxgIAAOdSg
-Date:   Wed, 22 Sep 2021 16:43:51 +0000
-Message-ID: <b56124c7c8b94531bdbd7b8d2fe00633@yadro.com>
-References: <20210915141719.1484-1-d.bogdanov@yadro.com>
- <40b321b4-76bd-8eb4-84bd-c7378ad2bbc7@oracle.com>
- <8f81906545014a768a7f775d1dcf51cf@yadro.com>
- <9ca9ec9f-bc6b-9aea-3b5a-43ce5fd09b5c@oracle.com>
-In-Reply-To: <9ca9ec9f-bc6b-9aea-3b5a-43ce5fd09b5c@oracle.com>
-Accept-Language: ru-RU, en-US
-Content-Language: ru-RU
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.199.0.54]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S237802AbhIVVOL (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 22 Sep 2021 17:14:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38252 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237831AbhIVVOI (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Wed, 22 Sep 2021 17:14:08 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7308FC061574
+        for <target-devel@vger.kernel.org>; Wed, 22 Sep 2021 14:12:38 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id m26so3827241pff.3
+        for <target-devel@vger.kernel.org>; Wed, 22 Sep 2021 14:12:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=ijKrByR1/KtEp2Ut8Wj0vMi00kBZm/A/r1gPwOEYZIg=;
+        b=OrqHQYdm9+OqD4xiOnaRMemKtPmraNMx/xM4IGtTgCL//HFNpJIj33pRKRHMFSLuNw
+         E0+Qs6XbNLghEd3b0xb9Yb9fdxx5XyGocU0Z28JiIQxtyz6JKd+6PhRNW25B4Tq4RYuF
+         xpVv4ZSv3RGnrlPKib+WWxqyBof/DYnxAgqc8TZw44UF1+pAFUYTp22YEajIE7kr16Og
+         s9Un2Ca3nN61u9akHfZbqho+/Mp2k850m7Qcm2RlHFZSrd72RqDVxL2+v/qlIdUrjnMo
+         6fzSJqkOfj3+CI9+Pfyo1t9u3I0fqdjNyqoFxMh0et4v9XlRh90PsrlP24S1uHrI3iVb
+         ZyZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=ijKrByR1/KtEp2Ut8Wj0vMi00kBZm/A/r1gPwOEYZIg=;
+        b=Z4gSFUeIEusTuzGL7+WI9PWj5uHCOyPq36cqrymYlOKiRc5R1SpLmAG6iI0fTtMN79
+         8z8HHMmWb3Hnas9L6+cv32Uwv5zpTdZlD19SFHcSakNUMytEz6t1DFw8Hsp0u1P0sNZv
+         /B924QRAsdhJQJPhtS5yvkok2LfnTqxuY4+RdjQn8w91s7eu92I4pebtzDKfIHGJYx7V
+         unnKH2Y4AX+YRPyps3RkJ7MXy4wfSc8KzXCC+bZk7E6VRoICuHqXKsDPvURulFssGXOP
+         uqh6oEdkuru2jxVqRQLE5eGpNoUgXAUxF8WNTAm3EpLIkej2NJhU8M9PFJqpwZn/xpSY
+         8hsw==
+X-Gm-Message-State: AOAM5333LPrX9vhes5fE5ONSzu847/XdCBwy4ZCumR31oKkrxha1TvU3
+        JaQ6fC5hrok8go7qPAUq6T3CmKw3LWhgqG90ykc=
+X-Google-Smtp-Source: ABdhPJxtyHEHJwBefKeN55RiY12n7DSZJOkVsytrdQ8VIFM6cctXCk6AG9scSKibCCIaykIBWD8tx/DUmt1hySGPeVk=
+X-Received: by 2002:a63:4622:: with SMTP id t34mr861710pga.293.1632345157990;
+ Wed, 22 Sep 2021 14:12:37 -0700 (PDT)
 MIME-Version: 1.0
+Sender: mrs.anna.brunn249@gmail.com
+Received: by 2002:a17:90b:4785:0:0:0:0 with HTTP; Wed, 22 Sep 2021 14:12:37
+ -0700 (PDT)
+From:   Aisha Al-Qaddafi <aisha.gdaffi24@gmail.com>
+Date:   Wed, 22 Sep 2021 22:12:37 +0100
+X-Google-Sender-Auth: cIhPf_QcsipteEXpaibDQJ2tLv4
+Message-ID: <CAN5BXtJH8hOyuptSmcosvyHw8nkgB2Tss_tJRysqSAZB8wVKqA@mail.gmail.com>
+Subject: My Dear Friend
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-SGkgTWlrZSwNCg0KPiBZZWFoLCBJIHRoaW5rIGl0J3Mgbm90IG5lZWRlZC4gSXQgY2FtZSBpbiB3
-aXRoOg0KPg0KPiBjb21taXQgMmM5ZmE0OWUxMDBmOTYyYWY5ODhmMWMwNTI5MjMxYmYxNDkwNWNk
-YQ0KPiBBdXRob3I6IEJhcnQgVmFuIEFzc2NoZSA8YnZhbmFzc2NoZUBhY20ub3JnPg0KPiBEYXRl
-OiAgIFR1ZSBOb3YgMjcgMTU6NTI6MDMgMjAxOCAtMDgwMA0KPg0KPiAgICAgc2NzaTogdGFyZ2V0
-L2NvcmU6IE1ha2UgQUJPUlQgYW5kIExVTiBSRVNFVCBoYW5kbGluZyBzeW5jaHJvbm91cw0KPiBn
-cmVlLiBJdCBsb29rcyBsaWtlIGl0IHdhcyBhZGRlZCBpbjoNCj4NCj4gYW5kIGluIHRoYXQgcGF0
-Y2ggSSBjYW4ndCBzZWUgaXQgZXZlciBoYXBwZW5pbmcuIFdlIGhhdmUgMiB3YXlzIHRvIHN1Ym1p
-dA0KPiBhbiBhYm9ydCB0bXI6DQo+DQo+IDEuIHRhcmdldF9zdWJtaXRfdG1yIC0gQ2FsbHMgdHJh
-bnNwb3J0X2xvb2t1cF90bXJfbHVuIHRoZW4NCj4gdHJhbnNwb3J0X2dlbmVyaWNfaGFuZGxlX3Rt
-ci4NCj4NCj4gMi4gaXNjc2l0X2hhbmRsZV90YXNrX21ndF9jbWQgLSBXaWxsIGNhbGwgdHJhbnNw
-b3J0X2xvb2t1cF90bXJfbHVuDQo+IGZvciBldmVyeSB0bXIgZXhjZXB0IHRoZSBpc2NzaSBzcGVj
-aWZpYyBUQVNLIFJFQVNTSUdOLiBUQVNLIFJFQVNTSU5HDQo+IGlzIG5vdCBwYXNzZWQgdG8gdHJh
-bnNwb3J0X2dlbmVyaWNfaGFuZGxlX3Rtci4NCj4NCj4gSSBkb24ndCBzZWUgYW55IHBsYWNlcyB3
-aGVyZSB0bXJfZGV2IGlzIE5VTEwgYWZ0ZXIgdHJhbnNwb3J0X2xvb2t1cF90bXJfbHVuDQo+IGhh
-cyBzZXQgaXQgYW5kIGFkZGVkIGl0IHRvIHRoZSBsaXN0Lg0KPg0KPiBTbyBJIHRoaW5rIHlvdSBj
-YW4ganVzdCBraWxsIGl0Lg0KDQpPaywgdGhlbiBpbiB0aGUgbmV4dCByZXZpc2lvbiBvZiB0aGUg
-cGF0Y2ggSSB3aWxsIGp1c3QgcmVtb3ZlIHRoYXQgdHJhbnNwb3J0X2xvb2t1cF90bXJfbHVuIHdp
-dGggV0FSTl9PTi4NCg0KQlIsDQogRG1pdHJ5DQo=
+Assalamu alaikum,
+I came across your e-mail contact prior to a private search while in
+need of your assistance. I am Aisha Al-Qaddafi, the only biological,
+Daughter of Former President of Libya Col. Muammar Al-Qaddafi. Am a
+single Mother and a Widow with three Children. I have investment funds
+worth Twenty Seven Million Five Hundred Thousand United State Dollar
+($27.500.000.00 ) and i need a trusted  investment Manager/Partner
+because of my current refugee status, however, I am interested in you
+for investment project assistance in your country. If you are willing
+to handle this project on my behalf kindly reply urgently to enable me
+to provide you more information about the investment
+funds.
+Best Regards
