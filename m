@@ -2,72 +2,136 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 695BC41527B
-	for <lists+target-devel@lfdr.de>; Wed, 22 Sep 2021 23:12:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08F92419F47
+	for <lists+target-devel@lfdr.de>; Mon, 27 Sep 2021 21:38:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237802AbhIVVOL (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 22 Sep 2021 17:14:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38252 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237831AbhIVVOI (ORCPT
+        id S236513AbhI0TkA (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 27 Sep 2021 15:40:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:42500 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229503AbhI0TkA (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 22 Sep 2021 17:14:08 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7308FC061574
-        for <target-devel@vger.kernel.org>; Wed, 22 Sep 2021 14:12:38 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id m26so3827241pff.3
-        for <target-devel@vger.kernel.org>; Wed, 22 Sep 2021 14:12:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=ijKrByR1/KtEp2Ut8Wj0vMi00kBZm/A/r1gPwOEYZIg=;
-        b=OrqHQYdm9+OqD4xiOnaRMemKtPmraNMx/xM4IGtTgCL//HFNpJIj33pRKRHMFSLuNw
-         E0+Qs6XbNLghEd3b0xb9Yb9fdxx5XyGocU0Z28JiIQxtyz6JKd+6PhRNW25B4Tq4RYuF
-         xpVv4ZSv3RGnrlPKib+WWxqyBof/DYnxAgqc8TZw44UF1+pAFUYTp22YEajIE7kr16Og
-         s9Un2Ca3nN61u9akHfZbqho+/Mp2k850m7Qcm2RlHFZSrd72RqDVxL2+v/qlIdUrjnMo
-         6fzSJqkOfj3+CI9+Pfyo1t9u3I0fqdjNyqoFxMh0et4v9XlRh90PsrlP24S1uHrI3iVb
-         ZyZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=ijKrByR1/KtEp2Ut8Wj0vMi00kBZm/A/r1gPwOEYZIg=;
-        b=Z4gSFUeIEusTuzGL7+WI9PWj5uHCOyPq36cqrymYlOKiRc5R1SpLmAG6iI0fTtMN79
-         8z8HHMmWb3Hnas9L6+cv32Uwv5zpTdZlD19SFHcSakNUMytEz6t1DFw8Hsp0u1P0sNZv
-         /B924QRAsdhJQJPhtS5yvkok2LfnTqxuY4+RdjQn8w91s7eu92I4pebtzDKfIHGJYx7V
-         unnKH2Y4AX+YRPyps3RkJ7MXy4wfSc8KzXCC+bZk7E6VRoICuHqXKsDPvURulFssGXOP
-         uqh6oEdkuru2jxVqRQLE5eGpNoUgXAUxF8WNTAm3EpLIkej2NJhU8M9PFJqpwZn/xpSY
-         8hsw==
-X-Gm-Message-State: AOAM5333LPrX9vhes5fE5ONSzu847/XdCBwy4ZCumR31oKkrxha1TvU3
-        JaQ6fC5hrok8go7qPAUq6T3CmKw3LWhgqG90ykc=
-X-Google-Smtp-Source: ABdhPJxtyHEHJwBefKeN55RiY12n7DSZJOkVsytrdQ8VIFM6cctXCk6AG9scSKibCCIaykIBWD8tx/DUmt1hySGPeVk=
-X-Received: by 2002:a63:4622:: with SMTP id t34mr861710pga.293.1632345157990;
- Wed, 22 Sep 2021 14:12:37 -0700 (PDT)
+        Mon, 27 Sep 2021 15:40:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1632771501;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=w8zVEowPpHEw4K+DjtjdHUbsuCY06YRlaczJf98yNn0=;
+        b=Kkrx4noT7A7zk46iXEyrqkGdOz2WSGesv4jyaEwqcazAOj1eG0Yp0JqXqlxGTXkaE4xrdJ
+        VbTS9YNrORR6phmQm/6FIK4kga4fu8hkVUCm6Ww+Q1eVDNsHJHsOPlhdpdyGVZQ0xsBfW9
+        Z5tyyzMV8ExjKfY3wLCA59/0PtY7Eb4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-310-Gz1bFcK-NzK6xGoEiP2Fcw-1; Mon, 27 Sep 2021 15:38:18 -0400
+X-MC-Unique: Gz1bFcK-NzK6xGoEiP2Fcw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3FF3D1084683;
+        Mon, 27 Sep 2021 19:38:17 +0000 (UTC)
+Received: from raketa.redhat.com (unknown [10.40.193.39])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id CD80C3AC0;
+        Mon, 27 Sep 2021 19:38:15 +0000 (UTC)
+From:   Maurizio Lombardi <mlombard@redhat.com>
+To:     martin.petersen@oracle.com
+Cc:     bostroesser@gmail.com, michael.christie@oracle.com,
+        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org
+Subject: [PATCH] target: allow setting dbroot as a module parameter
+Date:   Mon, 27 Sep 2021 21:38:14 +0200
+Message-Id: <20210927193814.79111-1-mlombard@redhat.com>
 MIME-Version: 1.0
-Sender: mrs.anna.brunn249@gmail.com
-Received: by 2002:a17:90b:4785:0:0:0:0 with HTTP; Wed, 22 Sep 2021 14:12:37
- -0700 (PDT)
-From:   Aisha Al-Qaddafi <aisha.gdaffi24@gmail.com>
-Date:   Wed, 22 Sep 2021 22:12:37 +0100
-X-Google-Sender-Auth: cIhPf_QcsipteEXpaibDQJ2tLv4
-Message-ID: <CAN5BXtJH8hOyuptSmcosvyHw8nkgB2Tss_tJRysqSAZB8wVKqA@mail.gmail.com>
-Subject: My Dear Friend
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Assalamu alaikum,
-I came across your e-mail contact prior to a private search while in
-need of your assistance. I am Aisha Al-Qaddafi, the only biological,
-Daughter of Former President of Libya Col. Muammar Al-Qaddafi. Am a
-single Mother and a Widow with three Children. I have investment funds
-worth Twenty Seven Million Five Hundred Thousand United State Dollar
-($27.500.000.00 ) and i need a trusted  investment Manager/Partner
-because of my current refugee status, however, I am interested in you
-for investment project assistance in your country. If you are willing
-to handle this project on my behalf kindly reply urgently to enable me
-to provide you more information about the investment
-funds.
-Best Regards
+The target driver prevents the users from changing
+the database root directory if a target module like ib_srpt
+has already been loaded during boot.
+
+Let the users set their preferred root directory
+by passing it as a module parameter. This, combined
+with the modprobe.d's "options" command,
+will mitigate the issue because the parameter will be
+automatically passed every time the target_core_mod module is inserted
+into the kernel; whether directly (using modprobe) or
+because another module being loaded depends on it.
+
+If the directory cannot be opened, the target driver will print
+an error and fall back to its default (/etc/target)
+
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+---
+ drivers/target/target_core_configfs.c | 29 ++++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
+index 274ffb6b83a1..c0fc6312aa20 100644
+--- a/drivers/target/target_core_configfs.c
++++ b/drivers/target/target_core_configfs.c
+@@ -100,7 +100,10 @@ static ssize_t target_core_item_version_show(struct config_item *item,
+ CONFIGFS_ATTR_RO(target_core_item_, version);
+ 
+ char db_root[DB_ROOT_LEN] = DB_ROOT_DEFAULT;
+-static char db_root_stage[DB_ROOT_LEN];
++static char db_root_stage[DB_ROOT_LEN] = {0};
++
++module_param_string(dbroot, db_root_stage, DB_ROOT_LEN, 0);
++MODULE_PARM_DESC(dbroot, "Target database root directory (def=/etc/target)");
+ 
+ static ssize_t target_core_item_dbroot_show(struct config_item *item,
+ 					    char *page)
+@@ -3507,25 +3510,25 @@ void target_setup_backend_cits(struct target_backend *tb)
+ 	target_core_setup_dev_stat_cit(tb);
+ }
+ 
+-static void target_init_dbroot(void)
++static int target_init_dbroot(char *path)
+ {
+ 	struct file *fp;
+ 
+-	snprintf(db_root_stage, DB_ROOT_LEN, DB_ROOT_PREFERRED);
+-	fp = filp_open(db_root_stage, O_RDONLY, 0);
++	fp = filp_open(path, O_RDONLY, 0);
+ 	if (IS_ERR(fp)) {
+-		pr_err("db_root: cannot open: %s\n", db_root_stage);
+-		return;
++		pr_err("db_root: cannot open: %s\n", path);
++		return -EINVAL;
+ 	}
+ 	if (!S_ISDIR(file_inode(fp)->i_mode)) {
+ 		filp_close(fp, NULL);
+-		pr_err("db_root: not a valid directory: %s\n", db_root_stage);
+-		return;
++		pr_err("db_root: not a valid directory: %s\n", path);
++		return -EINVAL;
+ 	}
+ 	filp_close(fp, NULL);
+ 
+-	strncpy(db_root, db_root_stage, DB_ROOT_LEN);
++	strlcpy(db_root, path, DB_ROOT_LEN);
+ 	pr_debug("Target_Core_ConfigFS: db_root set to %s\n", db_root);
++	return 0;
+ }
+ 
+ static int __init target_core_init_configfs(void)
+@@ -3608,7 +3611,13 @@ static int __init target_core_init_configfs(void)
+ 	if (ret < 0)
+ 		goto out;
+ 
+-	target_init_dbroot();
++	if (db_root_stage[0]) {
++		ret = target_init_dbroot(db_root_stage);
++		if (ret < 0)
++			target_init_dbroot(DB_ROOT_PREFERRED);
++	} else {
++		target_init_dbroot(DB_ROOT_PREFERRED);
++	}
+ 
+ 	return 0;
+ 
+-- 
+2.27.0
+
