@@ -2,208 +2,151 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF11041D145
-	for <lists+target-devel@lfdr.de>; Thu, 30 Sep 2021 04:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6DC041DF45
+	for <lists+target-devel@lfdr.de>; Thu, 30 Sep 2021 18:41:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346934AbhI3CGX (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 29 Sep 2021 22:06:23 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32]:48572 "EHLO
-        mx0b-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1347294AbhI3CGU (ORCPT
+        id S1351765AbhI3Qml (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 30 Sep 2021 12:42:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39344 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1352187AbhI3Qmk (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 29 Sep 2021 22:06:20 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18U0C6DL017464;
-        Thu, 30 Sep 2021 02:04:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references :
- content-transfer-encoding : content-type : mime-version;
- s=corp-2021-07-09; bh=UtDC9ouH3Q4WGuZ12fLcrluLt3CZ8j2TAPeAdEuTzVU=;
- b=RMmxnVwNGa9hkBWlxmqdzjmDKLuoy7CC3OR8Vk8dJB3IUh+UgVnB+ysH884eycwDbqm2
- GhssPExcCNrMwbruhDV8GTdVsvpc2YVcdssTbOGH3aerZpWls5RsFa8GikPtdmVZUYqi
- iWzPYZfsJuGEBkRMve/oLb7Qtd1SamJR62ZC2WxYD28UaDCQQDuDtuHOQ59Yl1zHcxRA
- x9HFGGssfeWc5meJGtsGa5VCtAV4n4C4T1KtZL4y0o8zCEWiwIhmSOxsdECsdbMm6tQ8
- qo9WGMSL7TLDMwh37lxSwzOLTul1yIhn9oHW4nwyY7l5dvDMmiRjCAlVTImjDTiPGNgt jw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by mx0b-00069f02.pphosted.com with ESMTP id 3bcg3hswrn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 30 Sep 2021 02:04:36 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 18U20Fu2160315;
-        Thu, 30 Sep 2021 02:04:35 GMT
-Received: from nam02-dm3-obe.outbound.protection.outlook.com (mail-dm3nam07lp2047.outbound.protection.outlook.com [104.47.56.47])
-        by userp3020.oracle.com with ESMTP id 3bc3cf5ava-2
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 30 Sep 2021 02:04:35 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nibDc6n+e2mv3zxS3r3T5PzBQFFj3T1FCc+MTXoCYgSOvZRxluSF2zYdDZVQMHWoOjFoXF2GH2tAmeNbD7sID8GsaHbOQWgTwvpDJCs6mnPnZQPJRSijykeZRuFYoPnHrYV4xp6w/+/w5plgU440HGP3GU12L/yw/phx93RwXnUPyC74i+dL9B+LDYsVcvV2LX3Uvw4my6c8SDGcznElCzFvWSo9yUBLSqCeuwJp9g3MUbxkBwxK1JX1nzmhEEpZ8lvCqVVRU4wJxtm9Gz0H17U63bYOoXM7K4C6/5Y7B+poPcRN45qK9kntMiV1GSspbBSJc9a8QGTcM8c5PNDLGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=UtDC9ouH3Q4WGuZ12fLcrluLt3CZ8j2TAPeAdEuTzVU=;
- b=YbMAhuHtGV53bvR0qwjgHiRKZqGc2UjTlG/JpUH1pfxBpRACi6syXseMRsg6gx2n3HB5Ko3VudYVZQ8xbrTLOZvxkqK/4mkDtVvk7RaOHctYBO14UiLUvn2S3RoOURS6q3weUHVLYEy78+qBU3EaA22TI7ZFjdL2d+b0fMgW9P2/g+41rPpb0KFGzQRtrf6F+CT1asdphgcb4RAT6N31q6Lws3lfxZETiobl5TLNj0/Jhr8XaRkguA8m3Zb0GY/Bp5ylAcReYxPkTR6s9z+AmmHzMvsIEgK0pRHXvctSLgtWVZvK9UhS5JvkvFbQrMxY16tYS0Ywg4T6pRsYzbpbGw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+        Thu, 30 Sep 2021 12:42:40 -0400
+Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1839C061773
+        for <target-devel@vger.kernel.org>; Thu, 30 Sep 2021 09:40:56 -0700 (PDT)
+Received: by mail-vs1-xe42.google.com with SMTP id 188so8205601vsv.0
+        for <target-devel@vger.kernel.org>; Thu, 30 Sep 2021 09:40:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UtDC9ouH3Q4WGuZ12fLcrluLt3CZ8j2TAPeAdEuTzVU=;
- b=dNIQVBD+NZrIpPFQsUyK+1BKXXXOa2OaTRoN0y6/DNePLAckCdzWLC793P3Y4Mx9gwFcEBgy4TDzIqBzZGNi1VKbDT86W6ZFFWfMRe3UxyYWKyvvIJDHHfEcz2r3b7VP+cYHTDVR8dKE4Gr5yV+3Fdgc9PTHNl2kmeVBUiAM/Hs=
-Authentication-Results: oracle.com; dkim=none (message not signed)
- header.d=none;oracle.com; dmarc=none action=none header.from=oracle.com;
-Received: from DM5PR10MB1466.namprd10.prod.outlook.com (2603:10b6:3:b::7) by
- DS7PR10MB4909.namprd10.prod.outlook.com (2603:10b6:5:3b0::11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4544.14; Thu, 30 Sep 2021 02:04:34 +0000
-Received: from DM5PR10MB1466.namprd10.prod.outlook.com
- ([fe80::195:7e6b:efcc:f531]) by DM5PR10MB1466.namprd10.prod.outlook.com
- ([fe80::195:7e6b:efcc:f531%5]) with mapi id 15.20.4544.023; Thu, 30 Sep 2021
- 02:04:34 +0000
-From:   Mike Christie <michael.christie@oracle.com>
-To:     martin.petersen@oracle.com, james.bottomley@hansenpartnership.com,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Cc:     Mike Christie <michael.christie@oracle.com>
-Subject: [PATCH 5/5] target: perform alua group changes in one step
-Date:   Wed, 29 Sep 2021 21:04:22 -0500
-Message-Id: <20210930020422.92578-6-michael.christie@oracle.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210930020422.92578-1-michael.christie@oracle.com>
-References: <20210930020422.92578-1-michael.christie@oracle.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: DM5PR07CA0159.namprd07.prod.outlook.com
- (2603:10b6:3:ee::25) To DM5PR10MB1466.namprd10.prod.outlook.com
- (2603:10b6:3:b::7)
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/T9drlD1s9vO6lHEMs4LJzmDo2MKXEHBXvFYaWoQWpk=;
+        b=FV+sR2jqeq3a30q0fwwes6WIJUL0Aly1jHDpEuRKN4E5hFr75A8Lw1Hf7FsKbd3IgX
+         Y0NETW3LIdrr+GfiFqDiRliDmaT3s6ks2SCzQ8xKiQWqtfryMEQxZRm/Ehnv8sx9IvZA
+         muPVzb5TbIR8gh03qrKvvPLKt+CWDdsXkBUBiZw2JG/VPZRXtjF2vQGNdWqMtE0+KYCn
+         puyxTyxmsl+RwXB2mIAoqF5n+/rz1oAVYvnPo9p/4N+LHs01uAkZKBx+0yd7aFh3bUHG
+         h/EeRqLYRyFYlkHNLt6EEQaizEMQ1XNxoB1ZM7qr+/WnP5xBCG7P4Ey4iY0NmkRmr8S1
+         mh4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/T9drlD1s9vO6lHEMs4LJzmDo2MKXEHBXvFYaWoQWpk=;
+        b=5bap1j1VgXn+x+huWVod1kDmLFaHeDxinOnpjzaxYtl+9TIVO1MWt2eAOnnphsQGeT
+         DQpak+ESHYtNEYyVNQ5xWtw6pcUTSpwczL+9fJ+DQbiv5DDHfe8AUfYYAM4wu3PKeLx4
+         uq8P+0keuBaDz8Df9/ggpbNQdKsbTYphUw2061DydzX3c9LA0GDXPNUqfJQ19T/JKB/R
+         t6abKhKbamvVKqKXr5hn33LBZ+lEqbSpHatwGrAoma/uZjHP4O7fn1g46zsGSnuB1Kpz
+         wSKBgJTgCWNErc/ys/Hh/KOdncjK726Ko6hLdTtuWw4Uv0b28C8fDGNFvdKKeKhOjA7M
+         pAPA==
+X-Gm-Message-State: AOAM530ruACm6F2JlJv9+KVTd1X0IxR9BVJ30TtyqwE0Lo3om4sIJF8J
+        tHaq0zCseFb/ylOZfRHi6+svSbDYwBObXgIE9Cs=
+X-Google-Smtp-Source: ABdhPJyrlzTC2MbiFYv9Onunj6ymT4OoDGeF1Rs8K96BASDJdMf5G8ZjaV568mQ5Ecmy8bt02e07EU6x/22RNi/kmb0=
+X-Received: by 2002:a67:ce14:: with SMTP id s20mr148117vsl.34.1633020056080;
+ Thu, 30 Sep 2021 09:40:56 -0700 (PDT)
 MIME-Version: 1.0
-Received: from localhost.localdomain (73.88.28.6) by DM5PR07CA0159.namprd07.prod.outlook.com (2603:10b6:3:ee::25) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4566.15 via Frontend Transport; Thu, 30 Sep 2021 02:04:33 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 8a7499f1-76ff-457f-809f-08d983b6a5ec
-X-MS-TrafficTypeDiagnostic: DS7PR10MB4909:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DS7PR10MB4909BA330411E61B4C0D8C9CF1AA9@DS7PR10MB4909.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:530;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ZuKJEv2vQDClzyiDWzEmks1USOxZi7WBps1XdsSLKGy15lp0qnNDK0CUvhPdoLBK64InV1WsOPFdRBAdcU5XRFRYOoFqNnYyVnLzhi17F6B57WW7+WqOH3K35jLpA3lQ5lAM177cZhNFpIFFABjxYIYlyfSsJhjRmo8BvTWRmIAp12D3EUPJQh5gP/KKdjDaNm4RnZLxuKW6p4SObbmCKQ/9/CDrWAT7Cvoywtdeb13PcR+4lz3ohBa28l060GYGAp8um6llTVlws3mKUsIZYcHWbIXcKy6BofeoP+Cu2NIwqSAOHGUWev9bO7HG3Jbcxj3TH0xWvngszm4WzOVHuiyL7M3tLTSCa6Hh8eme0IoeTbNPmAKKNpR2QkhHLfBTDx8BsjcoNEe+qrcVANw+yUn+ciDtWfqkCDXvjSbJSbcYAiCCdGDtRno+EoGu5BGqVOZ9HjBxOpTV61SkasTwKiTQzxD1VIQAKy5P5WKxioBClJaEiZM+W/WUvIMpXBgQvAhRjTuHq7tIdX0f+kYpCcua741/Jm60clpUBnp6C5JvjxSP2heCLyfSFgs1a/wydWth7zq5bdPigaT1b+/2N3X+CxmFSSuPR7d//QPl2TKk6ixKK5nbFxoWR3D3ujfmMfLaF1RpWGarNVQxY6Ff4niaz1GeWhYc5fETT1qyhRro2JV1MjeED5HgGJMIx+jQGKdM7gEZS6hp5g6AbUCM0w==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR10MB1466.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(2616005)(956004)(38100700002)(38350700002)(4326008)(6512007)(6666004)(6486002)(8936002)(83380400001)(316002)(6506007)(66476007)(1076003)(107886003)(508600001)(2906002)(26005)(66946007)(52116002)(5660300002)(8676002)(86362001)(186003)(66556008)(36756003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?nBVI2v6DZeKO0LqIC5fmnC3h1H//CNpC6z6H3CIfVjEt8gWfmfi+vVWE8h1O?=
- =?us-ascii?Q?OL04QR5rwME2Mx36XHIaYQlDQBmKj7GTJ2RKFaYPRHM6O2m3bW93FrOJO9Lz?=
- =?us-ascii?Q?Zom6GSMR7scXN9JO+WFirXY/C6C6Bj7mVn5pHWHOaCL4Ks+125ZjIp7iyTYM?=
- =?us-ascii?Q?0M5JGcFagwYS9vbP4RNPiOUESBCpHF26wziWuPARMHbupQEw+/FLcEdWyCkv?=
- =?us-ascii?Q?DmmMWdmQ4M288nGYAtmYAWnKKf03jhV/KgvW0x8o7Te3allB7racBUYzfDLv?=
- =?us-ascii?Q?3I5gJr/1vNAOPl+EzlAZw8smB6mcO1+L5bNcuN6rPJWxFnlKKuzEqnTVDV11?=
- =?us-ascii?Q?h6IDtXMc61m54sQ7DaC2Pu/jxvquZEiImCVflX8RJPxyD4nnAggHT20k4b97?=
- =?us-ascii?Q?LdkeHg6/a98HZnaWK8nH7nuEU5vryED27RlzNheuI8n7PpVKwrbJT+TJPfli?=
- =?us-ascii?Q?FhQQRK3WUchWGTeNzdSPk2F1OmBAdNTjlSlwKeAEdjk4XCkk1hXcnjNkSTST?=
- =?us-ascii?Q?rQF4uz0XDfVN+ROMyZrOYbSoYPpUWYIdmXKSMPaSBT186qMAvNklgsGnPmxn?=
- =?us-ascii?Q?MowUDZDB5D+kJCxpOVrl0kOIcBoybSthRnSFVR7m679fA1aA0fE5xB3WlgIK?=
- =?us-ascii?Q?f8s03lX9xXKuORLFvR+UKjNvTaOEuB9LrvEvRbcUnCTFmFJU/I5fMmlphkX1?=
- =?us-ascii?Q?A4xWbIJVWZfnQeJJC1cyqOzO8G94Hg78OAvNLghOsUGVwmSqcMTbqlTR2VUw?=
- =?us-ascii?Q?2tg4JBdxbbru9xY67sjPxP635kWnZMrI0O/L1mmmZzhW0jhmNy0vuhYOka1N?=
- =?us-ascii?Q?a26CLjJnNc0td4OPXijW3MkW5H3lzQ1xZcCESAPOMcln2DwZbujImBniGSgZ?=
- =?us-ascii?Q?cdgUOGOIY8CMA4kazF1/iStUB2XLxNudNtQZ6cqclrTATdnaACDFyGImln/W?=
- =?us-ascii?Q?wVAHFa/4zsAMKwTAqy1uZRLq+q1s6QPb2M/VHCmvQKwTlkUvUigFatajSSzE?=
- =?us-ascii?Q?EKMD5RWJjDSkJFHSE3uB/+JsM/RQWK+kUJTSw4na/4EYTOCXhC2H9D7rycOJ?=
- =?us-ascii?Q?99RhClkwA5ejPnMy2nsll+nvkzQmaV2K6dZ/jKmKz+VoYTITbyTHtoJOPEwf?=
- =?us-ascii?Q?u644BwLu/bCBCrNITAY9WeTqREvcLhBDs+sFKSMaM4kQbEeW+DqhniKAKHj+?=
- =?us-ascii?Q?vHSGCPQLVKmGjwqv/XHrZ6bYcyp1nrMV2skI2OHNoIBoQTInfhGyNo7Zq9bL?=
- =?us-ascii?Q?yiFD1SbTZxGBQTghUo3y+5pkYTPYBjp19grFYBqQzMh22JiTal+MDJyzt5UU?=
- =?us-ascii?Q?ScK18RpimLaTZHTBZ58+esWN?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8a7499f1-76ff-457f-809f-08d983b6a5ec
-X-MS-Exchange-CrossTenant-AuthSource: DM5PR10MB1466.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2021 02:04:34.2031
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nR7Hd/t7T0McqOTUdj67cEgvu2xy/s3eXofVrrv7PJBnvorfCNK7/3aL3HKe51NWGtAOOp9M2LQkhGBsLU8CsNIib4W1QWLQwuFPA1ea+3c=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR10MB4909
-X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10122 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 mlxlogscore=999
- phishscore=0 bulkscore=0 suspectscore=0 malwarescore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109230001
- definitions=main-2109300009
-X-Proofpoint-GUID: tz-8ZkBl9oqPlvDqWW4LvHW6d9S12Ojg
-X-Proofpoint-ORIG-GUID: tz-8ZkBl9oqPlvDqWW4LvHW6d9S12Ojg
+Received: by 2002:a59:ab2e:0:b0:22d:7f44:603a with HTTP; Thu, 30 Sep 2021
+ 09:40:55 -0700 (PDT)
+Reply-To: irenezakari24@gmail.com
+From:   Irene zakari <irenezakari88@gmail.com>
+Date:   Thu, 30 Sep 2021 09:40:55 -0700
+Message-ID: <CAFT8PFEuTDyM7AWv4-LAqHpR0VFES6VrRn3W0Yw7s4vRmk+-jg@mail.gmail.com>
+Subject: PLEASE I NEED YOUR HELP
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-When userspace changes the lun's alua group, it will set the lun's group
-to NULL then to the new group. Before the new group is set,
-target_alua_state_check will return 0 and allow the IO to execute. This
-has us skip the NULL stage, and just swap in the new group.
+Hello   ..
 
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
----
- drivers/target/target_core_alua.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+How do you do over there? I hope you are doing well?
 
-diff --git a/drivers/target/target_core_alua.c b/drivers/target/target_core_alua.c
-index 74944b914b4e..b56ef8af66e7 100644
---- a/drivers/target/target_core_alua.c
-+++ b/drivers/target/target_core_alua.c
-@@ -1835,8 +1835,6 @@ static void __target_detach_tg_pt_gp(struct se_lun *lun,
- 	list_del_init(&lun->lun_tg_pt_gp_link);
- 	tg_pt_gp->tg_pt_gp_members--;
- 	spin_unlock(&tg_pt_gp->tg_pt_gp_lock);
--
--	rcu_assign_pointer(lun->lun_tg_pt_gp, NULL);
- }
- 
- void target_detach_tg_pt_gp(struct se_lun *lun)
-@@ -1846,12 +1844,25 @@ void target_detach_tg_pt_gp(struct se_lun *lun)
- 	spin_lock(&lun->lun_tg_pt_gp_lock);
- 	tg_pt_gp = rcu_dereference_check(lun->lun_tg_pt_gp,
- 				lockdep_is_held(&lun->lun_tg_pt_gp_lock));
--	if (tg_pt_gp)
-+	if (tg_pt_gp) {
- 		__target_detach_tg_pt_gp(lun, tg_pt_gp);
-+		rcu_assign_pointer(lun->lun_tg_pt_gp, NULL);
-+	}
- 	spin_unlock(&lun->lun_tg_pt_gp_lock);
- 	synchronize_rcu();
- }
- 
-+static void target_swap_tg_pt_gp(struct se_lun *lun,
-+				 struct t10_alua_tg_pt_gp *old_tg_pt_gp,
-+				 struct t10_alua_tg_pt_gp *new_tg_pt_gp)
-+{
-+	assert_spin_locked(&lun->lun_tg_pt_gp_lock);
-+
-+	if (old_tg_pt_gp)
-+		__target_detach_tg_pt_gp(lun, old_tg_pt_gp);
-+	__target_attach_tg_pt_gp(lun, new_tg_pt_gp);
-+}
-+
- ssize_t core_alua_show_tg_pt_gp_info(struct se_lun *lun, char *page)
- {
- 	struct config_item *tg_pt_ci;
-@@ -1941,18 +1952,16 @@ ssize_t core_alua_store_tg_pt_gp_info(
- 					&tg_pt_gp->tg_pt_gp_group.cg_item),
- 				tg_pt_gp->tg_pt_gp_id);
- 
--			__target_detach_tg_pt_gp(lun, tg_pt_gp);
--			__target_attach_tg_pt_gp(lun,
-+			target_swap_tg_pt_gp(lun, tg_pt_gp,
- 					dev->t10_alua.default_tg_pt_gp);
- 			spin_unlock(&lun->lun_tg_pt_gp_lock);
- 
- 			goto sync_rcu;
- 		}
--		__target_detach_tg_pt_gp(lun, tg_pt_gp);
- 		move = 1;
- 	}
- 
--	__target_attach_tg_pt_gp(lun, tg_pt_gp_new);
-+	target_swap_tg_pt_gp(lun, tg_pt_gp, tg_pt_gp_new);
- 	spin_unlock(&lun->lun_tg_pt_gp_lock);
- 	pr_debug("Target_Core_ConfigFS: %s %s/tpgt_%hu/%s to ALUA"
- 		" Target Port Group: alua/%s, ID: %hu\n", (move) ?
--- 
-2.25.1
+My name is Irene. (24 years), i am single, from Gambia, the only child
+of late Eng. Bernard Bakary Zakaria. the Director of Bajam Enterprise
+(Building Construction Company in The Gambia) also the CEO of Bernard
+Import and Export (GAMBIA).
 
+As a matter of fact my mother died when i was barely 4 years old
+according to my late father and because of the type of love he had for
+my mother made him to remain UN-married till he left the ghost..
+
+So after the death of my father as a result of assassinate, his brother (My
+Uncle) who is the purchasing and marketing sale manager of my late
+fathers company named (Mr. James Tokunbo Oriade Zakaria) wanted to
+convert all the properties and resources of my late father into his
+which i quarreled with him and it made him to lay his anger on me to
+the extent of hiring an assassins to kill me but to God be the glory i
+succeeded by making a way to Burkina faso for my dear life.
+Honestly i do live a fearful life even here in Burkina faso because of
+those Assassins coming after me .
+
+I would want to live and study in your country for my better future.
+because my father same blood brother wanted to force me into undecided
+marriage, just for me to leave my father home and went and live with
+another man I never know as he want to occupied all my father home
+and maybe to sold it as my father no longer alive, I'm the only child
+daughter my father born, '' but he don't know that i am not
+interesting in any of my father properties or early marriage for now,
+because i still have future to think about and to focus on my studies
+first as i was doing my first year in the University before the death
+of my father.
+
+Actually what I want to discuss with you is about my personal issue
+concern funds my late father deposited in a bank outside my country,
+worth $4.5 million united state dollars. i need your assistance to
+receive and invest this funds in your country.
+
+Please help me, I am sincere to you and I want to be member of your
+family as well if you wouldn't mind to accept me and lead me to better
+future in your country.
+
+All the documents the bank issue to my father during time of deposit
+is with me now.
+I already notify the bank on phone about the death of my father and
+they are surprise for the news and accept that my father is their good
+customer.
+I will be happy if this money can be invested in any business of your
+choice and it will be under your control till i finished my education,
+also I'm assuring you good relationship and I am ready to discuss the
+amount of money to give you from this money for your help.
+
+Therefore, I shall give you the bank contact and other necessary
+information in my next email if you will only promise me that you will
+not/never betray and disclosed this matter to anybody, because, this
+money is the only hope i have for survival on earth since I have lost
+my parents.
+
+Moreover I have the FUND PLACEMENT CERTIFICATE and the DEATH
+CERTIFICATE here with me, but before I give you further information, i
+will like to know your full data
+
+1. Full Name: ........................
+2. Address: ..................
+3. Nationality: ........... Sex................
+4. Age:........... Date of Birth:................
+5. Occupation:...................
+.....
+6. Phone: ........... Fax:.........................
+7. State of Origin: .......Country:..............
+8. Occupation:...................
+................
+9. Marital status........... E-mail address's: ............
+10. Scan copy of your ID card or Driving License/Photo:............
+DECLARATION:
+
+so that i will be fully sure that i am not trusting the wrong person.
+and it will also give me the mind to send you the bank contact for you
+to communicate with them for more verification about this money. and
+to know you more better.
+
+Meanwhile, you can reach me through my pastor,his name is Pastor Paul
+any time you call, tell him that you want to speak with me because
+right now i am living in the church here in Burkina faso and i don't
+want to stay here any longer,
+send for me to speak with you his phone number is this(+226 75213646)
+
+I will stop here and i will be waiting for your reply and feel free
+ask any thing you want to know about me.
+Please help me, I would be highly appreciated
+Have nice day.
+From Irene
