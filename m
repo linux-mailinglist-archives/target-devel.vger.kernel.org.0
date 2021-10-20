@@ -2,98 +2,75 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66BA7434E54
-	for <lists+target-devel@lfdr.de>; Wed, 20 Oct 2021 16:54:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 263934352DE
+	for <lists+target-devel@lfdr.de>; Wed, 20 Oct 2021 20:43:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230179AbhJTO4d (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 20 Oct 2021 10:56:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57488 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230089AbhJTO4c (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Wed, 20 Oct 2021 10:56:32 -0400
-Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B2E2C06174E
-        for <target-devel@vger.kernel.org>; Wed, 20 Oct 2021 07:54:18 -0700 (PDT)
-Received: by mail-ot1-x335.google.com with SMTP id l10-20020a056830154a00b00552b74d629aso7237643otp.5
-        for <target-devel@vger.kernel.org>; Wed, 20 Oct 2021 07:54:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20210112.gappssmtp.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=TZZSEfWCStHUfXhWoXkg5KMgJocnV57u5o2CEcJ7HCc=;
-        b=m6t8lcoqFlEuO2YtgUGyJOgTFG9r3gegg328r7yqi7ahbS8ubR2dD0/Pj2EWCTAUuA
-         M02ojT0kPrzHZYYG+nzIM/amlc0aviTrC5h073WmzUsDG5kSpMZnjhuK+i8EoLI8XtFV
-         tAOJI6Dq6RqsaFkY7XaLCF+jWOo8HC09LBuWXmFGMukDr003XnwiD9sz7/I/c5Gdrkja
-         EgQndCGLKNGRW6KF4GgsUvpBI9e/r1wrQDvkfxN5dmsQcuosbJ5bD+47WPJHDtMVt1ox
-         UNh+E6Iq9tCpN0OMN/AP4Ti0h/SP/2gadP9EfeelfLwNwKFK/cs3CzBNoPypeMhUfQ1Q
-         8tNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=TZZSEfWCStHUfXhWoXkg5KMgJocnV57u5o2CEcJ7HCc=;
-        b=kP1KnmmDPUHiUknNZHOw1xYONaz8GUOrQlFElEX3G6cmg0zV94oFlpvVkJxqj6/eHU
-         kgHlIUi68boL4O0D6jAfPeplj7+u0+R2BBPKYVv8PVwPZomzpOIP0v9VZBbd5KcZNFmc
-         Zr/MMvXh1BUb3xHv2h+5cAWdoENGQtLoHLB1ymQWpBvCB5VO1q0gDSjtedEtvU0b1+8p
-         TEeLbo0H7Si63qw3kFlCQfk9NcSRrj3IWtowInjQjf7vSXFcHmYJs8wsUFgRym3NDXNU
-         leqLgjzFv0o3YMtrxg63t0yu5py7+ATwPfNhnMw+PBB6R/2QK+4S//nxsmWfrmjX1lB4
-         89EQ==
-X-Gm-Message-State: AOAM533Q10S/NBCHiS92eZtzY8niXHr6Gm14leXSCta47BqF3qGRMdPl
-        N+K5NnNOBycPqW7oM48i8d/FPg==
-X-Google-Smtp-Source: ABdhPJyA70p8IeSf47juIEqV0A0ohyswwqnHS0r02Wg4m/IZ8h7PlFDckmkiOFfwNwbTNzml/h726Q==
-X-Received: by 2002:a9d:4c99:: with SMTP id m25mr294329otf.204.1634741657447;
-        Wed, 20 Oct 2021 07:54:17 -0700 (PDT)
-Received: from [192.168.1.30] ([207.135.234.126])
-        by smtp.gmail.com with ESMTPSA id bc41sm476898oob.2.2021.10.20.07.54.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Oct 2021 07:54:17 -0700 (PDT)
-Subject: Re: remove QUEUE_FLAG_SCSI_PASSTHROUGH v2
-To:     Christoph Hellwig <hch@lst.de>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc:     "J. Bruce Fields" <bfields@fieldses.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        linux-block@vger.kernel.org, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, linux-nfs@vger.kernel.org
-References: <20211019075418.2332481-1-hch@lst.de>
- <yq15ytsbawr.fsf@ca-mkp.ca.oracle.com> <20211020053341.GA25529@lst.de>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <0a70e163-d6cb-9733-a91f-d0bee2c23c69@kernel.dk>
-Date:   Wed, 20 Oct 2021 08:54:16 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S230487AbhJTSpw (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 20 Oct 2021 14:45:52 -0400
+Received: from mta-02.yadro.com ([89.207.88.252]:36726 "EHLO mta-01.yadro.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S230076AbhJTSpu (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Wed, 20 Oct 2021 14:45:50 -0400
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id 8A47942B35;
+        Wed, 20 Oct 2021 18:43:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        content-type:content-type:content-transfer-encoding:mime-version
+        :x-mailer:message-id:date:date:subject:subject:from:from
+        :received:received:received; s=mta-01; t=1634755413; x=
+        1636569814; bh=QHRGrUEb+H9KZ0xJgGEVAJtJB0Dg4QG1oOcBKz7CYXU=; b=B
+        57uVnEY6SMqHH8x0e92oJUBufcuocCjIPsYhae/BVV7XGJULfOG0+RFmSOUTkuZc
+        9+eWuBlGAeRve6k88y9ENTo5peaJpXwZAaFhoKS+6YfRYhGD5czoYMKtxe8hD3ZI
+        JV8Fdg9j9yAb58A+KDz2JpH+I0CqNkNDms0RhGgai8=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Ab3MTRV6U_ep; Wed, 20 Oct 2021 21:43:33 +0300 (MSK)
+Received: from T-EXCH-04.corp.yadro.com (t-exch-04.corp.yadro.com [172.17.100.104])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mta-01.yadro.com (Postfix) with ESMTPS id 8C84F4278C;
+        Wed, 20 Oct 2021 21:43:33 +0300 (MSK)
+Received: from yadro.com (10.199.9.171) by T-EXCH-04.corp.yadro.com
+ (172.17.100.104) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Wed, 20
+ Oct 2021 21:43:32 +0300
+From:   Konstantin Shelekhin <k.shelekhin@yadro.com>
+To:     Martin Petersen <martin.petersen@oracle.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        <target-devel@vger.kernel.org>
+CC:     <linux-scsi@vger.kernel.org>, <linux@yadro.com>,
+        Konstantin Shelekhin <k.shelekhin@yadro.com>
+Subject: [PATCH 0/2] scsi: target: iblock: Report space allocation errors
+Date:   Wed, 20 Oct 2021 21:43:17 +0300
+Message-ID: <20211020184319.588002-1-k.shelekhin@yadro.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-In-Reply-To: <20211020053341.GA25529@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.199.9.171]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-04.corp.yadro.com (172.17.100.104)
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 10/19/21 11:33 PM, Christoph Hellwig wrote:
-> On Wed, Oct 20, 2021 at 12:05:24AM -0400, Martin K. Petersen wrote:
->>
->> Christoph,
->>
->>> The changes to support pktcdvd are a bit ugly, but I can't think of
->>> anything better (except for removing the driver entirely).  If we'd
->>> want to support packet writing today it would probably live entirely
->>> inside the sr driver.
->>
->> Yeah, I agree.
->>
->> Anyway. No major objections from me. Not sure whether it makes most
->> sense for this to go through block or scsi?
-> 
-> I'm not sure either, but either tree is fine with me.
+Currently iblock terminates failed requests with TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE
+regardless of the reason. It makes it impossible to distinguish the lack of
+free LBA from a hardware failure on thin provisioned devices without analyzing
+target logs. This series teaches iblock to report the appropriate sense reason
+according to the failed bio's status.
 
-Looks fine to me, outside of the spelling error in patch 1. I can set
-up a topic branch for this one.
+Konstantin Shelekhin (2):
+  scsi: target: core: Add sense reason for space allocation errors
+  scsi: target: iblock: Report space allocation errors
 
-Christoph, can you do a resend with the enum naming fixed?
+ drivers/target/target_core_iblock.c    | 24 ++++++++++++++++++++----
+ drivers/target/target_core_iblock.h    |  2 +-
+ drivers/target/target_core_transport.c |  6 ++++++
+ include/target/target_core_base.h      |  1 +
+ 4 files changed, 28 insertions(+), 5 deletions(-)
 
 -- 
-Jens Axboe
+2.33.0
 
