@@ -2,75 +2,89 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8203C435913
-	for <lists+target-devel@lfdr.de>; Thu, 21 Oct 2021 05:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3654435A97
+	for <lists+target-devel@lfdr.de>; Thu, 21 Oct 2021 08:06:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231397AbhJUDpn (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 20 Oct 2021 23:45:43 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32]:61224 "EHLO
-        mx0a-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231166AbhJUDpd (ORCPT
+        id S230441AbhJUGId (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 21 Oct 2021 02:08:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36216 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229499AbhJUGIc (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 20 Oct 2021 23:45:33 -0400
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19L2ffsn029728;
-        Thu, 21 Oct 2021 03:43:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2021-07-09;
- bh=TcRDwcZ5d4Py+nVR60KxR+lI6/3WT6kO6W2Siq2Lwis=;
- b=MtEhZ9f3rekh2NfMlnNIpEdQ6lV54gPC0BxvwjkKKzFQ71FjwNeSVfVEED4ir0QC1E5b
- LdxTjFj86O1EHD84PiHGUQvDU0LekIcpoCCwQPV+OT7OhnmvKU5ZmnDBhqfxzgevkjgZ
- P0RxeJ7U9F8GuWbxvObs+TxAurZ2JexA9E4/v1HrDMQqj0py8y2x0b2C7moldj1FMhFv
- YWK7CiQYSORCRSLDZyb36veyJ2H6oMqLUTjlBBjfyhsARvHSScP1bV39jC5W3Up9kOu9
- TBF3s1xnjzVVDyzuk1cz052xQUTo6wuv9INvlcikiDROKyMN1PhIwOQH1l40UYbq+1Du Ew== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by mx0b-00069f02.pphosted.com with ESMTP id 3btkwj3ww9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 21 Oct 2021 03:43:17 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 19L3esKG078043;
-        Thu, 21 Oct 2021 03:43:16 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by aserp3030.oracle.com with ESMTP id 3bqmshembg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 21 Oct 2021 03:43:16 +0000
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 19L3gu8S082116;
-        Thu, 21 Oct 2021 03:43:15 GMT
-Received: from ca-mkp.mkp.ca.oracle.com (ca-mkp.ca.oracle.com [10.156.108.201])
-        by aserp3030.oracle.com with ESMTP id 3bqmshekyd-22;
-        Thu, 21 Oct 2021 03:43:15 +0000
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     Varun Prakash <varun@chelsio.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        target-devel@vger.kernel.org, linux-scsi@vger.kernel.org
-Subject: Re: [PATCH] scsi: target: cxgbit: increase max DataSegmentLength
-Date:   Wed, 20 Oct 2021 23:42:53 -0400
-Message-Id: <163478764104.7011.956624840587774167.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <1634135087-4996-1-git-send-email-varun@chelsio.com>
-References: <1634135087-4996-1-git-send-email-varun@chelsio.com>
+        Thu, 21 Oct 2021 02:08:32 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72883C06161C;
+        Wed, 20 Oct 2021 23:06:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=mwm/ZOmtYGRRyWr/2SOza/GvMW5RB48APrJrzM9W7CI=; b=OWyYVxMNFVphebNZQcMAwa3hX+
+        bwdjFj/SQ/c5MwarxVDeENQfnD6RsUhnAK69XEynDW8iJKXGwww5NVTOGQiKLBRxjvtZhEMjg6oyW
+        M5xPmsVrVFz0ij+NpGKzaJFso9ZOcNGKLnK3mJ6mf2cLuRPRiWQFNnz2U2E3d+K88a1mB6/a3Anga
+        dEuxOlEoJ7BWJM1ak8yPFrvXUKxmOPDXW4Hw7i983+pZwUl+XFv9MBX3fADLOH0COFaURz0fofOOn
+        oso0CKmGo5VPHRzWUjVwA23fyZb1mH05hWPwWWe8/BlgGMORVEcKt29ofcJAsZG7kWxR5tks5e27Z
+        w/5pZ97Q==;
+Received: from [2001:4bb8:180:8777:7df0:a8d8:40cc:3310] (helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mdRDO-006U4C-OJ; Thu, 21 Oct 2021 06:06:11 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Jens Axboe <axboe@kernel.dk>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc:     "J. Bruce Fields" <bfields@fieldses.org>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        linux-block@vger.kernel.org, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-nfs@vger.kernel.org
+Subject: remove QUEUE_FLAG_SCSI_PASSTHROUGH v3
+Date:   Thu, 21 Oct 2021 08:06:00 +0200
+Message-Id: <20211021060607.264371-1-hch@lst.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: cNgI6W6uJpT5v8NMgip5gx7Ov4Xz4l7-
-X-Proofpoint-GUID: cNgI6W6uJpT5v8NMgip5gx7Ov4Xz4l7-
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Wed, 13 Oct 2021 19:54:47 +0530, Varun Prakash wrote:
+Hi all,
 
-> Current value of max DataSegmentLength is 8K, T5/T6 adapters supports
-> max DataSegmentLength upto 16K, so increase max DataSegmentLength.
-> 
-> 
+this series removes the QUEUE_FLAG_SCSI_PASSTHROUGH and thus the last
+remaining SCSI passthrough concept from the block layer.
 
-Applied to 5.16/scsi-queue, thanks!
+The changes to support pktcdvd are a bit ugly, but I can't think of
+anything better (except for removing the driver entirely).
+If we'd want to support packet writing today it would probably live
+entirely inside the sr driver.
 
-[1/1] scsi: target: cxgbit: increase max DataSegmentLength
-      https://git.kernel.org/mkp/scsi/c/7f96c7a67e40
+Changes since v2:
+ - s/blk_uniqueue_id/blk_unique_id/g
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Changes since v1:
+ - use an extra local variable in sd_get_unique_id to make sure we
+   always return the right length
+ - add an enum and a comment to better document ->get_unique_id
+ - spelling fixes
+
+Diffstat:
+ block/blk-core.c                   |    9 --
+ block/blk-mq-debugfs.c             |    1 
+ block/bsg-lib.c                    |   32 +++----
+ drivers/block/Kconfig              |    2 
+ drivers/block/pktcdvd.c            |    7 +
+ drivers/scsi/scsi_bsg.c            |    4 
+ drivers/scsi/scsi_error.c          |    2 
+ drivers/scsi/scsi_ioctl.c          |    4 
+ drivers/scsi/scsi_lib.c            |   27 ++++--
+ drivers/scsi/scsi_scan.c           |    1 
+ drivers/scsi/sd.c                  |   39 +++++++++
+ drivers/scsi/sg.c                  |    4 
+ drivers/scsi/sr.c                  |    2 
+ drivers/scsi/st.c                  |    2 
+ drivers/target/target_core_pscsi.c |    3 
+ fs/nfsd/Kconfig                    |    1 
+ fs/nfsd/blocklayout.c              |  158 +++++++++----------------------------
+ fs/nfsd/nfs4layouts.c              |    5 -
+ include/linux/blk-mq.h             |    5 -
+ include/linux/blkdev.h             |   14 ++-
+ include/scsi/scsi_cmnd.h           |    3 
+ 21 files changed, 148 insertions(+), 177 deletions(-)
