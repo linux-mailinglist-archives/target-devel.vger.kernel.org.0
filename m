@@ -2,83 +2,91 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2A8C435910
-	for <lists+target-devel@lfdr.de>; Thu, 21 Oct 2021 05:43:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11773435917
+	for <lists+target-devel@lfdr.de>; Thu, 21 Oct 2021 05:43:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231199AbhJUDpW (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 20 Oct 2021 23:45:22 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32]:43870 "EHLO
+        id S231388AbhJUDpo (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 20 Oct 2021 23:45:44 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32]:53900 "EHLO
         mx0a-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230103AbhJUDpP (ORCPT
+        by vger.kernel.org with ESMTP id S231264AbhJUDp3 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 20 Oct 2021 23:45:15 -0400
+        Wed, 20 Oct 2021 23:45:29 -0400
 Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19L2C5nv019145;
-        Thu, 21 Oct 2021 03:42:58 GMT
+        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19L23hqG019155;
+        Thu, 21 Oct 2021 03:43:09 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-type : content-transfer-encoding; s=corp-2021-07-09;
- bh=/8YsToP6j1aQC1eqi7PX08taVbr2nxYHJARNqDEe5PQ=;
- b=P2lK6VXXcpxe8J6TH6EfF1XEQ1675ZE4z2Zg5ZxqkhTBPcwcFOl+RzYZfSd5fRDQZImN
- yLqCJ5uI9p+nbwIAwLM8KmxB4AxzEN7a0553B5kJA1ObGBrh1O9KcKhiML4IEUJdk/tM
- b9xxt6HZII07H7Jt4MBg0kOurPeQPqgS++p4V3rpiyiMZ4LACYKtcf/wJPhHeHNKXWKK
- 6PAJjJ77IMlnUIMIxa/5En1TpRNTYibwaj/CyX6bJeaQJTHO34R8KTp6+w4n29x///d3
- oJ/lUJy4++2OHetgLSpISe19ycgEYH7xUb1+LAigzaasda74jGMb3DhWjYqsBT5LMhdX Yw== 
+ bh=SfIAroasqOKG7ABdu84goldKo7kiEdrIQonwbcPMIAM=;
+ b=ln218AhYyBLuLuc5PYDsszGGIa6CXk6BZgS6h7zCAROQGlpvaBE3QyOJRDEJcPHuyzYU
+ aNwjJEzdBCKerydpXbhVAweXaAp3R9HOEegf5gJ2d2qKFqkuUEk16uaOsI0ATQyIw9hT
+ M/CMK7HFp9iX7VzwdBreOA2iIC0kbJYxLtBn2cLoGebrAd7pDGQYAKNTTpM29salkOAd
+ eemdvM8lUk3aEu5bxg1Q1veXwXmfXklnOkRNmNQgA+6+oggEHKivN3jxz86HNEqA3Yei
+ KdfIEqCz1m24SZ+5itNOH/LA4dT6sXTi2gFemfUtNlBmy9v1tplApJBSv0yk3rMWq+EG Ig== 
 Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by mx0b-00069f02.pphosted.com with ESMTP id 3btqypjhtg-1
+        by mx0b-00069f02.pphosted.com with ESMTP id 3btqypjhud-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 21 Oct 2021 03:42:58 +0000
+        Thu, 21 Oct 2021 03:43:09 +0000
 Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 19L3esix078017;
-        Thu, 21 Oct 2021 03:42:57 GMT
+        by aserp3030.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 19L3eshO078026;
+        Thu, 21 Oct 2021 03:43:08 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-        by aserp3030.oracle.com with ESMTP id 3bqmshem0p-1
+        by aserp3030.oracle.com with ESMTP id 3bqmshem76-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 21 Oct 2021 03:42:57 +0000
+        Thu, 21 Oct 2021 03:43:08 +0000
 Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 19L3gu7m082116;
-        Thu, 21 Oct 2021 03:42:56 GMT
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 19L3gu8B082116;
+        Thu, 21 Oct 2021 03:43:08 GMT
 Received: from ca-mkp.mkp.ca.oracle.com (ca-mkp.ca.oracle.com [10.156.108.201])
-        by aserp3030.oracle.com with ESMTP id 3bqmshekyd-2;
-        Thu, 21 Oct 2021 03:42:56 +0000
+        by aserp3030.oracle.com with ESMTP id 3bqmshekyd-14;
+        Thu, 21 Oct 2021 03:43:07 +0000
 From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     Bodo Stroesser <bostroesser@gmail.com>,
-        Mike Christie <michael.christie@oracle.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+To:     Mike Christie <michael.christie@oracle.com>,
+        james.bottomley@hansenpartnership.com,
         target-devel@vger.kernel.org, linux-scsi@vger.kernel.org
-Subject: Re: [PATCH] scsi: target: tcmu: allocate zeroed pages for data area
-Date:   Wed, 20 Oct 2021 23:42:33 -0400
-Message-Id: <163478764104.7011.12641078538939220636.b4-ty@oracle.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>
+Subject: Re: [PATCH 0/5] target: fixes and perf improvements
+Date:   Wed, 20 Oct 2021 23:42:45 -0400
+Message-Id: <163478764104.7011.4720961002832674677.b4-ty@oracle.com>
 X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20211013171606.25197-1-bostroesser@gmail.com>
-References: <20211013171606.25197-1-bostroesser@gmail.com>
+In-Reply-To: <20210930020422.92578-1-michael.christie@oracle.com>
+References: <20210930020422.92578-1-michael.christie@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: Dp7yJoexljGRXYB6WNeXPSnlc61GxdtD
-X-Proofpoint-GUID: Dp7yJoexljGRXYB6WNeXPSnlc61GxdtD
+X-Proofpoint-ORIG-GUID: W7RTagJkmwCPh6SLope9oF63ZI_6SelH
+X-Proofpoint-GUID: W7RTagJkmwCPh6SLope9oF63ZI_6SelH
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Wed, 13 Oct 2021 19:16:06 +0200, Bodo Stroesser wrote:
+On Wed, 29 Sep 2021 21:04:17 -0500, Mike Christie wrote:
 
-> Tcmu populates the data area (used for communication with
-> userspace) with pages that are allocated by calling
-> alloc_page(GFP_NOIO).
-> Therefore previous content of the allocated pages is exposed
-> to user space. Avoid this by adding __GFP_ZERO flag.
+> The following patches apply to Martin's staging tree or Linus's tree.
+> The patches main goal is to take the locks out of the main IO path but
+> for the case of ordered cmds they also fix a handfull of bugs.
 > 
-> Zeroing the pages does (nearly) not affect tcmu throughput,
-> because allocated pages are re-used for the data transfers of
-> later SCSI cmds.
+> For the locks we currently have:
+> 
+> 1. lun_tg_pt_gp_lock
+> 2. delayed_cmd_lock
+> 3. dev_reservation_lock
 > 
 > [...]
 
 Applied to 5.16/scsi-queue, thanks!
 
-[1/1] scsi: target: tcmu: allocate zeroed pages for data area
-      https://git.kernel.org/mkp/scsi/c/1d2ac7b69d6a
+[1/5] target: fix ordered CMD_T_SENT handling
+      https://git.kernel.org/mkp/scsi/c/945a160794a9
+[2/5] target: fix ordered tag handling
+      https://git.kernel.org/mkp/scsi/c/ed1227e08099
+[3/5] target: fix alua_tg_pt_gps_count tracking
+      https://git.kernel.org/mkp/scsi/c/1283c0d1a32b
+[4/5] target: replace lun_tg_pt_gp_lock with rcu in IO path
+      https://git.kernel.org/mkp/scsi/c/7324f47d4293
+[5/5] target: perform alua group changes in one step
+      https://git.kernel.org/mkp/scsi/c/f9793d649c29
 
 -- 
 Martin K. Petersen	Oracle Linux Engineering
