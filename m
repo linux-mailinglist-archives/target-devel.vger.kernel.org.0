@@ -2,40 +2,93 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 480F2438962
-	for <lists+target-devel@lfdr.de>; Sun, 24 Oct 2021 15:56:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67CE9438BAE
+	for <lists+target-devel@lfdr.de>; Sun, 24 Oct 2021 21:48:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231293AbhJXN6t convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+target-devel@lfdr.de>); Sun, 24 Oct 2021 09:58:49 -0400
-Received: from bizcloud-marathonoil.com ([128.199.179.130]:50788 "EHLO
-        bizcloud-marathonoil.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S231744AbhJXN6t (ORCPT
+        id S232084AbhJXTuf (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 24 Oct 2021 15:50:35 -0400
+Received: from smtp01.smtpout.orange.fr ([80.12.242.123]:52764 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231992AbhJXTuf (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sun, 24 Oct 2021 09:58:49 -0400
-X-Greylist: delayed 1867 seconds by postgrey-1.27 at vger.kernel.org; Sun, 24 Oct 2021 09:58:48 EDT
-Received: from [5.135.230.141] (bizcloud-marathonoil.com [IPv6:::1])
-        by bizcloud-marathonoil.com (Postfix) with ESMTP id E56281C66D3
-        for <target-devel@vger.kernel.org>; Sun, 24 Oct 2021 13:09:43 +0000 (UTC)
-Reply-To: luisfernandezconsultant@gmail.com
-From:   Luis Fernandez <luisfernandezfirm@consultant.com>
-To:     target-devel@vger.kernel.org
-Subject: Re:Urgent Response
-Date:   24 Oct 2021 06:09:42 -0700
-Message-ID: <20211024060942.4E66CC6A18E433F4@consultant.com>
+        Sun, 24 Oct 2021 15:50:35 -0400
+Received: from pop-os.home ([92.140.161.106])
+        by smtp.orange.fr with ESMTPA
+        id ejTWmbi84dmYbejTWmLmaJ; Sun, 24 Oct 2021 21:48:12 +0200
+X-ME-Helo: pop-os.home
+X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
+X-ME-Date: Sun, 24 Oct 2021 21:48:12 +0200
+X-ME-IP: 92.140.161.106
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     james.smart@broadcom.com, ram.vegesna@broadcom.com,
+        jejb@linux.ibm.com, martin.petersen@oracle.com, dwagner@suse.de,
+        hare@suse.de
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] scsi: elx: libefc_sli: Use 'bitmap_zalloc()' when applicable
+Date:   Sun, 24 Oct 2021 21:48:09 +0200
+Message-Id: <2a0a83949fb896a0a236dcca94dfdc8486d489f5.1635104793.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Good day,
+'sli4->ext[i].use_map' is a bitmap. Use 'bitmap_zalloc()' to simplify code,
+improve the semantic and avoid some open-coded arithmetic in allocator
+arguments.
 
-I have an investment proposal that I would like to discuss with 
-you. I await your urgent response so that I will explain more 
-regarding this awesome Investment Opportunity.
+Also change the corresponding 'kfree()' into 'bitmap_free()' to keep
+consistency.
 
-Regards,
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/scsi/elx/libefc_sli/sli4.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-Luis Fernandez
+diff --git a/drivers/scsi/elx/libefc_sli/sli4.c b/drivers/scsi/elx/libefc_sli/sli4.c
+index 6c6c04e1b74d..907d67aeac23 100644
+--- a/drivers/scsi/elx/libefc_sli/sli4.c
++++ b/drivers/scsi/elx/libefc_sli/sli4.c
+@@ -4145,7 +4145,7 @@ static int
+ sli_get_read_config(struct sli4 *sli4)
+ {
+ 	struct sli4_rsp_read_config *conf = sli4->bmbx.virt;
+-	u32 i, total, total_size;
++	u32 i, total;
+ 	u32 *base;
+ 
+ 	if (sli_cmd_read_config(sli4, sli4->bmbx.virt)) {
+@@ -4203,8 +4203,7 @@ sli_get_read_config(struct sli4 *sli4)
+ 
+ 	for (i = 0; i < SLI4_RSRC_MAX; i++) {
+ 		total = sli4->ext[i].number * sli4->ext[i].size;
+-		total_size = BITS_TO_LONGS(total) * sizeof(long);
+-		sli4->ext[i].use_map = kzalloc(total_size, GFP_KERNEL);
++		sli4->ext[i].use_map = bitmap_zalloc(total, GFP_KERNEL);
+ 		if (!sli4->ext[i].use_map) {
+ 			efc_log_err(sli4, "bitmap memory allocation failed %d\n",
+ 				    i);
+@@ -4743,7 +4742,7 @@ sli_reset(struct sli4 *sli4)
+ 	sli4->ext[0].base = NULL;
+ 
+ 	for (i = 0; i < SLI4_RSRC_MAX; i++) {
+-		kfree(sli4->ext[i].use_map);
++		bitmap_free(sli4->ext[i].use_map);
+ 		sli4->ext[i].use_map = NULL;
+ 		sli4->ext[i].base = NULL;
+ 	}
+@@ -4784,7 +4783,7 @@ sli_teardown(struct sli4 *sli4)
+ 	for (i = 0; i < SLI4_RSRC_MAX; i++) {
+ 		sli4->ext[i].base = NULL;
+ 
+-		kfree(sli4->ext[i].use_map);
++		bitmap_free(sli4->ext[i].use_map);
+ 		sli4->ext[i].use_map = NULL;
+ 	}
+ 
+-- 
+2.30.2
+
