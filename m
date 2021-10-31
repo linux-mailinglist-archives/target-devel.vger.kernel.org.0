@@ -2,43 +2,58 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4364244085E
-	for <lists+target-devel@lfdr.de>; Sat, 30 Oct 2021 12:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D12D84410BE
+	for <lists+target-devel@lfdr.de>; Sun, 31 Oct 2021 21:09:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231764AbhJ3KZN convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+target-devel@lfdr.de>); Sat, 30 Oct 2021 06:25:13 -0400
-Received: from 219-87-183-172.static.tfn.net.tw ([219.87.183.172]:34849 "EHLO
-        ms4.kntech.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231685AbhJ3KZN (ORCPT
+        id S230131AbhJaUME (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 31 Oct 2021 16:12:04 -0400
+Received: from mailgate.kemenperin.go.id ([202.47.80.142]:58854 "EHLO
+        mailgate.kemenperin.go.id" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229939AbhJaUMC (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sat, 30 Oct 2021 06:25:13 -0400
-Received: from [103.27.239.15] ([103.27.239.15])
-        (authenticated bits=0)
-        by ms4.kntech.com.tw (8.13.8/8.13.8) with ESMTP id 19RF7h8i025575
-        for <target-devel@vger.kernel.org>; Wed, 27 Oct 2021 23:07:49 +0800
-Message-Id: <202110271507.19RF7h8i025575@ms4.kntech.com.tw>
-Content-Type: text/plain; charset="iso-8859-1"
+        Sun, 31 Oct 2021 16:12:02 -0400
+X-Greylist: delayed 5193 seconds by postgrey-1.27 at vger.kernel.org; Sun, 31 Oct 2021 16:11:58 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by mailgate.kemenperin.go.id (Postfix) with ESMTP id 2A4A7828F1E;
+        Mon,  1 Nov 2021 01:00:16 +0700 (WIB)
+Received: from mailgate.kemenperin.go.id ([127.0.0.1])
+        by localhost (mailgate.kemenperin.go.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id aSDB9UjKRu4l; Mon,  1 Nov 2021 01:00:13 +0700 (WIB)
+Received: from localhost (localhost [127.0.0.1])
+        by mailgate.kemenperin.go.id (Postfix) with ESMTP id DDB2F828CE9;
+        Mon,  1 Nov 2021 00:56:54 +0700 (WIB)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mailgate.kemenperin.go.id DDB2F828CE9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kemenperin.go.id;
+        s=3298A942-BBC6-11E3-B333-483736368EC2; t=1635703015;
+        bh=+tje3x5yIAM91gcZZJ8xoRjx6IuR+B3ePoXPCKu2mgI=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=KATUX992ge7D0qn9bU4D7zaeizgarlAYHOvy9yELrWAITGQnfQ7PTBkI/H7sn7ojK
+         6pYXvXirX8AfGfpGsZJ7vxq+ahjwtWBHvtg0siRTUmL0krLt/o2v2EbA8Sx2Bxubbh
+         OIJ8zNHAsG4Q9ZMaXzGon9a6CFzAJeqzE8v3/xHo=
+X-Virus-Scanned: amavisd-new at kemenperin.go.id
+Received: from mailgate.kemenperin.go.id ([127.0.0.1])
+        by localhost (mailgate.kemenperin.go.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 3ZjV-aWozXQn; Mon,  1 Nov 2021 00:56:54 +0700 (WIB)
+Received: from mailgate.kemenperin.go.id (mailgate.kemenperin.go.id [10.1.0.89])
+        by mailgate.kemenperin.go.id (Postfix) with ESMTP id F1386828B2F;
+        Mon,  1 Nov 2021 00:55:03 +0700 (WIB)
+Date:   Mon, 1 Nov 2021 00:55:03 +0700 (WIB)
+From:   Manuel Franco <silitonga@kemenperin.go.id>
+Reply-To: Manuel Franco <manuelfrancospende1@gmail.com>
+Message-ID: <316885095.327001.1635702903906.JavaMail.zimbra@kemenperin.go.id>
+Subject: 2,000,000.00 Euro
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Dear Friend,
-To:     target-devel@vger.kernel.org
-From:   "Wahid Majrooh" <wnf@sendayan.com.my>
-Date:   Wed, 27 Oct 2021 22:08:07 +0700
-Reply-To: wfnngaf@gmail.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.1.0.89]
+Thread-Index: cYoBZ9/HjDprLbzYDgjeQYDGCx21TQ==
+Thread-Topic: 2,000,000.00 Euro
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Dear Friend,
-
-I am writing to you to make a proposal regarding Investing in your
-country. I am proposing to you a business development Investment in
-housing and health sector or any other sector you can recommend. My name
-is Wahid Majrooh. Former  acting Minister of Public Health of
-Afghanistan.
 
 
-Sincerely
-
-Wahid
+-- 
+You have a donation of 2,000,000.00 Euro.Get back to me now so we can proceed.
