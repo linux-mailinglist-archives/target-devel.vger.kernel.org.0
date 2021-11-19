@@ -2,69 +2,59 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F5DD457E10
-	for <lists+target-devel@lfdr.de>; Sat, 20 Nov 2021 13:34:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B609145A365
+	for <lists+target-devel@lfdr.de>; Tue, 23 Nov 2021 14:01:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237552AbhKTMhG (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 20 Nov 2021 07:37:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42546 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237557AbhKTMhE (ORCPT
+        id S235080AbhKWNE3 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 23 Nov 2021 08:04:29 -0500
+Received: from mx07-00227901.pphosted.com ([185.132.182.185]:53866 "EHLO
+        mx08-00227901.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S232746AbhKWNE3 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sat, 20 Nov 2021 07:37:04 -0500
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25702C061763
-        for <target-devel@vger.kernel.org>; Sat, 20 Nov 2021 04:34:01 -0800 (PST)
-Received: by mail-wr1-x431.google.com with SMTP id b12so23077283wrh.4
-        for <target-devel@vger.kernel.org>; Sat, 20 Nov 2021 04:34:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=w2dLnl5hsLVKZTBAdcVFnDnMtM7+guW1LU+8LG4nir0=;
-        b=SfgrxszVAhIUhPhcltLFYjTgn8qP3dMZiJeatgbs4CMgmp9wHWdKySGpbmjZiqoH7W
-         QqnrA/Luw9RwpQ1sEm3NtAfjUcqrGetfb8MfoniTr/cGOaiUwRnkidKPhG9sJ7Q/ylYg
-         QnhEodclXSg4eKTsXOltnuxbA/MwWdnZgkftZR1xKb9zIdKYIc0J42PA8vFSkmI+Pio1
-         q3vjTpDwjEWKfMMN8Sbyp7O03J26GokdX3bZLF48yRrnVNwstZt61tqobKO1Fh8ulFWA
-         aNFykCu5v2789Xcka6PIGqzYhBcz0Z+Q6K1o0AmOGgc73aPZfDHtbPxq7hOoUe19n+wo
-         avYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=w2dLnl5hsLVKZTBAdcVFnDnMtM7+guW1LU+8LG4nir0=;
-        b=rQd1Idvdd2pF6UHoByFCPYCvI3T837u78k8bFHOr2S5RpLN75ONDywlInA+ILtvyl+
-         lsvrINtuZbWSke34o7Y/Hh0LurUFnGFhoOB3685lf7DkIYtnzt713Ka3v0yNFYbQBibT
-         ChLi7dZUYfl26YWAG6Xez1k/pCg6546vYqIuQfAlFRKLXwvfLlQLVNYlv0WXVwHq6joA
-         +XaYj8M7ZB5Ak8mM4RfvLL16KQ/xiSNpsMaurBQDpyEymveHn5YZaiEq/wzUAUTZVLa7
-         GWrGgLJmFEi/XLW3+HGJl5fkSU9+hDoROdi0x1cFgLnOtKLjWM9Glah2/+e/x07NWcLa
-         FKLw==
-X-Gm-Message-State: AOAM531s/RJaBmKhyomi2Rjyx7LndKzIdKcJIx3SUoUDoObmHRW9jjcM
-        A0PJxBw9QgWgHIpcvGGoiFJdeI6io/aNiE+XgRE=
-X-Google-Smtp-Source: ABdhPJwNeYCRmVDovPQVSwxxibNU3kfyr0SfgKTRhpGgm92tt3xvJBu3f86ir8VvjZwVO3Ztzl/nnM56CXXB2xWuEHE=
-X-Received: by 2002:a05:6000:18ad:: with SMTP id b13mr17285116wri.195.1637411639427;
- Sat, 20 Nov 2021 04:33:59 -0800 (PST)
+        Tue, 23 Nov 2021 08:04:29 -0500
+Received: from pps.filterd (m0097675.ppops.net [127.0.0.1])
+        by mx07-.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1AJAWTfE004792;
+        Fri, 19 Nov 2021 12:10:26 +0100
+Received: from zbw2k16ex01.bardusch.net ([185.80.186.174])
+        by mx07-.pphosted.com (PPS) with ESMTPS id 3cdjtyh9sp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Fri, 19 Nov 2021 12:10:26 +0100
+Received: from ZBW2K16EX01.bardusch.net (172.25.1.1) by
+ ZBW2K16EX01.bardusch.net (172.25.1.1) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA) id 15.1.2308.20;
+ Fri, 19 Nov 2021 12:10:25 +0100
+Received: from User (172.25.1.131) by ZBW2K16EX01.bardusch.net (172.25.1.1)
+ with Microsoft SMTP Server id 15.1.2308.20 via Frontend Transport; Fri, 19
+ Nov 2021 12:10:15 +0100
+Reply-To: <josechoondak@gmail.com>
+From:   Joseph Choondak <info@ndd.co.mz>
+Subject: I hope this email finds you well.
+Date:   Fri, 19 Nov 2021 03:10:29 -0800
 MIME-Version: 1.0
-Received: by 2002:adf:f989:0:0:0:0:0 with HTTP; Sat, 20 Nov 2021 04:33:58
- -0800 (PST)
-Reply-To: mitchellvivian01@gamil.com
-From:   Mitchell Vivian <duplanmartine36@gmail.com>
-Date:   Sat, 20 Nov 2021 12:33:58 +0000
-Message-ID: <CAO-XXH5uGE2Yd4cjnLYeWr_OADiBftpJAikaRx5eamVu8xQgPw@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <dc91b913-e8fc-41f7-bb34-5ebb4a01aaa7@ZBW2K16EX01.bardusch.net>
+To:     Undisclosed recipients:;
+X-Proofpoint-ORIG-GUID: OSryvInf1C1DvziVrJH9IYk0-ZnsY-OV
+X-Proofpoint-GUID: OSryvInf1C1DvziVrJH9IYk0-ZnsY-OV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-19_09,2021-11-17_01,2020-04-07_01
+X-Proofpoint-Spam-Reason: orgsafe
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hello
+May I please ask with considerable urgency for your kind assistance with the following matter.
+I'm a financial person, I think  I have something huge you might be interested in.
 
-My name is Miss Vivian Mitchell. I want to donate my fund $ 4.5
-million USD to you on a charity name to help the poor People.
+Looking forward to hearing from you.
 
-As soon as I read from you I will give you more details on how to
-achieve this goal and get this fund transferred into your bank
-account.
 
-Thanks have a nice day,
-Miss.vivian
+Respectfully!!
+Joseph Choondak
+Account Executive.
