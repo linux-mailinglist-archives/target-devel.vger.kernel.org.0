@@ -2,56 +2,69 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABF9B456BEB
-	for <lists+target-devel@lfdr.de>; Fri, 19 Nov 2021 09:55:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F5DD457E10
+	for <lists+target-devel@lfdr.de>; Sat, 20 Nov 2021 13:34:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233731AbhKSI5y (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 19 Nov 2021 03:57:54 -0500
-Received: from mail.restquality.pl ([51.38.125.186]:55632 "EHLO
-        mail.restquality.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230027AbhKSI5y (ORCPT
+        id S237552AbhKTMhG (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 20 Nov 2021 07:37:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42546 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237557AbhKTMhE (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 19 Nov 2021 03:57:54 -0500
-X-Greylist: delayed 558 seconds by postgrey-1.27 at vger.kernel.org; Fri, 19 Nov 2021 03:57:54 EST
-Received: by mail.restquality.pl (Postfix, from userid 1002)
-        id F324CA1CCA; Fri, 19 Nov 2021 08:45:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=restquality.pl;
-        s=mail; t=1637311533;
-        bh=lyluOlr6vHldnlvY3mLBE7NjhO1ThsEPzvo0ZPQcPec=;
-        h=Date:From:To:Subject:From;
-        b=IBXkKZE94oSB0m00Hw0F7V9MvmTt+hP6vnx79wBhNyB4BbrJrKk3i6hFq33nvfdSc
-         bgwm6HbJl4sA1PTP8r3k91jOjxSUVyBfc1PmvMmKIQQ6uveGhbqIeP6gHXY0nw648n
-         1a5Jq08c2HmhrhYXJc82b8rhfMqeNs6TQg4utvB/jTJd3uc3tCJXsXdNslvIP8Qbsf
-         WOa9DNfvkmfwewDYSGKl+eJTNA6w4Pef1eKi4aAdVi65slrdTxNej1UtaZcnrQ4Fvr
-         VgyV1bHppesdYOBCs5roTzsxWO341L51vfigkFr+ZNEqWDJ+kZNOkhqWjX1jVhyX8E
-         SwaLM1eB/+/NQ==
-Received: by mail.restquality.pl for <target-devel@vger.kernel.org>; Fri, 19 Nov 2021 08:45:21 GMT
-Message-ID: <20211119074500-0.1.7.85y.0.8aw347dv64@restquality.pl>
-Date:   Fri, 19 Nov 2021 08:45:21 GMT
-From:   "Dorian Kwiatkowski" <dorian.kwiatkowski@restquality.pl>
-To:     <target-devel@vger.kernel.org>
-Subject: Fotowoltaika dla firm
-X-Mailer: mail.restquality.pl
+        Sat, 20 Nov 2021 07:37:04 -0500
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25702C061763
+        for <target-devel@vger.kernel.org>; Sat, 20 Nov 2021 04:34:01 -0800 (PST)
+Received: by mail-wr1-x431.google.com with SMTP id b12so23077283wrh.4
+        for <target-devel@vger.kernel.org>; Sat, 20 Nov 2021 04:34:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=w2dLnl5hsLVKZTBAdcVFnDnMtM7+guW1LU+8LG4nir0=;
+        b=SfgrxszVAhIUhPhcltLFYjTgn8qP3dMZiJeatgbs4CMgmp9wHWdKySGpbmjZiqoH7W
+         QqnrA/Luw9RwpQ1sEm3NtAfjUcqrGetfb8MfoniTr/cGOaiUwRnkidKPhG9sJ7Q/ylYg
+         QnhEodclXSg4eKTsXOltnuxbA/MwWdnZgkftZR1xKb9zIdKYIc0J42PA8vFSkmI+Pio1
+         q3vjTpDwjEWKfMMN8Sbyp7O03J26GokdX3bZLF48yRrnVNwstZt61tqobKO1Fh8ulFWA
+         aNFykCu5v2789Xcka6PIGqzYhBcz0Z+Q6K1o0AmOGgc73aPZfDHtbPxq7hOoUe19n+wo
+         avYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=w2dLnl5hsLVKZTBAdcVFnDnMtM7+guW1LU+8LG4nir0=;
+        b=rQd1Idvdd2pF6UHoByFCPYCvI3T837u78k8bFHOr2S5RpLN75ONDywlInA+ILtvyl+
+         lsvrINtuZbWSke34o7Y/Hh0LurUFnGFhoOB3685lf7DkIYtnzt713Ka3v0yNFYbQBibT
+         ChLi7dZUYfl26YWAG6Xez1k/pCg6546vYqIuQfAlFRKLXwvfLlQLVNYlv0WXVwHq6joA
+         +XaYj8M7ZB5Ak8mM4RfvLL16KQ/xiSNpsMaurBQDpyEymveHn5YZaiEq/wzUAUTZVLa7
+         GWrGgLJmFEi/XLW3+HGJl5fkSU9+hDoROdi0x1cFgLnOtKLjWM9Glah2/+e/x07NWcLa
+         FKLw==
+X-Gm-Message-State: AOAM531s/RJaBmKhyomi2Rjyx7LndKzIdKcJIx3SUoUDoObmHRW9jjcM
+        A0PJxBw9QgWgHIpcvGGoiFJdeI6io/aNiE+XgRE=
+X-Google-Smtp-Source: ABdhPJwNeYCRmVDovPQVSwxxibNU3kfyr0SfgKTRhpGgm92tt3xvJBu3f86ir8VvjZwVO3Ztzl/nnM56CXXB2xWuEHE=
+X-Received: by 2002:a05:6000:18ad:: with SMTP id b13mr17285116wri.195.1637411639427;
+ Sat, 20 Nov 2021 04:33:59 -0800 (PST)
 MIME-Version: 1.0
+Received: by 2002:adf:f989:0:0:0:0:0 with HTTP; Sat, 20 Nov 2021 04:33:58
+ -0800 (PST)
+Reply-To: mitchellvivian01@gamil.com
+From:   Mitchell Vivian <duplanmartine36@gmail.com>
+Date:   Sat, 20 Nov 2021 12:33:58 +0000
+Message-ID: <CAO-XXH5uGE2Yd4cjnLYeWr_OADiBftpJAikaRx5eamVu8xQgPw@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Hello
 
-kontaktuj=C4=99 si=C4=99 z Pa=C5=84stwem, poniewa=C5=BC dostrzegam mo=C5=BC=
-liwo=C5=9B=C4=87 redukcji op=C5=82at za pr=C4=85d.
+My name is Miss Vivian Mitchell. I want to donate my fund $ 4.5
+million USD to you on a charity name to help the poor People.
 
-Odpowiednio dobrana instalacja fotowoltaiczna to rozwi=C4=85zanie, kt=C3=B3=
-re pozwala wygenerowa=C4=87 spore oszcz=C4=99dno=C5=9Bci w skali roku.
+As soon as I read from you I will give you more details on how to
+achieve this goal and get this fund transferred into your bank
+account.
 
-Chcia=C5=82bym porozmawia=C4=87 z Pa=C5=84stwem o tego typu rozwi=C4=85za=
-niu, a tak=C5=BCe przedstawi=C4=87 wst=C4=99pne kalkulacje.
-
-Czy s=C4=85 Pa=C5=84stwo zainteresowani?
-
-
-Pozdrawiam,
-Dorian Kwiatkowski
+Thanks have a nice day,
+Miss.vivian
