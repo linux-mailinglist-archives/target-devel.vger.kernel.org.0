@@ -2,68 +2,79 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90C1E463685
-	for <lists+target-devel@lfdr.de>; Tue, 30 Nov 2021 15:20:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE35A464D22
+	for <lists+target-devel@lfdr.de>; Wed,  1 Dec 2021 12:39:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237099AbhK3OYK (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 30 Nov 2021 09:24:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53418 "EHLO
+        id S238323AbhLALnL (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 1 Dec 2021 06:43:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237420AbhK3OYG (ORCPT
+        with ESMTP id S237407AbhLALnK (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 30 Nov 2021 09:24:06 -0500
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE3B1C061746
-        for <target-devel@vger.kernel.org>; Tue, 30 Nov 2021 06:20:44 -0800 (PST)
-Received: by mail-pl1-x641.google.com with SMTP id y8so15054248plg.1
-        for <target-devel@vger.kernel.org>; Tue, 30 Nov 2021 06:20:44 -0800 (PST)
+        Wed, 1 Dec 2021 06:43:10 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9F2AC061574
+        for <target-devel@vger.kernel.org>; Wed,  1 Dec 2021 03:39:49 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id o20so99760236eds.10
+        for <target-devel@vger.kernel.org>; Wed, 01 Dec 2021 03:39:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=argLEM5PENDrg5kgQHigjDQKj69yQI8BEKRU8DCve18=;
-        b=G+WQpMSjy+bHDR86b9B+hBiX6X+8Qdf9XoqPGUn1xY2h+gvyS0uyGALyhgfRB6Dm1i
-         YUF90wHgPHXtVyABeIgVYcnqDpDz69PN7NoRYiEXNfMNIGIdLLoG7h+m9ku/1pOAAW7B
-         EOs7w59YU/secBgeCtsN70/QO4v4T4xgZ7xldo/CBe4YpCbWUlBjhUXWdLLebzbIDttl
-         tTfDj/+GqPlH8BLxyFh4jb6ytXbYOei2eDV2u56sqCnLJtMVWJDLJzad3tzgpIntNumQ
-         Sd8vVP9TYqzHMFuzQFy64qGMS3ylwfeYCPfEgBMh65Bqp0Ne1X/o/Q7CHX1BZY8sy/aC
-         UFkQ==
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
+        b=KMS2yYcagaOL6MqbWxaKMQFvKASGe//n3MrFPZI0EUBoz6YlbrkMmCqpG4qd0LrAXf
+         bQg0HfkYZeF7IoTne+z5m2G7QOryQ9rnNuJlRH3GzeJR3F7W2Y0/7LSXZ0frwqJL9msN
+         cDthV25aNX9us8dNw3grDa5k7uZMrQwy43LV21dx32vkYvGFo5CmhPVy7Nk5+dUCmWKz
+         2IXY/SDeEfN+51vaODWorOdy/15HtQVVzP/UgS4MVqrPWWlVMFS0QJr9/Dmbl6Ox7v10
+         5VmjhZqHmIGVrVfExEIVHU9gonLuBkG7PsVp64SPINfKJs/qGqjfXMVMTV2C3LFMXCFS
+         uDkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=argLEM5PENDrg5kgQHigjDQKj69yQI8BEKRU8DCve18=;
-        b=2sH5gfghz6U2O9725gMIr2QbTwvUvaha4E9/i51OdT9keg3t8mmrou3PGQvPfE4gFd
-         /iDQhsDGzam53awL64n4uz+gO51AnPBbNPkKwOZuT/mObR9vRk9JqKNpZyIeExHsbjp+
-         yAyF4oIpE077c3zn+2r+uwMhiuzB+qwJg0iLuEibif9sMI+/myVJ0gxZ4hF1agp4z6kT
-         YfASLUvKO26Ml5vtCnglLBKv9WH9xi5shBZPsH1uFgs4nLybnmG4kThuC5FJzxDj9FK8
-         l3Sr5W3ZHF+0mnUjZHO2U4IArefZKrpe8EbNUfDQNZckAjNRAbarlXOt+6zUM1lllpqD
-         fCGg==
-X-Gm-Message-State: AOAM532RxR3nMqEPsg+8RkgZdpqcgSQT6m0ervKh2UVeGCxUuRpzy8yk
-        OQ6OK3lIq0wRuf3yMk6zJQWYqbLJsu1bXyT5pQ==
-X-Google-Smtp-Source: ABdhPJypNnrPu9Y72bmRH9Xl74oWvooTuOt7CCr28UdcPk9nJ3bDnzoGn36U1n+kulmdO335pMpI1IqTPtfmYPPR8gw=
-X-Received: by 2002:a17:90a:af94:: with SMTP id w20mr6244204pjq.223.1638282044498;
- Tue, 30 Nov 2021 06:20:44 -0800 (PST)
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
+        b=wQae4itKBAPEgvSnF0+Bu01Xjg10ls7AyluzUy+gbmDJs3PJt55AfbtEB24WOdG+mf
+         LPndzZXSQeuG5hTJFoO1v2i+N5nYC/T1CZg/noGEx9qcFcmSlwhBeVdRmqVo4ory6nxZ
+         jlXgc1g7Ek8shQg56yBRX1Fb0yUqvFAVQcqGdPL4e8hyId7IvXAeYDlKdsf5/7RjczJM
+         4jKB9dkHixKHoQIYIUVPa5UriCNG2aVgeuIoc/gpKxH/khVdJDL8I4/PkwcrPpTy8VJM
+         Uuo/ukwcNZHbVkJOOLVvh8d8a8QKkW8uKdA4hUeEAis3w7L24ADqXS3ia9umSF0TLI3u
+         Uc9A==
+X-Gm-Message-State: AOAM533cZj6CNfAS1qAA7N+a/+X78ie5Q519oSierFH1CgvZBkj9s7Q8
+        rF5xE20e2zWA4HGMYd0B9rw6cy9BJKluVZvHthE=
+X-Google-Smtp-Source: ABdhPJwZlmW9F5Zd93Ig6Qs6QtMP1NHZ8lErf8k3JQwo3JGw1z0G0l16ETEQsC6R9OebacJV3IvsXSA02aiuHd9TNhs=
+X-Received: by 2002:a17:907:a0d4:: with SMTP id hw20mr6733041ejc.16.1638358787858;
+ Wed, 01 Dec 2021 03:39:47 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a17:90a:694a:0:0:0:0 with HTTP; Tue, 30 Nov 2021 06:20:44
+Sender: mr.nedum.oudrago@gmail.com
+Received: by 2002:a17:907:162a:0:0:0:0 with HTTP; Wed, 1 Dec 2021 03:39:46
  -0800 (PST)
-Reply-To: c6715203@gmail.com
-From:   Maria-Elisabeth Schaeffler <ceciliasauli@gmail.com>
-Date:   Tue, 30 Nov 2021 17:20:44 +0300
-Message-ID: <CAL=8PfniY1S_SKS=kj+UcbJ7H2LYENzRGvBSyRjs9jK162U4Vg@mail.gmail.com>
-Subject: Spende
+From:   "Mrs. Orgil Baatar" <mrs.orgilbaatar21@gmail.com>
+Date:   Wed, 1 Dec 2021 03:39:46 -0800
+X-Google-Sender-Auth: By7FszXn4gM10IQ-vSJuYvXaW7o
+Message-ID: <CAF3CHuuLGSue2_hLDpTP3KJsbXnAUxv0f2GsV9oGLxLv8Ku3Mg@mail.gmail.com>
+Subject: Your long awaited part payment of $2.5.000.00Usd
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
---=20
-Hi,
-Ihre Spende in H=C3=B6he von 1.500.000,00 Euro von Maria-Frau Elisabeth
-Schaeffler steht Ihnen weiterhin zur Verf=C3=BCgung. kontaktieren Sie mich
-f=C3=BCr weitere Informationen.
+Attention: Beneficiary, Your long awaited part payment of
+$2.5.000.00Usd (TWO MILLION FIVE Hundred Thousand United State
+Dollars) is ready for immediate release to you, and it was
+electronically credited into an ATM Visa Card for easy delivery.
 
-Mit freundlichen Gr=C3=BC=C3=9Fen
-Frau Maria-Elisabeth Schaeffler.
+Your new Payment Reference No.- 6363836,
+Pin Code No: 1787
+Your Certificate of Merit Payment No: 05872,
+
+Your Names: |
+Address: |
+
+Person to Contact:MR KELLY HALL the Director of the International
+Audit unit ATM Payment Center,
+
+Email: uba-bf@e-ubabf.com
+TELEPHONE: +226 64865611 You can whatsApp the bank
+
+Regards.
+Mrs ORGIL BAATAR
