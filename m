@@ -2,32 +2,35 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC24A46824D
-	for <lists+target-devel@lfdr.de>; Sat,  4 Dec 2021 05:50:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C20C468747
+	for <lists+target-devel@lfdr.de>; Sat,  4 Dec 2021 20:57:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354789AbhLDEx3 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 3 Dec 2021 23:53:29 -0500
-Received: from sv3082.xserver.jp ([202.254.234.83]:38826 "EHLO
-        sv3082.xserver.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238601AbhLDEx3 (ORCPT
+        id S1346931AbhLDUAf (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 4 Dec 2021 15:00:35 -0500
+Received: from sv8534.xserver.jp ([183.181.84.55]:57524 "EHLO
+        sv8534.xserver.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344972AbhLDUAe (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 3 Dec 2021 23:53:29 -0500
-X-Greylist: delayed 435 seconds by postgrey-1.27 at vger.kernel.org; Fri, 03 Dec 2021 23:53:29 EST
-Received: from virusgw2401.xserver.jp (virusgw2401.xserver.jp [202.254.232.243])
-        by sv3082.xserver.jp (Postfix) with ESMTP id C558510C0BBD58
-        for <target-devel@vger.kernel.org>; Sat,  4 Dec 2021 13:42:48 +0900 (JST)
-Received: from sv3082.xserver.jp (202.254.234.83)
- by virusgw2401.xserver.jp (F-Secure/fsigk_smtp/521/virusgw2401.xserver.jp);
- Sat, 04 Dec 2021 13:42:48 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/521/virusgw2401.xserver.jp)
-Received: by sv3082.xserver.jp (Postfix, from userid 20057)
-        id C2F88102EB3418; Sat,  4 Dec 2021 13:42:48 +0900 (JST)
+        Sat, 4 Dec 2021 15:00:34 -0500
+X-Greylist: delayed 333 seconds by postgrey-1.27 at vger.kernel.org; Sat, 04 Dec 2021 15:00:34 EST
+Received: from virusgw8004.xserver.jp (virusgw8004.xserver.jp [183.181.92.6])
+        by sv8534.xserver.jp (Postfix) with ESMTP id 47C26285C2D6D6
+        for <target-devel@vger.kernel.org>; Sun,  5 Dec 2021 04:51:34 +0900 (JST)
+Received: from sv8534.xserver.jp (183.181.84.55)
+ by virusgw8004.xserver.jp (F-Secure/fsigk_smtp/521/virusgw8004.xserver.jp);
+ Sun, 05 Dec 2021 04:51:34 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/521/virusgw8004.xserver.jp)
+Received: from meisha.jp (sv8534.xserver.jp [183.181.84.55])
+        by sv8534.xserver.jp (Postfix) with ESMTPSA id 3D3DD285AE903B
+        for <target-devel@vger.kernel.org>; Sun,  5 Dec 2021 04:51:34 +0900 (JST)
+Date:   Sat, 4 Dec 2021 19:51:34 +0000
 To:     target-devel@vger.kernel.org
-Subject: =?UTF-8?B?44GK5ZWP44GE5ZCI44KP44Gb44GE44Gf44Gg44GN44G+44GX44Gm44GC44KK?=  =?UTF-8?B?44GM44Go44GG44GU44GW44GE44G+44GZ44CC?=
-Date:   Sat, 4 Dec 2021 04:42:48 +0000
-From:   ACORN BUY&SELL VINTAGE <wordpress@acorn-vtg.com>
-Message-ID: <esUM5x5KIgOh1iML1ogAehVQTl0VsvbNhJLpV1Dfik@acorn-vtg.com>
-X-Mailer: PHPMailer 6.5.0 (https://github.com/PHPMailer/PHPMailer)
+From:   =?UTF-8?B?5piO44KL44GE56S+5Lya44Gl44GP44KK6YGL5YuV?= 
+        <meisha@kpc-net.com>
+Subject: =?UTF-8?B?44GK5ZWP44GE5ZCI44KP44Gb44GC44KK44GM44Go44GG44GU44GW44GE44G+?=
+ =?UTF-8?B?44GZ?=
+Message-ID: <IBrtg2C8o2dTT2qquZlGaI6J3WDVOS2Q0v1axOTxmok@meisha.jp>
+X-Mailer: WPMailSMTP/Mailer/smtp 2.5.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -35,28 +38,25 @@ Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-この度はお問い合わせいただき、誠にありがとうございます。
-お問い合わせ内容により返信にお時間をいただく場合がございますが、何卒ご了承くださいませ。
+❤️ You have unread messages from Alice (2)! Click Here: http://bit.do/fSMFV?zsspw ❤️ 様
 
-以下の内容でメールを受け付けました。
-■ お名前　❤️ Alice want to meet you! Click Here: http://bit.do/fSMno?kudiw ❤️
-■ メールアドレス　target-devel@vger.kernel.org
-■ お問い合せ内容:その他
-■ メッセージ本文:
-gnbxkyi
-■ 添付画像:
+このメールは自動送信でお送りしています。
 
-———————-
-このメールは ACORN BUY&SELL VINTAGE お問い合わせフォームから送信されました。
+この度は、入力フォームよりお問い合わせを頂き、
+ありがとうございました。
+改めまして、内容確認後、ご連絡を差し上げます。
+しばらくお待ちくださいませ。
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- 国内最大級ヴィンテージ古着買取専門店 -
-ACORN Buy&Sell Vintage
-【VINTAGE古着 高価買取業界No.1】
-ADDRESS：〒542-0081 大阪府大阪市中央区南船場4-9-5
-HP：www.acorn-vtg.com
-OPEN：12:00~20:00
-MAIL：info@acorn-vtg.com
-TEL：06-6282-7794 （買取専用ダイアル）
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+------------------------------------------------------------
+ ▼ 送信内容
+------------------------------------------------------------
+
+お名前：❤️ You have unread messages from Alice (2)! Click Here: http://bit.do/fSMFV?zsspw ❤️
+ふりがな：81rt4to
+e-mail：target-devel@vger.kernel.org
+内容：z1p1c9k
+
+特定非営利活動法人 明るい社会づくり運動
+〒164-0011　東京都中野区中央5丁目2番1号第3ナカノビル6階
+TEL：03-5328-3071　FAX：03-5328-3072
 
