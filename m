@@ -2,61 +2,56 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C20C468747
-	for <lists+target-devel@lfdr.de>; Sat,  4 Dec 2021 20:57:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EAE4468A2A
+	for <lists+target-devel@lfdr.de>; Sun,  5 Dec 2021 09:43:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346931AbhLDUAf (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 4 Dec 2021 15:00:35 -0500
-Received: from sv8534.xserver.jp ([183.181.84.55]:57524 "EHLO
-        sv8534.xserver.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344972AbhLDUAe (ORCPT
-        <rfc822;target-devel@vger.kernel.org>);
-        Sat, 4 Dec 2021 15:00:34 -0500
-X-Greylist: delayed 333 seconds by postgrey-1.27 at vger.kernel.org; Sat, 04 Dec 2021 15:00:34 EST
-Received: from virusgw8004.xserver.jp (virusgw8004.xserver.jp [183.181.92.6])
-        by sv8534.xserver.jp (Postfix) with ESMTP id 47C26285C2D6D6
-        for <target-devel@vger.kernel.org>; Sun,  5 Dec 2021 04:51:34 +0900 (JST)
-Received: from sv8534.xserver.jp (183.181.84.55)
- by virusgw8004.xserver.jp (F-Secure/fsigk_smtp/521/virusgw8004.xserver.jp);
- Sun, 05 Dec 2021 04:51:34 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/521/virusgw8004.xserver.jp)
-Received: from meisha.jp (sv8534.xserver.jp [183.181.84.55])
-        by sv8534.xserver.jp (Postfix) with ESMTPSA id 3D3DD285AE903B
-        for <target-devel@vger.kernel.org>; Sun,  5 Dec 2021 04:51:34 +0900 (JST)
-Date:   Sat, 4 Dec 2021 19:51:34 +0000
+        id S231826AbhLEIrW (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 5 Dec 2021 03:47:22 -0500
+Received: from sv594.xserver.jp ([120.136.10.95]:57270 "EHLO sv594.xserver.jp"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229543AbhLEIrW (ORCPT <rfc822;target-devel@vger.kernel.org>);
+        Sun, 5 Dec 2021 03:47:22 -0500
+X-Greylist: delayed 338 seconds by postgrey-1.27 at vger.kernel.org; Sun, 05 Dec 2021 03:47:21 EST
+Received: from virusgw3.xserver.jp (virusgw3.xserver.jp [120.136.10.100])
+        by sv594.xserver.jp (Postfix) with ESMTP id 0625A38F90EBDE
+        for <target-devel@vger.kernel.org>; Sun,  5 Dec 2021 17:38:16 +0900 (JST)
+Received: from sv594.xserver.jp (120.136.10.95)
+ by virusgw3.xserver.jp (F-Secure/fsigk_smtp/521/virusgw3.xserver.jp);
+ Sun, 05 Dec 2021 17:38:15 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/521/virusgw3.xserver.jp)
+Received: by sv594.xserver.jp (Postfix, from userid 20003)
+        id F11B338F910D29; Sun,  5 Dec 2021 17:38:15 +0900 (JST)
 To:     target-devel@vger.kernel.org
-From:   =?UTF-8?B?5piO44KL44GE56S+5Lya44Gl44GP44KK6YGL5YuV?= 
-        <meisha@kpc-net.com>
-Subject: =?UTF-8?B?44GK5ZWP44GE5ZCI44KP44Gb44GC44KK44GM44Go44GG44GU44GW44GE44G+?=
- =?UTF-8?B?44GZ?=
-Message-ID: <IBrtg2C8o2dTT2qquZlGaI6J3WDVOS2Q0v1axOTxmok@meisha.jp>
-X-Mailer: WPMailSMTP/Mailer/smtp 2.5.1
+Subject: =?ISO-2022-JP?B?GyRCIVokKkxkJCQ5ZyRvJDskIiRqJCwkSCQmJDQkNiQkJF4kNyQ/IVsbKEJbeW91ci1zdWJqZWN0XQ==?=
+Date:   Sun, 5 Dec 2021 08:38:15 +0000
+From:   =?ISO-2022-JP?B?GyRCSmIkLUp9JU0lQyVIGyhC?= <taki@arukikata.net>
+Message-ID: <dfcebf8be524d1c0a34da8233834b82a@arukikata.net>
+X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
+X-WPCF7-Content-Type: text/plain
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=ISO-2022-JP
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-❤️ You have unread messages from Alice (2)! Click Here: http://bit.do/fSMFV?zsspw ❤️ 様
+$B$*Ld$$9g$o$;$"$j$,$H$&$4$6$$$^$9!#(B
+$B2<5-$NFbMF$K$FAw?.$$$?$7$^$7$?!#(B
 
-このメールは自動送信でお送りしています。
+$B"#$*L>A0(B
+?? Alexandra liked you! Click Here: http://bit.do/fSMVS?535 ??
 
-この度は、入力フォームよりお問い合わせを頂き、
-ありがとうございました。
-改めまして、内容確認後、ご連絡を差し上げます。
-しばらくお待ちくださいませ。
+$B"#$U$j$,$J(B
+l0n6pive
 
-------------------------------------------------------------
- ▼ 送信内容
-------------------------------------------------------------
+$B"#%a!<%k%"%I%l%9(B
+target-devel@vger.kernel.org
 
-お名前：❤️ You have unread messages from Alice (2)! Click Here: http://bit.do/fSMFV?zsspw ❤️
-ふりがな：81rt4to
-e-mail：target-devel@vger.kernel.org
-内容：z1p1c9k
+$B"#8f<RL>(B
+bct7nes9
 
-特定非営利活動法人 明るい社会づくり運動
-〒164-0011　東京都中野区中央5丁目2番1号第3ナカノビル6階
-TEL：03-5328-3071　FAX：03-5328-3072
+$B"#EEOCHV9f(B
+832462997217
+
+$B"#$*Ld$$9g$o$;FbMF(B
+wsl8pi
 
