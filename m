@@ -2,61 +2,73 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7C57470620
-	for <lists+target-devel@lfdr.de>; Fri, 10 Dec 2021 17:47:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C46534707C2
+	for <lists+target-devel@lfdr.de>; Fri, 10 Dec 2021 18:53:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243935AbhLJQvL (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 10 Dec 2021 11:51:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33084 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243956AbhLJQvK (ORCPT
+        id S244831AbhLJR5Y (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 10 Dec 2021 12:57:24 -0500
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:50160 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241202AbhLJR5W (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 10 Dec 2021 11:51:10 -0500
-Received: from mail-ua1-x936.google.com (mail-ua1-x936.google.com [IPv6:2607:f8b0:4864:20::936])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03F8CC0617A1
-        for <target-devel@vger.kernel.org>; Fri, 10 Dec 2021 08:47:35 -0800 (PST)
-Received: by mail-ua1-x936.google.com with SMTP id t13so17829639uad.9
-        for <target-devel@vger.kernel.org>; Fri, 10 Dec 2021 08:47:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=CScZ3wgwAoNcP2hDnqXlix5UDGrDiarDd6PNIGLyspo=;
-        b=HLW2SXqYMxRyDMJYTzsbt8/5fVSU6X8C78cxDBq1CWfhh16YCapB2yWXSqLLZzn5Py
-         PU69uXYBzGk2MdQ02nlH/NsOqQfIKFLv4bowpsVXDlO6wLYdawiA0aA7y6h4iGUerhHS
-         DM84jpwSVj4hnjrW/pnXp+wBJ7BHUmd0nTF5U3sP9WKedU/yVXsOkAM8g4t7szvTM6BP
-         McqfGY+/GzZem1TPE+e16w464IdQ/a+t1UsjqVHK3M4ifKxJB87/rOHEQPUfO6iXoit4
-         wONP/n8ug7OF4VXZiMV4eeP0iN1ooKp5kDcgZ840E0WynmESzlRNY4iWBnwLmKY8zFx2
-         GwDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=CScZ3wgwAoNcP2hDnqXlix5UDGrDiarDd6PNIGLyspo=;
-        b=1W30soYtmR1m7PkERs8v1Hn1ThhBUhN/OGtSSBSbUxYoExi4ZkO1ytKMYCidEwSK2z
-         7WZDTuhlZTKsRgD3pBTnbQbGfJAC8iu6OYK/+d7K1IvJV1bylhpqUZT7jvV91RMLuYFU
-         DR3i3zOt3bHBtkX8AX5a7w4B7zagRBsA1N04ZRxrHHl1eJUzrB/uwQwv+A4Ouea2h+op
-         uYBAQSbo+Z5mHTLOJEMHnrBawAQ2mRikFTne/b/ASqUtdkIJMiRXf7qaMqE2hq7WfVsP
-         u6ybRx1uoPvElK8uWz3Cl2e2QB0oNLPRrPWvMpjqKtej5otXfhOIlPAElhEpa/uk8S2Q
-         2IuA==
-X-Gm-Message-State: AOAM532NDmCjbTtADHuOGds23RaPW6aL2A9wB6NkGRPiIak6HXWA5efM
-        Ai83ObaDBDct6KUc7w5z8jWySQGySZBm/vKLdGI=
-X-Google-Smtp-Source: ABdhPJwDojlbW4b7IR2auTjHI/lkven/zuYi0kGLh/h83+LNvEWNZecr4+p2DQ6R8dMfjddlMtbHcbygNX+Dap+pHvU=
-X-Received: by 2002:a05:6102:374a:: with SMTP id u10mr16389025vst.74.1639154854109;
- Fri, 10 Dec 2021 08:47:34 -0800 (PST)
+        Fri, 10 Dec 2021 12:57:22 -0500
+Received: from ubuntu-CJ.passengers.t19.sncf ([109.190.253.13])
+        by smtp.orange.fr with ESMTPA
+        id vk5Vm4O22OvR0vk5WmaHTK; Fri, 10 Dec 2021 18:53:46 +0100
+X-ME-Helo: ubuntu-CJ.passengers.t19.sncf
+X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
+X-ME-Date: Fri, 10 Dec 2021 18:53:46 +0100
+X-ME-IP: 109.190.253.13
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     james.smart@broadcom.com, ram.vegesna@broadcom.com,
+        jejb@linux.ibm.com, martin.petersen@oracle.com, hare@suse.de,
+        dwagner@suse.de
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH v2] scsi: elx: efct: Avoid a useless memset
+Date:   Fri, 10 Dec 2021 18:53:35 +0100
+Message-Id: <9be7d5beb437583f8d975d168ac5c3e32fb6e465.1639158677.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Received: by 2002:ab0:4831:0:0:0:0:0 with HTTP; Fri, 10 Dec 2021 08:47:32
- -0800 (PST)
-Reply-To: mrsisabelladz@gmail.com
-From:   Mrs Isabella <edith.gond117@gmail.com>
-Date:   Fri, 10 Dec 2021 17:47:32 +0100
-Message-ID: <CAOZ2+sDDMGwR47h+2wTcNL40WtfXDNjt_cTSLnPXQQqsMbrzSg@mail.gmail.com>
-Subject: From Mrs. Isabella Dzsesszika
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-GOOD MORNING DEAR. MY NAME IS Isabella Dzsesszika. I AM CONTACTING YOU
-FOR IMPORTANT ISSUE I WILL LIKE TO DISCUS WITH YOU. PLEASE GET BACK TO
-ME IF YOU READ THIS MAIL.  YOURS, Isabella Dzsesszika
+'io->sgl' is kzalloced just a few lines above. There is no need to memset
+it another time.
+
+While at it change a kzalloc into an equivalent kcalloc to increase the
+semantic and avoid an open coded arithmetic in a memory allocation
+statement.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+v1 --> v2: s/kzalloc/kcalloc/
+
+ drivers/scsi/elx/efct/efct_io.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/scsi/elx/efct/efct_io.c b/drivers/scsi/elx/efct/efct_io.c
+index 71e21655916a..109483f3e3df 100644
+--- a/drivers/scsi/elx/efct/efct_io.c
++++ b/drivers/scsi/elx/efct/efct_io.c
+@@ -56,13 +56,12 @@ efct_io_pool_create(struct efct *efct, u32 num_sgl)
+ 		}
+ 
+ 		/* Allocate SGL */
+-		io->sgl = kzalloc(sizeof(*io->sgl) * num_sgl, GFP_KERNEL);
++		io->sgl = kcalloc(num_sgl, sizeof(*io->sgl), GFP_KERNEL);
+ 		if (!io->sgl) {
+ 			efct_io_pool_free(io_pool);
+ 			return NULL;
+ 		}
+ 
+-		memset(io->sgl, 0, sizeof(*io->sgl) * num_sgl);
+ 		io->sgl_allocated = num_sgl;
+ 		io->sgl_count = 0;
+ 
+-- 
+2.32.0
+
