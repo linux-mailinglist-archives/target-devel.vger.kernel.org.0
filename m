@@ -2,57 +2,51 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CF2047EE51
-	for <lists+target-devel@lfdr.de>; Fri, 24 Dec 2021 11:41:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1042247F638
+	for <lists+target-devel@lfdr.de>; Sun, 26 Dec 2021 10:42:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343824AbhLXKln (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 24 Dec 2021 05:41:43 -0500
-Received: from gs-wakayama.jp ([161.34.9.249]:37756 "EHLO gs-wakayama.jp"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240741AbhLXKln (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Fri, 24 Dec 2021 05:41:43 -0500
-X-Greylist: delayed 400 seconds by postgrey-1.27 at vger.kernel.org; Fri, 24 Dec 2021 05:41:42 EST
-Received: (qmail 22216 invoked by SAV 20211223.002 by uid 24500001); 24 Dec 2021 19:35:01 +0900
+        id S233194AbhLZJmX (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 26 Dec 2021 04:42:23 -0500
+Received: from slot0.jllresort.com ([62.197.136.5]:38334 "EHLO
+        slot0.jllresort.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229853AbhLZJmW (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Sun, 26 Dec 2021 04:42:22 -0500
+X-Greylist: delayed 726 seconds by postgrey-1.27 at vger.kernel.org; Sun, 26 Dec 2021 04:42:22 EST
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=jllresort.com;
+ h=Reply-To:From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding; i=ele.mon@jllresort.com;
+ bh=xnGQtZLv+kshKcPx2tkAFK6SxJ4=;
+ b=F690XpzxiXx1dAFlVs7bbCc763stYExXqlfRF6ser0ulzLxYpbBQF8VTyFzgLr7ELBeMYk904Ob3
+   BDHxrAKK5U5SgyT1cwZTAzNHD40DnDxbY/35rCroxFSgpTYlAeLwTxZ5vNx5NDPr0VmlC/q1y03j
+   gMTskYgITu5j49VajOvAu8SEA/nj3IXQPT0i051RnaRwXFPlRBDowzELGdL+Ujg3hX5d+H5hHta5
+   q+ZM5gz8LSklWSU01EppM7VEcUDGHwavwfB+N9cMCEr5q3BUf1nn0Ubu7GF8EcBLkgeLDKj330bF
+   ljpUpCUzuKqnOnyBK3rMqhhyGWlpWL155oX9yA==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=jllresort.com;
+ b=JNSx/a5SQEuOiqhQAyKY4bXsF/j/ojx5pxDDusMUtq0pM/pYUa92L8VEWHHlLzBQY5W0pGV5Agw3
+   Behz4Ltz7Rb5RYMY0Xv9A+KGDe86SWKgwCVkCjOaBXuSKd4n9dmlH9FoRWkDzBVQiqQ7kiQyPn77
+   GSfmTwMQYs1+Nhp51MQS3GpsV5HjgFYc33ldWVZv2x7utxwsLr6YHi+wyAMK+4nhGyVPqXYtB7Ef
+   Ic7z6vALDBIiZIMiwnLSmeqE9PS6yA732eHRCQ0tOVi97gbVboW2UzcyQ8dS0qlq7HsCbyKX0Gue
+   9wK+TudFIHdUvjPtb58ImKr1qskZg6MdAt20fg==;
+Reply-To: mustafa.ayvaz@ayvazburosu.com
+From:   ele.mon@jllresort.com
 To:     target-devel@vger.kernel.org
-Subject: =?ISO-2022-JP?B?GyRCJSwhPCVrJTklKyUmJUhPQjJOOzM4KU8iTEEkWCROJCpMZCQkOWckbyQ7RmJNRhsoQg==?=
-Date:   Fri, 24 Dec 2021 10:35:01 +0000
-From:   =?ISO-2022-JP?B?GyRCJSwhPCVrJTklKyUmJUhPQjJOOzM4KU8iTEEbKEI=?= 
-        <info.gs-wakayama@sand.ocn.ne.jp>
-Message-ID: <c78d809b7df391f4c2a790eb9f53dcc7@gs-wakayama.jp>
-X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
-X-WPCF7-Content-Type: text/plain
+Subject: Happy Weekend:
+Date:   26 Dec 2021 10:29:30 +0100
+Message-ID: <20211226102855.629F53E453561E38@jllresort.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-2022-JP
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-?? Debbie liked you! Click Here: http://inx.lv/pg0O?uqt ??<target-devel@vger.kernel.org>様
+Greetings to you target-devel,
 
-この度はガールスカウト和歌山県連盟へのお問い合わせありがとうございます。
+I was wondering if you got my previous email? I have been trying=20
+to reach you by email target-devel@vger.kernel.org, kindly get=20
+back to me swiftly, it is very important and urgent.
 
-以下の内容で承りましたのでご確認お願いいたします。
-
-のちほどお返事させていただきます。
-宜しくお願いいたします。
-
--------------------------------------------------
-
-ガールスカウト和歌山県連盟へのお問合せ内容
-
-入会希望の学年：成人　　y48x3fl9年
-
-年齢：ipiiby
-
-保護者様のお名前：eew75i
-
-〒77eg2ji　x19j4x2
-
-ご連絡先電話番号：l0cu99fi
-
-【ご連絡の可能な曜日・時間・ご質問など】
-jrn8hbh1
-
----------
-このメールはガールスカウト和歌山県連盟のお問い合わせフォームから送信されました
-
+Thanks
+Mustafa Ayvaz
+Email: mustafa.ayvaz@ayvazburosu.com
