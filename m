@@ -2,72 +2,140 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26199489847
-	for <lists+target-devel@lfdr.de>; Mon, 10 Jan 2022 13:10:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57A5E4899A5
+	for <lists+target-devel@lfdr.de>; Mon, 10 Jan 2022 14:14:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239855AbiAJMKr (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 10 Jan 2022 07:10:47 -0500
-Received: from szxga01-in.huawei.com ([45.249.212.187]:16699 "EHLO
-        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235772AbiAJMKp (ORCPT
+        id S231714AbiAJNOM (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 10 Jan 2022 08:14:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45022 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231691AbiAJNOL (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 10 Jan 2022 07:10:45 -0500
-Received: from dggpeml500022.china.huawei.com (unknown [172.30.72.53])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4JXXcr4wndzZf4c;
-        Mon, 10 Jan 2022 20:07:08 +0800 (CST)
-Received: from dggpeml500017.china.huawei.com (7.185.36.243) by
- dggpeml500022.china.huawei.com (7.185.36.66) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Mon, 10 Jan 2022 20:10:42 +0800
-Received: from [10.174.178.174] (10.174.178.174) by
- dggpeml500017.china.huawei.com (7.185.36.243) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Mon, 10 Jan 2022 20:10:42 +0800
-Subject: Re: [PATCH -next] scsi: efct: don't use GFP_KERNEL under spin lock
-To:     Maurizio Lombardi <mlombard@redhat.com>
-CC:     <linux-kernel@vger.kernel.org>, <target-devel@vger.kernel.org>,
-        <linux-scsi@vger.kernel.org>, <hch@lst.de>,
-        <james.smart@broadcom.com>, <martin.petersen@oracle.com>
-References: <20220110111838.965480-1-yangyingliang@huawei.com>
- <20220110111921.GA91632@raketa>
-From:   Yang Yingliang <yangyingliang@huawei.com>
-Message-ID: <ee058886-5bf0-db3e-7d78-8bc34bfd2440@huawei.com>
-Date:   Mon, 10 Jan 2022 20:10:41 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        Mon, 10 Jan 2022 08:14:11 -0500
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82C0AC061756
+        for <target-devel@vger.kernel.org>; Mon, 10 Jan 2022 05:14:11 -0800 (PST)
+Received: by mail-lf1-x135.google.com with SMTP id o12so44244886lfk.1
+        for <target-devel@vger.kernel.org>; Mon, 10 Jan 2022 05:14:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=STst/NZz7XpLuhkw/fjT1YooCLQUEgoChj9j28RAYfs=;
+        b=RUa3iiHQVnCGNM3LImQONai1GPVEeRvfJDttvdO2BADd0RZCAuICjteu+ZesXbDVCS
+         7rt67NsiEOI/Fjo0RI2F61CKXHSwnfUlBMFDBKoPmlVuqxLn8wven4iGHwDOf6HutO/5
+         HO+ShrYktVmmHNTFSTF8P+Gu6b0f4vJV+RF6EXccBEy8tuKQ5q6F/No+P+WPMTGhHjiV
+         MGaWsZaahDxGQrtfJmCaVe1KBaATy7V8JiHNFmCY/MrMGAYFEQ4iA5hJmE/7AFS8Y+eL
+         Qt7/krXapHJw3vA9M6xdjiKFFWojd57ZJ9AEWXy5UkMvnIuR6qU5ek5VudAqXC0/3VAo
+         UgZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=STst/NZz7XpLuhkw/fjT1YooCLQUEgoChj9j28RAYfs=;
+        b=14QU0P1nuEbFMjNfnH1G5StRIQxAzsX0NgCXk4N8oH5yYhGwtuBFDwOahzU0ipmwhB
+         8YDjTDwssrdtBcYJ4uNtx663OCAqI0Xzsmtfp1m6eQqgqSC+IPzB7hslA7LHWl2ogqB6
+         zUniFr6IIMjp4YJkhiZooD4DfjTQje1WP0HqlOX4i+2SpCdxgN5p6VuB8oZPBbPWUv35
+         vagQYllGNfVHOu5RgKJmCS41x1Qb59t+VWipYos1EXalaUYe2nu02yGB408XCkD/K6Sv
+         HzD/cVGT7PlsHCnt8ooMAodFSilbkz493OcTItUjcb1EKF7yz3e95bygJtp2SVxdgZEI
+         YP7w==
+X-Gm-Message-State: AOAM5329JiDIKwSzV1qKLnpPt5lKsFxyaHMBGfHPV65YL9qkpqytypFI
+        yyY9S7ncFBSMblj5C6OBC8dp8rArVO+A3EkyvV0=
+X-Google-Smtp-Source: ABdhPJzmym3k2C+0lplvpDPnjJ70CZhwSYTn+JlOcLkSp8BRN73Qb3miRHyDUR9r9ZqJp8k2JTKpxjoW9q9jDYWK4Js=
+X-Received: by 2002:a2e:9cc7:: with SMTP id g7mr53728954ljj.128.1641820449137;
+ Mon, 10 Jan 2022 05:14:09 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20220110111921.GA91632@raketa>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Originating-IP: [10.174.178.174]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpeml500017.china.huawei.com (7.185.36.243)
-X-CFilter-Loop: Reflected
+Received: by 2002:a05:6504:15d1:0:0:0:0 with HTTP; Mon, 10 Jan 2022 05:14:07
+ -0800 (PST)
+Reply-To: gtbank107@yahoo.com
+From:   Barr Robert Richter <westernunion.benin982@gmail.com>
+Date:   Mon, 10 Jan 2022 14:14:08 +0100
+Message-ID: <CAP=nHBLXRm0c8NQb8ytEbpcUhCC+nPkiaqh8gL-mLUSsX7SiUQ@mail.gmail.com>
+Subject: Contact GT Bank-Benin to receive your transfer amount of $18.5m US Dollars.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hi,
+Attn,Dear
+I need you to know that the fear of the LORD is
+the beginning of wisdom, and knowledge of the Holy One is
+understanding. As power of God Most High. And This is the confidence
+we have in approaching God, that if we ask anything according to his
+will, he hears us. I will make you know that Slow and steady wins the race.
+It is your turn to receive your overdue compensation funds total
+amount $18.5Milion  USD.
+I actualized that you will receive your transfer today without any more delay
+No More fee OK, Believe me , I am your Attorney standing here on your favor.
+I just concluded conversation with the Gt Bank Director, Mrs Mary Gate
+And She told me that your transfer is ready today
 
-On 2022/1/10 19:19, Maurizio Lombardi wrote:
-> On Mon, Jan 10, 2022 at 07:18:38PM +0800, Yang Yingliang wrote:
->> +	spin_lock_irqsave(&node->els_ios_lock, flags);
->> +
->>   	if (els) {
->>   		/* initialize fields */
->>   		els->els_retries_remaining = EFC_FC_ELS_DEFAULT_RETRIES;
-> If the els pointer is NULL you will lock the spinlock and disable the interrupts
-> for no reason, maybe you can just protect the list_add_tail()?
->
-> +spin_lock_irqsave(&node->els_ios_lock, flags);
->   list_add_tail(&els->list_entry, &node->els_ios_list);
-> +spin_unlock_irqrestore(&node->els_ios_lock, flags);
-Yes, it's better, I will send a v2 later.
+So the Bank Asked you to contact them immediately by re-confirming
+your Bank details asap.
+Because this is the Only thing holding this transfer
+If you did not trust me and Mrs Mary Gate,Who Else will you Trust?
+For we are the ones trying to protect your funds here
+and make sure that your funds is secure.
+So Promisingly, I am here to assure you, that Grate Miracle is coming on
+your way, and this funds total amount of $18.500,000 is your
+compensation, entitlement inheritance overdue funds on your name.
+Which you cannot let anything delay you from receiving your funds now,
 
-Thanks,
-Yang
->
-> Maurizio
->
-> .
+Finally i advised you to try your possible best and contact Gt Bank Benin
+once you get this message to receive your transfer $18.5 USD today.
+I know that a journey of thousand miles begins with a single step.
+Always put your best foot forward
+Try as hard as you can, God give you best.
+take my advice and follow the due process of your payment, the
+transfer will be released to
+you smoothly without any hitches or hindrance.
+
+Contact DR.MRS MARY GATE, Director Gt bank-Benin to receive your
+transfer amount of $18.5m US Dollars
+It was deposited and registered to your name this morning.
+Contact the Bank now to know when they will transfer to your
+country today
+
+Email id: gtbank107@yahoo.com
+Tel/mobile, +229 99069872
+Contact person, Mrs Mary Gate,Director Gt bank-Benin.
+Among the blind the one-eyed man is king
+
+As you sow, so you shall reap, i want you to receive your funds
+Best things in life are free
+Send to her your Bank Details as i listed here.
+
+Your account name-------------
+Your Bank Name----------------
+Account Number----------
+your Bank address----------
+Country-----------
+Your private phone number---------
+Routing Numbers-------------
+Swift Code-----------
+
+Note, Your funds is %100 Percent ready for
+transfer.
+Everything you do remember that Good things come to those who wait.
+I have done this work for you with my personally effort, Honesty is
+the best policy.
+now your transfer is currently deposited with paying bank this morning.
+It is by the grace of God that I received Christ, having known the truth.
+I had no choice than to do what is lawful and justice in the
+sight of God for eternal life and in the sight of man for witness of
+God & His Mercies and glory upon my life.
+
+send this needed bank details to the bank today, so that you receive
+your transfer today as
+it is available for your confirmation today.
+Please do your best as a serious person and send the fee urgent, Note
+that this transfer of $18.500.000 M USD is a Gift from God to Bless
+you.
+
+If you did not contact the bank urgent, finally the Bank will release
+your transfer of $18.500.000M USD to  Mr. David Bollen as your
+representative.
+So not allow another to claim your Money.
+Thanks For your Understanding.
+
+Barr Robert Richter, UN Attorney At Law Court-Benin
