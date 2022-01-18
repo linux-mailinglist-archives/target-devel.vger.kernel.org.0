@@ -2,68 +2,77 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D82224920A7
-	for <lists+target-devel@lfdr.de>; Tue, 18 Jan 2022 08:56:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD823492208
+	for <lists+target-devel@lfdr.de>; Tue, 18 Jan 2022 10:07:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343746AbiARH4g (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 18 Jan 2022 02:56:36 -0500
-Received: from xtrwktht.outbound-mail.sendgrid.net ([167.89.23.7]:52266 "EHLO
-        xtrwktht.outbound-mail.sendgrid.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1343742AbiARH4f (ORCPT
+        id S1345176AbiARJGm (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 18 Jan 2022 04:06:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38440 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345209AbiARJGl (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 18 Jan 2022 02:56:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fw-mail.com;
-        h=subject:from:mime-version:content-type:reply-to:to:
-        content-transfer-encoding;
-        s=s1; bh=B2xmKkMXK/CdPftlYkcnln9aA/2ZscZdV0EvGupf9ms=;
-        b=ckGFjZhE3qSdf53DBOlnRvw220P0wkeUjrt18VKEFeARwvgBku0j8hLsOn3bJhkcS/8l
-        qwfNvL2kAPQ+UffymJvTpMyrEFqFg9GS+kAaXgPfE5ssOMkNnG1iTkh0+knnQcnHSTvEI3
-        0uWi0wJ3IhUtH/2+niL1Jm+K2zrTleNYnaZxttNTPsXVU1UNq2DaIZC8uuaQZ4Hl1EZOHW
-        AD4lWyergHNBeEwM7Rqe+/mdYJf+RpfKw5TB2jum1yHW8jwdVqIBolp8LpBIdiVvZLko1p
-        4q642pjXoFU1pDcXLY7UnOS4MuEbTvFAv/V3Lcw6oNI92wJoUGpTQvbCm42K4Wmg==
-Received: by filterdrecv-7bc86b958d-ctgkz with SMTP id filterdrecv-7bc86b958d-ctgkz-1-61E67181-2A
-        2022-01-18 07:51:29.689880995 +0000 UTC m=+11957470.180888013
-Received: from localhost (unknown)
-        by ismtpd0182p1mdw1.sendgrid.net (SG)
-        with ESMTP id kYKMGkncT0WVKEp72rhvbQ
-        for <target-devel@vger.kernel.org>;
-        Tue, 18 Jan 2022 07:51:29.625 +0000 (UTC)
-Subject: Chicago Community Trust
-X-Php-Originating-Script: 0:PHPMailer.php
-From:   Chicago Community Trust <info@chicago.com>
-X-Mailer: PHPMailer 6.5.0 (https://github.com/PHPMailer/PHPMailer)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Received: by sendmail (localhost) with SMTP id 24b82feb-9981-4381-8f34-6c7b48d730d5; Tue, 18 Jan 2022 07:51:28 UTC
-Date:   Tue, 18 Jan 2022 07:51:29 +0000 (UTC)
-Message-Id: <e4s5CugjRJUpMQugdamzcbcC4rBGGdFnmd8gk5bzjHU@chicago.com>
-Reply-To: chicagocom@cct.org
-X-SG-EID: =?us-ascii?Q?n30+os+DMaf3PqRmW6MhJRXE=2FQ8IrKW9s8ZOIPFUbA3yW7k=2FTAv5zJ1+WXf4xp?=
- =?us-ascii?Q?Pj36EHaSYEMR=2FQh1ZQGq=2FZEu5ebXU4Z=2FiEe=2FCut?=
- =?us-ascii?Q?h96zLN34EWe8jYN7GeY80p79JrYzLbjFGm7x7WK?=
- =?us-ascii?Q?b9AZL0tb7251VcfvMNRAyduwjPNsqMVjcoh8voV?=
- =?us-ascii?Q?4HBRgqrBq=2FnheokUtFYpx8HZoKuaO2L0buhnaWm?=
- =?us-ascii?Q?9CzGK0DUhOy5+HHnFXisrpaQMNV1X7gH7uLSDTU?=
- =?us-ascii?Q?71gl+VkNMTtfV9W6hjCqw=3D=3D?=
-X-SG-ID: =?us-ascii?Q?N2C25iY2uzGMFz6rgvQsb8raWjw0ZPf1VmjsCkspi=2FIVy1Wk0DfJfDJiWxWC7D?=
- =?us-ascii?Q?XK2RwI6uRI2jYAYFdmkgtjz=2Fv7GC6T0BL1GDQfv?=
- =?us-ascii?Q?QAe8G=2F6yXER0QdVdl8alyqqKdf1?=
-To:     target-devel@vger.kernel.org
-X-Entity-ID: LH2pL+gv46ZRo0ybvGbdgA==
-Content-Transfer-Encoding: 8bit
+        Tue, 18 Jan 2022 04:06:41 -0500
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FB03C061746
+        for <target-devel@vger.kernel.org>; Tue, 18 Jan 2022 01:06:40 -0800 (PST)
+Received: by mail-yb1-xb32.google.com with SMTP id m6so53628840ybc.9
+        for <target-devel@vger.kernel.org>; Tue, 18 Jan 2022 01:06:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=AIHedDQeQ2nfeFyhlIY6iBZ7Eo/kAlP72EhStgPHV1I=;
+        b=Soz+QHT0dGLM8FndDi8+DmGrzF8Nand3R01M5J9drC3NXqHN7kmc4VY6l/NuWtUVfL
+         Pw1ipMH9eBCg/ZHqGLeAt2KZPu6XRfsWiJE2xzcq96Ba85LXlrKxOVNuY0HYvfKDfmKc
+         jAQ6EF695L6TTvaCdYqZtBN8gkAnqp1+r0RbNtIeu3qM6gm6h0M3GCKOMUuS25NPcq7T
+         m06EBwLGmWMwlcWjC1WtBCJ/c9tTXkQfsHougCLjPDZp39fgMD8pqVkLYWwbFdfOrAZL
+         FCMwtSnm8Hemf8tY2r2VyBfKOXtSL3AjGIsLn+yMreEST0ocUC4Xu0XEMGJmBV9pdbj2
+         rlHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=AIHedDQeQ2nfeFyhlIY6iBZ7Eo/kAlP72EhStgPHV1I=;
+        b=snOx6UDHmU9rX3drCbCB6qcyk+S70v2kcJ9Fru8kkXRDJ23uMW8gzBDQI8eVcUB141
+         BCyZy/3tSjzgLXFybhaK9mNeT7dCZV5rI3VKdQGu5D4Mx3bNGwkmYIGUBwoGcKVwSUpj
+         ncMhgIU6LHBUaiDvYOh1m2YcvwbbbE8zk5F2g+Tof26OYKhtPyjovyDuQ9hECvNXzt0p
+         VVvZdOLYi5OjrvzLrSpzEYTCy3ZbsPHfSbZjWGv2B1qLX24by1B99pQqeeQFN+7Ll6Ke
+         t+uoTcCS/jfQYqylZviHH5SWHPiumpMgSlGXdFN0T37wYBKlIOsDEjmcGqyxRBjnDJgs
+         je4w==
+X-Gm-Message-State: AOAM533u2e4OIDB3NdfA8a4m+8lH9ZGmLOe3+EZeUO4alZjzHO2A0wQA
+        iy72GdzhIoI5x1FMn8sDf5b8SMY7NDyl4BvSyHM=
+X-Google-Smtp-Source: ABdhPJyw0yTCzDjS933NePR8DAFAXJuHa33nOCZujulUZ2idVfAerV+90UYpawy22l7XlVZmlrM9B7gLM03XAJNOkeI=
+X-Received: by 2002:a25:37c2:: with SMTP id e185mr32076301yba.333.1642496799696;
+ Tue, 18 Jan 2022 01:06:39 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:a05:7108:3655:0:0:0:0 with HTTP; Tue, 18 Jan 2022 01:06:38
+ -0800 (PST)
+Reply-To: asil.ajwad@gmail.com
+From:   Asil Ajwad <graceyaogokamboule@gmail.com>
+Date:   Mon, 17 Jan 2022 21:06:38 -1200
+Message-ID: <CA+Yy_gDoLjOfusfXaCVeyK5wpATnnfHVgZ2fw-LqNg4nowYW8A@mail.gmail.com>
+Subject: Greetings,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Thank you for signing up at chicago.com. We look forward to keeping you connected in the months ahead. 
+-- 
+Greetings,
 
-From: ❤️ You have unread messages from Hayley (2)! Click Here: https://afly.co/xpb6wrkkpi?q48oj ❤️ 
+I am Mr.Asil Ajwad, I work with United Bank of Africa, can you use
+an ATM Visa Card to withdraw money at, ATM Cash Machine in your
+country, if yes I want to transfer abounded fund the sum of $10.5million
+US-Dollars, to you from my country, this is part of the money that was
+abounded by our late old client a politician who unfortunately lost
+his life and was forced out of power Du to his greedy act, the bank will
 
-Email: <target-devel@vger.kernel.org>
+change the account details to your name, and apply for a Visa Card
+with your details, the Visa Card will be send to you, and you can be
+withdrawing money with it always, whatever any amount you withdraw
+daily, you will send 60% to me and you will take 40%, the Visa Card
+and the bank account will be on your name, I will be waiting for your
+response for more details, thanks to you a lot for giving me your time.
 
-Organization: a5fmb4
-
-
---
-This e-mail was sent from a contact form on chicago.com (http://www.chicago.com)
-
+regards,
+Mr.Asil Ajwad.
