@@ -2,67 +2,106 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 745754A3649
-	for <lists+target-devel@lfdr.de>; Sun, 30 Jan 2022 13:38:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 594B64A37F0
+	for <lists+target-devel@lfdr.de>; Sun, 30 Jan 2022 19:00:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354795AbiA3Mit (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sun, 30 Jan 2022 07:38:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59512 "EHLO
+        id S231407AbiA3SAe (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 30 Jan 2022 13:00:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240805AbiA3Mit (ORCPT
+        with ESMTP id S236867AbiA3SAe (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sun, 30 Jan 2022 07:38:49 -0500
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0513EC061714
-        for <target-devel@vger.kernel.org>; Sun, 30 Jan 2022 04:38:49 -0800 (PST)
-Received: by mail-lj1-x22d.google.com with SMTP id t14so15646864ljh.8
-        for <target-devel@vger.kernel.org>; Sun, 30 Jan 2022 04:38:48 -0800 (PST)
+        Sun, 30 Jan 2022 13:00:34 -0500
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E17FBC061714;
+        Sun, 30 Jan 2022 10:00:33 -0800 (PST)
+Received: by mail-ed1-x52b.google.com with SMTP id p7so22316535edc.12;
+        Sun, 30 Jan 2022 10:00:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=B5teSI3NqSzeGu7ngV/22RiyR60khzQ8THYZDZ9DX3Q=;
-        b=TPqdpfnn514Pcvwtf5SJqkyiVyZLyHOOk7nSus6RZT5bQ+zZ7ZzBCHO1/SZTOwY7BH
-         ps5X0dp1FFmkYazreSSCTCS2Osw43m7HGjWIAE3882tMRrPklY3MxixxH5LHGBZ5/lb5
-         RMES3iiY+1rj0DXghImWEvSfi1Y5nH45dpj/AqAexqECbREmqTBy/Z4h33UthBkFcOP/
-         VFWY3jsTpA2d48G1zrw+Oy7aCYop79u0v7j75U6pjb01++Oj3rZ9blNTuRfeXsNKXFoY
-         RBcn0A0C/k8X+NCRRdqwJsSBnkdzcqr1IxKrh6OaRkE1Cki7bJh1Z2Cu3hO1b37HHcod
-         KipQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=hifISJNHBmnFk0GC+A9Z0ayqNnCFaEB7i+E3Na0lpu0=;
+        b=VVko/nJ6k+qZW+S4gH+Mc8gh07d2IL6mV7xXmaND9vpbFfjZ6GcK+4ZNxh0bDtcilr
+         uH/awgMFbXkxznR0O1mO7clmHnYfzqSMEcy+7OhhSY25vfuoyrbfDVWfbDq2wxE1cO+S
+         rSVnpzg6B7vXrp9usdCPc0//qZoHJ2F2C+UWM7JWuCtdsTPhDR03jGBC1AZ+sCrbdpSs
+         +ATcsG13Wvn7wmG4ozk11b4yaUIgjUN+lrvRnpDauMO4HVTo9S6tyhzeOxnYGCX+nuG9
+         A/vNkxVuVIaFtJc0YOni9uRC4W8qMUNy8Ba3YGdBszQmrXLRUoVi3YjBhHYYAmi/nHEu
+         U5kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=B5teSI3NqSzeGu7ngV/22RiyR60khzQ8THYZDZ9DX3Q=;
-        b=RAyjQJeA9GePltbT/sJ4I0Oln2PCkfISSC+zsbEuP/a+hpC3Ql9Yqge9PHvWqrvgay
-         To4x4D2eMoaFXkvEl2iYsvt9cjFs+Ds5Uh88FhAEiJSdpz+v+QICMXFC8mqhZ3B1A8GZ
-         ytQ8sO+UUxt0LlYYvpqnDmUZxEV9zVZgrN/8ti9O0BbZtjPcgRjw2ek/HOC6fmrwjWvE
-         rBOa/PkkUXaVpSLsIbKXKg68HoDl2k1UEhwiY6IgLRWu3KGb0xcAeErAlNrTlUiXHeI2
-         n3ceAdF6/oYJk+VUL3gSMkk2bmDXLujygaYCUV8MPOCh9a3IuI1b74Soqt2m+0hHMCaC
-         tDWw==
-X-Gm-Message-State: AOAM530DE+M1U5ScRsKUEIKdHMdGCnX9JtgAIWp6t2EKKkGW3WZtlLc4
-        6I4mIm7QfE0VnLpLmycW00eZrTjDDI4b5HN4CxA=
-X-Google-Smtp-Source: ABdhPJzta7oQ+XpGVK2Zq9xT6JV4Oyk1mSONp6aaci56rUVbyD/TSoVYl0YhYuGs9rDxTO/7WW+ymmid5oL4NQNzLbQ=
-X-Received: by 2002:a2e:86d8:: with SMTP id n24mr3352289ljj.344.1643546327308;
- Sun, 30 Jan 2022 04:38:47 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=hifISJNHBmnFk0GC+A9Z0ayqNnCFaEB7i+E3Na0lpu0=;
+        b=iWy9+0kiMa0VEpZxShTwPkB+OyOTBhxX+TwJ79t971laVhdPG2VJUBt/iCmKumtf1A
+         iLXPf11kQylW6G42pBPpMg+duEa5au1C5lf+mMTyNf6Wrk3BYLR9zYcwM4rUlGPCAv0l
+         o5TyDFTWiV1jY2E8dm1a9x0hqswrHYGPTG3sxv8dPlrSR+8+ayHuXwkPbTMXJeWtJYFu
+         8DIubYVdhMjDcsq6sjviagefz9+u3PUOXiO1qjBE2tlWsCzioFV/nfywWP+0kJ2vkIj6
+         Jk3MXWDXVfiZw4zYtSJFBy8LdO1Vmyj/2IwcgS/BCeSt1yUlIgg2zLqlQpRQ5cf5ljkw
+         gMqQ==
+X-Gm-Message-State: AOAM532wuB0JKhnIzSe2/2JTlnrTp6FJ6P7BZPs6lwG4vaOIlF+iOZ5V
+        8PjgmJoA0c63jPE/CgfcLZ9nkVveB4gRC+nIjE8=
+X-Google-Smtp-Source: ABdhPJw/7sZ/WX230/bQO9F/RVXuatPnwm/FcMRjriLox5Qz6EKrPVNP272AC5aFbSbGb+uPn1LUYKm+kA3WKxubY8s=
+X-Received: by 2002:a05:6402:1601:: with SMTP id f1mr17288718edv.165.1643565632215;
+ Sun, 30 Jan 2022 10:00:32 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a9a:69ca:0:b0:192:e139:95e2 with HTTP; Sun, 30 Jan 2022
- 04:38:46 -0800 (PST)
-Reply-To: mrs.bill.chantalone01@gmail.com
-From:   Mrs B Chantal <y417204@gmail.com>
-Date:   Sun, 30 Jan 2022 13:38:46 +0100
-Message-ID: <CAM0NOVmcznO9CLxyK3CaXvCX0P-s5yZHtV_KFGQYpvV4-eQZrw@mail.gmail.com>
-Subject: Hello....
-To:     undisclosed-recipients:;
+References: <20220127084754.GA25644@kili>
+In-Reply-To: <20220127084754.GA25644@kili>
+From:   Mark Mielke <mark.mielke@gmail.com>
+Date:   Sun, 30 Jan 2022 13:00:21 -0500
+Message-ID: <CALm7yL0Z-A1mk5OfonTU9zu2izO54Q65nX55fpNYeaeaiZKX0A@mail.gmail.com>
+Subject: Re: [PATCH] scsi: target: iscsi: Use strcmp() instead of strncmp()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        Roman Bolshakov <r.bolshakov@yadro.com>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-You have been compensated with the sum of 9.5 million dollars in this
-united nation the payment will be issue into atm visa  card and send
-to you from the santander bank we need your address and your
-Whatsapp number  + 1 6465853907  this my email.ID
-( mrs.bill.chantal.roland@gmail.com )  contact  me
+Sorry, I knee jerk react to "partial match", which was a red flag for
+me, so strncmp() is almost never used for "partial match" in my
+experience. :-)
 
-Thanks my
+It's really that strncmp() should be used for buffer overflow
+protection, but in this case - it's not. Since, the ", 5" applies to
+the clearly visible "=All" that is both allocated and '\0' terminated.
+It should be against the remaining buffer size of text_ptr. So,
+removing the ", 5" leaves it equally as bad at buffer overflow
+protection as it was before. :-)
 
-mrs bill chantal
+On Thu, Jan 27, 2022 at 10:19 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> We want to match the whole string "=All" and this code does that, but
+> strncmp() is normally used for a partial match and it's more readable
+> to use strcmp().
+>
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/target/iscsi/iscsi_target.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
+> index 2c54c5d8412d..4534101a7376 100644
+> --- a/drivers/target/iscsi/iscsi_target.c
+> +++ b/drivers/target/iscsi/iscsi_target.c
+> @@ -2213,7 +2213,7 @@ iscsit_process_text_cmd(struct iscsi_conn *conn, struct iscsi_cmd *cmd,
+>         /* '=' confirmed in strncmp */
+>         text_ptr = strchr(text_in, '=');
+>         BUG_ON(!text_ptr);
+> -       if (!strncmp("=All", text_ptr, 5)) {
+> +       if (!strcmp("=All", text_ptr)) {
+>                 cmd->cmd_flags |= ICF_SENDTARGETS_ALL;
+>         } else if (!strncmp("=iqn.", text_ptr, 5) ||
+>                    !strncmp("=eui.", text_ptr, 5)) {
+> --
+> 2.20.1
+>
+
+
+-- 
+Mark Mielke <mark.mielke@gmail.com>
