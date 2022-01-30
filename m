@@ -2,52 +2,67 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7882849DD6D
-	for <lists+target-devel@lfdr.de>; Thu, 27 Jan 2022 10:12:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 745754A3649
+	for <lists+target-devel@lfdr.de>; Sun, 30 Jan 2022 13:38:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238291AbiA0JL4 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 27 Jan 2022 04:11:56 -0500
-Received: from arvojournals0.net ([5.187.51.198]:49136 "EHLO mail.night24.pl"
-        rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S238287AbiA0JL4 (ORCPT <rfc822;target-devel@vger.kernel.org>);
-        Thu, 27 Jan 2022 04:11:56 -0500
-X-Greylist: delayed 352 seconds by postgrey-1.27 at vger.kernel.org; Thu, 27 Jan 2022 04:11:56 EST
-Received: by mail.night24.pl (Postfix, from userid 1001)
-        id 1E15463B36; Thu, 27 Jan 2022 04:05:45 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=night24.pl; s=mail;
-        t=1643274347; bh=buBwkictM90Vyd8ElDbF20ov3CLfq+fIaZvvC+nvN7k=;
-        h=Date:From:To:Subject:From;
-        b=tDSH2tJcyUaa4KoIOKzyXUWuCMN2OJcLPXjd0gw7FmdolJQIDlE7u4v9tRinWcdzU
-         sEiAvYxiT4rI9oCbM3nozYygVo2vn26nLxFKys/FSXwpcTAO0GVXF7BVPN1mw1bCm/
-         A5GqNLn79ADhM8c7T5tdncPoCnR+lmV7owYR7L+VnQhJB+D17WHbz5u9IkG1zDZ/v7
-         IGgUlym94TxhHOPzObhMwEH6Air7WP29XYwdrA97edG0WieqXRB/H6m1a6HW6cd743
-         2X94rCEa8Z1q+nK2l5EKb1McRdVty2Z7LM76xOnDdQJCJ2whDHJiEV0IKVvUkBTz1+
-         67DG+uD7qsNtA==
-Received: by mail.night24.pl for <target-devel@vger.kernel.org>; Thu, 27 Jan 2022 09:05:38 GMT
-Message-ID: <20220127024500-0.1.9.8le.0.64frh9rku6@night24.pl>
-Date:   Thu, 27 Jan 2022 09:05:38 GMT
-From:   "Jacek Szkudlarski" <jacek.szkudlarski@night24.pl>
-To:     <target-devel@vger.kernel.org>
-Subject: Wycena paneli fotowoltaicznych
-X-Mailer: mail.night24.pl
+        id S1354795AbiA3Mit (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 30 Jan 2022 07:38:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59512 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240805AbiA3Mit (ORCPT
+        <rfc822;target-devel@vger.kernel.org>);
+        Sun, 30 Jan 2022 07:38:49 -0500
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0513EC061714
+        for <target-devel@vger.kernel.org>; Sun, 30 Jan 2022 04:38:49 -0800 (PST)
+Received: by mail-lj1-x22d.google.com with SMTP id t14so15646864ljh.8
+        for <target-devel@vger.kernel.org>; Sun, 30 Jan 2022 04:38:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=B5teSI3NqSzeGu7ngV/22RiyR60khzQ8THYZDZ9DX3Q=;
+        b=TPqdpfnn514Pcvwtf5SJqkyiVyZLyHOOk7nSus6RZT5bQ+zZ7ZzBCHO1/SZTOwY7BH
+         ps5X0dp1FFmkYazreSSCTCS2Osw43m7HGjWIAE3882tMRrPklY3MxixxH5LHGBZ5/lb5
+         RMES3iiY+1rj0DXghImWEvSfi1Y5nH45dpj/AqAexqECbREmqTBy/Z4h33UthBkFcOP/
+         VFWY3jsTpA2d48G1zrw+Oy7aCYop79u0v7j75U6pjb01++Oj3rZ9blNTuRfeXsNKXFoY
+         RBcn0A0C/k8X+NCRRdqwJsSBnkdzcqr1IxKrh6OaRkE1Cki7bJh1Z2Cu3hO1b37HHcod
+         KipQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=B5teSI3NqSzeGu7ngV/22RiyR60khzQ8THYZDZ9DX3Q=;
+        b=RAyjQJeA9GePltbT/sJ4I0Oln2PCkfISSC+zsbEuP/a+hpC3Ql9Yqge9PHvWqrvgay
+         To4x4D2eMoaFXkvEl2iYsvt9cjFs+Ds5Uh88FhAEiJSdpz+v+QICMXFC8mqhZ3B1A8GZ
+         ytQ8sO+UUxt0LlYYvpqnDmUZxEV9zVZgrN/8ti9O0BbZtjPcgRjw2ek/HOC6fmrwjWvE
+         rBOa/PkkUXaVpSLsIbKXKg68HoDl2k1UEhwiY6IgLRWu3KGb0xcAeErAlNrTlUiXHeI2
+         n3ceAdF6/oYJk+VUL3gSMkk2bmDXLujygaYCUV8MPOCh9a3IuI1b74Soqt2m+0hHMCaC
+         tDWw==
+X-Gm-Message-State: AOAM530DE+M1U5ScRsKUEIKdHMdGCnX9JtgAIWp6t2EKKkGW3WZtlLc4
+        6I4mIm7QfE0VnLpLmycW00eZrTjDDI4b5HN4CxA=
+X-Google-Smtp-Source: ABdhPJzta7oQ+XpGVK2Zq9xT6JV4Oyk1mSONp6aaci56rUVbyD/TSoVYl0YhYuGs9rDxTO/7WW+ymmid5oL4NQNzLbQ=
+X-Received: by 2002:a2e:86d8:: with SMTP id n24mr3352289ljj.344.1643546327308;
+ Sun, 30 Jan 2022 04:38:47 -0800 (PST)
 MIME-Version: 1.0
+Received: by 2002:a9a:69ca:0:b0:192:e139:95e2 with HTTP; Sun, 30 Jan 2022
+ 04:38:46 -0800 (PST)
+Reply-To: mrs.bill.chantalone01@gmail.com
+From:   Mrs B Chantal <y417204@gmail.com>
+Date:   Sun, 30 Jan 2022 13:38:46 +0100
+Message-ID: <CAM0NOVmcznO9CLxyK3CaXvCX0P-s5yZHtV_KFGQYpvV4-eQZrw@mail.gmail.com>
+Subject: Hello....
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Dzie=C5=84 dobry,
+You have been compensated with the sum of 9.5 million dollars in this
+united nation the payment will be issue into atm visa  card and send
+to you from the santander bank we need your address and your
+Whatsapp number  + 1 6465853907  this my email.ID
+( mrs.bill.chantal.roland@gmail.com )  contact  me
 
-dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
-irm=C4=85.
+Thanks my
 
-=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
-ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
-
-Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
-ropozycji?
-
-
-Pozdrawiam,
-Jacek Szkudlarski
+mrs bill chantal
