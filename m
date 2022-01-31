@@ -2,43 +2,80 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D45B54A406A
-	for <lists+target-devel@lfdr.de>; Mon, 31 Jan 2022 11:45:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1877D4A4130
+	for <lists+target-devel@lfdr.de>; Mon, 31 Jan 2022 12:03:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358308AbiAaKpJ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 31 Jan 2022 05:45:09 -0500
-Received: from users210.phy.heteml.jp ([157.7.189.34]:39706 "EHLO
-        users210.phy.heteml.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358150AbiAaKpG (ORCPT
+        id S235668AbiAaLDS (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 31 Jan 2022 06:03:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43394 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1358594AbiAaLBT (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 31 Jan 2022 05:45:06 -0500
-X-Greylist: delayed 402 seconds by postgrey-1.27 at vger.kernel.org; Mon, 31 Jan 2022 05:45:06 EST
-Received: by users210.phy.heteml.jp (Postfix, from userid 995)
-        id E71C6403D813; Mon, 31 Jan 2022 19:38:20 +0900 (JST)
-To:     target-devel@vger.kernel.org
-Subject: =?iso-2022-jp?B?VGhhbmsgeW91IGZvciBjb250YWN0aW5nIHVz?=
-X-PHP-Originating-Script: 51056:contact.php
-From:   yugo_c89@hotmail.co.uk
-Reply-To: yugo_c89@hotmail.co.uk
-Content-Type: text/plain;charset=iso-2022-jp
-X-Mailer: PHP/7.4.27
-Message-Id: <20220131103820.E71C6403D813@users210.phy.heteml.jp>
-Date:   Mon, 31 Jan 2022 19:38:20 +0900 (JST)
+        Mon, 31 Jan 2022 06:01:19 -0500
+Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AA2CC06139F
+        for <target-devel@vger.kernel.org>; Mon, 31 Jan 2022 03:00:08 -0800 (PST)
+Received: by mail-il1-x142.google.com with SMTP id e8so10991856ilm.13
+        for <target-devel@vger.kernel.org>; Mon, 31 Jan 2022 03:00:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=FANIUiWvB3mdY3zLX2DODg2pUIL5eGT5wlydl6jYk40=;
+        b=Ozk//2swZ4n+9EW8l8AJE1MTLlpoaCXK3xzfpPFLIseBsOa2jBlUIXPufJKZWOZJb1
+         LZYSIA+qJrwb7cNfMphudC5bBa0wGV8S3gL6kVVbqGkOdt0B4XP1yUbpKkdrSgOk4SCw
+         v1C0S0LKRkjJnU7f896SEI1wlEalwFx9Rgq5irerJa96uqZolG/hVsfTboEhp5Wo262X
+         Bw5DjIfp6f3BMZuUcN/21CQmX+e0cBVKV6O17yhSY33CkiO9iN1/rQChZ0P/9curfp6q
+         4Ae69srjWBiOD2IQLksGh38ZmWapdFwCTJxNZE6Fdwc1T0xvGWym84r63rPu354BmJN+
+         Mxew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=FANIUiWvB3mdY3zLX2DODg2pUIL5eGT5wlydl6jYk40=;
+        b=DHAcV1Wo9j/4a1Ic0DxSA2426vvXib6kTsPFPWqJf2zG+OUm7byecidFGhKbbdwLsv
+         Mdn+QK4/oq18BggX4dM4xfLwnD9/qAJFUhkL+qoc34WDfhneoswGu0WKCq/7Zr40n8LK
+         jRQXR0yEC0mybF+CRGl5899K0D2tFehwZG+xJJXRc/w9bH9keSted2f3obTFtaEr4ekf
+         WrXyJKEBrOdg/bMvXDUAoHt8B+WIZN7V6maJR8xBBr+9rZQfI8n1lAHOEDJ32XSVNWk1
+         WjUomY2NsdaiD9Wi8LGBiuv37Tc2kjCyZhJQ/fuxIPxkKOp8F3Eevcb1x04ZJ+nYVKqC
+         +XnQ==
+X-Gm-Message-State: AOAM533O8R723LoKhtOnZlWhxJCx4QoFfiOJwbRlrh41lijyV30jAEV8
+        qaF/lKZTatQGHUTjZnmBkVXenNz8Q/24Zy6SRa8=
+X-Google-Smtp-Source: ABdhPJwTER/p0YcvOwwJid91RzPvkEw8DmHtUlVRny5nV0kksgWcR6ScIqwhpLtpjii0MFHZVgmhnLw6wJn43CXNw30=
+X-Received: by 2002:a92:ca4f:: with SMTP id q15mr10723189ilo.181.1643626807913;
+ Mon, 31 Jan 2022 03:00:07 -0800 (PST)
+MIME-Version: 1.0
+Reply-To: daniellakyle60@gmail.com
+Sender: drdanielmorris11111@gmail.com
+Received: by 2002:a05:6638:1248:0:0:0:0 with HTTP; Mon, 31 Jan 2022 03:00:07
+ -0800 (PST)
+From:   Mrs daniell akyle <daniellakyle60@gmail.com>
+Date:   Mon, 31 Jan 2022 12:00:07 +0100
+X-Google-Sender-Auth: juhwXopT4FowK4J6T8rApuMl0w4
+Message-ID: <CAKFcj-OsHQc6b32Puiy4zbkpRh0TFP-Vu0BdoENoHiCXtxRwQQ@mail.gmail.com>
+Subject: Ahoj
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-
-Thank you for contacting us.
-
-＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-
-【 name 】 ?? Cristal liked you! Click Here: http://inx.lv/Dl7P?dqxt ??
-【 email 】 target-devel@vger.kernel.org
-【 title 】 on5bpy
-【 content 】 rovtdxy
-
-＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-
-Date：2022/01/31 (Mon) 19:38:20
-
+Pozdravy
+Jmenuji se pan=C3=AD Daniella Kyleov=C3=A1, je mi 58 let
+Filip=C3=ADny. V sou=C4=8Dasn=C3=A9 dob=C4=9B jsem hospitalizov=C3=A1n na F=
+ilip=C3=ADn=C3=A1ch, kde jsem
+podstupuje l=C3=A9=C4=8Dbu akutn=C3=ADho karcinomu j=C3=ADcnu. jsem um=C3=
+=ADraj=C3=ADc=C3=AD,
+vdova, kter=C3=A1 se rozhodla darovat =C4=8D=C3=A1st sv=C3=A9ho majetku spo=
+lehliv=C3=A9 osob=C4=9B
+kter=C3=A1 tyto pen=C3=ADze pou=C5=BEije na pomoc chud=C3=BDm a m=C3=A9n=C4=
+=9B privilegovan=C3=BDm. Chci
+poskytnout dar ve v=C3=BD=C5=A1i 3 700 000 =C2=A3 na sirotky nebo charitati=
+vn=C3=AD organizace
+ve va=C5=A1=C3=AD oblasti. Zvl=C3=A1dne=C5=A1 to? Pokud jste ochotni tuto n=
+ab=C3=ADdku p=C5=99ijmout
+a ud=C4=9Blejte p=C5=99esn=C4=9B tak, jak v=C3=A1m =C5=99=C3=ADk=C3=A1m, pa=
+k se mi vra=C5=A5te pro dal=C5=A1=C3=AD vysv=C4=9Btlen=C3=AD.
+pozdravy
+Pan=C3=AD Daniella Kyleov=C3=A1
