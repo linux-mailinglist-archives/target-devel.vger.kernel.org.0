@@ -1,86 +1,60 @@
 Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
-Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 344004A5C8E
-	for <lists+target-devel@lfdr.de>; Tue,  1 Feb 2022 13:47:44 +0100 (CET)
+Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
+	by mail.lfdr.de (Postfix) with ESMTP id 923B94A6CF1
+	for <lists+target-devel@lfdr.de>; Wed,  2 Feb 2022 09:32:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238125AbiBAMrn (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 1 Feb 2022 07:47:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58322 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235978AbiBAMrm (ORCPT
+        id S237303AbiBBIcD (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 2 Feb 2022 03:32:03 -0500
+Received: from mail.privatemain.com.pl ([94.177.187.11]:60166 "EHLO
+        mail.privatemain.com.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235733AbiBBIcB (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 1 Feb 2022 07:47:42 -0500
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B5A3C061714
-        for <target-devel@vger.kernel.org>; Tue,  1 Feb 2022 04:47:42 -0800 (PST)
-Received: by mail-lj1-x242.google.com with SMTP id t9so23901235lji.12
-        for <target-devel@vger.kernel.org>; Tue, 01 Feb 2022 04:47:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=r4uL6sckAnaCJM6MEQaHZL7fDy5zSQzjqi9SEPfLKhw=;
-        b=XuIqjdxsDe5qZz4xUk8yb+5VxnXAid7nUT5n2C0bJeeSUnUJarNcaXlKjasbfbk3ea
-         726P3s5AZqZKYTZ62ub5BBOyGgF7btotsbMkE3GwyOcrLfYOFAjOd1unhxXNdSgjboPB
-         bWA+QvLNmE2Oh/d1OO8xwosekkH9szpygrFmVtIYBSiubxlpxm2NJM5ACHGvMgeeJ49w
-         gLpFJZdzoPcWTzKunKmMxxCYHIJ3msyKFUCISPPJqr3NNOZ0QBv+KJeUn0hiK+YM87bH
-         9UpGiWF7pQhuYp4G9EIFNdNmQucA9FtyHE/Y6H7jp4rk6jrTyN19HOEAwGGu1/Hj44Kp
-         XhNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=r4uL6sckAnaCJM6MEQaHZL7fDy5zSQzjqi9SEPfLKhw=;
-        b=drScJ2p15dCN9y43GUfKbuzIJe2EqbE51MazEMbgeekis8O4wr1NoJuxg526qf27jg
-         IFy85YxVMbJe4BJwqCwEWW4qrP2iojiMWdrZlipBGwkUo5VOMxGLE+c7TORsOrAvEiwq
-         bFeecbo4PGQ7VAsSerflufHl6/6/KR03AJNC5nxhoA+5edmDcY/hZxLI5nJYHQVrlJ42
-         2psGN2vC7/SNoCmnarz8aXXw+hOCYHpILWApQW4KhSfkWt0akfBo9ev4Cs7iHJnBFzrH
-         Oh6+pKgV1g4a9/WE8LJA8PWlQuFo237S5/WTr755f022fs3LQkJJK5pSIENpyf1yk2wO
-         OUhQ==
-X-Gm-Message-State: AOAM533jWXf4y05K0/lKjApYvzWY37YE7W4I/+uFKqGcKqdzffXLWKPp
-        HRkHguFeEFyVs5hHHi/d9A2M9BMzgBchQufdglU=
-X-Google-Smtp-Source: ABdhPJyf6ls1Rd2qgKaudu6soCt5TSrMTCfJ/DIJdMol2G2GLU1GKyfET77juCYglIJZunOJsyBj3rTILKcKa809FVA=
-X-Received: by 2002:a05:651c:b08:: with SMTP id b8mr16499550ljr.158.1643719660476;
- Tue, 01 Feb 2022 04:47:40 -0800 (PST)
+        Wed, 2 Feb 2022 03:32:01 -0500
+Received: by mail.privatemain.com.pl (Postfix, from userid 1001)
+        id 934D4A18B7; Wed,  2 Feb 2022 08:31:37 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=privatemain.com.pl;
+        s=mail; t=1643790719;
+        bh=M1ZVeu3q6Upppe+FUx/3rgI7MKJXh389NZDbgCK1SX4=;
+        h=Date:From:To:Subject:From;
+        b=wKCINY17BAMJmeTMQDWoQEv6p9cs/kaUrx/4A3hrW04NgO++iXOvUD/wqknfRZyC2
+         n13TesyHOk4R2cctVtEanXM63Aaf5dH+//pO5vFPaA5RgTq9/yCvg3LMVsFnGnq3Nl
+         Ro2yYvx0/+w3VgUsTjchUXu3GgPtj9evloGIPPvqZRAzZrQD6nhccgX774tfWPFpae
+         w7nyEUkkImvlmeqSsbwqTp0bTPl0qMaga7Up2aOkn2flMrbmU4OWIVg2FTyHQs93q9
+         ohu5q6196jN1lOiSVpA3V0wuJ65Wd9H79z+iRU9MLmJJm28cGQHCk221a/dsXWvmDc
+         ofYAZaFtMhF7Q==
+Received: by mail.privatemain.com.pl for <target-devel@vger.kernel.org>; Wed,  2 Feb 2022 08:31:11 GMT
+Message-ID: <20220202074501-0.1.6.sz.0.qz3jwmmhep@privatemain.com.pl>
+Date:   Wed,  2 Feb 2022 08:31:11 GMT
+From:   =?UTF-8?Q? "Arkadiusz_Soko=C5=82owski" ?= 
+        <arkadiusz.sokolowski@privatemain.com.pl>
+To:     <target-devel@vger.kernel.org>
+Subject: Koszty instalacji fotowoltaicznej
+X-Mailer: mail.privatemain.com.pl
 MIME-Version: 1.0
-Received: by 2002:a9a:7a90:0:b0:18f:3de1:d2f0 with HTTP; Tue, 1 Feb 2022
- 04:47:39 -0800 (PST)
-Reply-To: mualixx22@gmail.com
-From:   MR MUSSA ALI <mrsrochkabore@gmail.com>
-Date:   Tue, 1 Feb 2022 04:47:39 -0800
-Message-ID: <CABn=2XJX9QNe0u41cVY4eukMEkm0OKyn6FNjjcSSdGtF-xbKYg@mail.gmail.com>
-Subject: Urgent Reply
-To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Dear  friend,
+Dzie=C5=84 dobry,
 
-I know this means of communication may not be morally right to you as
-a person but I also have had a great thought about it and I have come
-to this conclusion which I am about to share with you.
+stworzyli=C5=9Bmy specjaln=C4=85 ofert=C4=99 dla firm, na kompleksow=C4=85=
+ obs=C5=82ug=C4=99 inwestycji w fotowoltaik=C4=99. =20
 
-INTRODUCTION: I am a assistance  and in one way or the other was hoping
-you will cooperate with me as a partner in a project of transferring
-an abandoned fund of a late customer of the bank worth of $18,000,000
-(Eighteen Million Dollars US).
+Specjalizujemy si=C4=99 w zakresie doboru, monta=C5=BCu i serwisie instal=
+acji fotowoltaicznych, dysponujemy najnowocze=C5=9Bniejszymi rozwi=C4=85z=
+ania, kt=C3=B3re zapewni=C4=85 Pa=C5=84stwu oczekiwane rezultaty.
 
-This will be disbursed or shared between the both of us in these
-percentages, 55% for me and 45% for you. Contact me immediately if
-that is alright for you so that we can enter in agreement before we
-start processing for the transfer of the funds. If you are satisfied
-with this proposal, please provide the below details for the Mutual
-Confidential Agreement:
+Mo=C5=BCemy przygotowa=C4=87 dla Pa=C5=84stwa wst=C4=99pn=C4=85 kalkulacj=
+=C4=99 i przeanalizowa=C4=87 efekty mo=C5=BCliwe do osi=C4=85gni=C4=99cia=
+=2E
 
-1. Full Name and Address
-2. Occupation and Country of Origin
-3. Telephone Number
+Czy s=C4=85 Pa=C5=84stwo otwarci na wst=C4=99pn=C4=85 rozmow=C4=99 w tym =
+temacie?
 
-I wait for your response so that we can commence on this project as
-soon as possible.
 
-Regards,
-Mr. Mussa  Ali
+Pozdrawiam
+Arkadiusz Soko=C5=82owski
