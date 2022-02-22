@@ -2,108 +2,107 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3050A4BEB0B
-	for <lists+target-devel@lfdr.de>; Mon, 21 Feb 2022 20:37:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 513004BF2E0
+	for <lists+target-devel@lfdr.de>; Tue, 22 Feb 2022 08:48:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232881AbiBUTSk (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 21 Feb 2022 14:18:40 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:47576 "EHLO
+        id S229507AbiBVHq5 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 22 Feb 2022 02:46:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232861AbiBUTSh (ORCPT
+        with ESMTP id S229545AbiBVHq4 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 21 Feb 2022 14:18:37 -0500
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1A295F88
-        for <target-devel@vger.kernel.org>; Mon, 21 Feb 2022 11:18:10 -0800 (PST)
-Received: by mail-wr1-x443.google.com with SMTP id o24so28793429wro.3
-        for <target-devel@vger.kernel.org>; Mon, 21 Feb 2022 11:18:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=kvhZrpHBK0kPy/iKTd/Hcailtj+KjaeLTS+rPhszZPs=;
-        b=DvKvy4anWNpS713ruDITpK8IGz6yYCH8AwvjaRhPgx6UqY+1yApgXuN95QoKzY16ua
-         k8wEmqqtfp0LsSRz5qv7qAdcrGFLtH8Jhl1vWJsdKQI5Mbr807uOtNQnOZIcl06XzO2b
-         MRfvfZIeL3t7wU5jWhrOFiYQPP/BNjrHD7IBtcJwnjFcJrREUCIoEXxD8bBZclpU2/XN
-         Fq+HeKsz3vgygYaV5QSQmALtlGKTRag0ufJ8et7dPY8OJAybSsat2lqpbPCg0nAYAmw2
-         CqLM77XHNpfLctk3RgyQC89rik+NvSz2wXYZlrq4inP/++nXWbkeI2NOqvfQtb1pHhKM
-         m7aQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=kvhZrpHBK0kPy/iKTd/Hcailtj+KjaeLTS+rPhszZPs=;
-        b=5xC4UNgQ5KZJ2RrNGeQCcX5FwmuwXJNcf8HRdK3eYDoIP6Q7Ef7mLTlBBbR8n+59Hl
-         j9+sx9pDkqAvdfXFkohQciUyAVAdxFUrQBkZGLrnWVcQkQ/1PRrhuWugzkAkd5bvxfzK
-         oPoDpHo/pYIKPeDSq9QjQ3GubJJxpxTEaW2F9a5xMlhnXPm8259RvvQIMqBvubR3zXk3
-         cDd1ckCmlaeXNRNZrpvIDj05FTVQncm227p/9VVe/p5dkbshZBFTB9Ozvs60EJi64y+J
-         ypTK7iPJ+AS+f4nO8Qf6WrC/067Z7mBXZ/Croy0FxZeNdqu8r6PHDjXtoRj95jlq2r1x
-         EV+A==
-X-Gm-Message-State: AOAM532kIuxeQYZDztuBzTqeavEBWcVnqsuqvNZwp8YnhiJ0KwavAJdy
-        +GKcl6liD9fX5R7CV+NJnLukEZSKxLhpk0tBiss=
-X-Google-Smtp-Source: ABdhPJwkrndb61WcPmfegEqKY5hx76jmw0qG8ijOi3O3cg1b0D1psyG+s2c3jkhnn+1kA6n2bhxblvT85Gi0WkY0vCc=
-X-Received: by 2002:adf:df0b:0:b0:1e4:979f:a56f with SMTP id
- y11-20020adfdf0b000000b001e4979fa56fmr16438990wrl.686.1645471089071; Mon, 21
- Feb 2022 11:18:09 -0800 (PST)
+        Tue, 22 Feb 2022 02:46:56 -0500
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40EE5120E80;
+        Mon, 21 Feb 2022 23:38:38 -0800 (PST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 0947C67373; Tue, 22 Feb 2022 08:38:33 +0100 (CET)
+Date:   Tue, 22 Feb 2022 08:38:33 +0100
+From:   Christoph Hellwig <hch@lst.de>
+To:     "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc:     Christoph Hellwig <hch@lst.de>, axboe@kernel.dk,
+        philipp.reisner@linbit.com, lars.ellenberg@linbit.com,
+        target-devel@vger.kernel.org, haris.iqbal@ionos.com,
+        jinpu.wang@ionos.com, manoj@linux.ibm.com, mrochs@linux.ibm.com,
+        ukrishn@linux.ibm.com, linux-block@vger.kernel.org,
+        linux-scsi@vger.kernel.org, drbd-dev@lists.linbit.com,
+        dm-devel@redhat.com
+Subject: Re: [PATCH 7/7] block: remove REQ_OP_WRITE_SAME support
+Message-ID: <20220222073833.GA4979@lst.de>
+References: <20220209082828.2629273-1-hch@lst.de> <20220209082828.2629273-8-hch@lst.de> <yq135kefh5j.fsf@ca-mkp.ca.oracle.com>
 MIME-Version: 1.0
-Received: by 2002:adf:e488:0:0:0:0:0 with HTTP; Mon, 21 Feb 2022 11:18:07
- -0800 (PST)
-Reply-To: jgrollande@gmail.com
-From:   "Mrs.Noah Emily Sara" <nichsteve1@gmail.com>
-Date:   Mon, 21 Feb 2022 11:18:07 -0800
-Message-ID: <CAOgf51Bi06jf84Zqs4AY-ikdw+UV-gc-f8mRv9jqWh_4_8dGsg@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:443 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [nichsteve1[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [nichsteve1[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  3.5 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq135kefh5j.fsf@ca-mkp.ca.oracle.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-My names are Mrs.Noah Emily Sara I'm from Alberta Canada but stay here
-in the Bradford United Kingdom. There is something
+On Sat, Feb 19, 2022 at 08:44:18PM -0500, Martin K. Petersen wrote:
+> > -static ssize_t queue_write_same_max_show(struct request_queue *q, char *page)
+> > -{
+> > -	return sprintf(page, "%llu\n",
+> > -		(unsigned long long)q->limits.max_write_same_sectors << 9);
+> > -}
+> > -
+> 
+> This tripped one of my test scripts. We should probably return 0 here
+> like we did for discard_zeroes_data and leave the sysfs entry in place.
 
-very important I want to discuss with you.
+The maybe fold this in?
 
-I'm a very influential and wealthy woman but I'm sick and dying. I'm
-suffering from severe oesophageal cancer and have a few months to
-live. I send you this message because I want to make a donation to you
-for charity purposes. I would like to donate funds for charity and
-investment purposes to you.
+---
+From eae8e9b8cff5ee8522b00430a4aabd01ebc7c55a Mon Sep 17 00:00:00 2001
+From: Christoph Hellwig <hch@lst.de>
+Date: Tue, 22 Feb 2022 08:35:59 +0100
+Subject: block: restore the write_same_max sysfs attribute
 
-Get back to me so I can send you more details about my donation.
+Some userspace breaks if this attribute is gone.  Restore it and always
+return 0.
 
-Warm Regards,
-Mrs.Noah Emily Sara
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ block/blk-sysfs.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
+index 4a5bb47bee3ce..431fdd036f65a 100644
+--- a/block/blk-sysfs.c
++++ b/block/blk-sysfs.c
+@@ -212,6 +212,11 @@ static ssize_t queue_discard_zeroes_data_show(struct request_queue *q, char *pag
+ 	return queue_var_show(0, page);
+ }
+ 
++static ssize_t queue_write_same_max_show(struct request_queue *q, char *page)
++{
++	return sprintf(page, "%llu\n", 0ULL);
++}
++
+ static ssize_t queue_write_zeroes_max_show(struct request_queue *q, char *page)
+ {
+ 	return sprintf(page, "%llu\n",
+@@ -581,6 +586,7 @@ QUEUE_RO_ENTRY(queue_discard_max_hw, "discard_max_hw_bytes");
+ QUEUE_RW_ENTRY(queue_discard_max, "discard_max_bytes");
+ QUEUE_RO_ENTRY(queue_discard_zeroes_data, "discard_zeroes_data");
+ 
++QUEUE_RO_ENTRY(queue_write_same_max, "write_same_max_bytes");
+ QUEUE_RO_ENTRY(queue_write_zeroes_max, "write_zeroes_max_bytes");
+ QUEUE_RO_ENTRY(queue_zone_append_max, "zone_append_max_bytes");
+ QUEUE_RO_ENTRY(queue_zone_write_granularity, "zone_write_granularity");
+@@ -636,6 +642,7 @@ static struct attribute *queue_attrs[] = {
+ 	&queue_discard_max_entry.attr,
+ 	&queue_discard_max_hw_entry.attr,
+ 	&queue_discard_zeroes_data_entry.attr,
++	&queue_write_same_max_entry.attr,
+ 	&queue_write_zeroes_max_entry.attr,
+ 	&queue_zone_append_max_entry.attr,
+ 	&queue_zone_write_granularity_entry.attr,
+-- 
+2.30.2
+
