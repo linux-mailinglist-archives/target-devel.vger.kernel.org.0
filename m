@@ -2,107 +2,93 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 513004BF2E0
-	for <lists+target-devel@lfdr.de>; Tue, 22 Feb 2022 08:48:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B0994BF5BC
+	for <lists+target-devel@lfdr.de>; Tue, 22 Feb 2022 11:25:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229507AbiBVHq5 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 22 Feb 2022 02:46:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54440 "EHLO
+        id S231162AbiBVKYh (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 22 Feb 2022 05:24:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229545AbiBVHq4 (ORCPT
+        with ESMTP id S231194AbiBVKYa (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 22 Feb 2022 02:46:56 -0500
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40EE5120E80;
-        Mon, 21 Feb 2022 23:38:38 -0800 (PST)
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 0947C67373; Tue, 22 Feb 2022 08:38:33 +0100 (CET)
-Date:   Tue, 22 Feb 2022 08:38:33 +0100
-From:   Christoph Hellwig <hch@lst.de>
-To:     "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc:     Christoph Hellwig <hch@lst.de>, axboe@kernel.dk,
-        philipp.reisner@linbit.com, lars.ellenberg@linbit.com,
-        target-devel@vger.kernel.org, haris.iqbal@ionos.com,
-        jinpu.wang@ionos.com, manoj@linux.ibm.com, mrochs@linux.ibm.com,
-        ukrishn@linux.ibm.com, linux-block@vger.kernel.org,
-        linux-scsi@vger.kernel.org, drbd-dev@lists.linbit.com,
-        dm-devel@redhat.com
-Subject: Re: [PATCH 7/7] block: remove REQ_OP_WRITE_SAME support
-Message-ID: <20220222073833.GA4979@lst.de>
-References: <20220209082828.2629273-1-hch@lst.de> <20220209082828.2629273-8-hch@lst.de> <yq135kefh5j.fsf@ca-mkp.ca.oracle.com>
+        Tue, 22 Feb 2022 05:24:30 -0500
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B43F159EB8
+        for <target-devel@vger.kernel.org>; Tue, 22 Feb 2022 02:24:05 -0800 (PST)
+Received: by mail-wr1-x42e.google.com with SMTP id j17so5484474wrc.0
+        for <target-devel@vger.kernel.org>; Tue, 22 Feb 2022 02:24:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=FyG0ATSkb5fmrso4VuDc0KiEUJrvvMWML2pstdAYUxY=;
+        b=pXTibmYGBx12yu5rhR5//nfYznFaMD51f/24MZt2MBPHY+YblB4iWeyWquCs1oipbO
+         rCObe3Sjnbr3eNV8dZoI2zMBQ20wzDFhIkGIEpHzeeflYtzVzn8kITLlxWkAzR3Pttpz
+         zUHFAVgAguHyeRFjTAILhVcLr//ZUuNUBABErpnxUYCbrdm5IvHvKz+svpm8Er/p56cZ
+         1Ien8Hd1yzYxf5Z2aTKTnBnPsSKijS1sISqnsLlJsic15l3YnBHj4yktVtDK5PE3DkQt
+         URx2MdzPK9KJFp4h1R74DxT6MTBE/TPldYBpeAUxEiQp9+JD+Z9TAUAa00gLojT9PAAV
+         ue7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=FyG0ATSkb5fmrso4VuDc0KiEUJrvvMWML2pstdAYUxY=;
+        b=zSEkH4ZUeOGvvMv67MnnmoelhlaIWTbwj5VmVa+Y315wOiJ9aLFz17YHkT7xFN6ErV
+         5/C6LFfYnCv0DdzfOSoBq5MR7AkDLN+d48so1PaJsgUHsdNI/grNVsID75bZ99YZA7kv
+         Nm6uD0127YGImC2NHsO35Ra5uWjcSOq2nMZoSQ/rJFxyPnOUkhbq33+4Y8Mxws3WQl1K
+         1lOBAyngUsNKhjLH+e7EaNUjl0qEaO2fwABbtOEFg0X5+2+uJPIZqlGtv/TKDybMp0tR
+         MovuA/fPafYu/YXWNy/v477iBJdaxoqv+DunyMd3vKwgPBF1Xl2OaHdqFdVBMgULAb5a
+         9wgg==
+X-Gm-Message-State: AOAM5313IcP9qfLyqZVqgj2xatqp7ZATFb5uSVykA9TNEfdu8T/+E4S+
+        ntwCDw1j3xXTzXjtkwkK8xQ=
+X-Google-Smtp-Source: ABdhPJydKrIrpyS2LZzwZerVWTqHFV4/5twdIxYmHGteecd6TNj1377uGks4FRfRzan7S8rBol/Jeg==
+X-Received: by 2002:a05:6000:2cb:b0:1ea:9133:43c3 with SMTP id o11-20020a05600002cb00b001ea913343c3mr1718403wry.47.1645525443995;
+        Tue, 22 Feb 2022 02:24:03 -0800 (PST)
+Received: from [192.168.0.133] ([5.193.8.34])
+        by smtp.gmail.com with ESMTPSA id u15sm54137760wrn.48.2022.02.22.02.24.00
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Tue, 22 Feb 2022 02:24:03 -0800 (PST)
+Message-ID: <6214b9c3.1c69fb81.83d06.1bb3@mx.google.com>
+From:   Mrs Maria Elisabeth Schaeffler <garyvernon830@gmail.com>
+X-Google-Original-From: Mrs Maria Elisabeth Schaeffler
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq135kefh5j.fsf@ca-mkp.ca.oracle.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Spende
+To:     Recipients <Mrs@vger.kernel.org>
+Date:   Tue, 22 Feb 2022 14:23:56 +0400
+Reply-To: mariaeisaeth001@gmail.com
+X-Spam-Status: No, score=2.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,TO_MALFORMED,T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Sat, Feb 19, 2022 at 08:44:18PM -0500, Martin K. Petersen wrote:
-> > -static ssize_t queue_write_same_max_show(struct request_queue *q, char *page)
-> > -{
-> > -	return sprintf(page, "%llu\n",
-> > -		(unsigned long long)q->limits.max_write_same_sectors << 9);
-> > -}
-> > -
-> 
-> This tripped one of my test scripts. We should probably return 0 here
-> like we did for discard_zeroes_data and leave the sysfs entry in place.
+Hallo,
 
-The maybe fold this in?
+Ich bin Frau Maria Elisabeth Schaeffler, eine deutsche Wirtschaftsmagnatin,=
+ Investorin und Philanthropin. Ich bin der Vorsitzende von Wipro Limited. I=
+ch habe 25 Prozent meines pers=F6nlichen Verm=F6gens f=FCr wohlt=E4tige Zwe=
+cke ausgegeben. Und ich habe auch versprochen zu geben
+der Rest von 25% geht dieses Jahr 2021 an Einzelpersonen. Ich habe mich ent=
+schlossen, Ihnen 1.500.000,00 Euro zu spenden. Wenn Sie an meiner Spende in=
+teressiert sind, kontaktieren Sie mich f=FCr weitere Informationen.
 
----
-From eae8e9b8cff5ee8522b00430a4aabd01ebc7c55a Mon Sep 17 00:00:00 2001
-From: Christoph Hellwig <hch@lst.de>
-Date: Tue, 22 Feb 2022 08:35:59 +0100
-Subject: block: restore the write_same_max sysfs attribute
+Sie k=F6nnen auch =FCber den untenstehenden Link mehr =FCber mich lesen
 
-Some userspace breaks if this attribute is gone.  Restore it and always
-return 0.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- block/blk-sysfs.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+https://en.wikipedia.org/wiki/Maria-Elisabeth_Schaeffler
 
-diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-index 4a5bb47bee3ce..431fdd036f65a 100644
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -212,6 +212,11 @@ static ssize_t queue_discard_zeroes_data_show(struct request_queue *q, char *pag
- 	return queue_var_show(0, page);
- }
- 
-+static ssize_t queue_write_same_max_show(struct request_queue *q, char *page)
-+{
-+	return sprintf(page, "%llu\n", 0ULL);
-+}
-+
- static ssize_t queue_write_zeroes_max_show(struct request_queue *q, char *page)
- {
- 	return sprintf(page, "%llu\n",
-@@ -581,6 +586,7 @@ QUEUE_RO_ENTRY(queue_discard_max_hw, "discard_max_hw_bytes");
- QUEUE_RW_ENTRY(queue_discard_max, "discard_max_bytes");
- QUEUE_RO_ENTRY(queue_discard_zeroes_data, "discard_zeroes_data");
- 
-+QUEUE_RO_ENTRY(queue_write_same_max, "write_same_max_bytes");
- QUEUE_RO_ENTRY(queue_write_zeroes_max, "write_zeroes_max_bytes");
- QUEUE_RO_ENTRY(queue_zone_append_max, "zone_append_max_bytes");
- QUEUE_RO_ENTRY(queue_zone_write_granularity, "zone_write_granularity");
-@@ -636,6 +642,7 @@ static struct attribute *queue_attrs[] = {
- 	&queue_discard_max_entry.attr,
- 	&queue_discard_max_hw_entry.attr,
- 	&queue_discard_zeroes_data_entry.attr,
-+	&queue_write_same_max_entry.attr,
- 	&queue_write_zeroes_max_entry.attr,
- 	&queue_zone_append_max_entry.attr,
- 	&queue_zone_write_granularity_entry.attr,
--- 
-2.30.2
-
+Sch=F6ne Gr=FC=DFe
+Gesch=E4ftsf=FChrer Wipro Limited
+Maria-Elisabeth_Schaeffler
+Email: mariaeisaeth001@gmail.com=20
