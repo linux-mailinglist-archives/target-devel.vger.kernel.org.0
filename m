@@ -2,106 +2,76 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D4DE4C9CFF
-	for <lists+target-devel@lfdr.de>; Wed,  2 Mar 2022 06:14:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 425F74CEA04
+	for <lists+target-devel@lfdr.de>; Sun,  6 Mar 2022 09:22:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239463AbiCBFOg (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 2 Mar 2022 00:14:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42006 "EHLO
+        id S232577AbiCFIXB (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 6 Mar 2022 03:23:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239521AbiCBFO0 (ORCPT
+        with ESMTP id S229913AbiCFIXB (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 2 Mar 2022 00:14:26 -0500
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57BC4A9A72;
-        Tue,  1 Mar 2022 21:13:43 -0800 (PST)
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2222cXOt016190;
-        Wed, 2 Mar 2022 05:13:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2021-07-09;
- bh=FJ/slUmyfVzJZk6jgRLUq//9lqbCFNZrAkRugfbn7XY=;
- b=m2pHnaHw9+VLURCb6pptbRrIZd9ijwuSU9jWcdRUIHuLGQrM0qX47XMbDQOpjldIAg08
- CZH8h7bfFgYwps0/cM7gmhlATA42jVxWnpMnNPgJh1UMgyWlL9JeenwlygReIrjK4RCk
- EjxgUNo47jjv9UIw68V3r2hjaMo+Dp5TAoBuO2e1Qouu0q/O+X/C/UH1s8eBATvfdRtK
- CtPBOcLBX6BKMJCJwx7G4t4tAzqADKjEVRLnMdrxdELjzID7kD6acLj7u5mQRh+xhId7
- X2RZNTqiKOR3cQ7beS/1XUe9URLAH51K3ebia/UpHgyAdGIEJAAPRZBRi8ATE13hnPcQ eg== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by mx0b-00069f02.pphosted.com with ESMTP id 3ehbk9b9vt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 02 Mar 2022 05:13:39 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 2225C1i8175289;
-        Wed, 2 Mar 2022 05:13:38 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by userp3030.oracle.com with ESMTP id 3ef9ayxgnq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 02 Mar 2022 05:13:38 +0000
-Received: from userp3030.oracle.com (userp3030.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 2225DVPS178145;
-        Wed, 2 Mar 2022 05:13:38 GMT
-Received: from ca-mkp.mkp.ca.oracle.com (ca-mkp.ca.oracle.com [10.156.108.201])
-        by userp3030.oracle.com with ESMTP id 3ef9ayxgcv-7;
-        Wed, 02 Mar 2022 05:13:38 +0000
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Subject: Re: remove struct scsi_request v2
-Date:   Wed,  2 Mar 2022 00:13:25 -0500
-Message-Id: <164619702114.16127.6666650319483152093.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220224175552.988286-1-hch@lst.de>
-References: <20220224175552.988286-1-hch@lst.de>
+        Sun, 6 Mar 2022 03:23:01 -0500
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A78DF25C67
+        for <target-devel@vger.kernel.org>; Sun,  6 Mar 2022 00:22:09 -0800 (PST)
+Received: by mail-lf1-x136.google.com with SMTP id b11so21261954lfb.12
+        for <target-devel@vger.kernel.org>; Sun, 06 Mar 2022 00:22:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
+        b=aFtvZ/J2/byl9AhiMzQrGigF1ViSgkRpSl3bYkBLKa3CpykpHIT4Z/sgyq2WUX8wLA
+         +AaIp+M9TCsex+ihFSmkXvSMyPCp1yhN/abQXB3RQJhJBo0Bwj+pqFSYyj//BBtQdAcb
+         CQtSKYSEIrUPMtKlaa64kAPVBhIyHHGXFOTVdczRd7IMXj5GEtpuUmTeUk8HbFqHKAGO
+         zCdSwqsERsud90oX+qz7PUx9kWOCnF8+s+sC1OeLEkDgleeBi4R2mzPPUkzxQlPn/kBP
+         fZOrrqMxIsniqXrQZ4ann6oIb0ckYXfGfYKZLEko+KDGmTdVPSScRwZNlP2GCE3iJa2M
+         1rew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
+        b=wxHuIpemHYDjZfbSsP808TU3Cgrc+7RkV/uVnXa1Yq+o4EIspmbXBygyv++ONM2uNq
+         uEEbPn23YccSbLxqG91fS+iGn3E/44bmHENgEdVD+ICVYyBG2ASsHkmLIlT0Ca0qdl4R
+         KaQnPhytODmOoK2auv9yIcNUCCG6RvuQ+sNAQ/jNCQxuoIOfNT7NQmFfg9TyWecTcRmA
+         JA/0rV0ziYp+PnKfVQ/ttcL4ZPami5G+rfwG0zermLsFeYFokJ8mOwTiktoLTKrZSw+k
+         S2cjKDlFg9gkA5AonULwnhWspcyN/amqMPVCZVhVtEGlkyPqL59wI7R7CXGdWGebv1J6
+         0L+A==
+X-Gm-Message-State: AOAM5334X3PGmWoqf4w3evy+wapcmCrx8Fag8TER9Xw3jO3VBM03YiuX
+        yWKWkpr8EVL7TsI6THt4IxsRS+i/ARkIgPK4swQ=
+X-Google-Smtp-Source: ABdhPJzCf63TJW8yC5DUEPbYWkhTGpuJ3Llg5QzG3RzuaE+Zn8BtVcPZlq4Zx8g+ElyKL0HwBTwaZECwrG9R6qI/BB0=
+X-Received: by 2002:a05:6512:b21:b0:443:db77:375e with SMTP id
+ w33-20020a0565120b2100b00443db77375emr4242095lfu.1.1646554928034; Sun, 06 Mar
+ 2022 00:22:08 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: IGWqcdbrgUnMcnR65o40HXNYBTSwpqrd
-X-Proofpoint-ORIG-GUID: IGWqcdbrgUnMcnR65o40HXNYBTSwpqrd
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Reply-To: mrs.susanelwoodhara17@gmail.com
+Sender: mrs.arawyann@gmail.com
+Received: by 2002:ab3:7d89:0:0:0:0:0 with HTTP; Sun, 6 Mar 2022 00:22:07 -0800 (PST)
+From:   Mrs Susan Elwood Hara <mrs.susanelwoodhara17@gmail.com>
+Date:   Sun, 6 Mar 2022 08:22:07 +0000
+X-Google-Sender-Auth: of5dhqXGRuDnl_SMWFrhF3Qpt8M
+Message-ID: <CACppo47o7TG1ZECd30surumPqEXg2k=Y1_9zB7MFtn5=ZbESJg@mail.gmail.com>
+Subject: GOD BLESS YOU AS YOU REPLY URGENTLY
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        SUBJ_ALL_CAPS,T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Thu, 24 Feb 2022 18:55:44 +0100, Christoph Hellwig wrote:
+GOD BLESS YOU AS YOU REPLY URGENTLY
 
-> with the recent removal of the REQ_OP_SCSI_{IN,OUT} based passthrough
-> from non-scsi drivers, the need for the scsi_request structure went
-> away as well.  As all submitters of SCSI passthrough requests are using
-> the SCSI midlayer now they can just fill out the scsi_cmnd directly.
-> 
-> Changes since v1:
->  - fix a few commit message typos
->  - remove an extra clearing of scmd->flags
->  - cleanup sense handling in sg_scsi_ioctl
->  - split the last patch
-> 
-> [...]
-
-Applied to 5.18/scsi-queue, thanks!
-
-[1/8] target/pscsi: remove struct pscsi_plugin_task
-      https://git.kernel.org/mkp/scsi/c/c49ff72cff4c
-[2/8] scsi: don't memset the entire scsi_cmnd in scsi_init_command
-      https://git.kernel.org/mkp/scsi/c/71bada345b33
-[3/8] scsi: remove the cmd field from struct scsi_request
-      https://git.kernel.org/mkp/scsi/c/ce70fd9a551a
-[4/8] scsi: remove the sense and sense_len fields from struct scsi_request
-      https://git.kernel.org/mkp/scsi/c/5b794f98074a
-[5/8] scsi: move the resid_len field from struct scsi_request to struct scsi_cmnd
-      https://git.kernel.org/mkp/scsi/c/a9a4ea1166d6
-[6/8] scsi: move the result field from struct scsi_request to struct scsi_cmnd
-      https://git.kernel.org/mkp/scsi/c/dbb4c84d87af
-[7/8] scsi: remove struct scsi_request
-      https://git.kernel.org/mkp/scsi/c/6aded12b10e0
-[8/8] scsi: remove <scsi/scsi_request.h>
-      https://git.kernel.org/mkp/scsi/c/264403033105
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+ Hello Dear,
+Greetings, I am contacting you regarding an important information i
+have for you please reply to confirm your email address and for more
+details Thanks
+Regards
+Mrs Susan Elwood Hara.
