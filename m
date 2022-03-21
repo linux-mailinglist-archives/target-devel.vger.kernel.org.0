@@ -2,91 +2,158 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21CB54DE5BB
-	for <lists+target-devel@lfdr.de>; Sat, 19 Mar 2022 04:57:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D9B64E1EB7
+	for <lists+target-devel@lfdr.de>; Mon, 21 Mar 2022 02:25:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242022AbiCSD6t (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 18 Mar 2022 23:58:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57766 "EHLO
+        id S1343986AbiCUB0h (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 20 Mar 2022 21:26:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241997AbiCSD6p (ORCPT
+        with ESMTP id S232538AbiCUB0f (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 18 Mar 2022 23:58:45 -0400
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F7E6108544;
-        Fri, 18 Mar 2022 20:57:25 -0700 (PDT)
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22J1vAVP027768;
-        Sat, 19 Mar 2022 03:57:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2021-07-09;
- bh=+Ph4OFt+3SrhMcCGxn1gvPn7gIbM0DtOHSGMh4qOOn0=;
- b=iH49+L2aEEZU6kJBs/+ywaC72hX7R9QgDoIqxpHY9VGs+B8iNKpbomwrXYljbM9Kh/Vo
- Fm+9vy6RUANaj/OPtXsB9/5JsbXZNek6QpZMVg+yqSA+LwWBEs7qx2X0yB/RBi/Ei16k
- zi6jJ63OGmpyarMuvUOis4YG+Y9hktfofty3tebI1qU2rxt7nIsZ7KEqBDTmPqYirpMo
- OcyGXgPf5ZisfHmWQv7Htd7pJVchdPoxBkL1cRI7Ub7gyXdQ1lQ+z2tHIhjkSizivqJh
- crivpJYucy8v8eGm4UzhavTIJQuFmhX5f18/Gt3UadOKgGjnXJpVaso7Ex6M0i/C8Hbf aA== 
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-        by mx0b-00069f02.pphosted.com with ESMTP id 3ew5y1r27k-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 19 Mar 2022 03:57:19 +0000
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.16.1.2/8.16.1.2) with SMTP id 22J3utTI007031;
-        Sat, 19 Mar 2022 03:57:18 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com with ESMTP id 3ew5kyshpk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 19 Mar 2022 03:57:18 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 22J3v5Qu007126;
-        Sat, 19 Mar 2022 03:57:17 GMT
-Received: from ca-mkp.mkp.ca.oracle.com (ca-mkp.ca.oracle.com [10.156.108.201])
-        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com with ESMTP id 3ew5kyshmn-10;
-        Sat, 19 Mar 2022 03:57:17 +0000
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     mingzhe.zou@easystack.cn, target-devel@vger.kernel.org,
-        linux-scsi@vger.kernel.org
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        zoumingzhe@qq.com
-Subject: Re: [PATCH v3] target: add iscsi/cpus_allowed_list in configfs
-Date:   Fri, 18 Mar 2022 23:57:00 -0400
-Message-Id: <164766213030.31329.5393511645473283160.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220301075500.14266-1-mingzhe.zou@easystack.cn>
-References: <20220125083821.18225-1-mingzhe.zou@easystack.cn> <20220301075500.14266-1-mingzhe.zou@easystack.cn>
+        Sun, 20 Mar 2022 21:26:35 -0400
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2048B275DE;
+        Sun, 20 Mar 2022 18:25:11 -0700 (PDT)
+Received: from fsav314.sakura.ne.jp (fsav314.sakura.ne.jp [153.120.85.145])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 22L1OQ9W020821;
+        Mon, 21 Mar 2022 10:24:26 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav314.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav314.sakura.ne.jp);
+ Mon, 21 Mar 2022 10:24:26 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav314.sakura.ne.jp)
+Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 22L1OOpR020816
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+        Mon, 21 Mar 2022 10:24:25 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <49925af7-78a8-a3dd-bce6-cfc02e1a9236@I-love.SAKURA.ne.jp>
+Date:   Mon, 21 Mar 2022 10:24:23 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: 3c-6AksHe6qvr493Slm86zZRyBwBAjEq
-X-Proofpoint-ORIG-GUID: 3c-6AksHe6qvr493Slm86zZRyBwBAjEq
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Content-Language: en-US
+To:     LKML <linux-kernel@vger.kernel.org>
+Cc:     Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>
+From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Subject: An announcement for kernel-global workqueue users.
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,RCVD_IN_SBL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Tue, 1 Mar 2022 15:55:00 +0800, mingzhe.zou@easystack.cn wrote:
+Hello.
 
-> From: Mingzhe Zou <mingzhe.zou@easystack.cn>
-> 
-> The RX/TX threads for iSCSI connection can be scheduled to
-> any online cpus, and will not be rescheduled.
-> 
-> If bind other heavy load threads with iSCSI connection
-> RX/TX thread to the same cpu, the iSCSI performance will
-> be worse.
-> 
-> [...]
+The Linux kernel provides kernel-global WQs (namely, system_wq, system_highpri_wq,
+system_long_wq, system_unbound_wq, system_freezable_wq, system_power_efficient_wq
+and system_freezable_power_efficient_wq). But since attempt to flush kernel-global
+WQs has possibility of deadlock, Tejun Heo thinks that we should stop calling
+flush_scheduled_work() and flush_workqueue(system_*). Such callers as of Linux 5.17
+are listed below.
 
-Applied to 5.18/scsi-queue, thanks!
+----------
+$ git grep -nF 'flush_scheduled_work()'
+drivers/acpi/osl.c:1182:         * invoke flush_scheduled_work()/acpi_os_wait_events_complete() to flush
+drivers/acpi/osl.c:1575:        flush_scheduled_work();
+drivers/block/aoe/aoedev.c:324: flush_scheduled_work();
+drivers/block/aoe/aoedev.c:523: flush_scheduled_work();
+drivers/crypto/atmel-ecc.c:401: flush_scheduled_work();
+drivers/crypto/atmel-sha204a.c:162:     flush_scheduled_work();
+drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c:2606:       flush_scheduled_work();
+drivers/gpu/drm/bridge/lontium-lt9611uxc.c:985: flush_scheduled_work();
+drivers/gpu/drm/i915/display/intel_display.c:10790:     flush_scheduled_work();
+drivers/gpu/drm/i915/gt/selftest_execlists.c:87:        flush_scheduled_work();
+drivers/iio/light/tsl2563.c:811:        flush_scheduled_work();
+drivers/infiniband/hw/mlx4/cm.c:511:            flush_scheduled_work();
+drivers/infiniband/hw/mlx4/cm.c:543:            flush_scheduled_work(); /* make sure all timers were flushed */
+drivers/infiniband/ulp/isert/ib_isert.c:2639:   flush_scheduled_work();
+drivers/input/mouse/psmouse-smbus.c:320:        flush_scheduled_work();
+drivers/md/dm.c:229:    flush_scheduled_work();
+drivers/message/fusion/mptscsih.c:1234: flush_scheduled_work();
+drivers/net/phy/phy.c:1060:     /* Cannot call flush_scheduled_work() here as desired because
+drivers/net/usb/lan78xx.c:3240:  * can't flush_scheduled_work() until we drop rtnl (later),
+drivers/net/usb/usbnet.c:853:    * can't flush_scheduled_work() until we drop rtnl (later),
+drivers/net/wireless/ath/ath6kl/usb.c:481:      flush_scheduled_work();
+drivers/net/wwan/wwan_hwsim.c:537:      flush_scheduled_work();         /* Wait deletion works completion */
+drivers/nvme/target/configfs.c:1557:    flush_scheduled_work();
+drivers/nvme/target/rdma.c:1587:                flush_scheduled_work();
+drivers/nvme/target/rdma.c:2056:        flush_scheduled_work();
+drivers/nvme/target/tcp.c:1818:         flush_scheduled_work();
+drivers/nvme/target/tcp.c:1879: flush_scheduled_work();
+drivers/nvme/target/tcp.c:1884: flush_scheduled_work();
+drivers/platform/surface/surface_acpi_notify.c:863:     flush_scheduled_work();
+drivers/power/supply/ab8500_btemp.c:975:        flush_scheduled_work();
+drivers/power/supply/ab8500_chargalg.c:1993:    flush_scheduled_work();
+drivers/power/supply/ab8500_charger.c:3400:     flush_scheduled_work();
+drivers/power/supply/ab8500_fg.c:3021:  flush_scheduled_work();
+drivers/rapidio/devices/tsi721.c:2944:  flush_scheduled_work();
+drivers/rtc/dev.c:99:                   flush_scheduled_work();
+drivers/scsi/mpt3sas/mpt3sas_scsih.c:12409:     flush_scheduled_work();
+drivers/scsi/qla2xxx/qla_target.c:1568:         flush_scheduled_work();
+drivers/staging/olpc_dcon/olpc_dcon.c:386:      flush_scheduled_work();
+sound/soc/intel/atom/sst/sst.c:363:     flush_scheduled_work();
+$ git grep -nF 'flush_workqueue(system_'
+drivers/block/rnbd/rnbd-clt.c:1776:     flush_workqueue(system_long_wq);
+drivers/infiniband/core/device.c:2857:  flush_workqueue(system_unbound_wq);
+include/linux/workqueue.h:592:  flush_workqueue(system_wq);
+----------
 
-[1/1] target: add iscsi/cpus_allowed_list in configfs
-      https://git.kernel.org/mkp/scsi/c/d72d827f2f26
+I tried to send a patch that emits a warning when flushing kernel-global WQs is attempted
+( https://lkml.kernel.org/r/2efd5461-fccd-f1d9-7138-0a6767cbf5fe@I-love.SAKURA.ne.jp ).
+But Linus does not want such patch
+( https://lkml.kernel.org/r/CAHk-=whWreGjEQ6yasspzBrNnS7EQiL+SknToWt=SzUh4XomyQ@mail.gmail.com ).
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Steps for converting kernel-global WQs into module's local WQs are shown below.
+But since an oversight in Step 4 results in breakage, I think that this conversion
+should be carefully handled by maintainers/developers of each module who are
+familiar with that module. (This is why I'm sending this mail than sending patches,
+in order to ask for your cooperation.)
+
+----------
+Step 0: Consider if flushing kernel-global WQs is unavoidable.
+
+    For example, commit 081bdc9fe05bb232 ("RDMA/ib_srp: Fix a deadlock")
+    simply removed flush_workqueue(system_long_wq) call.
+
+    For another example, schedule_on_each_cpu() does not need to call
+    flush_scheduled_work() because schedule_on_each_cpu() knows the list
+    of all "struct work_struct" instances which need to be flushed using
+    flush_work() call.
+
+    If flushing kernel-global WQs is still unavoidable, please proceed to
+    the following steps.
+
+Step 1: Declare a variable for your module.
+
+    struct workqueue_struct *my_wq;
+
+Step 2: Create a WQ for your module from __init function. The same flags
+        used by corresponding kernel-global WQ can be used when creating
+        the WQ for your module.
+
+    my_wq = alloc_workqueue("my_wq_name", 0, 0);
+
+Step 3: Destroy the WQ created in Step 2 from __exit function (and the error
+        handling path of __init function if __init function may fail after
+        creating the WQ).
+
+    destroy_workqueue(my_wq);
+
+Step 4: Replace e.g. schedule_work() call with corresponding queue_work() call
+        throughout your module which should be handled by the WQ for your module.
+
+Step 5: Replace flush_scheduled_work() and flush_workqueue(system_*) calls
+        with flush_workqueue() of the WQ for your module.
+
+    flush_workqueue(my_wq);
+----------
+
+Regards.
