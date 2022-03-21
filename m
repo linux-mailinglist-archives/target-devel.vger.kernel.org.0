@@ -2,158 +2,117 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D9B64E1EB7
-	for <lists+target-devel@lfdr.de>; Mon, 21 Mar 2022 02:25:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F4814E25E4
+	for <lists+target-devel@lfdr.de>; Mon, 21 Mar 2022 13:01:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343986AbiCUB0h (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sun, 20 Mar 2022 21:26:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44752 "EHLO
+        id S1347082AbiCUMDQ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 21 Mar 2022 08:03:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232538AbiCUB0f (ORCPT
+        with ESMTP id S1346746AbiCUMDO (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sun, 20 Mar 2022 21:26:35 -0400
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2048B275DE;
-        Sun, 20 Mar 2022 18:25:11 -0700 (PDT)
-Received: from fsav314.sakura.ne.jp (fsav314.sakura.ne.jp [153.120.85.145])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 22L1OQ9W020821;
-        Mon, 21 Mar 2022 10:24:26 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav314.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav314.sakura.ne.jp);
- Mon, 21 Mar 2022 10:24:26 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav314.sakura.ne.jp)
-Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-        (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 22L1OOpR020816
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-        Mon, 21 Mar 2022 10:24:25 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <49925af7-78a8-a3dd-bce6-cfc02e1a9236@I-love.SAKURA.ne.jp>
-Date:   Mon, 21 Mar 2022 10:24:23 +0900
+        Mon, 21 Mar 2022 08:03:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CD6CB56227
+        for <target-devel@vger.kernel.org>; Mon, 21 Mar 2022 05:01:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1647864109;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=hjyieAFQj3bcVjxdPEDIjVTjL278YKH95kf+yFJHAWk=;
+        b=RpzE2QFEIiof3jDspDEZynIg1sdDcaOgZzlaQDi2SWtGUEun6SSb4ZB4zx1FKiZ6z9gTom
+        xVRmgwGU61GDEEslPCeOqLppf8S5CI1JOc9WVq/53IRLLUmDSBq791M+qopXA856ctopQ0
+        0aJD7JU761lW5bhwrz3ldwXXnhRhPBM=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-237-tRaS0adJM9ebmUrp6OP27w-1; Mon, 21 Mar 2022 08:01:47 -0400
+X-MC-Unique: tRaS0adJM9ebmUrp6OP27w-1
+Received: by mail-wr1-f69.google.com with SMTP id s8-20020adfc548000000b00203eba1052eso1895490wrf.1
+        for <target-devel@vger.kernel.org>; Mon, 21 Mar 2022 05:01:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:organization:in-reply-to
+         :content-transfer-encoding;
+        bh=hjyieAFQj3bcVjxdPEDIjVTjL278YKH95kf+yFJHAWk=;
+        b=JRY8exGCfCF6nlG+QXvOAAOR4yzqVPnpubEYW5pRfpvIbdXDY86Our/+ubTbAIQSgN
+         /dj+ugSGtu3pfyK5Tuls6bDN3UpSY9GEUftNpKvTX895sBFPiHO+/4NHn3PZeM2hAHHS
+         s2E2L5C+LNxZ4QWWHFNiUQySC3H6PKXud1d1PmP3+6flws+JeqRGv402GDKxNhk3ECL5
+         z25N86hijqKcbGG+mtAhNi7jo4DuJHAbq05XdMN3groQlWgEXUI+VqU7LU+WMaDy1VD/
+         j/w60kdMBOlEpdezk2iCTsLf+hWK5TM4wmwwsjuVCI5XfvQneZitDxJ8HHc5rHLvmR7J
+         akzg==
+X-Gm-Message-State: AOAM530tRYkW8uoO4fZ5V4REZjilBymd1RDfNIVx2N5FGlBl2lUC9IpO
+        Dr9WP7ClkHo185kJTkJ37PPSFgeRXyEIDtXQvO4jE2PTU4RWmG4GeP5gcWvZAFO4xMUw0B8HU1K
+        b7DbPSjJIRPEnHd3pogrwRfLE
+X-Received: by 2002:a5d:6405:0:b0:204:1ef:56e8 with SMTP id z5-20020a5d6405000000b0020401ef56e8mr8378180wru.677.1647864106233;
+        Mon, 21 Mar 2022 05:01:46 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwhZuEfJSaXjpaErJyh2L9DkMAaRb0WEaJXZhhj0Z+2/QVCT0rFeZuYjApA/Lz7WeWZRTfZiw==
+X-Received: by 2002:a5d:6405:0:b0:204:1ef:56e8 with SMTP id z5-20020a5d6405000000b0020401ef56e8mr8378159wru.677.1647864105940;
+        Mon, 21 Mar 2022 05:01:45 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c704:4900:849b:f76e:5e1f:ff95? (p200300cbc7044900849bf76e5e1fff95.dip0.t-ipconnect.de. [2003:cb:c704:4900:849b:f76e:5e1f:ff95])
+        by smtp.gmail.com with ESMTPSA id a1-20020a056000188100b002041a652dfdsm1639674wri.25.2022.03.21.05.01.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Mar 2022 05:01:45 -0700 (PDT)
+Message-ID: <a37e9ba2-354b-0b75-cb05-bc730cb30151@redhat.com>
+Date:   Mon, 21 Mar 2022 13:01:44 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+Subject: Re: [RFC 2/3] mm: export zap_page_range()
 Content-Language: en-US
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>
-From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Subject: An announcement for kernel-global workqueue users.
+To:     Xiaoguang Wang <xiaoguang.wang@linux.alibaba.com>,
+        linux-mm@kvack.org, target-devel@vger.kernel.org,
+        linux-scsi@vger.kernel.org
+Cc:     linux-block@vger.kernel.org, xuyu@linux.alibaba.com,
+        bostroesser@gmail.com
+References: <20220318095531.15479-1-xiaoguang.wang@linux.alibaba.com>
+ <20220318095531.15479-3-xiaoguang.wang@linux.alibaba.com>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20220318095531.15479-3-xiaoguang.wang@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,RCVD_IN_SBL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hello.
+On 18.03.22 10:55, Xiaoguang Wang wrote:
+> Module target_core_user will use it to implement zero copy feature.
+> 
+> Signed-off-by: Xiaoguang Wang <xiaoguang.wang@linux.alibaba.com>
+> ---
+>  mm/memory.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 1f745e4d11c2..9974d0406dad 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -1664,6 +1664,7 @@ void zap_page_range(struct vm_area_struct *vma, unsigned long start,
+>  	mmu_notifier_invalidate_range_end(&range);
+>  	tlb_finish_mmu(&tlb);
+>  }
+> +EXPORT_SYMBOL_GPL(zap_page_range);
+>  
+>  /**
+>   * zap_page_range_single - remove user pages in a given range
 
-The Linux kernel provides kernel-global WQs (namely, system_wq, system_highpri_wq,
-system_long_wq, system_unbound_wq, system_freezable_wq, system_power_efficient_wq
-and system_freezable_power_efficient_wq). But since attempt to flush kernel-global
-WQs has possibility of deadlock, Tejun Heo thinks that we should stop calling
-flush_scheduled_work() and flush_workqueue(system_*). Such callers as of Linux 5.17
-are listed below.
+To which VMAs will you be applying zap_page_range? I assume only to some
+special ones where you previously vm_insert_page(s)_mkspecial'ed pages,
+not to some otherwise random VMAs, correct?
 
-----------
-$ git grep -nF 'flush_scheduled_work()'
-drivers/acpi/osl.c:1182:         * invoke flush_scheduled_work()/acpi_os_wait_events_complete() to flush
-drivers/acpi/osl.c:1575:        flush_scheduled_work();
-drivers/block/aoe/aoedev.c:324: flush_scheduled_work();
-drivers/block/aoe/aoedev.c:523: flush_scheduled_work();
-drivers/crypto/atmel-ecc.c:401: flush_scheduled_work();
-drivers/crypto/atmel-sha204a.c:162:     flush_scheduled_work();
-drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c:2606:       flush_scheduled_work();
-drivers/gpu/drm/bridge/lontium-lt9611uxc.c:985: flush_scheduled_work();
-drivers/gpu/drm/i915/display/intel_display.c:10790:     flush_scheduled_work();
-drivers/gpu/drm/i915/gt/selftest_execlists.c:87:        flush_scheduled_work();
-drivers/iio/light/tsl2563.c:811:        flush_scheduled_work();
-drivers/infiniband/hw/mlx4/cm.c:511:            flush_scheduled_work();
-drivers/infiniband/hw/mlx4/cm.c:543:            flush_scheduled_work(); /* make sure all timers were flushed */
-drivers/infiniband/ulp/isert/ib_isert.c:2639:   flush_scheduled_work();
-drivers/input/mouse/psmouse-smbus.c:320:        flush_scheduled_work();
-drivers/md/dm.c:229:    flush_scheduled_work();
-drivers/message/fusion/mptscsih.c:1234: flush_scheduled_work();
-drivers/net/phy/phy.c:1060:     /* Cannot call flush_scheduled_work() here as desired because
-drivers/net/usb/lan78xx.c:3240:  * can't flush_scheduled_work() until we drop rtnl (later),
-drivers/net/usb/usbnet.c:853:    * can't flush_scheduled_work() until we drop rtnl (later),
-drivers/net/wireless/ath/ath6kl/usb.c:481:      flush_scheduled_work();
-drivers/net/wwan/wwan_hwsim.c:537:      flush_scheduled_work();         /* Wait deletion works completion */
-drivers/nvme/target/configfs.c:1557:    flush_scheduled_work();
-drivers/nvme/target/rdma.c:1587:                flush_scheduled_work();
-drivers/nvme/target/rdma.c:2056:        flush_scheduled_work();
-drivers/nvme/target/tcp.c:1818:         flush_scheduled_work();
-drivers/nvme/target/tcp.c:1879: flush_scheduled_work();
-drivers/nvme/target/tcp.c:1884: flush_scheduled_work();
-drivers/platform/surface/surface_acpi_notify.c:863:     flush_scheduled_work();
-drivers/power/supply/ab8500_btemp.c:975:        flush_scheduled_work();
-drivers/power/supply/ab8500_chargalg.c:1993:    flush_scheduled_work();
-drivers/power/supply/ab8500_charger.c:3400:     flush_scheduled_work();
-drivers/power/supply/ab8500_fg.c:3021:  flush_scheduled_work();
-drivers/rapidio/devices/tsi721.c:2944:  flush_scheduled_work();
-drivers/rtc/dev.c:99:                   flush_scheduled_work();
-drivers/scsi/mpt3sas/mpt3sas_scsih.c:12409:     flush_scheduled_work();
-drivers/scsi/qla2xxx/qla_target.c:1568:         flush_scheduled_work();
-drivers/staging/olpc_dcon/olpc_dcon.c:386:      flush_scheduled_work();
-sound/soc/intel/atom/sst/sst.c:363:     flush_scheduled_work();
-$ git grep -nF 'flush_workqueue(system_'
-drivers/block/rnbd/rnbd-clt.c:1776:     flush_workqueue(system_long_wq);
-drivers/infiniband/core/device.c:2857:  flush_workqueue(system_unbound_wq);
-include/linux/workqueue.h:592:  flush_workqueue(system_wq);
-----------
+-- 
+Thanks,
 
-I tried to send a patch that emits a warning when flushing kernel-global WQs is attempted
-( https://lkml.kernel.org/r/2efd5461-fccd-f1d9-7138-0a6767cbf5fe@I-love.SAKURA.ne.jp ).
-But Linus does not want such patch
-( https://lkml.kernel.org/r/CAHk-=whWreGjEQ6yasspzBrNnS7EQiL+SknToWt=SzUh4XomyQ@mail.gmail.com ).
+David / dhildenb
 
-Steps for converting kernel-global WQs into module's local WQs are shown below.
-But since an oversight in Step 4 results in breakage, I think that this conversion
-should be carefully handled by maintainers/developers of each module who are
-familiar with that module. (This is why I'm sending this mail than sending patches,
-in order to ask for your cooperation.)
-
-----------
-Step 0: Consider if flushing kernel-global WQs is unavoidable.
-
-    For example, commit 081bdc9fe05bb232 ("RDMA/ib_srp: Fix a deadlock")
-    simply removed flush_workqueue(system_long_wq) call.
-
-    For another example, schedule_on_each_cpu() does not need to call
-    flush_scheduled_work() because schedule_on_each_cpu() knows the list
-    of all "struct work_struct" instances which need to be flushed using
-    flush_work() call.
-
-    If flushing kernel-global WQs is still unavoidable, please proceed to
-    the following steps.
-
-Step 1: Declare a variable for your module.
-
-    struct workqueue_struct *my_wq;
-
-Step 2: Create a WQ for your module from __init function. The same flags
-        used by corresponding kernel-global WQ can be used when creating
-        the WQ for your module.
-
-    my_wq = alloc_workqueue("my_wq_name", 0, 0);
-
-Step 3: Destroy the WQ created in Step 2 from __exit function (and the error
-        handling path of __init function if __init function may fail after
-        creating the WQ).
-
-    destroy_workqueue(my_wq);
-
-Step 4: Replace e.g. schedule_work() call with corresponding queue_work() call
-        throughout your module which should be handled by the WQ for your module.
-
-Step 5: Replace flush_scheduled_work() and flush_workqueue(system_*) calls
-        with flush_workqueue() of the WQ for your module.
-
-    flush_workqueue(my_wq);
-----------
-
-Regards.
