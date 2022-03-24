@@ -2,94 +2,98 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 596B74E60F8
-	for <lists+target-devel@lfdr.de>; Thu, 24 Mar 2022 10:17:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 238F74E64BF
+	for <lists+target-devel@lfdr.de>; Thu, 24 Mar 2022 15:11:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349138AbiCXJSY (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 24 Mar 2022 05:18:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49646 "EHLO
+        id S242274AbiCXONC (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 24 Mar 2022 10:13:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229863AbiCXJSX (ORCPT
+        with ESMTP id S1345387AbiCXONB (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 24 Mar 2022 05:18:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7401E9D4FD
-        for <target-devel@vger.kernel.org>; Thu, 24 Mar 2022 02:16:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1648113411;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=kxIA+CLFwcc8TqwMm37/uOtvk1/QQRU8QzWc86/Fkpw=;
-        b=Pkga9J0yl/+d5KxZyuDfSSUfzF9R1sJJyvXBuQMkKDNFRw7YKj8nqdB3UgmAOFikk3wtYR
-        QPg0OV3HFX2nOSxN1WmEqeEVv7/zOkqE1s8rFbciChBU16kwskpFiExj8Ol/C/Wb/QyMxJ
-        NhyZ3bwCYU/gxhAjlcfl7v9FAuZRJAk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-286-LUQhrbZgOFe5H5F8ssxHOg-1; Thu, 24 Mar 2022 05:16:50 -0400
-X-MC-Unique: LUQhrbZgOFe5H5F8ssxHOg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B4B79805A30;
-        Thu, 24 Mar 2022 09:16:49 +0000 (UTC)
-Received: from T590 (ovpn-8-20.pek2.redhat.com [10.72.8.20])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 384BA112132C;
-        Thu, 24 Mar 2022 09:16:41 +0000 (UTC)
-Date:   Thu, 24 Mar 2022 17:16:36 +0800
-From:   Ming Lei <ming.lei@redhat.com>
-To:     Xiaoguang Wang <xiaoguang.wang@linux.alibaba.com>
-Cc:     linux-mm@kvack.org, target-devel@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-block@vger.kernel.org,
-        xuyu@linux.alibaba.com, bostroesser@gmail.com
-Subject: Re: [RFC 2/3] mm: export zap_page_range()
-Message-ID: <Yjw29HcA2JL41aA6@T590>
-References: <20220318095531.15479-1-xiaoguang.wang@linux.alibaba.com>
- <20220318095531.15479-3-xiaoguang.wang@linux.alibaba.com>
+        Thu, 24 Mar 2022 10:13:01 -0400
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51C33AC04F
+        for <target-devel@vger.kernel.org>; Thu, 24 Mar 2022 07:11:26 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id m26-20020a05600c3b1a00b0038c8b999f58so7308743wms.1
+        for <target-devel@vger.kernel.org>; Thu, 24 Mar 2022 07:11:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:mime-version:content-transfer-encoding
+         :content-description:subject:to:from:date:reply-to;
+        bh=sfxo1dqqTrr7e28OuTBjrwUEPnrevaNVUdgTMF56Ktk=;
+        b=lht20495o279uTMqkk9avlB0zkO0c7mmCZIH8e0fGDtWZUw65aZMRgJ5LQ3zUzoHKP
+         0lzB/nByEq5Du7n1TQsBT7fN33u6pR/WhxaXWZUj+kyczlxqKZr3TpxAjgql9uFHK+UT
+         yG98eotj81A4YkCzYUk8lVpU+CFL6GPPd2yLWJ0fsjLRgjyAHP1yTjiWu6yzq1HAmdjG
+         Nws7xCn90IfL0VTxdyiOL1vS4+ukfAM9vwOToGk/+goyKwjTY4+XyrLIHl3DlUphs7NI
+         d6DCP3k78xvPrWLMkrTsFNWIw5su6YBE+h/XHnaphCq+KNawGdrp96YKp1KFkMWeZvL6
+         h4sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:mime-version
+         :content-transfer-encoding:content-description:subject:to:from:date
+         :reply-to;
+        bh=sfxo1dqqTrr7e28OuTBjrwUEPnrevaNVUdgTMF56Ktk=;
+        b=koKrTSt+eAAj6rzVWScyf6nPlaxzvwyEz1AtEYSKqLHgCrYWEX6sU7dHBhkeriWlbn
+         WTpnkN4I/VaK5b9fqPG0BvdIjvSeU9HCTdc3XVSdkyxGkTJ5Fb6WstUmiWeVdHtpxgyr
+         fJnnpoPNzF07ktqt6oD5zv1csLInL/Nbrrk/l68X1Jpa9ePfxMc+i1b9OKTu+NinFNMU
+         wLFkNK6364UY8taq2QlbtWq+sNnFNXRxkGK9a5/+6ocUMPDh7d7wpG8xrWUL6AV+yOVr
+         lJjJfcSx7PdgEM0A+zejMXoauWbR15djKjIiPq1ZpU2AZDhyktoKCqOh16P3OCF2rYAi
+         2RLQ==
+X-Gm-Message-State: AOAM531O9+vQAlk591uzgonpuhTJmeVQcsLVCh+I8u+OtBu5x5rvoy9L
+        gVyJkUqkjdM50aph9HRGJ28=
+X-Google-Smtp-Source: ABdhPJzND5cmCimK4m8fBwVJXSHXE4o1Sg3rCS+CpCoLBgTL3A75clV9wmG0JIkR8SWD5mVA5kp8aA==
+X-Received: by 2002:a05:600c:1ca4:b0:38c:987e:5feb with SMTP id k36-20020a05600c1ca400b0038c987e5febmr14447628wms.27.1648131084949;
+        Thu, 24 Mar 2022 07:11:24 -0700 (PDT)
+Received: from [192.168.0.102] ([105.112.209.229])
+        by smtp.gmail.com with ESMTPSA id i9-20020a5d5849000000b002058631cfacsm2830384wrf.61.2022.03.24.07.11.20
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Thu, 24 Mar 2022 07:11:24 -0700 (PDT)
+Message-ID: <623c7c0c.1c69fb81.cf812.b780@mx.google.com>
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220318095531.15479-3-xiaoguang.wang@linux.alibaba.com>
-X-Scanned-By: MIMEDefang 2.78 on 10.11.54.3
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: meine Spende
+To:     spenserw08@gmail.com
+From:   spenserw08@gmail.com
+Date:   Thu, 24 Mar 2022 07:11:12 -0700
+Reply-To: mariaelisabethschaeffler70@gmail.com
+X-Spam-Status: No, score=2.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Fri, Mar 18, 2022 at 05:55:30PM +0800, Xiaoguang Wang wrote:
-> Module target_core_user will use it to implement zero copy feature.
-> 
-> Signed-off-by: Xiaoguang Wang <xiaoguang.wang@linux.alibaba.com>
-> ---
->  mm/memory.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 1f745e4d11c2..9974d0406dad 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -1664,6 +1664,7 @@ void zap_page_range(struct vm_area_struct *vma, unsigned long start,
->  	mmu_notifier_invalidate_range_end(&range);
->  	tlb_finish_mmu(&tlb);
->  }
-> +EXPORT_SYMBOL_GPL(zap_page_range);
+ Hallo,
 
-BTW, what is the counter part api of remap_pfn_range() for serving the
-unmap? Or does it really need to unmap the vm space for this zero-copy
-case?
-
-If it isn't necessary to unmap, maybe remap_pfn_range() is faster than
-vm_insert_page(s)_mkspecial + zap_page_range() since zap_page_range()
-looks a bit heavy.
+ =
 
 
-Thanks,
-Ming
+Ich bin Frau Maria Elisabeth Schaeffler, eine deutsche Gesch=E4ftsmagnatin,=
+ Investorin und Philanthropin. Ich bin der Vorsitzende von Wipro Limited. I=
+ch habe 25 Prozent meines pers=F6nlichen Verm=F6gens f=FCr wohlt=E4tige Zwe=
+cke ausgegeben. Und ich habe auch versprochen, den Rest von 25% in diesem J=
+ahr 2021 an Einzelpersonen zu verschenken. Ich habe beschlossen, Ihnen 1.50=
+0.000,00 Euro zu spenden. Wenn Sie an meiner Spende interessiert sind, kont=
+aktieren Sie mich f=FCr weitere Informationen.
 
+
+Sie k=F6nnen auch mehr =FCber mich =FCber den unten stehenden Link lesen
+
+https://en.wikipedia.org/wiki/Maria-Elisabeth_Schaeffler
+
+Sch=F6ne Gr=FC=DFe
+
+Gesch=E4ftsf=FChrer Wipro Limited
+
+Maria Elisabeth Schaeffler
+
+E-Mail: mariaelisabethschaeffler70@gmail.com
