@@ -2,98 +2,96 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 238F74E64BF
-	for <lists+target-devel@lfdr.de>; Thu, 24 Mar 2022 15:11:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD8C64E6FC5
+	for <lists+target-devel@lfdr.de>; Fri, 25 Mar 2022 10:07:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242274AbiCXONC (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 24 Mar 2022 10:13:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39808 "EHLO
+        id S1350483AbiCYJIe (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 25 Mar 2022 05:08:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345387AbiCXONB (ORCPT
+        with ESMTP id S229940AbiCYJId (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 24 Mar 2022 10:13:01 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51C33AC04F
-        for <target-devel@vger.kernel.org>; Thu, 24 Mar 2022 07:11:26 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id m26-20020a05600c3b1a00b0038c8b999f58so7308743wms.1
-        for <target-devel@vger.kernel.org>; Thu, 24 Mar 2022 07:11:26 -0700 (PDT)
+        Fri, 25 Mar 2022 05:08:33 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5310CD33A;
+        Fri, 25 Mar 2022 02:06:59 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id k10so8485236edj.2;
+        Fri, 25 Mar 2022 02:06:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=message-id:mime-version:content-transfer-encoding
-         :content-description:subject:to:from:date:reply-to;
-        bh=sfxo1dqqTrr7e28OuTBjrwUEPnrevaNVUdgTMF56Ktk=;
-        b=lht20495o279uTMqkk9avlB0zkO0c7mmCZIH8e0fGDtWZUw65aZMRgJ5LQ3zUzoHKP
-         0lzB/nByEq5Du7n1TQsBT7fN33u6pR/WhxaXWZUj+kyczlxqKZr3TpxAjgql9uFHK+UT
-         yG98eotj81A4YkCzYUk8lVpU+CFL6GPPd2yLWJ0fsjLRgjyAHP1yTjiWu6yzq1HAmdjG
-         Nws7xCn90IfL0VTxdyiOL1vS4+ukfAM9vwOToGk/+goyKwjTY4+XyrLIHl3DlUphs7NI
-         d6DCP3k78xvPrWLMkrTsFNWIw5su6YBE+h/XHnaphCq+KNawGdrp96YKp1KFkMWeZvL6
-         h4sw==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=VhdVUAWHXjzUGq4oP9g7su55g+qs75mizf7QQXpvJEw=;
+        b=euZVYebCE4XJ6h2KVEIZN/sxeNdWBhCLQ41F3VbBi73AFa8s6umon5UZl9YlT8u9vD
+         fp5poY35XXFvreG/fDo9a+X3woO+AKZa38cO0DSYqK+Dg+LmytrvB9q4rUXqVhP0E0qK
+         bWQTPeb835PslboqVCKK8yVwr6+RZXn+Pcj5irL12oEbLAKjT/cPXQAmCp4Uz1Wu1Kjg
+         +tffZ3ZZLqEIRodZ7+iJuewi0Age1X4soOIbsnvEAit3U5iUNsTTEoz4k4QfSfCdqEHh
+         yH+VoYrCj3wY1l5+lrFZJAzocKld8uAYeFiOVipvXPyK+TigtwMG/UQDqaT08hNZyR6C
+         HZIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:mime-version
-         :content-transfer-encoding:content-description:subject:to:from:date
-         :reply-to;
-        bh=sfxo1dqqTrr7e28OuTBjrwUEPnrevaNVUdgTMF56Ktk=;
-        b=koKrTSt+eAAj6rzVWScyf6nPlaxzvwyEz1AtEYSKqLHgCrYWEX6sU7dHBhkeriWlbn
-         WTpnkN4I/VaK5b9fqPG0BvdIjvSeU9HCTdc3XVSdkyxGkTJ5Fb6WstUmiWeVdHtpxgyr
-         fJnnpoPNzF07ktqt6oD5zv1csLInL/Nbrrk/l68X1Jpa9ePfxMc+i1b9OKTu+NinFNMU
-         wLFkNK6364UY8taq2QlbtWq+sNnFNXRxkGK9a5/+6ocUMPDh7d7wpG8xrWUL6AV+yOVr
-         lJjJfcSx7PdgEM0A+zejMXoauWbR15djKjIiPq1ZpU2AZDhyktoKCqOh16P3OCF2rYAi
-         2RLQ==
-X-Gm-Message-State: AOAM531O9+vQAlk591uzgonpuhTJmeVQcsLVCh+I8u+OtBu5x5rvoy9L
-        gVyJkUqkjdM50aph9HRGJ28=
-X-Google-Smtp-Source: ABdhPJzND5cmCimK4m8fBwVJXSHXE4o1Sg3rCS+CpCoLBgTL3A75clV9wmG0JIkR8SWD5mVA5kp8aA==
-X-Received: by 2002:a05:600c:1ca4:b0:38c:987e:5feb with SMTP id k36-20020a05600c1ca400b0038c987e5febmr14447628wms.27.1648131084949;
-        Thu, 24 Mar 2022 07:11:24 -0700 (PDT)
-Received: from [192.168.0.102] ([105.112.209.229])
-        by smtp.gmail.com with ESMTPSA id i9-20020a5d5849000000b002058631cfacsm2830384wrf.61.2022.03.24.07.11.20
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Thu, 24 Mar 2022 07:11:24 -0700 (PDT)
-Message-ID: <623c7c0c.1c69fb81.cf812.b780@mx.google.com>
-Content-Type: text/plain; charset="iso-8859-1"
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=VhdVUAWHXjzUGq4oP9g7su55g+qs75mizf7QQXpvJEw=;
+        b=es+MrmEUR4sGbkxC2OWDgyCL+qq+RKcAA4YuZVLgT4RISul2PO3ataL5PF849JifjP
+         JEeRWdlxw5mIUH1/dvURJn+eSc96T5XDY4/nEzP6w48NvB1WMBXaiqu6wRSuZ1+vqemS
+         g5sbd5QnhydkSOVIci/5sJB50sJuspeICtbmOTHEHNorNOZ7p7hlIFh+b/iUVSb95kiP
+         J9Wsu1tFAMRgHG8o1iI+pAzWwvHR0l0elY8D8F2SXxCBvRTWet+k+dzVm1WWOuQUYhQb
+         EaKTxqcqTvlPVKstERTCVs1F9tNTCUQiCiYEQOYQowwcu79rrmXxYv5ED+2uHy6ffKrW
+         sRQg==
+X-Gm-Message-State: AOAM532NasESIedtkyxqnHrWKwzRKMrEJJzVgkFGnjhufBjUGfJj6s4c
+        eT/xbNSEs3DM4hK3UEpmk98=
+X-Google-Smtp-Source: ABdhPJx01pPWcYHPsWa/D2UX3hyEAgDAM3v69gqG2zc9S5TZfdLa41DCwYMxLs2+YR31sY0zcWOsoQ==
+X-Received: by 2002:a05:6402:4315:b0:419:2e38:ab8f with SMTP id m21-20020a056402431500b004192e38ab8fmr11628871edc.250.1648199218448;
+        Fri, 25 Mar 2022 02:06:58 -0700 (PDT)
+Received: from [192.168.178.40] (ipbcc1cfad.dynamic.kabel-deutschland.de. [188.193.207.173])
+        by smtp.gmail.com with ESMTPSA id e9-20020a170906c00900b006d4a45869basm2087116ejz.199.2022.03.25.02.06.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Mar 2022 02:06:58 -0700 (PDT)
+Message-ID: <d15369a8-7a98-1b1a-b950-40d78ed5e9ec@gmail.com>
+Date:   Fri, 25 Mar 2022 10:06:57 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: meine Spende
-To:     spenserw08@gmail.com
-From:   spenserw08@gmail.com
-Date:   Thu, 24 Mar 2022 07:11:12 -0700
-Reply-To: mariaelisabethschaeffler70@gmail.com
-X-Spam-Status: No, score=2.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: **
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [RFC 3/3] scsi: target: tcmu: Support zero copy
+Content-Language: en-US
+To:     Xiaoguang Wang <xiaoguang.wang@linux.alibaba.com>,
+        linux-mm@kvack.org, target-devel@vger.kernel.org,
+        linux-scsi@vger.kernel.org
+Cc:     linux-block@vger.kernel.org, xuyu@linux.alibaba.com
+References: <20220318095531.15479-1-xiaoguang.wang@linux.alibaba.com>
+ <20220318095531.15479-4-xiaoguang.wang@linux.alibaba.com>
+ <94b00e49-5efb-658f-3142-42e7cc551d19@gmail.com>
+ <57da7e54-f582-3b10-52a9-5166adacf4e6@linux.alibaba.com>
+From:   Bodo Stroesser <bostroesser@gmail.com>
+In-Reply-To: <57da7e54-f582-3b10-52a9-5166adacf4e6@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
- Hallo,
-
- =
 
 
-Ich bin Frau Maria Elisabeth Schaeffler, eine deutsche Gesch=E4ftsmagnatin,=
- Investorin und Philanthropin. Ich bin der Vorsitzende von Wipro Limited. I=
-ch habe 25 Prozent meines pers=F6nlichen Verm=F6gens f=FCr wohlt=E4tige Zwe=
-cke ausgegeben. Und ich habe auch versprochen, den Rest von 25% in diesem J=
-ahr 2021 an Einzelpersonen zu verschenken. Ich habe beschlossen, Ihnen 1.50=
-0.000,00 Euro zu spenden. Wenn Sie an meiner Spende interessiert sind, kont=
-aktieren Sie mich f=FCr weitere Informationen.
+On 23.03.22 15:33, Xiaoguang Wang wrote:
 
+... snip ...
 
-Sie k=F6nnen auch mehr =FCber mich =FCber den unten stehenden Link lesen
+>> What happens if the tcmu device currently is not open / mapped?
+> I'm not sure how it will happen.
+> But we may check whether udev->vma has a valid value. If yes,
+> it'll enter tcmu_cmd_zerocopy_map().
+> 
 
-https://en.wikipedia.org/wiki/Maria-Elisabeth_Schaeffler
+Yeah, but what I also wanted to suggest is, that if userspace maps
+the uio device while zero copy cmds already being in the ring,
+you have to iterate over those cmds and populate the mapping.
 
-Sch=F6ne Gr=FC=DFe
-
-Gesch=E4ftsf=FChrer Wipro Limited
-
-Maria Elisabeth Schaeffler
-
-E-Mail: mariaelisabethschaeffler70@gmail.com
+Bodo
