@@ -2,174 +2,71 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 017C44EFAA6
-	for <lists+target-devel@lfdr.de>; Fri,  1 Apr 2022 21:58:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CE414F0DAA
+	for <lists+target-devel@lfdr.de>; Mon,  4 Apr 2022 05:16:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351155AbiDAUAF (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 1 Apr 2022 16:00:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60650 "EHLO
+        id S1351898AbiDDDSp (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 3 Apr 2022 23:18:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344680AbiDAUAE (ORCPT
+        with ESMTP id S1346706AbiDDDSo (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 1 Apr 2022 16:00:04 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F95D208247;
-        Fri,  1 Apr 2022 12:58:14 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id dr20so8009051ejc.6;
-        Fri, 01 Apr 2022 12:58:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=WRx3gxfAOSc7mMmq0ocwCJ3iE/vWYvf0MtXC/w5ZLdw=;
-        b=lxlQbe8ON1pI9Lol/MiprmeqFqfGFj1RS2RxwlsVbfIunEsapzRucqxh8vU3HiDFzQ
-         MApdI4DADhmW9OmEa7aVQruMnN0/9GCiYMmCWF9v+CTQBLQ58pemHOIJEZL+jxNPoEX7
-         eYE5hm/k25/rs9o8Yl/XYeuJK4SEtc/ua0MsY78lhoDd1Y/w7oUcgnw/Std4tu5FQOmk
-         iiaCqXzoNcxG9/rWVzYHnw4yuzhgMDZTrPDXbfAu8pRi9waRZuAXeaFeC7bkKMdcusHD
-         PcgWO4aXBsZKxr7QAwAa7FJ011OnP7phz0OLEXq+n3LJNcxzKkDCE5sHgQK40O6vt4us
-         lQCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=WRx3gxfAOSc7mMmq0ocwCJ3iE/vWYvf0MtXC/w5ZLdw=;
-        b=76nIIGPDC3IbHvTVTThx3/JNlCAFU9tFG1auy2+Y6qwslgDb6RkRaozcYf0SezNdvR
-         GL2fc1R9obhKtIDUN2aF4CHtDAZN3KjvqKs5+miAO5iDPLJV0jOC4FkAxTZTpk9Ikot0
-         2FnPb3stOd5AthJxJh6OQ5YhoXmbr7jHVTbYxuO9uM/oejPhEc7gNgeixo4rUXtnNUxr
-         nYMST1CGQvMOrPEnVeRzRyeNv4hueQsAqBT4iMpbBJ1NaKfi6YDbigxjUvN6oQwUt2hi
-         w/gQVfLnNgTzrMrTh1NpDKwugMjnkKSMDd4D0pVv8ic7itBYXmyDudeRgLqW99p6co/X
-         OlKw==
-X-Gm-Message-State: AOAM533kAcKE1l8Z6BkzypDGc9pYCXtORigopPQzYVe48c3ovAqOhe7F
-        jJJxflZCXufZn1GTJXAwqA+d0XR3sqI=
-X-Google-Smtp-Source: ABdhPJwNtDOKVIv30XenStCCa5yvnACQvvQzfwO7QtFVbS3mQIpInYsHpkRH6uyzpS+M/F2LwjqqRA==
-X-Received: by 2002:a17:907:1c9d:b0:6e4:a223:1af2 with SMTP id nb29-20020a1709071c9d00b006e4a2231af2mr1304871ejc.102.1648843092510;
-        Fri, 01 Apr 2022 12:58:12 -0700 (PDT)
-Received: from [192.168.178.40] (ipbcc1cfad.dynamic.kabel-deutschland.de. [188.193.207.173])
-        by smtp.gmail.com with ESMTPSA id hp12-20020a1709073e0c00b006e02924bf20sm1319405ejc.117.2022.04.01.12.58.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Apr 2022 12:58:11 -0700 (PDT)
-Message-ID: <5226b4ae-33fe-2bee-b88a-240994231d1c@gmail.com>
-Date:   Fri, 1 Apr 2022 21:58:11 +0200
+        Sun, 3 Apr 2022 23:18:44 -0400
+X-Greylist: delayed 334 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 03 Apr 2022 20:16:49 PDT
+Received: from mta-out-06.alice.it (mta-out-06.alice.it [217.169.118.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 528C72D1FB
+        for <target-devel@vger.kernel.org>; Sun,  3 Apr 2022 20:16:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alice.it; s=20211207; t=1649042209; 
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        h=Reply-To:From:To:Date:Message-ID:MIME-Version;
+        b=G/9sJ6xLoHGKZnbLPheE0y9UdN4AKF2oisLs1T9F0niA0QVZq34zR9ApUJKc8LBy+wXuSytPYcELi2M0C2VmRyrFxbPXVOePOO7ZEI/DEWVBG3qHT1FC8GLMpH4hAAYvrU3D7CT+Zr/b2rdscv6DN/wPR5lIDM7Hw/74KntamrPQ+OQvnM2iQWEzvDaOTmwfY7tE940rU5UZCDKuah6hgp6pm0ZkFxUArX7+kHxYDuWufAbIszTOdaMh3jn0iXoQLGd8pCPZAIsgIHgQXAIJuO+z9IQO2UTd66JEFepsXz5oP80ekggrI5k89tubFeckn7NaK4MbFhonYRk6LdRYHQ==
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvvddrudejuddgieekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuvffgnffgvefqoffkvfetnffktedpqfgfvfenuceurghilhhouhhtmecufedtudenucfgmhhpthihuchsuhgsjhgvtghtucdluddtmdengfhmphhthicusghougihucdlhedtmdenucfjughrpehrhffvfffkggestddtfedttddttdenucfhrhhomhephggvuchhrghvvgcurghnuchofhhfvghruchtohcuihhnvhgvshhtuchinhcuhihouhhrucgtohhunhhtrhihuchunhguvghrucgruchjohhinhhtuchvvghnthhurhgvuchprghrthhnvghrshhhihhpuchplhgvrghsvgcurhgvphhlhicufhhorhcumhhorhgvucguvghtrghilhhsuceofhgpphgvnhhnrgesrghlihgtvgdrihhtqeenucggtffrrghtthgvrhhnpeehjeetgefhleetiedtkeelfffgjeeugeegleekueffgfegtdekkeeifedvvdffteenucfkphepudejiedrvddvjedrvdegvddrudeltdenucevlhhushhtvghrufhiiigvpeefkedtnecurfgrrhgrmhephhgvlhhopegrlhhitggvrdhithdpihhnvghtpedujeeirddvvdejrddvgedvrdduledtpdhmrghilhhfrhhomhepfhgpphgvnhhnrgesrghlihgtvgdrihhtpdhnsggprhgtphhtthhopedupdhrtghpthhtohepthgrrhhgvghtqdguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-RazorGate-Vade-Verdict: clean 60
+X-RazorGate-Vade-Classification: clean
+Received: from alice.it (176.227.242.190) by mta-out-06.alice.it (5.8.807.04) (authenticated as f_penna@alice.it)
+        id 623C9D2101212A14 for target-devel@vger.kernel.org; Mon, 4 Apr 2022 05:11:11 +0200
+Reply-To: dougfield20@inbox.lv
+From:   We have an offer to invest in your country under a
+         joint venture partnership please reply for more
+         details <f_penna@alice.it>
+To:     target-devel@vger.kernel.org
+Date:   03 Apr 2022 20:11:09 -0700
+Message-ID: <20220403201109.39F749BA7DE75008@alice.it>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH v2 3/3] scsi: target: tcmu: Use
- address_space->invalidate_lock
-Content-Language: en-US
-To:     Xiaoguang Wang <xiaoguang.wang@linux.alibaba.com>,
-        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Cc:     linux-block@vger.kernel.org
-References: <20220323134940.31463-1-xiaoguang.wang@linux.alibaba.com>
- <20220323134940.31463-4-xiaoguang.wang@linux.alibaba.com>
-From:   Bodo Stroesser <bostroesser@gmail.com>
-In-Reply-To: <20220323134940.31463-4-xiaoguang.wang@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=6.6 required=5.0 tests=BAYES_50,BODY_EMPTY,
+        DKIM_INVALID,DKIM_SIGNED,EMPTY_MESSAGE,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,MISSING_SUBJECT,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L3,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5147]
+        *  0.9 RCVD_IN_MSPIKE_L3 RBL: Low reputation (-3)
+        *      [217.169.118.12 listed in bl.mailspike.net]
+        * -0.7 RCVD_IN_DNSWL_LOW RBL: Sender listed at https://www.dnswl.org/,
+        *       low trust
+        *      [217.169.118.12 listed in list.dnswl.org]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [dougfield20[at]inbox.lv]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [f_penna[at]alice.it]
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.0 RCVD_IN_MSPIKE_BL Mailspike blacklisted
+        *  1.8 MISSING_SUBJECT Missing Subject: header
+        *  2.3 EMPTY_MESSAGE Message appears to have no textual parts and no
+        *      Subject: text
+        *  0.1 DKIM_INVALID DKIM or DK signature exists, but is not valid
+        *  0.0 BODY_EMPTY No body text in message
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On 23.03.22 14:49, Xiaoguang Wang wrote:
-> Currently tcmu_vma_fault() uses udev->cmdr_lock to avoid concurrent
-> find_free_blocks(), which unmaps idle pages and truncates them. This
-> work is really like many filesystem's truncate operations, but they
-> use address_space->invalidate_lock to protect race.
-> 
-> This patch replaces cmdr_lock with address_space->invalidate_lock in
-> tcmu fault procedure, which will also make page-fault have concurrency.
-> 
-
-Page fault happens only once for each allocated data page. After the
-page fault was processed, the page is re-used for many cmds without
-further page faults.
-
-Of course, if find_free_blocks released a page and tcmu after that
-allocates a new one, another page fault will occur. But that is a
-very rare case.
-
-So, what is the advantage of concurrency here?
-
-OTOH, I don't like the switch from tcmu's cmdr_lock to
-filemap_invalidate_* without a real technical reason.
-
-
-> Signed-off-by: Xiaoguang Wang <xiaoguang.wang@linux.alibaba.com>
-> ---
->   drivers/target/target_core_user.c | 14 ++++++++++----
->   1 file changed, 10 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-> index 9196188504ec..81bfa553cc67 100644
-> --- a/drivers/target/target_core_user.c
-> +++ b/drivers/target/target_core_user.c
-> @@ -1820,13 +1820,14 @@ static int tcmu_find_mem_index(struct vm_area_struct *vma)
->   
->   static struct page *tcmu_try_get_data_page(struct tcmu_dev *udev, uint32_t dpi)
->   {
-> +	struct address_space *mapping = udev->inode->i_mapping;
->   	struct page *page;
->   
-> -	mutex_lock(&udev->cmdr_lock);
-> +	filemap_invalidate_lock_shared(mapping);
->   	page = xa_load(&udev->data_pages, dpi);
->   	if (likely(page)) {
->   		get_page(page);
-> -		mutex_unlock(&udev->cmdr_lock);
-> +		filemap_invalidate_unlock_shared(mapping);
->   		return page;
->   	}
->   
-> @@ -1836,7 +1837,7 @@ static struct page *tcmu_try_get_data_page(struct tcmu_dev *udev, uint32_t dpi)
->   	 */
->   	pr_err("Invalid addr to data page mapping (dpi %u) on device %s\n",
->   	       dpi, udev->name);
-> -	mutex_unlock(&udev->cmdr_lock);
-> +	filemap_invalidate_unlock_shared(mapping);
->   
->   	return NULL;
->   }
-> @@ -3116,6 +3117,7 @@ static void find_free_blocks(void)
->   	loff_t off;
->   	u32 pages_freed, total_pages_freed = 0;
->   	u32 start, end, block, total_blocks_freed = 0;
-> +	struct address_space *mapping;
->   
->   	if (atomic_read(&global_page_count) <= tcmu_global_max_pages)
->   		return;
-> @@ -3139,6 +3141,8 @@ static void find_free_blocks(void)
->   			continue;
->   		}
->   
-> +		mapping = udev->inode->i_mapping;
-> +		filemap_invalidate_lock(mapping);
->   		end = udev->dbi_max + 1;
->   		block = find_last_bit(udev->data_bitmap, end);
->   		if (block == udev->dbi_max) {
-> @@ -3146,6 +3150,7 @@ static void find_free_blocks(void)
->   			 * The last bit is dbi_max, so it is not possible
->   			 * reclaim any blocks.
->   			 */
-> +			filemap_invalidate_unlock(mapping);
->   			mutex_unlock(&udev->cmdr_lock);
->   			continue;
->   		} else if (block == end) {
-> @@ -3159,10 +3164,11 @@ static void find_free_blocks(void)
->   
->   		/* Here will truncate the data area from off */
->   		off = udev->data_off + (loff_t)start * udev->data_blk_size;
-> -		unmap_mapping_range(udev->inode->i_mapping, off, 0, 1);
-> +		unmap_mapping_range(mapping, off, 0, 1);
->   
->   		/* Release the block pages */
->   		pages_freed = tcmu_blocks_release(udev, start, end - 1);
-> +		filemap_invalidate_unlock(mapping);
->   		mutex_unlock(&udev->cmdr_lock);
->   
->   		total_pages_freed += pages_freed;
