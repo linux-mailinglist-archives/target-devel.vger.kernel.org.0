@@ -2,101 +2,171 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC9794F22A8
-	for <lists+target-devel@lfdr.de>; Tue,  5 Apr 2022 07:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A34B4F5497
+	for <lists+target-devel@lfdr.de>; Wed,  6 Apr 2022 07:22:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229943AbiDEFrs (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 5 Apr 2022 01:47:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44404 "EHLO
+        id S245366AbiDFFAF (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 6 Apr 2022 01:00:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229731AbiDEFrr (ORCPT
+        with ESMTP id S1457530AbiDEQFw (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 5 Apr 2022 01:47:47 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F7DD5E15F;
-        Mon,  4 Apr 2022 22:45:50 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 30227B81A37;
-        Tue,  5 Apr 2022 05:45:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30CB4C340EE;
-        Tue,  5 Apr 2022 05:45:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649137547;
-        bh=gRpdesPvnbIGSxebVlyaRkNxgcCbKC3Od+BYMZifZO8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WD+JRYvskhSmVVBMnMJw0/1G3H6a+N1C9uZFgKiHbKzNPvqVuI6L5OyuaPIU/GcVK
-         p9Ezd99EsWg7F8epR/6qh8MV6eq7SgFXhFUqUug1upndo/Efkq0axblWoZn9JvLHDk
-         NmqZsxxMKxC5s07o7hS+Re7Ai9CVbL9JWXZ4WmIn3HtdqclK0tbR58xtxwCEaUuNp4
-         liDxWU7q1LiJKHCoGIo3C9Tw7hPvCg+1fKCDf2CEB0PL71aw64iAmFgGZNBJf/OMw9
-         DEbVdO/ONbCL1LJqtEdfTkuVGmfBovn1Bkd5w68OE6L/BH3NiohJZN9o1fac11yUrW
-         lKSD3HWND6PnA==
-Date:   Tue, 5 Apr 2022 08:45:43 +0300
-From:   Leon Romanovsky <leon@kernel.org>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Jason Gunthorpe <jgg@nvidia.com>, Ariel Elior <aelior@marvell.com>,
-        Anna Schumaker <anna@kernel.org>, Jens Axboe <axboe@fb.com>,
-        Christian Benvenuti <benve@cisco.com>,
-        Potnuri Bharat Teja <bharat@chelsio.com>,
-        Bernard Metzler <bmt@zurich.ibm.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-        Keith Busch <kbusch@kernel.org>,
-        Chaitanya Kulkarni <kch@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>, linux-cifs@vger.kernel.org,
-        linux-nfs@vger.kernel.org, linux-nvme@lists.infradead.org,
-        linux-rdma@vger.kernel.org, Max Gurtovoy <mgurtovoy@nvidia.com>,
-        Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>,
-        Michal Kalderon <mkalderon@marvell.com>,
-        Mustafa Ismail <mustafa.ismail@intel.com>,
-        Nelson Escobar <neescoba@cisco.com>, netdev@vger.kernel.org,
-        Paolo Abeni <pabeni@redhat.com>, rds-devel@oss.oracle.com,
-        Sagi Grimberg <sagi@grimberg.me>,
-        samba-technical@lists.samba.org,
-        Santosh Shilimkar <santosh.shilimkar@oracle.com>,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Steve French <sfrench@samba.org>,
-        Shiraz Saleem <shiraz.saleem@intel.com>,
-        target-devel@vger.kernel.org,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Yishai Hadas <yishaih@nvidia.com>,
-        Zhu Yanjun <zyjzyj2000@gmail.com>,
-        Xiao Yang <yangx.jy@fujitsu.com>
-Subject: Re: [PATCH] RDMA: Split kernel-only global device caps from uvers
- device caps
-Message-ID: <YkvXh28E3pLZSNTj@unreal>
-References: <0-v1-47e161ac2db9+80f-kern_caps_jgg@nvidia.com>
- <20220405044331.GA22322@lst.de>
+        Tue, 5 Apr 2022 12:05:52 -0400
+Received: from out30-57.freemail.mail.aliyun.com (out30-57.freemail.mail.aliyun.com [115.124.30.57])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E06C0310;
+        Tue,  5 Apr 2022 09:03:51 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01424;MF=xiaoguang.wang@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0V9HeY9c_1649174628;
+Received: from 30.32.95.104(mailfrom:xiaoguang.wang@linux.alibaba.com fp:SMTPD_---0V9HeY9c_1649174628)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Wed, 06 Apr 2022 00:03:48 +0800
+Message-ID: <e5923923-375f-c696-0c87-ca5def984d84@linux.alibaba.com>
+Date:   Wed, 6 Apr 2022 00:03:47 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220405044331.GA22322@lst.de>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.7.0
+Subject: Re: [PATCH v2 2/3] scsi: target: tcmu: Fix possible data corruption
+Content-Language: en-US
+To:     Bodo Stroesser <bostroesser@gmail.com>, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
+Cc:     linux-block@vger.kernel.org
+References: <20220323134940.31463-1-xiaoguang.wang@linux.alibaba.com>
+ <20220323134940.31463-3-xiaoguang.wang@linux.alibaba.com>
+ <b6280955-d3f5-f11b-5f62-07ab83cff4ac@gmail.com>
+From:   Xiaoguang Wang <xiaoguang.wang@linux.alibaba.com>
+In-Reply-To: <b6280955-d3f5-f11b-5f62-07ab83cff4ac@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-10.5 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Tue, Apr 05, 2022 at 06:43:31AM +0200, Christoph Hellwig wrote:
-> On Mon, Apr 04, 2022 at 01:18:00PM -0300, Jason Gunthorpe wrote:
-> > Split ib_device::device_cap_flags into kernel_cap_flags that holds the
-> > flags only used by the kernel.
-> > 
-> > This cleanly splits out the uverbs flags from the kernel flags to avoid
-> > confusion in the flags bitmap.
-> 
-> > Followup from Xiao Yang's series
-> 
-> Can you point me to this series?
+hi,
 
-https://lore.kernel.org/all/20220331032419.313904-1-yangx.jy@fujitsu.com/
-https://lore.kernel.org/all/20220331032419.313904-2-yangx.jy@fujitsu.com/
+> On 23.03.22 14:49, Xiaoguang Wang wrote:
+>> When tcmu_vma_fault() gets one page successfully, before the current
+>> context completes page fault procedure, find_free_blocks() may run in
+>> and call unmap_mapping_range() to unmap this page. Assume when
+>> find_free_blocks() completes its job firstly, previous page fault
+>> procedure starts to run again and completes, then one truncated page has
+>> beed mapped to use space, but note that tcmu_vma_fault() has gotten one
+>> refcount for this page, so any other subsystem won't use this page,
+>> unless later the use space addr is unmapped.
+>>
+>> If another command runs in later and needs to extends dbi_thresh, it may
+>> reuse the corresponding slot to previous page in data_bitmap, then thouth
+>> we'll allocate new page for this slot in data_area, but no page fault will
+>> happen again, because we have a valid map, real request's data will lose.
+>
+> I don't think, this is a safe fix. It is possible that not only
+> find_free_blocks runs before page fault procedure completes, but also
+> allocation for next cmd happens. In that case the new call to
+> unmap_mapping_range would also happen before page fault completes ->
+> data corruption.
+>
+> AFAIK, no one ever has seen this this bug in real life, as
+Yeah, I know, just find this maybe an issue by reading codes :)
 
-Thanks
+> find_free_blocks only runs seldomly and userspace would have to access
+> a data page the very first time while the cmd that owned this page
+> already has been completed by userspace. Therefore I think we should
+> apply a perfect fix only.
+>
+> I'm wondering whether there really is such a race. If so, couldn't the
+> same race happen in other drivers or even when truncating mapped files?
+Indeed, I have described how filesystem implementations avoid this issue
+in patch's commit message:
+
+  Filesystem implementations will also run into this issue, but they
+  usually lock page when vm_operations_struct->fault gets one page, and
+  unlock page after finish_fault() completes. In truncate sides, they
+  lock pages in truncate_inode_pages() to protect race with page fault.
+  We can also have similar codes like filesystem to fix this issue.
+
+
+Take ext4 as example, a file in ext4 is mapped to user space, if then a truncate
+operation occurs, ext4 calls truncate_pagecache():
+void truncate_pagecache(struct inode *inode, loff_t newsize)
+{
+        struct address_space *mapping = inode->i_mapping;
+        loff_t holebegin = round_up(newsize, PAGE_SIZE);
+
+        /*
+         * unmap_mapping_range is called twice, first simply for
+         * efficiency so that truncate_inode_pages does fewer
+         * single-page unmaps.  However after this first call, and
+         * before truncate_inode_pages finishes, it is possible for
+         * private pages to be COWed, which remain after
+         * truncate_inode_pages finishes, hence the second
+         * unmap_mapping_range call must be made for correctness.
+         */
+        unmap_mapping_range(mapping, holebegin, 0, 1);
+        truncate_inode_pages(mapping, newsize);
+        unmap_mapping_range(mapping, holebegin, 0, 1);
+}
+
+In truncate_inode_pages(), it'll lock page and set page->mapping
+to be NULL, and in ext4's filemap_fault(), it'll lock page and check whether
+page->mapping has been changed, if it's true, it'll just fail the page
+fault procedure.
+
+For tcmu, though the data area's pages don't have a valid mapping,
+but we can apply similar method.
+In tcmu_vma_fault(), we lock the page and set VM_FAULT_LOCKED
+flag, in find_free_blocks(), we firstly try to lock pages which are going
+to be released, if lock_page() returns, we can ensure that there are
+not inflight running page fault procedure, and following unmap_mapping_range()
+will also ensure that all user maps will be cleared.
+Seems that it'll resolve this possible issue, please have a check, thanks.
+
+
+Regards,
+Xiaoguang Wang
+
+
+>
+>
+>>
+>> To fix this issue, when extending dbi_thresh, we'll need to call
+>> unmap_mapping_range() to unmap use space data area which may exist,
+>> which I think it's a simple method.
+>>
+>> Filesystem implementations will also run into this issue, but they
+>> ususally lock page when vm_operations_struct->fault gets one page, and
+>> unlock page after finish_fault() completes. In truncate sides, they
+>> lock pages in truncate_inode_pages() to protect race with page fault.
+>> We can also have similar codes like filesystem to fix this issue.
+>>
+>> Signed-off-by: Xiaoguang Wang <xiaoguang.wang@linux.alibaba.com>
+>> ---
+>>   drivers/target/target_core_user.c | 5 +++++
+>>   1 file changed, 5 insertions(+)
+>>
+>> diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
+>> index 06a5c4086551..9196188504ec 100644
+>> --- a/drivers/target/target_core_user.c
+>> +++ b/drivers/target/target_core_user.c
+>> @@ -862,6 +862,7 @@ static int tcmu_alloc_data_space(struct tcmu_dev *udev, struct tcmu_cmd *cmd,
+>>       if (space < cmd->dbi_cnt) {
+>>           unsigned long blocks_left =
+>>                   (udev->max_blocks - udev->dbi_thresh) + space;
+>> +        loff_t off, len;
+>>             if (blocks_left < cmd->dbi_cnt) {
+>>               pr_debug("no data space: only %lu available, but ask for %u\n",
+>> @@ -870,6 +871,10 @@ static int tcmu_alloc_data_space(struct tcmu_dev *udev, struct tcmu_cmd *cmd,
+>>               return -1;
+>>           }
+>>   +        off = udev->data_off + (loff_t)udev->dbi_thresh * udev->data_blk_size;
+>> +        len = cmd->dbi_cnt * udev->data_blk_size;
+>> +        unmap_mapping_range(udev->inode->i_mapping, off, len, 1);
+>> +
+>>           udev->dbi_thresh += cmd->dbi_cnt;
+>>           if (udev->dbi_thresh > udev->max_blocks)
+>>               udev->dbi_thresh = udev->max_blocks;
+
