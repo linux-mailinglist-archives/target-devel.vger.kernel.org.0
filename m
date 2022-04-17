@@ -2,180 +2,107 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DEBF5046BF
-	for <lists+target-devel@lfdr.de>; Sun, 17 Apr 2022 07:26:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D8225046EF
+	for <lists+target-devel@lfdr.de>; Sun, 17 Apr 2022 09:23:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233437AbiDQF2o (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sun, 17 Apr 2022 01:28:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50088 "EHLO
+        id S232427AbiDQHZg (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 17 Apr 2022 03:25:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233425AbiDQF2o (ORCPT
+        with ESMTP id S231893AbiDQHZf (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sun, 17 Apr 2022 01:28:44 -0400
-Received: from out30-57.freemail.mail.aliyun.com (out30-57.freemail.mail.aliyun.com [115.124.30.57])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C87F113E12;
-        Sat, 16 Apr 2022 22:26:07 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R751e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04426;MF=xiaoguang.wang@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0VADb8oq_1650173164;
-Received: from localhost(mailfrom:xiaoguang.wang@linux.alibaba.com fp:SMTPD_---0VADb8oq_1650173164)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Sun, 17 Apr 2022 13:26:05 +0800
-From:   Xiaoguang Wang <xiaoguang.wang@linux.alibaba.com>
-To:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Cc:     linux-block@vger.kernel.org, bostroesser@gmail.com
-Subject: [PATCH v4] scsi: target: tcmu: Fix possible data corruption
-Date:   Sun, 17 Apr 2022 13:26:04 +0800
-Message-Id: <20220417052604.120942-1-xiaoguang.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.14.4.44.g2045bb6
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
-        version=3.4.6
+        Sun, 17 Apr 2022 03:25:35 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 132366176
+        for <target-devel@vger.kernel.org>; Sun, 17 Apr 2022 00:23:00 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id b19so15268746wrh.11
+        for <target-devel@vger.kernel.org>; Sun, 17 Apr 2022 00:22:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
+        b=a76B5ZazP66F+MjjxwJeCev0sXSEVmZnHJFAl28/egLaJJoCnsnBJU1Sk8AI87Wp+X
+         jFMhKzHx2qRtn0mncccF3RwL6IE4c5sR4Ks6In7Q9ZSgIeBHkXBXYJtr77kH/zpWiFE/
+         qv786vNHduo18TjPblXG8cpCuRA7kaOFgc2936rzgEJo02FBYjjNKHXzIck4IICktW57
+         IWLm8d5omDnTcxs1DQvP4T2iblM3fTv2hzEvIOeGORyHEo3YQafl1AJ1e2b6/KUstUNn
+         b14HbssNC2Pv8Y/YsCQJPzboMQgD33zFJq61Vs2Mf/AeEwzmD+Fl5EYbZ/8D3Zbv8J0x
+         2RsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
+        b=zRppq+/0N1LKnoP4nJwSzD+KBBXledABX/IlAjSPdqJFwvdMKRgMmTbVvz6+FhIaI/
+         GSzPWhiJT1Zi/xeKTjen48SDgFlOzrnjiHSecxhWCPYyUefFbzOGAhwef7HBi9Hsyzqu
+         KUdyanTnQ4rNw3pRMmDr7f610rA7fVybj6Lsl7+ogHbWMTR23Q8c72XszW2KwppwrNh4
+         POtbjahjGnPwxrWwN0ojK5ZZOUAQcBCSh17bKkoRv1QcCJ1tMwshNZBIO7nVbIaZ2Bfa
+         nHB0aCfWHkMtzr+csP0pI1JXPSNI+h8gD0AN8gSm51Sg5aqIQ7gVBrgt2ySzkzlFTL9C
+         NATw==
+X-Gm-Message-State: AOAM532qr5ZY4KCRRZl0A6ZUXsWEIyvAERooeThp0ItFeIqRw7zJYxgG
+        cCanzPnQVMfUihUZValJDKrftzpj2IZv/PME9Sw=
+X-Google-Smtp-Source: ABdhPJxqX5GioPtIik7UUz8o2q2w69dICkpuCZVmbMqgQ4lXXmUcp9iJAPQCs8mRej4LAUZlbMmwIxC91Mo/62j4Y8U=
+X-Received: by 2002:adf:dc90:0:b0:207:aa5c:8524 with SMTP id
+ r16-20020adfdc90000000b00207aa5c8524mr4679324wrj.523.1650180178336; Sun, 17
+ Apr 2022 00:22:58 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a05:6020:e0d4:b0:1cf:83e1:2b7f with HTTP; Sun, 17 Apr 2022
+ 00:22:57 -0700 (PDT)
+Reply-To: danielseyba@yahoo.com
+From:   Seyba Daniel <joynelly70@gmail.com>
+Date:   Sun, 17 Apr 2022 09:22:57 +0200
+Message-ID: <CANHFsh+mem0t2UpkvLbtYMnrTrUAzK_F1KB+1+iiCbbpaLxjDw@mail.gmail.com>
+Subject: Hello,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:441 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [joynelly70[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [joynelly70[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-When tcmu_vma_fault() gets one page successfully, before the current
-context completes page fault procedure, find_free_blocks() may run in
-and call unmap_mapping_range() to unmap this page. Assume when
-find_free_blocks() completes its job firstly, previous page fault
-procedure starts to run again and completes, then one truncated page has
-beed mapped to use space, but note that tcmu_vma_fault() has gotten one
-refcount for this page, so any other subsystem won't use this page,
-unless later the use space addr is unmapped.
+Hello,
 
-If another command runs in later and needs to extends dbi_thresh, it may
-reuse the corresponding slot to previous page in data_bitmap, then though
-we'll allocate new page for this slot in data_area, but no page fault will
-happen again, because we have a valid map, real request's data will lose.
+I am so sorry contacting you in this means especially when we have never
+met before. I urgently seek your service to represent me in investing in
+your region / country and you will be rewarded for your service without
+affecting your present job with very little time invested in it.
 
-Filesystem implementations will also run into this issue, but they
-usually lock page when vm_operations_struct->fault gets one page, and
-unlock page after finish_fault() completes. In truncate sides, they
-lock pages in truncate_inode_pages() to protect race with page fault.
-We can also have similar codes like filesystem to fix this issue.
+My interest is in buying real estate, private schools or companies with
+potentials for rapid growth in long terms.
 
-To fix this possible data corruption, we can apply similar method like
-filesystem. For pages that are to be freed, tcmu_blocks_release() locks
-and unlocks these pages, and make tcmu_vma_fault() also lock found page
-under cmdr_lock. At the same time, since tcmu_vma_fault() gets one extra
-page refcount, tcmu_blocks_release() won't free pages if pages are in
-page fault procedure, which means it's safe to call tcmu_blocks_release()
-before unmap_mapping_range().
+So please confirm interest by responding back.
 
-With above action, for above race, tcmu_blocks_release()
-will wait all page faults to be completed before calling
-unmap_mapping_range(), and later if unmap_mapping_range() is called,
-it will ensure stale mappings to be removed cleanly.
+My dearest regards
 
-Signed-off-by: Xiaoguang Wang <xiaoguang.wang@linux.alibaba.com>
----
-V4:
- Add comments to explain why it's safe to call tcmu_blocks_release()
-before unmap_mapping_range().
-
-V3:
- Just lock/unlock_page in tcmu_blocks_release(), and call
-tcmu_blocks_release() before unmap_mapping_range().
-
-V2:
-  Wait all possible inflight page faults to be completed in
-find_free_blocks() to fix possible stale map.
----
- drivers/target/target_core_user.c | 36 +++++++++++++++++++++++++++++++++---
- 1 file changed, 33 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-index fd7267baa707..f286b5294862 100644
---- a/drivers/target/target_core_user.c
-+++ b/drivers/target/target_core_user.c
-@@ -20,6 +20,7 @@
- #include <linux/configfs.h>
- #include <linux/mutex.h>
- #include <linux/workqueue.h>
-+#include <linux/pagemap.h>
- #include <net/genetlink.h>
- #include <scsi/scsi_common.h>
- #include <scsi/scsi_proto.h>
-@@ -1667,6 +1668,25 @@ static u32 tcmu_blocks_release(struct tcmu_dev *udev, unsigned long first,
- 	xas_lock(&xas);
- 	xas_for_each(&xas, page, (last + 1) * udev->data_pages_per_blk - 1) {
- 		xas_store(&xas, NULL);
-+		/*
-+		 * While reaching here, there maybe page faults occurring on
-+		 * these to be released pages, and there maybe one race that
-+		 * unmap_mapping_range() is called before page fault on these
-+		 * pages are finished, then valid but stale map is created.
-+		 *
-+		 * If another command runs in later and needs to extends
-+		 * dbi_thresh, it may reuse the corresponding slot to previous
-+		 * page in data_bitmap, then though we'll allocate new page for
-+		 * this slot in data_area, but no page fault will happen again,
-+		 * because we have a valid map, command's data will lose.
-+		 *
-+		 * So here we lock and unlock pages that are to be released to
-+		 * ensure all page faults to be completed, then following
-+		 * unmap_mapping_range() can ensure stale maps to be removed
-+		 * cleanly.
-+		 */
-+		lock_page(page);
-+		unlock_page(page);
- 		__free_page(page);
- 		pages_freed++;
- 	}
-@@ -1822,6 +1842,7 @@ static struct page *tcmu_try_get_data_page(struct tcmu_dev *udev, uint32_t dpi)
- 	page = xa_load(&udev->data_pages, dpi);
- 	if (likely(page)) {
- 		get_page(page);
-+		lock_page(page);
- 		mutex_unlock(&udev->cmdr_lock);
- 		return page;
- 	}
-@@ -1863,6 +1884,7 @@ static vm_fault_t tcmu_vma_fault(struct vm_fault *vmf)
- 	struct page *page;
- 	unsigned long offset;
- 	void *addr;
-+	vm_fault_t ret = 0;
- 
- 	int mi = tcmu_find_mem_index(vmf->vma);
- 	if (mi < 0)
-@@ -1887,10 +1909,11 @@ static vm_fault_t tcmu_vma_fault(struct vm_fault *vmf)
- 		page = tcmu_try_get_data_page(udev, dpi);
- 		if (!page)
- 			return VM_FAULT_SIGBUS;
-+		ret = VM_FAULT_LOCKED;
- 	}
- 
- 	vmf->page = page;
--	return 0;
-+	return ret;
- }
- 
- static const struct vm_operations_struct tcmu_vm_ops = {
-@@ -3205,12 +3228,19 @@ static void find_free_blocks(void)
- 			udev->dbi_max = block;
- 		}
- 
-+		/*
-+		 * Release the block pages.
-+		 * Also note that since tcmu_vma_fault() gets one extra page
-+		 * refcount, tcmu_blocks_release() won't free pages if pages
-+		 * are in page fault procedure, which means it's safe to
-+		 * call tcmu_blocks_release() before unmap_mapping_range().
-+		 */
-+		pages_freed = tcmu_blocks_release(udev, start, end - 1);
-+
- 		/* Here will truncate the data area from off */
- 		off = udev->data_off + (loff_t)start * udev->data_blk_size;
- 		unmap_mapping_range(udev->inode->i_mapping, off, 0, 1);
- 
--		/* Release the block pages */
--		pages_freed = tcmu_blocks_release(udev, start, end - 1);
- 		mutex_unlock(&udev->cmdr_lock);
- 
- 		total_pages_freed += pages_freed;
--- 
-2.14.4.44.g2045bb6
-
+Seyba Daniel
