@@ -2,107 +2,108 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D8225046EF
-	for <lists+target-devel@lfdr.de>; Sun, 17 Apr 2022 09:23:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DE1F504A85
+	for <lists+target-devel@lfdr.de>; Mon, 18 Apr 2022 03:34:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232427AbiDQHZg (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sun, 17 Apr 2022 03:25:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35120 "EHLO
+        id S235605AbiDRBgP (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 17 Apr 2022 21:36:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231893AbiDQHZf (ORCPT
+        with ESMTP id S235616AbiDRBfu (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sun, 17 Apr 2022 03:25:35 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 132366176
-        for <target-devel@vger.kernel.org>; Sun, 17 Apr 2022 00:23:00 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id b19so15268746wrh.11
-        for <target-devel@vger.kernel.org>; Sun, 17 Apr 2022 00:22:59 -0700 (PDT)
+        Sun, 17 Apr 2022 21:35:50 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 016981835E
+        for <target-devel@vger.kernel.org>; Sun, 17 Apr 2022 18:32:49 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id mp16-20020a17090b191000b001cb5efbcab6so16034963pjb.4
+        for <target-devel@vger.kernel.org>; Sun, 17 Apr 2022 18:32:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
-        b=a76B5ZazP66F+MjjxwJeCev0sXSEVmZnHJFAl28/egLaJJoCnsnBJU1Sk8AI87Wp+X
-         jFMhKzHx2qRtn0mncccF3RwL6IE4c5sR4Ks6In7Q9ZSgIeBHkXBXYJtr77kH/zpWiFE/
-         qv786vNHduo18TjPblXG8cpCuRA7kaOFgc2936rzgEJo02FBYjjNKHXzIck4IICktW57
-         IWLm8d5omDnTcxs1DQvP4T2iblM3fTv2hzEvIOeGORyHEo3YQafl1AJ1e2b6/KUstUNn
-         b14HbssNC2Pv8Y/YsCQJPzboMQgD33zFJq61Vs2Mf/AeEwzmD+Fl5EYbZ/8D3Zbv8J0x
-         2RsA==
+        d=kernel-dk.20210112.gappssmtp.com; s=20210112;
+        h=from:to:cc:in-reply-to:references:subject:message-id:date
+         :mime-version:content-transfer-encoding;
+        bh=KJfLbwgngO3OiGtIZhQTnGZUpV/6KTf4a6VxaVn0jHA=;
+        b=fUiWEs30cpVdTgnRTDuIunTyD3sFwyNXIMjD2xrDFFhby9PvozDytSBEVj5TLA3enQ
+         WJg5PUCFZhavWnDTUSjcqiWdtbmRSnwGPVoJqfidCHXMsRiC/8miYakfaAZVFsJvX3bS
+         5rW4pfgKMUPRH4xvCV8Ayqx16fXXcBpmLJ8ouv1MDWzBzzeX6sTvregS6+W7imKu2o9s
+         JkpStrFdIm2UGzcq7WrYJf9XXlMNLf1O1L3ohQXq8EaSjdqThCTtF7dsfLFbH0M279GX
+         9j/pkX//BLTGvZs/WRmTotqH1MNj+h8ET2s+rsNWcTHLVYqXbzx2Z0wD2+tsX+cqIWVh
+         IhOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
-        b=zRppq+/0N1LKnoP4nJwSzD+KBBXledABX/IlAjSPdqJFwvdMKRgMmTbVvz6+FhIaI/
-         GSzPWhiJT1Zi/xeKTjen48SDgFlOzrnjiHSecxhWCPYyUefFbzOGAhwef7HBi9Hsyzqu
-         KUdyanTnQ4rNw3pRMmDr7f610rA7fVybj6Lsl7+ogHbWMTR23Q8c72XszW2KwppwrNh4
-         POtbjahjGnPwxrWwN0ojK5ZZOUAQcBCSh17bKkoRv1QcCJ1tMwshNZBIO7nVbIaZ2Bfa
-         nHB0aCfWHkMtzr+csP0pI1JXPSNI+h8gD0AN8gSm51Sg5aqIQ7gVBrgt2ySzkzlFTL9C
-         NATw==
-X-Gm-Message-State: AOAM532qr5ZY4KCRRZl0A6ZUXsWEIyvAERooeThp0ItFeIqRw7zJYxgG
-        cCanzPnQVMfUihUZValJDKrftzpj2IZv/PME9Sw=
-X-Google-Smtp-Source: ABdhPJxqX5GioPtIik7UUz8o2q2w69dICkpuCZVmbMqgQ4lXXmUcp9iJAPQCs8mRej4LAUZlbMmwIxC91Mo/62j4Y8U=
-X-Received: by 2002:adf:dc90:0:b0:207:aa5c:8524 with SMTP id
- r16-20020adfdc90000000b00207aa5c8524mr4679324wrj.523.1650180178336; Sun, 17
- Apr 2022 00:22:58 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject
+         :message-id:date:mime-version:content-transfer-encoding;
+        bh=KJfLbwgngO3OiGtIZhQTnGZUpV/6KTf4a6VxaVn0jHA=;
+        b=vkjRDfIEQVzKV7/rqPjhv7bHOH1IcYjF6/XNxGJIqVY2KOORSIqfNgo9bl/XYJRU9m
+         K/WGxOf0PABTjsqffYQu+7EzDViPj9f3NV8RvwM3yxVeue+n+nv9Ooj0gFAf1c6qyGZh
+         zX9A0ZvMRCt/b5IGtXrCA0mcHL6elplzfZuzPkSC6ehACRVKFO5sFhUrDVe99jSGbXsV
+         +3OQj0KKJHhOqsKtFQIMdfuUH0NFdXkIQ4K3XGyrJG6pzGikxjULDNjAEPoPCzVWsQhw
+         X2UF7B2K8jp+m9fkIdY721ywlYjNw1Pj2ITvyV6dXR86bOkRhJc2r7aRvLVKnlX1E4x7
+         vR2w==
+X-Gm-Message-State: AOAM531m20wKdSzTc/IcRNg5cn6GZzZQNs+vuwzRDHKqWiP0byX9duXq
+        sDwb1Pyr0QwO4sIiwhgm5hYotg==
+X-Google-Smtp-Source: ABdhPJxH3Tcv8urG8TWDL99aaKBrMqsxLK1RCMCg75RZRVpxh7Td568gOGSDadX3DzyNp9aRqA2iCg==
+X-Received: by 2002:a17:903:2406:b0:158:f6f0:6c44 with SMTP id e6-20020a170903240600b00158f6f06c44mr4676524plo.88.1650245568439;
+        Sun, 17 Apr 2022 18:32:48 -0700 (PDT)
+Received: from [127.0.1.1] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id g15-20020a63be4f000000b0039934531e95sm10726611pgo.18.2022.04.17.18.32.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Apr 2022 18:32:47 -0700 (PDT)
+From:   Jens Axboe <axboe@kernel.dk>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     linux-block@vger.kernel.org, phillip@squashfs.org.uk,
+        target-devel@vger.kernel.org, colyli@suse.de,
+        linux-btrfs@vger.kernel.org, martin.petersen@oracle.com,
+        linux-raid@vger.kernel.org, dsterba@suse.com, josef@toxicpanda.com,
+        song@kernel.org, dm-devel@redhat.com, snitzer@redhat.com,
+        linux-bcache@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20220406061228.410163-1-hch@lst.de>
+References: <20220406061228.410163-1-hch@lst.de>
+Subject: Re: cleanup bio_kmalloc v3
+Message-Id: <165024556441.258485.6980891929042026868.b4-ty@kernel.dk>
+Date:   Sun, 17 Apr 2022 19:32:44 -0600
 MIME-Version: 1.0
-Received: by 2002:a05:6020:e0d4:b0:1cf:83e1:2b7f with HTTP; Sun, 17 Apr 2022
- 00:22:57 -0700 (PDT)
-Reply-To: danielseyba@yahoo.com
-From:   Seyba Daniel <joynelly70@gmail.com>
-Date:   Sun, 17 Apr 2022 09:22:57 +0200
-Message-ID: <CANHFsh+mem0t2UpkvLbtYMnrTrUAzK_F1KB+1+iiCbbpaLxjDw@mail.gmail.com>
-Subject: Hello,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:441 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [joynelly70[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [joynelly70[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hello,
+On Wed, 6 Apr 2022 08:12:23 +0200, Christoph Hellwig wrote:
+> this series finishes off the bio allocation interface cleanups by dealing
+> with the weirdest member of the famility.  bio_kmalloc combines a kmalloc
+> for the bio and bio_vecs with a hidden bio_init call and magic cleanup
+> semantics.
+> 
+> This series moves a few callers away from bio_kmalloc and then turns
+> bio_kmalloc into a simple wrapper for a slab allocation of a bio and the
+> inline biovecs.  The callers need to manually call bio_init instead with
+> all that entails and the magic that turns bio_put into a kfree goes away
+> as well, allowing for a proper debug check in bio_put that catches
+> accidental use on a bio_init()ed bio.
+> 
+> [...]
 
-I am so sorry contacting you in this means especially when we have never
-met before. I urgently seek your service to represent me in investing in
-your region / country and you will be rewarded for your service without
-affecting your present job with very little time invested in it.
+Applied, thanks!
 
-My interest is in buying real estate, private schools or companies with
-potentials for rapid growth in long terms.
+[1/5] btrfs: simplify ->flush_bio handling
+      commit: f9e69aa9ccd7e51c47b147e45e03987ea0ef9aa3
+[2/5] squashfs: always use bio_kmalloc in squashfs_bio_read
+      commit: 46a2d4ccc49903923506685a8368ca88312bbdc9
+[3/5] target/pscsi: remove pscsi_get_bio
+      commit: 7655db80932d95f501a0811544d9520ec720e38d
+[4/5] block: turn bio_kmalloc into a simple kmalloc wrapper
+      commit: 066ff571011d8416e903d3d4f1f41e0b5eb91e1d
+[5/5] pktcdvd: stop using bio_reset
+      commit: 852ad96cb03621f7995764b4b31cbff9801d8bcd
 
-So please confirm interest by responding back.
+Best regards,
+-- 
+Jens Axboe
 
-My dearest regards
 
-Seyba Daniel
