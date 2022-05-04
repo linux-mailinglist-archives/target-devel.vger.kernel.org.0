@@ -2,108 +2,101 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D34F51ACE7
-	for <lists+target-devel@lfdr.de>; Wed,  4 May 2022 20:33:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F02151B44B
+	for <lists+target-devel@lfdr.de>; Thu,  5 May 2022 02:09:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359867AbiEDSgz (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 4 May 2022 14:36:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33928 "EHLO
+        id S234402AbiEEAGj (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 4 May 2022 20:06:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376986AbiEDSgp (ORCPT
+        with ESMTP id S1380115AbiEDX6z (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 4 May 2022 14:36:45 -0400
-X-Greylist: delayed 601 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 04 May 2022 11:22:29 PDT
-Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B49965F1;
-        Wed,  4 May 2022 11:22:29 -0700 (PDT)
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 233F742B44;
-        Wed,  4 May 2022 18:02:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        mime-version:content-transfer-encoding:content-type:content-type
-        :content-language:accept-language:in-reply-to:references
-        :message-id:date:date:subject:subject:from:from:received
-        :received:received:received:received; s=mta-01; t=1651687350; x=
-        1653501751; bh=d1AvmeEuVZgsCOz9p7Jh6JALcdMQUebwCCJjiySqc3w=; b=Z
-        Pl5px0nVEqVgiJ2jfO7OD1RiJNO8dvbS2wXDfzEg8Gqc9ieuLc0DTCYMPc9R/QJH
-        bJwDE0x/J+/SywJAbD98WldPUm7LduUIZPhDVX2rslr0wr9aeV9lk7LXESt0IDu+
-        TNkbb1g+914eUu86EuRKWaCE9JZ5+EwWBfFOQ5hS8c=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id UoA5R8rV2ZWn; Wed,  4 May 2022 21:02:30 +0300 (MSK)
-Received: from T-EXCH-01.corp.yadro.com (t-exch-01.corp.yadro.com [172.17.10.101])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id 0B4ED4283A;
-        Wed,  4 May 2022 21:02:29 +0300 (MSK)
-Received: from T-EXCH-10.corp.yadro.com (172.17.11.60) by
- T-EXCH-01.corp.yadro.com (172.17.10.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.669.32; Wed, 4 May 2022 21:02:29 +0300
-Received: from T-EXCH-09.corp.yadro.com (172.17.11.59) by
- T-EXCH-10.corp.yadro.com (172.17.11.60) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Wed, 4 May 2022 21:02:28 +0300
-Received: from T-EXCH-09.corp.yadro.com ([fe80::d9f:e165:8a50:d450]) by
- T-EXCH-09.corp.yadro.com ([fe80::d9f:e165:8a50:d450%4]) with mapi id
- 15.02.0986.022; Wed, 4 May 2022 21:02:28 +0300
-From:   Dmitriy Bogdanov <d.bogdanov@yadro.com>
-To:     Mike Christie <michael.christie@oracle.com>,
-        Martin Petersen <martin.petersen@oracle.com>,
-        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>
-CC:     "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux@yadro.com" <linux@yadro.com>
-Subject: RE: [PATCH v3 0/3] target: iscsi: control authentication per ACL
-Thread-Topic: [PATCH v3 0/3] target: iscsi: control authentication per ACL
-Thread-Index: AQHXxLmS7SuA9HdbIk2r5RVxhcl+j6veWFEAgABFs0CBMY9zoA==
-Date:   Wed, 4 May 2022 18:02:28 +0000
-Message-ID: <bd9e50adcc95404c94b4408117a94b0a@yadro.com>
-References: <20211019071843.14890-1-d.bogdanov@yadro.com>
- <ec9e01a3-73d0-a06b-8c20-ae492c0c3313@oracle.com>
- <15af5f6f490a42c5a02c9d9bd79f1a28@yadro.com>
-In-Reply-To: <15af5f6f490a42c5a02c9d9bd79f1a28@yadro.com>
-Accept-Language: ru-RU, en-US
-Content-Language: ru-RU
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.178.114.42]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Wed, 4 May 2022 19:58:55 -0400
+Received: from mail-oa1-x41.google.com (mail-oa1-x41.google.com [IPv6:2001:4860:4864:20::41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 851F55536D
+        for <target-devel@vger.kernel.org>; Wed,  4 May 2022 16:54:26 -0700 (PDT)
+Received: by mail-oa1-x41.google.com with SMTP id 586e51a60fabf-e93bbb54f9so2782188fac.12
+        for <target-devel@vger.kernel.org>; Wed, 04 May 2022 16:54:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=ampHH5WJLIBWSsxWwzVjbk5pO9UBFxn81pZ6QIDzZtY=;
+        b=Wi7wBkWXT7fR+/jAEhKsO31Oarky7Hic5GyRt8ptMtPqYKzdv3nD2iizXBHC8wt7gG
+         9fsd8ooiANorT0v3olAVROYP4FnGfHLMp9s8CsoWjMv5N0zR3TyNWP5hje8Shep7Zu3V
+         mBeY949BNJJcL1tPO+A7NPW6WXiDsa9EiqKQi4r7pdfRLsFxM+8BREaiRQfvgji33pAW
+         DQK7/FRo20+wPLN9WuBRUWuT0OhVqxDsg4jNK1HZmPoZrU9Vz5YbqXbIMExMlMdhePLD
+         HcvQiSXWUUj3OFaH95xsjNewjk7Rz2w8fPDRN2lnxK2lve5m6wsLrJHNtF9JJQogylLg
+         +CeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=ampHH5WJLIBWSsxWwzVjbk5pO9UBFxn81pZ6QIDzZtY=;
+        b=rKDaO11/98DDkTzJBcVtRY7W0GNxF1fJ1iumbZ72lxhHTXn0DAPbczeClXg1Oti7nt
+         FWxA2p5Y4D0MbMc3YCV18d8O8h6cgSz5zj6BK1Ssk3YCgeOTkdfvtwA9IqAq+x+TAG0C
+         0UxkixfV7nEwBblmhZhHmWSDoVbbgwIyRyHVSFsDbW2SPKq9mbMAhCscriSmfdX+oHjn
+         sC5xWW0IQbOYuevYsQQat66HerM7Ih/ZwSlraaZsyuEgxNSPXb37g0M8RYlYJKiiUOgH
+         cnsHT4vFVgWMea0dv4ua9+k23SEmqusPqbb64Ct3c8ymtnbw0vnvVY5kxOZ9IqEAr2ap
+         llYA==
+X-Gm-Message-State: AOAM532caUzdi5Ui4qp2q5+ykYCYT7S+slLiwfWxTj/2wcFjpuriQqfU
+        A228kcdAW74PzuWA5h7pM0pcKfhr0q+IPb6QGDs=
+X-Google-Smtp-Source: ABdhPJx0eYlAt/hfjPvGtSBHd78AagzqG6VLgxRDPWFF/7HCXz4jmIrctspJtJUoYqYPhayL8i0k55Rrul42QWn8ads=
+X-Received: by 2002:a05:6871:453:b0:ed:d2f8:8ecc with SMTP id
+ e19-20020a056871045300b000edd2f88eccmr1027432oag.228.1651708466145; Wed, 04
+ May 2022 16:54:26 -0700 (PDT)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6802:1a9:0:0:0:0 with HTTP; Wed, 4 May 2022 16:54:25
+ -0700 (PDT)
+Reply-To: ortegainvestmmentforrealinvest@gmail.com
+From:   Info <joybhector64@gmail.com>
+Date:   Thu, 5 May 2022 05:24:25 +0530
+Message-ID: <CAP7KLYj7gc3f+0EkyoqXvxnOQ_=KMf4c5_EnQ4CRzn=9j8Gd3g@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2001:4860:4864:20:0:0:0:41 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [joybhector64[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [joybhector64[at]gmail.com]
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.5 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-SGkgTWlrZSwNCg0KSSd2ZSBqdXN0IHRyaWVkIG9uZSBtb3JlIHRpbWUgdG8gcmVwcm9kdWNlIHlv
-dXIgZXJyb3IgYW5kIEkgZmFpbGVkIGFnYWluLg0KV2l0aCB5b3VyIGNvbmZpZyBmaWxlIHRoZSBi
-ZWhhdmlvciBpcyB0aGUgYWJzb2x1dGVseSB0aGUgc2FtZSBmb3IgYm90aCBjYXNlcyB3aXRoIG15
-IHBhdGNoc2V0IGFuZCB3aXRob3V0IG15IHBhdGNoc2V0OiANCiogZm9yIGR5bmFtaWMgQUNMcyAt
-IHRhcmdldCBmYWlscyB0aGUgbG9naW4gYW5kIHNob3dzIHRoZSBiZWxsb3cgbG9ncy4NCiogZm9y
-IHRoZSByZWdpc3RlcmVkIEFDTCAtIHRhcmdldCBzdWNjZWVkcyB0aGUgbG9naW4uDQoNCkNvdWxk
-IHlvdSwgcGxlYXNlLCByZS1jaGVjayB0aGUgcGF0Y2hzZXQ/DQoNCkJSLA0KIERtaXRyeQ0KDQot
-LS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogRG1pdHJpeSBCb2dkYW5vdiA8ZC5ib2dk
-YW5vdkB5YWRyby5jb20+IA0KU2VudDogRnJpZGF5LCBPY3RvYmVyIDIyLCAyMDIxIDEwOjQ4IEFN
-DQpUbzogTWlrZSBDaHJpc3RpZSA8bWljaGFlbC5jaHJpc3RpZUBvcmFjbGUuY29tPjsgTWFydGlu
-IFBldGVyc2VuIDxtYXJ0aW4ucGV0ZXJzZW5Ab3JhY2xlLmNvbT47IHRhcmdldC1kZXZlbEB2Z2Vy
-Lmtlcm5lbC5vcmcNCkNjOiBsaW51eC1zY3NpQHZnZXIua2VybmVsLm9yZzsgbGludXhAeWFkcm8u
-Y29tDQpTdWJqZWN0OiBSRTogW1BBVENIIHYzIDAvM10gdGFyZ2V0OiBpc2NzaTogY29udHJvbCBh
-dXRoZW50aWNhdGlvbiBwZXIgQUNMDQoNCkhpIE1pa2UsDQoNCj4gSSBjYW4ndCBzZWVtIHRvIGdl
-dCB0aGUgcGF0Y2hlcyB3b3JraW5nIHdpdGggdGhlIHRhcmdldGNsaSBjb25maWcgZmlsZSBiZWxv
-dyBJdCB3b3JrZWQgb2sgYmVmb3JlIHRoZSBwYXRjaGVzLg0KPg0KPiBJIGdldCB0aGlzIGVycm9y
-Og0KPg0KPiBPY3QgMjIgMDA6NTY6MjUgb2w0IGtlcm5lbDogQ0hBUCB1c2VyIG9yIHBhc3N3b3Jk
-IG5vdCBzZXQgZm9yIEluaXRpYXRvciBBQ0wNCj4gT2N0IDIyIDAwOjU2OjI1IG9sNCBrZXJuZWw6
-IFNlY3VyaXR5IG5lZ290aWF0aW9uIGZhaWxlZC4NCj4gT2N0IDIyIDAwOjU2OjI1IG9sNCBrZXJu
-ZWw6IGlTQ1NJIExvZ2luIG5lZ290aWF0aW9uIGZhaWxlZC4NCg0KVGhpcyBraW5kIG9mIGVycm9y
-IGlzIHJlcG9ydGVkIGZvciB0aGUgdW5rbm93biAoZHluYW1pYykgQUNMIHNpbmNlIHRoZSBjb25m
-aWcgZmlsZSBoYXZlIG5vdCBoYXZlDQp1c2VyaWQvcGFzc3dvcmQgY29uZmlndXJlZCBmb3IgVFBH
-LiBZb3VyIGNvbmZpZyBmaWxlIGxvb2tzIHN0cmFuZ2UgLSBpdCBoYXMgZ2VuZXJhdGVfZHluX2Fj
-bHM9MQ0KYnV0IGhhcyBub3QgY3JlZGVudGlhbHMgZm9yIGR5bmFtaWMgYWNscy4NCg0KTG9naW4g
-ZnJvbSB0aGUgY29uZmlndXJlZCBBQ0wgaW4gdGhpcyBjb25maWcgZmlsZSB3b3JrcyB3ZWxsIGZv
-ciBtZS4NCg0KQ291bGQgeW91LCBwbGVhc2UsIGRlc2NyaWJlIG1vcmUgZGV0YWlscyBvZiB5b3Vy
-IHVzZWNhc2U/DQoNCkJSLA0KIERtaXRyeQ0K
+-- 
+I am an investor. I came from the USA and I have many investments all
+over the world.
+
+I want you to partner with me to invest in your country I am into many
+investment such as real Estate or buying of properties i can also
+invest money in any of existing business with equity royalty or by %
+percentage so on,
+Warm regards
