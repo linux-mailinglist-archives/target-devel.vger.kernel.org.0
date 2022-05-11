@@ -2,159 +2,105 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5461A5229D0
-	for <lists+target-devel@lfdr.de>; Wed, 11 May 2022 04:47:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 625D7522B64
+	for <lists+target-devel@lfdr.de>; Wed, 11 May 2022 06:43:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240568AbiEKCdI (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 10 May 2022 22:33:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35892 "EHLO
+        id S234311AbiEKEnf (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 11 May 2022 00:43:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241636AbiEKCdC (ORCPT
+        with ESMTP id S233586AbiEKEnd (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 10 May 2022 22:33:02 -0400
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BC9C6B7C5;
-        Tue, 10 May 2022 19:32:57 -0700 (PDT)
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24AKu3rn023623;
-        Wed, 11 May 2022 02:32:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : message-id : references : date : in-reply-to : content-type :
- mime-version; s=corp-2021-07-09;
- bh=yULIHoCxNXBzZcTlSWRuIUcjVwhrQ0zzhO06SJNdd1c=;
- b=ASCROJAFB6WqlJ1ylUN6bTDZIYngsHWzpSsVsaoxoS2/L4OjEqMyqkN9k5GL+7epo2JD
- kFvtUdqvMoKGOpD5iJQEZcA+RE/M0HeuqnI1SMP9KHg+qO1iw0B9ANnymgwvsJyhHJQ5
- MX1Tg0IzyQeOzVHy2AjKjJAxBfamfyPb/knlVrJOSUmJ/ltUMZnLWMr+ie3TURAloZfV
- hBm+emus3i4k0oDxkpu3Z4F3oh3ADUJSyr3WDuXWc6iTlyt2U5of4ZjbP86BuxEv4bs5
- Krw8s6poX3douYw2NazylXZZdd5jbqdqbKbFGaQRzvf/+/rWB9IB3PJno8ti4wzfZh9G aw== 
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3fwgcsrg28-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 11 May 2022 02:32:49 +0000
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.16.1.2/8.16.1.2) with SMTP id 24B2KMPk022247;
-        Wed, 11 May 2022 02:32:48 GMT
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2106.outbound.protection.outlook.com [104.47.55.106])
-        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com with ESMTP id 3fwf73hfpc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 11 May 2022 02:32:48 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jPcLVFMXncKWyNK6/6hVJGttHVyQPHaS55tXkvav8zxwGd0qoVLHuppl4fL2BwVilr8DLoHMDiJu7sj4LVnge0AbuotFNi/TAG7HOTcw5nQI651dogcbm4nT9JcaCPMW3J052LGC5JwV86XCvuSpmQmeZIivYjMDfG9vztvr8e0UCt7jtczb4KNi/LW2lxeA3jPRf07oEz3ruOdS4tQ1JgloqvPv7UJh7q7XdQbsX3K+LxD5I03vV1ClR0CIrAmMci4nSFieN3THCNyvigCD5Dd3ZrRuEMhiyfhCmoOvL3J9ch73nSZX61hNHxYNSAFnygXFiF1cp2BolxPWzk6hMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yULIHoCxNXBzZcTlSWRuIUcjVwhrQ0zzhO06SJNdd1c=;
- b=A6lDs6nPBrH0GSYyKoZVscMBwF/WNZZ4J1zZl5EFcF8OoGpXkzcbOA09Ho4jcecVBP6hVe9h6w17cFll1eD0J2+UTPFCKL5v9WwYupPqUilrkerxQNS8+cXlkGIWzjO4d+a2fGnV0tAsBGQcObNovh8MDjO7yjKE2VwoMorD5LyEzBGI2EhWlorWHH1QP5w6yoH7DvEpbgeVc/dicrNuB7P8AdyRFVMQUbvVFNFVtE5ZDHNttJ0c7S8gcrXjkQ8emCjYxJ46AiH5XkNRpkRbVPtjWdXtTOEIzs5gdJejeUDIHR8EUjdzhD8iTOAvPtLNog4IAiwBGBUpffT6DFPi3Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+        Wed, 11 May 2022 00:43:33 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 001AFA0D10
+        for <target-devel@vger.kernel.org>; Tue, 10 May 2022 21:43:31 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id e24so1138511pjt.2
+        for <target-devel@vger.kernel.org>; Tue, 10 May 2022 21:43:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yULIHoCxNXBzZcTlSWRuIUcjVwhrQ0zzhO06SJNdd1c=;
- b=K98YPO7vZ6JdYUEYCpnJhlU+YHqD/j3apxlJ2w+XhHRyGgZwn6ZkdmpE6qWUMNussTWmh8/STHgmo5r3fT5d3vUYN6EdPjAXX/7fFaicdZdXM01PyC3sagKVa1Xa753NpaSBXZ5Rq7R3m97/9YxgX7IOfrvoJlNq9uJXC34jg50=
-Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
- by SA2PR10MB4569.namprd10.prod.outlook.com (2603:10b6:806:111::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5227.21; Wed, 11 May
- 2022 02:32:45 +0000
-Received: from PH0PR10MB4759.namprd10.prod.outlook.com
- ([fe80::d1db:de4e:9b71:3192]) by PH0PR10MB4759.namprd10.prod.outlook.com
- ([fe80::d1db:de4e:9b71:3192%9]) with mapi id 15.20.5227.023; Wed, 11 May 2022
- 02:32:45 +0000
-To:     Max Gurtovoy <mgurtovoy@nvidia.com>
-Cc:     <linux-scsi@vger.kernel.org>, <target-devel@vger.kernel.org>,
-        <martin.petersen@oracle.com>, <hch@lst.de>, <sagi@grimberg.me>,
-        <michael.christie@oracle.com>
-Subject: Re: [PATCH 1/3] target/iscsi: rename iscsi_cmd to iscsit_cmd
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <yq1czgkyf28.fsf@ca-mkp.ca.oracle.com>
-References: <20220428092939.36768-1-mgurtovoy@nvidia.com>
-Date:   Tue, 10 May 2022 22:32:43 -0400
-In-Reply-To: <20220428092939.36768-1-mgurtovoy@nvidia.com> (Max Gurtovoy's
-        message of "Thu, 28 Apr 2022 12:29:37 +0300")
-Content-Type: text/plain
-X-ClientProxiedBy: SN7P220CA0015.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:806:123::20) To PH0PR10MB4759.namprd10.prod.outlook.com
- (2603:10b6:510:3d::12)
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
+        b=cATSTZkJ3ihDr7kmGJT5peIk4WzATgziNlLDQUaQF0UjlDqgoEEuGaUrbUqldJ31oR
+         vabmbeFahRwl3lPbxxDBTmLTUVgtoY1muM2STFJtAzdS2/uSXQL/RgxLgwTMgi6wZC5y
+         9jgvSsXhPDebEC+KeA4Yp5ZuYqS0IZCNAwEYvRF90XYQCKM/5RYtpKtYGDwmBfroTwaV
+         1kjYRadfleXzzdkACPIOP5V24SpiU9H+uY4/l89+6jdTamZt/dBupBOYqgZ1ZOGcp0Kc
+         rHgsvHxiWrGCkefizlgJ1/E5wTpZjYmPWzkULzoPVy/TUF5Wl3VJLwp8t2mpFTdixXxi
+         RXbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
+        b=TPEE0L879QWFxIA7X0jYG7mkcY4vG9JDkDc+IuiyRYkAtzYdE1Ru18SqhAFCTbFvkc
+         jgQoTutKcWXxL1yUfEW3plaHrTu/i4sEQQn8RBmbjTgF72zOt7DUk2bam6u4khPw8Mxn
+         hBgsV884M6RFPRbKAfc3gYwVuZVZOtzW2RZ4IyziThmYV2x7PaDQhCc8gv7V750WQBZp
+         MTFmvVNNNbqecxiZO2Ad0raX8dy7Cmw+pHQmqk4F7rD1IvbYVwcOmZ5g8Hm+YD+qUIVh
+         6hG7CL/V2d3WDH3Q8g+UnAMYiqqQTSrq6CM0hOssxrp6QtA59eiPLiPtqRFc/r3n6rHN
+         oUYA==
+X-Gm-Message-State: AOAM531acPFNaNWwAumjvP1WF+2mQX67UzsLduB66lbF9lG0TIJvDUn6
+        CQ/azX0vk+gEIBHcQO1v7BS2SXYK+qwEXmdrKt8=
+X-Google-Smtp-Source: ABdhPJxm5feB8ZFgWHkCEpggtBzqg6dLDwsr8iBU2Yy9cypEMDQj02HE7vMvH1ARhebCA2i8QIBvAnFPu1l+uxcE0Lc=
+X-Received: by 2002:a17:903:2287:b0:15e:99b4:9b0a with SMTP id
+ b7-20020a170903228700b0015e99b49b0amr23702716plh.43.1652244211258; Tue, 10
+ May 2022 21:43:31 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: fa15b15a-4581-449c-a656-08da32f687e0
-X-MS-TrafficTypeDiagnostic: SA2PR10MB4569:EE_
-X-Microsoft-Antispam-PRVS: <SA2PR10MB4569E717B85CAC483EF060938EC89@SA2PR10MB4569.namprd10.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: uDOJsAdLGWdZ891SuNgA21AE21dMZIXjKeBILX23/+YX1sCU61e7YOIJ+AzCrZcb3CTvTUoVEO98Nhu+40JaZUFdP6QoD4PZdHlLgZx1XRbVMLe3mEbQ2374TTVeAdaJXujngrQN94HQq1D46YQiGrpECdkDj70mnlbmySjpG3FtLPoyjL/CRaSS47qK46kWJayV5U6pbyi833w6DCr3EuC98RGVRi5r9sPjE+0cSr5HHTWgKpjDqh7JFKmPKR5kaLN7JSYZSpxxDIlCycf+AB2twT3bRxg4ps1moKe3uWdWtow4HqdDblz5ZMcjktcofSuuVNwsau75NmojezfcgXOaMsSXp7jkLcmTnaC64wilTiE4O3VwvzrEitBzSQPqOJx+FZbvgDswDEE8sxZ8VIpQFQA21ATgS6jMOjQl+Rr2tfZdjTu8BPNcI74V0nAsB6C9eLBCzDaCM+VKevjPaxXGlyA9joZ2oLeES35+hSGKEG9hgdByxoXkLCym8OsnvuO0ck5yMfRKEoQRCuh8YikbszQrUaFkLOtE/csxU4eGIjyWBNjftrQfeiwAYE/L05n6yStGj/KfNOKlvFyYvlZyXXbbL5uPIaSQ4a62Cvjw8oZst27OO+IrP5Jhnl36W3OLtD9fTDczLACBrZzvxdS4l1xoK/TIeUcVGMPLNeLfhSP5BeBlxACMmtwB1W8t7WVNb77QxfBJTMjyJsuoIA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4759.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(38100700002)(107886003)(26005)(6512007)(558084003)(8676002)(4326008)(6916009)(186003)(66556008)(316002)(66946007)(54906003)(66476007)(5660300002)(2906002)(86362001)(6506007)(8936002)(6486002)(508600001)(38350700002)(36916002)(52116002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?hiyJg71EgFOBCHreORRIQoi70yRLNcWdc83ZgJ3uStm2gwCebjwdDRx8tw6o?=
- =?us-ascii?Q?0CFC0NOdzcb3AcfYHpa3X5bsLoQQcECa3WZFR25TkId9+TQ6EPbyhjQemavg?=
- =?us-ascii?Q?Aazda9qrZBzeQaB60X/BD0TZJsI5mlNLjXBeL7HgcPFiYAgPyFd8sOHsGbJh?=
- =?us-ascii?Q?B21R/eVcfOa0/ZUHwijNG0vrpxpv7/R8yOu8riNfm1gL8KFk0vXfQt6I2w2X?=
- =?us-ascii?Q?gDf/SUgp5awad+1h0a4vwlKenVb6k/H2iBmt6+Cy+6TzdvVdfTidS2/ZDoML?=
- =?us-ascii?Q?z6DHDs7r/pZaYaJgFoJ3hqMCK9cvYGKBWWtvgKtk7RAH8fDeKOse5UQ/UI2k?=
- =?us-ascii?Q?Y/eDNtE7kVVPV5vNrGXmqhv8R7Mbq8WYLWbwwHIarukRVo67Mnwj38GEf4Ls?=
- =?us-ascii?Q?+9n52qb6Va7LPExD/wIF2OjP9hUoIae2fGDmpnO3TijwixGuLVpgAdOIv8Mp?=
- =?us-ascii?Q?o0PCOJfbY56vWdgA+XYH7PrH44VluTThT42eUfw4HTEio8mM70+VoLuxb2bj?=
- =?us-ascii?Q?AzA8CjrCANWue0F77LBcUnFFR9ssOvtlyk7z0/U/HM/ka75TUPaWcbfEBqgo?=
- =?us-ascii?Q?3DYIpwFRcRuhLBYmvMB2IIJ078gblPu5G1CpdlNAe9O611pkBEuV6Jh+UuVb?=
- =?us-ascii?Q?BcJz5YF3nVcCegOlCWcbCYN+Y+vh5UO8oiFKK14J9yj0upz2P0Wn2zW/Lwxt?=
- =?us-ascii?Q?kbYe9Kh5DZEBWSf1EMSDGGwGgvfsB/XlEs1EMXokPGVxRNw7U5ldmKIWZGSo?=
- =?us-ascii?Q?Rfef272jSV7zuORMvY6TdGjGiXKuiVyYOUkZBetmvSruGUHvJq8d16sQt+vN?=
- =?us-ascii?Q?kzYE7vMMaYeyYdm9MQT/tkMjLmichl3d36KZoV9iE7/A6IcZKBzkvvDIW4ua?=
- =?us-ascii?Q?eipxBJN/TWLzC/ub4K/jzM0rXGy4+GozZNauEXT13FHf5DpeffoxG/5KCYrp?=
- =?us-ascii?Q?TQaKSTKt97Mc8cUPP5gdBKcXEgYAo0//z25Cs12aRkbLvfNc8s9wEyBGuCaB?=
- =?us-ascii?Q?t8wlS+aaM7M8v8VZ7nSV9m+05qXNgbm5H+ge+/g3lDRQXJTw2O5G4n8K9a9b?=
- =?us-ascii?Q?jy+4bJbHiLj11DirRfjF92ioNzV/kYd55zQ8FPy9bvBbe2CScmDVHuolZqRa?=
- =?us-ascii?Q?26j/daOF5+Qu0QOGFVDT9mvS/ypFMv3gH+83CTGt+BGqk3Zuz0p2c4z9pIF5?=
- =?us-ascii?Q?heOLyQxNhHC0nkO6G7OE3Tc99/RJwiN4rBYiiCOgWia4w54JKuhwPsFSijfc?=
- =?us-ascii?Q?Berjmf7mtXJuyhtAxaXn5EfGfbSDr+HF7FQaBBUeTOgFNWkAcmRRwEGvhLUX?=
- =?us-ascii?Q?02G2gQwm1DCMI9oRmrvKw1nR+Ro3uZJJ+G9mvxylJzCH6dD8vIlybXzXiy97?=
- =?us-ascii?Q?24H3uIaJdoBbyPd9+1ay6eCkemfUemy8ovrVqim/LbMs4l3SEjcBO+ufYSBP?=
- =?us-ascii?Q?lcqm8KKPDY981OXhbrfMjcMdzs1CRkW31bnNzmZzgILbWVVYY5bKwJMkgSHw?=
- =?us-ascii?Q?jHwgvEb+PJvtuPdPC917ddXfeNGqU3yGrmsaTYZpmk2yb+O6b1pnDvg4R1yE?=
- =?us-ascii?Q?TZIK5n5tZTDT1jX+G9t+Isz5//bZR8k94V2OeFR4mzwkMCTovF2LNO4d86ts?=
- =?us-ascii?Q?vV/F/Ec2j7/pdgBqv54azbUp6FlnIOsw79SgSyigJZKMLOgDzH+IkRplZIUD?=
- =?us-ascii?Q?3/A2x9Ko79JqmgBubZd97Qd9IqDp2bX8MwnNZ7Z72nIXP4zdzM0+WAln475f?=
- =?us-ascii?Q?BRNfCNwbcBBUsogKlUVRM1EjxJ3F9wk=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa15b15a-4581-449c-a656-08da32f687e0
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2022 02:32:45.0586
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 45JKihAOCZbwuQ7Qsdji5C2pFMfQsOCy5W3eR3hZbV/v/OV9ii2+AzuwsXqon4yjmyKM0m/im+mOhZyCxGWovAnNwUNFYRR+1RQiAVY8N1E=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4569
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.486,18.0.858
- definitions=2022-05-10_07:2022-05-09,2022-05-10 signatures=0
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=617 adultscore=0
- spamscore=0 phishscore=0 suspectscore=0 mlxscore=0 bulkscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2205110010
-X-Proofpoint-GUID: wxh1oeZXPwA-5rOQ_b9KzJGwJc0UBuCB
-X-Proofpoint-ORIG-GUID: wxh1oeZXPwA-5rOQ_b9KzJGwJc0UBuCB
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Received: by 2002:a05:6a10:319:0:0:0:0 with HTTP; Tue, 10 May 2022 21:43:30
+ -0700 (PDT)
+From:   Private Mail <privatemail1961@gmail.com>
+Date:   Tue, 10 May 2022 21:43:30 -0700
+Message-ID: <CANjAOAjhJ4ieJMmzRZUBxfOb_bWq+QvWGKAj5_rzjwB5+n510w@mail.gmail.com>
+Subject: Have you had this? It is for your Benefit
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.3 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
+        BAYES_50,DEAR_BENEFICIARY,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
+        DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,
+        LOTS_OF_MONEY,MONEY_FRAUD_5,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+Our Ref: BG/WA0151/2022
 
-Max,
+Dear Beneficiary
 
-> The structure iscsi_cmd naming is used by the iscsi initiator driver.
-> Rename the target cmd to iscsit_cmd to have more readable code.
+Subject: An Estate of US$15.8 Million
 
-Applied to 5.19/scsi-staging, thanks!
+Blount and Griffin Genealogical Investigators specializes in probate
+research to locate missing heirs and beneficiaries to estates in the
+United Kingdom and Europe.
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+We can also help you find wills, obtain copies of certificates, help
+you to administer an estate, as well as calculating how an estate,
+intestacy or trust should be distributed.
+
+You may be entitled to a large pay out for an inheritance in Europe
+worth US$15.8 million. We have discovered an estate belonging to the
+late Depositor has remained unclaimed since he died in 2011 and we
+have strong reasons to believe you are the closest living relative to
+the deceased we can find.
+
+You may unknowingly be the heir of this person who died without
+leaving a will (intestate). We will conduct a probate research to
+prove your entitlement, and can submit a claim on your behalf all at
+no risk to yourselves.
+
+Our service fee of 10% will be paid to us after you have received the estate.
+
+The estate transfer process should take just a matter of days as we
+have the mechanism and expertise to get this done very quickly. This
+message may come to you as a shock, however we hope to work with you
+to transfer the estate to you as quickly as possible.
+
+Feel free to email our senior case worker Mr. Malcolm Casey on email:
+malcolmcasey68@yahoo.com for further discussions.
+
+With warm regards,
+
+Mr. Blount W. Gort, CEO.
+Blount and Griffin Associates Inc
