@@ -2,89 +2,56 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF71B529740
-	for <lists+target-devel@lfdr.de>; Tue, 17 May 2022 04:17:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D6735299D6
+	for <lists+target-devel@lfdr.de>; Tue, 17 May 2022 08:50:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238803AbiEQCRG (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 16 May 2022 22:17:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44250 "EHLO
+        id S232333AbiEQGuG (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 17 May 2022 02:50:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236124AbiEQCQ7 (ORCPT
+        with ESMTP id S230201AbiEQGt3 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 16 May 2022 22:16:59 -0400
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 066893CA78;
-        Mon, 16 May 2022 19:16:58 -0700 (PDT)
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24GKjIkv009400;
-        Tue, 17 May 2022 02:16:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2021-07-09;
- bh=EDZx3noKrdncNz/1cvortvCCaSiIFzGoHAED5uODYmY=;
- b=ZUgAq9w26MDCIv2e46/lE1LUwy3l0EA2qcxUSLWAUDm6B98RyP3Chog43/1p9CxYQJow
- O2WoGm2FwyZIw+E/CQmjzpWjZZyYQq/lb6dfOVaiiI2wBfuWgXsDBDM0CgQibiugWRgl
- +BwIEJ4sKeMTbQoyyFsfAccZo/CTMaJn1wuKZJw/TO2iHWXuxP/QX70PEu/OpTRKro+G
- yxH34Z75lY0wMQjxGg9181A2gdx+4OQZZQ64AKbbIrPPah7nTKUvTyw6dOsfYlnhEfdF
- LuNjcS06sdtRbf2jApFEB4zAijHyb/JAdTXt9UPHSL/OWQMdC2mplHbCs45F4wx9GXZy Dw== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3g24ytmwjy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 17 May 2022 02:16:47 +0000
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.16.1.2/8.16.1.2) with SMTP id 24H2G8Bp019232;
-        Tue, 17 May 2022 02:16:46 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com with ESMTP id 3g22v83hmf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 17 May 2022 02:16:46 +0000
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 24H2Ghw3019875;
-        Tue, 17 May 2022 02:16:45 GMT
-Received: from ca-mkp.mkp.ca.oracle.com (ca-mkp.ca.oracle.com [10.156.108.201])
-        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com with ESMTP id 3g22v83hkf-5;
-        Tue, 17 May 2022 02:16:45 +0000
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     target-devel@vger.kernel.org, Max Gurtovoy <mgurtovoy@nvidia.com>,
-        linux-scsi@vger.kernel.org
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>, hch@lst.de,
-        sagi@grimberg.me, michael.christie@oracle.com
-Subject: Re: [PATCH 1/3] target/iscsi: rename iscsi_cmd to iscsit_cmd
-Date:   Mon, 16 May 2022 22:16:40 -0400
-Message-Id: <165275376861.24722.17710637076786131.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.35.2
-In-Reply-To: <20220428092939.36768-1-mgurtovoy@nvidia.com>
-References: <20220428092939.36768-1-mgurtovoy@nvidia.com>
+        Tue, 17 May 2022 02:49:29 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 729CD47AF2;
+        Mon, 16 May 2022 23:49:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=OOcjDSgK8cJWTacTHHEeY2ZV1fsyiqwKHKqJNuxa1c0=; b=Qc4hfvbyF2ro5TiD9xxQUu2e1/
+        unv9+3sfNCxGiqiMnratiS2BH9dPkqzf6A3sY8MmNrRp36YZ79RgSAo/efmuwWL1MYD1f6Pszne4R
+        pMTR4UI+GgR7eB78m08fvbp9iNWACC/dM24ksVkt6Ab7xSt3MG1BjVpsgKKEF8IePEjBi5++e0tRP
+        uO1XaTnPb69lB/27Yk+2RxnyWr/ITW3N4mhMR9/ibSIvxcQXjlcGPyrrDQ/ltIWpkVBfpFT93kSgq
+        6QyzTMPEF8DAYVjDiadnjH6qWa5azUOMJ2tOWrL+toNM8eV89nl3XHFF4aDAmm6/ESb3lXFrbuClX
+        yleIQR1Q==;
+Received: from [2001:4bb8:19a:7bdf:afb1:9e:37ad:b912] (helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nqr0x-00Bsbu-1h; Tue, 17 May 2022 06:49:03 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Ming Lei <ming.lei@redhat.com>, linux-block@vger.kernel.org,
+        linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
+Subject: cleanup blk_execute_rq*
+Date:   Tue, 17 May 2022 08:48:58 +0200
+Message-Id: <20220517064901.3059255-1-hch@lst.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: ODsEWbcH5sMk7Op0QYBD8ZS5-zVX8QEO
-X-Proofpoint-ORIG-GUID: ODsEWbcH5sMk7Op0QYBD8ZS5-zVX8QEO
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Thu, 28 Apr 2022 12:29:37 +0300, Max Gurtovoy wrote:
+Hi Jens,
 
-> The structure iscsi_cmd naming is used by the iscsi initiator driver.
-> Rename the target cmd to iscsit_cmd to have more readable code.
-> 
-> 
-
-Applied to 5.19/scsi-queue, thanks!
-
-[1/3] target/iscsi: rename iscsi_cmd to iscsit_cmd
-      https://git.kernel.org/mkp/scsi/c/66cd9d4ef74a
-[2/3] target/iscsi: rename iscsi_conn to iscsit_conn
-      https://git.kernel.org/mkp/scsi/c/be36d683fc29
-[3/3] target/iscsi: rename iscsi_session to iscsit_session
-      https://git.kernel.org/mkp/scsi/c/0873fe44e780
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+this series cleans up the blk_execute_rq* helpers.  It simplifies the
+plugging mess a bit, fixes the sparse __bitwise warnings and simplifies
+the blk_execute_rq_nowait API a bit.
