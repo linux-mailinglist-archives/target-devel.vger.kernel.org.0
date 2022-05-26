@@ -2,110 +2,80 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF796534510
-	for <lists+target-devel@lfdr.de>; Wed, 25 May 2022 22:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7133D534837
+	for <lists+target-devel@lfdr.de>; Thu, 26 May 2022 03:39:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345134AbiEYUhm (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 25 May 2022 16:37:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50934 "EHLO
+        id S237708AbiEZBjP (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 25 May 2022 21:39:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243782AbiEYUhm (ORCPT
+        with ESMTP id S229458AbiEZBjN (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 25 May 2022 16:37:42 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 459C15E755
-        for <target-devel@vger.kernel.org>; Wed, 25 May 2022 13:37:40 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id h11so27323425eda.8
-        for <target-devel@vger.kernel.org>; Wed, 25 May 2022 13:37:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=jF4MxsPSKKSAh34A0y7fWqFeFSCCDQ9NCjS0um7aELU=;
-        b=hyNbqM90wkCUu7nISEHTZriYtwbp6gsYULvUSN0U6RSLTK12J/HLAN93ueROmFG+VR
-         U6KkIq9o9WrN58EZfYztg+Jf0SsTiqnUNKJvXM6wx9vvDhQWN5yQ6xjJAQ+P/QuCYWiU
-         nyH/B7+BKSBtUGF+++0WSN0vfAPRPBH+iKhy0euiS77pZnTXThBzCynPwzdYrR6Pc7Ul
-         B0GK6KVJXLpxZw6fTwWM6yeMFqhAj3F59poyS1XHAY2+ihbXTj6Sl79TpUokhFL0JV7J
-         RbRBtb0YUlBCggRPBnP0Uq5PoGMGO18aEV+QalUQ+Q84hvymcHA9J2gLvAmMBXNOJGcj
-         2loA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=jF4MxsPSKKSAh34A0y7fWqFeFSCCDQ9NCjS0um7aELU=;
-        b=4G/fDIqIXFmICLB4C4I2DyBzSYZ0OLEA7S68e0M1ZvMtizkTfclDI10F5MfGLhBiex
-         0uyfo7p5ey8N+HqIk3pmlGoTa8ZbZvpfjQgENVIFwO0bgJwtJuF0xDMycTYBEi1gqEIG
-         6ZvLB3pbGr6lAHOjxzNpw7x4HXBYpNqK/OcrM2inO6WbLaVyHfIlup6TXaaw74B28jKI
-         WnG9SJunxi6W140oSe0irRC4bO1xKAoszvhQ4h16cXnUys/j3xdfbaPoElJ4tU/cxBM4
-         gZcST0H+Umqg6jgPK5NxmOvGnRcb/YpmYyEL2ZeAgn8+NKHbP5nyuskIBEEQH+AogFBb
-         unGA==
-X-Gm-Message-State: AOAM532zR4ablnM7YCcXr2FvCbgJOLLgHJKGDU3ZI6eMv7HEah/YSou7
-        XnB5UCDJRrSlpiSq43SaqChWj48ScMSuS9j9Uw8=
-X-Google-Smtp-Source: ABdhPJzTcDFNPwadm/IDYMF0r0xZvuUNst7xNM0UZu6R21PxX31hEfyqy7LWoz68WcyapHY5p818yj90jWZvSKXZaos=
-X-Received: by 2002:aa7:c595:0:b0:42a:b571:2726 with SMTP id
- g21-20020aa7c595000000b0042ab5712726mr36983029edq.48.1653511058699; Wed, 25
- May 2022 13:37:38 -0700 (PDT)
+        Wed, 25 May 2022 21:39:13 -0400
+Received: from mail-m974.mail.163.com (mail-m974.mail.163.com [123.126.97.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 62C049D4FD;
+        Wed, 25 May 2022 18:39:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=b2P3Q
+        H6vt+McJy25fKhf43Jb4cDyVE2JY2bcEA7mzQo=; b=WDptdQL78j+RaS/nAHlYX
+        1Ce4aKhc4cNCcl5AxJK1AkEFLoy6YFb8SUGN9FUqFWukOvX2K+qSVayAHKuGitqX
+        DHE9c9TyX+fYi6o1XcqZGm/kb/MR8YwojTjisk5yHeYHPRJXQBRWwEVwVe8SGfIG
+        Xq94AeLZ77Q7yb0HmOMjoM=
+Received: from localhost.localdomain (unknown [123.112.69.106])
+        by smtp4 (Coremail) with SMTP id HNxpCgD3__Mh2o5ig+JFEQ--.3894S4;
+        Thu, 26 May 2022 09:38:46 +0800 (CST)
+From:   Jianglei Nie <niejianglei2021@163.com>
+To:     bootc@bootc.net, martin.petersen@oracle.com
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux1394-devel@lists.sourceforge.net,
+        linux-kernel@vger.kernel.org,
+        Jianglei Nie <niejianglei2021@163.com>
+Subject: [PATCH] scsi: target: sbp: Fix memory leak in sbp_management_request_logout()
+Date:   Thu, 26 May 2022 09:38:39 +0800
+Message-Id: <20220526013839.471987-1-niejianglei2021@163.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:ab4:a26b:0:0:0:0:0 with HTTP; Wed, 25 May 2022 13:37:38
- -0700 (PDT)
-From:   Luisa Donstin <luisadonstin@gmail.com>
-Date:   Wed, 25 May 2022 22:37:38 +0200
-Message-ID: <CA+QBM2r-tfUB_7P4VpzicsuVpz0Yta5js39M89VwqNv6fq6CPw@mail.gmail.com>
-Subject: Bitte kontaktaufnahme Erforderlich !!! Please Contact Required !!!
-To:     contact@firstdiamondbk.com
-Cc:     info@firstdiamondbk.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: HNxpCgD3__Mh2o5ig+JFEQ--.3894S4
+X-Coremail-Antispam: 1Uf129KBjvdXoW7GFykCw47GF4DtF18KrWUXFb_yoWfWrgEkw
+        srW34xurn5Ww4kKF4jkw15CrWavF4kZF1ayF4ktFWakrW7Wr1xXr1q9F93A3srCr48JrnY
+        kFsIvr1Uu3y5ujkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRibAwPUUUUU==
+X-Originating-IP: [123.112.69.106]
+X-CM-SenderInfo: xqlhyxxdqjzvrlsqjii6rwjhhfrp/1tbiMgQMjFWBzm5eRwABsa
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Guten Tag,
+When req->node_addr != login->sess->node_id, sbp_management_request
+_logout() returns without releasing the login, which may lead to a
+potential memory leak.
 
-Ich habe mich nur gefragt, ob Sie meine vorherige E-Mail bekommen
+We can fix it by calling sbp_login_release() before the function returns.
 
-haben ?
+Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
+---
+ drivers/target/sbp/sbp_target.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Ich habe versucht, Sie per E-Mail zu erreichen.
+diff --git a/drivers/target/sbp/sbp_target.c b/drivers/target/sbp/sbp_target.c
+index 504670994fb4..76f3ec58a24b 100644
+--- a/drivers/target/sbp/sbp_target.c
++++ b/drivers/target/sbp/sbp_target.c
+@@ -575,6 +575,7 @@ static void sbp_management_request_logout(
+ 		req->status.status = cpu_to_be32(
+ 			STATUS_BLOCK_RESP(STATUS_RESP_REQUEST_COMPLETE) |
+ 			STATUS_BLOCK_SBP_STATUS(SBP_STATUS_ACCESS_DENIED));
++		sbp_login_release(login, true);
+ 		return;
+ 	}
+ 
+-- 
+2.25.1
 
-Kommen Sie bitte schnell zu mir zur=C3=BCck, es ist sehr wichtig.
-
-Danke
-
-Luisa Donstin
-
-luisadonstin@gmail.com
-
-
-
-
-
-
-
-
-
-----------------------------------
-
-
-
-
-Good Afternoon,
-
-I was just wondering if you got my Previous E-mail
-have ?
-
-I tried to reach you by E-mail.
-
-Please come back to me quickly, it is very Important.
-
-Thanks
-
-Luisa Donstin
-
-luisadonstin@gmail.com
