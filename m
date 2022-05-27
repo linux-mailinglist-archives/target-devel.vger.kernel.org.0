@@ -2,80 +2,75 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7133D534837
-	for <lists+target-devel@lfdr.de>; Thu, 26 May 2022 03:39:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 418645363EA
+	for <lists+target-devel@lfdr.de>; Fri, 27 May 2022 16:18:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237708AbiEZBjP (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 25 May 2022 21:39:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57404 "EHLO
+        id S1348132AbiE0OSB convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+target-devel@lfdr.de>); Fri, 27 May 2022 10:18:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbiEZBjN (ORCPT
+        with ESMTP id S1343843AbiE0OSA (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 25 May 2022 21:39:13 -0400
-Received: from mail-m974.mail.163.com (mail-m974.mail.163.com [123.126.97.4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 62C049D4FD;
-        Wed, 25 May 2022 18:39:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=b2P3Q
-        H6vt+McJy25fKhf43Jb4cDyVE2JY2bcEA7mzQo=; b=WDptdQL78j+RaS/nAHlYX
-        1Ce4aKhc4cNCcl5AxJK1AkEFLoy6YFb8SUGN9FUqFWukOvX2K+qSVayAHKuGitqX
-        DHE9c9TyX+fYi6o1XcqZGm/kb/MR8YwojTjisk5yHeYHPRJXQBRWwEVwVe8SGfIG
-        Xq94AeLZ77Q7yb0HmOMjoM=
-Received: from localhost.localdomain (unknown [123.112.69.106])
-        by smtp4 (Coremail) with SMTP id HNxpCgD3__Mh2o5ig+JFEQ--.3894S4;
-        Thu, 26 May 2022 09:38:46 +0800 (CST)
-From:   Jianglei Nie <niejianglei2021@163.com>
-To:     bootc@bootc.net, martin.petersen@oracle.com
-Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux1394-devel@lists.sourceforge.net,
-        linux-kernel@vger.kernel.org,
-        Jianglei Nie <niejianglei2021@163.com>
-Subject: [PATCH] scsi: target: sbp: Fix memory leak in sbp_management_request_logout()
-Date:   Thu, 26 May 2022 09:38:39 +0800
-Message-Id: <20220526013839.471987-1-niejianglei2021@163.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 27 May 2022 10:18:00 -0400
+X-Greylist: delayed 11281 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 27 May 2022 07:17:58 PDT
+Received: from mail.composit.net (mail.composit.net [195.49.185.119])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 651A21BE98;
+        Fri, 27 May 2022 07:17:58 -0700 (PDT)
+Received: from mail.composit.net (localhost.localdomain [127.0.0.1])
+        by mail.composit.net (Proxmox) with ESMTP id 5EA983869EC;
+        Fri, 27 May 2022 14:06:01 +0300 (MSK)
+Received: from mail.composit.net (unknown [192.168.101.14])
+        by mail.composit.net (Proxmox) with SMTP id 36046382208;
+        Fri, 27 May 2022 14:06:01 +0300 (MSK)
+Received: from [192.168.1.105] (Unknown [197.234.219.23])
+        by mail.composit.net with ESMTPSA
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256)
+        ; Fri, 27 May 2022 14:06:02 +0300
+Message-ID: <4ED5AFB7-F243-4A5D-9A33-ED8CBA42C001@mail.composit.net>
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: HNxpCgD3__Mh2o5ig+JFEQ--.3894S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7GFykCw47GF4DtF18KrWUXFb_yoWfWrgEkw
-        srW34xurn5Ww4kKF4jkw15CrWavF4kZF1ayF4ktFWakrW7Wr1xXr1q9F93A3srCr48JrnY
-        kFsIvr1Uu3y5ujkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRibAwPUUUUU==
-X-Originating-IP: [123.112.69.106]
-X-CM-SenderInfo: xqlhyxxdqjzvrlsqjii6rwjhhfrp/1tbiMgQMjFWBzm5eRwABsa
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Greetings From Ukraine.  
+To:     Recipients <heiss@dnet.it>
+From:   "Kostiantyn Chichkov" <heiss@dnet.it>
+Date:   Fri, 27 May 2022 12:05:42 +0100
+Reply-To: kostiantync@online.ee
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,
+        RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_SBL,RCVD_IN_SORBS_WEB,
+        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  1.3 RCVD_IN_BL_SPAMCOP_NET RBL: Received via a relay in
+        *      bl.spamcop.net
+        *      [Blocked - see <https://www.spamcop.net/bl.shtml?195.49.185.119>]
+        *  1.5 RCVD_IN_SORBS_WEB RBL: SORBS: sender is an abusable web server
+        *      [197.234.219.23 listed in dnsbl.sorbs.net]
+        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
+        *      [197.234.219.23 listed in zen.spamhaus.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
+        *      https://senderscore.org/blocklistlookup/
+        *      [195.49.185.119 listed in bl.score.senderscore.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 SPF_NONE SPF: sender does not publish an SPF Record
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-When req->node_addr != login->sess->node_id, sbp_management_request
-_logout() returns without releasing the login, which may lead to a
-potential memory leak.
+Good Morning,
 
-We can fix it by calling sbp_login_release() before the function returns.
+We are Kostiantyn Chychkov and Maryna Chudnovska from Ukraine, we need your service, we have gone through your profile and we will like to work with you on an important service that needs urgent attention due to the ongoing war in our country. Kindly acknowledge this inquiry as soon as possible for a detailed discussion about the service.
 
-Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
----
- drivers/target/sbp/sbp_target.c | 1 +
- 1 file changed, 1 insertion(+)
+Thank you.
 
-diff --git a/drivers/target/sbp/sbp_target.c b/drivers/target/sbp/sbp_target.c
-index 504670994fb4..76f3ec58a24b 100644
---- a/drivers/target/sbp/sbp_target.c
-+++ b/drivers/target/sbp/sbp_target.c
-@@ -575,6 +575,7 @@ static void sbp_management_request_logout(
- 		req->status.status = cpu_to_be32(
- 			STATUS_BLOCK_RESP(STATUS_RESP_REQUEST_COMPLETE) |
- 			STATUS_BLOCK_SBP_STATUS(SBP_STATUS_ACCESS_DENIED));
-+		sbp_login_release(login, true);
- 		return;
- 	}
- 
--- 
-2.25.1
+Yours expectantly,
+
+Kostiantyn Chichkov & Ms. Maryna Chudnovska,
+From Ukraine.
+
 
