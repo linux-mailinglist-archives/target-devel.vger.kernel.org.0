@@ -2,75 +2,50 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 418645363EA
-	for <lists+target-devel@lfdr.de>; Fri, 27 May 2022 16:18:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C9F553704A
+	for <lists+target-devel@lfdr.de>; Sun, 29 May 2022 10:13:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348132AbiE0OSB convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+target-devel@lfdr.de>); Fri, 27 May 2022 10:18:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60648 "EHLO
+        id S229705AbiE2INg (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 29 May 2022 04:13:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343843AbiE0OSA (ORCPT
+        with ESMTP id S229683AbiE2INf (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 27 May 2022 10:18:00 -0400
-X-Greylist: delayed 11281 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 27 May 2022 07:17:58 PDT
-Received: from mail.composit.net (mail.composit.net [195.49.185.119])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 651A21BE98;
-        Fri, 27 May 2022 07:17:58 -0700 (PDT)
-Received: from mail.composit.net (localhost.localdomain [127.0.0.1])
-        by mail.composit.net (Proxmox) with ESMTP id 5EA983869EC;
-        Fri, 27 May 2022 14:06:01 +0300 (MSK)
-Received: from mail.composit.net (unknown [192.168.101.14])
-        by mail.composit.net (Proxmox) with SMTP id 36046382208;
-        Fri, 27 May 2022 14:06:01 +0300 (MSK)
-Received: from [192.168.1.105] (Unknown [197.234.219.23])
-        by mail.composit.net with ESMTPSA
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256)
-        ; Fri, 27 May 2022 14:06:02 +0300
-Message-ID: <4ED5AFB7-F243-4A5D-9A33-ED8CBA42C001@mail.composit.net>
-Content-Type: text/plain; charset="iso-8859-1"
+        Sun, 29 May 2022 04:13:35 -0400
+X-Greylist: delayed 67200 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 29 May 2022 01:13:34 PDT
+Received: from server.hacktechmedia.com (vmi777997.contaboserver.net [207.244.255.247])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B1874B42F
+        for <target-devel@vger.kernel.org>; Sun, 29 May 2022 01:13:34 -0700 (PDT)
+Received: by server.hacktechmedia.com (Postfix, from userid 1005)
+        id 755CB5C24DF; Sat, 28 May 2022 07:15:35 -0500 (CDT)
+To:     target-devel@vger.kernel.org
+Subject: EasyBook Contact Form
+X-PHP-Originating-Script: 1005:PHPMailer.php
+Date:   Sat, 28 May 2022 12:15:35 +0000
+From:   EasyBook Theme <wordpress@cththemes.com>
+Reply-To: target-devel@vger.kernel.org
+Message-ID: <XnGju5BwrgBA8hCCL7oPdd6XkXveS1nbfBot8iRWwOs@marinecolleges.com>
+X-Mailer: PHPMailer 6.6.0 (https://github.com/PHPMailer/PHPMailer)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Greetings From Ukraine.  
-To:     Recipients <heiss@dnet.it>
-From:   "Kostiantyn Chichkov" <heiss@dnet.it>
-Date:   Fri, 27 May 2022 12:05:42 +0100
-Reply-To: kostiantync@online.ee
-X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,
-        RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_SBL,RCVD_IN_SORBS_WEB,
-        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,DATE_IN_PAST_12_24,
+        HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_ENVFROM,KHOP_HELO_FCRDNS,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,T_SHORT_SHORTNER
         autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  1.3 RCVD_IN_BL_SPAMCOP_NET RBL: Received via a relay in
-        *      bl.spamcop.net
-        *      [Blocked - see <https://www.spamcop.net/bl.shtml?195.49.185.119>]
-        *  1.5 RCVD_IN_SORBS_WEB RBL: SORBS: sender is an abusable web server
-        *      [197.234.219.23 listed in dnsbl.sorbs.net]
-        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
-        *      [197.234.219.23 listed in zen.spamhaus.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
-        *      https://senderscore.org/blocklistlookup/
-        *      [195.49.185.119 listed in bl.score.senderscore.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 SPF_NONE SPF: sender does not publish an SPF Record
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-X-Spam-Level: *****
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Good Morning,
+From: 💛 Have you ever tried this sex game before? GIVE IT A TRY: https://sweetgirl22.page.link/c2Sd?m1quj 💛 <target-devel@vger.kernel.org>
+Subject: Contact Form Subject
 
-We are Kostiantyn Chychkov and Maryna Chudnovska from Ukraine, we need your service, we have gone through your profile and we will like to work with you on an important service that needs urgent attention due to the ongoing war in our country. Kindly acknowledge this inquiry as soon as possible for a detailed discussion about the service.
+Message Body:
+e130ve
 
-Thank you.
-
-Yours expectantly,
-
-Kostiantyn Chichkov & Ms. Maryna Chudnovska,
-From Ukraine.
-
+-- 
+This e-mail was sent from a contact form on EasyBook (http://townhub.cththemes.com)
 
