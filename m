@@ -2,74 +2,74 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B3FD553463
-	for <lists+target-devel@lfdr.de>; Tue, 21 Jun 2022 16:22:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 246C1554EA6
+	for <lists+target-devel@lfdr.de>; Wed, 22 Jun 2022 17:06:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350675AbiFUOUc (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 21 Jun 2022 10:20:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33948 "EHLO
+        id S1359038AbiFVPGl (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 22 Jun 2022 11:06:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350589AbiFUOUa (ORCPT
+        with ESMTP id S1359068AbiFVPGj (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 21 Jun 2022 10:20:30 -0400
-Received: from smtpbg.qq.com (smtpbg136.qq.com [106.55.201.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCCD3140CD;
-        Tue, 21 Jun 2022 07:20:24 -0700 (PDT)
-X-QQ-mid: bizesmtp87t1655821217tp8rfu89
-Received: from ubuntu.localdomain ( [106.117.99.68])
-        by bizesmtp.qq.com (ESMTP) with 
-        id ; Tue, 21 Jun 2022 22:20:14 +0800 (CST)
-X-QQ-SSF: 0100000000700060B000D00A0000000
-X-QQ-FEAT: RKCwGdK8Yfg7VxFNpIqXTE0grhkMICdJ+CsRucJlPWC1m9niPrQ9sW1JDn21B
-        6RVWkPULMyA/QOh2SXDdLb5c5nsd57IznTuJp+KlQQSK1mMN2Q7CH4qBzNESwVJBhjZzszS
-        ohr8bxrhRIpGGB7C/dzy+qZxuZez1M3lsbWqFr6kslf8id1tlcR4HmieH/7m8UJ9GZiJxJr
-        grdKtzMY044sVBLe32+AgVqH4/XVbADzGod32P/xhv9yM8EL56RWml8LwjTVXWGlPRjLi+9
-        aI/XUUueipg2mveaL7x5iayAAXH7GvMkNHmp7AqhM0jSF9k0c0F6SoQxr+YtmHRL3CENm0c
-        AMjcxG7iCyEBL3m1l2BwXNDMfqD7a2dWWR/eeI0
-X-QQ-GoodBg: 0
-From:   Jiang Jian <jiangjian@cdjrlc.com>
-To:     martin.petersen@oracle.com
-Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jiang Jian <jiangjian@cdjrlc.com>
-Subject: [PATCH] scsi: target: Remove duplicate 'the' in two places.
-Date:   Tue, 21 Jun 2022 22:20:12 +0800
-Message-Id: <20220621142012.4622-1-jiangjian@cdjrlc.com>
-X-Mailer: git-send-email 2.17.1
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybgspam:qybgspam7
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR autolearn=ham
-        autolearn_force=no version=3.4.6
+        Wed, 22 Jun 2022 11:06:39 -0400
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 780CF3EBA3
+        for <target-devel@vger.kernel.org>; Wed, 22 Jun 2022 08:06:38 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id c205so9643499pfc.7
+        for <target-devel@vger.kernel.org>; Wed, 22 Jun 2022 08:06:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=vhZEVnaGNBjosB86GDUW8b2wHjB/+QU31bPXl36TqFE=;
+        b=UdjSwRw+6oQ6qiUR+rRkUhjWOua8+J1yFZkG0uO49bJMwCFfyLLueiiFV2vREFvYD3
+         QtS2Mf0rebC9FzTRPmreZMcP+LPiYCVXfn0eFFw6XFuKg0kRkGh+vWEx2v/l7D1oKJi9
+         hGKEHoX3k08NLkUOnVvzYSZrQfOVoplrWXJZwl842JSBwC1OqwAZ4pzDGSUyMDeJ82oM
+         ZkOJTKXBg+R/uW2vJUQ4lrGK0ukdXBHefoDrwFfs2t1CwgmBt9mgd2vmbpntmjRAq8Sv
+         1FynTzIPvLnHdJnwSBERrCZIGHp62lUfkUT0AaQOfp2k1f6J2WeAAzrI5UDlUpblHuF0
+         +8kQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=vhZEVnaGNBjosB86GDUW8b2wHjB/+QU31bPXl36TqFE=;
+        b=bmLc6LS6IWS36IIaIKZDTw53R/PFb+5YO4dBtXTzYlli/RM3a+AgjeWJTP95C1WU7w
+         yBbuoSw9CZpJogPcHJRS0aubqvN4ARLQcudwUZn75B8S1KSHfCbljCN3n5sEBurvA/i5
+         oB87RIUEvR7R4A2YSW1K/56ctA7aEAUhP307wQ/ETY+5AsZ33gvSlZhu8BwjxsSSI13d
+         3END5tICHxqjfFOP4lpy9qRE8SmiWhCuNNvFYXD2PSGL+ol4/BdRWbrdGjrqnCM38TY9
+         /E4pKM0hju5OvB9NGGSAXWybh/lfLDdO3Idswb1xu6PwJPbNNPWZCOAdLKNS2xoWEZ60
+         485w==
+X-Gm-Message-State: AJIora+za759jnZkCI+uZQxmP/78uPZOiAHPLYawretpm0syYnPZhGeA
+        27jcNkiNBbllQ76h2GiF9ZGA5IkbG7/f7eiRuZM=
+X-Google-Smtp-Source: AGRyM1vf/g0ul1trLFEAu7oYWn9j7QPhrxQj2kFug+Wf51rlwJHcE5bY2L1/LDYmR9NhUHUSJA/sC5iD4j6lOoGUUZ4=
+X-Received: by 2002:a63:8c50:0:b0:40c:fa26:9738 with SMTP id
+ q16-20020a638c50000000b0040cfa269738mr3295495pgn.541.1655910397895; Wed, 22
+ Jun 2022 08:06:37 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a17:903:2308:b0:16a:1b3f:f74b with HTTP; Wed, 22 Jun 2022
+ 08:06:37 -0700 (PDT)
+Reply-To: sales0212@asonmedsystemsinc.com
+From:   Prasad Ronni <lerwickfinance7@gmail.com>
+Date:   Wed, 22 Jun 2022 16:06:37 +0100
+Message-ID: <CAFkto5thhNhkkGjQ3S6MhMGPs7Qzv1MpCVsUz+gkgdDGLSPYXA@mail.gmail.com>
+Subject: Service Needed.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-file: drivers/target/target_core_alua.c
-line: 388
- * the Target Port in question for the the incoming
-changed to
- * the Target Port in question for the incoming
-
-Signed-off-by: Jiang Jian <jiangjian@cdjrlc.com>
----
- drivers/target/target_core_alua.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/target/target_core_alua.c b/drivers/target/target_core_alua.c
-index b56ef8af66e7..58df0145e8d0 100644
---- a/drivers/target/target_core_alua.c
-+++ b/drivers/target/target_core_alua.c
-@@ -385,7 +385,7 @@ target_emulate_set_target_port_groups(struct se_cmd *cmd)
- 
- 			/*
- 			 * Extract the RELATIVE TARGET PORT IDENTIFIER to identify
--			 * the Target Port in question for the the incoming
-+			 * the Target Port in question for the incoming
- 			 * SET_TARGET_PORT_GROUPS op.
- 			 */
- 			rtpi = get_unaligned_be16(ptr + 2);
 -- 
-2.17.1
+Hi,
 
+Are you currently open to work as our executive company representative
+on contractual basis working remotely? If yes, we will be happy to
+share more details. Looking forward to your response.
+
+Regards,
