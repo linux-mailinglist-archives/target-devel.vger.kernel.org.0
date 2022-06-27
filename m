@@ -2,90 +2,82 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07D0255D0E5
-	for <lists+target-devel@lfdr.de>; Tue, 28 Jun 2022 15:08:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F398555CDC6
+	for <lists+target-devel@lfdr.de>; Tue, 28 Jun 2022 15:04:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243269AbiF1BxA convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+target-devel@lfdr.de>); Mon, 27 Jun 2022 21:53:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38738 "EHLO
+        id S239517AbiF0Qhb (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 27 Jun 2022 12:37:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243234AbiF1Bw7 (ORCPT
+        with ESMTP id S239532AbiF0Qh0 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 27 Jun 2022 21:52:59 -0400
-X-Greylist: delayed 42336 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 27 Jun 2022 18:52:57 PDT
-Received: from mail.dica.am (inntech.am [109.75.47.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94613263A
-        for <target-devel@vger.kernel.org>; Mon, 27 Jun 2022 18:52:57 -0700 (PDT)
-X-Footer: aW5udGVjaC5hbQ==
-Received: from johnlewis.com ([35.89.234.8])
-        (authenticated user info@inntech.am)
-        by mail.dica.am (Kerio Connect 9.2.1) with ESMTPSA
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256 bits))
-        for target-devel@vger.kernel.org;
-        Mon, 27 Jun 2022 15:27:35 +0400
-Reply-To: robert_turner@johnlewis-trades.com
-From:   John Lewis & Partners <robert_turner049@johnlewis.com>
-To:     target-devel@vger.kernel.org
-Subject: Order Emquiry 27/06/22
-Date:   27 Jun 2022 21:26:40 +1000
-Message-ID: <20220627171949.8856BE578A4AEDD9@johnlewis.com>
+        Mon, 27 Jun 2022 12:37:26 -0400
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22D56120AA;
+        Mon, 27 Jun 2022 09:37:24 -0700 (PDT)
+Received: by mail-pj1-f54.google.com with SMTP id i8-20020a17090aee8800b001ecc929d14dso10555760pjz.0;
+        Mon, 27 Jun 2022 09:37:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=h+CBkZaCUAPsWCF3WoXppHNKCyy0dZJN6jYn++00T3g=;
+        b=7p1fFtmxjpgpdCxfjBHM1/VvTSG6Lpy9043NJpMYFZvwJzsJKlyeMseOTDj9+yFtBO
+         XP8VxNnsyciE6/OHjDc3RAd81A9hgwmtxesSC4opzbmEV9lJmPwSHWxvyNXSK8/9ntIv
+         8T15ZK1PnGHKIaW48WErH/47wJRY8itJXSxsDCC1VDpHcuS3ovEuvnO/i+7dlclnAa5k
+         D9W2ds7N4JRSTbOgdxCjCgW9rPEgI7ew+a7pooShyhtFixgNmJrVOCjR27Iha1SUGGXR
+         xJv+HfCOdoYqcBrLj1lJl5qEnlSY1TVx9L53ibCszzCShfZYqJ6Xc2B8x/FdAqZt/9K1
+         4CFA==
+X-Gm-Message-State: AJIora98faboZt6EoG9xTun9oAE15ZN3Zn5yWNpmiQ9BQ+7BscbWGnxi
+        FfvNNhEUr+B0DwEUrDoA/PE=
+X-Google-Smtp-Source: AGRyM1uxX09PPBW2F2Ve5hEmUYge6i2EYx09NheABWO/DbMTHVZ8M4EiHWU/Ay5mZjKCh3PMVRT2OQ==
+X-Received: by 2002:a17:902:d4c8:b0:16a:480b:b79c with SMTP id o8-20020a170902d4c800b0016a480bb79cmr235609plg.15.1656347843352;
+        Mon, 27 Jun 2022 09:37:23 -0700 (PDT)
+Received: from ?IPV6:2620:15c:211:201:ebc3:3a94:fe74:44f0? ([2620:15c:211:201:ebc3:3a94:fe74:44f0])
+        by smtp.gmail.com with ESMTPSA id v19-20020aa78093000000b0051b693baadcsm7559184pff.205.2022.06.27.09.37.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jun 2022 09:37:22 -0700 (PDT)
+Message-ID: <ed7e268e-94c5-38b1-286d-e2cb10412334@acm.org>
+Date:   Mon, 27 Jun 2022 09:37:21 -0700
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: Yes, score=5.0 required=5.0 tests=ADVANCE_FEE_3_NEW,BAYES_50,
-        SPF_FAIL,SPF_HELO_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: use-after-free in srpt_enable_tpg()
+Content-Language: en-US
+To:     Mike Christie <michael.christie@oracle.com>
+Cc:     "lizhijian@fujitsu.com" <lizhijian@fujitsu.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+References: <17649b9c-7e42-1625-8bc9-8ad333ab771c@fujitsu.com>
+From:   Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <17649b9c-7e42-1625-8bc9-8ad333ab771c@fujitsu.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.7 SPF_HELO_SOFTFAIL SPF: HELO does not match SPF record
-        *      (softfail)
-        *  0.0 SPF_FAIL SPF: sender does not match SPF record (fail)
-        *      [SPF failed: Please see http://www.openspf.org/Why?s=mfrom;id=robert_turner049%40johnlewis.com;ip=109.75.47.174;r=lindbergh.monkeyblade.net]
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.5 ADVANCE_FEE_3_NEW Appears to be advance fee fraud (Nigerian
-        *      419)
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Dear target-devel
+On 6/27/22 00:09, lizhijian@fujitsu.com wrote:
+> So far, I doubt if the previous defect of configfs mentioned in
+> 9b64f7d0b: "(RDMA/srpt: Postpone HCA removal until after configfs
+> directory removal)" has got a better solution. if not, i have no a
+> clear mechanism to avoid it yet.
+> 
+> feedbacks are very welcome.
+Mike, are you perhaps aware of any plans to add functions to the LIO 
+core for removing tpg and wwn objects?
 
+Thanks,
 
- 
-The world famous brand John Lewis & Partners, is UK's largest 
-multi-channel retailer with over 126 shops and multiple expansion 
-in Africa furnished by European/Asian/American products. We are
-sourcing new products to attract new customers and also retain 
-our existing ones, create new partnerships with companies dealing 
-with different kinds of goods globally.
- 
-Your company's products are of interest to our market as we have 
-an amazing market for your products.Provide us your current 
-catalog through email to review more. We hope to be able to order
-with you and start a long-term friendly, respectable and solid 
-business partnership. Please we would appreciate it if you could 
-send us your stock availability via email if any.
-
- 
-Our payment terms are 15 days net in Europe, 30 days Net in UK 
-and 30 days net in Asia/USA as we have operated with over 5297 
-suppliers around the globe for the past 50 years now. For
-immediate response Send your reply to "robert_turner@johnlewis-
-trades.com" for us to be able to treat with care and urgency.
- 
- 
-Best Regards
-Rob Turner
-Head Of Procurement Operations
-John Lewis & Partners.
-robert_turner@johnlewis-trades.com
-Tel: +44-7451-274090
-WhatsApp: +447497483925
-www.johnlewis.com
-REGISTERED OFFICE: 171 VICTORIA STREET, LONDON SW1E 5NN
-
-
+Bart.
