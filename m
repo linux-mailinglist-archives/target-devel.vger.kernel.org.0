@@ -2,79 +2,149 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB11F578B63
-	for <lists+target-devel@lfdr.de>; Mon, 18 Jul 2022 21:58:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D236C578C2E
+	for <lists+target-devel@lfdr.de>; Mon, 18 Jul 2022 22:55:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236338AbiGRT56 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 18 Jul 2022 15:57:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46438 "EHLO
+        id S230263AbiGRUzh (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 18 Jul 2022 16:55:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236381AbiGRT5r (ORCPT
+        with ESMTP id S235219AbiGRUzg (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 18 Jul 2022 15:57:47 -0400
-Received: from mail-yb1-xb44.google.com (mail-yb1-xb44.google.com [IPv6:2607:f8b0:4864:20::b44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD8002D1FE
-        for <target-devel@vger.kernel.org>; Mon, 18 Jul 2022 12:57:45 -0700 (PDT)
-Received: by mail-yb1-xb44.google.com with SMTP id 75so22837873ybf.4
-        for <target-devel@vger.kernel.org>; Mon, 18 Jul 2022 12:57:45 -0700 (PDT)
+        Mon, 18 Jul 2022 16:55:36 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D977E2F02B
+        for <target-devel@vger.kernel.org>; Mon, 18 Jul 2022 13:55:34 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id bp17so21479704lfb.3
+        for <target-devel@vger.kernel.org>; Mon, 18 Jul 2022 13:55:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
-        b=NzKrsOEUDJAHtXJ/3YQcQKAXgqqWuh59wbN+FZYhwzNoGCP1DCWerufiv+8vbKdqh8
-         4gFWbOb/iyKAFT+xxOvuQ68Z3f85ts/NQjQx6FNgZeVa1HUn0RJw3E3/P3PN41P83H5G
-         liOboMaE4kEpppYH0UAuJokwjnmhJWe+Gz04LSnOsGbNm6ASl0byTenreiX1srOC2jdn
-         ahsjae5XwAWThgjoa54iEI69khJ4Ue26g3OjjFbo6h+4RY2qwJ47yoht0btXM9VbvcHi
-         G9+uyyek3Fd7p/693tOzOyRKBPuLacYytv32dq6pyWmyZwKJWWFfaZZgMj+pklEbCTKr
-         QO4g==
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ngAg2yVO32eBtQbv+5HGxymaiT96wuzbFVwUnPbkYPs=;
+        b=Lekm+r2aRj8xx29RD0wy/9Tl0pPKcs7oHW9Fd98cwNBSfHby25BNUaqXile6+m1W3J
+         YlBpcOTBiSgo4GLV2EkMvz09EnwHmUNnw6N8DrwfOSvrx6y91FkuJ/CZPj2CsH7lDGv0
+         o2tWRKHqhw4fCFTn9zXdMRxsg3zuz5eXOmvdR5+WDd61Z4EhpVK0l964j97jzc7hSIZG
+         q2J1Idq/NpA3PMmskY2EYKBHPMWN+Jp7nFw61/1Ri+T33vzU7cYw9Fynr92ZeC156nXK
+         zk4/C0BlRTyLcmaIVFcYuBR9D2IaW3gHdwiPhzFUrc3rEKXyHE8Kfkxz2QpTlaLG0D8m
+         K/Sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
-        b=x/4X5J9w1VVryU9eclFZVOf5zaaRt9HZn8XRT/+GVGoiH6l3/d9sWqC7gCM1pP1lxP
-         DHvticMlDNdnSURFNnBRtcwF21NIzm65RLRXUNxc+//RX4flceS98vCg3yOhGAfixC36
-         sVB+YT7U9HUBo5ZYfvyXdsb+YndRLMG8fDxTB60LgB+qscY3dxEcx8Wn4CBdrkGvDV1w
-         fWn99Y3BJ9fJnQlF9VwSAvzv2YxiRf/zCkDfEW+J8a7uTFKkD1X9ZQ0mF1xrT1ngG/oN
-         1fWnrVqb+HPd0J2PaYrsgcYgf4c42AdVC/TIUy8p+UO6xd+0SLlwYCl3ZB8y5SJEf28n
-         CEGQ==
-X-Gm-Message-State: AJIora+Zd/kLs1CUMWoRlzPpdEZEIb5ZJKPc0dyynhJzIvog50znXL6n
-        8ka+lSpbHZB2JD9AoSTT2LQ8Y5IUKUEazw6JdnU=
-X-Google-Smtp-Source: AGRyM1sH7+gbGg0UshsiXZstF+hLoFjAGrPyBnSF74G21W6HobwMkanHtbrky4v88zMKZpFbOfLENfbFg0w48FTsPkY=
-X-Received: by 2002:a25:587:0:b0:670:6034:81b8 with SMTP id
- 129-20020a250587000000b00670603481b8mr3647582ybf.4.1658174264748; Mon, 18 Jul
- 2022 12:57:44 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ngAg2yVO32eBtQbv+5HGxymaiT96wuzbFVwUnPbkYPs=;
+        b=TsJf1kCzmzYxkUHykz9Xj8eMusLQdKbXNqvvXn58wNEPx6GU3HFgpiGgLc+eKkN9ic
+         DLs8FXappR5sNcdj2ZAteGpMvLHrgPTPQFrRRMeIMgOC85/c+keJvp1VgYf2jYvbLTo6
+         0S/oywFb00dcn5Ga5AqOQP6yAFeqA2syVICtEWog4SJb41tlb2Ti2ThrXebolHrGHOCF
+         6IHCeNoN3mnTVxfMTqZlUZTLwYu0qE9rxLBiyF6LZ/btW7YAuJrTBg9Kllvo/lpezaed
+         eOZ47B4Q1zBcGxRCIqxKof1bnffGY1K5tdwxOR/p2WXiocrva+AOQ4LVoYadTJrehV6O
+         AXgw==
+X-Gm-Message-State: AJIora9JWIiM3U2Y9yiVxcbW56cVMTaEYAhM2xnuCwy3HY3kyBa4GJNj
+        Bo4YI6TLcYXEcY2nnEoIGIhbZM/mgwVxiM03b6ufrg==
+X-Google-Smtp-Source: AGRyM1tcWZRhnGREO1HBCcsOSiZAmhbB+eNTAxfA1VHqRBIMV5ol//3U7P7L3hH5mPy40BaNkgIjSUUGC1iWFEDtcX4=
+X-Received: by 2002:a05:6512:31d1:b0:489:cfee:3600 with SMTP id
+ j17-20020a05651231d100b00489cfee3600mr15798595lfe.432.1658177732994; Mon, 18
+ Jul 2022 13:55:32 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:7000:34dd:0:0:0:0 with HTTP; Mon, 18 Jul 2022 12:57:44
- -0700 (PDT)
-Reply-To: lilywilliam989@gmail.com
-From:   Lily William <rayimemogn@gmail.com>
-Date:   Mon, 18 Jul 2022 11:57:44 -0800
-Message-ID: <CAMefwTOVxz0RyX8-7firORdsW5jX-9Dk3My=PH-+N4hSMx+mbg@mail.gmail.com>
-Subject: Hi Dear,
-To:     undisclosed-recipients:;
+References: <20220708211447.135209-1-justinstitt@google.com> <20220718180421.49697-1-justinstitt@google.com>
+In-Reply-To: <20220718180421.49697-1-justinstitt@google.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Mon, 18 Jul 2022 13:55:21 -0700
+Message-ID: <CAKwvOdn42__0Z4Qrh0rVzotCGFdecfyCY-=C_OE0U3z20A1NmA@mail.gmail.com>
+Subject: Re: [PATCH v2] target: iscsi: fix clang -Wformat warnings
+To:     martin.petersen@oracle.com
+Cc:     linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        llvm@lists.linux.dev, mgurtovoy@nvidia.com,
+        michael.christie@oracle.com, mingzhe.zou@easystack.cn,
+        nathan@kernel.org, target-devel@vger.kernel.org, trix@redhat.com,
+        Justin Stitt <justinstitt@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hi Dear,
+On Mon, Jul 18, 2022 at 11:04 AM Justin Stitt <justinstitt@google.com> wrote:
+>
+> When building with Clang we encounter these warnings:
+> | drivers/target/iscsi/iscsi_target_login.c:719:24: error: format
+> | specifies type 'unsigned short' but the argument has type 'int'
+> | [-Werror,-Wformat] " from node: %s\n", atomic_read(&sess->nconn),
+> -
+> | drivers/target/iscsi/iscsi_target_login.c:767:12: error: format
+> | specifies type 'unsigned short' but the argument has type 'int'
+> | [-Werror,-Wformat] " %s\n", atomic_read(&sess->nconn),
+> -
+> | drivers/target/iscsi/iscsi_target.c:4365:12: error: format specifies
+> | type 'unsigned short' but the argument has type 'int' [-Werror,-Wformat]
+> | " %s\n", atomic_read(&sess->nconn)
+>
+> For all warnings, the format specifier is `%hu` which describes an
+> unsigned short. The resulting type of atomic_read is an int. The
+> proposed fix is to listen to Clang and swap the format specifier.
+>
+> Link: https://github.com/ClangBuiltLinux/linux/issues/378
+> Signed-off-by: Justin Stitt <justinstitt@google.com>
 
-My name is Dr Lily William from the United States.I am a French and
-American nationality (dual) living in the U.S and sometimes in France
-for Work Purpose.
+Thanks for the patch!
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
-I hope you consider my friend request. I will share some of my pics
-and more details about myself when I get your response.
+> ---
+> diff from v1->v2:
+> Combined two similar patches into one:
+> * https://lore.kernel.org/all/20220708221314.466294-1-justinstitt@google.com/
+> * https://lore.kernel.org/llvm/20220708211447.135209-1-justinstitt@google.com/
+>
+>  drivers/target/iscsi/iscsi_target.c       | 2 +-
+>  drivers/target/iscsi/iscsi_target_login.c | 4 ++--
+>  2 files changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
+> index e368f038ff5c..bfb717065344 100644
+> --- a/drivers/target/iscsi/iscsi_target.c
+> +++ b/drivers/target/iscsi/iscsi_target.c
+> @@ -4361,7 +4361,7 @@ int iscsit_close_connection(
+>
+>         spin_lock_bh(&sess->conn_lock);
+>         atomic_dec(&sess->nconn);
+> -       pr_debug("Decremented iSCSI connection count to %hu from node:"
+> +       pr_debug("Decremented iSCSI connection count to %d from node:"
+>                 " %s\n", atomic_read(&sess->nconn),
+>                 sess->sess_ops->InitiatorName);
+>         /*
+> diff --git a/drivers/target/iscsi/iscsi_target_login.c b/drivers/target/iscsi/iscsi_target_login.c
+> index 6b94eecc4790..0778591abae7 100644
+> --- a/drivers/target/iscsi/iscsi_target_login.c
+> +++ b/drivers/target/iscsi/iscsi_target_login.c
+> @@ -715,7 +715,7 @@ void iscsi_post_login_handler(
+>
+>                 list_add_tail(&conn->conn_list, &sess->sess_conn_list);
+>                 atomic_inc(&sess->nconn);
+> -               pr_debug("Incremented iSCSI Connection count to %hu"
+> +               pr_debug("Incremented iSCSI Connection count to %d"
+>                         " from node: %s\n", atomic_read(&sess->nconn),
+>                         sess->sess_ops->InitiatorName);
+>                 spin_unlock_bh(&sess->conn_lock);
+> @@ -763,7 +763,7 @@ void iscsi_post_login_handler(
+>         spin_lock_bh(&sess->conn_lock);
+>         list_add_tail(&conn->conn_list, &sess->sess_conn_list);
+>         atomic_inc(&sess->nconn);
+> -       pr_debug("Incremented iSCSI Connection count to %hu from node:"
+> +       pr_debug("Incremented iSCSI Connection count to %d from node:"
+>                 " %s\n", atomic_read(&sess->nconn),
+>                 sess->sess_ops->InitiatorName);
+>         spin_unlock_bh(&sess->conn_lock);
+> --
+> 2.37.0.170.g444d1eabd0-goog
+>
 
-Thanks
 
-With love
-Lily
+-- 
+Thanks,
+~Nick Desaulniers
