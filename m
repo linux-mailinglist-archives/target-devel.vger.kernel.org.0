@@ -2,350 +2,181 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6B705834E5
-	for <lists+target-devel@lfdr.de>; Wed, 27 Jul 2022 23:41:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B5765845ED
+	for <lists+target-devel@lfdr.de>; Thu, 28 Jul 2022 20:54:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232949AbiG0Vlk (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 27 Jul 2022 17:41:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33076 "EHLO
+        id S231921AbiG1Smf (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 28 Jul 2022 14:42:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbiG0Vlj (ORCPT
+        with ESMTP id S231279AbiG1Smd (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 27 Jul 2022 17:41:39 -0400
-Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9A44422DA;
-        Wed, 27 Jul 2022 14:41:37 -0700 (PDT)
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 7A4B7412E1;
-        Wed, 27 Jul 2022 21:41:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        content-type:content-type:content-transfer-encoding:mime-version
-        :references:in-reply-to:x-mailer:message-id:date:date:subject
-        :subject:from:from:received:received:received:received; s=
-        mta-01; t=1658958094; x=1660772495; bh=X/13rGCj3Z+k+S2YJnLzmVd6Z
-        kC3cOAIPY/Yg4xDIKY=; b=GinbO9sE3U6TJMQKKYiPUMtS/z3UwPcqLDO5vCvoe
-        tovVGK6mhXxJhJjGvMBDyPUMeI6/0AoplaKU3LDPmkmj0ZiRMj4KhXliYWMl6i0F
-        t5zYrqZm9DfHzhh4JsH0VNYj3DOm9UkJcdFeGV5dxSLvajo/K6OfKyhzv6aClzCh
-        rI=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id EWGY0e4LGtE5; Thu, 28 Jul 2022 00:41:34 +0300 (MSK)
-Received: from T-EXCH-01.corp.yadro.com (t-exch-01.corp.yadro.com [172.17.10.101])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id A7727412D8;
-        Thu, 28 Jul 2022 00:41:34 +0300 (MSK)
-Received: from T-EXCH-08.corp.yadro.com (172.17.11.58) by
- T-EXCH-01.corp.yadro.com (172.17.10.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.669.32; Thu, 28 Jul 2022 00:41:34 +0300
-Received: from NB-591.corp.yadro.com (10.199.18.20) by
- T-EXCH-08.corp.yadro.com (172.17.11.58) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.1118.9; Thu, 28 Jul 2022 00:41:33 +0300
-From:   Dmitry Bogdanov <d.bogdanov@yadro.com>
-To:     Martin Petersen <martin.petersen@oracle.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        <target-devel@vger.kernel.org>
-CC:     <linux-scsi@vger.kernel.org>, <linux@yadro.com>,
-        Dmitry Bogdanov <d.bogdanov@yadro.com>
-Subject: [PATCH v2 2/2] target: core: de-RCU of se_lun and se_lun acl
-Date:   Thu, 28 Jul 2022 00:41:25 +0300
-Message-ID: <20220727214125.19647-3-d.bogdanov@yadro.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220727214125.19647-1-d.bogdanov@yadro.com>
+        Thu, 28 Jul 2022 14:42:33 -0400
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D743F7539D;
+        Thu, 28 Jul 2022 11:42:32 -0700 (PDT)
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26SGxFia009496;
+        Thu, 28 Jul 2022 18:42:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2022-7-12;
+ bh=MVAYaMKnvde+RI5omzPq2W4oBo8jOzacpZOHXJpvVo0=;
+ b=Cdmi4x5IXUFs4bQK+6pk+9RSpl7Sfr1n9T3QaMH7qyhoi3OEmyv18gLkdDDD8xBrOUjC
+ KA5Z+a5ZzLyQ/PrdMjt9Y5VKSljLn1jLdpTHHXHH4cHcZO7rI8G9Av9OBXAWj80aA7Es
+ cf5SoNfkNCeI834HAQJHvqysKxS4alvkU3pWGAQDf8QjSpI6sixXGB/y7ARScfC1r03m
+ oRb8bFhY9kH0IOBC/1aDYnZFMDPSYCUzrp1GX+Kk2Gq5dDorNve5bPSb3pfEwLz1or8s
+ f9SQfe4x+oi3JHCxd2OPFR/Mb6OmbwbW5MhQ1qsuLeMDyV1+6hD5MDFSSqDOaVPAUf/H EA== 
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3hg9a4wk36-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 28 Jul 2022 18:42:31 +0000
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.5/8.17.1.5) with ESMTP id 26SH81Vl029770;
+        Thu, 28 Jul 2022 18:42:31 GMT
+Received: from nam02-dm3-obe.outbound.protection.outlook.com (mail-dm3nam02lp2049.outbound.protection.outlook.com [104.47.56.49])
+        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3hkt7c5ucj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 28 Jul 2022 18:42:31 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZbkBhaozuAwwxxzdqOnZCM2oFI4AmdGLfh9fsNfTSDfSvLJn9KdAx2QZRBcyCvWrLfiQ7fJzKGk1icjDVAY5nK0al3bQN6wB9eT7JiNy0J/36aEcI1LoAgIZXIEVbTlykRW6/w9BAMGkpwxPOcg3JwapGarQs2+FEKsd3AV5wWxbv8fdTzev0U+7l2BQhEfFcuapTc0NmgMph+Y7mu0LNc5ZdIVc3GPCvH+U/X7vMAjhNgnwPM9B+6d2XVkUoX9eE3kZQhP70SL4P9vQDZ1/h4IdLQyIlpNDYLQu4RT/PokHP9aH81MgEU11EUd6VxrRv6MCeIjhboIfjiMHIvq4/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MVAYaMKnvde+RI5omzPq2W4oBo8jOzacpZOHXJpvVo0=;
+ b=RJA0/7aaPriLGSCLnxouxiiicEMg/y6n9KVZFIWFvSHSwB4cyaVqF1kHbB5uoXGthAm6OqxyWujAxL2x69Ry8PcLK23GSNo4Ni25wq6MYt3oStyYlZkZinForU2+FHWe+8NsTcV0yLuJrR7fKA9JVC+fTsW2ZkAHi0NfYGT4+4uNs7okwDx9zm+PrdQPlx4B6Gjh6X/PagdY6P4ZLidWlkmqDqCXQID9gTa0yeHl9HrSe891xtmucmYpZ/xXd8f5OiPr/mwUBbjKZUPN18L4HT0xK3RmhmA7UCzeuH/quU/7G8Y8WKesehhvBhNTdn8H5sP53AH4KiWNNXqi8vastQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MVAYaMKnvde+RI5omzPq2W4oBo8jOzacpZOHXJpvVo0=;
+ b=EXhkwOdIGtQF1dFoXLKqVYLAepmUT1zWR+8DqpmJSVm3+gX7/q2/MIZdrIlAe+fC16JdmQNQxq9+21WbeSMKnjBBcB2XbTcCPjjQu5t+bw/tgyE39Q+rBi7IGDl0xqDDFFQVlnX5Ugm4N0Nzos2PZ0jLGQ2Ux4pY9qTqBeAmaS4=
+Received: from DM5PR10MB1466.namprd10.prod.outlook.com (2603:10b6:3:b::7) by
+ PH0PR10MB4566.namprd10.prod.outlook.com (2603:10b6:510:36::23) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5458.19; Thu, 28 Jul 2022 18:42:29 +0000
+Received: from DM5PR10MB1466.namprd10.prod.outlook.com
+ ([fe80::8dee:d667:f326:1d50]) by DM5PR10MB1466.namprd10.prod.outlook.com
+ ([fe80::8dee:d667:f326:1d50%6]) with mapi id 15.20.5458.025; Thu, 28 Jul 2022
+ 18:42:28 +0000
+Message-ID: <791a84ff-2046-cb7a-4758-81f4788dfd6f@oracle.com>
+Date:   Thu, 28 Jul 2022 13:42:27 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.1.0
+Subject: Re: [PATCH v2 0/2] target: core: fix race during ACL removal
+Content-Language: en-US
+To:     Dmitry Bogdanov <d.bogdanov@yadro.com>,
+        Martin Petersen <martin.petersen@oracle.com>,
+        target-devel@vger.kernel.org
+Cc:     linux-scsi@vger.kernel.org, linux@yadro.com
 References: <20220727214125.19647-1-d.bogdanov@yadro.com>
+From:   Mike Christie <michael.christie@oracle.com>
+In-Reply-To: <20220727214125.19647-1-d.bogdanov@yadro.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH2PR19CA0011.namprd19.prod.outlook.com
+ (2603:10b6:610:4d::21) To DM5PR10MB1466.namprd10.prod.outlook.com
+ (2603:10b6:3:b::7)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.199.18.20]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-08.corp.yadro.com (172.17.11.58)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 4dc635b1-ae7b-445d-3b20-08da70c8ec48
+X-MS-TrafficTypeDiagnostic: PH0PR10MB4566:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: pq57oIXCPZSkRMsx34rZdCb9MoDJUk+Ru4XUAtWJ73UlVV4/FnM9ixwwmXzevJ9bMkYSf/AkLfP3dYSve9FOZdXfXRv66fXwRXfCdjeHk90Hgn6iRWo+Bou7W6KYq55S+F/LYoSZDqTbZb53oxbPla9/jHrmAZkvsU6jzCcQZDg6JhVcKAMoqqqBvrGNJBTWXxf2ARabUA78Z2gXe27jpqEm8jhagKf3N4CJmkkm1qxOHe6YZb6IrBZNLQLpRawTpuxW2pvR9wj9p3rboPtD1NhCkYcyzjXBStYTseOr04v47yE5GB+OPrMCspjlfTvvDN5L1wyxUg2XeuXe5IOPIIKoLUfZGHze+ce6rk+Eamth9jwgKrZP1OeR60HR77R6/3t4FFynyN6MCj3NYa+YnTByLCWK9ik7HCoAJ4yVuFPDC+/QMSL4sZ4c9xy/ZNt78L87ekUBccf23dFEOPp3lY7uLcFjFIY699T4+ScW5Qu1piEaky/D8QH4KHE5J8JnnIztoQGgeCSPjpPQdvU4eS2wAltNxcYG+dtUY3rZlHyQybwqlhmRlsHmNHwl40rkyPnUpfZvf4cv9L2Co48pxFRgJSNjnWw5Iz2miZU1UDZ7LVZ4lonmBSHxBJt7h1QeTjzzGJdQNBPa0AukoMr62QYD2zzDy7lOuao0RRjqJ872NPwaxvQCI95qC8ZTkK7dv/PGgi0cILt98CEDr0bPdDIYKNl147pvNSsXROqKQPDWf3jnbE9yrn845mIVXHFZ1QeLNSRrMIW5U5TzmYdkQ0XRuYUMLJJsnZ/mFxyFZzD239je3ugjFFltf6dBKNehjEYcaNDjres/j94+CBddpQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR10MB1466.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(366004)(346002)(396003)(136003)(39860400002)(376002)(186003)(41300700001)(31696002)(316002)(38100700002)(66946007)(31686004)(36756003)(83380400001)(2906002)(86362001)(110136005)(6506007)(2616005)(66556008)(4744005)(66476007)(53546011)(478600001)(4326008)(6486002)(5660300002)(8936002)(6512007)(8676002)(26005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?djFpZGxwRXFqcDJUWUZJTnVaWXoxZ29yYlpCUUwybXFnZkdwdUlqU1ViS1Fx?=
+ =?utf-8?B?OE5TNk43MENYRkRidFc3NUdrVE5Fa2RUSDliTkw4TkgrMHVkTlZvLzN3elZi?=
+ =?utf-8?B?Wjc2OGh2S29FOUs4bVFmVjFYUlhqUHB5WHBOeG00SjdEOFhWcTRhVFc4ZWZJ?=
+ =?utf-8?B?UkIySlAzNlBkLzdCcjcvaDhOMCtvZndTTkNQWW9oWXJuT3M2ZDA2bTk5RGJo?=
+ =?utf-8?B?VkJCOXhiZmNhMVNiUWIwK2Q3eWhxQ3FUOHFHWWpHNnJuV1A1OU9PQWdGTGRZ?=
+ =?utf-8?B?L1FMZ09jQWNxK0tDWndYZnhrcGNyeDIwb0k0YjNTeEtRdFJPNFBZeTFnYVRl?=
+ =?utf-8?B?K1NnaGVjdUtjaURpTmk0dXREd0J6UzUyYUQwRWVkYkJpdExMMEJZUkxYNjRS?=
+ =?utf-8?B?Zm9DdCtDSG9RN25UbGR2ZGV5cThEeDJqZkp0YUxVZXJUdFJPZkJNVmR1aHlP?=
+ =?utf-8?B?S1dFNURhaERBS1dWUGIvdjZYVjV5OVNTOVBhMjArclM4bzU2eG9kVHFVMnlj?=
+ =?utf-8?B?clJMR3pmUEdEbXRnZmhvd3h3ZnRPYUd5UFg1ZVJIT2dZSlhRUWg1UnVLZy9Z?=
+ =?utf-8?B?NTJyWFpQNjdUaWdjMzZHSnI2RjArRGZCaWw2Y3hBaVQwOUFReWxnMTJDdFc5?=
+ =?utf-8?B?TlJ6dnlWamNLZ09ROGZHcEkzYkY2R3lCYlJtZHREYUlWeVJNQ1ZpRjBieU5P?=
+ =?utf-8?B?VFNuOXlrYzlWYkFBcjBIeEUzMGhVN09LQ3YzeXZlL0xZZnI0QmVkTHB1czhD?=
+ =?utf-8?B?aXRaRnBoZDVRdEZWWFdIaDd0THd3VTB3V1VKVHZVa2VGdG5zNkM1QUx1OWM3?=
+ =?utf-8?B?UUQzd2Z6SFV0TmtUN1VGVVI0eEhzUlk2QkMrMmRrV0hDK2llOFFENW5aZGtj?=
+ =?utf-8?B?WGdiVDZqRU44R1lBaEdZQnp4SCtZby9NZFJYdUQ0WmVYSnZYeG5YOEdQNGlZ?=
+ =?utf-8?B?N09vbkFuais0azNFc3A4KzVBb0NiNGRPalFrZ0VpakZlT1RWdlQxZzhQem5h?=
+ =?utf-8?B?Unh0YmFsblNRM1NvTytCc21mWWJYTU1QbkVWN3NoMGJLMjVSWkNlYXZobTFR?=
+ =?utf-8?B?Y0E2NG5SSDFuQlFQU0kvM1VEYkxIL0h0SUtVS0tKWUlFSXJzYzBLYTFiamoy?=
+ =?utf-8?B?ZjVxVGgvVUxBYStJeHJzRC9FbFAvc1pQME9BVm95Q1UrdUhhbDhaMENNMHQ3?=
+ =?utf-8?B?cmJDQWc2M2dYMGhVTGhUelFRUkZIMUczNHVtU2Zoay9oLy8zSnZRdWFTTVJD?=
+ =?utf-8?B?VWM4Q0xtQ05pQk1vU3l4VXJRUktoMUwvOWczOE54QTRJbXYrd1h3TUhRS0hr?=
+ =?utf-8?B?TFo3REpab3lIaXdkOUdDZDRwWUZScTFsblB6b0xkc3l2bDlueDhUME9OYldh?=
+ =?utf-8?B?UzJCNDgyT1pPVTI0OWdmZDZidmV5Um1Ock5MdG1FbWdOSVcyQi9SY3RST3FJ?=
+ =?utf-8?B?MzR3YmhMdFE2SFFaMys1RGpqcFMrUGJOVVpkVFpjS3NxYnVFMk9aWm5PZG9r?=
+ =?utf-8?B?VzJmbDc4OUt1bnpGbWgwZWJpMGxZSElxTjIxWC9vNUM0Qmx1eWliOUcwald2?=
+ =?utf-8?B?cHU1NGU3TmVORjBMbEtuQmtPd294ci9FRWE4RnZIN2VZQU9CQnN0SDlMVHc3?=
+ =?utf-8?B?dVd6WnBKR0t5QzA5c2xkekxoUmdRdXBuUW1CbDZUQkVPcWJaQTRhbTFpWDc4?=
+ =?utf-8?B?cTZFblBkem1INTc3MURzTmxZWWhraEd0ejJmQm51Lzg3TVdKbVN1OG9WQjJY?=
+ =?utf-8?B?T2kyaHJ5UnlRckJsQzBtRWt5K2g3ck0wOVM1SXo3THZSSEt2eGxxMmU1Zmwr?=
+ =?utf-8?B?SFppRVZ1SDBGQkN2K0RDQjMzTGtzQWNJY3Radyt2N0V3SmZCQjAweFY3RXBZ?=
+ =?utf-8?B?UkJqLzBaNDltbmxlK1lucmwreGQrUlZ1MmhsQjNJKzNIVC9NVHh2UUt4T1Mw?=
+ =?utf-8?B?MmZGQy9xNE9UQ05BSVNiTDJCWnFjM1NIV0I1ZzQxVjg0Y0tnOE4xclZTV2VL?=
+ =?utf-8?B?VWxvbVhaTnJydFN2UGdqb3pTNEFKeWdHOExDTXNVa3lXVEdnaTNCNkowaElB?=
+ =?utf-8?B?NHZYakNSVTg0SW5rV1VaVk84TUZMbUhrSTBCTzRRc0Z5eHMxV2k0NTNmUUVk?=
+ =?utf-8?B?eGFZWldJMFdxa1p0Sjl6dXdEUmZZZEJNb1kxckEyaWdQTWFmN1BvT2poZVZq?=
+ =?utf-8?B?QVE9PQ==?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4dc635b1-ae7b-445d-3b20-08da70c8ec48
+X-MS-Exchange-CrossTenant-AuthSource: DM5PR10MB1466.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2022 18:42:28.7835
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PP2O4FPgH87YpBOWzofsJXjivt7kk6BeZU04X9a/Cz6+fmzBse6+rAHgfalXJ1GaFBXJkz09OqLoA3yHVUfYGIe4gi5+tMkHiCM3bYe+Glg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4566
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-07-28_06,2022-07-28_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
+ phishscore=0 spamscore=0 adultscore=0 suspectscore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2207280085
+X-Proofpoint-ORIG-GUID: adjf0-pCvd3Tz4BOCuvDX4g74JqWMgOW
+X-Proofpoint-GUID: adjf0-pCvd3Tz4BOCuvDX4g74JqWMgOW
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-se_lun and se_lun_acl are immutable pointers of struct se_dev_entry.
-Remove RCU usage for access to those pointers.
+On 7/27/22 4:41 PM, Dmitry Bogdanov wrote:
+> This patchset fixes a race condition due to incorrect usage of RCU
+> for se_dev_entry.se_lun variable when ACL is being removed.
+> 
+> Based on 5.20/scsi-queue.
+> 
+> v2:
+>   add more details in commit message
+>   fix misformatting
+> 
+> Dmitry Bogdanov (2):
+>   target: core: fix race during ACL removal
+>   target: core: de-RCU of se_lun and se_lun acl
+> 
+>  drivers/target/target_core_alua.c   |  3 +--
+>  drivers/target/target_core_device.c | 32 ++++++++++-------------------
+>  drivers/target/target_core_pr.c     | 28 ++++++++-----------------
+>  drivers/target/target_core_stat.c   | 10 ++++-----
+>  drivers/target/target_core_xcopy.c  |  2 +-
+>  include/target/target_core_base.h   |  4 ++--
+>  6 files changed, 27 insertions(+), 52 deletions(-)
+> 
 
-Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
----
-v2:
-  remove misformatting
----
- drivers/target/target_core_alua.c   |  3 +--
- drivers/target/target_core_device.c | 29 +++++++++++------------------
- drivers/target/target_core_pr.c     | 28 ++++++++--------------------
- drivers/target/target_core_stat.c   | 10 ++++------
- drivers/target/target_core_xcopy.c  |  2 +-
- include/target/target_core_base.h   |  4 ++--
- 6 files changed, 27 insertions(+), 49 deletions(-)
-
-diff --git a/drivers/target/target_core_alua.c b/drivers/target/target_core_alua.c
-index 58df0145e8d0..fb91423a4e2e 100644
---- a/drivers/target/target_core_alua.c
-+++ b/drivers/target/target_core_alua.c
-@@ -934,8 +934,7 @@ static void core_alua_queue_state_change_ua(struct t10_alua_tg_pt_gp *tg_pt_gp)
- 
- 		spin_lock(&lun->lun_deve_lock);
- 		list_for_each_entry(se_deve, &lun->lun_deve_list, lun_link) {
--			lacl = rcu_dereference_check(se_deve->se_lun_acl,
--					lockdep_is_held(&lun->lun_deve_lock));
-+			lacl = se_deve->se_lun_acl;
- 
- 			/*
- 			 * spc4r37 p.242:
-diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
-index 88a844ae1fd0..b7f16ee8aa0e 100644
---- a/drivers/target/target_core_device.c
-+++ b/drivers/target/target_core_device.c
-@@ -75,7 +75,7 @@ transport_lookup_cmd_lun(struct se_cmd *se_cmd)
- 			return TCM_WRITE_PROTECTED;
- 		}
- 
--		se_lun = rcu_dereference(deve->se_lun);
-+		se_lun = deve->se_lun;
- 
- 		if (!percpu_ref_tryget_live(&se_lun->lun_ref)) {
- 			se_lun = NULL;
-@@ -152,7 +152,7 @@ int transport_lookup_tmr_lun(struct se_cmd *se_cmd)
- 	rcu_read_lock();
- 	deve = target_nacl_find_deve(nacl, se_cmd->orig_fe_lun);
- 	if (deve) {
--		se_lun = rcu_dereference(deve->se_lun);
-+		se_lun = deve->se_lun;
- 
- 		if (!percpu_ref_tryget_live(&se_lun->lun_ref)) {
- 			se_lun = NULL;
-@@ -216,7 +216,7 @@ struct se_dev_entry *core_get_se_deve_from_rtpi(
- 
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(deve, &nacl->lun_entry_hlist, link) {
--		lun = rcu_dereference(deve->se_lun);
-+		lun = deve->se_lun;
- 		if (!lun) {
- 			pr_err("%s device entries device pointer is"
- 				" NULL, but Initiator has access.\n",
-@@ -243,11 +243,8 @@ void core_free_device_list_for_node(
- 	struct se_dev_entry *deve;
- 
- 	mutex_lock(&nacl->lun_entry_mutex);
--	hlist_for_each_entry_rcu(deve, &nacl->lun_entry_hlist, link) {
--		struct se_lun *lun = rcu_dereference_check(deve->se_lun,
--					lockdep_is_held(&nacl->lun_entry_mutex));
--		core_disable_device_list_for_node(lun, deve, nacl, tpg);
--	}
-+	hlist_for_each_entry_rcu(deve, &nacl->lun_entry_hlist, link)
-+		core_disable_device_list_for_node(deve->se_lun, deve, nacl, tpg);
- 	mutex_unlock(&nacl->lun_entry_mutex);
- }
- 
-@@ -334,8 +331,7 @@ int core_enable_device_list_for_node(
- 	mutex_lock(&nacl->lun_entry_mutex);
- 	orig = target_nacl_find_deve(nacl, mapped_lun);
- 	if (orig && orig->se_lun) {
--		struct se_lun *orig_lun = rcu_dereference_check(orig->se_lun,
--					lockdep_is_held(&nacl->lun_entry_mutex));
-+		struct se_lun *orig_lun = orig->se_lun;
- 
- 		if (orig_lun != lun) {
- 			pr_err("Existing orig->se_lun doesn't match new lun"
-@@ -355,8 +351,8 @@ int core_enable_device_list_for_node(
- 			return -EINVAL;
- 		}
- 
--		rcu_assign_pointer(new->se_lun, lun);
--		rcu_assign_pointer(new->se_lun_acl, lun_acl);
-+		new->se_lun = lun;
-+		new->se_lun_acl = lun_acl;
- 		hlist_del_rcu(&orig->link);
- 		hlist_add_head_rcu(&new->link, &nacl->lun_entry_hlist);
- 		mutex_unlock(&nacl->lun_entry_mutex);
-@@ -374,8 +370,8 @@ int core_enable_device_list_for_node(
- 		return 0;
- 	}
- 
--	rcu_assign_pointer(new->se_lun, lun);
--	rcu_assign_pointer(new->se_lun_acl, lun_acl);
-+	new->se_lun = lun;
-+	new->se_lun_acl = lun_acl;
- 	hlist_add_head_rcu(&new->link, &nacl->lun_entry_hlist);
- 	mutex_unlock(&nacl->lun_entry_mutex);
- 
-@@ -454,10 +450,7 @@ void core_clear_lun_from_tpg(struct se_lun *lun, struct se_portal_group *tpg)
- 
- 		mutex_lock(&nacl->lun_entry_mutex);
- 		hlist_for_each_entry_rcu(deve, &nacl->lun_entry_hlist, link) {
--			struct se_lun *tmp_lun = rcu_dereference_check(deve->se_lun,
--					lockdep_is_held(&nacl->lun_entry_mutex));
--
--			if (lun != tmp_lun)
-+			if (lun != deve->se_lun)
- 				continue;
- 
- 			core_disable_device_list_for_node(lun, deve, nacl, tpg);
-diff --git a/drivers/target/target_core_pr.c b/drivers/target/target_core_pr.c
-index 3829b61b56c1..a1d67554709f 100644
---- a/drivers/target/target_core_pr.c
-+++ b/drivers/target/target_core_pr.c
-@@ -739,8 +739,7 @@ static struct t10_pr_registration *__core_scsi3_alloc_registration(
- 			if (!deve_tmp->se_lun_acl)
- 				continue;
- 
--			lacl_tmp = rcu_dereference_check(deve_tmp->se_lun_acl,
--						lockdep_is_held(&lun_tmp->lun_deve_lock));
-+			lacl_tmp = deve_tmp->se_lun_acl;
- 			nacl_tmp = lacl_tmp->se_lun_nacl;
- 			/*
- 			 * Skip the matching struct se_node_acl that is allocated
-@@ -784,8 +783,7 @@ static struct t10_pr_registration *__core_scsi3_alloc_registration(
- 			 * the original *pr_reg is processed in
- 			 * __core_scsi3_add_registration()
- 			 */
--			dest_lun = rcu_dereference_check(deve_tmp->se_lun,
--				kref_read(&deve_tmp->pr_kref) != 0);
-+			dest_lun = deve_tmp->se_lun;
- 
- 			pr_reg_atp = __core_scsi3_do_alloc_registration(dev,
- 						nacl_tmp, dest_lun, deve_tmp,
-@@ -1437,34 +1435,26 @@ static void core_scsi3_nodeacl_undepend_item(struct se_node_acl *nacl)
- 
- static int core_scsi3_lunacl_depend_item(struct se_dev_entry *se_deve)
- {
--	struct se_lun_acl *lun_acl;
--
- 	/*
- 	 * For nacl->dynamic_node_acl=1
- 	 */
--	lun_acl = rcu_dereference_check(se_deve->se_lun_acl,
--				kref_read(&se_deve->pr_kref) != 0);
--	if (!lun_acl)
-+	if (!se_deve->se_lun_acl)
- 		return 0;
- 
--	return target_depend_item(&lun_acl->se_lun_group.cg_item);
-+	return target_depend_item(&se_deve->se_lun_acl->se_lun_group.cg_item);
- }
- 
- static void core_scsi3_lunacl_undepend_item(struct se_dev_entry *se_deve)
- {
--	struct se_lun_acl *lun_acl;
--
- 	/*
- 	 * For nacl->dynamic_node_acl=1
- 	 */
--	lun_acl = rcu_dereference_check(se_deve->se_lun_acl,
--				kref_read(&se_deve->pr_kref) != 0);
--	if (!lun_acl) {
-+	if (!se_deve->se_lun_acl) {
- 		kref_put(&se_deve->pr_kref, target_pr_kref_release);
- 		return;
- 	}
- 
--	target_undepend_item(&lun_acl->se_lun_group.cg_item);
-+	target_undepend_item(&se_deve->se_lun_acl->se_lun_group.cg_item);
- 	kref_put(&se_deve->pr_kref, target_pr_kref_release);
- }
- 
-@@ -1751,8 +1741,7 @@ core_scsi3_decode_spec_i_port(
- 		 * and then call __core_scsi3_add_registration() in the
- 		 * 2nd loop which will never fail.
- 		 */
--		dest_lun = rcu_dereference_check(dest_se_deve->se_lun,
--				kref_read(&dest_se_deve->pr_kref) != 0);
-+		dest_lun = dest_se_deve->se_lun;
- 
- 		dest_pr_reg = __core_scsi3_alloc_registration(cmd->se_dev,
- 					dest_node_acl, dest_lun, dest_se_deve,
-@@ -3446,8 +3435,7 @@ core_scsi3_emulate_pro_register_and_move(struct se_cmd *cmd, u64 res_key,
- 	dest_pr_reg = __core_scsi3_locate_pr_reg(dev, dest_node_acl,
- 					iport_ptr);
- 	if (!dest_pr_reg) {
--		struct se_lun *dest_lun = rcu_dereference_check(dest_se_deve->se_lun,
--				kref_read(&dest_se_deve->pr_kref) != 0);
-+		struct se_lun *dest_lun = dest_se_deve->se_lun;
- 
- 		spin_unlock(&dev->dev_reservation_lock);
- 		if (core_scsi3_alloc_registration(cmd->se_dev, dest_node_acl,
-diff --git a/drivers/target/target_core_stat.c b/drivers/target/target_core_stat.c
-index 62d15bcc3d93..f85ee5b0fd80 100644
---- a/drivers/target/target_core_stat.c
-+++ b/drivers/target/target_core_stat.c
-@@ -877,7 +877,6 @@ static ssize_t target_stat_auth_dev_show(struct config_item *item,
- 	struct se_lun_acl *lacl = auth_to_lacl(item);
- 	struct se_node_acl *nacl = lacl->se_lun_nacl;
- 	struct se_dev_entry *deve;
--	struct se_lun *lun;
- 	ssize_t ret;
- 
- 	rcu_read_lock();
-@@ -886,9 +885,9 @@ static ssize_t target_stat_auth_dev_show(struct config_item *item,
- 		rcu_read_unlock();
- 		return -ENODEV;
- 	}
--	lun = rcu_dereference(deve->se_lun);
-+
- 	/* scsiDeviceIndex */
--	ret = snprintf(page, PAGE_SIZE, "%u\n", lun->lun_index);
-+	ret = snprintf(page, PAGE_SIZE, "%u\n", deve->se_lun->lun_index);
- 	rcu_read_unlock();
- 	return ret;
- }
-@@ -1217,7 +1216,6 @@ static ssize_t target_stat_iport_dev_show(struct config_item *item,
- 	struct se_lun_acl *lacl = iport_to_lacl(item);
- 	struct se_node_acl *nacl = lacl->se_lun_nacl;
- 	struct se_dev_entry *deve;
--	struct se_lun *lun;
- 	ssize_t ret;
- 
- 	rcu_read_lock();
-@@ -1226,9 +1224,9 @@ static ssize_t target_stat_iport_dev_show(struct config_item *item,
- 		rcu_read_unlock();
- 		return -ENODEV;
- 	}
--	lun = rcu_dereference(deve->se_lun);
-+
- 	/* scsiDeviceIndex */
--	ret = snprintf(page, PAGE_SIZE, "%u\n", lun->lun_index);
-+	ret = snprintf(page, PAGE_SIZE, "%u\n", deve->se_lun->lun_index);
- 	rcu_read_unlock();
- 	return ret;
- }
-diff --git a/drivers/target/target_core_xcopy.c b/drivers/target/target_core_xcopy.c
-index 6bb20aa9c5bc..8713cda0c2fb 100644
---- a/drivers/target/target_core_xcopy.c
-+++ b/drivers/target/target_core_xcopy.c
-@@ -88,7 +88,7 @@ static int target_xcopy_locate_se_dev_e4(struct se_session *sess,
- 		struct se_device *this_dev;
- 		int rc;
- 
--		this_lun = rcu_dereference(deve->se_lun);
-+		this_lun = deve->se_lun;
- 		this_dev = rcu_dereference_raw(this_lun->lun_se_dev);
- 
- 		rc = target_xcopy_locate_se_dev_e4_iter(this_dev, dev_wwn);
-diff --git a/include/target/target_core_base.h b/include/target/target_core_base.h
-index c2b36f7d917d..8c920456edd9 100644
---- a/include/target/target_core_base.h
-+++ b/include/target/target_core_base.h
-@@ -665,9 +665,9 @@ struct se_dev_entry {
- 	/* Used for PR SPEC_I_PT=1 and REGISTER_AND_MOVE */
- 	struct kref		pr_kref;
- 	struct completion	pr_comp;
--	struct se_lun_acl __rcu	*se_lun_acl;
-+	struct se_lun_acl	*se_lun_acl;
- 	spinlock_t		ua_lock;
--	struct se_lun __rcu	*se_lun;
-+	struct se_lun		*se_lun;
- #define DEF_PR_REG_ACTIVE		1
- 	unsigned long		deve_flags;
- 	struct list_head	alua_port_list;
--- 
-2.25.1
-
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
