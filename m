@@ -2,61 +2,73 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2B6458EC3D
-	for <lists+target-devel@lfdr.de>; Wed, 10 Aug 2022 14:46:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 380F15900CA
+	for <lists+target-devel@lfdr.de>; Thu, 11 Aug 2022 17:47:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229782AbiHJMqH (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 10 Aug 2022 08:46:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40362 "EHLO
+        id S236492AbiHKPqb (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 11 Aug 2022 11:46:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbiHJMqH (ORCPT
+        with ESMTP id S236354AbiHKPpU (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 10 Aug 2022 08:46:07 -0400
-Received: from immobilier-du-maroc.eu (unknown [164.132.21.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56A194A837
-        for <target-devel@vger.kernel.org>; Wed, 10 Aug 2022 05:46:03 -0700 (PDT)
-Received: by ns376096.ip-94-23-192.eu (Postfix, from userid 10335)
-        id AAAA66DE394A; Wed, 10 Aug 2022 14:46:02 +0200 (CEST)
-To:     target-devel@vger.kernel.org
-Subject: =?us-ascii?Q?Immobilier_au_Maroc_"Der_Preisverfall_von_Bitco?=  =?us-ascii?Q?in_macht_Sie_zum_Milliardar"?=
-X-PHP-Originating-Script: 10335:PHPMailer.php
-Date:   Wed, 10 Aug 2022 12:46:02 +0000
-From:   Immobilier au Maroc <wordpress@immobilier-du-maroc.eu>
-Reply-To: developper.viaprestige@gmail.com
-Message-ID: <D7GLeVNs3JmFh8J5tOVUy7U84FhoXWS1jX9k2CnZk@www.immobilier-du-maroc.eu>
-X-Mailer: PHPMailer 6.6.0 (https://github.com/PHPMailer/PHPMailer)
+        Thu, 11 Aug 2022 11:45:20 -0400
+Received: from bg5.exmail.qq.com (bg4.exmail.qq.com [43.154.54.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBB3F85A83;
+        Thu, 11 Aug 2022 08:39:34 -0700 (PDT)
+X-QQ-mid: bizesmtp80t1660232370t2k0kspq
+Received: from localhost.localdomain ( [182.148.14.53])
+        by bizesmtp.qq.com (ESMTP) with 
+        id ; Thu, 11 Aug 2022 23:39:24 +0800 (CST)
+X-QQ-SSF: 0100000000200060B000B00A0000000
+X-QQ-FEAT: DQ0OCu3gog0v2CmrXL5aP554rtncg5anknbV1mQ7QqGeHs/fCaJUaT9f9hsch
+        0NRLMAaqVNP1lYZio17nx0kb9Y1/5Tgbcmgx/x5aqKSpg0DLkYwhfOKF23l4vSIekBeOtvq
+        XCuCxygvuy+HxycQ8aYpejJMgCWdFcJdTy/5uc0fPwdn5BCVfLtbz7Uq5JXc04uGnCGrz13
+        m+QjIkaeqjvEmgYcIwvGi/FVA9FD5ahfipDPvW/yxG0PV2JRYrjqj/vQxq6LNxb/1nsAgiK
+        ZchkJuD1E+qX3hzVDYI/5ZJKgH4e5i0XZOtVrknjSmOHpyU/Jp04ombHptTbyAKZmHfJrZ6
+        jAj29DN4kevjUSt9loo0SdQFlaLOa0LPcJ50rg1zw1Xek40+yc6VijeK7IzTPLRzEmpc+oV
+        NlrEemIJMOw=
+X-QQ-GoodBg: 0
+From:   Shaomin Deng <dengshaomin@cdjrlc.com>
+To:     martin.petersen@oracle.com
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Shaomin Deng <dengshaomin@cdjrlc.com>
+Subject: [PATCH] scsi: core: Remove repeated word "calling" in target_core_pscsi.c
+Date:   Thu, 11 Aug 2022 11:39:23 -0400
+Message-Id: <20220811153923.17278-1-dengshaomin@cdjrlc.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: Yes, score=6.7 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,RCVD_IN_VALIDITY_RPBL,RDNS_NONE,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLACK autolearn=no
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr4
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Report: *  1.7 URIBL_BLACK Contains an URL listed in the URIBL blacklist
-        *      [URIs: immobilier-du-maroc.eu]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
-        *      https://senderscore.org/blocklistlookup/
-        *      [164.132.21.16 listed in bl.score.senderscore.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 SPF_NONE SPF: sender does not publish an SPF Record
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.8 RDNS_NONE Delivered to internal network by a host with no rDNS
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-De : Gradyextet <target-devel@vger.kernel.org>
-Objet : Der Preisverfall von Bitcoin macht Sie zum Milliardar
+There is repeated word, so remove it.
 
-Corps du message :
-Investieren Sie noch heute und werden Sie der nachste Milliardar... https://telegra.ph/Passives-Einkommen-und-7500000-Euro-auf-KryptowГ¤hrung-522492-08-09
+Signed-off-by: Shaomin Deng <dengshaomin@cdjrlc.com>
+---
+ drivers/target/target_core_pscsi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/target/target_core_pscsi.c b/drivers/target/target_core_pscsi.c
+index e6a967ddc08c..245912fc209c 100644
+--- a/drivers/target/target_core_pscsi.c
++++ b/drivers/target/target_core_pscsi.c
+@@ -500,7 +500,7 @@ static int pscsi_configure_device(struct se_device *dev)
+ 			continue;
+ 		/*
+ 		 * Functions will release the held struct scsi_host->host_lock
+-		 * before calling calling pscsi_add_device_to_list() to register
++		 * before calling pscsi_add_device_to_list() to register
+ 		 * struct scsi_device with target_core_mod.
+ 		 */
+ 		switch (sd->type) {
 -- 
-Cet e-mail a été envoyé via le formulaire de contact de Immobilier au Maroc (https://www.immobilier-du-maroc.eu)
+2.35.1
 
