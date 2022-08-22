@@ -2,84 +2,45 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DE2959B339
-	for <lists+target-devel@lfdr.de>; Sun, 21 Aug 2022 13:18:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4572759C010
+	for <lists+target-devel@lfdr.de>; Mon, 22 Aug 2022 15:04:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229603AbiHULSW (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sun, 21 Aug 2022 07:18:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43236 "EHLO
+        id S234864AbiHVNE1 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 22 Aug 2022 09:04:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229566AbiHULSV (ORCPT
+        with ESMTP id S234795AbiHVNEW (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sun, 21 Aug 2022 07:18:21 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD722643F;
-        Sun, 21 Aug 2022 04:18:18 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 86D75B80CAC;
-        Sun, 21 Aug 2022 11:18:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7336C433D6;
-        Sun, 21 Aug 2022 11:18:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661080696;
-        bh=ptHOrY6H/u2M8gvWUkoZP/1haNUm/UVGhD3B1HMsr8E=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pOPbY0XfVrNLb9iaanR876q8f08y8gyXGNkotpb79QcY6qjJmNFB4bVfEbodGBKXO
-         tbXcas9Y0Dz+sVfwjcaGZRIzlSVIjrQP4Gga8kG+Y0REXr4MKb/lx6AyUMK5FXXe+Q
-         JK9FvVoUHm0pdKbcWM9Db11Nbbnu6Gs5znb8bh1Z90M9+nSpr343uKFCikD5osJGUV
-         +ig/3HZbNAxhu92wyRoNfv/PjsADY5B47b6gzoTR70Ll4tAJc5595aH6whYXwUPbXJ
-         Uii7LNUr+dKFoMd6Z5gNwGdoCqqIjkbRbFFYSra8WnbMYQ6ovxmLTjiYQHQKq+Tv+k
-         6uLklpwb4krNQ==
-Date:   Sun, 21 Aug 2022 14:18:11 +0300
-From:   Leon Romanovsky <leon@kernel.org>
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        linux-rdma@vger.kernel.org, target-devel@vger.kernel.org
-Subject: Re: [PATCH] IB: move from strlcpy with unused retval to strscpy
-Message-ID: <YwIUc7E18FexunJB@unreal>
-References: <20220818210018.6841-1-wsa+renesas@sang-engineering.com>
+        Mon, 22 Aug 2022 09:04:22 -0400
+X-Greylist: delayed 401 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 22 Aug 2022 06:04:21 PDT
+Received: from cloudhost-4892685.us-midwest-2.nxcli.net (cloudhost-4892685.us-midwest-2.nxcli.net [199.189.224.219])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 526ED1C912
+        for <target-devel@vger.kernel.org>; Mon, 22 Aug 2022 06:04:20 -0700 (PDT)
+Received: (qmail 1515 invoked by uid 10062); 22 Aug 2022 12:57:39 +0000
+To:     target-devel@vger.kernel.org
+Subject: =?us-ascii?Q?The_Telegraph:_Sie_konnten_der_nachste_Milliona?=  =?us-ascii?Q?r_sein._Beeil_dich?=
+X-PHP-Originating-Script: 10062:PHPMailer.php
+Date:   Mon, 22 Aug 2022 12:57:39 +0000
+From:   Construction <info@yourdomain.com>
+Reply-To: info@yourdomain.com
+Message-ID: <twbTHydFwZL7TfWCq5yXUVQv4WS7W9fUjwPGMYuB4@techrakers.com>
+X-Mailer: PHPMailer 6.6.0 (https://github.com/PHPMailer/PHPMailer)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220818210018.6841-1-wsa+renesas@sang-engineering.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=UTF-8
+X-Spam-Status: No, score=3.0 required=5.0 tests=BAYES_50,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_PH_SURBL autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Thu, Aug 18, 2022 at 11:00:18PM +0200, Wolfram Sang wrote:
-> Follow the advice of the below link and prefer 'strscpy' in this
-> subsystem. Conversion is 1:1 because the return value is not used.
-> Generated by a coccinelle script.
-> 
-> Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> ---
->  drivers/infiniband/core/cma_configfs.c             | 2 +-
->  drivers/infiniband/core/device.c                   | 4 ++--
->  drivers/infiniband/hw/bnxt_re/main.c               | 2 +-
->  drivers/infiniband/hw/hfi1/file_ops.c              | 2 +-
->  drivers/infiniband/hw/hfi1/verbs.c                 | 2 +-
->  drivers/infiniband/hw/mthca/mthca_cmd.c            | 2 +-
->  drivers/infiniband/hw/ocrdma/ocrdma_hw.c           | 2 +-
->  drivers/infiniband/hw/qib/qib_iba7322.c            | 2 +-
->  drivers/infiniband/ulp/ipoib/ipoib_ethtool.c       | 4 ++--
->  drivers/infiniband/ulp/opa_vnic/opa_vnic_ethtool.c | 4 ++--
->  drivers/infiniband/ulp/srpt/ib_srpt.c              | 2 +-
->  11 files changed, 14 insertions(+), 14 deletions(-)
+Message Body:
+Mude von niedrigen Lohnen und hohen Benzinpreisen? Es gibt eine Losung http://news-3-kalamazoo.jalinteriordesigns.com/bild-news-6910
 
-You forgot to change strlcpy in include/rdma/rdma_vt.h file.
+--
+This e-mail was sent from a contact form on Construction (http://yourdomain.com/)
 
-I changed locally and applied to -next.
-
-Thanks
