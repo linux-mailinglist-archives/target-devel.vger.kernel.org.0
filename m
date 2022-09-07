@@ -2,113 +2,114 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A3CC5B05EC
-	for <lists+target-devel@lfdr.de>; Wed,  7 Sep 2022 15:59:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 512CA5B06B0
+	for <lists+target-devel@lfdr.de>; Wed,  7 Sep 2022 16:32:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229816AbiIGN7c (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 7 Sep 2022 09:59:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46764 "EHLO
+        id S230305AbiIGOb6 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 7 Sep 2022 10:31:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229706AbiIGN73 (ORCPT
+        with ESMTP id S230027AbiIGObk (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 7 Sep 2022 09:59:29 -0400
-Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 217C0319;
-        Wed,  7 Sep 2022 06:59:22 -0700 (PDT)
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 0768E445A5;
-        Wed,  7 Sep 2022 13:59:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        content-type:content-type:content-transfer-encoding:mime-version
-        :references:in-reply-to:x-mailer:message-id:date:date:subject
-        :subject:from:from:received:received:received:received; s=
-        mta-01; t=1662559159; x=1664373560; bh=KKfhBzB4M8nL3qeVorAlXcWtz
-        DieHqC2/n754Ez+k7U=; b=PaOIY4r9p9/RnVoEhzZRZQhUHhM56Lr+i/beitVPs
-        YOlHEncrKaXsvw77k2pB3Kbl6ygYRbY32gqifGLvD9Fc9aSDMnp4LEsDKZuWbfGV
-        uiTh+iC7z37npGezdLL2L6nNlBXdIqQxFxOhKdL/9I4SNcp9Z4xM8E6Aq3ox/l0S
-        AQ=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id KK-mSYAsuiwX; Wed,  7 Sep 2022 16:59:19 +0300 (MSK)
-Received: from T-EXCH-02.corp.yadro.com (T-EXCH-02.corp.yadro.com [172.17.10.102])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id C265346DB5;
-        Wed,  7 Sep 2022 16:59:05 +0300 (MSK)
-Received: from T-EXCH-08.corp.yadro.com (172.17.11.58) by
- T-EXCH-02.corp.yadro.com (172.17.10.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.669.32; Wed, 7 Sep 2022 16:59:05 +0300
-Received: from NB-591.corp.yadro.com (10.199.18.20) by
- T-EXCH-08.corp.yadro.com (172.17.11.58) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.1118.9; Wed, 7 Sep 2022 16:59:05 +0300
-From:   Dmitry Bogdanov <d.bogdanov@yadro.com>
-To:     Martin Petersen <martin.petersen@oracle.com>,
-        <target-devel@vger.kernel.org>
-CC:     <linux-scsi@vger.kernel.org>, <linux@yadro.com>,
-        Dmitry Bogdanov <d.bogdanov@yadro.com>
-Subject: [PATCH 4/4] target: core: new key must be used for moved PR
-Date:   Wed, 7 Sep 2022 16:58:51 +0300
-Message-ID: <20220907135851.3756-5-d.bogdanov@yadro.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220907135851.3756-1-d.bogdanov@yadro.com>
-References: <20220907135851.3756-1-d.bogdanov@yadro.com>
+        Wed, 7 Sep 2022 10:31:40 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53C42115A
+        for <target-devel@vger.kernel.org>; Wed,  7 Sep 2022 07:31:37 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id t5so19953264edc.11
+        for <target-devel@vger.kernel.org>; Wed, 07 Sep 2022 07:31:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date;
+        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
+        b=k+kTmF4dNKKC1tFdYzcwH7/l46epf5FbUFPW9fotRQ90/DS7R3h9yaNhOg0lTJdIKN
+         YHdSCTkM8Zkjp7Hn3R4P0XvsDr7GxfmeGBL++Unk5TJmx9qVPx583aTDfnV2PWRJleSF
+         V9CWF3CXrTGHaUKzdckweUxspufsytFwPi4BnYsAOc2hSOm8q6pA2t/VPIekeXstFpXE
+         htt2kpsyRtvUjut5U+QWEOTH3kFoTjQxxF4WczaCcSaHvXanBanYGkEYwnM/Vnd0ubg4
+         W8etIyyum3dHJgEwMgk9+gvP+Ht+yKtyVUWfAI5wHJqHC9VVX3XlSnd5oyt/DWf9M1PE
+         uqfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
+        b=Ni4nPZ4gtGdcwh6ctlabWeJ8pA4ALeF9hdXAk4b1f5ejDB5k07hAYLZKMM1Se6o9Qm
+         QbXLNXPTPVPGHe1vVKhk+pBsawn62pu/Ew3m15dxu4wS9zzSWwHwCAwlYskqGD19aQ7z
+         kDwtnDl4N3mDc2q//v7wHD0dAiY7LmQKcfEWMadhYPzOM2ZKM4srNrSsWGXdXRUKWg7u
+         cywi7pZBoOQBtcnkmZrbkBLkDwfwpiPtFQFmypspJanxYSF9yDL+nqc+9EHExEnkf2vs
+         25MbhlFdUJE0cukuOvQs1iJkoUKUD0OxKEk/tMzOE7r7GGAabKEfH+wqDhN+KYMUpNOP
+         3THQ==
+X-Gm-Message-State: ACgBeo2RaDjG6IRa8p6iS2TQZe/lTEN267EBKOp4ASEKsAOjIJqKnX9Z
+        GMMJXWV9xPHee3eHZva/VG4i8PZP5GXJGOX0ECo=
+X-Google-Smtp-Source: AA6agR7oVOAvDjQn3BvyL8TRl7TU52ugVo1oxft3hLVGbPDpO77yZb9oqAmvuH8HvlLOfxUiSLCWLP4h3TKLUQD64AM=
+X-Received: by 2002:a05:6402:2937:b0:44e:b578:6fdd with SMTP id
+ ee55-20020a056402293700b0044eb5786fddmr3322109edb.159.1662561095860; Wed, 07
+ Sep 2022 07:31:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.199.18.20]
-X-ClientProxiedBy: T-EXCH-02.corp.yadro.com (172.17.10.102) To
- T-EXCH-08.corp.yadro.com (172.17.11.58)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a54:3fc4:0:0:0:0:0 with HTTP; Wed, 7 Sep 2022 07:31:34 -0700 (PDT)
+Reply-To: lumar.casey@outlook.com
+From:   LUMAR CASEY <miriankushrat@gmail.com>
+Date:   Wed, 7 Sep 2022 16:31:34 +0200
+Message-ID: <CAO4StN1ngaz5Z=OEaG_ttEwdR6_pWWO2Esip5rtKi-tOEu80oA@mail.gmail.com>
+Subject: ATTENTION/PROPOSAL
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=6.8 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM,UNDISC_MONEY,UPPERCASE_75_100 autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:541 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5049]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [miriankushrat[at]gmail.com]
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 UPPERCASE_75_100 message body is 75-100% uppercase
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  0.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  0.0 ADVANCE_FEE_4_NEW_MONEY Advance Fee fraud and lots of money
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-According to SPC4 5.12.8:
-e) Retain the reservation key specified in the SERVICE ACTION
-RESERVATION KEY field and associated information;
+ATTENTION
 
-But currently sa_res_key is only used for the not existing I_T nexus.
-The patch adds an updating of the key for the existing I_T nexus the PR
-moved to.
+BUSINESS PARTNER,
 
-Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
----
- drivers/target/target_core_pr.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+I AM LUMAR CASEY WORKING WITH AN INSURANCE FINANCIAL INSTITUTE, WITH
+MY POSITION AND PRIVILEGES I WAS ABLE TO SOURCE OUT AN OVER DUE
+PAYMENT OF 12.8 MILLION POUNDS THAT IS NOW SECURED WITH A SHIPPING
+DIPLOMATIC OUTLET.
 
-diff --git a/drivers/target/target_core_pr.c b/drivers/target/target_core_pr.c
-index 8c83c5530536..fc7b2e2c17a5 100644
---- a/drivers/target/target_core_pr.c
-+++ b/drivers/target/target_core_pr.c
-@@ -3440,8 +3440,6 @@ core_scsi3_emulate_pro_register_and_move(struct se_cmd *cmd, u64 res_key,
- 	 *       transport protocols where port names are not required;
- 	 * d) Register the reservation key specified in the SERVICE ACTION
- 	 *    RESERVATION KEY field;
--	 * e) Retain the reservation key specified in the SERVICE ACTION
--	 *    RESERVATION KEY field and associated information;
- 	 *
- 	 * Also, It is not an error for a REGISTER AND MOVE service action to
- 	 * register an I_T nexus that is already registered with the same
-@@ -3463,6 +3461,12 @@ core_scsi3_emulate_pro_register_and_move(struct se_cmd *cmd, u64 res_key,
- 		dest_pr_reg = __core_scsi3_locate_pr_reg(dev, dest_node_acl,
- 						iport_ptr);
- 		new_reg = 1;
-+	} else {
-+	/*
-+	 * e) Retain the reservation key specified in the SERVICE ACTION
-+	 *    RESERVATION KEY field and associated information;
-+	 */
-+		dest_pr_reg->pr_res_key = sa_res_key;
- 	}
- 	/*
- 	 * f) Release the persistent reservation for the persistent reservation
--- 
-2.25.1
+I AM SEEKING YOUR PARTNERSHIP TO RECEIVE THIS CONSIGNMENT AS AS MY
+PARTNER TO INVEST THIS FUND INTO A PROSPEROUS INVESTMENT VENTURE IN
+YOUR COUNTRY.
 
+I AWAIT YOUR REPLY TO ENABLE US PROCEED WITH THIS BUSINESS PARTNERSHIP TOGETHER.
+
+REGARDS,
+
+LUMAR CASEY
