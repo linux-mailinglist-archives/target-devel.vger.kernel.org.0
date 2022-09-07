@@ -2,114 +2,78 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 512CA5B06B0
-	for <lists+target-devel@lfdr.de>; Wed,  7 Sep 2022 16:32:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 977305B09F3
+	for <lists+target-devel@lfdr.de>; Wed,  7 Sep 2022 18:19:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230305AbiIGOb6 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 7 Sep 2022 10:31:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46814 "EHLO
+        id S229563AbiIGQTE (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 7 Sep 2022 12:19:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230027AbiIGObk (ORCPT
+        with ESMTP id S229589AbiIGQTD (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 7 Sep 2022 10:31:40 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53C42115A
-        for <target-devel@vger.kernel.org>; Wed,  7 Sep 2022 07:31:37 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id t5so19953264edc.11
-        for <target-devel@vger.kernel.org>; Wed, 07 Sep 2022 07:31:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date;
-        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
-        b=k+kTmF4dNKKC1tFdYzcwH7/l46epf5FbUFPW9fotRQ90/DS7R3h9yaNhOg0lTJdIKN
-         YHdSCTkM8Zkjp7Hn3R4P0XvsDr7GxfmeGBL++Unk5TJmx9qVPx583aTDfnV2PWRJleSF
-         V9CWF3CXrTGHaUKzdckweUxspufsytFwPi4BnYsAOc2hSOm8q6pA2t/VPIekeXstFpXE
-         htt2kpsyRtvUjut5U+QWEOTH3kFoTjQxxF4WczaCcSaHvXanBanYGkEYwnM/Vnd0ubg4
-         W8etIyyum3dHJgEwMgk9+gvP+Ht+yKtyVUWfAI5wHJqHC9VVX3XlSnd5oyt/DWf9M1PE
-         uqfw==
+        Wed, 7 Sep 2022 12:19:03 -0400
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A89FA4B2D;
+        Wed,  7 Sep 2022 09:19:02 -0700 (PDT)
+Received: by mail-pf1-f171.google.com with SMTP id d82so1503901pfd.10;
+        Wed, 07 Sep 2022 09:19:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date;
-        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
-        b=Ni4nPZ4gtGdcwh6ctlabWeJ8pA4ALeF9hdXAk4b1f5ejDB5k07hAYLZKMM1Se6o9Qm
-         QbXLNXPTPVPGHe1vVKhk+pBsawn62pu/Ew3m15dxu4wS9zzSWwHwCAwlYskqGD19aQ7z
-         kDwtnDl4N3mDc2q//v7wHD0dAiY7LmQKcfEWMadhYPzOM2ZKM4srNrSsWGXdXRUKWg7u
-         cywi7pZBoOQBtcnkmZrbkBLkDwfwpiPtFQFmypspJanxYSF9yDL+nqc+9EHExEnkf2vs
-         25MbhlFdUJE0cukuOvQs1iJkoUKUD0OxKEk/tMzOE7r7GGAabKEfH+wqDhN+KYMUpNOP
-         3THQ==
-X-Gm-Message-State: ACgBeo2RaDjG6IRa8p6iS2TQZe/lTEN267EBKOp4ASEKsAOjIJqKnX9Z
-        GMMJXWV9xPHee3eHZva/VG4i8PZP5GXJGOX0ECo=
-X-Google-Smtp-Source: AA6agR7oVOAvDjQn3BvyL8TRl7TU52ugVo1oxft3hLVGbPDpO77yZb9oqAmvuH8HvlLOfxUiSLCWLP4h3TKLUQD64AM=
-X-Received: by 2002:a05:6402:2937:b0:44e:b578:6fdd with SMTP id
- ee55-20020a056402293700b0044eb5786fddmr3322109edb.159.1662561095860; Wed, 07
- Sep 2022 07:31:35 -0700 (PDT)
+        bh=TW5/xrU71CRZ+SFtRp+t5LY3Ivw7HfzPCmyqfMpNsds=;
+        b=QWwboI8aO+Hq3Wx2k7faYDURr9Gu4IvHQyl9xjxow6OkDlDvxzHt/Z3YDN16CUNQLS
+         UVgKqO+VGKYnvIPECdMet3bDTgnA9IXM75acuSLAkmSF2z3ieQAT0n+ucNbD9lpfHLEl
+         cwTpL9AdcYW3/Urv9KGiQSBjxRb6303MtZ3sLjafX0uzfI/ks1rFnVh/ZBOpb5IvBPVI
+         OeBmbotEvWwR0JQJljt6T2kJR3HVogTCsvLxvVVjYPDB1bYdNe3IMZrISFRNUTz4ci3j
+         tRaNZZaqqu1LLTAoaK0VqCOSN3Wk/zIC/ZwfZHEj31bIHV0ltp/MntEXdU9Ij62F0zbo
+         e0JQ==
+X-Gm-Message-State: ACgBeo3PzR3pj6Su4rOIWU3TwsPYjTmqL7ZHh4WFFOOyrVwybmgTk+8W
+        R1HqwQY3fqGSW+g8IB0yOmR4i/hZuM8=
+X-Google-Smtp-Source: AA6agR7Bgwe6TvU0UVF6sPA2YFGQYnY+Wa89EBd5H/d62Yo0FVRHmOjVTZ/6x1ty6Yi+3Dq1Cdjdhg==
+X-Received: by 2002:a63:fb56:0:b0:429:983f:b91e with SMTP id w22-20020a63fb56000000b00429983fb91emr4072903pgj.399.1662567540886;
+        Wed, 07 Sep 2022 09:19:00 -0700 (PDT)
+Received: from ?IPV6:2620:15c:211:201:899e:cff7:8f51:a7ba? ([2620:15c:211:201:899e:cff7:8f51:a7ba])
+        by smtp.gmail.com with ESMTPSA id e6-20020a17090301c600b001712c008f99sm12500257plh.11.2022.09.07.09.18.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Sep 2022 09:18:59 -0700 (PDT)
+Message-ID: <196c8254-1dcb-1fcf-d746-0bf3a4c12ff4@acm.org>
+Date:   Wed, 7 Sep 2022 09:18:57 -0700
 MIME-Version: 1.0
-Received: by 2002:a54:3fc4:0:0:0:0:0 with HTTP; Wed, 7 Sep 2022 07:31:34 -0700 (PDT)
-Reply-To: lumar.casey@outlook.com
-From:   LUMAR CASEY <miriankushrat@gmail.com>
-Date:   Wed, 7 Sep 2022 16:31:34 +0200
-Message-ID: <CAO4StN1ngaz5Z=OEaG_ttEwdR6_pWWO2Esip5rtKi-tOEu80oA@mail.gmail.com>
-Subject: ATTENTION/PROPOSAL
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.8 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM,UNDISC_MONEY,UPPERCASE_75_100 autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:541 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5049]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [miriankushrat[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 UPPERCASE_75_100 message body is 75-100% uppercase
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  0.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  0.0 ADVANCE_FEE_4_NEW_MONEY Advance Fee fraud and lots of money
-X-Spam-Level: ******
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH 1/4] target: core: fix preempt and abort for allreg res
+Content-Language: en-US
+To:     Dmitry Bogdanov <d.bogdanov@yadro.com>,
+        Martin Petersen <martin.petersen@oracle.com>,
+        target-devel@vger.kernel.org
+Cc:     linux-scsi@vger.kernel.org, linux@yadro.com
+References: <20220907135851.3756-1-d.bogdanov@yadro.com>
+ <20220907135851.3756-2-d.bogdanov@yadro.com>
+From:   Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20220907135851.3756-2-d.bogdanov@yadro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-ATTENTION
+On 9/7/22 06:58, Dmitry Bogdanov wrote:
+> -		if (pr_reg->pr_res_key != sa_res_key)
+> +		if ((sa_res_key) && (pr_reg->pr_res_key != sa_res_key))
+>   			continue;
 
-BUSINESS PARTNER,
+Please do not introduce superfluous parentheses. Four parentheses can be 
+left out from the above code without affecting readability.
 
-I AM LUMAR CASEY WORKING WITH AN INSURANCE FINANCIAL INSTITUTE, WITH
-MY POSITION AND PRIVILEGES I WAS ABLE TO SOURCE OUT AN OVER DUE
-PAYMENT OF 12.8 MILLION POUNDS THAT IS NOW SECURED WITH A SHIPPING
-DIPLOMATIC OUTLET.
+Thanks,
 
-I AM SEEKING YOUR PARTNERSHIP TO RECEIVE THIS CONSIGNMENT AS AS MY
-PARTNER TO INVEST THIS FUND INTO A PROSPEROUS INVESTMENT VENTURE IN
-YOUR COUNTRY.
-
-I AWAIT YOUR REPLY TO ENABLE US PROCEED WITH THIS BUSINESS PARTNERSHIP TOGETHER.
-
-REGARDS,
-
-LUMAR CASEY
+Bart.
