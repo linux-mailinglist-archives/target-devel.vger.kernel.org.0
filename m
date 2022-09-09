@@ -2,116 +2,102 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA79E5B32C4
-	for <lists+target-devel@lfdr.de>; Fri,  9 Sep 2022 11:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B2575B3438
+	for <lists+target-devel@lfdr.de>; Fri,  9 Sep 2022 11:42:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232057AbiIIJFT (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 9 Sep 2022 05:05:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58202 "EHLO
+        id S231712AbiIIJkg (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 9 Sep 2022 05:40:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232034AbiIIJEr (ORCPT
+        with ESMTP id S230402AbiIIJka (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 9 Sep 2022 05:04:47 -0400
-Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB08462C8;
-        Fri,  9 Sep 2022 02:04:38 -0700 (PDT)
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 5B70056986;
-        Fri,  9 Sep 2022 09:04:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        content-type:content-type:content-transfer-encoding:mime-version
-        :references:in-reply-to:x-mailer:message-id:date:date:subject
-        :subject:from:from:received:received:received:received; s=
-        mta-01; t=1662714275; x=1664528676; bh=j3EFmaiCZMVFbbLxrbUxJL+ew
-        m0YbGI9Kr2Un5elhMI=; b=sBO9uK0JFX106nhqMRE7qaMdgtkFgtQfpy+u0Pb+C
-        LPem6LwLjUOFt3uG3feB8UB+EUEfqeTLU9GAPTUPfAPXXeNr6oIhhpdsQSRjss+d
-        XIeN47lUFNLy8V3Md/OYJsc3xQ+LImdyRZK9k5WKNS67xtLag4fTXg8J9Eh7RKC7
-        tI=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id UolzIMD3xYMV; Fri,  9 Sep 2022 12:04:35 +0300 (MSK)
-Received: from T-EXCH-02.corp.yadro.com (T-EXCH-02.corp.yadro.com [172.17.10.102])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        Fri, 9 Sep 2022 05:40:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 108E39C525;
+        Fri,  9 Sep 2022 02:40:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id 2FF19569AA;
-        Fri,  9 Sep 2022 12:04:33 +0300 (MSK)
-Received: from T-EXCH-08.corp.yadro.com (172.17.11.58) by
- T-EXCH-02.corp.yadro.com (172.17.10.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.669.32; Fri, 9 Sep 2022 12:04:33 +0300
-Received: from NB-591.corp.yadro.com (10.199.18.20) by
- T-EXCH-08.corp.yadro.com (172.17.11.58) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.1118.9; Fri, 9 Sep 2022 12:04:32 +0300
-From:   Dmitry Bogdanov <d.bogdanov@yadro.com>
-To:     Martin Petersen <martin.petersen@oracle.com>,
-        <target-devel@vger.kernel.org>
-CC:     Bart Van Assche <bvanassche@acm.org>, <linux-scsi@vger.kernel.org>,
-        <linux@yadro.com>, Dmitry Bogdanov <d.bogdanov@yadro.com>
-Subject: [PATCH v2 4/4] target: core: new key must be used for moved PR
-Date:   Fri, 9 Sep 2022 12:04:25 +0300
-Message-ID: <20220909090425.14479-5-d.bogdanov@yadro.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220909090425.14479-1-d.bogdanov@yadro.com>
-References: <20220909090425.14479-1-d.bogdanov@yadro.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9845261F6A;
+        Fri,  9 Sep 2022 09:40:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A696C433C1;
+        Fri,  9 Sep 2022 09:40:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662716425;
+        bh=HsfqPASjnakS+xsqfPpAn2Do0sUbq2U9xY/KUbbjIP4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Np7qYKPDxkWRV3AzIEX0EEInSZkDu8nyjOKt/thmwV20qBJ/XehbSQ6RAFNU59mRz
+         uIaN745OjFy8eeLD3llQbNIMMzzk93bzsvg8Ls+StIWbB0lsbujcMsfeQW0xO/odEb
+         cVASnbjfzCf/mnDTH+NxBLvJcU0ZCdtWyY2YmnwPRZ8Mypx2gzn2xFFcncu/YIY7X5
+         F5faa52aFffAWRL/lOvU/lbc0yTJY3ZVrocrHLme32ptHBRTzjBfoOrBJYk8SC40mx
+         gTzi+PGBo/WpCGibrG3zzCmh8Al0eTOlddTf3OG55JThKJUSZlkx4pnphVospe5Yhk
+         cwxQVw9xK0u8A==
+Date:   Fri, 9 Sep 2022 10:40:10 +0100
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     Hangyu Hua <hbh25y@gmail.com>
+Cc:     bvanassche@acm.org, jgg@ziepe.ca, leon@kernel.org,
+        linux-rdma@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] infiniband: ulp: srpt: Use flex array destination for
+ memcpy()
+Message-ID: <YxsJ+n8RjpBIpGKo@work>
+References: <20220909022943.8896-1-hbh25y@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.199.18.20]
-X-ClientProxiedBy: T-EXCH-02.corp.yadro.com (172.17.10.102) To
- T-EXCH-08.corp.yadro.com (172.17.11.58)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220909022943.8896-1-hbh25y@gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-According to SPC4 5.12.8:
-e) Retain the reservation key specified in the SERVICE ACTION
-RESERVATION KEY field and associated information;
+On Fri, Sep 09, 2022 at 10:29:43AM +0800, Hangyu Hua wrote:
+> In preparation for FORTIFY_SOURCE performing run-time destination buffer
+> bounds checking for memcpy(), specify the destination output buffer
+> explicitly, instead of asking memcpy() to write past the end of what looked
+> like a fixed-size object.
+> 
+> Notice that srp_rsp[] is a pointer to a structure that contains
+> flexible-array member data[]:
+> 
+> struct srp_rsp {
+> 	...
+> 	__be32	sense_data_len;
+> 	__be32	resp_data_len;
+> 	u8	data[];
+> };
+> 
+> link: https://github.com/KSPP/linux/issues/201
+> Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
 
-But currently sa_res_key is only used for the not existing I_T nexus.
-The patch adds a changing of the key for the existing I_T nexus the PR
-moved to.
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
----
-v2:
-  fix indentation
----
- drivers/target/target_core_pr.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Thanks
+--
+Gustavo
 
-diff --git a/drivers/target/target_core_pr.c b/drivers/target/target_core_pr.c
-index 6a5f9504a481..1493b1d01194 100644
---- a/drivers/target/target_core_pr.c
-+++ b/drivers/target/target_core_pr.c
-@@ -3440,8 +3440,6 @@ core_scsi3_emulate_pro_register_and_move(struct se_cmd *cmd, u64 res_key,
- 	 *       transport protocols where port names are not required;
- 	 * d) Register the reservation key specified in the SERVICE ACTION
- 	 *    RESERVATION KEY field;
--	 * e) Retain the reservation key specified in the SERVICE ACTION
--	 *    RESERVATION KEY field and associated information;
- 	 *
- 	 * Also, It is not an error for a REGISTER AND MOVE service action to
- 	 * register an I_T nexus that is already registered with the same
-@@ -3463,6 +3461,12 @@ core_scsi3_emulate_pro_register_and_move(struct se_cmd *cmd, u64 res_key,
- 		dest_pr_reg = __core_scsi3_locate_pr_reg(dev, dest_node_acl,
- 						iport_ptr);
- 		new_reg = 1;
-+	} else {
-+		/*
-+		 * e) Retain the reservation key specified in the SERVICE ACTION
-+		 *    RESERVATION KEY field and associated information;
-+		 */
-+		dest_pr_reg->pr_res_key = sa_res_key;
- 	}
- 	/*
- 	 * f) Release the persistent reservation for the persistent reservation
--- 
-2.25.1
-
+> ---
+>  drivers/infiniband/ulp/srpt/ib_srpt.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
+> index 21cbe30d526f..8c29e14150d3 100644
+> --- a/drivers/infiniband/ulp/srpt/ib_srpt.c
+> +++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
+> @@ -1421,7 +1421,7 @@ static int srpt_build_cmd_rsp(struct srpt_rdma_ch *ch,
+>  
+>  		srp_rsp->flags |= SRP_RSP_FLAG_SNSVALID;
+>  		srp_rsp->sense_data_len = cpu_to_be32(sense_data_len);
+> -		memcpy(srp_rsp + 1, sense_data, sense_data_len);
+> +		memcpy(srp_rsp->data, sense_data, sense_data_len);
+>  	}
+>  
+>  	return sizeof(*srp_rsp) + sense_data_len;
+> -- 
+> 2.34.1
+> 
