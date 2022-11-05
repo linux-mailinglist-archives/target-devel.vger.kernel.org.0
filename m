@@ -2,98 +2,74 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EE5D61947E
-	for <lists+target-devel@lfdr.de>; Fri,  4 Nov 2022 11:36:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1924D61DA22
+	for <lists+target-devel@lfdr.de>; Sat,  5 Nov 2022 13:39:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231266AbiKDKgC (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 4 Nov 2022 06:36:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53138 "EHLO
+        id S229648AbiKEMjX (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 5 Nov 2022 08:39:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230074AbiKDKgB (ORCPT
+        with ESMTP id S229804AbiKEMjM (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 4 Nov 2022 06:36:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85DBD26139
-        for <target-devel@vger.kernel.org>; Fri,  4 Nov 2022 03:35:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1667558106;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=V2VgDi2GpVKn8OQoFfTvoSmz+Epx/SkIYdUKdUUW3HQ=;
-        b=LEbiQKdxhNiZn5vHW06R80TiqFXKD61DkPAUGhqqnWM3QaeUzqMfHrA+EGbRNABnbPaRq2
-        1rbs5Cxhosbk82URGBYJ5O5Cr1oLSIfWBXoHoFzW04jnQpnGEuuBH+S/HmGstf9kJpB/ba
-        uTpk7fBFIs45DDzKxipkehHkuVe0SXM=
-Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com
- [209.85.217.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-449-jsKJEgpqMwmPWR7OJUC7nw-1; Fri, 04 Nov 2022 06:35:05 -0400
-X-MC-Unique: jsKJEgpqMwmPWR7OJUC7nw-1
-Received: by mail-vs1-f69.google.com with SMTP id 64-20020a670743000000b003a630e65824so1541803vsh.15
-        for <target-devel@vger.kernel.org>; Fri, 04 Nov 2022 03:35:05 -0700 (PDT)
+        Sat, 5 Nov 2022 08:39:12 -0400
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F018C18348
+        for <target-devel@vger.kernel.org>; Sat,  5 Nov 2022 05:39:08 -0700 (PDT)
+Received: by mail-pg1-x530.google.com with SMTP id g129so6562960pgc.7
+        for <target-devel@vger.kernel.org>; Sat, 05 Nov 2022 05:39:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=c8XA1N0uaxkLO/wKHErNWHaSuu64k5Pjb5u9dmcZrOc=;
+        b=RIHC9n/dKVExSLG73bd8Y0TEFLCe8HTSL+2d7yE6D2NKhaBTGC77yJTmz2n+UQEoLn
+         jxE36/CP2zWRsxdrbl6Qipo/1wujKwbWTegmQtKA5KaKY5c5k0uls/46uPweryK1Q/70
+         p7KuiiXfJ0vih3FChZlrnOZ0SimajpgL+AXRNjZnSx1jbzFH5llJcPftmYgxT0KBp7aY
+         Nvw2mfIN1dkT84jofHnK9dh7XMfTMquPbJMMLMjB0Dp08MAIB2DxhF8xAtCfYFVwsPDo
+         kuNK/heTlVtwv9hHFhKrR/b4yxRwRja7vVsRsbB9inWGKh1FmpKXNdm91a1Uu/cF0CiR
+         QmBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V2VgDi2GpVKn8OQoFfTvoSmz+Epx/SkIYdUKdUUW3HQ=;
-        b=vnLEezz546aXmNhUXUp+b4Umw0DvcniVH7rXAW5u6WCmNwBbxqovvao5hjQSXwJyE3
-         pU3RBkF8fTdIFX3BfoipzkQ2eq9bRH3ViKACKiFWD1h/LBv/Q3eGoZW8mXYwqdUou3Ll
-         TYsay4xvw3HB2SjZBZg+7jTGm+z4Kcy62E2VOk85xiLctoSuI/Y1p/BqP9OmABPAOeVn
-         CJxWbPLGG6JNEOOAuwlrhfcO64o6Kq8+mT7JprMvSrRqR/VV7UQ9vPK77VLqtPRvJYI2
-         5urHi9LKoEoEhES1P+2wX9Stb01Wp2M2XsAlgSHCdhCWIJj+pji2iO7sxnnPNyGdeOS8
-         XCPA==
-X-Gm-Message-State: ACrzQf0eQSHBJdnV8r4PaFaoFwJJJnh2668BVlXOkCuR0CSveBGfalo8
-        5TRWI1yykERaKv1rU0WdaHP4HLKjiZwtJZB/o7XyOIq/+YDTlEQrw9UPyaXaCmXtmMItVW2d5un
-        8nHl/NqnUn79FCWwTCscx5yzqewAHkL4dW48EJYIN
-X-Received: by 2002:a67:ea90:0:b0:3ab:e987:e4bd with SMTP id f16-20020a67ea90000000b003abe987e4bdmr20766048vso.25.1667558103951;
-        Fri, 04 Nov 2022 03:35:03 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM6iEYH+g2VXjehgD5W67kMbqElpjqtDMbM4p7staWf6qRfgI5rDr+ffxnakiZB2hMQCAaE79cuuQ/rdCTu3Kac=
-X-Received: by 2002:a67:ea90:0:b0:3ab:e987:e4bd with SMTP id
- f16-20020a67ea90000000b003abe987e4bdmr20766041vso.25.1667558103702; Fri, 04
- Nov 2022 03:35:03 -0700 (PDT)
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=c8XA1N0uaxkLO/wKHErNWHaSuu64k5Pjb5u9dmcZrOc=;
+        b=BIcoITsWEWKlhSNCHjsG4iv579KBEMhqP9jw5LiIDmSukozngwcaHJzn+/xyWTVjrC
+         Gd2Uvcm6FGayla0Iz0ZlFkR2RMifsEEUArzOLnAt+/luEJT9vXrV8EZykUGqp4NKAaYa
+         jfvIHFCM5isTtBH9/2IVDXLCfn5TDdnwoQ4i8Lh3zLM88AEGV7s5wSDfKUaSP14utpe6
+         /U7PyrEJXsXDUNbeqKCnzZKi0ez+40NgakzN/2/oVvV/UHfx6cV7O5t0Yq55fGLaW1Q4
+         cdvFWdf/KW+9cM2Z68V9pmaulxN5oWulTjEn+Z+0GpOkiPw0EMSbjgB3EvzbR9fkkwpW
+         M1JQ==
+X-Gm-Message-State: ACrzQf2mCIrc3CJ260WQZOMMxJ5dpFJOXNfB6gMW9uKD4krdu7E8w4dd
+        HgvtlTh2DQZLBw6PLuginZFzlmHGURRGVuR2HmU=
+X-Google-Smtp-Source: AMsMyM7B0KgO1ePqgiznBJPxBFqW0p1QJVzP9XdnRybtCWEEA1+7r7SGcBMaZXE781qwVCHZ0F/UGDKN4buuMG8EUng=
+X-Received: by 2002:a63:8aca:0:b0:461:25fe:e7c5 with SMTP id
+ y193-20020a638aca000000b0046125fee7c5mr34958534pgd.395.1667651947704; Sat, 05
+ Nov 2022 05:39:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAJ-UWOeis8L26X1rSa0t+h3rzmQCFLSxPKBS7YiP=hArgnjPSA@mail.gmail.com>
- <CAFL455=Yn6JWY8=7AjXkqH4Yf1_k=PsHDLANeQ5WdJtZO1Dg1Q@mail.gmail.com>
- <CAJ-UWOeFDrL83akdz70LWYROjD_RboPQrP7kT1vwPvGnu_MyGw@mail.gmail.com>
- <CAFL455kcxPSLrJ8R2k-2dTr6f6Eg5W-7M2bUioC=P++W0YC=PA@mail.gmail.com>
- <CAEU3=8GPcCagm_VW3p9miw1ALr-y7=SvONLxLBBeWft-R2o3YA@mail.gmail.com> <CAJ-UWOcFDo4OPKEs0JwztX+vgm=Kizpqo-eCucUgLjKKqQgzxA@mail.gmail.com>
-In-Reply-To: <CAJ-UWOcFDo4OPKEs0JwztX+vgm=Kizpqo-eCucUgLjKKqQgzxA@mail.gmail.com>
-From:   Maurizio Lombardi <mlombard@redhat.com>
-Date:   Fri, 4 Nov 2022 11:34:52 +0100
-Message-ID: <CAFL455mp3fKycwEGufWt6zsPLTM8P+A=de26-+abMgZP7usD3A@mail.gmail.com>
-Subject: Re: [BUG] iscsi hangs during login attempt
-To:     Paul Dagnelie <pcd@delphix.com>
-Cc:     Sumedh Bala <sumedh.bala@delphix.com>,
-        target-devel@vger.kernel.org, Sumedh Bala <sbala@delphix.com>,
-        Sebastien Roy <sebastien.roy@delphix.com>
+Received: by 2002:a05:7301:2e91:b0:83:922d:c616 with HTTP; Sat, 5 Nov 2022
+ 05:39:06 -0700 (PDT)
+Reply-To: stefanopessia755@hotmail.com
+From:   Stefano Pessina <wamathaibenard@gmail.com>
+Date:   Sat, 5 Nov 2022 15:39:06 +0300
+Message-ID: <CAN7bvZKFRi6jCy913fp9Nu5T=uorMfPGun5ibm5bYqhSVn2ZFA@mail.gmail.com>
+Subject: Geldspende
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hi Paul,
-
-po 31. 10. 2022 v 22:13 odes=C3=ADlatel Paul Dagnelie <pcd@delphix.com> nap=
-sal:
->
-> Hey Maurizio,
->
-> So far no luck here on reproducing the issue. Do you have any updates
-> on this issue?
-
-Sorry but no luck so far. Actually I did some experiments to try to
-reproduce it but I have been
-slowed down by another bug:
-https://marc.info/?l=3Dtarget-devel&m=3D166755512117326&w=3D2
-
-Maurizio
-
+--=20
+Die Summe von 500.000,00 =E2=82=AC wurde Ihnen von STEFANO PESSINA gespende=
+t.
+Bitte kontaktieren Sie uns f=C3=BCr weitere Informationen =C3=BCber
+stefanopessia755@hotmail.com
