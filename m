@@ -2,129 +2,113 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 350AF61F040
-	for <lists+target-devel@lfdr.de>; Mon,  7 Nov 2022 11:22:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B12161F891
+	for <lists+target-devel@lfdr.de>; Mon,  7 Nov 2022 17:12:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231489AbiKGKV5 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 7 Nov 2022 05:21:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33006 "EHLO
+        id S231530AbiKGQMX (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 7 Nov 2022 11:12:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231308AbiKGKVs (ORCPT
+        with ESMTP id S231419AbiKGQMW (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 7 Nov 2022 05:21:48 -0500
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B91618E1E
-        for <target-devel@vger.kernel.org>; Mon,  7 Nov 2022 02:21:26 -0800 (PST)
-Received: by mail-oi1-x242.google.com with SMTP id r76so11581674oie.13
-        for <target-devel@vger.kernel.org>; Mon, 07 Nov 2022 02:21:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
-        b=L9okY7Icb0Gf5ctoFsS3m7Ms6FyffuhIG/wumllqb99pGSDM0eKoVdXRomu4k2Vvje
-         vaAAA5b5CG4T9vL3DYzTbt6i7ilTYVRiZHeAf51qWroCKMi/06UV8twkwYbbvcb58b0c
-         O8aiXYIeKLPGKFxD8AeTNjdm9XiiwAwYXXYnxXnBzQtt4ZaPQYbu2mn3d4/wBF5dq0sI
-         fYgKey8dWac3TMQ3pm+aZLL8XgADS0c8wc9DQhJYDoGLimjkDspSigMMA/pe1/be4Mmf
-         FTMTprRtatoAeN10/4e16TIuQYPcJ6zZ7AsqjnUqg8Bde3BWUPkO4V20s/KjpolOjYbD
-         1dVg==
+        Mon, 7 Nov 2022 11:12:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0143A1C93D
+        for <target-devel@vger.kernel.org>; Mon,  7 Nov 2022 08:11:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1667837486;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=jh+EXDcJkAahHMoMULmbM5Xs/CgtdVrEAp+coMCUVIk=;
+        b=OGY8feCA+S4nCz9yUfW+eABtv7BdwAtOzn8MUggg/DaZO0/yjy9mUi6MwRUsWn84qhlpsv
+        kMOXAK6iYnQm1VfyX3GLyQY9YJth4DaziJviXw8CGrYVGEpJWkYaWc+bb0d8sMn7z9WG/z
+        AoEk9tLb1CFsc7by/rXmYc9HU5bDSfM=
+Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
+ [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-370-3yvIqHriMr65YjC_b5DddQ-1; Mon, 07 Nov 2022 11:11:25 -0500
+X-MC-Unique: 3yvIqHriMr65YjC_b5DddQ-1
+Received: by mail-ua1-f71.google.com with SMTP id a43-20020a9f376e000000b003eac6b97cf1so5380556uae.11
+        for <target-devel@vger.kernel.org>; Mon, 07 Nov 2022 08:11:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
-        b=7VIaFlQkGMYAkwDxJ/sByP6SufzjHbAgX4Pjayz0mrYx4CYTdlv6HtenKz2hsm77nj
-         dNHRqrcv6j3OwgApviZpB4dFa3PFx00bkODp1rNc/LLN+vCfSqXLNMYoPQvFbTtAgbRH
-         n43AxMNjE8kK/pzZO3vP9E/7uv1gSUx1JW9vcYsoOATG3howYTq3n2HxvuI8W8qGpef4
-         hREi0N2q+y+YTm2hakIyIQUD+4PMyOI71QLND1rrbffNREccO8PIgKlMbWrrQh6tejwZ
-         WgRhcpMyP1aeQBOHYi2/hyH7d9KwW7T/zBwh9M6NJigSUpczWBU7T0wD401xQlgWrSSX
-         8qWg==
-X-Gm-Message-State: ACrzQf39XpdqusYLeXr++NNa5WvwrPUwziVKzmWi8g0mNsLRqfu1BDe/
-        gJyseR0YhtSre37XHhVE19WpOyevFUECJok/bSRWHLTVtS8=
-X-Google-Smtp-Source: AMsMyM4Z92xjGZXgCyg2wym9Bu3/u65n6EL2ZpWI9kWf7s8xWZden0QG/zdZVfFd3uCVmOfceIs+YigxV7lXSF4Af+Y=
-X-Received: by 2002:a17:90b:2393:b0:213:ecb2:2e04 with SMTP id
- mr19-20020a17090b239300b00213ecb22e04mr38944517pjb.100.1667816475223; Mon, 07
- Nov 2022 02:21:15 -0800 (PST)
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jh+EXDcJkAahHMoMULmbM5Xs/CgtdVrEAp+coMCUVIk=;
+        b=5sNkpY/OFRFPZ2mOJvPfF5xDq6Nltbu5w32M8hj5IDJZDvL8qJo1pTnDFwxo2KtPKZ
+         BUTmL1KpbpxMmpCPdhhpR0bo4u1aNnYSwTvHSbXYaB84p9lhQULNTO1IU1y7Vt7HWLLV
+         Z5D+tfgJJxSLtGjU+R0gUMcND5aRLtY2bJucg+bCTPMuMMcaxPTHBCpKE63mdqAYRmVh
+         fAKCu5w/M2CStWKVBL0LEo0ADoCsvHyY1m1JFS16LcHNknwfOouyPq0SaYgJ6/zyMA3Z
+         fVe4md9jUT+pMu5Du8T5pHb9d2gBw8TeacM7aEOZjsjKzOtGTSnU3LApZ6Ti/SeLkmpN
+         LIxA==
+X-Gm-Message-State: ACrzQf1JBL2tHfnkQaadNJpzkbBEpgqO6XzObOc6tfYPjppk9/TDR/6T
+        o2YGpldXQcyZGuk7a0EO6K+YtgXwumDnEY+VS39KRmudGXGRR0K7tijJc55+2cRlSbq96WGIqjN
+        EHwpe6U6NfsFeOQc0PDcVNgutbsN4y4+VYICeOvOe
+X-Received: by 2002:a67:ea91:0:b0:3aa:19bc:16a3 with SMTP id f17-20020a67ea91000000b003aa19bc16a3mr27476328vso.22.1667837484192;
+        Mon, 07 Nov 2022 08:11:24 -0800 (PST)
+X-Google-Smtp-Source: AMsMyM7yHZHazQPWQ9AfPQanDfBIE7+ycUjfOmax4iir+4XMFUL/mbonMCU3NbveTR/e14IcHTu9OH4d6CQ0QUwMjDo=
+X-Received: by 2002:a67:ea91:0:b0:3aa:19bc:16a3 with SMTP id
+ f17-20020a67ea91000000b003aa19bc16a3mr27476309vso.22.1667837483965; Mon, 07
+ Nov 2022 08:11:23 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a05:6a06:925:b0:587:19e0:c567 with HTTP; Mon, 7 Nov 2022
- 02:21:14 -0800 (PST)
-Reply-To: contact@ammico.it
-From:   =?UTF-8?Q?Mrs=2E_Monika_Everenov=C3=A1?= <977638ib@gmail.com>
-Date:   Mon, 7 Nov 2022 11:21:14 +0100
-Message-ID: <CAHAXD+Z_SoFK+TjW_6apBCCLtc_awXEjaqOdf77jdLRxxup3TA@mail.gmail.com>
-Subject: Re:
-To:     undisclosed-recipients:;
+References: <20221104095041.289643-1-mlombard@redhat.com> <9b226985-f6d8-2fd7-6134-83255354e5bf@oracle.com>
+In-Reply-To: <9b226985-f6d8-2fd7-6134-83255354e5bf@oracle.com>
+From:   Maurizio Lombardi <mlombard@redhat.com>
+Date:   Mon, 7 Nov 2022 17:11:12 +0100
+Message-ID: <CAFL455kS4-QfRQMW---XyY8PhPt2O1YvQY=vaUkxF7bRRQi4VQ@mail.gmail.com>
+Subject: Re: [PATCH] target: fix a race condition between login_work and the
+ login thread
+To:     Mike Christie <michael.christie@oracle.com>
+Cc:     martin.petersen@oracle.com, target-devel@vger.kernel.org,
+        linux@yadro.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.6 required=5.0 tests=ADVANCE_FEE_2_NEW_MONEY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_FROM,FROM_STARTS_WITH_NUMS,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:242 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.7 FROM_STARTS_WITH_NUMS From: starts with several numbers
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [977638ib[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  2.0 ADVANCE_FEE_2_NEW_MONEY Advance Fee fraud and lots of money
-X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Hei ja miten voit?
-Nimeni on rouva Evereen, l=C3=A4het=C3=A4n t=C3=A4m=C3=A4n viestin suurella=
- toivolla
-v=C3=A4lit=C3=B6n vastaus, koska minun on teht=C3=A4v=C3=A4 uusi syd=C3=A4n=
-leikkaus
-t=C3=A4ll=C3=A4 hetkell=C3=A4 huonokuntoinen ja v=C3=A4h=C3=A4iset mahdolli=
-suudet selviyty=C3=A4.
-Mutta ennen kuin min=C3=A4
-Tee toinen vaarallinen operaatio, annan sen sinulle
-Minulla on 6 550 000 dollaria yhdysvaltalaisella pankkitilill=C3=A4
-sijoittamista, hallinnointia ja k=C3=A4ytt=C3=B6=C3=A4 varten
-voittoa hyv=C3=A4ntekev=C3=A4isyysprojektin toteuttamiseen. Tarkoitan saira=
-iden auttamista
-ja k=C3=B6yh=C3=A4t ovat viimeinen haluni maan p=C3=A4=C3=A4ll=C3=A4, sill=
-=C3=A4 minulla ei ole niit=C3=A4
-kenelt=C3=A4 perii rahaa.
-Vastaa minulle nopeasti
-terveisi=C3=A4
-Rouva Monika Evereen
-Florida, Amerikan Yhdysvallat
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-Hi and how are you?
-My name is Mrs. Evereen, I am sending this message with great hope for
-an immediate response, as I have to undergo heart reoperation in my
-current poor health with little chance of survival. But before I
-undertake the second dangerous operation, I will give you the
-$6,550,000 I have in my US bank account to invest well, manage and use
-the profits to run a charity project for me. I count helping the sick
-and the poor as my last wish on earth, because I have no one to
-inherit money from.
-Please give me a quick reply
-regards
-Mrs. Monika Evereen
-Florida, United States of America
+ne 6. 11. 2022 v 1:13 odes=C3=ADlatel Mike Christie
+<michael.christie@oracle.com> napsal:
+>
+> You can remove the cancel_delayed_work in iscsi_target_do_login_rx
+> in the chunk that checks for 1 being returned since you do it here
+> now.
+
+Correct, I missed this one
+
+>
+> For the error path, I think you could also move the cancel_delayed_work_s=
+ync
+> from them and put it in here.
+>
+> If we leave it to the callers, in iscsi_target_do_login_rx in the "goto e=
+rr"
+> handling should this be reversed and do you want to use the _sync call li=
+ke above?
+>
+>         iscsi_target_restore_sock_callbacks(conn);
+>         cancel_delayed_work(&conn->login_work);
+
+Yes, I noticed it too and I was already preparing a follow-up patch to fix =
+this.
+There is also another issue in iscsi_target_start_negotiation():
+
+        if (ret < 0) {
+                cancel_delayed_work_sync(&conn->login_work);
+                iscsi_target_restore_sock_callbacks(conn);
+
+This is obviously wrong because it leaves a small window open to race condi=
+tions
+I will submit a V2.
+
+Maurizio
+
