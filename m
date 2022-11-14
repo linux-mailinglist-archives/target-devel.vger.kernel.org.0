@@ -2,113 +2,133 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A00EE627508
-	for <lists+target-devel@lfdr.de>; Mon, 14 Nov 2022 04:40:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63B4A627A63
+	for <lists+target-devel@lfdr.de>; Mon, 14 Nov 2022 11:25:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235431AbiKNDkl (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sun, 13 Nov 2022 22:40:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59598 "EHLO
+        id S235878AbiKNKZO (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 14 Nov 2022 05:25:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235249AbiKNDkl (ORCPT
+        with ESMTP id S235798AbiKNKZJ (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sun, 13 Nov 2022 22:40:41 -0500
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [58.251.27.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47BC36559;
-        Sun, 13 Nov 2022 19:40:40 -0800 (PST)
-Received: from mxde.zte.com.cn (unknown [10.35.20.165])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        Mon, 14 Nov 2022 05:25:09 -0500
+Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A17E1D0D0;
+        Mon, 14 Nov 2022 02:25:08 -0800 (PST)
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id D5A6D411F8;
+        Mon, 14 Nov 2022 10:25:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        content-type:content-type:content-transfer-encoding:mime-version
+        :x-mailer:message-id:date:date:subject:subject:from:from
+        :received:received:received:received; s=mta-01; t=1668421504; x=
+        1670235905; bh=z3JiUsrxPOCX2YvK+EQmubzwkInsJC8PzgFviu8qFUc=; b=o
+        75gIccJMdps94CrvWEbghAGa4hlMsQB+HsBsgekuA0lJcM5VFv0L25if08RNasxp
+        dejJ38VEx5i88hIaTCdyF6gLhjZnMoKZ92mMhCr9y0T/QyAyfLgaxglvAE/5PcjT
+        91OmgmY4xMKpxy7UpjDchN1u2DeyELJn8IAIz2CGJo=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id q8UhweDcKBXc; Mon, 14 Nov 2022 13:25:04 +0300 (MSK)
+Received: from T-EXCH-01.corp.yadro.com (T-EXCH-01.corp.yadro.com [172.17.10.101])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mxct.zte.com.cn (FangMail) with ESMTPS id 4N9ZpG44z7zjn8;
-        Mon, 14 Nov 2022 11:40:38 +0800 (CST)
-Received: from mxus.zte.com.cn (unknown [10.207.168.7])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mxde.zte.com.cn (FangMail) with ESMTPS id 4N9ZpB72rKz4xD31;
-        Mon, 14 Nov 2022 11:40:34 +0800 (CST)
-Received: from mxhk.zte.com.cn (unknown [192.168.250.138])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mxus.zte.com.cn (FangMail) with ESMTPS id 4N9Zp74zSvz9tyD6;
-        Mon, 14 Nov 2022 11:40:31 +0800 (CST)
-Received: from mxct.zte.com.cn (unknown [192.168.251.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mxhk.zte.com.cn (FangMail) with ESMTPS id 4N9Zp42p3gz4xVnD;
-        Mon, 14 Nov 2022 11:40:28 +0800 (CST)
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mxct.zte.com.cn (FangMail) with ESMTPS id 4N9Zp20fR1z4y0tt;
-        Mon, 14 Nov 2022 11:40:26 +0800 (CST)
-Received: from szxlzmapp06.zte.com.cn ([10.5.230.252])
-        by mse-fl1.zte.com.cn with SMTP id 2AE3eC1t022476;
-        Mon, 14 Nov 2022 11:40:12 +0800 (+08)
-        (envelope-from yang.yang29@zte.com.cn)
-Received: from mapi (szxlzmapp04[null])
-        by mapi (Zmail) with MAPI id mid14;
-        Mon, 14 Nov 2022 11:40:13 +0800 (CST)
-Date:   Mon, 14 Nov 2022 11:40:13 +0800 (CST)
-X-Zmail-TransId: 2b066371b89d59d038a6
-X-Mailer: Zmail v1.0
-Message-ID: <202211141140133437292@zte.com.cn>
-Mime-Version: 1.0
-From:   <yang.yang29@zte.com.cn>
-To:     <martin.petersen@oracle.com>
-Cc:     <linux-scsi@vger.kernel.org>, <target-devel@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <xu.panda@zte.com.cn>,
-        <yang.yang29@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIGxpbnV4LW5leHRdIHNjc2k6IHRhcmdldDogVXNlIHN5c2ZzX3N0cmVxKCkgaW5zdGVhZCBvZiBzdHJuY21wKCk=?=
-Content-Type: text/plain;
-        charset="UTF-8"
-X-MAIL: mse-fl1.zte.com.cn 2AE3eC1t022476
-X-Fangmail-Gw-Spam-Type: 0
-X-FangMail-Miltered: at cgslv5.04-192.168.251.14.novalocal with ID 6371B8B5.000 by FangMail milter!
-X-FangMail-Envelope: 1668397238/4N9ZpG44z7zjn8/6371B8B5.000/10.35.20.165/[10.35.20.165]/mxde.zte.com.cn/<yang.yang29@zte.com.cn>
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6371B8B5.000/4N9ZpG44z7zjn8
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+        by mta-01.yadro.com (Postfix) with ESMTPS id A3F33403CB;
+        Mon, 14 Nov 2022 13:25:04 +0300 (MSK)
+Received: from T-EXCH-09.corp.yadro.com (172.17.11.59) by
+ T-EXCH-01.corp.yadro.com (172.17.10.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
+ 15.1.669.32; Mon, 14 Nov 2022 13:25:04 +0300
+Received: from localhost (10.178.120.161) by T-EXCH-09.corp.yadro.com
+ (172.17.11.59) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1118.9; Mon, 14 Nov
+ 2022 13:25:04 +0300
+From:   Anastasia Kovaleva <a.kovaleva@yadro.com>
+To:     <target-devel@vger.kernel.org>
+CC:     <linux-scsi@vger.kernel.org>, <linux@yadro.com>
+Subject: [PATCH v3 0/3] Make target send correct io limits
+Date:   Mon, 14 Nov 2022 13:24:57 +0300
+Message-ID: <20221114102500.88892-1-a.kovaleva@yadro.com>
+X-Mailer: git-send-email 2.38.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.178.120.161]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-09.corp.yadro.com (172.17.11.59)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-From: Xu Panda <xu.panda@zte.com.cn>
+Currently iblock always reports MAXIMUM TRANSFER LENGTH in 512b units
+regardless of the LU block size.
 
-There is a ready-to-use method to compare a retrieved from a sysfs node
-string with another string. It treats both NUL and newline-then-NUL as
-equivalent string terminations. So use it instead of manually truncating
-the line length in the strncmp() method.
+Target block size:
+  target:~ # fdisk -l /dev/nullb0
+  Disk /dev/nullb0: 250 GiB, 268435456000 bytes, 65536000 sectors
+  Units: sectors of 1 * 4096 = 4096 bytes
+  Sector size (logical/physical): 4096 bytes / 4096 bytes
+  I/O size (minimum/optimal): 4096 bytes / 4096 bytes
 
-Signed-off-by: Xu Panda <xu.panda@zte.com.cn>
-Signed-off-by: Yang Yang <yang.yang29@zte.com>
----
- drivers/target/target_core_configfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Initiator block size:
+  initiator:~ # fdisk -l /dev/sdc
+  Disk /dev/sdc: 250 GiB, 268435456000 bytes, 65536000 sectors
+  Disk model: nullb0
+  Units: sectors of 1 * 4096 = 4096 bytes
+  Sector size (logical/physical): 4096 bytes / 4096 bytes
+  I/O size (minimum/optimal): 4096 bytes / 131072 bytes
 
-diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
-index b8a5c8d6cfde..119711c2bc08 100644
---- a/drivers/target/target_core_configfs.c
-+++ b/drivers/target/target_core_configfs.c
-@@ -208,7 +208,7 @@ static struct config_group *target_core_register_fabric(
- 		 * mkdir(2) system calls with known TCM fabric modules.
- 		 */
+target max transfer length limit:
+  target:~ # cat /sys/block/nullb0/queue/max_hw_sectors_kb
+  128
 
--		if (!strncmp(name, "iscsi", 5)) {
-+		if (!sysfs_streq(name, "iscsi")) {
- 			/*
- 			 * Automatically load the LIO Target fabric module when the
- 			 * following is called:
-@@ -221,7 +221,7 @@ static struct config_group *target_core_register_fabric(
- 				         " iscsi_target_mod.ko: %d\n", ret);
- 				return ERR_PTR(-EINVAL);
- 			}
--		} else if (!strncmp(name, "loopback", 8)) {
-+		} else if (!sysfs_streq(name, "loopback")) {
- 			/*
- 			 * Automatically load the tcm_loop fabric module when the
- 			 * following is called:
+So the maximum transfer length should be 128 * 1024 / 4096 = 32 blocks
+But the target sends MTL in 512b units, so the initiators see 256 blocks
+instead.
+
+  initiator:~ # sg_inq -p 0xb0 /dev/sdc
+  VPD INQUIRY: Block limits page (SBC)
+    Maximum compare and write length: 1 blocks
+    Optimal transfer length granularity: 1 blocks
+    Maximum transfer length: 256 blocks
+    Optimal transfer length: 32 blocks
+    Maximum prefetch transfer length: 0 blocks [ignored]
+
+This happens because MAXIMUM TRANSFER LENGTH field in VPD Block Limits
+page is derived from dev->dev_attrib.hw_max_sectors which happens to be
+in 512b units for iblock. This patch series fixes this issue and removes
+some special-casing for other backstores.
+
+Changes since v1:
+Sinse the v1 patch series, some variables was renamed, the checkpatch
+script was run and issues with debug logs was fixed, some refactoring
+was done.
+
+Changes since v2:
+Since the v2 patch series, a kernel bot found some issues with building
+a kernel for i386. The problem was that division 64 bit number make GCC
+generate __udivdi3 which is missing on i386.
+
+Anastasia Kovaleva (3):
+  target: core: Send mtl in blocks
+  target: core: make hw_max_sectors store the sectors amount in blocks
+  target: core: Change the way target_xcopy_do_work sets restiction on
+    max io
+
+ drivers/target/target_core_configfs.c |  2 -
+ drivers/target/target_core_file.c     |  1 -
+ drivers/target/target_core_iblock.c   |  4 +-
+ drivers/target/target_core_spc.c      |  6 +-
+ drivers/target/target_core_xcopy.c    | 97 +++++++++++++++------------
+ drivers/target/target_core_xcopy.h    |  2 +-
+ include/target/target_core_base.h     |  1 -
+ 7 files changed, 62 insertions(+), 51 deletions(-)
+
 -- 
-2.15.2
+2.38.1
+
