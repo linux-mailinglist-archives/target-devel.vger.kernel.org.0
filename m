@@ -2,78 +2,80 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5F1E63960C
-	for <lists+target-devel@lfdr.de>; Sat, 26 Nov 2022 14:09:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8697D639A94
+	for <lists+target-devel@lfdr.de>; Sun, 27 Nov 2022 13:44:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229481AbiKZNJP (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 26 Nov 2022 08:09:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50836 "EHLO
+        id S229546AbiK0MoZ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 27 Nov 2022 07:44:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229521AbiKZNJN (ORCPT
+        with ESMTP id S229489AbiK0MoZ (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sat, 26 Nov 2022 08:09:13 -0500
-Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9900F1D643
-        for <target-devel@vger.kernel.org>; Sat, 26 Nov 2022 05:09:12 -0800 (PST)
-Received: by mail-vs1-xe43.google.com with SMTP id k67so6513737vsk.2
-        for <target-devel@vger.kernel.org>; Sat, 26 Nov 2022 05:09:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JjTBep/hEuzuOvIlSBGXr083GbVo/g9gCrt75fjqWp4=;
-        b=b7mzVjnbYm4yzLhJvPU3xmMBiSf9iXorA2EJ4v8zgQEOiPaH+zb1+w7kIIEPUps6om
-         Pb6R7N43NPT/8/GgGENH7pU8rV2KMJO4E5euXFjDGe9BOYvqG7iRlLFc1kgZN60x0drA
-         bu9mCmKfu9k9GQUJcfKoRKPzIkYW+Uxac4ZRxTv2yCh0n/1J5GCQWpHrdcTlX+EoUnnn
-         19RbNjtMPz67U5IN3Fxo/kN/Cs8hLfj5xfLVwOz5GIkwD8oUx/Zm2JCcWbmHiaWBltFM
-         jbBoGW/UiYLaHd7sMwxHtbSWv10vzGfnhoiU3Cr4EgregZSk/NBCZBu1NruXXi51YC9Y
-         h6VQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JjTBep/hEuzuOvIlSBGXr083GbVo/g9gCrt75fjqWp4=;
-        b=JMHctM93bwovcXYnijOx84H8WnjyWbZs81cfGswS2BajAPOOb6SeB9M6hOHOxy5a5g
-         O/BoS/7mUJTdjWwNzbJNUN72nMmxEPYGr++p6g6EUSlx+PPluN43cseLlET9xheJOmMQ
-         iamNIyuD0kOE/0fjyUItyqX9L9xkHjljRnGp0NXoQBqTJsaChGnq5dE8PBQK/DF5Y2FF
-         UFp6ImIz6sBVfay09oYgLUbQ30BZ2Dsiz/h1iKBuwqKAlmTsaIZit53eOEMvB66RgbDX
-         /iX0amiz55TyBg9SdcJ7mOfVo6a9QrTp9ZaX9++O6Ld4kHRGY31V8vQ6E73P57JloyZh
-         zIkA==
-X-Gm-Message-State: ANoB5pkP6dMlZ3AmsCBEOPr3UxxPmKhoVCMQFmzPQFRy2ygtKKLz7wTu
-        vfCIV0DRZvo2ghtlv5ZJzKTTaNQxCnhdvJiItLA=
-X-Google-Smtp-Source: AA0mqf7S6X2KOm0KD965BGAGKTcp+soP20Idd57MLQYDAJss+QBqxjwHUDoKg+/ajK03kOLBYXMhhwmrpG6CZ1trelQ=
-X-Received: by 2002:a67:d789:0:b0:3b0:6e7c:94b8 with SMTP id
- q9-20020a67d789000000b003b06e7c94b8mr9891887vsj.74.1669468151576; Sat, 26 Nov
- 2022 05:09:11 -0800 (PST)
+        Sun, 27 Nov 2022 07:44:25 -0500
+Received: from jari.cn (unknown [218.92.28.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D6335BCB7;
+        Sun, 27 Nov 2022 04:44:23 -0800 (PST)
+Received: by ajax-webmail-localhost.localdomain (Coremail) ; Sun, 27 Nov
+ 2022 20:44:13 +0800 (GMT+08:00)
+X-Originating-IP: [182.148.15.36]
+Date:   Sun, 27 Nov 2022 20:44:13 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From:   "KaiLong Wang" <wangkailong@jari.cn>
+To:     mikecyr@linux.ibm.com, jejb@linux.ibm.com,
+        martin.petersen@oracle.com
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] scsi: ibmvscsi_tgt: convert sysfs snprintf to sysfs_emit
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT6.0.1 build 20210329(c53f3fee)
+ Copyright (c) 2002-2022 www.mailtech.cn
+ mispb-4e503810-ca60-4ec8-a188-7102c18937cf-zhkzyfz.cn
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 MIME-Version: 1.0
-Received: by 2002:a59:c208:0:b0:32a:66df:3ea6 with HTTP; Sat, 26 Nov 2022
- 05:09:11 -0800 (PST)
-Reply-To: ninacoulibaly03@myself.com
-From:   nina coulibaly <ninacoulibaly49@gmail.com>
-Date:   Sat, 26 Nov 2022 13:09:11 +0000
-Message-ID: <CAPhHPC3ncOaJCOzNXC=4pM4M-mZBn10n3MHEy8mdi1oAVKYFYw@mail.gmail.com>
-Subject: from nina coulibaly
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+Message-ID: <483482fb.1d3.184b91dde72.Coremail.wangkailong@jari.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: AQAAfwCHj+CdW4NjZHIFAA--.115W
+X-CM-SenderInfo: 5zdqwypdlo00nj6mt2flof0/1tbiAQADB2FEYx0G1gACsM
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+        daVFxhVjvjDU=
+X-Spam-Status: No, score=2.2 required=5.0 tests=BAYES_00,RCVD_IN_PBL,RDNS_NONE,
+        T_SPF_HELO_PERMERROR,T_SPF_PERMERROR,XPRIO autolearn=no
         autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
--- 
-Dear,
-I am interested to invest with you in your country with total trust
-and i hope you will give me total support, sincerity and commitment.
-Please get back to me as soon as possible so that i can give you my
-proposed details of funding and others.
-
-Best Regards.
-
-Mrs. Nina Coulibaly
+Rml4IHRoZSBmb2xsb3dpbmcgY29jY2ljaGVjayB3YXJuaW5nOgoKZHJpdmVycy9zY3NpL2libXZz
+Y3NpX3RndC9pYm12c2NzaV90Z3QuYzozNjI1OjgtMTY6IFdBUk5JTkc6IHVzZQpzY25wcmludGYg
+b3Igc3ByaW50Zgpkcml2ZXJzL3Njc2kvaWJtdnNjc2lfdGd0L2libXZzY3NpX3RndC5jOjM2MTk6
+OC0xNjogV0FSTklORzogdXNlCnNjbnByaW50ZiBvciBzcHJpbnRmCmRyaXZlcnMvc2NzaS9pYm12
+c2NzaV90Z3QvaWJtdnNjc2lfdGd0LmM6MzYzMzo4LTE2OiBXQVJOSU5HOiB1c2UKc2NucHJpbnRm
+IG9yIHNwcmludGYKClNpZ25lZC1vZmYtYnk6IEthaUxvbmcgV2FuZyA8d2FuZ2thaWxvbmdAamFy
+aS5jbj4KLS0tCiBkcml2ZXJzL3Njc2kvaWJtdnNjc2lfdGd0L2libXZzY3NpX3RndC5jIHwgNiAr
+KystLS0KIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCgpk
+aWZmIC0tZ2l0IGEvZHJpdmVycy9zY3NpL2libXZzY3NpX3RndC9pYm12c2NzaV90Z3QuYyBiL2Ry
+aXZlcnMvc2NzaS9pYm12c2NzaV90Z3QvaWJtdnNjc2lfdGd0LmMKaW5kZXggZTg3NzAzMTBhNjRi
+Li5kOWE2MTUzMDY5NDkgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc2NzaS9pYm12c2NzaV90Z3QvaWJt
+dnNjc2lfdGd0LmMKKysrIGIvZHJpdmVycy9zY3NpL2libXZzY3NpX3RndC9pYm12c2NzaV90Z3Qu
+YwpAQCAtMzYxNiwxMyArMzYxNiwxMyBAQCBzdGF0aWMgdm9pZCBpYm12c2NzaXNfcmVtb3ZlKHN0
+cnVjdCB2aW9fZGV2ICp2ZGV2KQogc3RhdGljIHNzaXplX3Qgc3lzdGVtX2lkX3Nob3coc3RydWN0
+IGRldmljZSAqZGV2LAogCQkJICAgICAgc3RydWN0IGRldmljZV9hdHRyaWJ1dGUgKmF0dHIsIGNo
+YXIgKmJ1ZikKIHsKLQlyZXR1cm4gc25wcmludGYoYnVmLCBQQUdFX1NJWkUsICIlc1xuIiwgc3lz
+dGVtX2lkKTsKKwlyZXR1cm4gc3lzZnNfZW1pdChidWYsICIlc1xuIiwgc3lzdGVtX2lkKTsKIH0K
+IAogc3RhdGljIHNzaXplX3QgcGFydGl0aW9uX251bWJlcl9zaG93KHN0cnVjdCBkZXZpY2UgKmRl
+diwKIAkJCQkgICAgIHN0cnVjdCBkZXZpY2VfYXR0cmlidXRlICphdHRyLCBjaGFyICpidWYpCiB7
+Ci0JcmV0dXJuIHNucHJpbnRmKGJ1ZiwgUEFHRV9TSVpFLCAiJXhcbiIsIHBhcnRpdGlvbl9udW1i
+ZXIpOworCXJldHVybiBzeXNmc19lbWl0KGJ1ZiwgIiV4XG4iLCBwYXJ0aXRpb25fbnVtYmVyKTsK
+IH0KIAogc3RhdGljIHNzaXplX3QgdW5pdF9hZGRyZXNzX3Nob3coc3RydWN0IGRldmljZSAqZGV2
+LApAQCAtMzYzMCw3ICszNjMwLDcgQEAgc3RhdGljIHNzaXplX3QgdW5pdF9hZGRyZXNzX3Nob3co
+c3RydWN0IGRldmljZSAqZGV2LAogewogCXN0cnVjdCBzY3NpX2luZm8gKnZzY3NpID0gY29udGFp
+bmVyX29mKGRldiwgc3RydWN0IHNjc2lfaW5mbywgZGV2KTsKIAotCXJldHVybiBzbnByaW50Zihi
+dWYsIFBBR0VfU0laRSwgIiV4XG4iLCB2c2NzaS0+ZG1hX2Rldi0+dW5pdF9hZGRyZXNzKTsKKwly
+ZXR1cm4gc3lzZnNfZW1pdChidWYsICIleFxuIiwgdnNjc2ktPmRtYV9kZXYtPnVuaXRfYWRkcmVz
+cyk7CiB9CiAKIHN0YXRpYyBpbnQgaWJtdnNjc2lzX2dldF9zeXN0ZW1faW5mbyh2b2lkKQotLSAK
+Mi4yNS4xCg==
