@@ -2,70 +2,106 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CEAD63C932
-	for <lists+target-devel@lfdr.de>; Tue, 29 Nov 2022 21:21:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31B7763E870
+	for <lists+target-devel@lfdr.de>; Thu,  1 Dec 2022 04:45:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235645AbiK2UVa (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Tue, 29 Nov 2022 15:21:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59676 "EHLO
+        id S229719AbiLADpu (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 30 Nov 2022 22:45:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233910AbiK2UV3 (ORCPT
+        with ESMTP id S229563AbiLADpt (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Tue, 29 Nov 2022 15:21:29 -0500
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CD20BF45
-        for <target-devel@vger.kernel.org>; Tue, 29 Nov 2022 12:21:29 -0800 (PST)
-Received: by mail-ej1-x643.google.com with SMTP id fy37so36501915ejc.11
-        for <target-devel@vger.kernel.org>; Tue, 29 Nov 2022 12:21:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=NCdvtJveHDYFqzUSKnhMRlpxiMaloDGt/VpZEwPBQhjQMXUBWdnaYDjqlXrbg+Bikl
-         FKSgttC7iaOmfhSEF008UFCXLlQxo2EwPt/Fad2W2xWj6oKPBSnTPaxqLrPTiomtnKtO
-         ur0+U8h7iHUwHaycqReg0t0CMc1Dszu/SLG/8eCgpoN0USvRyjwqzLuOEKoI8t0f9mlg
-         g3elQGqk8d8B1w5+Y32fux/b7kFF0/QD3IBevKg59D9gi88gbe5N8cT3zu85UD9r7W0V
-         tJEyBOSuRU7DlkfVm7ySxjJTo33yivwbsJhjNcGj2jUbOR5AB2zC5zYVa95MlVRrZbr3
-         DwKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=jjHLdO3YLHEL2YYuR8FPNaKui488Y/FtxsWsEMNZmCssQSf2/yLGbJMKjyHBjs6Klt
-         ZtesYAva9yu8xHWmDossFN5kaqJDEEgJlkaAd+Nnao8Xf7aWZes5e8TQ3gnWi4jSHF8r
-         mwX0R2OPR3Hyv+WS3L3r8cl330CZHYzC17GxC7vM7MvCmtYSCxkfodBzRbU/3D3WOab6
-         2cGSju+kHusJMZd/BfV7jIjjTPhcz+Zzorz6kOKrd7FpoMCwj2oISzUUDcPUW/j3ggiL
-         KCP2CUVlOm6qARj2JD9DfCurD7NSDye3AbZZPCP9891aPfqvHM48RGAoW/FLi/aGUmrS
-         VhAQ==
-X-Gm-Message-State: ANoB5pkzD3W4qYg2vo6Y1llNCBp8ojuvWrCuqxRu0baTXrGhiK7DICzf
-        dpO3YZ2MnmPUvXvUBOi3BylqNp4k3BE7jFhhcLU=
-X-Google-Smtp-Source: AA0mqf5+auc+byiHC0rSIpN0xdxvm0HS8q7hFcXAT+IBk2Hh61ZU8jPNCbiXQ9nYEoYcn4h0bcsglNpWmAPyV5wo+0E=
-X-Received: by 2002:a17:906:1d59:b0:7c0:5496:4f1b with SMTP id
- o25-20020a1709061d5900b007c054964f1bmr8915717ejh.715.1669753287568; Tue, 29
- Nov 2022 12:21:27 -0800 (PST)
+        Wed, 30 Nov 2022 22:45:49 -0500
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BE1C9075D;
+        Wed, 30 Nov 2022 19:45:49 -0800 (PST)
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2B12cw7b018211;
+        Thu, 1 Dec 2022 03:45:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2022-7-12;
+ bh=s2lKGcIDI4AmL3/WrisDPx/XVUZYFEjrbjDERtfxedM=;
+ b=P25S1mwpy16V9MA7WRyiyP8PT5DsP73pv8MLMUvP3PyEkpJ/1UmJbg0l5z1nzMy1NGaR
+ VTZJmYgCYfbr/ZnckCuNarizuf4ulQ6JYl+omFqjwZ8A0u3TDoYtRX3yvOmR0JoLBfYt
+ wk5khozpbh8oVQpPbHPMtfw7FWP4bhxlz5EPXUrfWqoxh7hJRVEOBKKFdm66dbMXtJ2s
+ F7pwrMXqMs3/dWvEkg/qkRibf/h80Ni3AOCzC5NqGG63TuopLXywTj7hS17U4iSmbrX9
+ 5XHDKdOfDtdxHLXsiqDrsaQoqkm9WlpmBk8BIi3eCJS8vpe05sLZTfnKR/ZLSjwhaq/k pg== 
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3m3xhtbnpx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 01 Dec 2022 03:45:40 +0000
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.5/8.17.1.5) with ESMTP id 2B13EhFO007601;
+        Thu, 1 Dec 2022 03:45:40 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3m398a2cky-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 01 Dec 2022 03:45:40 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2B13jbpQ033801;
+        Thu, 1 Dec 2022 03:45:39 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3m398a2cjs-3;
+        Thu, 01 Dec 2022 03:45:39 +0000
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org,
+        Chen Zhongjin <chenzhongjin@huawei.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        jejb@linux.ibm.com, christophe.jaillet@wanadoo.fr, hare@suse.de,
+        ram.vegesna@broadcom.com, dwagner@suse.de, james.smart@broadcom.com
+Subject: Re: [PATCH] scsi: efct: Fix possible memleak in efct_device_init()
+Date:   Thu,  1 Dec 2022 03:45:04 +0000
+Message-Id: <166986602281.2101055.16297897704954452228.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20221111074046.57061-1-chenzhongjin@huawei.com>
+References: <20221111074046.57061-1-chenzhongjin@huawei.com>
 MIME-Version: 1.0
-Received: by 2002:a17:906:bfe7:b0:78c:cad3:6a2f with HTTP; Tue, 29 Nov 2022
- 12:21:26 -0800 (PST)
-Reply-To: mr.abraham022@gmail.com
-From:   "Mr.Abraham" <chiogb003@gmail.com>
-Date:   Tue, 29 Nov 2022 20:21:26 +0000
-Message-ID: <CABa6Gn=-hQGaeUozi=1PmGLoywO6sMGqRWVc8NVxm7AkJKYXBg@mail.gmail.com>
-Subject: hi
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-01_02,2022-11-30_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=0
+ phishscore=0 mlxscore=0 bulkscore=0 spamscore=0 malwarescore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2212010022
+X-Proofpoint-GUID: J-bSg6ItaaEh2IX5ayA29fee92Pd0m5N
+X-Proofpoint-ORIG-GUID: J-bSg6ItaaEh2IX5ayA29fee92Pd0m5N
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-My Greeting, Did you receive the letter i sent to you. Please answer me.
-Regard, Mr.Abraham
+On Fri, 11 Nov 2022 15:40:46 +0800, Chen Zhongjin wrote:
+
+> In efct_device_init(), when efct_scsi_reg_fc_transport() fails,
+> efct_scsi_tgt_driver_exit() is not called to release memory for
+> efct_scsi_tgt_driver_init() and causes memleak:
+> 
+> unreferenced object 0xffff8881020ce000 (size 2048):
+>   comm "modprobe", pid 465, jiffies 4294928222 (age 55.872s)
+>   backtrace:
+>     [<0000000021a1ef1b>] kmalloc_trace+0x27/0x110
+>     [<000000004c3ed51c>] target_register_template+0x4fd/0x7b0 [target_core_mod]
+>     [<00000000f3393296>] efct_scsi_tgt_driver_init+0x18/0x50 [efct]
+>     [<00000000115de533>] 0xffffffffc0d90011
+>     [<00000000d608f646>] do_one_initcall+0xd0/0x4e0
+>     [<0000000067828cf1>] do_init_module+0x1cc/0x6a0
+>     ...
+> 
+> [...]
+
+Applied to 6.2/scsi-queue, thanks!
+
+[1/1] scsi: efct: Fix possible memleak in efct_device_init()
+      https://git.kernel.org/mkp/scsi/c/bb0cd225dd37
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
