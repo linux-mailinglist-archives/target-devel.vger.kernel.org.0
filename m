@@ -2,59 +2,60 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40E1F6404D5
-	for <lists+target-devel@lfdr.de>; Fri,  2 Dec 2022 11:37:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8445640675
+	for <lists+target-devel@lfdr.de>; Fri,  2 Dec 2022 13:12:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232313AbiLBKhu (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 2 Dec 2022 05:37:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48408 "EHLO
+        id S232598AbiLBMMH (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 2 Dec 2022 07:12:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232614AbiLBKht (ORCPT
+        with ESMTP id S233152AbiLBMME (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 2 Dec 2022 05:37:49 -0500
+        Fri, 2 Dec 2022 07:12:04 -0500
 Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E3481A22C;
-        Fri,  2 Dec 2022 02:37:48 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53CE1D2D8D;
+        Fri,  2 Dec 2022 04:11:58 -0800 (PST)
 Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 448C7411FF;
-        Fri,  2 Dec 2022 10:37:47 +0000 (UTC)
+        by mta-01.yadro.com (Postfix) with ESMTP id 0515941207;
+        Fri,  2 Dec 2022 12:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        in-reply-to:content-disposition:content-type:content-type
-        :mime-version:references:message-id:subject:subject:from:from
-        :date:date:received:received:received:received; s=mta-01; t=
-        1669977466; x=1671791867; bh=ZWp1MMAsAJAHYPIe3irwq+JygYGJU8/aDGe
-        tX8eqb0A=; b=Yyj2csGY/0z0/2tY3HSIL1c9H7B2CCK7iBzch1RmA9FWng4xb0F
-        018dYYAu24f5etgGcUqx1uMrJ/I7TirYaRFZqF6iJtuXofw5pTsWV4VOwtUCH0F+
-        CPFgredLtFukW4qcBM/eWYDd/3V/Z+QMy3/spQff60jdc+5proGmhOrc=
+        content-type:content-type:content-transfer-encoding:mime-version
+        :x-mailer:message-id:date:date:subject:subject:from:from
+        :received:received:received:received; s=mta-01; t=1669983115; x=
+        1671797516; bh=LvOacjOBkfqk+aDT0pJIwXBlozs+ILLOC1yKowC2PLQ=; b=v
+        iqh9MYnwUFS4jzOD4wLHY45MAciMnNiH6BiQxn8N91bSJBL76lJBOu5rvLobgKSW
+        eShIKz7vFBO4vaEyBA4l78cpjPdpCnnPQzBrn1asdvEn86HMXnMaQDxDMFYpPv3X
+        rQYG6fF8XUj6ZBv8BkQV0zHbZwsh7fh0ETDCIqppOg=
 X-Virus-Scanned: amavisd-new at yadro.com
 Received: from mta-01.yadro.com ([127.0.0.1])
         by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id aW-J5o5d2v0V; Fri,  2 Dec 2022 13:37:46 +0300 (MSK)
-Received: from T-EXCH-01.corp.yadro.com (T-EXCH-01.corp.yadro.com [172.17.10.101])
+        with ESMTP id TF6Uakxfl_rv; Fri,  2 Dec 2022 15:11:55 +0300 (MSK)
+Received: from T-EXCH-02.corp.yadro.com (T-EXCH-02.corp.yadro.com [172.17.10.102])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id 4EBC740889;
-        Fri,  2 Dec 2022 13:37:45 +0300 (MSK)
+        by mta-01.yadro.com (Postfix) with ESMTPS id 42C2240889;
+        Fri,  2 Dec 2022 15:11:54 +0300 (MSK)
 Received: from T-EXCH-08.corp.yadro.com (172.17.11.58) by
- T-EXCH-01.corp.yadro.com (172.17.10.101) with Microsoft SMTP Server
+ T-EXCH-02.corp.yadro.com (172.17.10.102) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.669.32; Fri, 2 Dec 2022 13:37:45 +0300
-Received: from yadro.com (10.199.18.20) by T-EXCH-08.corp.yadro.com
- (172.17.11.58) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1118.9; Fri, 2 Dec 2022
- 13:37:44 +0300
-Date:   Fri, 2 Dec 2022 13:37:44 +0300
+ 15.1.669.32; Fri, 2 Dec 2022 15:11:54 +0300
+Received: from NB-591.corp.yadro.com (10.199.18.20) by
+ T-EXCH-08.corp.yadro.com (172.17.11.58) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.1118.9; Fri, 2 Dec 2022 15:11:53 +0300
 From:   Dmitry Bogdanov <d.bogdanov@yadro.com>
 To:     Martin Petersen <martin.petersen@oracle.com>,
         <target-devel@vger.kernel.org>
-CC:     <linux-scsi@vger.kernel.org>, <linux@yadro.com>
-Subject: Re: [RESEND v2 0/4] target: fix bugs in Persistent Reservations
-Message-ID: <20221202103744.GA15327@yadro.com>
-References: <20221202103331.14297-1-d.bogdanov@yadro.com>
+CC:     Christoph Hellwig <hch@infradead.org>,
+        <linux-scsi@vger.kernel.org>, <linux@yadro.com>,
+        Dmitry Bogdanov <d.bogdanov@yadro.com>
+Subject: [PATCH v3 0/5] scsi: target: make RTPI an TPG identifier
+Date:   Fri, 2 Dec 2022 15:11:34 +0300
+Message-ID: <20221202121139.28180-1-d.bogdanov@yadro.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20221202103331.14297-1-d.bogdanov@yadro.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.199.18.20]
 X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
  T-EXCH-08.corp.yadro.com (172.17.11.58)
@@ -67,28 +68,71 @@ Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Fri, Dec 02, 2022 at 01:33:27PM +0300, Dmitry Bogdanov wrote:
-> This patch set fixes few rare bugs and deviations from standard in
-> PREEMPT AND ABORT and REGISTER AND MOVE operations.
-> 
-> v2:
->   remove superfluous parentheses
->   fix indentation
-> 
-> Dmitry Bogdanov (4):
->   target: core: fix preempt and abort for allreg res
->   target: core: fix memory leak in preempt_and_abort
->   target: core: abort all preempted regs if requested
->   target: core: new key must be used for moved PR
-> 
->  drivers/target/target_core_pr.c | 33 ++++++++++++++++++++++++++-------
->  1 file changed, 26 insertions(+), 7 deletions(-)
-> 
-> -- 
-> 2.25.1
-> 
+SAM-5 4.6.5.2 (Relative Port Identifier attribute) defines the attribute
+as unique across SCSI target ports:
+ The Relative Port Identifier attribute identifies a SCSI target port or
+ a SCSI initiator port relative to other SCSI ports in a SCSI target
+ device and any SCSI initiator devices contained within that SCSI target
+ device. A SCSI target device may assign relative port identifiers to
+ its SCSI target ports and any SCSI initiator ports. If relative port
+ identifiers are assigned, the SCSI target device shall assign each of
+ its SCSI target ports and any SCSI initiator ports a unique relative
+ port identifier from 1 to 65 535. SCSI target ports and SCSI initiator
+ ports share the same number space.
 
+In the current TCM implementation, auto-incremented lun_rtpi weakly
+follows the model outlined by SAM-5 and SPC-4. In case of multiple SCSI
+target ports (se_portal_group's), which is common to scenario with
+multiple HBAs or multiple iSCSI/FC targets, it's possible to have two
+backstores (se_device's) with different values of lun_rtpi on the same
+SCSI target port.
 
-Sorry, found it in 6.1.
-Thought it was not merged because I did not find it in 6.2/scsi-*
-branches.
+Similar issue happens during re-export. If a LUN of a backstore is
+removed from a target port and added again to the same target port, RTPI
+is incremented again and will be different from the first time.
+
+The two issues happen because each se_device increments RTPI for its own
+LUNs independently.
+
+The behaviour means that a SCSI application client can't reliably make any
+sense of RTPI values reported by a LUN as it's not really related to SCSI
+target ports. A conforming target implementation must ensure that RTPI field is
+unique per port. The patchset resolves the issue.
+
+Make RTPI be part of se_tpg instead of se_lun. Make it configurable.
+
+Changelog:
+  v3:
+    make variable static
+    change core_ prefix to target_
+    split to tpg_enable/tpg_disable functions
+
+  v2:
+    use XArray for tracking RTPI instead of linked list
+    do not allow to change RTPI on enabled target port
+    drop not needed patches
+
+Dmitry Bogdanov (2):
+  scsi: target: core: Add RTPI field to target port
+  scsi: target: core: Add RTPI attribute for target port
+
+Roman Bolshakov (3):
+  scsi: target: core: Use RTPI from target port
+  scsi: target: core: Drop device-based RTPI
+  scsi: target: core: Add common port attributes
+
+ drivers/target/target_core_alua.c            |   4 +-
+ drivers/target/target_core_configfs.c        |   9 +-
+ drivers/target/target_core_device.c          |  43 +-------
+ drivers/target/target_core_fabric_configfs.c |  48 ++++++--
+ drivers/target/target_core_internal.h        |   3 +-
+ drivers/target/target_core_pr.c              |   8 +-
+ drivers/target/target_core_spc.c             |   2 +-
+ drivers/target/target_core_stat.c            |   6 +-
+ drivers/target/target_core_tpg.c             | 110 +++++++++++++++++--
+ include/target/target_core_base.h            |   7 +-
+ 10 files changed, 168 insertions(+), 72 deletions(-)
+
+-- 
+2.25.1
+
