@@ -2,63 +2,84 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E44A64C551
-	for <lists+target-devel@lfdr.de>; Wed, 14 Dec 2022 09:53:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 493E364C594
+	for <lists+target-devel@lfdr.de>; Wed, 14 Dec 2022 10:10:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237375AbiLNIx1 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 14 Dec 2022 03:53:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56586 "EHLO
+        id S229773AbiLNJKZ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 14 Dec 2022 04:10:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229695AbiLNIxZ (ORCPT
+        with ESMTP id S229572AbiLNJKX (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 14 Dec 2022 03:53:25 -0500
-Received: from mail.groupteam.pl (mail.groupteam.pl [51.75.73.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 689925FC8
-        for <target-devel@vger.kernel.org>; Wed, 14 Dec 2022 00:53:24 -0800 (PST)
-Received: by mail.groupteam.pl (Postfix, from userid 1002)
-        id B3028A742A; Wed, 14 Dec 2022 08:51:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=groupteam.pl; s=mail;
-        t=1671007953; bh=9KGuIG62LgzC9aYmjKxzocuYLRCVghXg6v9Q1q2LHec=;
-        h=Date:From:To:Subject:From;
-        b=gN338bpQgbSNpnxI1MdODqLFBoEq+Fqeqia0etv3+uiJ9hnPYVY0FxBNcP2f7XgPC
-         Wflsby4YTm/EOyJBz/NZE33MWR9HSHT0QoJdzDvettv3E1UnK/XeVgz/C3U9fcGTCd
-         6NJ8XfO+5lxtwdGL3WfUafArtfF9VFyNdFa+GB7mvLsuNGQ6OEfpOqWTK+HZjjeNua
-         rL4GkGRVK41GYKROD3jxH773bceMvxwo3pX1w/KVGM37+8vowNSHlqa5BDJybMQFd0
-         Q0Wb0YvtmwKQUbOceC0VqO15exbabfwo2umF25C04OWnufuY6wN7TX0kzWItZ28e3U
-         Uj8xyOb2vfKlg==
-Received: by mail.groupteam.pl for <target-devel@vger.kernel.org>; Wed, 14 Dec 2022 08:50:41 GMT
-Message-ID: <20221214074500-0.1.78.2qbsi.0.5j06pf291a@groupteam.pl>
-Date:   Wed, 14 Dec 2022 08:50:41 GMT
-From:   "Krzysztof Maj" <krzysztof.maj@groupteam.pl>
-To:     <target-devel@vger.kernel.org>
-Subject: Biznesowy angielski
-X-Mailer: mail.groupteam.pl
+        Wed, 14 Dec 2022 04:10:23 -0500
+Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4462A10FF5
+        for <target-devel@vger.kernel.org>; Wed, 14 Dec 2022 01:10:22 -0800 (PST)
+Received: by mail-oo1-xc35.google.com with SMTP id c190-20020a4a4fc7000000b004a3addd10b5so2275788oob.1
+        for <target-devel@vger.kernel.org>; Wed, 14 Dec 2022 01:10:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=nuvBIf2lT6ew8E3Gonh9xI5Qgd+TLMqmI33+g9gdqOQ=;
+        b=G0PNtRvJRXtlRPfmaVr9f1iNJSykI4rSVSTkRsj5ZTY0PGdA1LtldGr8ZS6ylSSEKK
+         X5QYeUAncqVHXboWRt/3HBtj5+zPkm6tJ9dBKflkLwggeO2aNOqaC73Nv2XOWGavD71U
+         rebLnU4IrlzNbE3yRfbSOIoILV1j/6wuIcWswCljfGoicK7IqKZVRL+Ou4a9ybYvdh+L
+         loGGQMSBFRmPKbmchEPTFCn+1Fl+IwpJ2//7/5grV/24UZL3KlBDpIjqgvlIq2rDTrX6
+         AFSHn6nm9U8jg8vFhhph2h/yPHuu2ZYwlh+84XfAi8NcRkF9K/17LxORevMXENLMwtlm
+         Q8FQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nuvBIf2lT6ew8E3Gonh9xI5Qgd+TLMqmI33+g9gdqOQ=;
+        b=UxqVLAjRBgtqjwKcagq0m10K2+t54KQ1b+Xx/UW60b4nO7ygCAwZySS9U7x6ZGEGLS
+         XjvqtN6CfZWNZL8CCS3pG1ZmyB3kjL1/cdI77Jgw8PT0wVaiOOSZKyxAc31yATLL/cFi
+         VgbyVfLy06sdN5bVPZx3WF3RTNlfyRl5Sa9nxh/2Tcxx+aeyCm8UAaGadoEvQWH482dN
+         tMWggu2wy7JnsJg3sqoSg5fqaUsxHviDoL29zzMZupd7HV6lHaANcVXroIWWnEIlGiPk
+         6CilAZ+eNgsEzif+LRbK25lhplklxhp50XDtKzQG+2ZmLVM5Whr4vzWQW2mcnT/tgwMY
+         92wg==
+X-Gm-Message-State: ANoB5pkzHa4RIUXORg7KqnrQp3j5Ku5XKH8VhQ1PTPP0YVJE3ZvaDtxt
+        kjhc5l7/MQ5700wUPyyU5IBnk+iBsSInimVYHZg=
+X-Google-Smtp-Source: AA0mqf4FwgYmxLqXp5R6N11klJQuY9vmleodwghNoh0cg/IDrh8j/DF0An8RETR/DWxXy1X4gVdYEwIQxclp7QzTx/g=
+X-Received: by 2002:a4a:892f:0:b0:49f:46ea:1bbc with SMTP id
+ f44-20020a4a892f000000b0049f46ea1bbcmr31524489ooi.53.1671009021551; Wed, 14
+ Dec 2022 01:10:21 -0800 (PST)
 MIME-Version: 1.0
+Received: by 2002:a05:6358:7211:b0:dd:1fa2:ef73 with HTTP; Wed, 14 Dec 2022
+ 01:10:21 -0800 (PST)
+Reply-To: phmaanu21@hotmail.com
+From:   Philip Manul <lometogo1999@gmail.com>
+Date:   Wed, 14 Dec 2022 01:10:21 -0800
+Message-ID: <CAFtqZGFLnyoWNRa8xhs4Sk_1A6t7k7HSwYv7KsEW4S5gSvmSsw@mail.gmail.com>
+Subject: REP:
+To:     in <in@proposal.net>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,
-        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,URIBL_ABUSE_SURBL,
-        URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
-        *      blocklist
-        *      [URIs: groupteam.pl]
-        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        *      [51.75.73.133 listed in zen.spamhaus.org]
-        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
-        *      blocklist
-        *      [URIs: groupteam.pl]
-        * -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
-        *      [score: 0.0000]
-        *  1.2 URIBL_ABUSE_SURBL Contains an URL listed in the ABUSE SURBL
-        *      blocklist
-        *      [URIs: groupteam.pl]
-        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
-        *      https://senderscore.org/blocklistlookup/
-        *      [51.75.73.133 listed in bl.score.senderscore.com]
+X-Spam-Status: Yes, score=7.5 required=5.0 tests=ADVANCE_FEE_3_NEW,BAYES_50,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNCLAIMED_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:c35 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [phmaanu21[at]hotmail.com]
         *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
         * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [lometogo1999[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [lometogo1999[at]gmail.com]
+        *  2.4 UNCLAIMED_MONEY BODY: People just leave money laying around
         *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
         *       valid
         * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
@@ -66,36 +87,33 @@ X-Spam-Report: *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus 
         * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
         *      envelope-from domain
         * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-X-Spam-Level: ******
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  3.0 ADVANCE_FEE_3_NEW Appears to be advance fee fraud (Nigerian
+        *      419)
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Dzie=C5=84 dobry,=20
+--=20
+Guten tag,
+Mein Name ist Philip Manul. Ich bin von Beruf Rechtsanwalt. Ich habe
+einen verstorbenen Kunden, der zuf=C3=A4llig denselben Namen mit Ihnen
+teilt. Ich habe alle Papierdokumente in meinem Besitz. Ihr Verwandter,
+mein verstorbener Kunde, hat hier in meinem Land einen nicht
+beanspruchten Fonds zur=C3=BCckgelassen. Ich warte auf Ihre Antwort zum
+Verfahren.
+Philip Manul.
 
-czy rozwa=C5=BCali Pa=C5=84stwo rozw=C3=B3j kwalifikacji j=C4=99zykowych =
-swoich pracownik=C3=B3w?
+***************************************************
 
-Opracowali=C5=9Bmy kursy j=C4=99zykowe dla r=C3=B3=C5=BCnych bran=C5=BC, =
-w kt=C3=B3rych koncentrujemy si=C4=99 na podniesieniu poziomu s=C5=82owni=
-ctwa i jako=C5=9Bci komunikacji wykorzystuj=C4=85c autorsk=C4=85 metod=C4=
-=99, stworzon=C4=85 specjalnie dla wymagaj=C4=85cego biznesu.=20
-
-Niestandardowy kurs on-line, dopasowany do profilu firmy i obszar=C3=B3w =
-=C5=9Bwiadczonych us=C5=82ug, w szybkim czasie przyniesie efekty, kt=C3=B3=
-re zwi=C4=99ksz=C4=85 komfort i jako=C5=9B=C4=87 pracy, rozwijaj=C4=85c m=
-o=C5=BCliwo=C5=9Bci biznesowe.=20
-
-Zdalne szkolenie j=C4=99zykowe to m.in. zaj=C4=99cia z native speakerami,=
- kt=C3=B3re w szybkim czasie naucz=C4=85 pracownik=C3=B3w rozmawia=C4=87 =
-za pomoc=C4=85 jasnego i zwi=C4=99z=C5=82ego j=C4=99zyka Business English=
-=2E
-
-Czy m=C3=B3g=C5=82bym przedstawi=C4=87 wi=C4=99cej szczeg=C3=B3=C5=82=C3=B3=
-w i opowiedzie=C4=87 jak dzia=C5=82amy?=20
-
-
-Pozdrawiam
-Krzysztof Maj
+Good day,
+My name is Philip Manul. I am a lawyer by profession. I have a
+deceased client who happens to share the same surname with you. I have
+all paper documents in my possession. Your relative my late client
+left an unclaimed fund here in my country. I await your reply for
+Procedure.
+Philip Manul.
