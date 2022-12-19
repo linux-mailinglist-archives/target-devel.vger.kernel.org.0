@@ -2,118 +2,100 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 493E364C594
-	for <lists+target-devel@lfdr.de>; Wed, 14 Dec 2022 10:10:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB354650D7E
+	for <lists+target-devel@lfdr.de>; Mon, 19 Dec 2022 15:39:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229773AbiLNJKZ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 14 Dec 2022 04:10:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33188 "EHLO
+        id S232278AbiLSOjV (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 19 Dec 2022 09:39:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229572AbiLNJKX (ORCPT
+        with ESMTP id S231754AbiLSOjT (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 14 Dec 2022 04:10:23 -0500
-Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4462A10FF5
-        for <target-devel@vger.kernel.org>; Wed, 14 Dec 2022 01:10:22 -0800 (PST)
-Received: by mail-oo1-xc35.google.com with SMTP id c190-20020a4a4fc7000000b004a3addd10b5so2275788oob.1
-        for <target-devel@vger.kernel.org>; Wed, 14 Dec 2022 01:10:22 -0800 (PST)
+        Mon, 19 Dec 2022 09:39:19 -0500
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BE308F
+        for <target-devel@vger.kernel.org>; Mon, 19 Dec 2022 06:39:18 -0800 (PST)
+Received: by mail-wr1-x42d.google.com with SMTP id w15so8825580wrl.9
+        for <target-devel@vger.kernel.org>; Mon, 19 Dec 2022 06:39:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=nuvBIf2lT6ew8E3Gonh9xI5Qgd+TLMqmI33+g9gdqOQ=;
-        b=G0PNtRvJRXtlRPfmaVr9f1iNJSykI4rSVSTkRsj5ZTY0PGdA1LtldGr8ZS6ylSSEKK
-         X5QYeUAncqVHXboWRt/3HBtj5+zPkm6tJ9dBKflkLwggeO2aNOqaC73Nv2XOWGavD71U
-         rebLnU4IrlzNbE3yRfbSOIoILV1j/6wuIcWswCljfGoicK7IqKZVRL+Ou4a9ybYvdh+L
-         loGGQMSBFRmPKbmchEPTFCn+1Fl+IwpJ2//7/5grV/24UZL3KlBDpIjqgvlIq2rDTrX6
-         AFSHn6nm9U8jg8vFhhph2h/yPHuu2ZYwlh+84XfAi8NcRkF9K/17LxORevMXENLMwtlm
-         Q8FQ==
+        d=arrikto-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yGMLsH8dgzcahtBgx80OpxckreFvsodbzajyjupc3Ck=;
+        b=VT1BFOOZBN2F54VOA5DbCEiDLjMvyAoExiqGeHO3SWZgE1VGL1FR7HaceCyrlMNcpt
+         oO/xHErMVV4ixh2giC0zjgvauQbju6Sf5hHRubr7AZIBkNcywFmNr6MEdlyYtrKtxaNL
+         Js5ZJJfQ5QZkJfmtTQzLzK+Rbc7aVRuG+7URjn9EgR05H8CvulGE9ROW6umO7cCDMdFW
+         gZOkvE2J9xveWWbz/aitCcw7UjKFAF5mUmJ3cYOgGIA8tfNvTcmE+PQFn0ETqRNSmybm
+         8z2/KHe4XbPhd3FAUP5qe2eDTeiGKu9FUaXgOPbHMCTf03oJczu9VW8q0d0rIg/1KBZk
+         1JxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nuvBIf2lT6ew8E3Gonh9xI5Qgd+TLMqmI33+g9gdqOQ=;
-        b=UxqVLAjRBgtqjwKcagq0m10K2+t54KQ1b+Xx/UW60b4nO7ygCAwZySS9U7x6ZGEGLS
-         XjvqtN6CfZWNZL8CCS3pG1ZmyB3kjL1/cdI77Jgw8PT0wVaiOOSZKyxAc31yATLL/cFi
-         VgbyVfLy06sdN5bVPZx3WF3RTNlfyRl5Sa9nxh/2Tcxx+aeyCm8UAaGadoEvQWH482dN
-         tMWggu2wy7JnsJg3sqoSg5fqaUsxHviDoL29zzMZupd7HV6lHaANcVXroIWWnEIlGiPk
-         6CilAZ+eNgsEzif+LRbK25lhplklxhp50XDtKzQG+2ZmLVM5Whr4vzWQW2mcnT/tgwMY
-         92wg==
-X-Gm-Message-State: ANoB5pkzHa4RIUXORg7KqnrQp3j5Ku5XKH8VhQ1PTPP0YVJE3ZvaDtxt
-        kjhc5l7/MQ5700wUPyyU5IBnk+iBsSInimVYHZg=
-X-Google-Smtp-Source: AA0mqf4FwgYmxLqXp5R6N11klJQuY9vmleodwghNoh0cg/IDrh8j/DF0An8RETR/DWxXy1X4gVdYEwIQxclp7QzTx/g=
-X-Received: by 2002:a4a:892f:0:b0:49f:46ea:1bbc with SMTP id
- f44-20020a4a892f000000b0049f46ea1bbcmr31524489ooi.53.1671009021551; Wed, 14
- Dec 2022 01:10:21 -0800 (PST)
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yGMLsH8dgzcahtBgx80OpxckreFvsodbzajyjupc3Ck=;
+        b=1OtMwXbPndlwHzOCRLVxP0g6TZyxqj06NcJSfgW+H4eVqtZsPdqtfjcb2SjLdpglKS
+         ehVR5hCG2xVs3rJQIEeLOXNUecj6Dt85xpP68XYBSdJWrnHGp9ACfPkYEuuCFR5QidY+
+         SuTWnEWcTPQA5uggivl+S7oADsmqnpsfwND5kQ5skMdyrzOPAQqm8htjDpvBrvcTL1Is
+         OWJbXMbdxE1t8PRitoGT9gDWPLjtD2UVvP0RgrNpcWixByCywQbPeUHX4bPcurDSlNKz
+         BHZzsrWrhiPMt/cIEe5hEswPSqM7wqMgMXopixobMyDGOwYtRJPzxR5jrvRjMCd+zeFS
+         +FnQ==
+X-Gm-Message-State: ANoB5pkc18P7jSlglixnUO+mmaczCV1wmkxh2iN3koXAdRiB76dquaSH
+        Pb0M8xeDd5ZHqSOuILnE1H5CEg==
+X-Google-Smtp-Source: AA0mqf5/VyOUBf9M76A2ciHOjRS4N/9IXTIhrdBesQDhgDxyOax74woFyxZrsxJtJgKa1C/SuM19qQ==
+X-Received: by 2002:a5d:4242:0:b0:242:5ed6:a09f with SMTP id s2-20020a5d4242000000b002425ed6a09fmr25001217wrr.44.1671460757191;
+        Mon, 19 Dec 2022 06:39:17 -0800 (PST)
+Received: from [10.94.1.166] ([185.109.18.135])
+        by smtp.gmail.com with ESMTPSA id y1-20020adfd081000000b002421a8f4fa6sm10246190wrh.92.2022.12.19.06.39.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Dec 2022 06:39:16 -0800 (PST)
+Message-ID: <da4f53f3-4e13-1259-b0a6-cc28160be23b@arrikto.com>
+Date:   Mon, 19 Dec 2022 16:39:15 +0200
 MIME-Version: 1.0
-Received: by 2002:a05:6358:7211:b0:dd:1fa2:ef73 with HTTP; Wed, 14 Dec 2022
- 01:10:21 -0800 (PST)
-Reply-To: phmaanu21@hotmail.com
-From:   Philip Manul <lometogo1999@gmail.com>
-Date:   Wed, 14 Dec 2022 01:10:21 -0800
-Message-ID: <CAFtqZGFLnyoWNRa8xhs4Sk_1A6t7k7HSwYv7KsEW4S5gSvmSsw@mail.gmail.com>
-Subject: REP:
-To:     in <in@proposal.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=7.5 required=5.0 tests=ADVANCE_FEE_3_NEW,BAYES_50,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNCLAIMED_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:c35 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [phmaanu21[at]hotmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [lometogo1999[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [lometogo1999[at]gmail.com]
-        *  2.4 UNCLAIMED_MONEY BODY: People just leave money laying around
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  3.0 ADVANCE_FEE_3_NEW Appears to be advance fee fraud (Nigerian
-        *      419)
-X-Spam-Level: *******
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH] tcm_loop: Increase maximum request size
+To:     Christoph Hellwig <hch@infradead.org>,
+        Mike Christie <michael.christie@oracle.com>
+Cc:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
+References: <20220929115504.23806-1-ntsironis@arrikto.com>
+ <ed3e5f22-dd2c-2952-dc7e-c47bccf66611@oracle.com>
+ <Y5Dc66mOzBfBhUGY@infradead.org>
+Content-Language: en-US
+From:   Nikos Tsironis <ntsironis@arrikto.com>
+In-Reply-To: <Y5Dc66mOzBfBhUGY@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
---=20
-Guten tag,
-Mein Name ist Philip Manul. Ich bin von Beruf Rechtsanwalt. Ich habe
-einen verstorbenen Kunden, der zuf=C3=A4llig denselben Namen mit Ihnen
-teilt. Ich habe alle Papierdokumente in meinem Besitz. Ihr Verwandter,
-mein verstorbener Kunde, hat hier in meinem Land einen nicht
-beanspruchten Fonds zur=C3=BCckgelassen. Ich warte auf Ihre Antwort zum
-Verfahren.
-Philip Manul.
+On 12/7/22 20:35, Christoph Hellwig wrote:
+> On Wed, Dec 07, 2022 at 12:29:56PM -0600, Mike Christie wrote:
+>> I think you need to make this configurable.
+>>
+>> If you use loop with pscsi, then the sgl that loop now gets might be too
+>> big for the backend device so we now fail in:
+>>
+>> pscsi_map_sg -> blk_rq_append_bio -> ll_back_merge_fn
+>>
+>> So some users might be relying on the smaller limit.
+> 
+> Note that this could happen even now, you just need sufficiently
+> horrible hardware to pass through for it.  But yes, for pscsi
+> this needs to look at the underlying device, and increasing the
+> limit might be a good point to do that.  I'm not sure it's worth
+> to add user configuration, though.
 
-***************************************************
+Thanks for the feedback.
 
-Good day,
-My name is Philip Manul. I am a lawyer by profession. I have a
-deceased client who happens to share the same surname with you. I have
-all paper documents in my possession. Your relative my late client
-left an unclaimed fund here in my country. I await your reply for
-Procedure.
-Philip Manul.
+What should I do? Change pscsi to look at the underlying device limits?
+
+Nikos
