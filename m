@@ -2,69 +2,139 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F370C668C64
-	for <lists+target-devel@lfdr.de>; Fri, 13 Jan 2023 07:18:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02CF66699A2
+	for <lists+target-devel@lfdr.de>; Fri, 13 Jan 2023 15:12:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235197AbjAMGSi (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 13 Jan 2023 01:18:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58922 "EHLO
+        id S241013AbjAMOMh (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 13 Jan 2023 09:12:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234479AbjAMGRP (ORCPT
+        with ESMTP id S241320AbjAMOMO (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 13 Jan 2023 01:17:15 -0500
-X-Greylist: delayed 401 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 12 Jan 2023 22:15:42 PST
-Received: from mp-relay-01.fibernetics.ca (mp-relay-01.fibernetics.ca [208.85.217.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4A1968798
-        for <target-devel@vger.kernel.org>; Thu, 12 Jan 2023 22:15:42 -0800 (PST)
-Received: from mailpool-fe-01.fibernetics.ca (mailpool-fe-01.fibernetics.ca [208.85.217.144])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Fri, 13 Jan 2023 09:12:14 -0500
+Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9773E8D5E5;
+        Fri, 13 Jan 2023 06:08:19 -0800 (PST)
+Received: from mta-01.yadro.com (localhost.localdomain [127.0.0.1])
+        by mta-01.yadro.com (Proxmox) with ESMTP id 7155E341746;
+        Fri, 13 Jan 2023 17:08:17 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; h=cc
+        :cc:content-type:content-type:date:from:from:in-reply-to
+        :message-id:mime-version:references:reply-to:subject:subject:to
+        :to; s=mta-01; bh=wUB2XrlKQCI2b2IvULO1TtTfCjn0ogMQX5Y6hiYqPIA=; b=
+        nOX/3M2oODZ98+LgHCPnhqmeLdTWiN0be2b6yIQ11mLyWhvGQ+GQAb5Uk2WLERao
+        MyqRH6Lm+HNk9MKTnOHAa5cSBRGIs7jEMtZrkVvN0glsLvn+bLVVORidO+m2VVjK
+        zQOS3jwoaBX0mAimMhd+I6eUroq/2O+gI1DMqI0LQio=
+Received: from T-EXCH-08.corp.yadro.com (unknown [172.17.10.14])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mp-relay-01.fibernetics.ca (Postfix) with ESMTPS id B7D3BE176B;
-        Fri, 13 Jan 2023 06:09:00 +0000 (UTC)
-Received: from localhost (mailpool-mx-01.fibernetics.ca [208.85.217.140])
-        by mailpool-fe-01.fibernetics.ca (Postfix) with ESMTP id 7FFEA26899;
-        Fri, 13 Jan 2023 06:09:00 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at 
-X-Spam-Score: 3.651
-X-Spam-Level: ****
-X-Spam-Status: No, score=4.3 required=5.0 tests=BAYES_60,
-        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,SPF_HELO_NONE,
-        SPF_PASS,SUBJ_ALL_CAPS autolearn=no autolearn_force=no version=3.4.6
-Received: from mailpool-fe-01.fibernetics.ca ([208.85.217.144])
-        by localhost (mail-mx-01.fibernetics.ca [208.85.217.140]) (amavisd-new, port 10024)
-        with ESMTP id cyGX_k_eAuCw; Fri, 13 Jan 2023 06:09:00 +0000 (UTC)
-Received: from localhost (unknown [208.85.220.72])
-        by mail.ca.inter.net (Postfix) with ESMTP id 6239926897;
-        Fri, 13 Jan 2023 06:08:55 +0000 (UTC)
-Received: from reverse.rain.network (reverse.rain.network [197.184.176.8])
- by webmail.ca.inter.net (Horde Framework) with HTTP; Fri, 13 Jan 2023
- 01:08:55 -0500
-Message-ID: <20230113010855.24090i07ungeq0zb@webmail.ca.inter.net>
-Date:   Fri, 13 Jan 2023 01:08:55 -0500
-From:   INFO <boothg@istar.ca>
-Reply-to: s.g0392440821@gmail.com
-To:     undisclosed-recipients:;
-Subject: IST DIESE E-MAIL AKTIV?
+        by mta-01.yadro.com (Proxmox) with ESMTPS id 65A0E34173F;
+        Fri, 13 Jan 2023 17:08:17 +0300 (MSK)
+Received: from yadro.com (10.178.114.42) by T-EXCH-08.corp.yadro.com
+ (172.17.11.58) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1118.9; Fri, 13 Jan
+ 2023 17:08:16 +0300
+Date:   Fri, 13 Jan 2023 17:08:16 +0300
+From:   Dmitry Bogdanov <d.bogdanov@yadro.com>
+To:     Mike Christie <michael.christie@oracle.com>
+CC:     <mlombard@redhat.com>, <martin.petersen@oracle.com>,
+        <mgurtovoy@nvidia.com>, <sagi@grimberg.me>,
+        <linux-scsi@vger.kernel.org>, <target-devel@vger.kernel.org>
+Subject: Re: [PATCH v2 09/13] scsi: target: iscsit: Fix isert disconnect
+ handling during login
+Message-ID: <20230113140816.GA31614@yadro.com>
+References: <20230112030832.110143-1-michael.christie@oracle.com>
+ <20230112030832.110143-10-michael.christie@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=ISO-8859-1;
- DelSp="Yes";
- format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-User-Agent: Internet Messaging Program (IMP) H3 (4.3.7)
-X-Originating-User-Info: boothg@istar.ca 208.85.219.96
+In-Reply-To: <20230112030832.110143-10-michael.christie@oracle.com>
+X-Originating-IP: [10.178.114.42]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-08.corp.yadro.com (172.17.11.58)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+On Wed, Jan 11, 2023 at 09:08:28PM -0600, Mike Christie wrote:
+> 
+> If we get a disconnect event while logging in we can end up in a state
+> where will never be able to relogin. This happens when:
+> 
+> 1. login thread has put us into TARG_CONN_STATE_IN_LOGIN
+> 2. isert then does
+> 
+> isert_disconnected_handler -> iscsit_cause_connection_reinstatement
+> 
+> which sets the conn connection_reinstatement flag. Nothing else happens
+> because we are only in IN_LOGIN. The tx/rx threads are not running yet
+> so we can't start recovery from those contexts at this time.
+> 
+> 3. The login thread finishes processing the login pdu and thinks login is
+> done. It sets us into TARG_CONN_STATE_LOGGED_IN/TARG_SESS_STATE_LOGGED_IN.
+> This starts the rx/tx threads.
+> 
+> 4. The initiator thought it disconnected the connection at 2, and has
+> since sent a new connect which is now handled. This leads us to eventually
+> run:
+> 
+> iscsi_check_for_session_reinstatement-> iscsit_stop_session ->
+> iscsit_cause_connection_reinstatement
+> 
+> iscsit_stop_session sees the old conn and does
+> iscsit_cause_connection_reinstatement which sees connection_reinstatement
+> is set so it just returns instead of trying to kill the tx/rx threads
+> which would have caused recovery to start.
+> 
+> 5. iscsit_stop_session then waits on session_wait_comp which will never
+> happen since we didn't kill the tx/rx threads.
+> 
+> This has the iscsit login code check if a fabric driver ran
+> iscsit_cause_connection_reinstatement during the login process similar
+> to how we check for the sk state for tcp based iscsit. This will prevent
+> us from getting into 3 and creating a ghost session.
+> 
+> Signed-off-by: Mike Christie <michael.christie@oracle.com>
+> ---
+>  drivers/target/iscsi/iscsi_target_nego.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/drivers/target/iscsi/iscsi_target_nego.c b/drivers/target/iscsi/iscsi_target_nego.c
+> index ff49c8f3fe24..2dd81752d4c9 100644
+> --- a/drivers/target/iscsi/iscsi_target_nego.c
+> +++ b/drivers/target/iscsi/iscsi_target_nego.c
+> @@ -350,6 +350,16 @@ static int iscsi_target_do_tx_login_io(struct iscsit_conn *conn, struct iscsi_lo
+>                                             ISCSI_LOGIN_STATUS_NO_RESOURCES);
+>                         return -1;
+>                 }
+> +
+> +               /*
+> +                * isert doesn't know the iscsit state and uses
+> +                * iscsit_cause_connection_reinstatement as a generic error
+> +                * notification system. It may call it before we are in FFP.
+> +                * Handle this now in case it signaled a failure before the
+> +                * rx/tx threads were up and could start recovery.
+> +                */
+> +               if (atomic_read(&conn->connection_reinstatement))
+> +                       goto err;
 
+Why only for login->login_complete case? In other case the session will
+not hang? Will it be droppped on login timeout or something else?
 
-Sehr geehrter E-Mail-Begünstigter, Sie wurden für eine Spende in Höhe  
-von 3.500.000,00 ? ausgewählt. Wenden Sie sich an diese  
-E-Mail-Adresse: s.g0392440821@gmail.com, um weitere Informationen zum  
-Erhalt Ihrer Spende zu erhalten. Vielen Dank
+May be the root cause is point 2 itself - calling iscsit_cause_connection_reinstatement
+in not ISER_CONN_FULL_FEATURE state where there are no TX_RX threads?
+I mean that was a misuse of iscsit_cause_connection_reinstatement?
+
+>         }
+> 
+>         if (conn->conn_transport->iscsit_put_login_tx(conn, login,
+> --
+> 2.31.1
+> 
+> 
 
