@@ -2,79 +2,71 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80310694CC1
-	for <lists+target-devel@lfdr.de>; Mon, 13 Feb 2023 17:29:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7DC769666B
+	for <lists+target-devel@lfdr.de>; Tue, 14 Feb 2023 15:19:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230507AbjBMQ3M (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 13 Feb 2023 11:29:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50562 "EHLO
+        id S233485AbjBNOTC (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 14 Feb 2023 09:19:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230053AbjBMQ3H (ORCPT
+        with ESMTP id S233509AbjBNOSh (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 13 Feb 2023 11:29:07 -0500
+        Tue, 14 Feb 2023 09:18:37 -0500
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBA3ACA3E
-        for <target-devel@vger.kernel.org>; Mon, 13 Feb 2023 08:28:20 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB4D46A66
+        for <target-devel@vger.kernel.org>; Tue, 14 Feb 2023 06:17:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1676305693;
+        s=mimecast20190719; t=1676384222;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=5j1Ma1y2clXVYgy/SSzEPndVHrV3hCwEM5eslt7nI0Q=;
-        b=cRL9skPcEtVmFy++makr+zLvGdge1fMeYcb4wckmvDSDeZFbdxd94iUdByXt8E92WBWaQs
-        f2gXfLvI7sNMg1hSVxzWCoDz4Zke94CTtOpdAqyHNegQ+UPwjNKLXte0QQ7jThveE9VSeu
-        I+zTa0K2AZtfc3TBQmGOaqQ58P8VvHY=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=7N44JLJ7XEtVeo5qSIwMY7zH3NAHVSZwtfpm4QfM50w=;
+        b=g7dhTtm9w1X/zXqfoH//qOTUP8VnBxe31BhZunetnyhgI30PANWbzqNwsMe9a2vyZadSMI
+        2ebLlUktclDr6/1F7A0bvKkMgCgfNeLQsrm/+ypwxGcZoQnez0ldwa77/wLgjJ0jDHo/1z
+        SB6fZ1uwEiH0mxyGqk3HVt4yPRtAnVE=
+Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com
+ [209.85.221.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-581-6sOfmMtIMvOoB-93NUDhHg-1; Mon, 13 Feb 2023 11:26:18 -0500
-X-MC-Unique: 6sOfmMtIMvOoB-93NUDhHg-1
-Received: by mail-qv1-f69.google.com with SMTP id f6-20020a0cc306000000b0056e96f4fd64so4588735qvi.15
-        for <target-devel@vger.kernel.org>; Mon, 13 Feb 2023 08:26:03 -0800 (PST)
+ us-mta-352-phGDmbHiPiuFdUyzM6GsWg-1; Tue, 14 Feb 2023 09:13:10 -0500
+X-MC-Unique: phGDmbHiPiuFdUyzM6GsWg-1
+Received: by mail-vk1-f199.google.com with SMTP id h85-20020a1f9e58000000b003e8d54eb923so5870442vke.5
+        for <target-devel@vger.kernel.org>; Tue, 14 Feb 2023 06:13:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:date
-         :cc:to:from:subject:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5j1Ma1y2clXVYgy/SSzEPndVHrV3hCwEM5eslt7nI0Q=;
-        b=r99hEQxGgxMvkUaRWlJSXGy7aWGqrVR3RlJQAKzDiCLnSDDqz+W0aNnisQyU9Fvbdc
-         tnVksCwI1YrrMMMVEIN181LJEOCVciHWc6D0HYEHAr3Jr//yMYzsWRvUkdd22RGYsqIU
-         BBr2NA/0TGIrxPBBA2PW6sVsns109Cz74IbFeijIGth49dwNXCyc0a78b41ZD+U0akb6
-         cibFcFy9E9S/EQqOzTUgv6jesL4iDFYreudw3cersXteerstFVkSRImAC3V6dUH7vcpB
-         AQIxBo9pqtc/84WEg05a1Dw97ENpmuNzeQ03Hv7tjM32HphpdYLvLwdy1lLQz8FfX32Y
-         /uhw==
-X-Gm-Message-State: AO0yUKXJVXbg8cMsS3KBihp8Ld7CZ4LCjf5D/CIZXf0SshoYXqhH2KuT
-        XXxtTvGF+Meq3htq3A3JMN0NsdxgSc3n/voYJqQ0IwbZYSDJA/T8rFjte3AmmqGkQKNcOJVkb34
-        Un6yO0pokoJxiPz5JVQ5/Pqgj
-X-Received: by 2002:ac8:4989:0:b0:3b9:bc8c:c200 with SMTP id f9-20020ac84989000000b003b9bc8cc200mr22568788qtq.11.1676305559045;
-        Mon, 13 Feb 2023 08:25:59 -0800 (PST)
-X-Google-Smtp-Source: AK7set8ovOjeDU1c4YFiSw/aT0D3JImyNrfY5/hhgcuAwbBF6PU988XxOtmfKk+J3NLmD9rXWS7L2A==
-X-Received: by 2002:ac8:4989:0:b0:3b9:bc8c:c200 with SMTP id f9-20020ac84989000000b003b9bc8cc200mr22568756qtq.11.1676305558637;
-        Mon, 13 Feb 2023 08:25:58 -0800 (PST)
-Received: from lobep17 ([2600:6c64:4e7f:603b:6e24:8ff:feb9:533e])
-        by smtp.gmail.com with ESMTPSA id e68-20020a37b547000000b0071aacb2c76asm10037678qkf.132.2023.02.13.08.25.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Feb 2023 08:25:58 -0800 (PST)
-Message-ID: <e669443e4d5bbcce8c54c45de9b47e59f56f3b75.camel@redhat.com>
-Subject: Re: [PATCH] scsi: target: iscsi: set memalloc_noio with loopback
- network connections
-From:   Laurence Oberman <loberman@redhat.com>
-To:     Mike Christie <michael.christie@oracle.com>,
-        Maurizio Lombardi <mlombard@redhat.com>,
-        David Jeffery <djeffery@redhat.com>
-Cc:     target-devel@vger.kernel.org,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Mon, 13 Feb 2023 11:25:57 -0500
-In-Reply-To: <2fea4b28-e441-6c77-5bb6-97428c19179f@oracle.com>
-References: <20230208200957.14073-1-djeffery@redhat.com>
-         <CAFL455kEoLQF+vc2MGmtLdrQ-=U+HJzqgknZmM54iCPJD1p_mA@mail.gmail.com>
-         <2fea4b28-e441-6c77-5bb6-97428c19179f@oracle.com>
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7N44JLJ7XEtVeo5qSIwMY7zH3NAHVSZwtfpm4QfM50w=;
+        b=nLN1imux07/e7ICfTk9Xl3G21GU5q6P460ELpldjXdWPM/i8/SPUkndq93MGyiYX21
+         aF3ykBsPTo5o/JA8Xv4WOKbwwQRTOEZw/TP4tkMRuOq8teBWrQPy67rS9p7uWQfwZUZT
+         ICQ3j3soAVeUZ5mIY/TJE91x/wbFNdKsA+GKAozF7BXwnbTTreFM3SQTacofID+4ty0Q
+         cBo9kl4LapW4eSHbzaS9c/51pjsFgxyn0W3gCiuzHXiqzdVzT9R37b3Q8BjNv7EIqlHE
+         0h8U2rCsec8PKbM6hbiDs8UgEsGy8uf0vuOP+mAUWzS6AYUoNqj3QNLx8HOwDdBHJnwF
+         YarA==
+X-Gm-Message-State: AO0yUKWLTD839QIl2UZCLHzu0FLEzFa0vrD0SeXXeRQoV1gq+WimHfj7
+        y83U/psXMKWw8smCEpI1IZ+UpKleg51Kc8kX5+mgb7L0If3uleTdz5YVeUuxbx0FoirClUXcu+g
+        rGIu/racx74kAUlOuiieCeshD6+FgGBMjBIzpJbKi
+X-Received: by 2002:a67:f041:0:b0:3d0:ea5f:2ebe with SMTP id q1-20020a67f041000000b003d0ea5f2ebemr372802vsm.24.1676383989522;
+        Tue, 14 Feb 2023 06:13:09 -0800 (PST)
+X-Google-Smtp-Source: AK7set8ILiEnGlv5ZuJO0ChYIMtg9QWP50qmRJ7YQj61dDD6f94LA8JGnnpX4OUnpNtqWXQzhBR1pE6CLrjg8QUPvRI=
+X-Received: by 2002:a67:f041:0:b0:3d0:ea5f:2ebe with SMTP id
+ q1-20020a67f041000000b003d0ea5f2ebemr372792vsm.24.1676383989174; Tue, 14 Feb
+ 2023 06:13:09 -0800 (PST)
+MIME-Version: 1.0
+References: <20230129234441.116310-1-michael.christie@oracle.com> <20230129234441.116310-7-michael.christie@oracle.com>
+In-Reply-To: <20230129234441.116310-7-michael.christie@oracle.com>
+From:   Maurizio Lombardi <mlombard@redhat.com>
+Date:   Tue, 14 Feb 2023 15:12:57 +0100
+Message-ID: <CAFL455=Gp=vKpYwg3CNiuMVkfG96rgfuxpD_sGrSny4cyW+26g@mail.gmail.com>
+Subject: Re: [PATCH v3 06/14] scsi: target: iscsit: Fix TAS handling during
+ conn cleanup
+To:     Mike Christie <michael.christie@oracle.com>
+Cc:     martin.petersen@oracle.com, mgurtovoy@nvidia.com, sagi@grimberg.me,
+        d.bogdanov@yadro.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
@@ -85,60 +77,47 @@ Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-On Mon, 2023-02-13 at 10:22 -0600, Mike Christie wrote:
-> On 2/13/23 5:59 AM, Maurizio Lombardi wrote:
-> > st 8. 2. 2023 v 21:10 odesílatel David Jeffery <djeffery@redhat.com
-> > > napsal:
-> > > 
-> > > +       /*
-> > > +        * If the iscsi connection is over a loopback device from
-> > > using
-> > > +        * iscsi and iscsit on the same system, we need to set
-> > > memalloc_noio to
-> > > +        * prevent memory allocation deadlocks between target and
-> > > initiator.
-> > > +        */
-> > > +       rcu_read_lock();
-> > > +       dst = rcu_dereference(conn->sock->sk->sk_dst_cache);
-> > > +       if (dst && dst->dev && dst->dev->flags & IFF_LOOPBACK)
-> > > +               loopback = true;
-> > > +       rcu_read_unlock();
-> > 
-> > Hi Mike,
-> > I tested it, it works. The customer also confirmed that it fixes
-> > the
-> > deadlock on his setup.
-> 
-> You never responded about why/how it's used in production. Is it some
-> sort
-> of clustering or container or what?
-> 
-> The login related code can still swing back on you if it's run for a
-> relogin.
-> It would happen if we overqueue and a nop timesout because the iscsi
-> recv thread
-> is waiting for backend resources like a request/queue slot, or if
-> management tools
-> disable/enable the tpgt for reconfigs, etc.
-> 
+po 30. 1. 2023 v 0:45 odes=C3=ADlatel Mike Christie
+<michael.christie@oracle.com> napsal:
+>
+> This fixes a bug added in:
+>
+> commit f36199355c64 ("scsi: target: iscsi: Fix cmd abort fabric stop
+> race")
+>
+> If CMD_T_TAS is set on the se_cmd we must call iscsit_free_cmd to do the
+> last put on the cmd and free it, because the connection is down and we
+> will not up sending the response and doing the put from the normal IO
+> path. This patch adds a check for CMD_T_TAS in
+> iscsit_release_commands_from_conn so we now detect this case.
+>
+> Fixes: f36199355c64 ("scsi: target: iscsi: Fix cmd abort fabric stop race=
+")
+> Signed-off-by: Mike Christie <michael.christie@oracle.com>
+> ---
+>  drivers/target/iscsi/iscsi_target.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/i=
+scsi_target.c
+> index 83b007141229..2a011afa6dff 100644
+> --- a/drivers/target/iscsi/iscsi_target.c
+> +++ b/drivers/target/iscsi/iscsi_target.c
+> @@ -4222,7 +4222,8 @@ static void iscsit_release_commands_from_conn(struc=
+t iscsit_conn *conn)
+>
+>                 if (se_cmd->se_tfo !=3D NULL) {
+>                         spin_lock_irq(&se_cmd->t_state_lock);
+> -                       if (se_cmd->transport_state & CMD_T_ABORTED) {
+> +                       if (se_cmd->transport_state & CMD_T_ABORTED &&
+> +                           !(se_cmd->transport_state & CMD_T_TAS)) {
+>                                 /*
+>                                  * LIO's abort path owns the cleanup for =
+this,
+>                                  * so put it back on the list and let
+> --
+> 2.25.1
+>
 
-Hi Mike,
-The use case described is as follows:
-
-
-"This customer moved their on-premise system to the cloud.
-Their on-premise system runs with two servers and one external storage
-and uses data mirroring software to mirror data.
-
-When moving to the cloud, customer wanted to implement a data mirror
-using data mirror software with two instances to reduce the cost of
-using the cloud infrastructure.
-To build a system with two instances, we use iSCSI to mirror data
-between a local disk on one instance and a local disk on the other
-instance.
-We coexist iSCSI initiator and target so that data mirroring software
-can access each disk through a unified interface."
-
-Thanks
-Laurence
+Reviewed-by: Maurizio Lombardi <mlombard@redhat.com>
 
