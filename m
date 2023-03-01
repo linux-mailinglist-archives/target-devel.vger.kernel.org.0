@@ -2,201 +2,148 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B47216A6910
-	for <lists+target-devel@lfdr.de>; Wed,  1 Mar 2023 09:45:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 880AD6A6C00
+	for <lists+target-devel@lfdr.de>; Wed,  1 Mar 2023 12:58:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229644AbjCAIpg (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 1 Mar 2023 03:45:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40422 "EHLO
+        id S229813AbjCAL63 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 1 Mar 2023 06:58:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229723AbjCAIpX (ORCPT
+        with ESMTP id S229819AbjCAL60 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 1 Mar 2023 03:45:23 -0500
-Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B87FF961;
-        Wed,  1 Mar 2023 00:45:22 -0800 (PST)
-Received: from mta-01.yadro.com (localhost.localdomain [127.0.0.1])
-        by mta-01.yadro.com (Proxmox) with ESMTP id DDE15341C53;
-        Wed,  1 Mar 2023 11:45:20 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; h=cc
-        :cc:content-transfer-encoding:content-type:content-type:date
-        :from:from:in-reply-to:message-id:mime-version:references
-        :reply-to:subject:subject:to:to; s=mta-01; bh=6RFLv9E9XXOOlobf2b
-        ucWCM8Og0jjTl1urqafYJiZX4=; b=FuKDGjRjtl1kU83UAc1212kmETnGMMUvNi
-        d6lvI6NNcCn2eJnk/kME4EGYXfI0O5TvJEuSPNqSrkCao8KP7ZAs1pGd7AfmRzdk
-        TfTUV9YFzPcXytslnvjUV73mUh4axJlnDmVinPfUGms2XcXWzA137nN3bt5NjBBo
-        RnyUaWufg=
-Received: from T-EXCH-08.corp.yadro.com (unknown [172.17.10.14])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mta-01.yadro.com (Proxmox) with ESMTPS id D29CF341C51;
-        Wed,  1 Mar 2023 11:45:20 +0300 (MSK)
-Received: from NB-591.corp.yadro.com (10.199.20.11) by
- T-EXCH-08.corp.yadro.com (172.17.11.58) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.1118.9; Wed, 1 Mar 2023 11:45:20 +0300
-From:   Dmitry Bogdanov <d.bogdanov@yadro.com>
-To:     Martin Petersen <martin.petersen@oracle.com>,
-        <target-devel@vger.kernel.org>
-CC:     Christoph Hellwig <hch@infradead.org>,
-        Mike Christie <michael.christie@oracle.com>,
-        <linux-scsi@vger.kernel.org>, <linux@yadro.com>,
-        Dmitry Bogdanov <d.bogdanov@yadro.com>,
-        Roman Bolshakov <r.bolshakov@yadro.com>
-Subject: [PATCH v5 4/4] scsi: target: core: Add RTPI attribute for target port
-Date:   Wed, 1 Mar 2023 11:45:12 +0300
-Message-ID: <20230301084512.21956-5-d.bogdanov@yadro.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230301084512.21956-1-d.bogdanov@yadro.com>
-References: <20230301084512.21956-1-d.bogdanov@yadro.com>
+        Wed, 1 Mar 2023 06:58:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 800062F7B7
+        for <target-devel@vger.kernel.org>; Wed,  1 Mar 2023 03:57:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1677671855;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=mHl5KQjEc4/d6SgEY0TdUVaYr+bU97RLVBw2BBUuA38=;
+        b=IzK5Tj+b9zVUvuXav6xbVx3HcaHafSD8i/DCv+uVd1UyPER/PlKnjHST2RupKkXCh4lPrq
+        Igimw2KVaWUlXsV8DC/cLGO3WdRsR79iWomj6BcTFctoSRZWDtoF+Qkoqzi6beDOR3rhKU
+        nHp7xkoaplu2eLPpW/bKvPGj6Zk1ncM=
+Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com
+ [209.85.222.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-483-dGb70gUMMQOHU4pmlWpYfQ-1; Wed, 01 Mar 2023 06:57:34 -0500
+X-MC-Unique: dGb70gUMMQOHU4pmlWpYfQ-1
+Received: by mail-ua1-f72.google.com with SMTP id j21-20020a9f3095000000b006901584fb3aso2201342uab.7
+        for <target-devel@vger.kernel.org>; Wed, 01 Mar 2023 03:57:34 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1677671853;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mHl5KQjEc4/d6SgEY0TdUVaYr+bU97RLVBw2BBUuA38=;
+        b=aLJ0rjj6LBpm6SoPvOGxWOG1XEyoqM2zSa6bRSCKBssLwQEkkAwf6Jt1l6SS+o+krW
+         FC2wEgBz/6rAVLe9AL9ALkDkQasXHKgocgdBJGmomRo6sQ8h5EsP1H4xoyMGeeWrPjtF
+         jIxzjDMv5KCc/JxK/j4tBUSmbSYcWFvd6abBAh+R4bQWTKtMtiRGIAKtsel4DdjusRkF
+         w/vFwitWp/QpMpssZP43U2dxQkoKLF9danHPkhy2iamnwjdExY21szYROCfUY5pKXQUS
+         W73vuhoPWFIzCJwQXgY7xt+gBsZF9+Nh71NgCc1c/ZbwmZ4qsrSDf/uefLQgFnDqI84W
+         s5/w==
+X-Gm-Message-State: AO0yUKUpmTmprDmUyM0EQSZyz3huxx4lCwLelVAesgjSRIjXCFDTssp1
+        xwMU8SSH1hkPENbP2O0zA7OyVNAXbELRavLKgrFlDSK06C4kueF5nVkO33ygiDGJxFiyZ4ZMpp6
+        QHqQ2hI+fSFv/afJDAh0zsWyjMSnRlRlG/WfXWUQZ58xsuQ==
+X-Received: by 2002:a05:6122:656:b0:401:8898:ea44 with SMTP id h22-20020a056122065600b004018898ea44mr3351179vkp.3.1677671853359;
+        Wed, 01 Mar 2023 03:57:33 -0800 (PST)
+X-Google-Smtp-Source: AK7set9l846Pjlw2nULxarUi1PRFBt3nBG6v0YrgnYC4ddQ7sWQ5MmNP5msaiDYvAL+l07xHgrEbEXqOCSsuiMJsbhs=
+X-Received: by 2002:a05:6122:656:b0:401:8898:ea44 with SMTP id
+ h22-20020a056122065600b004018898ea44mr3351172vkp.3.1677671853105; Wed, 01 Mar
+ 2023 03:57:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.199.20.11]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-08.corp.yadro.com (172.17.11.58)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230129234441.116310-1-michael.christie@oracle.com> <20230129234441.116310-6-michael.christie@oracle.com>
+In-Reply-To: <20230129234441.116310-6-michael.christie@oracle.com>
+From:   Maurizio Lombardi <mlombard@redhat.com>
+Date:   Wed, 1 Mar 2023 12:57:21 +0100
+Message-ID: <CAFL455=QjP9TutSh0e5KS0R07PK3Pvcv+6xNkP6i6ExGv+gCpg@mail.gmail.com>
+Subject: Re: [PATCH v3 05/14] scsi: target: iscsit: stop/wait on cmds during
+ conn close
+To:     Mike Christie <michael.christie@oracle.com>
+Cc:     martin.petersen@oracle.com, mgurtovoy@nvidia.com, sagi@grimberg.me,
+        d.bogdanov@yadro.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-RELATIVE TARGET PORT IDENTIFIER can be read and configured via configfs:
-$ echo 0x10 > $TARGET/tpgt_N/rtpi
+po 30. 1. 2023 v 0:45 odes=C3=ADlatel Mike Christie
+<michael.christie@oracle.com> napsal:
+>
+> This fixes a bug added in:
+>
+> commit f36199355c64 ("scsi: target: iscsi: Fix cmd abort fabric stop
+> race")
+>
+> If we have multiple sessions to the same se_device we can hit a race wher=
+e
+> a LUN_RESET on one session cleans up the se_cmds from under another
+> session which is being closed. This results in the closing session freein=
+g
+> its conn/session structs while they are still in use.
+>
+> The bug is:
+>
+> 1. Session1 has IO se_cmd1.
+> 2. Session2 can also have se_cmds for IO and optionally TMRs for ABORTS
+> but then gets a LUN_RESET.
+> 3. The LUN_RESET on session2 sees the se_cmds on session1 and during
+> the drain stages marks them all with CMD_T_ABORTED.
+> 4. session1 is now closed so iscsit_release_commands_from_conn only sees
+> se_cmds with the CMD_T_ABORTED bit set and returns immediately even
+> though we have outstanding commands.
+> 5. session1's connection and session are freed.
+> 6. The backend request for se_cmd1 completes and it accesses the freed
+> connection/session.
+>
+> This hooks the iscsit layer into the cmd counter code, so we can wait for
+> all outstanding se_cmds before freeing the connection.
+>
+> Fixes: f36199355c64 ("scsi: target: iscsi: Fix cmd abort fabric stop race=
+")
+> Signed-off-by: Mike Christie <michael.christie@oracle.com>
+> ---
+>  drivers/target/iscsi/iscsi_target.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+>
+> diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/i=
+scsi_target.c
+> index 11115c207844..83b007141229 100644
+> --- a/drivers/target/iscsi/iscsi_target.c
+> +++ b/drivers/target/iscsi/iscsi_target.c
+> @@ -4245,6 +4245,16 @@ static void iscsit_release_commands_from_conn(stru=
+ct iscsit_conn *conn)
+>                 iscsit_free_cmd(cmd, true);
+>
+>         }
+> +
+> +       /*
+> +        * Wait on commands that were cleaned up via the aborted_task pat=
+h.
+> +        * LLDs that implement iscsit_wait_conn will already have waited =
+for
+> +        * commands.
+> +        */
+> +       if (!conn->conn_transport->iscsit_wait_conn) {
+> +               target_stop_cmd_counter(conn->cmd_cnt);
+> +               target_wait_for_cmds(conn->cmd_cnt);
+> +       }
+>  }
+>
+>  static void iscsit_stop_timers_for_cmds(
+> --
+> 2.25.1
+>
 
-RTPI can be changed only on disabled target ports.
-
-Signed-off-by: Roman Bolshakov <r.bolshakov@yadro.com>
-Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
----
- v5:
-    fix casting from config_item to se_tpg
- v4:
-    move rtpi file from tpgt_n/attrib to tpgt_n folder
-    revert occasional rename of core_tpg_remove_lun
-
- v3:
-    change core_ prefix to target_
-
- v2:
-   do not allow to change RTPI on enabled target port
----
- drivers/target/target_core_fabric_configfs.c | 39 +++++++++++++++++++-
- drivers/target/target_core_tpg.c             | 19 ++++++++--
- include/target/target_core_base.h            |  1 +
- 3 files changed, 53 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/target/target_core_fabric_configfs.c b/drivers/target/target_core_fabric_configfs.c
-index 873da49ab704..0ce47e21e0c8 100644
---- a/drivers/target/target_core_fabric_configfs.c
-+++ b/drivers/target/target_core_fabric_configfs.c
-@@ -844,15 +844,48 @@ static ssize_t target_fabric_tpg_base_enable_store(struct config_item *item,
- 		return ret;
- 	return count;
- }
-+static ssize_t target_fabric_tpg_base_rtpi_show(struct config_item *item, char *page)
-+{
-+	struct se_portal_group *se_tpg = to_tpg(item);
-+
-+	return sysfs_emit(page, "%#x\n", se_tpg->tpg_rtpi);
-+}
-+
-+static ssize_t target_fabric_tpg_base_rtpi_store(struct config_item *item,
-+				   const char *page, size_t count)
-+{
-+	struct se_portal_group *se_tpg = to_tpg(item);
-+	u16 val;
-+	int ret;
-+
-+	ret = kstrtou16(page, 0, &val);
-+	if (ret < 0)
-+		return ret;
-+	if (val == 0)
-+		return -EINVAL;
-+
-+	if (se_tpg->enabled) {
-+		pr_info("%s_TPG[%hu] - Can not change RTPI on enabled TPG",
-+			se_tpg->se_tpg_tfo->fabric_name,
-+			se_tpg->se_tpg_tfo->tpg_get_tag(se_tpg));
-+		return -EINVAL;
-+	}
-+
-+	se_tpg->tpg_rtpi = val;
-+	se_tpg->rtpi_manual = true;
-+
-+	return count;
-+}
- 
- CONFIGFS_ATTR(target_fabric_tpg_base_, enable);
-+CONFIGFS_ATTR(target_fabric_tpg_base_, rtpi);
- 
- static int
- target_fabric_setup_tpg_base_cit(struct target_fabric_configfs *tf)
- {
- 	struct config_item_type *cit = &tf->tf_tpg_base_cit;
- 	struct configfs_attribute **attrs = NULL;
--	size_t nr_attrs = 0;
-+	size_t nr_attrs = 1;
- 	int i = 0;
- 
- 	if (tf->tf_ops->tfc_tpg_base_attrs)
-@@ -875,7 +908,9 @@ target_fabric_setup_tpg_base_cit(struct target_fabric_configfs *tf)
- 			attrs[i] = tf->tf_ops->tfc_tpg_base_attrs[i];
- 
- 	if (tf->tf_ops->fabric_enable_tpg)
--		attrs[i] = &target_fabric_tpg_base_attr_enable;
-+		attrs[i++] = &target_fabric_tpg_base_attr_enable;
-+
-+	attrs[i++] = &target_fabric_tpg_base_attr_rtpi;
- 
- done:
- 	cit->ct_item_ops = &target_fabric_tpg_base_item_ops;
-diff --git a/drivers/target/target_core_tpg.c b/drivers/target/target_core_tpg.c
-index b1d9383386ec..2e079c6a8e8c 100644
---- a/drivers/target/target_core_tpg.c
-+++ b/drivers/target/target_core_tpg.c
-@@ -445,10 +445,21 @@ static int target_tpg_register_rtpi(struct se_portal_group *se_tpg)
- 	u32 val;
- 	int ret;
- 
--	ret = xa_alloc(&tpg_xa, &val, se_tpg,
--		       XA_LIMIT(1, USHRT_MAX), GFP_KERNEL);
--	if (!ret)
--		se_tpg->tpg_rtpi = val;
-+	if (se_tpg->rtpi_manual) {
-+		ret = xa_insert(&tpg_xa, se_tpg->tpg_rtpi, se_tpg, GFP_KERNEL);
-+		if (ret) {
-+			pr_info("%s_TPG[%hu] - Can not set RTPI %#x, it is already busy",
-+				se_tpg->se_tpg_tfo->fabric_name,
-+				se_tpg->se_tpg_tfo->tpg_get_tag(se_tpg),
-+				se_tpg->tpg_rtpi);
-+			return -EINVAL;
-+		}
-+	} else {
-+		ret = xa_alloc(&tpg_xa, &val, se_tpg,
-+			       XA_LIMIT(1, USHRT_MAX), GFP_KERNEL);
-+		if (!ret)
-+			se_tpg->tpg_rtpi = val;
-+	}
- 
- 	return ret;
- }
-diff --git a/include/target/target_core_base.h b/include/target/target_core_base.h
-index 008e0e4500d1..e52d0915b3d8 100644
---- a/include/target/target_core_base.h
-+++ b/include/target/target_core_base.h
-@@ -918,6 +918,7 @@ struct se_portal_group {
- 	bool			enabled;
- 	/* RELATIVE TARGET PORT IDENTIFIER */
- 	u16			tpg_rtpi;
-+	bool			rtpi_manual;
- 	/* Used for PR SPEC_I_PT=1 and REGISTER_AND_MOVE */
- 	atomic_t		tpg_pr_ref_count;
- 	/* Spinlock for adding/removing ACLed Nodes */
--- 
-2.25.1
-
+Reviewed-by: Maurizio Lombardi <mlombard@redhat.com>
 
