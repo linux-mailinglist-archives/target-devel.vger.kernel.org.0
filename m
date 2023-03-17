@@ -2,68 +2,100 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C18CC6BE643
-	for <lists+target-devel@lfdr.de>; Fri, 17 Mar 2023 11:11:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C3466BEF04
+	for <lists+target-devel@lfdr.de>; Fri, 17 Mar 2023 17:59:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229560AbjCQKLS (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 17 Mar 2023 06:11:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46538 "EHLO
+        id S230025AbjCQQ71 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 17 Mar 2023 12:59:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229999AbjCQKLQ (ORCPT
+        with ESMTP id S229988AbjCQQ7Y (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 17 Mar 2023 06:11:16 -0400
-Received: from sragenkab.go.id (mail.sragenkab.go.id [103.172.109.4])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id A7E1CA8E8E
-        for <target-devel@vger.kernel.org>; Fri, 17 Mar 2023 03:11:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sragenkab.go.id;
-         h=mime-version:content-type:content-transfer-encoding:date:from
-        :to:subject:reply-to:message-id; q=dns/txt; s=dkim1; bh=QGcIAmD5
-        O/Y9qXzDV8MxyimbsW3+rMaQ/kz75GzBHbk=; b=A8eZMZ7CvUGDZLuSt/X66RzL
-        YL8BdBzFe1pBDPQNcka7Po9LWBlD3l41dpYNpiUXuysJFw+DsYeoFSRz6SFwTKBv
-        9iUrCn4c7Y4G6EI2oCnwcLGMbbQpqYqs6+gUN2jD8KPtK/s1oQRytT1LVGiHv0vw
-        Xd/7xlQwHCSXcoklgzQlGv1/MMIEQibxqnQdrnQXWlM8SbMGDzdXRmJF0vNXcEfR
-        vimV4IMgdj+jER6Kf0XeQQTKFExEwgog8Ml1yV61EqExYXKHFoUrlPsdG8CWdMz2
-        7RRwHQqWpnX6URn96Zf+tVwK6mWYqClmZy1shBXx8/oGDuWhrJC1D4ccgKFD6g==
-Received: (qmail 87676 invoked from network); 14 Mar 2023 21:19:26 -0000
-Received: from localhost (HELO mail2.sragenkab.go.id) (127.0.0.1)
-  by localhost with SMTP; 14 Mar 2023 21:19:26 -0000
+        Fri, 17 Mar 2023 12:59:24 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4418A20D25;
+        Fri, 17 Mar 2023 09:59:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 0FBE7CE20FF;
+        Fri, 17 Mar 2023 16:59:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00E0C433EF;
+        Fri, 17 Mar 2023 16:59:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1679072358;
+        bh=Yr+loVbWv0qK18b3WpWr9ZR4G6QuOAV94eNluGFAb18=;
+        h=Date:From:To:Cc:Subject:From;
+        b=XniyUM26LziXHrexP/d/DUVLjnjl4qsrffDi+ERWh6SmXsGgmg7VJxMQtVgwshxny
+         dFvp0OpJhh/vfqa/cGeur5SEtghfBr9J8PS6x8rdr83Z7Jg2vnxLMEeyE9TQQsK9k7
+         7EyZpAMUKl0mpKAA3yBGWpDbAHZ/lKDCvl9dgxS3rljmW+AJt7BkR1YjB4s6tSDzHl
+         sk9WX3evD6kjhJWmuXcjEuXv0dg0BRT/rZhwCXMgMMRhznb5ZkmA2GgzdfCJPufpnS
+         /+KkNz7UZCe78TZKjBmBuqymn9RqBm3tnfT5q/gONOSHXhhcKMvGHhTCTTBOeDycaQ
+         bAouUTD5ks0FQ==
+Date:   Fri, 17 Mar 2023 10:59:48 -0600
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     Bodo Stroesser <bostroesser@gmail.com>
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org
+Subject: [PATCH][next] uapi: target: Replace fake flex-array with
+ flexible-array member
+Message-ID: <ZBSchMvTdl7VObKI@work>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 14 Mar 2023 14:19:25 -0700
-From:   Ibrahim Tafa <jurnalsukowati@sragenkab.go.id>
-To:     undisclosed-recipients:;
-Subject: LOAN OPPORTUNITY AT LOW-INTEREST RATE
-Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
-Mail-Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
-Message-ID: <55264f0c46876a4351ef76813871d122@sragenkab.go.id>
-X-Sender: jurnalsukowati@sragenkab.go.id
-User-Agent: Roundcube Webmail/0.8.1
-X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS,SUBJ_ALL_CAPS,UNDISC_MONEY,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
+Zero-length arrays as fake flexible arrays are deprecated and we are
+moving towards adopting C99 flexible-array members instead.
 
+Address the following warning found with GCC-13 and
+-fstrict-flex-arrays=3 enabled:
+  CC      drivers/target/target_core_user.o
+drivers/target/target_core_user.c: In function ‘queue_cmd_ring’:
+drivers/target/target_core_user.c:1096:15: warning: array subscript 0 is outside array bounds of ‘struct iovec[0]’ [-Warray-bounds=]
+ 1096 |         iov = &entry->req.iov[0];
+      |               ^~~~~~~~~~~~~~~~~~
+In file included from drivers/target/target_core_user.c:31:
+./include/uapi/linux/target_core_user.h:122:38: note: while referencing ‘iov’
+  122 |                         struct iovec iov[0];
+      |                                      ^~~
 
+This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
+routines on memcpy() and help us make progress towards globally
+enabling -fstrict-flex-arrays=3 [1].
+
+Link: https://github.com/KSPP/linux/issues/21
+Link: https://github.com/KSPP/linux/issues/270
+Link: https://gcc.gnu.org/pipermail/gcc-patches/2022-October/602902.html [1]
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+---
+ include/uapi/linux/target_core_user.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/uapi/linux/target_core_user.h b/include/uapi/linux/target_core_user.h
+index fbd8ca67e107..f925a77f19ed 100644
+--- a/include/uapi/linux/target_core_user.h
++++ b/include/uapi/linux/target_core_user.h
+@@ -119,7 +119,7 @@ struct tcmu_cmd_entry {
+ 			__u64 cdb_off;
+ 			__u64 __pad1;
+ 			__u64 __pad2;
+-			struct iovec iov[0];
++			__DECLARE_FLEX_ARRAY(struct iovec, iov);
+ 		} req;
+ 		struct {
+ 			__u8 scsi_status;
 -- 
-Greetings,
-   I am contacting you based on the Investment/Loan opportunity for 
-companies in need of financing a project/business, We have developed a 
-new method of financing that doesn't take long to receive financing from 
-our clients.
-    If you are looking for funds to finance your project/Business or if 
-you are willing to work as our agent in your country to find clients in 
-need of financing and earn commissions, then get back to me for more 
-details.
+2.34.1
 
-Regards,
-Ibrahim Tafa
-ABIENCE INVESTMENT GROUP FZE, United Arab Emirates
