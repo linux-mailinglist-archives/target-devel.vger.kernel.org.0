@@ -2,36 +2,36 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA7B56C0826
-	for <lists+target-devel@lfdr.de>; Mon, 20 Mar 2023 02:06:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 488F86C07F7
+	for <lists+target-devel@lfdr.de>; Mon, 20 Mar 2023 02:03:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231474AbjCTBGI (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sun, 19 Mar 2023 21:06:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44472 "EHLO
+        id S231387AbjCTBDd (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sun, 19 Mar 2023 21:03:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231403AbjCTBDk (ORCPT
+        with ESMTP id S231321AbjCTBCy (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sun, 19 Mar 2023 21:03:40 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D2932411F;
-        Sun, 19 Mar 2023 17:57:53 -0700 (PDT)
+        Sun, 19 Mar 2023 21:02:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DB1123854;
+        Sun, 19 Mar 2023 17:57:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 519E9B80D42;
-        Mon, 20 Mar 2023 00:56:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 152D6C433D2;
-        Mon, 20 Mar 2023 00:56:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A6DF61204;
+        Mon, 20 Mar 2023 00:57:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF47AC433EF;
+        Mon, 20 Mar 2023 00:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679273811;
-        bh=K+V39EeKe6iCTrbQd/BlGo1gjFZe4Ik03rVWVFz+ysk=;
+        s=k20201202; t=1679273840;
+        bh=nD/p5Flp6LuUhsPojE0Dk0+s5ZY25hB+PXBH1ZDKZ4c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eAEaK25AHrymu75/LLRcR6OJngGNuZPJ943HeLZCtqCRvuFpUas3dZd3YcesH/30V
-         t0ji0jTSjgKAUkRPrMU1CtGRQLbmMuttKDYr/5GwD23kbMSckRUvP2oUIDhB5+o+wM
-         zCX4Cmw7mPMX6tPH4dXkfqfYkrBMEumnIxvxX5psdIol4GjYaFKXmWuUE9U4ph6z/S
-         c3IDVoSYHhvf6abK69cq0do7Lbksw/VFID7siimwVReQrblfHqJb2X45o1QlHTVGjL
-         C7vemrwAiWc6Wg0oUoODcAXHhG8t9/JG0JdnAdpCxBO/U68arwHeo+jVltjwZxDJFE
-         Q/gu2II4YbhZA==
+        b=bqwu1/aZyfwrO3/fD2j2r9HqGPdxWTp7gntPCeUWD+S7G34of9fdQEPMGUHSJcCr+
+         BZhyOD5psVv5fBZ4jcLEYhc/7xi1rEhlflN2sG9r1AJdP0ZEvlCkA4wBOVYpEw6a+H
+         5HxcHytGpd5ldRCQG2W7Y511nn+emzhg4S3cq4m+mKwelZMOehWS5MVQjRK2Bz43bd
+         DGTE8PfLL2KMQG0jer8gSRX+t7X2xx2jjuffpDuKYwJ4wfdqsW4p09IpjUmWUkG9Fo
+         nvrDJqYIggsK9Etslrb4VQNoAYxZYoeGCZM5Kpepx2HgT7RznmsZ7v35+pLRY9BXGu
+         4PAku9FqpWiQw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Maurizio Lombardi <mlombard@redhat.com>,
@@ -39,12 +39,12 @@ Cc:     Maurizio Lombardi <mlombard@redhat.com>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>, mgurtovoy@nvidia.com,
         linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 06/12] scsi: target: iscsi: Fix an error message in iscsi_check_key()
-Date:   Sun, 19 Mar 2023 20:56:29 -0400
-Message-Id: <20230320005636.1429242-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 5/9] scsi: target: iscsi: Fix an error message in iscsi_check_key()
+Date:   Sun, 19 Mar 2023 20:57:03 -0400
+Message-Id: <20230320005707.1429405-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230320005636.1429242-1-sashal@kernel.org>
-References: <20230320005636.1429242-1-sashal@kernel.org>
+In-Reply-To: <20230320005707.1429405-1-sashal@kernel.org>
+References: <20230320005707.1429405-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -76,10 +76,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/target/iscsi/iscsi_target_parameters.c b/drivers/target/iscsi/iscsi_target_parameters.c
-index 7a461fbb15668..31cd3c02e5176 100644
+index 29a37b242d30a..01f93de93c8c7 100644
 --- a/drivers/target/iscsi/iscsi_target_parameters.c
 +++ b/drivers/target/iscsi/iscsi_target_parameters.c
-@@ -1262,18 +1262,20 @@ static struct iscsi_param *iscsi_check_key(
+@@ -1270,18 +1270,20 @@ static struct iscsi_param *iscsi_check_key(
  		return param;
  
  	if (!(param->phase & phase)) {
