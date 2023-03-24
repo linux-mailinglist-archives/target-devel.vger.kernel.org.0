@@ -2,70 +2,71 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA34A6C4CAC
-	for <lists+target-devel@lfdr.de>; Wed, 22 Mar 2023 15:00:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91A2F6C84A7
+	for <lists+target-devel@lfdr.de>; Fri, 24 Mar 2023 19:18:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231137AbjCVOAh (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 22 Mar 2023 10:00:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41812 "EHLO
+        id S231805AbjCXSSR (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 24 Mar 2023 14:18:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231145AbjCVOAg (ORCPT
+        with ESMTP id S230350AbjCXSSO (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 22 Mar 2023 10:00:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9E74193
-        for <target-devel@vger.kernel.org>; Wed, 22 Mar 2023 06:59:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1679493591;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=aEfREtnuoRn4im/BDpgIBUhnwsEs800ZPAqQZipuKHM=;
-        b=Qt3zJgEqGYGc5S3NcxyS97XR9sgjd2hYpXN1zvN7if+miq3TBs/D+wG2wFZDdobj+IVjgw
-        /WFffZtzfLlRiwQkBUyWU1obG0/X+i6VzEzCADJPmhpKTechlDEYFZSWlsc85o2E1pM1SH
-        /a/huwGtFdtkWggRbgPB6tCYfcwaaE4=
-Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com
- [209.85.217.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-487-NOn3DtQAP0WDwWJbbZln-Q-1; Wed, 22 Mar 2023 09:59:50 -0400
-X-MC-Unique: NOn3DtQAP0WDwWJbbZln-Q-1
-Received: by mail-vs1-f72.google.com with SMTP id i16-20020a67c210000000b00425f051bf84so3914662vsj.13
-        for <target-devel@vger.kernel.org>; Wed, 22 Mar 2023 06:59:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679493589;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aEfREtnuoRn4im/BDpgIBUhnwsEs800ZPAqQZipuKHM=;
-        b=V7rsK+UrO49wZQP6a7pIGSHoz5OxwYvkpAmW9F+OP3BWX+r5BFkT+cr9DEmy2OG8/b
-         8WALtiFy4Kh1t50gM74VqN0a03SVJLXUAZWl+qgpV67feUKpUxobQfEb8vcuNF0Bar43
-         YlGNTbELVLNa8zeUtpUif+/pvc0QisxXxNxF5wgSI8zeQU+V6Vg+T4COFfNQQiPnkvTe
-         CpENhm0sp94SEF2FCVH7hj+i17AExE+G4S5C/s8fic87zMIuFaH0BVvwNB1VzdW6TR3r
-         8UZ9A9ZR9k85SuKNv4ufpJO1IlTOKvVieJwYWDw4oFkuk6J16fFiRIdDaOiI4goB8RiW
-         Yjhw==
-X-Gm-Message-State: AO0yUKX4h/kNWNCWXyLntEgkN2c4OsYEyFxLQhfBkM2up1AwSqSl3qNn
-        YbD7pSq54mdOQ4dHkv91f0dJFD61HYouzek34q7vd7fyJSqUVC/qmeW8U3ONjYSiNWK2XJYP4p/
-        uzAHhS0XDI8GHNId66yjTu7tuNWIVSBumnMoNr4powkbkg3njC38=
-X-Received: by 2002:a05:6122:2014:b0:401:7625:e9e3 with SMTP id l20-20020a056122201400b004017625e9e3mr1715133vkd.1.1679493589479;
-        Wed, 22 Mar 2023 06:59:49 -0700 (PDT)
-X-Google-Smtp-Source: AK7set+uhq7r8CfHdNF8Xk9sGgjZhBRbHGta4Fle3DFMhflNTVy5YrsAHewSbzRSQnTt3JKQjNAHZ3yhdLh5LDbVvmY=
-X-Received: by 2002:a05:6122:2014:b0:401:7625:e9e3 with SMTP id
- l20-20020a056122201400b004017625e9e3mr1715119vkd.1.1679493589174; Wed, 22 Mar
- 2023 06:59:49 -0700 (PDT)
+        Fri, 24 Mar 2023 14:18:14 -0400
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B3AECC10;
+        Fri, 24 Mar 2023 11:18:11 -0700 (PDT)
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32OI0SD2022105;
+        Fri, 24 Mar 2023 18:17:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : subject :
+ date : message-id : mime-version : content-transfer-encoding;
+ s=corp-2022-7-12; bh=1v7ZLeL97hWYChdBpR/rAN0z9r+BoNViKNQTonIgoCs=;
+ b=dklQLpv5Kih9JVdYi1iO2ImypuDTYkW4F+sme8XZYHtjXMI0JGJwkdeW4lDW2IeRBmfH
+ 3I2ntPpGeIzk11tOaMcV1bNoGPAbQ0hTjXtjXXclvUGOKdyOxoRjcG7LD65Rvpp5xwrd
+ yaHgfOOpDxdRe3+ncYvEX4jdkqh4RvqDfJNWKMFaUwqxzOhfDkduEHS7+/ZtYlugQZsi
+ E+xMsDiXR7w7ek9bDVLPOyEFuc1jfmuafwBkXAjxBCfYxpU7/3Ad01Gq+rExVNAJz5Lf
+ cCgB+txoCNtMcPWNsFOVrACgPIJRV31gci7NttV3wqYP5XYkTkPoRXqrhHm3Nvujdvkn OA== 
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3phgrg81bc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 24 Mar 2023 18:17:46 +0000
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.5/8.17.1.5) with ESMTP id 32OIAArs001370;
+        Fri, 24 Mar 2023 18:17:45 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3pgxk4bx2j-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 24 Mar 2023 18:17:45 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32OIHiEJ021017;
+        Fri, 24 Mar 2023 18:17:45 GMT
+Received: from mnchrist-mac.us.oracle.com (dhcp-10-154-153-54.vpn.oracle.com [10.154.153.54])
+        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3pgxk4bx19-1;
+        Fri, 24 Mar 2023 18:17:44 +0000
+From:   Mike Christie <michael.christie@oracle.com>
+To:     bvanassche@acm.org, hch@lst.de, martin.petersen@oracle.com,
+        linux-scsi@vger.kernel.org, james.bottomley@hansenpartnership.com,
+        linux-block@vger.kernel.org, dm-devel@redhat.com,
+        snitzer@kernel.org, axboe@kernel.dk,
+        linux-nvme@lists.infradead.org, chaitanyak@nvidia.com,
+        kbusch@kernel.org, target-devel@vger.kernel.org
+Subject: [PATCH v5 00/18] Use block pr_ops in LIO
+Date:   Fri, 24 Mar 2023 13:17:23 -0500
+Message-Id: <20230324181741.13908-1-michael.christie@oracle.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20230227075735.8695-1-mlombard@redhat.com>
-In-Reply-To: <20230227075735.8695-1-mlombard@redhat.com>
-From:   Maurizio Lombardi <mlombard@redhat.com>
-Date:   Wed, 22 Mar 2023 14:59:37 +0100
-Message-ID: <CAFL455n3w6MoWTC6sj2T_oSg38oF-zSpQFaiJshknd91OJShTg@mail.gmail.com>
-Subject: Re: [PATCH] target: iscsi: use GFP_NOIO with loopback connections
-To:     martin.petersen@oracle.com
-Cc:     michael.christie@oracle.com, target-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-24_11,2023-03-24_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ mlxlogscore=999 spamscore=0 adultscore=0 bulkscore=0 mlxscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2303240143
+X-Proofpoint-ORIG-GUID: 42_53J3ULHbeAIb4lt_dUZZeDskoyq4B
+X-Proofpoint-GUID: 42_53J3ULHbeAIb4lt_dUZZeDskoyq4B
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -74,30 +75,87 @@ Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-po 27. 2. 2023 v 9:00 odes=C3=ADlatel Maurizio Lombardi <mlombard@redhat.co=
-m> napsal:
->
-> Fix the issue by using memalloc_noio_*() to enable implicit GFP_NOIO
-> in the vulnerable code paths, when the connection is in loopback.
->
-> @@ -1289,6 +1291,12 @@ static int __iscsi_target_login_thread(struct iscs=
-i_np *np)
->                 iscsit_free_conn(conn);
->                 return 1;
->         }
-> +
-> +       dst =3D sk_dst_get(conn->sock->sk);
-> +       if (dst && dst->dev && dst->dev->flags & IFF_LOOPBACK)
-> +               conn->loopback =3D true;
-> +       dst_release(dst);
-> +
+The patches in this thread allow us to use the block pr_ops with LIO's
+target_core_iblock module to support cluster applications in VMs. They
+were built over Linus's tree. They also apply over linux-next and
+Martin's tree and Jens's trees. 
+ 
+Currently, to use windows clustering or linux clustering (pacemaker +
+cluster labs scsi fence agents) in VMs with LIO and vhost-scsi, you have
+to use tcmu or pscsi or use a cluster aware FS/framework for the LIO pr
+file. Setting up a cluster FS/framework is pain and waste when your real
+backend device is already a distributed device, and pscsi and tcmu are
+nice for specific use cases, but iblock gives you the best performance and
+allows you to use stacked devices like dm-multipath. So these patches
+allow iblock to work like pscsi/tcmu where they can pass a PR command to
+the backend module. And then iblock will use the pr_ops to pass the PR
+command to the real devices similar to what we do for unmap today.
 
-As discussed in the other thread, conn->sock is not set when
-isert/cxgbit etc are used.
-So we need to check it here otherwise the kernel would crash.
+The patches are separated in the following groups:
+Patch 1 - 2:
+- Add block layer callouts for reading reservations and rename reservation
+  error code.
+Patch 3 - 5:
+- SCSI support for new callouts.
+Patch 6:
+- DM support for new callouts.
+Patch 7 - 13:
+- NVMe support for new callouts.
+Patch 14 - 18:
+- LIO support for new callouts.
 
-I think that "conn->loopback" should be set by the iscsit_accept_np() callb=
-ack.
+This patchset has been tested with the libiscsi PGR ops and with window's
+failover cluster verification test. Note that for scsi backend devices we
+need this patchset:
 
-Maurizio
+https://lore.kernel.org/linux-scsi/20230123221046.125483-1-michael.christie@oracle.com/T/#m4834a643ffb5bac2529d65d40906d3cfbdd9b1b7
+
+to handle UAs. To reduce the size of this patchset that's being done
+separately to make reviewing easier. And to make merging easier this
+patchset and the one above do not have any conflicts so can be merged
+in different trees.
+
+v5:
+- Use []/struct_size with nvme reservation structs
+- Add Keith's copywrite to pr.c
+- Drop else in nvme_send_pr_command
+- Fix PR_EXCLUSIVE_ACCESS_ALL_REGS use in block_pr_type_from_nvme
+
+v4:
+- Pass read_keys number of keys instead of array len
+- Keep the switch use when converting between block and scsi/nvme PR
+types. Drop default case so compiler spits out warning if in the future
+a new value is added.
+- Add helper for handling
+nvme_send_ns_head_pr_command/nvme_send_ns_pr_command
+- Use void * instead of u8* for passing data buffer.
+- Rename status variable to rs.
+- Have caller init buffer/structs instead of nvme/scsi callouts.
+- Drop blk_status to err code.
+
+v3:
+- Fix patch subject formatting.
+- Fix coding style.
+- Rearrange patches so helpers are added with users to avoid compilation
+errors.
+- Move pr type conversion to array and add nvme_pr_type.
+- Add Extended Data Structure control flag enum and use in code for checks.
+- Move nvme pr code to new file.
+- Add more info to patch subjects about why we need to add blk_status
+to pr_ops.
+- Use generic SCSI passthrough error handling interface.
+- Fix checkpatch --strict errors. Note that I kept the existing coding
+style that it complained about because it looked like it was the preferred
+style for the code and I didn't want a mix and match.
+
+v2:
+- Drop BLK_STS_NEXUS rename changes. Will do separately.
+- Add NVMe support.
+- Fixed bug in target_core_iblock where a variable was not initialized
+mentioned by Christoph.
+- Fixed sd pr_ops UA handling issue found when running libiscsi PGR tests.
+- Added patches to allow pr_ops to pass up a BLK_STS so we could return
+a RESERVATION_CONFLICT status when a pr_ops callout fails.
+
+
 
