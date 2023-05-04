@@ -2,106 +2,121 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF5E96F313B
-	for <lists+target-devel@lfdr.de>; Mon,  1 May 2023 14:53:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5283A6F736C
+	for <lists+target-devel@lfdr.de>; Thu,  4 May 2023 21:43:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232370AbjEAMxf (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 1 May 2023 08:53:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44348 "EHLO
+        id S229983AbjEDTnQ (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 4 May 2023 15:43:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232043AbjEAMxe (ORCPT
+        with ESMTP id S229683AbjEDTnF (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 1 May 2023 08:53:34 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C165310D1
-        for <target-devel@vger.kernel.org>; Mon,  1 May 2023 05:53:33 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-50bc4b88998so2130154a12.3
-        for <target-devel@vger.kernel.org>; Mon, 01 May 2023 05:53:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682945612; x=1685537612;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=W+Xyl8GFZnjIscOSe4qlAq6PZj3KVD/uO8v6sui6RQ8=;
-        b=NZzMzBTFyGxSSsB6Ygc9igIimVu4WZbedZD6BXQiMgFJq0RBmzIeNwGEgQrMBLeBW/
-         3YPCm4jmvL8iTCxCytv/iH4MrQTnX9FiZMeUIG1NciaCfRnl7pmMizisLlB4ZGTnwEx7
-         t6GZnmoVQ4g542jQgEDEue21VOW36msRTxAw2undt6NUh7lXSysNQbnFUoSfU4IPcLlk
-         OrGxeQmEBJY26vQlb7cwEXQythK5aHexxBfqoOyWMTyDFuIfA1dbLHgEAuqVXHW4WfWB
-         OC3IV/nS62ven3QGGI4Ca70GG+WV/2UjORXUNyNYgt0s8tYUbZS+xEdqvmXUJbYUadCl
-         HLvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682945612; x=1685537612;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=W+Xyl8GFZnjIscOSe4qlAq6PZj3KVD/uO8v6sui6RQ8=;
-        b=NDf7Y0PpPTLgBrICUnpxkwvyiw5tJN2BmLJts872e6ZK/yqiRZJRLqLBckNbeyYwJE
-         loN+rvvoBHH7a3gpPKJ8oBuQiG6Ru78Y/0XYtutgCU8Mc4vvCwDV/P2/crE0cFwiUgFW
-         QGbKDGHYWJLXK/OcS0W7C5c9BuPCTwwbEZrAzP+b+0EtJWbYVTZYblGal/qYU833M6kZ
-         ksxqOoXeaDxshG0NS6xmi3bQc97FmPudidxxZIy0lOdGeT/z2vG/wF0Oco2EspYhC3Yp
-         QikoWysxOYho+/ge7BSNbxO7vWs8SkWBSxgXiQj+OYEkRjS483EauYUJ5zNbNWsrxtfI
-         9CJw==
-X-Gm-Message-State: AC+VfDxD+KFBiMGRDz+HzdZBTXUhlJ5QsP2lo3qqnYLaizdG7SYmoWJF
-        XDHknp2ZH52j8iLbemJcUQ+h310wL7Sj6Y1Ewv8=
-X-Google-Smtp-Source: ACHHUZ7EfILVh2dPA/Zwkw36z7LsSzoLv9YYccCcrG5FgngoCWtG+6QBcqjTsv+PLEMEb5eXDjnTnLuxmVBZiPxrWL8=
-X-Received: by 2002:aa7:cac3:0:b0:506:a561:b0a9 with SMTP id
- l3-20020aa7cac3000000b00506a561b0a9mr6404903edt.14.1682945612108; Mon, 01 May
- 2023 05:53:32 -0700 (PDT)
+        Thu, 4 May 2023 15:43:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E20C7D99;
+        Thu,  4 May 2023 12:42:44 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D0196370D;
+        Thu,  4 May 2023 19:42:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45FE2C43443;
+        Thu,  4 May 2023 19:42:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683229361;
+        bh=hUoPHgkgFeSmgpT+GyBiuCiIZCGJ4a49BAhUVhMi/lQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=CWrKOQLPqp0zmwDnQ28ZWEQONIzn2PqRkTfx7gLZAwodYBy0MJ3llb9vSd4MJHp32
+         jtc2ZmNrX34ZyO1ZshX72biRc3e1Wmr4q/r043cl0GDqghDBXj91z0h0J0DvsHIMef
+         DuF3uGBHIc0NN09DMA8USeqI7C2H3gYPptf/FOYxQ0v+tVXbOWd3R/5Pp4D5mnqyD9
+         UysCNXOqvviRvf+Ow3EnNh12JvSdJch38S3mnu1ZtcrDez84bMapSzHPVRk0JtrYQA
+         K80fv/gntqtMDr16/yffBEPGFQD/HvascheqqEWYcNp2JCpnS2TmXaBOboNlDBwlch
+         ois20cyNtvVQg==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Dmitry Bogdanov <d.bogdanov@yadro.com>, Forza <forza@tnonline.net>,
+        Mike Christie <michael.christie@oracle.com>,
+        Maurizio Lombardi <mlombard@redhat.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>, mgurtovoy@nvidia.com,
+        mingzhe.zou@easystack.cn, justinstitt@google.com,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.3 19/59] scsi: target: iscsit: Free cmds before session free
+Date:   Thu,  4 May 2023 15:41:02 -0400
+Message-Id: <20230504194142.3805425-19-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230504194142.3805425-1-sashal@kernel.org>
+References: <20230504194142.3805425-1-sashal@kernel.org>
 MIME-Version: 1.0
-Received: by 2002:ab4:aaab:0:b0:209:e1ae:81f1 with HTTP; Mon, 1 May 2023
- 05:53:31 -0700 (PDT)
-Reply-To: lschantal86@gmail.com
-From:   "L.S Chantal" <etp838558@gmail.com>
-Date:   Mon, 1 May 2023 12:53:31 +0000
-Message-ID: <CAHJkhGUuz6uxv=8SfOprUVg5XGsCAqJ8N14qqq6zBv6S03-gZg@mail.gmail.com>
-Subject: hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,HK_SCAM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:52b listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [etp838558[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [lschantal86[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [etp838558[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  1.4 HK_SCAM No description available.
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: ******
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-SANTANDER BANK COMPENSATION UNIT, IN AFFILIATION WITH THE UNITED
+From: Dmitry Bogdanov <d.bogdanov@yadro.com>
 
-NATION.
-Your compensation fund of =E2=82=AC5.1 million is ready for payment
-contact me for more details.
+[ Upstream commit d8990b5a4d065f38f35d69bcd627ec5a7f8330ca ]
 
-Thanks
+Commands from recovery entries are freed after session has been closed.
+That leads to use-after-free at command free or NPE with such call trace:
+
+Time2Retain timer expired for SID: 1, cleaning up iSCSI session.
+BUG: kernel NULL pointer dereference, address: 0000000000000140
+RIP: 0010:sbitmap_queue_clear+0x3a/0xa0
+Call Trace:
+ target_release_cmd_kref+0xd1/0x1f0 [target_core_mod]
+ transport_generic_free_cmd+0xd1/0x180 [target_core_mod]
+ iscsit_free_cmd+0x53/0xd0 [iscsi_target_mod]
+ iscsit_free_connection_recovery_entries+0x29d/0x320 [iscsi_target_mod]
+ iscsit_close_session+0x13a/0x140 [iscsi_target_mod]
+ iscsit_check_post_dataout+0x440/0x440 [iscsi_target_mod]
+ call_timer_fn+0x24/0x140
+
+Move cleanup of recovery enrties to before session freeing.
+
+Reported-by: Forza <forza@tnonline.net>
+Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Link: https://lore.kernel.org/r/20230319015620.96006-7-michael.christie@oracle.com
+Reviewed-by: Maurizio Lombardi <mlombard@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/target/iscsi/iscsi_target.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
+index baf4da7bb3b4e..412efb576f785 100644
+--- a/drivers/target/iscsi/iscsi_target.c
++++ b/drivers/target/iscsi/iscsi_target.c
+@@ -4517,6 +4517,9 @@ int iscsit_close_session(struct iscsit_session *sess, bool can_sleep)
+ 	iscsit_stop_time2retain_timer(sess);
+ 	spin_unlock_bh(&se_tpg->session_lock);
+ 
++	if (sess->sess_ops->ErrorRecoveryLevel == 2)
++		iscsit_free_connection_recovery_entries(sess);
++
+ 	/*
+ 	 * transport_deregister_session_configfs() will clear the
+ 	 * struct se_node_acl->nacl_sess pointer now as a iscsi_np process context
+@@ -4540,9 +4543,6 @@ int iscsit_close_session(struct iscsit_session *sess, bool can_sleep)
+ 
+ 	transport_deregister_session(sess->se_sess);
+ 
+-	if (sess->sess_ops->ErrorRecoveryLevel == 2)
+-		iscsit_free_connection_recovery_entries(sess);
+-
+ 	iscsit_free_all_ooo_cmdsns(sess);
+ 
+ 	spin_lock_bh(&se_tpg->session_lock);
+-- 
+2.39.2
+
