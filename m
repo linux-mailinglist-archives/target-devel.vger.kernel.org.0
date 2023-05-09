@@ -2,118 +2,63 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B356A6FB4FB
-	for <lists+target-devel@lfdr.de>; Mon,  8 May 2023 18:23:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 782A46FC189
+	for <lists+target-devel@lfdr.de>; Tue,  9 May 2023 10:16:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233714AbjEHQXR (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Mon, 8 May 2023 12:23:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54716 "EHLO
+        id S234305AbjEIIQr (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 9 May 2023 04:16:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232527AbjEHQXP (ORCPT
+        with ESMTP id S229533AbjEIIQq (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Mon, 8 May 2023 12:23:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD0483593
-        for <target-devel@vger.kernel.org>; Mon,  8 May 2023 09:22:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1683562949;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=lhidUOW4bA7y2e2ETgcoqxr4iJ8kArDkcOif0PbdN+A=;
-        b=Qcm5HBGw/BxwykKJlmNmDka4bb/HKRROsmKF1WK2NWVJ42mo65td42ByfzFUbNpuwwyNNQ
-        cOosP+RkKQ2XqF+C0n5moCCInIwqIjFDHzbRI1Mng01FHWsTRBBp5nDk3EhqH9BqsoWzrp
-        +oh5Hlgw8rVMGLAq8VAdU4Zebxj6y6E=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-1-GcrJSZ59Nfa-msN5CI94sg-1; Mon, 08 May 2023 12:22:27 -0400
-X-MC-Unique: GcrJSZ59Nfa-msN5CI94sg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4775B870828;
-        Mon,  8 May 2023 16:22:27 +0000 (UTC)
-Received: from kalibr.redhat.com (unknown [10.35.206.135])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 130382026D16;
-        Mon,  8 May 2023 16:22:25 +0000 (UTC)
-From:   Maurizio Lombardi <mlombard@redhat.com>
-To:     martin.petersen@oracle.com
-Cc:     michael.christie@oracle.com, target-devel@vger.kernel.org
-Subject: [PATCH V3 3/3] target: iscsi: prevent login threads from racing between each other
-Date:   Mon,  8 May 2023 18:22:19 +0200
-Message-Id: <20230508162219.1731964-4-mlombard@redhat.com>
-In-Reply-To: <20230508162219.1731964-1-mlombard@redhat.com>
-References: <20230508162219.1731964-1-mlombard@redhat.com>
+        Tue, 9 May 2023 04:16:46 -0400
+Received: from mail.penmade.pl (mail.penmade.pl [94.177.230.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A81D210DD
+        for <target-devel@vger.kernel.org>; Tue,  9 May 2023 01:16:43 -0700 (PDT)
+Received: by mail.penmade.pl (Postfix, from userid 1001)
+        id 9586684AB0; Tue,  9 May 2023 09:16:35 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=penmade.pl; s=mail;
+        t=1683620198; bh=CSKXLMgcdpWkXuTgJn5+jsCVobtU9JEF4vCnS5z6McM=;
+        h=Date:From:To:Subject:From;
+        b=o0076VR+d8qtgfjxf9hTZdsqfvEsVoYTyiSoAH8ezv7Z7NSYAecyjcawdeLruHNhy
+         1IezuDwSsOTdFQpy9XyXWQwunBGrla+m6Q96PWLNEeM5bTu1THN0CAIaHJXnNiQbgn
+         n3ieNg7+nL1Ds7WN+PLqdRieVAjoyMWISZyJiwG6aiCN2O0h2DL/U8MgAvWCu6IYBZ
+         zvKxheVBKPPgA4wYAEs2qrGeejy8kNGnM0GeeQtRXoijsPErmGGuo9uC+CVck1YO89
+         9i7qMS5Nid2WX25hxGd/b+dPijokES2k09NC29KdrkzuliCeMBnRpHM6baAZj8IOEk
+         3dLs4TPtFTZdA==
+Received: by mail.penmade.pl for <target-devel@vger.kernel.org>; Tue,  9 May 2023 08:16:24 GMT
+Message-ID: <20230509074500-0.1.40.jyuv.0.8nrtw07r2u@penmade.pl>
+Date:   Tue,  9 May 2023 08:16:24 GMT
+From:   "Wiktor Nurek" <wiktor.nurek@penmade.pl>
+To:     <target-devel@vger.kernel.org>
+Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
+X-Mailer: mail.penmade.pl
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,URIBL_CSS_A,URIBL_DBL_SPAM
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-The tpg->np_login_sem is a semaphore that is used to serialize the login
-process when multiple login threads run concurrently against the same
-target portal group.
+Dzie=C5=84 dobry,
 
-The iscsi_target_locate_portal() function finds the tpg,
-calls iscsit_access_np() against the np_login_sem semaphore
-and saves the tpg pointer in conn->tpg;
+chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
+skania nowych zlece=C5=84 ze strony www.
 
-If iscsi_target_locate_portal() fails, the caller will check for the
-conn->tpg pointer and, if it's not NULL, then it will assume
-that iscsi_target_locate_portal() called iscsit_access_np() on the
-semaphore.
+Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
+, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
+=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
+jonowania strony w Google.
 
-Make sure that conn->tpg gets initialized only if iscsit_access_np()
-was successful, otherwise iscsit_deaccess_np() may end up
-being called against a semaphore we never took, allowing more than one
-thread to access the same tpg.
+Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
 
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
----
- drivers/target/iscsi/iscsi_target_nego.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/target/iscsi/iscsi_target_nego.c b/drivers/target/iscsi/iscsi_target_nego.c
-index e3a5644a70b3..fa3fb5f4e6bc 100644
---- a/drivers/target/iscsi/iscsi_target_nego.c
-+++ b/drivers/target/iscsi/iscsi_target_nego.c
-@@ -1122,6 +1122,7 @@ int iscsi_target_locate_portal(
- 	iscsi_target_set_sock_callbacks(conn);
- 
- 	login->np = np;
-+	conn->tpg = NULL;
- 
- 	login_req = (struct iscsi_login_req *) login->req;
- 	payload_length = ntoh24(login_req->dlength);
-@@ -1189,7 +1190,6 @@ int iscsi_target_locate_portal(
- 	 */
- 	sessiontype = strncmp(s_buf, DISCOVERY, 9);
- 	if (!sessiontype) {
--		conn->tpg = iscsit_global->discovery_tpg;
- 		if (!login->leading_connection)
- 			goto get_target;
- 
-@@ -1206,9 +1206,11 @@ int iscsi_target_locate_portal(
- 		 * Serialize access across the discovery struct iscsi_portal_group to
- 		 * process login attempt.
- 		 */
-+		conn->tpg = iscsit_global->discovery_tpg;
- 		if (iscsit_access_np(np, conn->tpg) < 0) {
- 			iscsit_tx_login_rsp(conn, ISCSI_STATUS_CLS_TARGET_ERR,
- 				ISCSI_LOGIN_STATUS_SVC_UNAVAILABLE);
-+			conn->tpg = NULL;
- 			ret = -1;
- 			goto out;
- 		}
--- 
-2.31.1
-
+Pozdrawiam serdecznie,
+Wiktor Nurek
