@@ -2,172 +2,75 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0F71706ACD
-	for <lists+target-devel@lfdr.de>; Wed, 17 May 2023 16:16:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DCA7707D9B
+	for <lists+target-devel@lfdr.de>; Thu, 18 May 2023 12:09:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231915AbjEQOQB (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 17 May 2023 10:16:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41756 "EHLO
+        id S230073AbjERKJv (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Thu, 18 May 2023 06:09:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231363AbjEQOQA (ORCPT
+        with ESMTP id S230319AbjERKJt (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 17 May 2023 10:16:00 -0400
-Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A276E76AC;
-        Wed, 17 May 2023 07:15:57 -0700 (PDT)
-Received: from mta-01.yadro.com (localhost.localdomain [127.0.0.1])
-        by mta-01.yadro.com (Proxmox) with ESMTP id 29FFE342727;
-        Wed, 17 May 2023 17:15:56 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; h=cc
-        :cc:content-transfer-encoding:content-type:content-type:date
-        :from:from:in-reply-to:message-id:mime-version:references
-        :reply-to:subject:subject:to:to; s=mta-01; bh=hhuCKxrOOMxz40mcCv
-        w/VMLdNFqtSTgFPVATb9/tl+U=; b=sMbLdFAx/ejGSVNnMZU/HwlZXl3H/Jgq0v
-        6qfcK51nmaQZczl6q2j3IsDycrEqGFAUuoncgfDy0BGecGvJFUteyE4ITTxfUmEj
-        bnjblzJ6Nw/wYjIcPnPKPLpp3uq5NvoYMn08poW/0AOF+LU+7nd+3XQb4Q9qizVq
-        qc1hv6pvg=
-Received: from T-EXCH-08.corp.yadro.com (unknown [172.17.10.14])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mta-01.yadro.com (Proxmox) with ESMTPS id 204B9341E5B;
-        Wed, 17 May 2023 17:15:56 +0300 (MSK)
-Received: from T-EXCH-09.corp.yadro.com (172.17.11.59) by
- T-EXCH-08.corp.yadro.com (172.17.11.58) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.9; Wed, 17 May 2023 17:15:55 +0300
-Received: from yadro.com (172.22.1.19) by T-EXCH-09.corp.yadro.com
- (172.17.11.59) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1118.9; Wed, 17 May
- 2023 17:15:54 +0300
-From:   Konstantin Shelekhin <k.shelekhin@yadro.com>
-To:     Martin Petersen <martin.petersen@oracle.com>
-CC:     <target-devel@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-        <linux@yadro.com>, Konstantin Shelekhin <k.shelekhin@yadro.com>,
-        "Dmitry Bogdanov" <d.bogdanov@yadro.com>
-Subject: [PATCH 2/2] scsi: target: iblock: Report space allocation errors
-Date:   Wed, 17 May 2023 17:15:37 +0300
-Message-ID: <20230517141537.80936-3-k.shelekhin@yadro.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230517141537.80936-1-k.shelekhin@yadro.com>
-References: <20230517141537.80936-1-k.shelekhin@yadro.com>
+        Thu, 18 May 2023 06:09:49 -0400
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED1D01716
+        for <target-devel@vger.kernel.org>; Thu, 18 May 2023 03:09:48 -0700 (PDT)
+Received: by mail-pj1-x102b.google.com with SMTP id 98e67ed59e1d1-24de9c66559so1434211a91.0
+        for <target-devel@vger.kernel.org>; Thu, 18 May 2023 03:09:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684404588; x=1686996588;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4jlL8pzL6NVZbuVjV4h5KPilkuQmPMJRpXcDIhZ2tX0=;
+        b=Uuf9W2g3+s+QX9JFY9bG09bklfXORbeAj7glSeO7V5C4o6SQkjcss+7dG2JZJEGuB7
+         LFwFcplFn4plpWL0gs+Xy2qxokUFS4aXnD8fhzVwnH/FeeQUvThZ42VVVEa/tDw0bRge
+         zL8erXodqRMiNZnTKIoIMkWqOIiBk6u8KlfECYkmYRlRAXY6i0L4cvDg6s15c8/itgnR
+         cnbcDHejtOQV8XVtLE7tXD97GgRcvjy8SNmMOx7vAVcub1rjEzWbgQmb0g/k+eLwQCox
+         fN20PceYLU9RN178V9nropEZvC3Bz50HqA3saHWAkrGNGlri44FqS3QdekpoT7b/Tome
+         NjNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684404588; x=1686996588;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4jlL8pzL6NVZbuVjV4h5KPilkuQmPMJRpXcDIhZ2tX0=;
+        b=Ixr59EaVc9kHlInilxOTyapvcNF6370z9hRjJT1+gdMP+j74LYrgu2yuFPHIEpZbU7
+         ueQ7vRu3SET87VDET+dbXl3Re4MdPeXTj5s1UjG5kbvQai+sN6bxpTh26jKwS7sO7Pcu
+         PeUL/SL399oBo1BGrPWJxN3gMXoB5Qqsc7F+rasOM3M+8d99EwBPbXfHVraOT4VL8ecB
+         fskcz2tyxBZoCYyfFbJaIQosHoXMEN0j9HRcClfRLTgb9c2PYKfn5ijo2jGgt+Yg7PWU
+         F+7NiO68D2KjRm31Lym9kB0HwRrOwFALC0UIBzB8ro2/yEaFmMYCMVkD4m96fFVsCb3M
+         7C7w==
+X-Gm-Message-State: AC+VfDyk0SAD4nCmDoXfG2DcFcQWWvfKExQA4FwMd0TQ7ZCwQSfiWDDY
+        1pjl05sBmCFx6l6/EdqPejseXpwC8qH8UFued80=
+X-Google-Smtp-Source: ACHHUZ6fgxWylXiDejdv8ZrO505bzWrLi9hOpgOqXWDp0Iw2AGXwE/OWLQRwANhwhtCgCBrDlmnPl9GQ0jxnKLDe8p4=
+X-Received: by 2002:a17:90a:4b4e:b0:253:1ec9:ecd6 with SMTP id
+ o14-20020a17090a4b4e00b002531ec9ecd6mr1766302pjl.42.1684404588361; Thu, 18
+ May 2023 03:09:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [172.22.1.19]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-09.corp.yadro.com (172.17.11.59)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Received: by 2002:a05:7300:1481:b0:bc:c778:1d6d with HTTP; Thu, 18 May 2023
+ 03:09:46 -0700 (PDT)
+Reply-To: ninacoulibaly03@hotmail.com
+From:   nina coulibaly <ninacoulibaly213@gmail.com>
+Date:   Thu, 18 May 2023 03:09:46 -0700
+Message-ID: <CAL52byYZ9MZr0cZ+iPu_zN_Tj6nZXVGHeAdxr99GdQ3JJEyUsg@mail.gmail.com>
+Subject: from nina coulibaly
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-When a thin provisioned block device lacks free LBA it ends bio requests
-with BLK_STS_NOSPC. Currently iblock treats bio status as a boolean and
-terminates failed requests with LOGICAL UNIT COMMUNICATION FAILURE if
-the status is non-zero. Thus, initiators see space allocation errors as
-I/O errors.
+Dear,
 
-This commit modifies the iblock_req structure to store the status of the
-first failed bio instead of the total number of failed bios. The status
-is then used to set the specific sense reason.
+Please grant me permission to share a very crucial discussion with
+you.I am looking forward to hearing from you at your earliest
+convenience.
 
-For BLK_STS_NOSPC the sense reason is set to TCM_SPACE_ALLOCATION_FAILED
-as per SBC-3 4.7.3.6.
-
-On Linux initiators:
-
-old:
-
-  $ dd if=/dev/zero of=/dev/sda oflag=direct bs=4k count=1
-  dd: error writing '/dev/sda': I/O error
-
-new:
-
-  $ dd if=/dev/zero of=/dev/sda oflag=direct bs=4k count=1
-  dd: error writing '/dev/sda': No space left on device
-
-Signed-off-by: Konstantin Shelekhin <k.shelekhin@yadro.com>
-Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
----
- drivers/target/target_core_iblock.c | 28 +++++++++++++++++++++-------
- drivers/target/target_core_iblock.h |  2 +-
- 2 files changed, 22 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/target/target_core_iblock.c b/drivers/target/target_core_iblock.c
-index cc838ffd1294..78831a3df511 100644
---- a/drivers/target/target_core_iblock.c
-+++ b/drivers/target/target_core_iblock.c
-@@ -310,20 +310,33 @@ static sector_t iblock_get_blocks(struct se_device *dev)
- 	return blocks_long;
- }
- 
-+static sense_reason_t iblock_blk_status_to_reason(blk_status_t status)
-+{
-+	switch (status) {
-+	case BLK_STS_OK:
-+		return TCM_NO_SENSE;
-+	case BLK_STS_NOSPC:
-+		return TCM_SPACE_ALLOCATION_FAILED;
-+	default:
-+		return TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE;
-+	}
-+}
-+
- static void iblock_complete_cmd(struct se_cmd *cmd)
- {
- 	struct iblock_req *ibr = cmd->priv;
--	u8 status;
-+	sense_reason_t reason;
- 
- 	if (!refcount_dec_and_test(&ibr->pending))
- 		return;
- 
--	if (atomic_read(&ibr->ib_bio_err_cnt))
--		status = SAM_STAT_CHECK_CONDITION;
-+	reason = iblock_blk_status_to_reason(atomic_read(&ibr->status));
-+
-+	if (reason == TCM_NO_SENSE)
-+		target_complete_cmd(cmd, SAM_STAT_GOOD);
- 	else
--		status = SAM_STAT_GOOD;
-+		target_complete_cmd_with_sense(cmd, SAM_STAT_CHECK_CONDITION, reason);
- 
--	target_complete_cmd(cmd, status);
- 	kfree(ibr);
- }
- 
-@@ -335,9 +348,10 @@ static void iblock_bio_done(struct bio *bio)
- 	if (bio->bi_status) {
- 		pr_err("bio error: %p,  err: %d\n", bio, bio->bi_status);
- 		/*
--		 * Bump the ib_bio_err_cnt and release bio.
-+		 * Set the error status of the iblock request to the error
-+		 * status of the first failed bio.
- 		 */
--		atomic_inc(&ibr->ib_bio_err_cnt);
-+		atomic_cmpxchg(&ibr->status, BLK_STS_OK, bio->bi_status);
- 		smp_mb__after_atomic();
- 	}
- 
-diff --git a/drivers/target/target_core_iblock.h b/drivers/target/target_core_iblock.h
-index 8c55375d2f75..fda2e41b2e74 100644
---- a/drivers/target/target_core_iblock.h
-+++ b/drivers/target/target_core_iblock.h
-@@ -13,7 +13,7 @@
- 
- struct iblock_req {
- 	refcount_t pending;
--	atomic_t ib_bio_err_cnt;
-+	atomic_t status;
- } ____cacheline_aligned;
- 
- #define IBDF_HAS_UDEV_PATH		0x01
--- 
-2.40.1
-
-
+Mrs. Nina Coulibaly
