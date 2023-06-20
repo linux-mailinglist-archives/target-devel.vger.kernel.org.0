@@ -2,42 +2,42 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64C2A7340BC
-	for <lists+target-devel@lfdr.de>; Sat, 17 Jun 2023 14:14:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C807736F72
+	for <lists+target-devel@lfdr.de>; Tue, 20 Jun 2023 16:58:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235815AbjFQMOM (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 17 Jun 2023 08:14:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46450 "EHLO
+        id S233444AbjFTO6a (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Tue, 20 Jun 2023 10:58:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235893AbjFQMOF (ORCPT
+        with ESMTP id S233446AbjFTO6X (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sat, 17 Jun 2023 08:14:05 -0400
+        Tue, 20 Jun 2023 10:58:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A75526BE
-        for <target-devel@vger.kernel.org>; Sat, 17 Jun 2023 05:12:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 968B9199E
+        for <target-devel@vger.kernel.org>; Tue, 20 Jun 2023 07:57:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1687003978;
+        s=mimecast20190719; t=1687273035;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
         bh=bszGYXAPCfyFrCrKXBgf4DyEzlv1vS1+csO6wWtbX4c=;
-        b=ZH3uQ90QaWYZ91CERbG+c63lDgnvZVv5e3+xwOWM3lR06+s5upuNOWRO+fpv9AndENqu93
-        fL/YV2dhBpzftUiBB4NDJh8OLH3ValjIivB4g1YQygx8PXktcCWRt/l0EPCQl8ktgcWLoj
-        TYIF1qqXbbGfQQqIsZ+kwE1DeEmnr/M=
+        b=f919fnlfwRTXavVMtnEakZZ8PtCpziZZ0NdLPF60em/ZHKC9eNrcfsH7qxt1bQqdP1A7xL
+        QMQ9rIYlDUg5ZSs8mZHZKJY1KVgEFs2P0rx5E4Ivrs+a4g1+EHRqP4EuYDH4p9fRpavAdS
+        8XcvE7i/wODG17ibeekuUh8YSNvAuf8=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-436-185vvMv5PdOOlfFYb8ORMQ-1; Sat, 17 Jun 2023 08:12:55 -0400
-X-MC-Unique: 185vvMv5PdOOlfFYb8ORMQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+ us-mta-180-5iBq3k2zOLaeVvGBHbh90g-1; Tue, 20 Jun 2023 10:57:13 -0400
+X-MC-Unique: 5iBq3k2zOLaeVvGBHbh90g-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 192423C11C6A;
-        Sat, 17 Jun 2023 12:12:54 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.42.28.51])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 903F92026D49;
-        Sat, 17 Jun 2023 12:12:51 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 176203C1BFD2;
+        Tue, 20 Jun 2023 14:54:42 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.4])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9E84B422B0;
+        Tue, 20 Jun 2023 14:54:39 +0000 (UTC)
 From:   David Howells <dhowells@redhat.com>
 To:     netdev@vger.kernel.org
 Cc:     David Howells <dhowells@redhat.com>,
@@ -58,14 +58,14 @@ Cc:     David Howells <dhowells@redhat.com>,
         "Martin K. Petersen" <martin.petersen@oracle.com>,
         Al Viro <viro@zeniv.linux.org.uk>, open-iscsi@googlegroups.com,
         linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-Subject: [PATCH net-next v2 15/17] iscsi: Use sendmsg(MSG_SPLICE_PAGES) rather than sendpage
-Date:   Sat, 17 Jun 2023 13:11:44 +0100
-Message-ID: <20230617121146.716077-16-dhowells@redhat.com>
-In-Reply-To: <20230617121146.716077-1-dhowells@redhat.com>
-References: <20230617121146.716077-1-dhowells@redhat.com>
+Subject: [PATCH net-next v3 16/18] iscsi: Use sendmsg(MSG_SPLICE_PAGES) rather than sendpage
+Date:   Tue, 20 Jun 2023 15:53:35 +0100
+Message-ID: <20230620145338.1300897-17-dhowells@redhat.com>
+In-Reply-To: <20230620145338.1300897-1-dhowells@redhat.com>
+References: <20230620145338.1300897-1-dhowells@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
