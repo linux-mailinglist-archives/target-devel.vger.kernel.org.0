@@ -2,63 +2,108 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AFF0762F17
-	for <lists+target-devel@lfdr.de>; Wed, 26 Jul 2023 10:05:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB2867635FD
+	for <lists+target-devel@lfdr.de>; Wed, 26 Jul 2023 14:14:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231550AbjGZIFO (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 26 Jul 2023 04:05:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49150 "EHLO
+        id S233775AbjGZMOf (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 26 Jul 2023 08:14:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231351AbjGZIEp (ORCPT
+        with ESMTP id S233803AbjGZMOd (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 26 Jul 2023 04:04:45 -0400
-X-Greylist: delayed 498 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 26 Jul 2023 00:55:57 PDT
-Received: from mail.slitrig.pl (mail.slitrig.pl [51.38.127.96])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E42A6422B
-        for <target-devel@vger.kernel.org>; Wed, 26 Jul 2023 00:55:57 -0700 (PDT)
-Received: by mail.slitrig.pl (Postfix, from userid 1002)
-        id 3223AA47CC; Wed, 26 Jul 2023 07:46:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=slitrig.pl; s=mail;
-        t=1690357613; bh=q6g+ObtCV61LlnEBi7yLnSiOU+IF64224rZgvBJLEss=;
-        h=Date:From:To:Subject:From;
-        b=nDByzCmA8DvAA/HWam+F5RCEr5s1OgkfwV9k7djwkrfHTUmzi4Tj7TIbcV4kwCUSR
-         rpi4Jn85opitsYq7/euSb3Bw37Gep0G9gx+yBlAjDju/DVdW+ipC3ybjkvHKWtKFxp
-         /aUhweTguE6aVf7iccQxTjfYqRZaBXuF/Mr2JyWAlAJfHZm7MReo/AUD+BWOUV4FrM
-         sMHaOcIJ5lOg3q9NdMa8od08P24H53dqHWFBzjZatiO3+ejxSeX1CnuBV8qabJeIAq
-         M72KQ3/N7QeLjk3wgkpZyGuD4Gdeh82dFXFrQxx1LA0IoZabZHMiReNyuDmBFbtc6Q
-         9T/3+XLZSe6CQ==
-Received: by slitrig.pl for <target-devel@vger.kernel.org>; Wed, 26 Jul 2023 07:45:44 GMT
-Message-ID: <20230726064520-0.1.b2.vx2u.0.q8q5if2lo5@slitrig.pl>
-Date:   Wed, 26 Jul 2023 07:45:44 GMT
-From:   "Wiktor Nurek" <wiktor.nurek@slitrig.pl>
-To:     <target-devel@vger.kernel.org>
-Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
-X-Mailer: mail.slitrig.pl
+        Wed, 26 Jul 2023 08:14:33 -0400
+Received: from mta-04.yadro.com (mta-04.yadro.com [89.207.88.248])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1941D19BF;
+        Wed, 26 Jul 2023 05:14:30 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 959E5C0007
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
+        t=1690372540; bh=xdgyRgw1OcoQaf1uILZNJ74oN+M3FHJX3tQ++Y+yd8w=;
+        h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+        b=hwaCui+VKoi920x6Rg1sN7Za54/UKvr9EdXO5zcxwJ48X9lQHwcXVP4qLVGfgZ1hU
+         R8VWjNqGG/5WzATfGQoqBU/0vFQuD955mUMk8hy/4GysrrFwr9iY26Vkt8RtwbPyon
+         WXFK1Ry+W85RY/M2Ms6fqqMaRaf0GCmiaLtht5SIwE/SaZxQuf9qcB+SZ1zUv0DHoY
+         1310tsYaaIuJCmJX6ESSh5vgcnyqJwYqA6OzKV9ylnDocrdfpcktqbsldvgac7Akew
+         oZsUmFF169VMWhI3ACSpvINB2zLhAPQEHOxOcdTEN1SRk8ESSjubkOtxvDh/ZkutqT
+         RtCeL2ecT+P0w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
+        t=1690372540; bh=xdgyRgw1OcoQaf1uILZNJ74oN+M3FHJX3tQ++Y+yd8w=;
+        h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+        b=aieNPyJkIRvZatE5q7k55c9MeQfDpNQoGaf2XFByQljNMgO4zjQ6/B3d6Bbdrf8p/
+         jNyaot8RIATbJvLD+YMnlxEMJKOG6xxdqMh/rHZ6dKMxCc9f3lkHO6sKcDeN4Dkrxy
+         4/YiUP+/V+MR8w9R5tF+40JQykYOIBibd4gga8LjoADsDqGLZUkGWDgcAlqU99Yt/X
+         flhi51sI1eOZ9ACvLmFq3pNyyWXCT5cUZMdXEA1q3PRmU8sfSwpRa2E4xNig3GkQe5
+         BaBfwLsEeX9MbOtnQ6/jK0MRlyfEKnCGslSuFxA+Q7H/jwPh5EQ00/ICO9N2wePnFI
+         hWx9RHB7QDL1w==
+From:   Anastasia Kovaleva <a.kovaleva@yadro.com>
+To:     <martin.petersen@oracle.com>, <michael.christie@oracle.com>
+CC:     <linux-scsi@vger.kernel.org>, <target-devel@vger.kernel.org>,
+        <linux@yadro.com>
+Subject: [RFC PATCH 0/3] SCSI target logs
+Date:   Wed, 26 Jul 2023 14:55:06 +0300
+Message-ID: <20230726115509.357-1-a.kovaleva@yadro.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-ClientProxiedBy: T-EXCH-08.corp.yadro.com (172.17.11.58) To
+ T-EXCH-09.corp.yadro.com (172.17.11.59)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Dzie=C5=84 dobry,
+This patch is an initial work on scsi target logging improvement, that
+was discussed here:
+https://lore.kernel.org/target-devel/ZF0MiCRW8HWm8YYj@yadro.com/
+This is an example of how it will look.
 
-chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
-skania nowych zlece=C5=84 ze strony www.
+Things worth mentioning:
 
-Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
-, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
-=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
-jonowania strony w Google.
+1. I've decided not to implement target_lun_LEVEL() and implement
+   target_cmd_LEVEL() instead because the mapped lun is stored in the
+   se_cmd structure, and most of the time we already have the cmd when
+   we want to log a lun.
 
-Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
+2. Target prefix such as "core" or "iscsi" will be defined in the
+   beginning of each file.
+
+For example, you can test it with such command:
+
+   sg_inq -f -c --page=255 /dev/sda
 
 
-Pozdrawiam serdecznie
-Wiktor Nurek
+And the log output will look like that:
+
+   [ 2229.586394] target core (iqn.1996-04.de.suse:01:6e84cb30fc63 -> 1/0): INQUIRY with EVPD==0 but PAGE CODE=ff
+
+
+For bio errors log will look like that:
+
+   [ 3354.495867] target iblock (iqn.1996-04.de.suse:01:6e84cb30fc63 -> 1/0): bio error: 0000000097ff0ac0, err: 10
+
+I'll be thankful for your comments and suggestions. It would also be
+great if you could tell me whether it would be better to send the entire
+series for all modules at onse, or send patches for each module
+individually as soon as they are ready.
+
+Kind regards,
+Anastasia Kovaleva
+
+Anastasia Kovaleva (3):
+  target: core: Initial work on improving SCSI target logs
+  target: core: apply the new wrapper to spc
+  target: core: apply the new wrapper to iblock
+
+ drivers/target/target_core_iblock.c | 94 ++++++++++++++---------------
+ drivers/target/target_core_spc.c    | 27 ++++-----
+ include/target/target_core_base.h   | 25 ++++++++
+ 3 files changed, 82 insertions(+), 64 deletions(-)
+
+-- 
+2.40.1
+
