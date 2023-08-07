@@ -2,75 +2,93 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AD2D770DED
-	for <lists+target-devel@lfdr.de>; Sat,  5 Aug 2023 07:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5B83771DC7
+	for <lists+target-devel@lfdr.de>; Mon,  7 Aug 2023 12:11:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229493AbjHEF2n (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sat, 5 Aug 2023 01:28:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56604 "EHLO
+        id S229834AbjHGKLf (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 7 Aug 2023 06:11:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjHEF2m (ORCPT
+        with ESMTP id S229496AbjHGKLf (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sat, 5 Aug 2023 01:28:42 -0400
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C53264C2D
-        for <target-devel@vger.kernel.org>; Fri,  4 Aug 2023 22:28:41 -0700 (PDT)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-586a684e85aso14531707b3.2
-        for <target-devel@vger.kernel.org>; Fri, 04 Aug 2023 22:28:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691213321; x=1691818121;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Fyaf0OHfvWgaqfRiwRufcy49gz6rXRNyNLf1qH0Ffk0=;
-        b=NgyOgqJBr0ZdWm02y+4p1Wg22aez6l4MibE5tBg/6yw+Fxy86CwwMh9tAK6w/wF849
-         HJw9K3BrIuhWIpGsAOBg1zKmz9QlJthLbwj8HNb4DNN8D+ZFOD8DArmlaV+1bj2cUveT
-         7j4PmZpvkmE3o/r7f9gW9hu8faa2xvdPF783mUydCNKOWhe115CER6vakXaYA4AJlfvy
-         rS/5+pciOGr5nuV0NkNCz6hMnKccYcl5UqBpueUn5hXrJJokh9gIDl6FZ5zUOpTcDU6x
-         IbcSPQ6fW35iYp0ap+82cSMeFvvnrRblE2mwsriXZcECHU5yyywdWE8ygQHRmQapl3HK
-         2puQ==
+        Mon, 7 Aug 2023 06:11:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5738110F1
+        for <target-devel@vger.kernel.org>; Mon,  7 Aug 2023 03:10:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1691403047;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type;
+        bh=2yG5uCh9/4E1VtSr3okWqDhu/dCuzXZKqsQA8TJO8TA=;
+        b=eUE2iljmQuqit95AmgE4HK4bMtOzjiyFm4y/VTDd2UQlX2xtUsATgQHGCMT8GFR/YwUQLZ
+        rHKOvLi+d0LHS9vQgFDWRKIb2JpE4P3vDfs2esKP49HAL61dBJ/IqnAPtVduIiUuVUCgUY
+        HfSBsvWUdtP2bYq3JEa4buQLF3mkTUQ=
+Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
+ [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-102-_DJI2ENLN-yQSrfqpfZ6WQ-1; Mon, 07 Aug 2023 06:10:46 -0400
+X-MC-Unique: _DJI2ENLN-yQSrfqpfZ6WQ-1
+Received: by mail-ua1-f69.google.com with SMTP id a1e0cc1a2514c-79b02ab5194so311746241.1
+        for <target-devel@vger.kernel.org>; Mon, 07 Aug 2023 03:10:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691213321; x=1691818121;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fyaf0OHfvWgaqfRiwRufcy49gz6rXRNyNLf1qH0Ffk0=;
-        b=gWPQgqiGYdll59rQX/teiGSpeDYi0b9pGp9I/cF9ENNnHTfSPsif/claHGPZJsMCy7
-         QJHvWv32RQvWOuCBE7IZtkJRZgBsjsSqCw8utolsMgSh7q28Ozyya3o2YYlzglrValCI
-         ZKa3vP2oPiYQmCi7FY7xHcktWyySHS6pYPXcV1bPFqNtmh9Pd13JQpyja4xpJs8xke4a
-         VSxOs8wRujjB1lWv/YOl203wTgFQzkjOVZztm/vwUvZBNwtxVRK+9qziFiI0d52SnFMr
-         /IKlXGh0NG5uE3bW8aMJskWKQ4FTpE/bteL92+wFglt/ahr1m8ceQC/HMnp1nMEtgVFT
-         h+kw==
-X-Gm-Message-State: AOJu0YzLa0jUhxaaFgYjr+boyYzDqHPTI0kv+9ATmU3r11cjqBKY31Kt
-        uSgkocTKs2y/PeMzF5a8H5MeycbGB21pPxVBXptMWxFAIcs=
-X-Google-Smtp-Source: AGHT+IF9OIMc+WdgLi3BvHBoJhdUyxR83jLlQ8PhrJCnrxI3o69vLRgqUo2Q/Q5Ul4VLGlIfIGKc6uYiRo/+2JJaYPw=
-X-Received: by 2002:a0d:d582:0:b0:583:d720:db2a with SMTP id
- x124-20020a0dd582000000b00583d720db2amr4048816ywd.49.1691213320938; Fri, 04
- Aug 2023 22:28:40 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1691403045; x=1692007845;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2yG5uCh9/4E1VtSr3okWqDhu/dCuzXZKqsQA8TJO8TA=;
+        b=VwmkjGAvkX8c8don8E9H2KQGnT5MYazwnnxkwUF+y+isQzcGt+zLSb6MI/ush3+i95
+         H7ip0Sh0vVms4sKgeJVKv5S4Gv6J/JrbdNBTxmqP1B4+IBIaJB/FaQ81STib1pngyQHY
+         ahSPhyu9D3mV1xTWZzamxyLCPbNwu6yeDQuiE+aIgJaCMDetcaljcVTa4g8m6u5YKpNh
+         2nwLHR68ngcm2D2hkLtZfxFfYkCm3PSa5OzgJx4tb7NAZUCWtb53l3DYCdWZOCgbHgxZ
+         ICNsWfxIComDPq07DFZubt8EBnicNjg0lCCFoKOb8mvyOhZmZVtOJUeK2U/OUygULOYk
+         4BuA==
+X-Gm-Message-State: AOJu0YyiBGF6naclLUcj2i4B3FR3uHkgXEZ0v1Rr8hZPGrqCj8BtMBzZ
+        PGFdmgIFehGsRwsCC/Ntt08kNtms6LgGM029nG24CYpJCwtEMkhzFmjHOuBh1D9NK+yXVvKn2cr
+        S5AD9hRlC2CfA+kPKLDUu10sAB8DXDjCL8aYBqMOglaN/JDWXt9U=
+X-Received: by 2002:a67:fe10:0:b0:443:6397:250f with SMTP id l16-20020a67fe10000000b004436397250fmr2907083vsr.27.1691403045248;
+        Mon, 07 Aug 2023 03:10:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE0I3T5LBB3bruAyZb8u4XCvH9IhBxW7kCe3mD2SSnIv8MYwph1GHUKguNLAcV5qV89o061g9wJ5Mhe9QAbLk4=
+X-Received: by 2002:a67:fe10:0:b0:443:6397:250f with SMTP id
+ l16-20020a67fe10000000b004436397250fmr2907080vsr.27.1691403045006; Mon, 07
+ Aug 2023 03:10:45 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:6918:3a94:b0:194:f3d9:1521 with HTTP; Fri, 4 Aug 2023
- 22:28:40 -0700 (PDT)
-Reply-To: bintu37999@gmail.com
-From:   Bintu Felicia <comingsoon978@gmail.com>
-Date:   Sat, 5 Aug 2023 06:28:40 +0100
-Message-ID: <CA+3qwhHYo4dy-AOhLMYKRU_ZMKRpJ9BcDqzTu1X999-Ehe1Fww@mail.gmail.com>
-Subject: HELLO...,
-To:     undisclosed-recipients:;
+From:   Maurizio Lombardi <mlombard@redhat.com>
+Date:   Mon, 7 Aug 2023 12:10:33 +0200
+Message-ID: <CAFL455=r4SuND7vL1Sr2vKzLTsgg-KL7GNzzJZPe2wDDH-NQyg@mail.gmail.com>
+Subject: For targetcli/rtslib/configshell distro package maintainers.
+To:     target-devel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-How are you today? I hope you are fine. My name is Miss
-Bintu Felicia . l am single looking for honest and nice
-person whom i can partner with . I don't care about
-your color, ethnicity, Status or Sex. Upon your reply to
-this mail I will tell you more about myself and send you
-more of my picture .I am sending you this beautiful mail
-with a wish for much happiness
+Hello,
+
+If your distro has switched to Cython 3, you have probably noticed
+that the python-kmod package doesn't compile anymore.
+
+Since agrover's python-kmod repository on github is marked as
+archived, I found myself forced to fork it and modify it to make it
+compatible with Cython 3.0.
+
+Here is my repository
+https://github.com/maurizio-lombardi/python-kmod
+I released version 0.9.2 a week ago and merged it in Fedora rawhide.
+
+You may have to backport this rtslib patch to make targetcli work with
+this new version of kmod
+https://github.com/open-iscsi/rtslib-fb/commit/c1378f28f7abce6f8993a43c34d5e287b092bb1e
+
+nvmetcli seems to work without problems.
+
+Please don't hesitate to submit MRs to improve it because I am more
+experienced in C than in Python and I will appreciate any help.
+
+Thanks,
+Maurizio
+
