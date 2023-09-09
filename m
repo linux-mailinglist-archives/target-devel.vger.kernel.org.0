@@ -2,48 +2,48 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95641799415
-	for <lists+target-devel@lfdr.de>; Sat,  9 Sep 2023 02:39:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 687EA7994C2
+	for <lists+target-devel@lfdr.de>; Sat,  9 Sep 2023 02:45:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244379AbjIIAi7 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Fri, 8 Sep 2023 20:38:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33546 "EHLO
+        id S1345927AbjIIAkU (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Fri, 8 Sep 2023 20:40:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232058AbjIIAie (ORCPT
+        with ESMTP id S1345941AbjIIAjl (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Fri, 8 Sep 2023 20:38:34 -0400
+        Fri, 8 Sep 2023 20:39:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A42B273C;
-        Fri,  8 Sep 2023 17:38:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A4FCC433BD;
-        Sat,  9 Sep 2023 00:37:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F9D82720;
+        Fri,  8 Sep 2023 17:38:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70AF0C116A6;
+        Sat,  9 Sep 2023 00:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694219865;
+        s=k20201202; t=1694219928;
         bh=FmxSrNQT6q8Z/aqU4VCkOAJy8UyrNaAPvy5gamFQjg4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kBJjPhw+UgLajsmX/bJg3P5eceZqb3ETaLC4xWaYBWSKIN2WICz+/ZXMktygHQja3
-         OHAS2ma83Hgprh62tohwj8tgqvv2OskJ2hAR4bFnU1ECaWTSnJDiBK3PLhb7p1aaEV
-         YyEi1dtSRXtJITloveU9v5VXP3mQYNuzgsLddyMXkmy65xbZ+ROQZeZTq2qRSq7TsF
-         gzY53uk2vx7NB+adQc/f7HUcNrorJV9G5SMULIaMJdC7ShSb4KliWvJT3eWrXycUs2
-         gEzVImIAWHAWFu5lyyy6gZMEJG904a9FSBOohGXoSpkjoiXAapAUhfSXchmwdatNA2
-         an60KLkXxT1tQ==
+        b=UhYt9gXTrdeekbRSjPwleHIjOSwJFDv5GuiszgE6FnoyC7yclaoPlNB7GFf7u68bo
+         s0q5M0mLV92DFW5DI89Mi7J9rJhxcgjx5Lh3k66jSVcjDJulBsVuSKvxHReSVs+fjB
+         SjTUP6Gg0E2LvPVqoc1yqC1MdN+xdNAgcvubRJltCbnzFcdR/hU/05isTAUD/zBsPQ
+         8dZIHdSZoc3KErHyTxo8J1o2zL87wtUroksBiQ21kuZPypGmYkdG8YG9Tk1iSHpwbR
+         +Vg/K+iH7nx+Nm7e1a67Hv7Bbxj3O/7fkTbTXGv4ZuXmFVeHW0deMWPGyPENG0fgI/
+         kiABiPaXxAoxw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Konstantin Shelekhin <k.shelekhin@yadro.com>,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>, mlombard@redhat.com,
-        michael.christie@oracle.com, linux-scsi@vger.kernel.org,
+        Sasha Levin <sashal@kernel.org>, michael.christie@oracle.com,
+        mlombard@redhat.com, linux-scsi@vger.kernel.org,
         target-devel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.4 15/25] scsi: target: iscsi: Fix buffer overflow in lio_target_nacl_info_show()
-Date:   Fri,  8 Sep 2023 20:37:03 -0400
-Message-Id: <20230909003715.3579761-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 15/24] scsi: target: iscsi: Fix buffer overflow in lio_target_nacl_info_show()
+Date:   Fri,  8 Sep 2023 20:38:07 -0400
+Message-Id: <20230909003818.3580081-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230909003715.3579761-1-sashal@kernel.org>
-References: <20230909003715.3579761-1-sashal@kernel.org>
+In-Reply-To: <20230909003818.3580081-1-sashal@kernel.org>
+References: <20230909003818.3580081-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.4.15
+X-stable-base: Linux 6.1.52
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
