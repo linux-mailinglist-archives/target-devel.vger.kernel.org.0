@@ -2,56 +2,91 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88A3F79E1C3
-	for <lists+target-devel@lfdr.de>; Wed, 13 Sep 2023 10:16:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C1AA79F66D
+	for <lists+target-devel@lfdr.de>; Thu, 14 Sep 2023 03:40:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234331AbjIMIQq (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Wed, 13 Sep 2023 04:16:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40208 "EHLO
+        id S233718AbjINBk5 (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Wed, 13 Sep 2023 21:40:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234999AbjIMIQp (ORCPT
+        with ESMTP id S233625AbjINBk4 (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Wed, 13 Sep 2023 04:16:45 -0400
-Received: from mail.slitrig.pl (mail.slitrig.pl [51.38.127.96])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBBDE1996
-        for <target-devel@vger.kernel.org>; Wed, 13 Sep 2023 01:16:40 -0700 (PDT)
-Received: by mail.slitrig.pl (Postfix, from userid 1002)
-        id 8FC1CA4C89; Wed, 13 Sep 2023 08:16:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=slitrig.pl; s=mail;
-        t=1694592998; bh=q6g+ObtCV61LlnEBi7yLnSiOU+IF64224rZgvBJLEss=;
-        h=Date:From:To:Subject:From;
-        b=KgZmrtrhTrtRHZIuNWDnXt9gzDkhqRmJza7LCpjEeSZVv4MZbNM6pPZDlPL4gSnmM
-         WIXJ9bTHERaDQ56t3VUrqqeslzUmmGYndkkkf2I6zKGczN1uMxSX3kGeraVF8D+k0L
-         nm+9lnsLDcxZH3JVLmJZKwUqvFYjZBJU2Uaf/bzW+KptWD2qEFIZaUOblrI7d3uAdv
-         LYTv58keA3k6Bl2240lKsAScMqvmERtwEy7I6k+vHpOOO3sy1F+E7iTO6Tovyv09Kp
-         3ZUvbquJuzhFPYBYKbh3sqLW1Z0sECFKCXRjwSdK+p/ndUKYYT5wiTjmy9qFPULXom
-         MjHxATfgsEa1g==
-Received: by mail.slitrig.pl for <target-devel@vger.kernel.org>; Wed, 13 Sep 2023 08:15:45 GMT
-Message-ID: <20230913064500-0.1.c1.16xjz.0.29rs28loby@slitrig.pl>
-Date:   Wed, 13 Sep 2023 08:15:45 GMT
-From:   "Wiktor Nurek" <wiktor.nurek@slitrig.pl>
-To:     <target-devel@vger.kernel.org>
-Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
-X-Mailer: mail.slitrig.pl
+        Wed, 13 Sep 2023 21:40:56 -0400
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CA3B1BD3;
+        Wed, 13 Sep 2023 18:40:52 -0700 (PDT)
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38DKbOIb005535;
+        Thu, 14 Sep 2023 01:40:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2023-03-30;
+ bh=bYGqFxi1OHfFB/skcVZcSNk2thtjUMw9RD2mRaKfX10=;
+ b=wYRgWChSINdnbpKSsFZ4P28BgOyIW6W8w/TfqRyJ3QZiSqd0ZV3DmX+dgXyFN6yLFwqU
+ 6Ei0F9Ptwng7uPc9GG+B8XExq+V0WAZ4SMSVPnkotZQm7TbG/4rgg+UFxCSDmhbKzQb3
+ cSjQIzLGKwmjuhXR7eJ0UPXlOZ0J/CgLYYv7SioS5bZapuWVaxSIfxiYbdcVxluYiJHX
+ lUBZwtBjIIfPH5H3OsgiGPy5+dvjaGcUuX855ZHpRDv2f5xMsXwhMRuX92G/suzxYc5K
+ mXWJwowCLYHNCHAzVpdzWcMl9MBpm2m23jwbqd4cMLnLPDWodtYOwEnzKKdVgh/XpWau Gg== 
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t2y9kujut-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 14 Sep 2023 01:40:44 +0000
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 38E15njl007764;
+        Thu, 14 Sep 2023 01:40:43 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3t0f581r12-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 14 Sep 2023 01:40:43 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38E1efpP038417;
+        Thu, 14 Sep 2023 01:40:42 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+        by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3t0f581qyy-2;
+        Thu, 14 Sep 2023 01:40:42 +0000
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     Kees Cook <keescook@chromium.org>,
+        Azeem Shaikh <azeemshaikh38@gmail.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-hardening@vger.kernel.org, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] scsi: target: Replace strlcpy with strscpy
+Date:   Wed, 13 Sep 2023 21:40:25 -0400
+Message-Id: <169465549434.730690.14253964357330620522.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230831143638.232596-1-azeemshaikh38@gmail.com>
+References: <20230831143638.232596-1-azeemshaikh38@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-13_19,2023-09-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
+ spamscore=0 mlxscore=0 mlxlogscore=717 adultscore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309140013
+X-Proofpoint-GUID: OL_8MbQxqPqPazGAf-Yn2ihlsF1JXjHb
+X-Proofpoint-ORIG-GUID: OL_8MbQxqPqPazGAf-Yn2ihlsF1JXjHb
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Thu, 31 Aug 2023 14:36:38 +0000, Azeem Shaikh wrote:
 
-chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
-skania nowych zlece=C5=84 ze strony www.
+> strlcpy() reads the entire source buffer first.
+> This read may exceed the destination size limit.
+> This is both inefficient and can lead to linear read
+> overflows if a source string is not NUL-terminated [1].
+> In an effort to remove strlcpy() completely [2], replace
+> strlcpy() here with strscpy().
+> 
+> [...]
 
-Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
-, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
-=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
-jonowania strony w Google.
+Applied to 6.6/scsi-fixes, thanks!
 
-Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
+[1/1] scsi: target: Replace strlcpy with strscpy
+      https://git.kernel.org/mkp/scsi/c/5c584fe6098a
 
-
-Pozdrawiam serdecznie
-Wiktor Nurek
+-- 
+Martin K. Petersen	Oracle Linux Engineering
