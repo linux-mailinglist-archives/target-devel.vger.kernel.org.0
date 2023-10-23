@@ -2,71 +2,108 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0FB37CF219
-	for <lists+target-devel@lfdr.de>; Thu, 19 Oct 2023 10:11:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86FCF7D2EF0
+	for <lists+target-devel@lfdr.de>; Mon, 23 Oct 2023 11:53:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235216AbjJSILh (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Thu, 19 Oct 2023 04:11:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49756 "EHLO
+        id S232700AbjJWJxl (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Mon, 23 Oct 2023 05:53:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232926AbjJSILe (ORCPT
+        with ESMTP id S229575AbjJWJxk (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Thu, 19 Oct 2023 04:11:34 -0400
-X-Greylist: delayed 313 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 19 Oct 2023 01:11:30 PDT
-Received: from mail.okerlenbiz.com (mail.okerlenbiz.com [54.36.101.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80C3010F
-        for <target-devel@vger.kernel.org>; Thu, 19 Oct 2023 01:11:30 -0700 (PDT)
-Received: by mail.okerlenbiz.com (Postfix, from userid 1002)
-        id 2AC54A2978; Thu, 19 Oct 2023 08:06:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=okerlenbiz.com;
-        s=mail; t=1697702774;
-        bh=sxkamsLepnJSy5ikFDKOiyq8RChcIfs44Djo0bti1MM=;
-        h=Date:From:To:Subject:From;
-        b=fCVEm4elpfnmQf0kfrwidJm5OKjxGmgRVhfoXeUf7iRvHFao3bIKpEd+KpDfc8Wcy
-         +O+7OFE9h/TV9L1V4mFNKuuwIGaPcYo65BBDj0IuasGUKDwPJy5dTfsZ5IzIORHiy/
-         T/23hU5S8xpGaf6HbUFdTbmKVqBA2d33tILs0nKqnEtTcLOgq5ep6e2Eh0VoB1DoPu
-         Z3w9t2Gqp5QtYzQeFnRpWR913Ffku3kMSrfQBk632jtL0PKy0vQ/g8HLrc3ZYUbIhP
-         kdYwjJ41hOeyUYo6WEJl9ahfIWmLJAvBXQKnnnBw38FtLACW9y4rNIox8Z2OFi3+by
-         Ocx2mTfWivmTw==
-Received: by mail.okerlenbiz.com for <target-devel@vger.kernel.org>; Thu, 19 Oct 2023 08:06:12 GMT
-Message-ID: <20231019064500-0.1.6d.8lwq.0.gelr3699bp@okerlenbiz.com>
-Date:   Thu, 19 Oct 2023 08:06:12 GMT
-From:   "Philipp Raber" <philipp.raber@okerlenbiz.com>
-To:     <target-devel@vger.kernel.org>
-Subject: Metalworking and welding
-X-Mailer: mail.okerlenbiz.com
+        Mon, 23 Oct 2023 05:53:40 -0400
+X-Greylist: delayed 91 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 23 Oct 2023 02:53:36 PDT
+Received: from omta033.useast.a.cloudfilter.net (omta033.useast.a.cloudfilter.net [44.202.169.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F1C6D65;
+        Mon, 23 Oct 2023 02:53:36 -0700 (PDT)
+Received: from eig-obgw-5010a.ext.cloudfilter.net ([10.0.29.199])
+        by cmsmtp with ESMTPS
+        id umGZq9MMVjtZ3urbQqaPCT; Mon, 23 Oct 2023 09:52:04 +0000
+Received: from 162-240-83-27.unifiedlayer.com ([137.59.148.200])
+        by cmsmtp with ESMTPS
+        id urbPqSLt1oIDwurbPq5bmt; Mon, 23 Oct 2023 09:52:04 +0000
+X-Authority-Analysis: v=2.4 cv=TP1W9npa c=1 sm=1 tr=0 ts=65364244
+ a=MgGYFET5X96nYrQ76toljg==:117 a=/5CYD1hNzocxg58dEBddTw==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=kj9zAlcOel0A:10 a=bhdUkHdE2iEA:10 a=lUDAUsI-kUQA:10
+ a=9m64_h_j2zU8ieQoq-sA:9 a=CjuIK1q_8ugA:10
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=35686686.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=Dm1nus89JLbD/65ItGQLhdR/UwQLhddPM+BxEJ7yOwM=; b=psmQC4SvG8qI0XH/ll0hW7b54T
+        TI7vPSB8ejQbKeTnucwalfcFc9fMHxB4ARdZO2yhvpLYN5zvKaVgiPpZlRYY3JRlsf+mQRxa0VaJE
+        UuSzbutT7fiSK+Q1RIJk5/RuZOFI1jUJcVRROgCOZPRP5VZEuXSF7lwDXtJQfsjYw17bPnxqGU2Sa
+        EzjFojVaO93jRTT0r4+JYlb3ibiLYMUfUQs8OnIoDzTJEdV/2P8CtnZ1ve95WUBGBVcHlN2ZzSjW3
+        hOOm8SySkV1NEnoNV0CKITk5ARiyL27HzPY+2W/YGqnrApIDw1mKPLEIMVeOaYNXBGGSAPARHdaIc
+        Q2D5OdQg==;
+Received: from md-hk-12.webhostbox.net ([137.59.148.200]:17940)
+        by md-hk-12.webhostbox.net with esmtpa (Exim 4.96.2)
+        (envelope-from <jc@35686686.com>)
+        id 1qulJz-003aaJ-2f;
+        Mon, 23 Oct 2023 08:39:39 +0530
+Received: from [181.214.94.254]
+ by 35686686.com
+ with HTTP (HTTP/1.1 POST); Mon, 23 Oct 2023 08:39:36 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+Date:   Mon, 23 Oct 2023 11:09:36 +0800
+From:   jc@35686686.com
+To:     undisclosed-recipients:;
+Subject: LOAN SCHEME
+Reply-To: info@kafurinvestment.com
+Mail-Reply-To: info@kafurinvestment.com
+User-Agent: Roundcube Webmail/1.6.0
+Message-ID: <eb8ad888286bc7fa05b345815a27dbea@35686686.com>
+X-Sender: jc@35686686.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - md-hk-12.webhostbox.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - 35686686.com
+X-BWhitelist: no
+X-Source-IP: 137.59.148.200
+X-Source-L: No
+X-Exim-ID: 1qulJz-003aaJ-2f
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: md-hk-12.webhostbox.net [137.59.148.200]:17940
+X-Source-Auth: jc@35686686.com
+X-Email-Count: 25
+X-Org:  HG=dishared_whb_net_legacy;ORG=directi;
+X-Source-Cap: ZmJkZXN4amc7Ymx1ZWhvc3Q7bWQtaGstMTIud2ViaG9zdGJveC5uZXQ=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfOKly1JL98KHXEiMQSh+nonamZItPy8s8ipJUA0erlu2p1v52o+qJDaokyvYnqXR8T8yHurbiDLN2UIxTUYKoBjfuWrsRWhfedHRYMJGR3Rl75QgD1nG
+ cTNvbAz2D6RvbE/5irQgUFVmbIYKVgySfu9jn5ie7hQePJQGXkqHwluc/VHa6kxA7ZRhYeElPZGzpZX6YZl2opeU10p4IHO0APVPbzbLRMlD5Z2d42viWhsj
+ L7VE7h76UQOeNuTfzhF2fyQnZbvbpvAPLSFStlVgl8jqLID+73yP4e3NZkEWfb9gnjw1XIi+sRw3CnFRCCDKIqRzb8W/8p+Ge3nKAanO04E=
+X-Spam-Status: No, score=1.5 required=5.0 tests=BAYES_50,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,SUBJ_ALL_CAPS autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <target-devel.vger.kernel.org>
 X-Mailing-List: target-devel@vger.kernel.org
 
-Good morning,
+Greetings:
 
-We specialize in serial production of metal elements.
+I am Mr. Faheem Badawi, working as a project facilitator for (Kafur 
+Project Management Services) also, with numerous investors worldwide. As 
+a means of widening our global portfolio we would like to know if you 
+have any project(s) requiring funding. We also offer business, personal 
+and home loans to finance new projects as well as expansion capital.
 
-You do not have to resort to the services of subcontractors - we offer yo=
-u comprehensive services
-Support from design to production to transportation, which guarantees sho=
-rt delivery times orders and lower costs.
+For more updates on the mode of operation send a reply.
 
-We have an extensive machine park and a large team of specialists, thanks=
- to which we can offer services such as laser sheet metal cutting, pipe a=
-nd profile bending, welding and powder coating.
+Waiting for your prompt response.
 
-The main area of our production is currently storage and transport trolle=
-ys. We produce transport pallets, scissor lifts, furniture elements, buil=
-ding formwork and much more.
-
-If you have any need regarding this, please send me a message.
-
-
-Greetings
-Philipp Raber
+Kind regards,
+Faheem Badawi.
+(Financial Advisory - KPMS)
