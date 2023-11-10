@@ -2,70 +2,58 @@ Return-Path: <target-devel-owner@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 270A87E16F9
-	for <lists+target-devel@lfdr.de>; Sun,  5 Nov 2023 22:59:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FA0D7E8966
+	for <lists+target-devel@lfdr.de>; Sat, 11 Nov 2023 07:05:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229652AbjKEV7L (ORCPT <rfc822;lists+target-devel@lfdr.de>);
-        Sun, 5 Nov 2023 16:59:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40176 "EHLO
+        id S229870AbjKKGFo (ORCPT <rfc822;lists+target-devel@lfdr.de>);
+        Sat, 11 Nov 2023 01:05:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229448AbjKEV7K (ORCPT
+        with ESMTP id S229502AbjKKGFo (ORCPT
         <rfc822;target-devel@vger.kernel.org>);
-        Sun, 5 Nov 2023 16:59:10 -0500
-X-Greylist: delayed 5133 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 05 Nov 2023 13:59:07 PST
-Received: from SMTP-HCRC-200.brggroup.vn (unknown [42.112.212.144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E795FCC;
-        Sun,  5 Nov 2023 13:59:07 -0800 (PST)
-Received: from SMTP-HCRC-200.brggroup.vn (localhost [127.0.0.1])
-        by SMTP-HCRC-200.brggroup.vn (SMTP-CTTV) with ESMTP id 5AAE4193AD;
-        Mon,  6 Nov 2023 01:57:54 +0700 (+07)
-Received: from zimbra.hcrc.vn (unknown [192.168.200.66])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by SMTP-HCRC-200.brggroup.vn (SMTP-CTTV) with ESMTPS id 53713192C1;
-        Mon,  6 Nov 2023 01:57:54 +0700 (+07)
+        Sat, 11 Nov 2023 01:05:44 -0500
+Received: from mail.maprial.com (mail.maprial.com [190.181.35.27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF4814204;
+        Fri, 10 Nov 2023 22:05:40 -0800 (PST)
 Received: from localhost (localhost [127.0.0.1])
-        by zimbra.hcrc.vn (Postfix) with ESMTP id E571A1B81FC6;
-        Mon,  6 Nov 2023 01:57:55 +0700 (+07)
-Received: from zimbra.hcrc.vn ([127.0.0.1])
-        by localhost (zimbra.hcrc.vn [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id nxoECyIIl_YQ; Mon,  6 Nov 2023 01:57:55 +0700 (+07)
+        by mail.maprial.com (Postfix) with ESMTP id D0690816870E;
+        Fri, 10 Nov 2023 21:40:23 -0400 (-04)
+Received: from mail.maprial.com ([127.0.0.1])
+        by localhost (mail.maprial.com [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id ZVjzlqL7wJYK; Fri, 10 Nov 2023 21:40:23 -0400 (-04)
 Received: from localhost (localhost [127.0.0.1])
-        by zimbra.hcrc.vn (Postfix) with ESMTP id B33E61B8250D;
-        Mon,  6 Nov 2023 01:57:55 +0700 (+07)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra.hcrc.vn B33E61B8250D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hcrc.vn;
-        s=64D43D38-C7D6-11ED-8EFE-0027945F1BFA; t=1699210675;
+        by mail.maprial.com (Postfix) with ESMTP id E9CB975C1EAC;
+        Fri, 10 Nov 2023 17:46:47 -0400 (-04)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.maprial.com E9CB975C1EAC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maprial.com;
+        s=8A254412-65B9-11ED-A564-8B9C10001A2B; t=1699652808;
         bh=WOZURJ77pkiMUL2pPLC14ifVPRvyTQIBEQmxuN1ezAA=;
         h=MIME-Version:To:From:Date:Message-Id;
-        b=X6QE+5M7khQ7q+G08Vtcahzk6t4Lj1RcMkQg3wucxsfaW94u2OpQHftgWFcQw4rbl
-         QwNqKG5AnctuKXHodCBi3nl8xbI7IKsSMsCIE90aPBT/MO+JPibKFnwpeGCWtD0m5P
-         x4djqZC60wHL0zOKeNYuUE6f/QMWVy7c6mAfYIMJ80Qv4fZZ/nCAhMJn7of7xQDyO4
-         FdSys5l92ul7K1Am7VXcDGwYdDDF0dv+/UkFuid/j4MdHq6c/6cSsvo4Y2PuMTrH39
-         d1r2TY9nSCmhZMU+IDQj9rf0prNArxmTa8QnhUlfHzhHxEh+g+3pUdaDl2ZeED/J2G
-         7u6wEBIZnihjg==
-X-Virus-Scanned: amavisd-new at hcrc.vn
-Received: from zimbra.hcrc.vn ([127.0.0.1])
-        by localhost (zimbra.hcrc.vn [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id VYyKrE7ui0pf; Mon,  6 Nov 2023 01:57:55 +0700 (+07)
-Received: from [192.168.1.152] (unknown [51.179.100.52])
-        by zimbra.hcrc.vn (Postfix) with ESMTPSA id 54C3D1B81FC6;
-        Mon,  6 Nov 2023 01:57:49 +0700 (+07)
+        b=OFPgE3oIZQLt/NyrpRQvbg4vApH1cy+J9G+iftlYnC25pjNPXmQixhQDXtycDmqT0
+         5LcFpdNIy+TFG+lO1ko0pC1vOyIylUqcJFo91+d2vx7iVcgCCnrnNkiREdRW0xkLgg
+         oBGke9fgfXDNG2l81M5PjS9FUGO7iwu5KSEX5ZXs=
+X-Virus-Scanned: amavisd-new at mail.maprial.com
+Received: from mail.maprial.com ([127.0.0.1])
+        by localhost (mail.maprial.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 3yKhu5sJVViC; Fri, 10 Nov 2023 17:46:47 -0400 (-04)
+Received: from [192.168.1.152] (unknown [51.179.104.230])
+        by mail.maprial.com (Postfix) with ESMTPSA id 063F9816871C;
+        Fri, 10 Nov 2023 17:04:07 -0400 (-04)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Description: Mail message body
 Subject: =?utf-8?b?4oKsIDEwMC4wMDAuMDAwPw==?=
-To:     Recipients <ch.31hamnghi@hcrc.vn>
-From:   ch.31hamnghi@hcrc.vn
-Date:   Sun, 05 Nov 2023 19:57:38 +0100
+To:     Recipients <gvalencia@maprial.com>
+From:   gvalencia@maprial.com
+Date:   Fri, 10 Nov 2023 22:03:58 +0100
 Reply-To: joliushk@gmail.com
-Message-Id: <20231105185749.54C3D1B81FC6@zimbra.hcrc.vn>
-X-Spam-Status: No, score=2.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+Message-Id: <20231110210409.063F9816871C@mail.maprial.com>
+X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,DKIM_INVALID,
+        DKIM_SIGNED,FREEMAIL_FORGED_REPLYTO,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -80,4 +68,3 @@ Kan ik =E2=82=AC 100.000.000 aan u overmaken? Kan ik je vertrouwen
 Ik wacht op jullie reacties
 Met vriendelijke groeten
 mevrouw Joanna Liu
-
