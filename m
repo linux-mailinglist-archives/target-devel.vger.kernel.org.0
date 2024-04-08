@@ -1,101 +1,80 @@
-Return-Path: <target-devel+bounces-126-lists+target-devel=lfdr.de@vger.kernel.org>
+Return-Path: <target-devel+bounces-128-lists+target-devel=lfdr.de@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1738189B61B
-	for <lists+target-devel@lfdr.de>; Mon,  8 Apr 2024 04:54:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39D6689B7AC
+	for <lists+target-devel@lfdr.de>; Mon,  8 Apr 2024 08:35:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43EAA1C20F69
-	for <lists+target-devel@lfdr.de>; Mon,  8 Apr 2024 02:54:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D44C51F22403
+	for <lists+target-devel@lfdr.de>; Mon,  8 Apr 2024 06:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE531C3E;
-	Mon,  8 Apr 2024 02:54:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="s7zvsb0F"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96807462;
+	Mon,  8 Apr 2024 06:35:25 +0000 (UTC)
 X-Original-To: target-devel@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD58617F7;
-	Mon,  8 Apr 2024 02:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C784D1D52C;
+	Mon,  8 Apr 2024 06:35:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712544872; cv=none; b=bWDS3PM26xRLobvpVnVdShpuGVGzzbgA7amV3RuzwqFHiEcdEtpMQDinWHfHaW+/BSlE8KQnbFBimd924voSkj7lNsQaDzGRx+2hJyYJzD5gBeC99ZtzLOoj4mIOnnYOiM4NaOCquntT6JIzFgoTAoSPvqrABjHqukJ2Agaetqg=
+	t=1712558125; cv=none; b=ky0GDW73yjWyYPx0s8ahwRhHtnJe59QFWBgJT+nmZhtzDt4vze4zH4UsUh+sk/SES60sQyy2L56SvEyFfoBPvO5zMOnNMarrY3+dJfmQlmtD71FtM/y+n2qhkqOjo0zZd8wUTrS5+F/kIbkVRnm89SeV9zNkCn9wXkEbgnCDgks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712544872; c=relaxed/simple;
-	bh=94RvMc6Rf0UIsnYRM2ZlngrhDBe/mSI9V8l2Gsna8QA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=twA4HHnZv3gkuRizWXCMUZG5Hu9W1ypKTXMhg/aYDsfgv+j+fZHq5e/zsK01t4EwqKxM//CsoBw3+Y+GhBLyJPUHoOzaYL4fogcF3/5220lXNiusB6JpOtvE7/iZS9GL1wpGEKIOgcRIxKzgML8iUYljkvP8PsuC/mL8rwBZW+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=s7zvsb0F; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=sVZokRLRtK/U1jkTDOTUDvOWvOdsjK6uSS0rAvoMvMU=; b=s7zvsb0FszY3b8Zjx3MaQsPz6c
-	J+9tShR/usOzuGoOe9mjdBVGE8Afqk9VwBM6KnmdVSQ4bt3/u20STOWDCBzyAK34uZdbPuWEigubv
-	JO0GTIZJo6P0v/tDUbtKns/v2I15RPbLgYXaldVUNbvd7FKySEOuRN7ylM8S9UwlUXafqZeMwp3Aw
-	04wm3TKLe7mmnsSsv5G82rUlfORZyyj+NEALgljEUx2fXNOtysCoXj+ARLIeWlB0SSKVhSMAqnG5i
-	SjxHPqpkySPz9kkWlX17RS/T2Zt3FR+upavdCEj0KAvYwqQOhkb6Om3t7B8s3VqiN3A6kUU9nDiaV
-	l42C0+3w==;
-Received: from [50.53.2.121] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rtf9S-0000000E7aj-106x;
-	Mon, 08 Apr 2024 02:54:30 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-scsi@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>,
-	"James E.J. Bottomley" <jejb@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Max Gurtovoy <mgurtovoy@nvidia.com>,
-	linux-rdma@vger.kernel.org,
-	target-devel@vger.kernel.org
-Subject: [PATCH 4/8] scsi: iser: fix @read_stag kernel-doc warning
-Date: Sun,  7 Apr 2024 19:54:21 -0700
-Message-ID: <20240408025425.18778-5-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408025425.18778-1-rdunlap@infradead.org>
-References: <20240408025425.18778-1-rdunlap@infradead.org>
+	s=arc-20240116; t=1712558125; c=relaxed/simple;
+	bh=+KhrMhcJSvItbb/04gtqwcqQ9SN2qd7j6u0HCMyKS6E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mYZL38Z/YPlbX5CnEncegqU5YvCtQR5AOnZd7kaHy5REDW4JTyoyCi6vwFtb9pfT5LGPmCDWXKCiHSaW/guaGZ6otOGSL3bzrTLPRjblC4mRSEjNnA7LUk/Od8O3W5VhpYzc2MjYWcaW0HZ6hNe8gj7VBUvROog2uA644m1RZyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grimberg.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grimberg.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4167082dabdso946495e9.0;
+        Sun, 07 Apr 2024 23:35:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712558122; x=1713162922;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+KhrMhcJSvItbb/04gtqwcqQ9SN2qd7j6u0HCMyKS6E=;
+        b=rIWolup+fF/JdenwNEaEzc+lbOEPqTJjhS/4mSR7b2E9Fm6deNxifJd+dSoWXdYfjv
+         kl5ZhPlTJiMvdwTvdQAX8xGlZS9v3Alg6h9eYU6CR4KMlfDP/L2jbmZKg/LdYhbZNoiG
+         xR543HRvgyhYpVghB17b8wm1J91B3daanGR9YmSzC7O4KT014m8918zyWrcXSouSoLqM
+         RLQ9dn2kO00MZ0nLf/2zpiVVePiIoj6pc9LIQxLc05OtYwTdBIytUfE/VOupEK+hFQED
+         /fmJsiKKUOIFYt2JN3th4lyOR0G/dD95k7iKORtFOZp6wOpWRHhSZFLOsKH7a0CbF2QO
+         HOkw==
+X-Forwarded-Encrypted: i=1; AJvYcCXzrQFkztSNddltB3uOM76pesg4PhzI4hleyXmTF3fKqamV0SvfZ0m8o5CDGrabMchcOi5DekB5MN7bENNih6kKPp9Gg33rX4LtniSLa0b+eknLh+W7TDCVxnAXhaADDuvwlc5bPpJGFDPBHge3SDbeDkZefX7UuL9iem9kDdOxC6NDn84=
+X-Gm-Message-State: AOJu0Yxz8NBC5TCnK5baIRShSXcy5UsKSxaU8qsRIZQsxjvITIH6JX2O
+	86awN6no0vNy7fGxrB5EmWy3pQd6/QYElGnUJXPB4uaXyKiZ4sTZ
+X-Google-Smtp-Source: AGHT+IFSyt0zPSTcrnhe5XjpfseqpCtC+DiCJFueKoydoT+hbLBs5WFMLMjDRBKfZIA/WEgashqa5Q==
+X-Received: by 2002:a05:600c:3b96:b0:416:7b2c:df09 with SMTP id n22-20020a05600c3b9600b004167b2cdf09mr693106wms.1.1712558121952;
+        Sun, 07 Apr 2024 23:35:21 -0700 (PDT)
+Received: from [10.50.4.160] (bzq-84-110-32-226.static-ip.bezeqint.net. [84.110.32.226])
+        by smtp.gmail.com with ESMTPSA id l25-20020a1c7919000000b004161cb3e794sm7174390wme.1.2024.04.07.23.35.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 07 Apr 2024 23:35:21 -0700 (PDT)
+Message-ID: <6d038491-b05d-435f-9f34-53afc6e67029@grimberg.me>
+Date: Mon, 8 Apr 2024 09:35:19 +0300
 Precedence: bulk
 X-Mailing-List: target-devel@vger.kernel.org
 List-Id: <target-devel.vger.kernel.org>
 List-Subscribe: <mailto:target-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:target-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/8] scsi: iser: fix @read_stag kernel-doc warning
+To: Randy Dunlap <rdunlap@infradead.org>, linux-scsi@vger.kernel.org
+Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Max Gurtovoy <mgurtovoy@nvidia.com>, linux-rdma@vger.kernel.org,
+ target-devel@vger.kernel.org
+References: <20240408025425.18778-1-rdunlap@infradead.org>
+ <20240408025425.18778-5-rdunlap@infradead.org>
+Content-Language: he-IL, en-US
+From: Sagi Grimberg <sagi@grimberg.me>
+In-Reply-To: <20240408025425.18778-5-rdunlap@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Correct kernel-doc comments for struct iser_ctrl to prevent warnings:
-
-iser.h:76: warning: Function parameter or struct member 'read_stag' not described in 'iser_ctrl'
-iser.h:76: warning: Excess struct member 'reaf_stag' description in 'iser_ctrl'
-
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
----
-Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: linux-scsi@vger.kernel.org
-Cc: Sagi Grimberg <sagi@grimberg.me>
-Cc: Max Gurtovoy <mgurtovoy@nvidia.com>
-Cc: linux-rdma@vger.kernel.org
-Cc: target-devel@vger.kernel.org
-
- include/scsi/iser.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff -- a/include/scsi/iser.h b/include/scsi/iser.h
---- a/include/scsi/iser.h
-+++ b/include/scsi/iser.h
-@@ -63,7 +63,7 @@ struct iser_cm_hdr {
-  * @rsvd:         reserved
-  * @write_stag:   write rkey
-  * @write_va:     write virtual address
-- * @reaf_stag:    read rkey
-+ * @read_stag:    read rkey
-  * @read_va:      read virtual address
-  */
- struct iser_ctrl {
+Acked-by: Sagi Grimberg <sagi@grimberg.me>
 
