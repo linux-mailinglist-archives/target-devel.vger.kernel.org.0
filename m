@@ -1,115 +1,199 @@
-Return-Path: <target-devel+bounces-195-lists+target-devel=lfdr.de@vger.kernel.org>
+Return-Path: <target-devel+bounces-197-lists+target-devel=lfdr.de@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8BA199501B
-	for <lists+target-devel@lfdr.de>; Tue,  8 Oct 2024 15:32:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D3B2995D14
+	for <lists+target-devel@lfdr.de>; Wed,  9 Oct 2024 03:38:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CE5C2867EA
-	for <lists+target-devel@lfdr.de>; Tue,  8 Oct 2024 13:32:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DCFB284A2A
+	for <lists+target-devel@lfdr.de>; Wed,  9 Oct 2024 01:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B031DFE22;
-	Tue,  8 Oct 2024 13:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9712729429;
+	Wed,  9 Oct 2024 01:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b="j+nRcyis";
-	dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b="ssqSsqUy"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="PeLhhuPS"
 X-Original-To: target-devel@vger.kernel.org
-Received: from mta-03.yadro.com (mta-03.yadro.com [89.207.88.253])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BA0190055;
-	Tue,  8 Oct 2024 13:31:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.207.88.253
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C51208AD
+	for <target-devel@vger.kernel.org>; Wed,  9 Oct 2024 01:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728394299; cv=none; b=bfyDeN6r21ku+7sNpfJtaH46TOm7vrFVs5NHFSueWgaHaEGREtei+94+0awU5w6o1rm4TEA0oDZUkGRbt+fq7cgzrSW9RZrmo5X4xCG8EG2qbPIZZP8cO+fnCITmqvX995YSwgez1gkxX6czOJE2ppA7UBC/bdtk77foNKQeagU=
+	t=1728437931; cv=none; b=IIzjebhfBO5vQ/lLPsN/kUH9WDZba98vmb46JaxibCO5x+bjnUnDt8rZ0KnWxDdmUj1noSqjhOv0G7kLUuiW3Uz482wd8lbqpH1jV3lJAFy9kPXhCNTp1/P6zJUfBvAgj2CizkrkUMZUYgLJfg7MeQNo/ERESs4STrn5saTy2rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728394299; c=relaxed/simple;
-	bh=95R7frcox+BpLSzcSxD73QmPKcWo05sbLhvOIqrwt/o=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O5gKLafA+vO5Jpdqtr6nx4jfCQRXQNFOIVKtkwOZLqQfDqMi+N9FUlqRQhA7MO/1yQslyH+Re/Z+3iCbxMxZoXCc0vvci5fFWBnE9ncBGU3M1+As03uN1yTHljSdDiMtdIJIvFx/7LFrvdYc81GpmbykAEvSuqDbFo/BTbGBUvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yadro.com; spf=pass smtp.mailfrom=yadro.com; dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b=j+nRcyis; dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b=ssqSsqUy; arc=none smtp.client-ip=89.207.88.253
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yadro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yadro.com
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-03.yadro.com B763FE0018
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
-	t=1728394294; bh=6Jaz5KTsUcnqJMhBopv+w18+cRGcBKKrscV7xAds5Og=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=j+nRcyisDDBz2ua7jQ4Dh0AyjzagptYvj8CoBQh9AqW3v4r+hYdKc3egCm3AskhC1
-	 Gs1YyDhIHPAJc944m3rrGS2uoGKvqk666V9Gfd+QswtajqMlozOSP3ZIvtfTS/0fNJ
-	 Fada7l6fcj7sgsSnwrT06EC6rE3B5QZ2ZQwFU89nGD7Y21c8f9/7HqRGsRvDOCdFL0
-	 0mRHCccM0Uq837GTYXEps7k4gJ52Brdc9lgZQCzA81Y+zhao1CNAYLNxPUo6cNJ2fK
-	 qaEdTAKQy/EZAlCzTvfRdpyuni5HyUb+h60L0F/Fd6skoK3qarp9uCuy55VbiBdRYh
-	 3iU9Pj+E4u9bA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
-	t=1728394294; bh=6Jaz5KTsUcnqJMhBopv+w18+cRGcBKKrscV7xAds5Og=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=ssqSsqUysxs+G5+oHMP3hAOWr6Bib0345pyP1q9/8MFyXSY36p7EqohomWU/WwKZt
-	 9MyzfF73BCjC6BcAGO8+TGy6mKRi59K9Qd5rCEXBJ0c/0pk+GpePhHEHR+tkQzGr+n
-	 FQCpONT4T9t6GCCKK0kAUJVlMjTaFKkVhvuiXTnBDksFd/e4nll9Y+zzvr9m7CoQiQ
-	 8g9mSTH2bkgNTwLpH39f1uN5kJxHaYhR34OBaoC9/fX58/Xk/rYa5MeFr3BILOMrHl
-	 gsalMwXzLGfEJpHBoEIO5sDNKVktpTU9oQLVDJVQfx41xB4ksLxoAVmiMkL7RO7Vxg
-	 7i9CYHOlRA3ag==
-From: Anastasia Kovaleva <a.kovaleva@yadro.com>
-To: <target-devel@vger.kernel.org>
-CC: <njavali@marvell.com>, <GR-QLogic-Storage-Upstream@marvell.com>,
-	<James.Bottomley@HansenPartnership.com>, <martin.petersen@oracle.com>,
-	<bvanassche@acm.org>, <quinn.tran@cavium.com>, <nab@linux-iscsi.org>,
-	<himanshu.madhani@cavium.com>, <linux-scsi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux@yadro.com>
-Subject: [PATCH 3/3] scsi: qla2xxx: Remove incorrect trap
-Date: Tue, 8 Oct 2024 16:24:02 +0300
-Message-ID: <20241008132402.26164-4-a.kovaleva@yadro.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20241008132402.26164-1-a.kovaleva@yadro.com>
-References: <20241008132402.26164-1-a.kovaleva@yadro.com>
+	s=arc-20240116; t=1728437931; c=relaxed/simple;
+	bh=hrsgq3gxocyiHRLNaRDJ3sCr/IMNBDwc/bTvD7a2B5A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CSW89av5UMYNHBfNWQdTBAEGjfi/hY4PuDIu2tpX5S2rJnYKV3gGSSlickxyksAsNUl4NiNnB+GnqlZ87jkKtF+p445mCfq4m+J5aE/XpAUk3UwI1/vx09Zvz09GvjM+tkqSsRlAtnytZ09ED35n55cW62V75AFdMBgQ6w6Scik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=PeLhhuPS; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 498JtZ66022304;
+	Wed, 9 Oct 2024 01:38:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2023-11-20; bh=bD+hepKSLWWk33AD4ZUihFuX7m9CX
+	zPlviQ1hmcVXTw=; b=PeLhhuPSJKSDf6O0BV3YR9DQObzQ7RoIq9xWfEpNfiZgU
+	YLrkO5grNt5d12y+7BjaBIgc4lSdmqhWqf9Rff9v5UPW0ZdRsg+7LrJkBnu56gzH
+	aDcKnvVme8g8fj/I3Gd5uAEPdXO1hBBe6ICQPnwynkTIMmthQ0RbauWRiLnoZr3t
+	2wANdJsReuJqwXuV0gv8i9PFcSqSA8+IhyjaqDB5SweXd2BaCheG9PmrRQyvKEi2
+	d3zIeNHw0SdFMZYQl7eKDH6gcJH462VkDbIQ36wecY1brnLcq1GiVtvQbsNQGVSF
+	hqwz5w/4CQg5XaWfJ0etjF7CimQ6LE/46+Auu/puQ==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 423034qcnb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 09 Oct 2024 01:38:44 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 498NQoTV011392;
+	Wed, 9 Oct 2024 01:38:43 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 422uwe8989-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 09 Oct 2024 01:38:43 +0000
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4991chj6024787;
+	Wed, 9 Oct 2024 01:38:43 GMT
+Received: from mnc-mac.us.oracle.com (dhcp-10-65-182-164.vpn.oracle.com [10.65.182.164])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 422uwe897c-1;
+	Wed, 09 Oct 2024 01:38:43 +0000
+From: Mike Christie <michael.christie@oracle.com>
+To: stefanha@redhat.com, jasowang@redhat.com, mst@redhat.com,
+        sgarzare@redhat.com, pbonzini@redhat.com, target-devel@vger.kernel.org,
+        virtualization@lists.linux-foundation.org
+Cc: Mike Christie <michael.christie@oracle.com>
+Subject: [PATCH 1/8] vhost-scsi: Reduce mem use by moving upages to per queue
+Date: Tue,  8 Oct 2024 20:38:31 -0500
+Message-ID: <20241009013839.88593-1-michael.christie@oracle.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: target-devel@vger.kernel.org
 List-Id: <target-devel.vger.kernel.org>
 List-Subscribe: <mailto:target-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:target-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain
-X-ClientProxiedBy: T-EXCH-08.corp.yadro.com (172.17.11.58) To
- T-EXCH-09.corp.yadro.com (172.17.11.59)
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-08_24,2024-10-08_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
+ spamscore=0 adultscore=0 phishscore=0 suspectscore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2409260000 definitions=main-2410090009
+X-Proofpoint-GUID: GNGgdsyJg7-tDbGf2pn_KUAPLuJTST6J
+X-Proofpoint-ORIG-GUID: GNGgdsyJg7-tDbGf2pn_KUAPLuJTST6J
 
-This BUG_ON() is triggered when there is no fc_port with a certain
-loop ID in the scsi host vp_fcports list, but there is one in
-lport_loopid_map. As these two data structures do not change
-simultaneously and atomically, such a trap is invalid.
+Each worker thread can process 1 command at a time so there's no need to
+allocate a upages array per cmd. This patch moves it to per queue. Even a
+small device with 128 cmds and 1 queue this brings mem use for the array
+from
 
-Cc: stable@vger.kernel.org
-Fixes: 726b85487067 ("qla2xxx: Add framework for async fabric discovery")
-Signed-off-by: Anastasia Kovaleva <a.kovaleva@yadro.com>
-Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+2 MB = 8 bytes per page pointer * 2048 pointers * 128 cmds
+
+to
+
+16K = 8 bytes per pointer * 2048 * 1 queue
+
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
 ---
- drivers/scsi/qla2xxx/qla_target.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ drivers/vhost/scsi.c | 24 ++++++++++--------------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_target.c b/drivers/scsi/qla2xxx/qla_target.c
-index bc7feef6ee79..9a5dbd00de01 100644
---- a/drivers/scsi/qla2xxx/qla_target.c
-+++ b/drivers/scsi/qla2xxx/qla_target.c
-@@ -5190,15 +5190,7 @@ static int qlt_24xx_handle_els(struct scsi_qla_host *vha,
- 		ql_dbg(ql_dbg_disc, vha, 0x20fc,
- 		    "%s: logo %llx res %d sess %p ",
- 		    __func__, wwn, res, sess);
--		if (res == 0) {
--			/*
--			 * cmd went upper layer, look for qlt_xmit_tm_rsp()
--			 * for LOGO_ACK & sess delete
--			 */
--			BUG_ON(!sess);
--			res = 0;
--		} else {
--			/* cmd did not go to upper layer. */
-+		if (res) {
- 			if (sess) {
- 				qlt_schedule_sess_for_deletion(sess);
- 				res = 0;
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 006ffacf1c56..0cfa56d08450 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -83,7 +83,6 @@ struct vhost_scsi_cmd {
+ 	/* Pointer to the SGL formatted memory from virtio-scsi */
+ 	struct scatterlist *tvc_sgl;
+ 	struct scatterlist *tvc_prot_sgl;
+-	struct page **tvc_upages;
+ 	/* Pointer to response header iovec */
+ 	struct iovec *tvc_resp_iov;
+ 	/* Pointer to vhost_scsi for our device */
+@@ -187,6 +186,7 @@ struct vhost_scsi_virtqueue {
+ 	struct vhost_scsi_cmd *scsi_cmds;
+ 	struct sbitmap scsi_tags;
+ 	int max_cmds;
++	struct page **upages;
+ 
+ 	struct vhost_work completion_work;
+ 	struct llist_head completion_list;
+@@ -619,7 +619,6 @@ vhost_scsi_get_cmd(struct vhost_virtqueue *vq, struct vhost_scsi_tpg *tpg,
+ 	struct vhost_scsi_nexus *tv_nexus;
+ 	struct scatterlist *sg, *prot_sg;
+ 	struct iovec *tvc_resp_iov;
+-	struct page **pages;
+ 	int tag;
+ 
+ 	tv_nexus = tpg->tpg_nexus;
+@@ -637,12 +636,10 @@ vhost_scsi_get_cmd(struct vhost_virtqueue *vq, struct vhost_scsi_tpg *tpg,
+ 	cmd = &svq->scsi_cmds[tag];
+ 	sg = cmd->tvc_sgl;
+ 	prot_sg = cmd->tvc_prot_sgl;
+-	pages = cmd->tvc_upages;
+ 	tvc_resp_iov = cmd->tvc_resp_iov;
+ 	memset(cmd, 0, sizeof(*cmd));
+ 	cmd->tvc_sgl = sg;
+ 	cmd->tvc_prot_sgl = prot_sg;
+-	cmd->tvc_upages = pages;
+ 	cmd->tvc_se_cmd.map_tag = tag;
+ 	cmd->tvc_tag = scsi_tag;
+ 	cmd->tvc_lun = lun;
+@@ -669,7 +666,9 @@ vhost_scsi_map_to_sgl(struct vhost_scsi_cmd *cmd,
+ 		      struct scatterlist *sgl,
+ 		      bool is_prot)
+ {
+-	struct page **pages = cmd->tvc_upages;
++	struct vhost_scsi_virtqueue *svq = container_of(cmd->tvc_vq,
++					struct vhost_scsi_virtqueue, vq);
++	struct page **pages = svq->upages;
+ 	struct scatterlist *sg = sgl;
+ 	ssize_t bytes, mapped_bytes;
+ 	size_t offset, mapped_offset;
+@@ -1595,11 +1594,11 @@ static void vhost_scsi_destroy_vq_cmds(struct vhost_virtqueue *vq)
+ 
+ 		kfree(tv_cmd->tvc_sgl);
+ 		kfree(tv_cmd->tvc_prot_sgl);
+-		kfree(tv_cmd->tvc_upages);
+ 		kfree(tv_cmd->tvc_resp_iov);
+ 	}
+ 
+ 	sbitmap_free(&svq->scsi_tags);
++	kfree(svq->upages);
+ 	kfree(svq->scsi_cmds);
+ 	svq->scsi_cmds = NULL;
+ }
+@@ -1625,6 +1624,11 @@ static int vhost_scsi_setup_vq_cmds(struct vhost_virtqueue *vq, int max_cmds)
+ 		return -ENOMEM;
+ 	}
+ 
++	svq->upages = kcalloc(VHOST_SCSI_PREALLOC_UPAGES, sizeof(struct page *),
++			      GFP_KERNEL);
++	if (!svq->upages)
++		goto out;
++
+ 	for (i = 0; i < max_cmds; i++) {
+ 		tv_cmd = &svq->scsi_cmds[i];
+ 
+@@ -1636,14 +1640,6 @@ static int vhost_scsi_setup_vq_cmds(struct vhost_virtqueue *vq, int max_cmds)
+ 			goto out;
+ 		}
+ 
+-		tv_cmd->tvc_upages = kcalloc(VHOST_SCSI_PREALLOC_UPAGES,
+-					     sizeof(struct page *),
+-					     GFP_KERNEL);
+-		if (!tv_cmd->tvc_upages) {
+-			pr_err("Unable to allocate tv_cmd->tvc_upages\n");
+-			goto out;
+-		}
+-
+ 		tv_cmd->tvc_resp_iov = kcalloc(UIO_MAXIOV,
+ 					       sizeof(struct iovec),
+ 					       GFP_KERNEL);
 -- 
-2.40.1
+2.34.1
 
 
