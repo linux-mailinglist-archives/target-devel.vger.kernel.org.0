@@ -1,245 +1,331 @@
-Return-Path: <target-devel+bounces-620-lists+target-devel=lfdr.de@vger.kernel.org>
+Return-Path: <target-devel+bounces-622-lists+target-devel=lfdr.de@vger.kernel.org>
 X-Original-To: lists+target-devel@lfdr.de
 Delivered-To: lists+target-devel@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D05FABF0999
-	for <lists+target-devel@lfdr.de>; Mon, 20 Oct 2025 12:40:26 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCAE7C0B0E2
+	for <lists+target-devel@lfdr.de>; Sun, 26 Oct 2025 20:14:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EB36188D31E
-	for <lists+target-devel@lfdr.de>; Mon, 20 Oct 2025 10:40:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 608D24EC104
+	for <lists+target-devel@lfdr.de>; Sun, 26 Oct 2025 19:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 890242FFDFF;
-	Mon, 20 Oct 2025 10:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F25252292;
+	Sun, 26 Oct 2025 19:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="k3A7mL32";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="fA34/L6L"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="HL0e2mnM"
 X-Original-To: target-devel@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6CB2FB097;
-	Mon, 20 Oct 2025 10:38:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760956729; cv=fail; b=TplQ1zFVejOf2u1MtU9Hfd9TISrHowJCHt2tZIhbZhSn6KZAGtiUwA2acMOq5k7w4lmcHETquCkLNUIGJKgl93LdGffkklDXeDgOa1/KjkxykxrQRWbiIea71kYcA/yghqWAvuxkfxyR6qe4cKy49oSNv8YURQtRTFSWEKL3pXM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760956729; c=relaxed/simple;
-	bh=O0umhKrH86sZpLuIjLhjHtxr2ZaMuL5FOgq9frGoicI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=o4NtLMsExFWBE1JPx4OncFlLSSDrcCPVCpauWvNvE3pKdC0pbro9fg60ib7tCLJPStjx7RUjUIv7n0jj+2bp81fvmAZlgLu1TcjZSyjJlLkMvJ8PCzzOV+8IXekdyGvs+5e5Od49/DgcNDMlbVQhr9kz3ms8ZbV8VfXjSI4+vX0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=k3A7mL32; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=fA34/L6L; arc=fail smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335B121767C;
+	Sun, 26 Oct 2025 19:13:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761506004; cv=none; b=G24gIIreIvpi9YqKCwsbIi00eB6vPrGRBNP/LoFheQo34ksNXEyTs6xef5zaQvQXG8K84z05OwsMWKJHg4SAoluaNO8k6c2oxEfHSnYptmytegD5M93TqDqODC7YyCN1TcTu6MVZWVTg8soij4DzjuQXHYYVi7fYIXCfqwqPjvE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761506004; c=relaxed/simple;
+	bh=YQJrQZtKC6qcthbKGN9i3tlsIUKA9iPjXIL+ttcf4ao=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=LEbymcP/kgVKjOnVc95qtd4GxuCGC/MblLaHaiC/mDzGr5mqWW6glQhRrK6WRzjjPHucPINA5qlpMEkrIcumpKfMiICBBxGnfBMlDh5QcFN9DWNyZfa65CYnVsLgYOS4hoE8Pqx2OPEJDHilZqK7ThovqJkIxnXmCYPV342AYbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=HL0e2mnM; arc=none smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59K8SJTK008948;
-	Mon, 20 Oct 2025 10:38:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=dIa3ePwvAWaY3kw92znXX5CRVzoShcUAAqWtvkIt9Xk=; b=
-	k3A7mL32TVoqDlVn50kUNNPXofaWCOPBUbmmt+T8domsy4UlANAhsKnMcuVg9uHP
-	D3lEU4yPZ/EvhPu6BOLkBkI0zDXEcrVOGmc4r2vx3zyi6O5KaSR84zp7z2eqykg6
-	GAUDWT3PvXbAi/b7aOjmgdtAnKtrs0GbJZ6ly923pw+iMqwaSKVVXfQ6IHdGDztR
-	tgCXe9WfkIS0GsJhzvWVJyLrupBrA4kej+Ce/LJTy3jvxoGrfHJOMWu/3OCf8R8h
-	VuTQVPLMcCPYXB0SW+CitXS78NX3fnCCnoYd6cL97MVQ36qWa0vd26WhEfiD+J3J
-	xYhMLDieLMgTf5xvotK/3g==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49v31d20px-1
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59Q6Cs0o022347;
+	Sun, 26 Oct 2025 19:13:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
+	content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=wX9+a6daoQks5MpE/nIFHVCuKFTPv
+	wgMI6gFnmkC9xI=; b=HL0e2mnMTObY1De9+ebOPCKT4PdHjvWPJNQJie3mAihEK
+	V33kymzKn/WpwpoI3P4QKke+vO/KMVAcECbyB7Qy4og4cZ1iuSF//8Cuiu+8NDih
+	5RbTVfYHG/sKuvROJ7IQG47ZWHSbK4eO+aTarYRAEqlqXl05AxkmmD7yRW3WWzSF
+	sAvN8HcCyx+Rxep1pftigTzgNPmnumdLIfEaaTlmD01+zQbvNp7IUko5qvDuoD3M
+	mukx8P4B2SvKrG4j9qOn2bTAem7AkzSCSAKl1bMJBxRitKctB8X5+vzMd8j9wvOA
+	zn3fgjjkK6Sd3rZAPDXMIcrVb5CnL+xwUbBNsNWSQ==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4a0myc1w5u-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 20 Oct 2025 10:38:47 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59KAaK4i013669;
-	Mon, 20 Oct 2025 10:38:46 GMT
-Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazon11010046.outbound.protection.outlook.com [52.101.61.46])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 49v1bahuvj-2
+	Sun, 26 Oct 2025 19:13:19 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59QEQsrY038681;
+	Sun, 26 Oct 2025 19:13:18 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a0n061wrk-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 20 Oct 2025 10:38:46 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=W2KXXO+JDfmk/8a/HiumrJH5V0HEQdCFKwGPCeuYlWMnsV92NlELhTpYf4l2kfgx648xtxbfidVaH7rb0nTBnvit62cdlpXQGriwPkbT8XfwPN85fnkHdXrYdZdQUvTemrClC5pDvDuQAGiLiiOio51CGhCj4KWWG9+b6F8KQcekMa3UH/Fs+iR/hip6kZIkO9qOl8Bjkd06ah98/Q1WKTSV0scP5d+ESFviGZfCUNSHK/GyIZqGk8jMpggBmr3/63r4jlpqEgWdBpljLQv3/NZXvMzwWXouxrbdHCWHTb0omjePmasgdvLWnUp2WgE7f/WkBGXnEINIiO1/QFk6hA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dIa3ePwvAWaY3kw92znXX5CRVzoShcUAAqWtvkIt9Xk=;
- b=eMQFpMp83t8Lv8kS79lMhjaNzhobzKrXw+TE8J1c4liWKGvDIRGGcgm6BEvXjs9LLikpGgkhIaQmxzrz7uJFgEUTlqXl80dEQAJgTeXn8ayuh92J1hUJETMQ3imMufuQKvEiwx545YmcYlUBm9MBQnjLBUeoQLE37ogYBSLBRFzEqwFj8aPUu/OT8v467d9xpixTS/FyiOTUXobcm+MM0J62fd+aoQ3A6oJDhVFEs6PdBMyh4caukOZ/F6tauA/LF/ZstRvVtEd14u6cgdoTu4MrbRCm0D2EYyY5CllWDttzYJfPBAyGAy9yay5U/uTdE7W7F+wsE4y508xUtKnnow==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dIa3ePwvAWaY3kw92znXX5CRVzoShcUAAqWtvkIt9Xk=;
- b=fA34/L6LfSTURSqXx00gkTtqidRj7dUeUn/Q0RUuT+XqStJGUDxcd08IJs6tilxjetWGfbIw/Pii38wUg6Bzmu80BwFmARfzlW7eTdpWRs13KjsBCV/5PIPDGVpro5wD0TV9QaE7uLDMC5LWV05j1UMNNszhAvaECcQzARw5LTo=
-Received: from MN2PR10MB4320.namprd10.prod.outlook.com (2603:10b6:208:1d5::16)
- by CO6PR10MB5618.namprd10.prod.outlook.com (2603:10b6:303:149::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.17; Mon, 20 Oct
- 2025 10:38:40 +0000
-Received: from MN2PR10MB4320.namprd10.prod.outlook.com
- ([fe80::42ec:1d58:8ba8:800c]) by MN2PR10MB4320.namprd10.prod.outlook.com
- ([fe80::42ec:1d58:8ba8:800c%5]) with mapi id 15.20.9228.016; Mon, 20 Oct 2025
- 10:38:40 +0000
-From: John Garry <john.g.garry@oracle.com>
-To: martin.petersen@oracle.com
-Cc: target-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-scsi@vger.kernel.org, michael.christie@oracle.com,
-        John Garry <john.g.garry@oracle.com>
-Subject: [PATCH v3 7/7] scsi: target: Add atomic support to target_core_iblock
-Date: Mon, 20 Oct 2025 10:38:20 +0000
-Message-ID: <20251020103820.2917593-8-john.g.garry@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20251020103820.2917593-1-john.g.garry@oracle.com>
-References: <20251020103820.2917593-1-john.g.garry@oracle.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PH8P221CA0003.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:510:2d8::31) To MN2PR10MB4320.namprd10.prod.outlook.com
- (2603:10b6:208:1d5::16)
+	Sun, 26 Oct 2025 19:13:18 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 59QJDId9038300;
+	Sun, 26 Oct 2025 19:13:18 GMT
+Received: from gms-bm-13185-1.osdevelopmeniad.oraclevcn.com (gms-bm-13185-1.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.252.35])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4a0n061wq4-1;
+	Sun, 26 Oct 2025 19:13:18 +0000
+From: Gulam Mohamed <gulam.mohamed@oracle.com>
+To: martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
+Subject: [PATCH 6.19/scsi-queue] scsi: target: core: Add emulation for REPORT_IDENTIFICATION_INFORMATION
+Date: Sun, 26 Oct 2025 19:13:09 +0000
+Message-ID: <20251026191309.34968-1-gulam.mohamed@oracle.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: target-devel@vger.kernel.org
 List-Id: <target-devel.vger.kernel.org>
 List-Subscribe: <mailto:target-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:target-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN2PR10MB4320:EE_|CO6PR10MB5618:EE_
-X-MS-Office365-Filtering-Correlation-Id: b336e1de-ff1d-483a-2b90-08de0fc4d576
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?9EcDaRERo1/r70KqfuU8Bg5O3P9y7CvQPb5gl+ulg//lQGd0eM81NfldUlVs?=
- =?us-ascii?Q?1z1wnbDdbEDH+IcUpOWKbi1Zhq3GV6C4g2pJg3j83k8dWv7sR3ObNNc/yxEw?=
- =?us-ascii?Q?8SDN+cWtmz4Y/fiikdyYjQbeaT8pE/1XGm5utH39vWZ/aOgaz9QNjElWr1L+?=
- =?us-ascii?Q?4MSB2HswU5lXvWCnh8ReM2Go948QhM4q3v8Q7pxuk136mqhTgWxPPStAvynp?=
- =?us-ascii?Q?QsZhGTcaf0izeE3yE8AIhCcEX8O5D3mWRIjV54TDRpk7ODbSuAikoMjIzb8i?=
- =?us-ascii?Q?45b56aUaDjopqNTnaFSJGscw0P+ZldCtFaP1hgHz5KPOSLjq0+587cVE6fF5?=
- =?us-ascii?Q?kjBIpl6aixPAm1lP1REYwmqAvtB/llw+V77QsuNoVOHx+Wx12rsxZB2owrjY?=
- =?us-ascii?Q?MTXhh2Tu9F0HRocyq0qRxObPpFJ01nA5Xtb2hquMhTXekVyV76fuq5IjUJ31?=
- =?us-ascii?Q?YEdAwIR1MEAumzwFBvpVitwD7cntiT0tsDdNrjmSbKFsN3E9CkSgq8B1J7+l?=
- =?us-ascii?Q?UQOM2IeoFxLpS626YUdBlYll+PKmnoE5JhW8sQ8/JR4WljKdQynLDQsBhOT+?=
- =?us-ascii?Q?JkEPMDiuZIDJGXc1MUdEZurmYCBSz0frTV4eubMIqVa/EhR6ocHaEY25gTTz?=
- =?us-ascii?Q?682a/hVHeJLZ4CsmcWWTuubtwqYNHONN86s1pao466c1duXngG/BMNEGzYWN?=
- =?us-ascii?Q?fKgq/UH52tAYQ6FOR8quvUnmLw1qGgaExsnmXEbESZYZ1heKeD2xl8Ovv5GJ?=
- =?us-ascii?Q?veI5ITHojHWop/lfDjd+oxeBEAxYXMoIpZI7t50yjgpne66+fFxmuIoOhuWy?=
- =?us-ascii?Q?aUlkYZDCILuRPrxZrgpqewJXI8cLJpA6wAlijQQlgQp3hDEbzeognPaCR1tJ?=
- =?us-ascii?Q?6NteF4A/pkk6UHQgzRHwNKsWYurUJwU3ovyR/rtrwRkyOLa1bv74nCKx7bcj?=
- =?us-ascii?Q?ceeS01lcYBhI0c5XlSeJdxefldMP+C1FI2kst8dWCkdtaEWvmcxPxyThVIFS?=
- =?us-ascii?Q?RQK/susG9estv4x5jOI1pmYPPR7dHlgxii4t4JnB110vWUqvQ395lGh50r/W?=
- =?us-ascii?Q?JIZPFk2ldjx3zXBSKn3AcMb9Hk8zfq1nug+nz1L5/hOQBtXNHhE14mucytJ1?=
- =?us-ascii?Q?2brN4b9lqkQA+lXtCiVPGLdSl2sNRd2fuD1mQewh3SqZmWCO8cQSCSMax3Bl?=
- =?us-ascii?Q?LytAYdOCV+U1U76CyI5ergByhnjm+meglNVXyBl0dnQCEPUN26f4xfvYMg6S?=
- =?us-ascii?Q?OAQsdLHLMtJonPv9GfdSsFAT1Lj7yH+WWEIh1yPBwEjJn1aNL4QWmyQ827oL?=
- =?us-ascii?Q?4rX0m43DUbh2IC75BXJHpqWtAmGdF4YEz2scSYL3/ioiIiXI3dU0fyx5v+3f?=
- =?us-ascii?Q?zqo3F7oaL11vLDfss+gOlMmhk84AYtcIr64B8t1jo8LPcjBGWUJEWvcx1zLU?=
- =?us-ascii?Q?lDieM2j91O/P8zc3yZMcC2MpteS5oBjU?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR10MB4320.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?asai6yC5o1FBN4zRSuWdk+5VgykW6Kk6ujgO0SyYsBhuzBYjBIIAR6Dqkfz3?=
- =?us-ascii?Q?teNNOlDFnNJFE648Jm9V/pFy3Cqt9ZtBA2JQXYkeP6jGloiJTnZof7gloB9y?=
- =?us-ascii?Q?4ZWmH8U2q76Mm4/TtTe149yQ3IKUj2JF1O5xizQtoIXRrhXFCnJyBeQJAnVJ?=
- =?us-ascii?Q?URvNadqo/BHtwgTf6IVEeoMEr4VLtgWLbmOAOIeg0ErDNSthhDANMmRwTHFn?=
- =?us-ascii?Q?ljtTWTQEdLvYWi3yim8uSypA0hms/hIwebSRClZws8rJIic++td8KfFXQaJj?=
- =?us-ascii?Q?WIlgeGfS/c5XxXs2wlo6W7/kbetWlNK8ur5fCbjUY8e4fdwtJzFSaI3Foz6A?=
- =?us-ascii?Q?PagSJLz5fuIMiCzGtPDpDgJD8nesx2rkGiBVvfc48ig8YGVhOAqeZLJJSxr2?=
- =?us-ascii?Q?r8frl1aI2aTxt2bbVXziQbxGfG+F4KSxAzsfG1C3hsv4C/48zWqxMxVk71ja?=
- =?us-ascii?Q?C8P4mnT2VCNc/PirwyOatOdU7Dg8poszT+Cli5FM5N/zacEAM64eUmBJ6UNf?=
- =?us-ascii?Q?+hmTxkqmegdiJH5jB+QmAYTj07BU+wpVdwSIKbLf/6KNrux2RkpXFWj2c3Bg?=
- =?us-ascii?Q?T001MfWULJ8JvvtrHo7+IBHR7ogdb3nMS3giKmCGOztcTUdrGc8TbakEfeFO?=
- =?us-ascii?Q?egrwwTqiOYJpGtKSY7bzUB+PDEFEzgPzg2vgTGZc3YuDC5w9Rzdlv10uPmVQ?=
- =?us-ascii?Q?bX4HLezz51w84Spc+ugoBlMO7yTDiqLqdweR3pB0x9epKuYUwpltgmzQQPhk?=
- =?us-ascii?Q?yc+7UWYlZPksgM8fWVpx/ixWy6yMrkgCxy6fqJP8KEB4JRL5jX1h3qS0yPPP?=
- =?us-ascii?Q?U+SfOtt2ilggJOn/K1TD2OcUXxdDhp/kFPiwYdUeRAO/KJbrtORnwAHiZIM7?=
- =?us-ascii?Q?aINrmHZATEEEmY/pEzebGetOt+XfwejEgRfGuU9dV9rWS0YyF7Tn5YlbAJPs?=
- =?us-ascii?Q?eR7tfmEyg8eA+PVIZLffTaz7XzOuZ18gqqr2h3kmpFI9V7cR+ThsvBcnQtiH?=
- =?us-ascii?Q?KWMFdvw87xHAFpbe4U8OZKem5eRl/K3f6ok0uPCh1fHGu2F0vb5LeoT8CZ8W?=
- =?us-ascii?Q?sEOVz+N44gcmryGH+q7qf+D9ZN0sskjuOtER7QHIz5leDd0tl+C01zq/FnkJ?=
- =?us-ascii?Q?/Guf09qCEmzkomJjtJFEuhlQCk1/nZENyR5NPbaV49xlWxmGei54NN5I8hF3?=
- =?us-ascii?Q?Opjuu08lSd1mFUj7zYSu1UH5oNMrMfjocD3mxVoM3d57e7f3p79vAz+BB2hV?=
- =?us-ascii?Q?vG+LZbTbto+tGmNOHKGXuHm/M3DIkIoS9N8huDlGGy+qB4V6XAJ7il5BVafI?=
- =?us-ascii?Q?YUK+pMdvMxxgDKWtg2Xs/7agvgBm2lw2bHPCGSFMjuKoFU2TBOxEAQaiKIoZ?=
- =?us-ascii?Q?zJ7vtfeApPyeigHhPPouW/abTjkkHEQmsqOSTesR7W4pJ7r8TFKhno3SR/jK?=
- =?us-ascii?Q?BxvyBRWTUnPgyWuHFLPw1/+4Tnn/VADYFIAoN/FSV/Rwro7ew42WDsxT6drS?=
- =?us-ascii?Q?AZoZ5vX8SL1gvM+Os68d10EEZbK3fnsTsCpDeksLhvSRhtiwCp6j4QTfK5G8?=
- =?us-ascii?Q?3brePAvUuYScs8EB6ffmp9f/8f3CBeuWn9S3XzQo6xYuqjUaiEMV5rjkm+8n?=
- =?us-ascii?Q?cg=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	XgC7CdBMPn/3VtvgRQkKq4OZdCEKf2KoU3o9s6F79IENvHUizY/+p+bIROpSUkfv7JBjPvbDlnNHW+r3iT9z5f8bmCx1hCclzFBnn3QRspYS4ilgBzV0pyBswg0yrHsIcQk4uehhkzYzjz2DQy7osV5Zo7zp7IXvWI47RUcvhMUVoAouAoy2Sp/G7c2zcG5jojOgE+q6WOdjBvq5Tq8RcwNYzCr25MFRZbCCX07zhbb7ZIwG6mvNFTPUI45ozWH6hm7thpJNkJoC77Fj0USxXAQb7bM2pXGWVpBKUpDFzIVHj9pkDal2f8OGTdw8dZmxDQWnwAE6OKinVi3cmP/1b/siZ+UdHfjwHR3BeMcx/0Z1wbgKCzQGu1FLoHS4wTZ8aeaZmc3LSecDAep6kyH6LFksGovYyOnsgpqKcOR1ZP1uXrQYvp66mq02HhYmNsWVKiMD07/aTexsPksNq8eoRF979+ofm+T5XD8MRiapbf9yKAevn2+Utg5IOQ/SrkM3sVyNf0sW5REWbdpZSSIOJ3RNBp+YGo2wh5uRiJYsMWdxHA9IuUQl9tC/8c4VUT+qx4zwDeBF5dofJBj8lVLonz1YLmr7140Rk+g9sochatg=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b336e1de-ff1d-483a-2b90-08de0fc4d576
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR10MB4320.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2025 10:38:40.7102
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rfTcsz7XaFAMhkNsLsi3YNY1eaNLuiQnm366N6fmK0MGPaSKe8ceXUqPveUxNKkNdQkrRP8xwotFWnLaLpblpA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR10MB5618
+Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-20_02,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
- suspectscore=0 spamscore=0 adultscore=0 bulkscore=0 phishscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2510020000 definitions=main-2510200087
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMyBTYWx0ZWRfX9PYK0x7V54p/
- 0MXaq8TdjCaWG/SuDsjpn6pRA+wCnepMQ4o8t70JZ9CQ6/Rp/9NeEoPTqOiVRjDcpOHeB9pvEfR
- 658Qca4OG7UnnLxgBQW6I0iRi8/eGiHQc9DHpZSe0s6qOFsBCwkEtmimruAKvvZRiOMrMfZHSLe
- tU5irDB8DVuRKNGZIOHu5pEur8MzVuUHs2O3w74U0AxGanGAvwYH+qbRz4shbySdXKlUGolcIpp
- ma5/F27wzf+9ftSkrLaJScBdL4hGCCsUVbeSfV0VWTHam9NrM6AfcxWMp14vDcSNXN9atCDE+Ao
- 4A4fvDQBu2O1hRNr9uqwD+76r+GSrZ5yzDTrvjCprnAUyw4oeiKD/7AENy9p6MfpLtYh6Ge+/f9
- TLzCcTfeCDejPNAcQRdYX92JQNXv0Q==
-X-Proofpoint-GUID: mWWO_c7mKOTZWdsSIG0bzNy28P9wK910
-X-Authority-Analysis: v=2.4 cv=KoZAGGWN c=1 sm=1 tr=0 ts=68f61137 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=x6icFKpwvdMA:10
- a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8
- a=zDhUAMABgqaCYlsd0_oA:9
-X-Proofpoint-ORIG-GUID: mWWO_c7mKOTZWdsSIG0bzNy28P9wK910
+ definitions=2025-10-26_07,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 suspectscore=0
+ malwarescore=0 adultscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510020000
+ definitions=main-2510260185
+X-Authority-Analysis: v=2.4 cv=fIg0HJae c=1 sm=1 tr=0 ts=68fe72cf cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8
+ a=V6UrBLdeg1_xNK5wq5sA:9
+X-Proofpoint-GUID: 38ziOfiie1Bvp_QMLW8q1zi3ii7GIDVl
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAxMiBTYWx0ZWRfX4rFJwUHXaueR
+ knbK3dSAOpCp6sAYEhTkFdS12fHvk5ZiQYTXlNxXHoNBjiG9BKMVCBa8OKrur2IHUGh+C2GBMFr
+ 43M+uhdwNBc0G3ildChLgEJVEzeCvYFSLCZegsZ7uCqF0+ZrzpAoYBO+WAkUMm9blUjC0jDu9Np
+ N+Szb2CVSn+HgGu2V2ejQC25fvO75JAi0KG7kQaEymg0pWMHwDzBP/XpXTVfO3yZi5JWQvr3AAr
+ X5n8OLEERR+UnMtUjezoNUlKlAXoeU00a1g4/WrpEqOXxOo5SKaYM3cF4lRESMFMiU68cH3Dfm8
+ q3s1PxctT0Gp+efQQJkIeoMdkYPMcFNUGoFgrmI3cpwKHmg8OV3QrbkSKyarGKA7NlCT+Id3paP
+ FxDydmbmns9Ylh5vYjRWh8G82G0iHA==
+X-Proofpoint-ORIG-GUID: 38ziOfiie1Bvp_QMLW8q1zi3ii7GIDVl
 
-From: Mike Christie <michael.christie@oracle.com>
+This patch will implement the REPORT_IDENTIFICATION_INFORMATION using the
+configfs file pd_text_id_info in target core module. The configfs file is
+created in /sys/kernel/config/target/core/<backend type>/
+<backing_store_name>/wwn/. The user can set the peripheral device text
+identification string to the file pd_text_id_info. An emulation function
+"spc_emulate_report_id_info()" is defined in target_core_spc.c which
+returns the device text id whenever the user requests the same.
 
-This has target_core_iblock use the LIO helper function to translate its
-block_device atomic settings to LIO settings. If we then get a write
-that LIO has indicated is atomic via the SCF_ATOMIC flag, we use the
-REQ_ATOMIC flag to tell the block layer to perform an atomic write.
-
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Gulam Mohamed <gulam.mohamed@oracle.com>
 ---
- drivers/target/target_core_iblock.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/target/target_core_configfs.c | 55 ++++++++++++++++++
+ drivers/target/target_core_spc.c      | 82 +++++++++++++++++++++++++++
+ include/target/target_core_base.h     |  4 ++
+ 3 files changed, 141 insertions(+)
 
-diff --git a/drivers/target/target_core_iblock.c b/drivers/target/target_core_iblock.c
-index 281612b9830f8..8ec7b534ad760 100644
---- a/drivers/target/target_core_iblock.c
-+++ b/drivers/target/target_core_iblock.c
-@@ -152,6 +152,8 @@ static int iblock_configure_device(struct se_device *dev)
- 	if (bdev_nonrot(bd))
- 		dev->dev_attrib.is_nonrot = 1;
+diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
+index b19acd662726..ac78a106e0f3 100644
+--- a/drivers/target/target_core_configfs.c
++++ b/drivers/target/target_core_configfs.c
+@@ -1726,6 +1726,59 @@ static ssize_t target_wwn_vpd_protocol_identifier_show(struct config_item *item,
+ 	return len;
+ }
  
-+	target_configure_write_atomic_from_bdev(&dev->dev_attrib, bd);
++static ssize_t target_wwn_pd_text_id_info_show(struct config_item *item,
++		char *page)
++{
++	return sprintf(page, "%s\n", &to_t10_wwn(item)->pd_text_id_info[0]);
++}
 +
- 	bi = bdev_get_integrity(bd);
- 	if (!bi)
- 		return 0;
-@@ -773,6 +775,9 @@ iblock_execute_rw(struct se_cmd *cmd, struct scatterlist *sgl, u32 sgl_nents,
- 			else if (!bdev_write_cache(ib_dev->ibd_bd))
- 				opf |= REQ_FUA;
- 		}
++static ssize_t target_wwn_pd_text_id_info_store(struct config_item *item,
++		const char *page, size_t count)
++{
++	struct t10_wwn *t10_wwn = to_t10_wwn(item);
++	struct se_device *dev = t10_wwn->t10_dev;
 +
-+		if (cmd->se_cmd_flags & SCF_ATOMIC)
-+			opf |= REQ_ATOMIC;
- 	} else {
- 		opf = REQ_OP_READ;
- 		miter_dir = SG_MITER_FROM_SG;
++	/* +2 to allow for a trailing (stripped) '\n' and null-terminator */
++	unsigned char buf[PD_TEXT_ID_INFO_LEN + 2];
++	char *stripped = NULL;
++	ssize_t len;
++
++	len = strscpy(buf, page, sizeof(buf));
++	if (len > 0) {
++		/* Strip any newline added from userspace. */
++		stripped = strstrip(buf);
++		len = strlen(stripped);
++	}
++
++	if (len < 0 || len >= PD_TEXT_ID_INFO_LEN) {
++		pr_err("Emulated peripheral device text id info exceeds"
++			" PD_TEXT_ID_INFO_LEN: " __stringify(PD_TEXT_ID_INFO_LEN)
++			"\n");
++		return -EOVERFLOW;
++	}
++
++	/*
++	 * Check to see if any active exports exist.  If they do exist, fail
++	 * here as changing this information on the fly (underneath the
++	 * initiator side OS dependent multipath code) could cause negative
++	 * effects.
++	 */
++	if (dev->export_count) {
++		pr_err("Unable to set the peripheral device text id info while"
++			" active %d exports exist\n", dev->export_count);
++		return -EINVAL;
++	}
++
++	BUILD_BUG_ON(sizeof(dev->t10_wwn.pd_text_id_info) != PD_TEXT_ID_INFO_LEN);
++	strscpy(dev->t10_wwn.pd_text_id_info, stripped,
++	       sizeof(dev->t10_wwn.pd_text_id_info));
++
++	pr_debug("Target_Core_ConfigFS: Set emulated peripheral dev text id info:"
++		  " %s\n", dev->t10_wwn.pd_text_id_info);
++
++	return count;
++}
++
+ /*
+  * Generic wrapper for dumping VPD identifiers by association.
+  */
+@@ -1782,6 +1835,7 @@ CONFIGFS_ATTR_RO(target_wwn_, vpd_protocol_identifier);
+ CONFIGFS_ATTR_RO(target_wwn_, vpd_assoc_logical_unit);
+ CONFIGFS_ATTR_RO(target_wwn_, vpd_assoc_target_port);
+ CONFIGFS_ATTR_RO(target_wwn_, vpd_assoc_scsi_target_device);
++CONFIGFS_ATTR(target_wwn_, pd_text_id_info);
+ 
+ static struct configfs_attribute *target_core_dev_wwn_attrs[] = {
+ 	&target_wwn_attr_vendor_id,
+@@ -1793,6 +1847,7 @@ static struct configfs_attribute *target_core_dev_wwn_attrs[] = {
+ 	&target_wwn_attr_vpd_assoc_logical_unit,
+ 	&target_wwn_attr_vpd_assoc_target_port,
+ 	&target_wwn_attr_vpd_assoc_scsi_target_device,
++	&target_wwn_attr_pd_text_id_info,
+ 	NULL,
+ };
+ 
+diff --git a/drivers/target/target_core_spc.c b/drivers/target/target_core_spc.c
+index aad0096afa21..9fa84202ee4b 100644
+--- a/drivers/target/target_core_spc.c
++++ b/drivers/target/target_core_spc.c
+@@ -1963,6 +1963,18 @@ static const struct target_opcode_descriptor tcm_opcode_report_supp_opcodes = {
+ 	.enabled = spc_rsoc_enabled,
+ };
+ 
++static struct target_opcode_descriptor tcm_opcode_report_identifying_information = {
++	.support = SCSI_SUPPORT_FULL,
++	.serv_action_valid = 1,
++	.opcode = MAINTENANCE_IN,
++	.service_action = MI_REPORT_IDENTIFYING_INFORMATION,
++	.cdb_size = 12,
++	.usage_bits = {MAINTENANCE_IN, MI_REPORT_IDENTIFYING_INFORMATION,
++		       0x00, 0x00,
++		       0x00, 0x00, 0xff, 0xff,
++		       0xff, 0xff, 0xff, SCSI_CONTROL_MASK},
++};
++
+ static bool tcm_is_set_tpg_enabled(const struct target_opcode_descriptor *descr,
+ 				   struct se_cmd *cmd)
+ {
+@@ -2049,6 +2061,7 @@ static const struct target_opcode_descriptor *tcm_supported_opcodes[] = {
+ 	&tcm_opcode_report_target_pgs,
+ 	&tcm_opcode_report_supp_opcodes,
+ 	&tcm_opcode_set_tpg,
++	&tcm_opcode_report_identifying_information,
+ };
+ 
+ static int
+@@ -2266,6 +2279,70 @@ spc_emulate_report_supp_op_codes(struct se_cmd *cmd)
+ 	return ret;
+ }
+ 
++static sense_reason_t
++spc_fill_pd_text_id_info(struct se_cmd *cmd, u8 *cdb)
++{
++	struct se_device *dev = cmd->se_dev;
++	unsigned char *buf;
++	unsigned char *rbuf;
++	u32 header_len = 4;
++	u32 actual_data_len;
++	u32 buf_len;
++	u16 id_len;
++
++	buf_len = get_unaligned_be32(&cdb[6]);
++	if (buf_len < header_len)
++		return TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE;
++
++	id_len = strlen(dev->t10_wwn.pd_text_id_info);
++	if (id_len > 0)
++		/* trailing null */
++		id_len += 1;
++
++	actual_data_len = id_len + header_len;
++
++	if (actual_data_len < buf_len)
++		buf_len = actual_data_len;
++
++	buf = kzalloc(buf_len, GFP_KERNEL);
++	if (!buf) {
++		pr_err("Unable to allocate response buffer for IDENTITY INFO\n");
++		return TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE;
++	}
++
++	scnprintf(&buf[header_len], buf_len - header_len, "%s",
++		 dev->t10_wwn.pd_text_id_info);
++
++	put_unaligned_be16(id_len, &buf[2]);
++
++	rbuf = transport_kmap_data_sg(cmd);
++	if (rbuf) {
++		memcpy(rbuf, buf, buf_len);
++		transport_kunmap_data_sg(cmd);
++	}
++	kfree(buf);
++
++	target_complete_cmd_with_length(cmd, SAM_STAT_GOOD, buf_len);
++	return TCM_NO_SENSE;
++}
++
++static sense_reason_t
++spc_emulate_report_id_info(struct se_cmd *cmd)
++{
++	u8 *cdb = cmd->t_task_cdb;
++	sense_reason_t rc;
++
++	switch ((cdb[10] >> 1)) {
++	case 2:
++		rc = spc_fill_pd_text_id_info(cmd, cdb);
++		break;
++	default:
++		return TCM_UNSUPPORTED_SCSI_OPCODE;
++	}
++
++	return rc;
++}
++
+ sense_reason_t
+ spc_parse_cdb(struct se_cmd *cmd, unsigned int *size)
+ {
+@@ -2405,6 +2482,11 @@ spc_parse_cdb(struct se_cmd *cmd, unsigned int *size)
+ 			    MI_REPORT_SUPPORTED_OPERATION_CODES)
+ 				cmd->execute_cmd =
+ 					spc_emulate_report_supp_op_codes;
++			if ((cdb[1] & 0x1f) ==
++			    MI_REPORT_IDENTIFYING_INFORMATION) {
++				cmd->execute_cmd =
++					spc_emulate_report_id_info;
++			}
+ 			*size = get_unaligned_be32(&cdb[6]);
+ 		} else {
+ 			/*
+diff --git a/include/target/target_core_base.h b/include/target/target_core_base.h
+index c4d9116904aa..c9b5edcce1eb 100644
+--- a/include/target/target_core_base.h
++++ b/include/target/target_core_base.h
+@@ -108,6 +108,9 @@
+ #define SE_MODE_PAGE_BUF			512
+ #define SE_SENSE_BUF				96
+ 
++/* Peripheral Device Text Identification Information */
++#define PD_TEXT_ID_INFO_LEN			256
++
+ enum target_submit_type {
+ 	/* Use the fabric driver's default submission type */
+ 	TARGET_FABRIC_DEFAULT_SUBMIT,
+@@ -347,6 +350,7 @@ struct t10_wwn {
+ 	struct se_device *t10_dev;
+ 	struct config_group t10_wwn_group;
+ 	struct list_head t10_vpd_list;
++	char pd_text_id_info[PD_TEXT_ID_INFO_LEN];
+ };
+ 
+ struct t10_pr_registration {
 -- 
-2.43.5
+2.47.3
 
 
