@@ -1,51 +1,51 @@
-Return-Path: <target-devel+bounces-1015-lists+target-devel=lfdr.de@vger.kernel.org>
+Return-Path: <target-devel+bounces-1016-lists+target-devel=lfdr.de@vger.kernel.org>
 Delivered-To: lists+target-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGvMJqxxwmmncwQAu9opvQ
-	(envelope-from <target-devel+bounces-1015-lists+target-devel=lfdr.de@vger.kernel.org>)
-	for <lists+target-devel@lfdr.de>; Tue, 24 Mar 2026 12:12:44 +0100
+	id WITYIiKgwmm3fQQAu9opvQ
+	(envelope-from <target-devel+bounces-1016-lists+target-devel=lfdr.de@vger.kernel.org>)
+	for <lists+target-devel@lfdr.de>; Tue, 24 Mar 2026 15:30:58 +0100
 X-Original-To: lists+target-devel@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7439307162
-	for <lists+target-devel@lfdr.de>; Tue, 24 Mar 2026 12:12:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB9330A2BC
+	for <lists+target-devel@lfdr.de>; Tue, 24 Mar 2026 15:30:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0B85130435CE
-	for <lists+target-devel@lfdr.de>; Tue, 24 Mar 2026 10:56:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F19A431231B6
+	for <lists+target-devel@lfdr.de>; Tue, 24 Mar 2026 14:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A29783EAC95;
-	Tue, 24 Mar 2026 10:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75B0F3FEB37;
+	Tue, 24 Mar 2026 14:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fMEcgbbG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jHLE0f+j"
 X-Original-To: target-devel@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7806B3DEAC9;
-	Tue, 24 Mar 2026 10:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C0F3FE34B;
+	Tue, 24 Mar 2026 14:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774349751; cv=none; b=B7Z9UVwmDn/dqqJGccA5RsPQnncUptq6TMnA4zBCA1BoZMiR3cucZJDBHRgoYH6b9/jQCMZeYe0EKf3rqkTJDZTIJZQjiSlJMSfSUTPEhUiKr5C0iN5W2GrQNB7UVzj0DuX+YX0aXxFSEnPwrdnMNOIkDLVh4Ghu/n+5pbTAo78=
+	t=1774362398; cv=none; b=Uc3mdKLN4zCahXUVz7QBNxcvYVgup2clcAOyc/A8LMHE4KpZEzxNElwlLC6TesN6AkHpLtUulkSbAuQh6jBJ9KdlRy6U5kHcD9LNtf+h7TOTJ06nKDUreoZLXIf9qNX9xhSY7KGijJ9wdKg+gwvxGL9mKJt//N5Uf25kVDN+R7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774349751; c=relaxed/simple;
-	bh=PKmRQSmpQcoJaB3C8EeGp80u+1D+x7QmhnNQbCSeB8o=;
+	s=arc-20240116; t=1774362398; c=relaxed/simple;
+	bh=jbmeTUiHgD1/BUVa6y6/L4uBWdzAaIyEnuCWg6Aqqwk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VUso9PBHIwKWlpTaQpb2hCvT80JMX/Iyng+s/RmV3DJGG1f2WzlgjdQ97PVx9oILgp6AiLh5QE77ZGE0JdpZimRb6H3BsQ77/8GwGl4Rmk5yllaM8pfFGNM/j+JjHWoZt+a1gzirFCEki9uG3vRnfwTPeWbFFCsm5nEgHGchqsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fMEcgbbG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D7FC19424;
-	Tue, 24 Mar 2026 10:55:42 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=FuWFEN7dJWXxy9cMoQNY3TpB9ZzxbguBat3WlCvj80xu4F2ksESfe5mRSnQbqTmACC40r/6+iM2tsLLLURY+OtrD/k+VUq9UTtTM1z5bJfv3xcsxFP1jn74iKCFnmHWUEwwJCyYWf6TMkjwWaqW/UVnSsK9q5BxJJOFRvhJ/gnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jHLE0f+j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF10FC19424;
+	Tue, 24 Mar 2026 14:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774349751;
-	bh=PKmRQSmpQcoJaB3C8EeGp80u+1D+x7QmhnNQbCSeB8o=;
+	s=k20201202; t=1774362397;
+	bh=jbmeTUiHgD1/BUVa6y6/L4uBWdzAaIyEnuCWg6Aqqwk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fMEcgbbGgPyzprrfIXmnWzFQVASvL51viSIEUIGq0ULM2FvF4mbfhFjh/HfjosHht
-	 cgW+/u9gxB9fYbahyMGnurb7qoARj2GLGX6Ra96W/IHys+NfiTnIL/mImcGXUmlDjh
-	 NebVgjLehpGJwqkV4cVX7lDDhnYo58udnTxoI3ZrFyMQMHtl4DswqW26b/zG06s1sO
-	 T1KpDuiaLK8G1+W+b214NZfc+rI3YgT9zrIPw8TCw1KOpmEjvUWFSZAmeubTl2MSkT
-	 fUye6Vy/rI8+HkSs58CRHJoldtPx4J8kBNNWCqvbMR5Ikppaz5prA9TA7BNpQhgvcl
-	 Af6e9o0yrXfiQ==
-Message-ID: <a9ac9f4b-9b25-43f3-a2c1-da7157a95ab9@kernel.org>
-Date: Tue, 24 Mar 2026 11:55:41 +0100
+	b=jHLE0f+jKQrZNp687YBoBRWvKqV1yWHDJoeSVdPwmNvSWECrmPXDTbAi2oKjk+1NJ
+	 qnx4cHZLM+LIL/EoJtJgr2egOHXEYl3PmIEgTgWfctCXapgNTUzCU72gmELiYyBz2u
+	 Bmagz4Dqlv/xXZnYGIqOcn/VE+9HcIDQca+kSTZwU2EdFdYDcSCQi3OsySsDqMWMEj
+	 xJBl1+rl8ONOJYI/rFp2Q6/AgAT6Ooo3EbuSldP/+bCHPCgnXfLdZYk7zRnOoBztke
+	 5D4hhUKhkSo5DjVR7YkZzeoY/AhHGi4yeVpH65JJi5N0Pl6nFAlDHXYhnAvm2OMXP/
+	 QLKTQd8HLcvhQ==
+Message-ID: <d5b66671-697f-4a4d-8039-d9c9ac5ad4d7@kernel.org>
+Date: Tue, 24 Mar 2026 15:26:28 +0100
 Precedence: bulk
 X-Mailing-List: target-devel@vger.kernel.org
 List-Id: <target-devel.vger.kernel.org>
@@ -53,8 +53,8 @@ List-Subscribe: <mailto:target-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:target-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 04/21] mm: avoid deadlock when holding rmap on
- mmap_prepare error
+Subject: Re: [PATCH v4 05/21] mm: switch the rmap lock held option off in
+ compat layer
 Content-Language: en-US
 To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>
@@ -87,29 +87,30 @@ Cc: Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>,
  linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
  Ryan Roberts <ryan.roberts@arm.com>
 References: <cover.1774045440.git.ljs@kernel.org>
- <d44248be9da68258b07c2c59d4e73485ee0ca943.1774045440.git.ljs@kernel.org>
+ <dda74230d26a1fcd79a3efab61fa4101dd1cac64.1774045440.git.ljs@kernel.org>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <d44248be9da68258b07c2c59d4e73485ee0ca943.1774045440.git.ljs@kernel.org>
+In-Reply-To: <dda74230d26a1fcd79a3efab61fa4101dd1cac64.1774045440.git.ljs@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-1016-lists,target-devel=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lwn.net,ladisch.de,arndb.de,linuxfoundation.org,microsoft.com,kernel.org,linux.intel.com,gmail.com,foss.st.com,bootlin.com,nod.at,ti.com,oracle.com,redhat.com,auristor.com,zeniv.linux.org.uk,suse.cz,google.com,suse.com,suse.de,vger.kernel.org,st-md-mailman.stormreply.com,lists.infradead.org,lists.linux.dev,kvack.org,arm.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-1015-lists,target-devel=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[lwn.net,ladisch.de,arndb.de,linuxfoundation.org,microsoft.com,kernel.org,linux.intel.com,gmail.com,foss.st.com,bootlin.com,nod.at,ti.com,oracle.com,redhat.com,auristor.com,zeniv.linux.org.uk,suse.cz,google.com,suse.com,suse.de,vger.kernel.org,st-md-mailman.stormreply.com,lists.infradead.org,lists.linux.dev,kvack.org,arm.com];
+	RCPT_COUNT_TWELVE(0.00)[44];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[vbabka@kernel.org,target-devel@vger.kernel.org];
@@ -117,51 +118,64 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[target-devel];
-	RCPT_COUNT_TWELVE(0.00)[44];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: D7439307162
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2CB9330A2BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 On 3/20/26 23:39, Lorenzo Stoakes (Oracle) wrote:
-> Commit ac0a3fc9c07d ("mm: add ability to take further action in
-> vm_area_desc") added the ability for drivers to instruct mm to take actions
-> after the .mmap_prepare callback is complete.
+> In the mmap_prepare compatibility layer, we don't need to hold the rmap
+> lock, as we are being called from an .mmap handler.
 > 
-> To make life simpler and safer, this is done before the VMA/mmap write lock
-> is dropped but when the VMA is completely established.
+> The .mmap_prepare hook, when invoked in the VMA logic, is called prior to
+> the VMA being instantiated, but the completion hook is called after the VMA
+> is linked into the maple tree, meaning rmap walkers can reach it.
 > 
-> So on error, we simply munmap() the VMA.
+> The mmap hook does not link the VMA into the tree, so this cannot happen.
 > 
-> As part of this implementation, unfortunately a horrible hack had to be
-> implemented to support some questionable behaviour hugetlb relies upon -
-> that is that the file rmap lock is held until the operation is complete.
+> Therefore it's safe to simply disable this in the mmap_prepare
+> compatibility layer.
 > 
-> The implementation, for convenience, did this in mmap_action_finish() so
-> both the VMA and mmap_prepare compatibility layer paths would have this
-> correctly handled.
+> Also update VMA tests code to reflect current compatibility layer state.
 > 
-> However, it turns out there is a mistake here - the rmap lock cannot be
-> held on munmap, as free_pgtables() -> unlink_file_vma_batch_add() ->
-> unlink_file_vma_batch_process() takes the file rmap lock.
-> 
-> We therefore currently have a deadlock issue that might arise.
-> 
-> Resolve this by leaving it to callers to handle the unmap.
-> 
-> The compatibility layer does not support this rmap behaviour, so we simply
-> have it unmap on error after calling mmap_action_complete().
-> 
-> In the VMA implementation, we only perform the unmap after the rmap lock is
-> dropped.
-> 
-> This resolves the issue by ensuring the rmap lock is always dropped when
-> the unmap occurs.
-> 
-> Fixes: ac0a3fc9c07d ("mm: add ability to take further action in vm_area_desc")
-> Cc: <stable@vger.kernel.org>
 > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
 Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
+a typo fix below, Andrew can fix locally?
+
+> ---
+>  mm/util.c                       |  6 ++++-
+>  tools/testing/vma/include/dup.h | 42 +++++++++++++++++----------------
+>  2 files changed, 27 insertions(+), 21 deletions(-)
+> 
+> diff --git a/mm/util.c b/mm/util.c
+> index a2cfa0d77c35..182f0f5cc400 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -1204,6 +1204,7 @@ int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
+> 
+>  		.action.type = MMAP_NOTHING, /* Default */
+>  	};
+> +	struct mmap_action *action = &desc.action;
+>  	int err;
+> 
+>  	err = vfs_mmap_prepare(file, &desc);
+> @@ -1214,8 +1215,11 @@ int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
+>  	if (err)
+>  		return err;
+> 
+> +	/* being invoked from .mmmap means we don't have to enforce this. */
+
+				.mmap
+
+> +	action->hide_from_rmap_until_complete = false;
+> +
+>  	set_vma_from_desc(vma, &desc);
+> -	err = mmap_action_complete(vma, &desc.action);
+> +	err = mmap_action_complete(vma, action);
+>  	if (err) {
+>  		const size_t len = vma_pages(vma) << PAGE_SHIFT;
+> 
 
