@@ -1,51 +1,51 @@
-Return-Path: <target-devel+bounces-1018-lists+target-devel=lfdr.de@vger.kernel.org>
+Return-Path: <target-devel+bounces-1019-lists+target-devel=lfdr.de@vger.kernel.org>
 Delivered-To: lists+target-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJCDCJmiwmm3fQQAu9opvQ
-	(envelope-from <target-devel+bounces-1018-lists+target-devel=lfdr.de@vger.kernel.org>)
-	for <lists+target-devel@lfdr.de>; Tue, 24 Mar 2026 15:41:29 +0100
+	id 6P0AANWvwmmRkwQAu9opvQ
+	(envelope-from <target-devel+bounces-1019-lists+target-devel=lfdr.de@vger.kernel.org>)
+	for <lists+target-devel@lfdr.de>; Tue, 24 Mar 2026 16:37:57 +0100
 X-Original-To: lists+target-devel@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C73F30A57F
-	for <lists+target-devel@lfdr.de>; Tue, 24 Mar 2026 15:41:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEECF318303
+	for <lists+target-devel@lfdr.de>; Tue, 24 Mar 2026 16:37:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A778F30318AD
-	for <lists+target-devel@lfdr.de>; Tue, 24 Mar 2026 14:38:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ADD893035012
+	for <lists+target-devel@lfdr.de>; Tue, 24 Mar 2026 15:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929CC3FE357;
-	Tue, 24 Mar 2026 14:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E14F36DA1A;
+	Tue, 24 Mar 2026 15:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qIMNEe8j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A8CdR1TD"
 X-Original-To: target-devel@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BADF3E5590;
-	Tue, 24 Mar 2026 14:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F0438AC90;
+	Tue, 24 Mar 2026 15:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774363091; cv=none; b=c8h/VhXgTV+LVHie/dhwQmlPFZMfna8micPEuGUayZrDjpFo7LLnCO7AbBI+/Wgr8kLS9jwGXvgxdKe0iOYyBrVt1rsHCdB0ML+QMZu119xmBT9cjpISSkajMSmtMlCJlTXKCUwM7F/UBy/QRlEOP2y7iBi0qI7UAqHrHTS39b4=
+	t=1774366348; cv=none; b=grV/dUaA/CixhdCqAuJglIzwf/GU3jNISvGlSrhW7HO3OVO09U8d8uyMsZ4svkpqE3mQi/lp6lOSEQn0wrXiArq0tnDJ1Vd+loHUpNmb286l2cr9r4eO3I53JQhPrdUiYnXNUZCT9YrsJTiNBUaQwktRCFjgPg6x3VmgfqDiU7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774363091; c=relaxed/simple;
-	bh=e5f6jgo0dBEyQUURQKSWrpDzBd0JxDsZ01SMVL8k3SU=;
+	s=arc-20240116; t=1774366348; c=relaxed/simple;
+	bh=Pj+OtiBpuBF7IoC42Kw/vtLSB42CPkuKUZUpsmZAtF8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kdbr3XE67ebaWhFIQfJh0BrRzY6t758FoB4ttwB0P1w8Lh8ltSVKt41dG8fwNUecX1/h9xeY2NZIG3PaQIPV3oNwRErebtIdtvKy56t7+0F4SB30cqhc0k622Nos2cjpHkxY+XqC7bpC2XQNdQYLceTUHqbtnRl+U3wj47DKjxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qIMNEe8j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6B0C19424;
-	Tue, 24 Mar 2026 14:38:02 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=JQ8HAgoisIhTyxZX6WPGP1AfGRfPar7Z4QzJWHkKg5/oJjsJvPJ8iDhrhUZRRiS+kbvOzE1JMq882IbpUisPdyySInvH+eT/kTqhCY7kS8Mw0auVYHLNYZqv/+2OnJK1dg5gLlPGH7pBpN7T/HJLXDpAG7RU7A63SJZfXU1HWfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A8CdR1TD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E0FC19424;
+	Tue, 24 Mar 2026 15:32:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774363091;
-	bh=e5f6jgo0dBEyQUURQKSWrpDzBd0JxDsZ01SMVL8k3SU=;
+	s=k20201202; t=1774366348;
+	bh=Pj+OtiBpuBF7IoC42Kw/vtLSB42CPkuKUZUpsmZAtF8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qIMNEe8jc/gh4IeEeHB78CDBRX8uly5TJ7AQbfM/aTBCdNlUClXSmZ3DGj32XYiJq
-	 w3bJ+ggFkIa6py50tYHZOmCtQhawWtrsj76/eDZGqNTS2E6DEDw7zok6+dGEPnugh1
-	 rN0pTjYTfRuusdcmWnyo9rBjiDrJMXTlzi6iUnqi2UkrzVyRfQZmP9Akgci7mz3F+g
-	 QuGR7o1Khy+ZyGWNS8jwo3oNlwx2iL889bycIRnXzH46HhBhKml65awhc9OfKZRYcU
-	 c9A/SwhXZceArl/7YVlb4KEf7T2vzd4jdb/0Re/Fh6+vKY2naQlBbaFBfS5NTPAKfw
-	 5GaQjW2N9rzXA==
-Message-ID: <89b0e46e-693f-454e-ac74-6e396183c5c6@kernel.org>
-Date: Tue, 24 Mar 2026 15:38:01 +0100
+	b=A8CdR1TDIvUqf/UIBWs17Nn4y+ea/fY6CzTak5aX12J4D+twwLfy+SwnX5lrhff4D
+	 CUzBvNr9gv4/0D50Bsuh5GstOCFIQ7l1/YDJTViyrQcTcXkjPsV2NcEd1kTpkceCXt
+	 qvmlEfeNjP0yn00Q1AmSFrv9QGGtJ2oKpyqS2VkQuMlb7xlEpzGPo2Z8H/X24jQkzS
+	 /dRZDV1lzwWddAwn65weghGa9oo7qiThUc/kW/BhhH1pEumyxJoYG7WP3BMi6+9/xr
+	 Y4kgvnO6kl4rFLyL5hI2Nvbd4V/5vHv9ZNMEpKAQRKpcauDbgPeLzXT7iYy5Aj7+iX
+	 gcx1tICooGAPQ==
+Message-ID: <ee66e204-4439-482f-a8cc-93de1d332a8d@kernel.org>
+Date: Tue, 24 Mar 2026 16:32:17 +0100
 Precedence: bulk
 X-Mailing-List: target-devel@vger.kernel.org
 List-Id: <target-devel.vger.kernel.org>
@@ -53,8 +53,7 @@ List-Subscribe: <mailto:target-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:target-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/21] mm: have mmap_action_complete() handle the rmap
- lock and unmap
+Subject: Re: [PATCH v4 08/21] mm: add vm_ops->mapped hook
 Content-Language: en-US
 To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>
@@ -87,9 +86,9 @@ Cc: Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>,
  linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
  Ryan Roberts <ryan.roberts@arm.com>
 References: <cover.1774045440.git.ljs@kernel.org>
- <8d1ee8ebd3542d006a47e8382fb80cf5b57ecf10.1774045440.git.ljs@kernel.org>
+ <4c5e98297eb0aae9565c564e1c296a112702f144.1774045440.git.ljs@kernel.org>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <8d1ee8ebd3542d006a47e8382fb80cf5b57ecf10.1774045440.git.ljs@kernel.org>
+In-Reply-To: <4c5e98297eb0aae9565c564e1c296a112702f144.1774045440.git.ljs@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -97,11 +96,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-1018-lists,target-devel=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-1019-lists,target-devel=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -118,29 +117,54 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[target-devel];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1C73F30A57F
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AEECF318303
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 On 3/20/26 23:39, Lorenzo Stoakes (Oracle) wrote:
-> Rather than have the callers handle this both the rmap lock release and
-> unmapping the VMA on error, handle it within the mmap_action_complete()
-> logic where it makes sense to, being careful not to unlock twice.
+> Previously, when a driver needed to do something like establish a
+> reference count, it could do so in the mmap hook in the knowledge that the
+> mapping would succeed.
 > 
-> This simplifies the logic and makes it harder to make mistake with this,
-> while retaining correct behaviour with regard to avoiding deadlocks.
+> With the introduction of f_op->mmap_prepare this is no longer the case, as
+> it is invoked prior to actually establishing the mapping.
 > 
-> Also replace the call_action_complete() function with a direct invocation
-> of mmap_action_complete() as the abstraction is no longer required.
+> mmap_prepare is not appropriate for this kind of thing as it is called
+> before any merge might take place, and after which an error might occur
+> meaning resources could be leaked.
 > 
-> Also update the VMA tests to reflect this change.
+> To take this into account, introduce a new vm_ops->mapped callback which
+> is invoked when the VMA is first mapped (though notably - not when it is
+> merged - which is correct and mirrors existing mmap/open/close behaviour).
+> 
+> We do better that vm_ops->open() here, as this callback can return an
+> error, at which point the VMA will be unmapped.
+> 
+> Note that vm_ops->mapped() is invoked after any mmap action is complete
+> (such as I/O remapping).
+> 
+> We intentionally do not expose the VMA at this point, exposing only the
+> fields that could be used, and an output parameter in case the operation
+> needs to update the vma->vm_private_data field.
+> 
+> In order to deal with stacked filesystems which invoke inner filesystem's
+> mmap() invocations, add __compat_vma_mapped() and invoke it on vfs_mmap()
+> (via compat_vma_mmap()) to ensure that the mapped callback is handled when
+> an mmap() caller invokes a nested filesystem's mmap_prepare() callback.
+> 
+> Update the mmap_prepare documentation to describe the mapped hook and make
+> it clear what its intended use is.
+> 
+> The vm_ops->mapped() call is handled by the mmap complete logic to ensure
+> the same code paths are handled by both the compatibility and VMA layers.
+> 
+> Additionally, update VMA userland test headers to reflect the change.
 > 
 > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-Nice simplification.
-
 Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
 
 
