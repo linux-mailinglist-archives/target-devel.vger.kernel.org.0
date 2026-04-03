@@ -1,87 +1,87 @@
-Return-Path: <target-devel+bounces-1044-lists+target-devel=lfdr.de@vger.kernel.org>
+Return-Path: <target-devel+bounces-1047-lists+target-devel=lfdr.de@vger.kernel.org>
 Delivered-To: lists+target-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oPE+IFQY0Gks3QYAu9opvQ
-	(envelope-from <target-devel+bounces-1044-lists+target-devel=lfdr.de@vger.kernel.org>)
-	for <lists+target-devel@lfdr.de>; Fri, 03 Apr 2026 21:43:16 +0200
+	id AMTvLXMY0Gks3QYAu9opvQ
+	(envelope-from <target-devel+bounces-1047-lists+target-devel=lfdr.de@vger.kernel.org>)
+	for <lists+target-devel@lfdr.de>; Fri, 03 Apr 2026 21:43:47 +0200
 X-Original-To: lists+target-devel@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A12B4397D06
-	for <lists+target-devel@lfdr.de>; Fri, 03 Apr 2026 21:43:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B39B4397D3A
+	for <lists+target-devel@lfdr.de>; Fri, 03 Apr 2026 21:43:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A1FD7304016E
-	for <lists+target-devel@lfdr.de>; Fri,  3 Apr 2026 19:41:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 03DEC302BA3E
+	for <lists+target-devel@lfdr.de>; Fri,  3 Apr 2026 19:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D7F3D810E;
-	Fri,  3 Apr 2026 19:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908EE3D669F;
+	Fri,  3 Apr 2026 19:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="Qc2Jf0oU"
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="JvULn3uO"
 X-Original-To: target-devel@vger.kernel.org
-Received: from mail-pg1-f225.google.com (mail-pg1-f225.google.com [209.85.215.225])
+Received: from mail-dy1-f227.google.com (mail-dy1-f227.google.com [74.125.82.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6CE3D47CB
-	for <target-devel@vger.kernel.org>; Fri,  3 Apr 2026 19:41:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB71C3537FA
+	for <target-devel@vger.kernel.org>; Fri,  3 Apr 2026 19:41:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775245286; cv=none; b=eFAjanlIsLOhZ/mt7UV4EVUlLNaoqv4Gx0TgvfnFqRToGkXgeoBV8gDbEqqv3T1dEQnWK9cCLWT/P4vFm7c2x0HKE9zPF9cX7Ez2hraqZoiN64bdqhIuu76xHgx5n8Jx3/KVYpoyw0BNWgq+410J628Z8hr1Kfw6zXQ/s3mcmd0=
+	t=1775245287; cv=none; b=EuwcHFFzZj1ffeREiD/6pCXOX+7iPLwZ2B2p7Et68+JxJOkPTFq6Cs7+auapb2ib9xmlZYB0Z0LmSZhQUErQPlxO7PnIN1a7UMjGZLEP1+HVmdSc7srjxN7GCIFRLU5XTTTgve7xu9/JyrI4PNuQs5FwN+OhWxldpAfIcUVS5l8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775245286; c=relaxed/simple;
-	bh=3X8FVNCusqycQp84YyxWQtssypswH6QLhLTJE0aKENM=;
+	s=arc-20240116; t=1775245287; c=relaxed/simple;
+	bh=dXB9nsSEQr0UD6HILmUJ3dO6tL18AphRTyOEKOREPnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LDcnb7sGu5HpOy8GShtul4JoAViYyta2FsyKZohaZF5rFcp00XycHoCVVgZxhAun+JPFvAEDE9kon3GnhPhbLOWs/tmrteUST59qQneGQ8TQ9Cwd3e4cs3jMQXVBDh/sHMn/kKtXeQW+jZBb89CXniTBIlvmIyugT38bK4LCCtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=Qc2Jf0oU; arc=none smtp.client-ip=209.85.215.225
+	 MIME-Version; b=oECO06PqFRMXgZ7GHyjcuGE8mW8SkaGGgFL0qDes0K+30VQc2fP3bYgcL3J+RRcf63fDOivVC9sprkKwIRAWsDxiuImz+iBBQUEYEgyFFQ5SFXARzEW4DY6ZEkOK6vlfdbIN60YriNXC/Azz4UAEElquCip1EHcekXVDDNdso9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=JvULn3uO; arc=none smtp.client-ip=74.125.82.227
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
-Received: by mail-pg1-f225.google.com with SMTP id 41be03b00d2f7-c76afacbb0bso147904a12.2
-        for <target-devel@vger.kernel.org>; Fri, 03 Apr 2026 12:41:22 -0700 (PDT)
+Received: by mail-dy1-f227.google.com with SMTP id 5a478bee46e88-2c98928e4bfso206519eec.2
+        for <target-devel@vger.kernel.org>; Fri, 03 Apr 2026 12:41:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=purestorage.com; s=google2022; t=1775245282; x=1775850082; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FBT4yhY9HCpI609RSvOs0NG7s5YjLQ+PXcfiCvwv9X4=;
-        b=Qc2Jf0oUPwOX5x18L+T6AtHmmvUM/LGEgchVQPfoPiyPBNZI20CiqiQOMEHqgW6VmN
-         IDhYEc/istquK+3cbLEOcdQhxZwEIGzO3KNx+kvZ25jlnlO6OQr0Gns5p9B4zhcRMFhr
-         QzIVqD8yxEPf9z6KzdQHBXMuwIi4ylmbzynmjmuS/bjYrDQX2vQHQVOl1WGjPETYM6Hq
-         asja5Ze3I5GEl3o6FzyDQplyD/7cd2u23CL3FbPFOYiEg8tpW2Z3TZTEqwDUbRRVmvOu
-         MMG2aibMnIDdhRIOXctl7s86IBX5jjpOYvsWyOvQdoB94k4jZ1LX45XbdtRIb3D3IQSs
-         vsYQ==
+        bh=i7Uy8gUL8icrsg5BG6MoYGthlOT8yOCeEWU7Db5146I=;
+        b=JvULn3uOwkKUaQaHqiJT+f+UAp8ILB924uzwY7yoeg21GuaTAkNMfn7WUgSTmCkyyC
+         smp36/0PpdPHWDotyaAGL/JbIpK+JlJaBVTYquHkH154ucK+3pSS95gCSapl3kKo9uf4
+         CwKtYFWipRUDso/ZR6Q+7MeTxbp66XDGH5FaEwhIQQf5KAHfzO4HRx5Ch2hcidmiMls7
+         wASCAkOrzJBIOCxCNniqYnNrUCX2PDkSp054MqK0XYeRm+Mhy60OSUv9gYlxEKXOSt89
+         AFrDjNx/epWcUHg7nLd6JKf0zEH5JSKt8eVcdbCrM6HrP6YF+DCiIQzbi/HLtM+sOnOx
+         w5wA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1775245282; x=1775850082;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=FBT4yhY9HCpI609RSvOs0NG7s5YjLQ+PXcfiCvwv9X4=;
-        b=XUIhCSzMiDni03+uSoU5nq61HvFv05tUZ+AwCEtyzP765OauFjBKqCRYJ4MvUBFVSC
-         BJF7DL1HG1+Le1PgjEZjDt/JQHwN/RZQSGbEZJloeKlrM/dIF91k2xTN3JS17wPGfDmO
-         zMM4Rg0kqLGR9xdNiolXRuM68y8vCcLsy9n/ksSHgX542z6XKWtdxBZyI0NMiDMeLiXL
-         lLQOIOTFxyT9aUdyLF9q8zCzUe5ZddQf1tg7fhpx9+Scurf0xseda+VeJKtMasmGpTKy
-         J3NVsGnRzPEfWlDdQNymyTxtaUNCLDH3AKm9PENRyXmCi3VgshZ8oTUuXiAPZgauGpO8
-         e6ww==
-X-Forwarded-Encrypted: i=1; AJvYcCW4kMyR8dlIieWuouqBPdrcZmCIZNTCqiJafjea5YbObIr9BN/gjKI83o1AlaGAD/pMpaqa+3Su7WyRzno=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyq0fw8s64obc7dZQzfbYcROwW/MqKxtEepaRBXhy+tKPUHZle0
-	J6RGufYMvAYnGTqRKRsNTLlleTkzt8vZqyDIvykpxS/eDexGrm5MoBIYMHErpBhvHucnmRTGl0K
-	hv3O5nbP6fo0Aao+KtYlLnnVZ6Gz2sKVucGjn
-X-Gm-Gg: AeBDiet2qdpocthMtCbACwsMx6KhWRckemEEc6mftP9oKGEs8PVdY16YZO52QwmfGK9
-	lF/8pSdcbfziplAuiPAUGFcwkQnaz6lLGdmhNnU1Rmz2pwFRH2k+hDL+HFTmn4LyyQyCw9tsHPU
-	ZlRI1X07slMaZffyPtcoCAyoFM4JaryIuEvUnBCdG5L228ju8MP3kJi8y2teEYDVJWi1XSKEnDk
-	4t6tr3nUwWKo9D2AyGoULWlMsAjOSXwlomg6GDfcsyoULvE2BGLFOZbeOr5HofFgelAWSEp8az5
-	GJ/sSwK2txB4IhywnHrpFNWU/HRt9X31se9c/ToEvEPxb+Q4I6t/nBlft4llBWsNloBkJkCYbNv
-	VZrcD0MtkeK6xRpUdr6UVAxplwmcbU8zeQSYenuq8+DwcM5EftYVHtg==
-X-Received: by 2002:a17:90b:4b52:b0:359:ff8a:ee4d with SMTP id 98e67ed59e1d1-35de69d98a8mr2252048a91.6.1775245282098;
+        bh=i7Uy8gUL8icrsg5BG6MoYGthlOT8yOCeEWU7Db5146I=;
+        b=nzgjZhvTzPG/MUSOzat/OEAFfS5LyOxpBOGXisxVS6ZLXLovrbgKI+Ruu/TDkTHYyl
+         fCZE8zFdKca/6iZ/5hoydxWsjsPcTC6CCT6dO7wZFFCXothld8lhmfpck56+M9nUShiw
+         ieeHMyiESCveFOEgYzfP0yrvnNj0i1DT9evbbSDNRJS9YQVf41EclavQDO7vXFviBvTc
+         xBjtYhSrmUHIS/jpuR1QWRESp9tOLZGe8YAKEGO43g7R5t19iQzva8I7IyQoWuUrYVB/
+         4m6eVG+tY1TuY4OB2+mgjb5Qkc2+bnYHwlM/gaj5/pW3vU+QZmhYp/esymAe4FqlYK2C
+         HMCw==
+X-Forwarded-Encrypted: i=1; AJvYcCV919N2aQBJEGObiK1oKU8NnXMH+pYXbxdlB5PoBvPopRR1W1QIHwlVCU1lmpyshUlJOE2G00rV1WgRlGk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRGMKuF5iRg3fGN9TGaoAA7iwF5l+bJIkk9ABD9KUyk2c9OemJ
+	Ynnj8Xjd0NPw5LBgdSpL2l5FHfeaQ7fLTJZb8xLDPega8WuA7ydaT5LmHT5+a1BCfOEj+xp8G/6
+	4pnrggnEgI8ek7qyoMZZhYZ/s5jMcv7WUiKnV
+X-Gm-Gg: AeBDiet7opoW967fXSz7ME9A45SR2gmoM+TwmxYHrJJMK814YPQ30sPoyTW1Rb5D39V
+	Kis1YZidNVNyGuwbGZrTO/9GlUjsXllMEnkjTmHHbt8VLIAKkqOrflQ7bR8v9Wryts3wJm13cnz
+	HdtO+CxFq8WFRTOYl6+4iH2Tg1L2PmF61s6k3tmWOHzDojRxueYk1J1M6s/lkSPKIEzziVjdnBn
+	qnHDngAQuD3j7j2tJJaH/cdbIMN/ea0tyoVA8ADdfFs5y0fYPz1XbAZD2vsD7w14FBo/sR4TxBk
+	LOjoP8lwuWIkHjC9WC3+y+D96401IPWic5xOOkfgJKkUt+7oTUTa6ZnKkwNZuhf1aADg2eaDLkc
+	xVmDay4gO+5lkSjsTHS7WdjPgzL6gW+/5PoZZnYs9tKUqA9rawwdq5A==
+X-Received: by 2002:a05:7301:6093:b0:2c0:c55c:156f with SMTP id 5a478bee46e88-2cbfbc82969mr870935eec.4.1775245282274;
         Fri, 03 Apr 2026 12:41:22 -0700 (PDT)
 Received: from c7-smtp-2023.dev.purestorage.com ([208.88.159.128])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-35dd3602d2csm550564a91.2.2026.04.03.12.41.21
+        by smtp-relay.gmail.com with ESMTPS id 5a478bee46e88-2cb61750eb8sm339741eec.29.2026.04.03.12.41.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 03 Apr 2026 12:41:22 -0700 (PDT)
 X-Relaying-Domain: purestorage.com
 Received: from dev-csander.dev.purestorage.com (dev-csander.dev.purestorage.com [10.112.29.101])
-	by c7-smtp-2023.dev.purestorage.com (Postfix) with ESMTP id 583413422E3;
+	by c7-smtp-2023.dev.purestorage.com (Postfix) with ESMTP id 7623D34014E;
 	Fri,  3 Apr 2026 13:41:21 -0600 (MDT)
 Received: by dev-csander.dev.purestorage.com (Postfix, from userid 1557716354)
-	id 4EF9EE41AC2; Fri,  3 Apr 2026 13:41:21 -0600 (MDT)
+	id 6CCCEE41AC2; Fri,  3 Apr 2026 13:41:21 -0600 (MDT)
 From: Caleb Sander Mateos <csander@purestorage.com>
 To: Jens Axboe <axboe@kernel.dk>,
 	Christoph Hellwig <hch@lst.de>,
@@ -94,9 +94,9 @@ Cc: linux-block@vger.kernel.org,
 	linux-scsi@vger.kernel.org,
 	target-devel@vger.kernel.org,
 	Caleb Sander Mateos <csander@purestorage.com>
-Subject: [PATCH 5/6] t10-pi: use bio_integrity_intervals() helper
-Date: Fri,  3 Apr 2026 13:41:08 -0600
-Message-ID: <20260403194109.2255933-6-csander@purestorage.com>
+Subject: [PATCH 6/6] target: use bio_integrity_intervals() helper
+Date: Fri,  3 Apr 2026 13:41:09 -0600
+Message-ID: <20260403194109.2255933-7-csander@purestorage.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260403194109.2255933-1-csander@purestorage.com>
 References: <20260403194109.2255933-1-csander@purestorage.com>
@@ -118,7 +118,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-1044-lists,target-devel=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-1047-lists,target-devel=lfdr.de];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,purestorage.com:dkim,purestorage.com:email,purestorage.com:mid];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -133,35 +133,56 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: A12B4397D06
+X-Rspamd-Queue-Id: B39B4397D3A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Use bio_integrity_intervals() to convert blk_rq_pos(rq) to integrity
-intervals to reduce code duplication.
+Use bio_integrity_intervals() to convert bio->bi_iter.bi_sector to
+integrity intervals to reduce code duplication. Make the same change in
+the nvmet code that appears to have been copied from the target code.
 
 Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
 ---
- block/t10-pi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/target/io-cmd-bdev.c   | 3 +--
+ drivers/target/target_core_iblock.c | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/block/t10-pi.c b/block/t10-pi.c
-index 36475369cd16..112015cdeb72 100644
---- a/block/t10-pi.c
-+++ b/block/t10-pi.c
-@@ -540,11 +540,11 @@ static void __blk_reftag_remap(struct bio *bio, struct blk_integrity *bi,
+diff --git a/drivers/nvme/target/io-cmd-bdev.c b/drivers/nvme/target/io-cmd-bdev.c
+index f2d9e8901df4..dcf273360015 100644
+--- a/drivers/nvme/target/io-cmd-bdev.c
++++ b/drivers/nvme/target/io-cmd-bdev.c
+@@ -218,12 +218,11 @@ static int nvmet_bdev_alloc_bip(struct nvmet_req *req, struct bio *bio,
+ 		pr_err("Unable to allocate bio_integrity_payload\n");
+ 		return PTR_ERR(bip);
+ 	}
  
- static void blk_integrity_remap(struct request *rq, unsigned int nr_bytes,
- 				bool prep)
- {
- 	struct blk_integrity *bi = &rq->q->limits.integrity;
--	u64 ref = blk_rq_pos(rq) >> (bi->interval_exp - SECTOR_SHIFT);
-+	u64 ref = bio_integrity_intervals(bi, blk_rq_pos(rq));
- 	unsigned intervals = nr_bytes >> bi->interval_exp;
- 	struct bio *bio;
+ 	/* virtual start sector must be in integrity interval units */
+-	bip_set_seed(bip, bio->bi_iter.bi_sector >>
+-		     (bi->interval_exp - SECTOR_SHIFT));
++	bip_set_seed(bip, bio_integrity_intervals(bi, bio->bi_iter.bi_sector));
  
- 	if (!(bi->flags & BLK_INTEGRITY_REF_TAG))
- 		return;
+ 	resid = bio_integrity_bytes(bi, bio_sectors(bio));
+ 	while (resid > 0 && sg_miter_next(miter)) {
+ 		len = min_t(size_t, miter->length, resid);
+ 		rc = bio_integrity_add_page(bio, miter->page, len,
+diff --git a/drivers/target/target_core_iblock.c b/drivers/target/target_core_iblock.c
+index 1087d1d17c36..434ef2b0b120 100644
+--- a/drivers/target/target_core_iblock.c
++++ b/drivers/target/target_core_iblock.c
+@@ -706,12 +706,11 @@ iblock_alloc_bip(struct se_cmd *cmd, struct bio *bio,
+ 		pr_err("Unable to allocate bio_integrity_payload\n");
+ 		return PTR_ERR(bip);
+ 	}
+ 
+ 	/* virtual start sector must be in integrity interval units */
+-	bip_set_seed(bip, bio->bi_iter.bi_sector >>
+-				  (bi->interval_exp - SECTOR_SHIFT));
++	bip_set_seed(bip, bio_integrity_intervals(bi, bio->bi_iter.bi_sector));
+ 
+ 	pr_debug("IBLOCK BIP Size: %u Sector: %llu\n", bip->bip_iter.bi_size,
+ 		 (unsigned long long)bip->bip_iter.bi_sector);
+ 
+ 	resid = bio_integrity_bytes(bi, bio_sectors(bio));
 -- 
 2.45.2
 
