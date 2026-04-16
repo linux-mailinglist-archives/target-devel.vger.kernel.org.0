@@ -1,68 +1,102 @@
-Return-Path: <target-devel+bounces-1076-lists+target-devel=lfdr.de@vger.kernel.org>
+Return-Path: <target-devel+bounces-1078-lists+target-devel=lfdr.de@vger.kernel.org>
 Delivered-To: lists+target-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id JmxhIwYP32knOQAAu9opvQ
-	(envelope-from <target-devel+bounces-1076-lists+target-devel=lfdr.de@vger.kernel.org>)
-	for <lists+target-devel@lfdr.de>; Wed, 15 Apr 2026 06:07:34 +0200
+	id yH7xMNwr4GmldAAAu9opvQ
+	(envelope-from <target-devel+bounces-1078-lists+target-devel=lfdr.de@vger.kernel.org>)
+	for <lists+target-devel@lfdr.de>; Thu, 16 Apr 2026 02:22:52 +0200
 X-Original-To: lists+target-devel@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B48784002AF
-	for <lists+target-devel@lfdr.de>; Wed, 15 Apr 2026 06:07:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AEC3409355
+	for <lists+target-devel@lfdr.de>; Thu, 16 Apr 2026 02:22:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 14F623016915
-	for <lists+target-devel@lfdr.de>; Wed, 15 Apr 2026 04:07:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F12BA3057C7F
+	for <lists+target-devel@lfdr.de>; Thu, 16 Apr 2026 00:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F4134F479;
-	Wed, 15 Apr 2026 04:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F591A9FAF;
+	Thu, 16 Apr 2026 00:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E0Y23FOj"
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="QdBkYjZg"
 X-Original-To: target-devel@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f226.google.com (mail-pf1-f226.google.com [209.85.210.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9446125228C;
-	Wed, 15 Apr 2026 04:07:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA1619539F
+	for <target-devel@vger.kernel.org>; Thu, 16 Apr 2026 00:22:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776226050; cv=none; b=FFktRwN67LsWfXGklkK4tMXGEGUtFsDHZvDDj4u24ebu/IVT7kQ/wNG2cj44No8mjGVNR+goRfxtcd+WbrADAQ4L1jI4dQmZRtHCpwkgnAfrrKnJYfHPDltPREdKxYY9J6E9jS+hu8/uR/OvOHwRp8qLnPGCB6M7+QMa7vKMJM0=
+	t=1776298969; cv=none; b=aE2ofkkzjdkYcN2gvtL094WSOdx4mCylw7cfCjHCy9RH4/Ira/q3ZudwKYArve9B3UIwAWcutV3ivt2S3YLWK2vAR631SBDd50HaXTPv+NEP+e6w9bljcNXcXNWWEBNWekZlETWxsFRslNH81tsPzLrIaZSx8gSiSjHurgrPXHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776226050; c=relaxed/simple;
-	bh=I4U/X4anEmx3t+b5a+LnHSrvGNqMgQjmdI7ZhAp2BlY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OljKLQLxVVodsFVwafARmECSXVYgs2OGI/pjHcKUDNCWeCByN5kvb2l3jxB5kcHVZXHXbQAw5/cN6ZGaVJMXPcZgmgr5VCU83EGa54BCBjQ10laaqivgcetROpg++llJwHJktfePyRuHzyVdKKoI70pqKv/M72fcyv6VqWexLWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E0Y23FOj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E33C19424;
-	Wed, 15 Apr 2026 04:07:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776226050;
-	bh=I4U/X4anEmx3t+b5a+LnHSrvGNqMgQjmdI7ZhAp2BlY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E0Y23FOjVd8T4aAqg89FmLjNMrZyV0RthL4Aa+uTP0OizulJaaP6J+ikMyAMPoxCz
-	 kKrnuCM8N/1+JcpJl+1XM0FG9Dw3SVdwgSVJT0tZmVJLNd+3nW/41WobhgkS6/GrHt
-	 nNeV1X1AONrGj3K5U3sffT4dZBhuTTLRa79tYE6SXLV6IuuJuebM51yC+GLXkLA6cp
-	 gF41mAKWxs4zVBJaL+SDrJSW2GGj8rLJKd813JZSSWGgIEhHUmqfm57HIP7zYmgd19
-	 TNmYvHjM6kxngUZtSudrTyqVKftJL5twlB9YmdC2qe/1aQuPJ+yGkWfs+rrsdRtRN3
-	 VwGX9RGOX31mw==
-From: "Carlos Bilbao (Lambda)" <carlos.bilbao@kernel.org>
-To: martin.petersen@oracle.com,
-	kees@kernel.org,
-	d.bogdanov@yadro.com
-Cc: pabeni@redhat.com,
-	mlombard@redhat.com,
-	kuniyu@google.com,
-	michael.christie@oracle.com,
+	s=arc-20240116; t=1776298969; c=relaxed/simple;
+	bh=ZsNzzGBZWRqGf2uq6G6j10Q+trCcIWrDEn8dRrN0A+w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XmKANynNRLgVWRu5Ehg58uHEHgrHcqRkZsxu3kuC5zgSFDaKvzOlyDUjL1RI2YYGMlsKp4TveMC2GwIxuoCURc7bS/8/Sx8kUB+cRPbvWMUEmOruOzB1Yr4MaxyVe2cnWPA5KQkj5RSEKQXDeymJkb+9uiXDwFt0unzSky7EYtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=QdBkYjZg; arc=none smtp.client-ip=209.85.210.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
+Received: by mail-pf1-f226.google.com with SMTP id d2e1a72fcca58-8270edc7e2eso129986b3a.2
+        for <target-devel@vger.kernel.org>; Wed, 15 Apr 2026 17:22:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1776298967; x=1776903767; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=32BeK9NcDM0TTacs4Hgu5YnQIjPRb6EDjdK365GBPos=;
+        b=QdBkYjZg4GcvOsulgVGLN6Yty+QsEbBvYWqsK9h3dF7jbJWgX4mCT4/D1D0j/8Tv+J
+         5Yp8rJivwDJkNZhw5M104fimxjMCPZnnsmI8u1dgc+bt+NVrD5r2WfXs64QLqtEvN6Kf
+         eOEZhVK0EguESYlUsx1HhkNgzXn2izp+Sp8TViUDzcdF9lLNVKyJqQqdv0XXtnGRM9SC
+         QbYOzhhluh6zuQT6kbEs89FUCKn8CMAVSbgP5gEmYEl/JTWaG3fDweNWeQUicDi1mdOT
+         PuoNMiwN5YHh6s7cdPf6rjkMU4Wm62fG3ASI2FKa5jr4RJzMVIIZmn9bVDy81wgPC9lL
+         K3hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776298967; x=1776903767;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=32BeK9NcDM0TTacs4Hgu5YnQIjPRb6EDjdK365GBPos=;
+        b=bPxI3+kQTSj4iGlGX/0XD5iITDX+57ZW2ISjpTQFjnywZjUXR43I1DO0B/AClNOYum
+         Eso1SXgpJSln/7V2jGXElH4HLWec2PFyXUqgubrzjmp3okcoUydJ23Hg43GRYk6rm4PZ
+         CVxxL5B4qYEqzU2+OCKP5DoVVhjJa+01Ina8jVA3S9CTt3jLtiT/JURJuDQipIuVUfps
+         38NfjBNFUSLcKuElq19jdYOvRjglPqjHVH60+VaNMtxTNMXa5NxLu9n4xfnciPSyQc2I
+         oyY1V1m4aP6rCkkRHrmuYEKCAx7Y+OlZwFtkq32qw62Z1Ko/WmVUDRnIrzF71kSnwDDO
+         ROzQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8+UBtigO3e6z/8NLa1SubPD2Ahe8k2OOI94El9sTCgyFoUIovYB11uACeJ4Y6ytKJHSvA6J9zVpxpCGaQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXHVBJD9bLCEk/ic5xvzlc6+yH+gFArGODqmA7d3RPcLHc/yCF
+	V8YJNNL7AdeiA7O7u46fLNt2SFkBwIGzWY8swoAePRNp1H0rKVrW3EBGjumTDyI9liNyCAD9iq5
+	NQgPC2/AY3qoL0cF34nlkdFOPxYWi4mYMajd7
+X-Gm-Gg: AeBDiethpoPjRDeHggz0v0BvVnbGSgEeD8LTgeCVaNGLm6do0IJW1rS38CHz8vVWVUp
+	61/1m1RBiH8ypaoNoETYZ5j8Ef/ecAidLvuVVXOpyKEMbRQwTqsk6GzkMuJZ2RQuWgPGqifXyJW
+	9j4qTrkiPw9KSHo4RZwnROM3X75S/A2gfrotZtS60o8arGoLE7VrwQI0vDmvY5dUQHoY3vih7Bu
+	BprPtRuE4r9uxVPrCBOF+6keeDEpo0LnKtzcSie5isJsEBnxTc1RvT+XajG93Ro7XDftv4/dblA
+	KTshOivmHkvYQvQJLZu9L4azxabQxwgN1PkwxzyDQ5sbDyrWMfDkW8FGEYy3+SYLBoXwplEXVAk
+	GJeINAt7CwuD9zYr0gsLUkcQF5PXjy7KlE6JD17OE/dAUUlaPPMUT0aRsPIOY2pln
+X-Received: by 2002:a05:6a00:809:b0:81f:453d:1ab9 with SMTP id d2e1a72fcca58-82f678215a0mr2547248b3a.3.1776298967035;
+        Wed, 15 Apr 2026 17:22:47 -0700 (PDT)
+Received: from c7-smtp-2023.dev.purestorage.com ([208.88.159.128])
+        by smtp-relay.gmail.com with ESMTPS id d2e1a72fcca58-82f6741a4a2sm280415b3a.7.2026.04.15.17.22.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 17:22:47 -0700 (PDT)
+X-Relaying-Domain: purestorage.com
+Received: from dev-csander.dev.purestorage.com (dev-csander.dev.purestorage.com [10.112.29.101])
+	by c7-smtp-2023.dev.purestorage.com (Postfix) with ESMTP id A7CFE3405AE;
+	Wed, 15 Apr 2026 18:22:45 -0600 (MDT)
+Received: by dev-csander.dev.purestorage.com (Postfix, from userid 1557716354)
+	id 914E7E41B93; Wed, 15 Apr 2026 18:22:45 -0600 (MDT)
+From: Caleb Sander Mateos <csander@purestorage.com>
+To: Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: Anuj Gupta <anuj20.g@samsung.com>,
+	linux-block@vger.kernel.org,
+	linux-nvme@lists.infradead.org,
 	linux-scsi@vger.kernel.org,
 	target-devel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	bilbao@vt.edu,
-	Carlos Bilbao <carlos.bilbao@kernel.org>
-Subject: [PATCH v3] scsi: target: iscsi: reject invalid size Extended CDB AHS
-Date: Tue, 14 Apr 2026 21:07:28 -0700
-Message-ID: <20260415040728.187680-1-carlos.bilbao@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <yq1cy02tgum.fsf@ca-mkp.ca.oracle.com>
-References: <yq1cy02tgum.fsf@ca-mkp.ca.oracle.com>
+	Caleb Sander Mateos <csander@purestorage.com>
+Subject: [PATCH v2 0/6] block: fix integrity offset/length conversions
+Date: Wed, 15 Apr 2026 18:22:08 -0600
+Message-ID: <20260416002214.2048150-1-csander@purestorage.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: target-devel@vger.kernel.org
 List-Id: <target-devel.vger.kernel.org>
@@ -74,111 +108,69 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[purestorage.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[purestorage.com:s=google2022];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-1076-lists,target-devel=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-1078-lists,target-devel=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.c.6.3.0.1.0.0.e.4.0.c.3.0.0.6.2.asn6.rspamd.com:server fail];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[carlos.bilbao@kernel.org,target-devel@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[target-devel];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B48784002AF
+	FROM_NEQ_ENVFROM(0.00)[csander@purestorage.com,target-devel@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[purestorage.com:+];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[target-devel];
+	NEURAL_HAM(-0.00)[-1.000];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,purestorage.com:dkim,purestorage.com:mid]
+X-Rspamd-Queue-Id: 7AEC3409355
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Carlos Bilbao <carlos.bilbao@kernel.org>
+The block layer's integrity code currently sets the seed (initial
+reference tag) in units of 512-byte sectors but increments it in units
+of integrity intervals. Not only do the T10 DIF formats require ref tags
+to be the lower bits of the logical block address, but mixing the two
+units means the ref tags used for a particular logical block vary based
+on its offset within a read/write request. This looks to be a
+longstanding bug affecting block devices that support integrity with
+block sizes > 512 bytes; I'm surprised it wasn't noticed before.
 
-If ecdb_ahdr->ahslength is zero, two bugs follow:
+Also fix the newly added fs_bio_integrity_verify() to pass
+bio_integrity_verify() a struct bdev_iter representing the data instead
+of the integrity. Most of the integrity data is currently being skipped.
 
-  kmalloc(be16_to_cpu(ecdb_ahdr->ahslength) + 15, ...)
+v2:
+- Reorder fixes before refactoring commits
+- Use u64, SECTOR_SHIFT (Christoph)
+- Don't take sector_t in bip_set_seed() (Christoph)
 
-allocates 15 bytes, but the immediately following memcpy writes
-ISCSI_CDB_SIZE (16) bytes into it, a one-byte heap overflow. Also:
+Caleb Sander Mateos (6):
+  block: use integrity interval instead of sector as seed
+  bio-integrity-fs: pass data iter to bio_integrity_verify()
+  blk-integrity: take u64 in bio_integrity_intervals()
+  bio-integrity-fs: use integrity interval instead of sector as seed
+  t10-pi: use bio_integrity_intervals() helper
+  blk-integrity: avoid sector_t in bip_{get,set}_seed()
 
-  memcpy(cdb + ISCSI_CDB_SIZE, ecdb_ahdr->ecdb,
-           be16_to_cpu(ecdb_ahdr->ahslength) - 1);
+ block/bio-integrity-fs.c            |  5 +++--
+ block/bio-integrity.c               |  4 ++--
+ block/t10-pi.c                      |  7 ++++---
+ drivers/nvme/target/io-cmd-bdev.c   |  3 +--
+ drivers/target/target_core_iblock.c |  3 +--
+ include/linux/bio-integrity.h       | 11 -----------
+ include/linux/blk-integrity.h       | 28 +++++++++++++++++++++-------
+ include/linux/bvec.h                |  1 +
+ 8 files changed, 33 insertions(+), 29 deletions(-)
 
-(u16)0 - 1 promotes to (int)-1 which converts to SIZE_MAX as size_t,
-causing a massive out-of-bounds write.
-
-Reject ahslength == 0 with ISCSI_REASON_PROTOCOL_ERROR before the kmalloc.
-Also reject ahslength values that exceed the actual AHS buffer advertised.
-
-Fixes: 8f1f7d297bce ("scsi: target: iscsi: Add support for extended CDB AHS")
-Signed-off-by: Carlos Bilbao (Lambda) <carlos.bilbao@kernel.org>
-Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
-
-Changes in v3:
-- Move ahslength and cdb_length declarations to function scope following
-  the reverse christmas tree ordering of existing locals.
-
-Changes in v2:
-- Add bounds check: ahslength must not exceed (hdr->hlength * 4) - 3.
-- Replace opaque ahslength + 15 with explicit cdb_length variable.
----
- drivers/target/iscsi/iscsi_target.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
-index e80449f6ce15..cb832fd523af 100644
---- a/drivers/target/iscsi/iscsi_target.c
-+++ b/drivers/target/iscsi/iscsi_target.c
-@@ -995,6 +995,7 @@ int iscsit_setup_scsi_cmd(struct iscsit_conn *conn, struct iscsit_cmd *cmd,
- 	int data_direction, payload_length;
- 	struct iscsi_ecdb_ahdr *ecdb_ahdr;
- 	struct iscsi_scsi_req *hdr;
-+	u16 ahslength, cdb_length;
- 	int iscsi_task_attr;
- 	unsigned char *cdb;
- 	int sam_task_attr;
-@@ -1108,14 +1109,27 @@ int iscsit_setup_scsi_cmd(struct iscsit_conn *conn, struct iscsit_cmd *cmd,
- 				ISCSI_REASON_CMD_NOT_SUPPORTED, buf);
- 		}
- 
--		cdb = kmalloc(be16_to_cpu(ecdb_ahdr->ahslength) + 15,
--			      GFP_KERNEL);
-+		ahslength = be16_to_cpu(ecdb_ahdr->ahslength);
-+		if (!ahslength) {
-+			pr_err("Extended CDB AHS with zero length, protocol error.\n");
-+			return iscsit_add_reject_cmd(cmd,
-+				ISCSI_REASON_PROTOCOL_ERROR, buf);
-+		}
-+		if (ahslength > (hdr->hlength * 4) - 3) {
-+			pr_err("Extended CDB AHS length %u exceeds available PDU buffer.\n",
-+			       ahslength);
-+			return iscsit_add_reject_cmd(cmd,
-+				ISCSI_REASON_PROTOCOL_ERROR, buf);
-+		}
-+
-+		cdb_length = ahslength - 1 + ISCSI_CDB_SIZE;
-+
-+		cdb = kmalloc(cdb_length, GFP_KERNEL);
- 		if (cdb == NULL)
- 			return iscsit_add_reject_cmd(cmd,
- 				ISCSI_REASON_BOOKMARK_NO_RESOURCES, buf);
- 		memcpy(cdb, hdr->cdb, ISCSI_CDB_SIZE);
--		memcpy(cdb + ISCSI_CDB_SIZE, ecdb_ahdr->ecdb,
--		       be16_to_cpu(ecdb_ahdr->ahslength) - 1);
-+		memcpy(cdb + ISCSI_CDB_SIZE, ecdb_ahdr->ecdb, cdb_length - ISCSI_CDB_SIZE);
- 	}
- 
- 	data_direction = (hdr->flags & ISCSI_FLAG_CMD_WRITE) ? DMA_TO_DEVICE :
 -- 
-2.43.0
+2.45.2
 
 
