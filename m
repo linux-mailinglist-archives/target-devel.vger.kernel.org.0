@@ -1,123 +1,124 @@
-Return-Path: <target-devel+bounces-1115-lists+target-devel=lfdr.de@vger.kernel.org>
+Return-Path: <target-devel+bounces-1116-lists+target-devel=lfdr.de@vger.kernel.org>
 Delivered-To: lists+target-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aH12Az6o+Wnk+gIAu9opvQ
-	(envelope-from <target-devel+bounces-1115-lists+target-devel=lfdr.de@vger.kernel.org>)
-	for <lists+target-devel@lfdr.de>; Tue, 05 May 2026 10:20:14 +0200
+	id EIZeBuT6+WmNFgMAu9opvQ
+	(envelope-from <target-devel+bounces-1116-lists+target-devel=lfdr.de@vger.kernel.org>)
+	for <lists+target-devel@lfdr.de>; Tue, 05 May 2026 16:12:52 +0200
 X-Original-To: lists+target-devel@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CF804C893A
-	for <lists+target-devel@lfdr.de>; Tue, 05 May 2026 10:20:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBFEF4CF262
+	for <lists+target-devel@lfdr.de>; Tue, 05 May 2026 16:12:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2F97B3009815
-	for <lists+target-devel@lfdr.de>; Tue,  5 May 2026 08:20:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CF8BE301436A
+	for <lists+target-devel@lfdr.de>; Tue,  5 May 2026 14:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B183EE1F6;
-	Tue,  5 May 2026 08:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="QmeTUJjA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5640748032B;
+	Tue,  5 May 2026 14:12:48 +0000 (UTC)
 X-Original-To: target-devel@vger.kernel.org
-Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
+Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [83.223.95.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FDB3EF0DA;
-	Tue,  5 May 2026 08:20:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8B247F2EA;
+	Tue,  5 May 2026 14:12:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777969208; cv=none; b=eGFSS4X+wXbVcgiMAbnjEZIit4+urx/fZ+mlmq8hOxgsYT0Cwdx6HiG/YG9O2vU4/4LCcYITTmGD09yRgJJRA43RYoLth3fT+7PiYi2KM2273EapH+8ppJQwW5VvObaOZMDpkZC4hKIpQ4vZ7woupcgBkl/1YBMqkBFDrEW6aI4=
+	t=1777990368; cv=none; b=S4TnVcxdqCB2tsvxGe/wMzcYhD0M2+zrVSqhfr28Ou+LTOQvQRglUuRZ6fqHTtIByQTLL2agN4wavbec933MRy8lf5Pp2ToRqlvXZpZ+zmEiGhF3SS5U4MC82jgpziOSL1VQN7hq+NGN0ltLfBeQooYW0SbjJ5tQLuh5cn0UfY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777969208; c=relaxed/simple;
-	bh=o9I8R4ykhawPwL7TUfA7kqPV2OOTYA6gQ/zyz+O0Udg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WonVOfRcLIhrk8mPoLf4knLgv3gIf6sf/3NFEYkALXR20Qp6R/6lrwjb5BEDWvjOBwS9Py1/PzZ1x+pI05dAQjztp9MCVzFrtGtdUVWVlxy6iTfXlCBEEYwZ+79jV5EJA0mL7R/Fk4AwUfBNQXTwl4QeWmZl841e3GiVaY0mYo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=QmeTUJjA; arc=none smtp.client-ip=199.89.1.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 011.lax.mailroute.net (Postfix) with ESMTP id 4g8rzS698zz1XM6JG;
-	Tue,  5 May 2026 08:20:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1777969201; x=1780561202; bh=x1/xhG5InhxqNp2gmwf7KwSF
-	7yoc52gdNUL64u114kY=; b=QmeTUJjAdOkY2nI8DYRk2wrKstUxKjq+Ojp+UAeu
-	i2OwSWR0mVVIMqA8fpyNonGO9hfuV9wlXu23GQRQS3BIP/Rmh2brqvSa7yAf56Fr
-	STf4OTJxboGBMIe6BiONjvXyk+eAFPXdK8DyNbIRR8D3evvtFCZR2gRhzoS/3HS7
-	SXeVLsgC++SMnm5o25eLxHlUYmtqtMpCYtx0TsEnoj/hlkSZo3qFMeLcsoz/Dwpx
-	xUTK53PNK50JiP0R6y6cFBBpaXv54zSbv7dZdGcCvrkNzZNl1aTtMvbBukHRW0bJ
-	SPxENoHyomtSGybG2JI2uapnYdGV81/46YgPhZdvLpkHRw==
-X-Virus-Scanned: by MailRoute
-Received: from 011.lax.mailroute.net ([127.0.0.1])
- by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id vFlzf1RHxyJo; Tue,  5 May 2026 08:20:01 +0000 (UTC)
-Received: from [10.211.9.52] (unknown [213.147.98.98])
+	s=arc-20240116; t=1777990368; c=relaxed/simple;
+	bh=PQn62JhwDz9Sa7flQCbe72MOhKpt47xC2HlEX38VAEg=;
+	h=Message-Id:From:Date:Subject:To:Cc; b=tlpcfz24kcqwONr7e9foTecHp4yPFbUjNFg6yrqNyvRbCnHO428H4NFxz/dIFjPGeezBD98GeprPSHvqzbSk2SYG3jODZitp+XPoppcOdOP25QKzypK60RoLH0A/tx4NbaboaADO+kKvjBjQzBuTH9CtK/1WkxjK707DpE0cy8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.95.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4g8rzK3Hyjz1XM5kD;
-	Tue,  5 May 2026 08:19:56 +0000 (UTC)
-Message-ID: <ef60eb35-deb8-4703-bcdf-0a2cf26de45d@acm.org>
-Date: Tue, 5 May 2026 10:19:54 +0200
+	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by mailout1.hostsharing.net (Postfix) with ESMTPS id 97422313;
+	Tue, 05 May 2026 16:12:34 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 91C21602D0D2; Tue,  5 May 2026 16:12:34 +0200 (CEST)
+Message-Id: <c57e018b4dee8d9d913870b8101ee9357c0c4a55.1777989011.git.lukas@wunner.de>
+From: Lukas Wunner <lukas@wunner.de>
+Date: Tue, 5 May 2026 16:12:36 +0200
+Subject: [PATCH] scsi: elx: efct: Restore config space after error-induced
+ reset
+To: Ram Vegesna <ram.vegesna@broadcom.com>, "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, Mike Christie <michael.christie@oracle.com>, James Smart <jsmart2021@gmail.com>
 Precedence: bulk
 X-Mailing-List: target-devel@vger.kernel.org
 List-Id: <target-devel.vger.kernel.org>
 List-Subscribe: <mailto:target-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:target-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] RDMA/srpt: fix integer overflow in immediate data length
- check
-To: Sara Venkatesh <sarajvenkatesh@gmail.com>, jgg@ziepe.ca
-Cc: leon@kernel.org, dledford@redhat.com, linux-rdma@vger.kernel.org,
- target-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
- carlos.bilbao@kernel.org
-References: <20260504080036.3482415-1-sarajvenkatesh@gmail.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20260504080036.3482415-1-sarajvenkatesh@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0CF804C893A
+X-Rspamd-Queue-Id: DBFEF4CF262
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[acm.org,reject];
-	R_DKIM_ALLOW(-0.20)[acm.org:s=mr01];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[acm.org:+];
-	TAGGED_FROM(0.00)[bounces-1115-lists,target-devel=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,oracle.com,gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-1116-lists,target-devel=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,ziepe.ca];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[wunner.de: no valid DMARC record];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bvanassche@acm.org,target-devel@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.906];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[target-devel];
-	TO_DN_SOME(0.00)[]
+	FROM_NEQ_ENVFROM(0.00)[lukas@wunner.de,target-devel@vger.kernel.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,wunner.de:mid,wunner.de:email]
 
-On 5/4/26 10:00 AM, Sara Venkatesh wrote:
-> imm_buf->len is a user-controlled uint32_t received from the network.
-> Adding it to imm_data_offset without overflow checking allows a
-> malicious initiator to send len=0xFFFFFFFF, causing req_size to wrap
-> around to a small value, bypassing the bounds check, and subsequently
-> passing a ~4GB length to sg_init_one().
-> 
-> Use check_add_overflow() to detect wrapping before the comparison.
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+When a Fatal Error is handled by AER or DPC, the error-reporting PCIe
+device is reset and its driver's ->slot_reset() callback is invoked to
+bring the device back to working state.
+
+That callback first needs to call pci_restore_state() to re-initialize
+BAR assignments and other bits in config space.
+
+The Emulex/Broadcom EFCT driver neglects to do that.  Fix it.
+
+Fixes: 4df84e846624 ("scsi: elx: efct: Driver initialization routines")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org # v5.14+
+---
+Compile-tested only, I do not have this hardware available for testing.
+That said, it seems the code path has never been tested anyway.
+If you have the hardware, consider injecting a Fatal Error as described
+in Documentation/PCI/pcieaer-howto.rst and see if the hardware recovers
+successfully.
+
+ drivers/scsi/elx/efct/efct_driver.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/scsi/elx/efct/efct_driver.c b/drivers/scsi/elx/efct/efct_driver.c
+index 07c2f45..fe45009 100644
+--- a/drivers/scsi/elx/efct/efct_driver.c
++++ b/drivers/scsi/elx/efct/efct_driver.c
+@@ -688,6 +688,8 @@
+ 	int rc;
+ 	struct efct *efct = pci_get_drvdata(pdev);
+ 
++	pci_restore_state(pdev);
++
+ 	rc = pci_enable_device_mem(pdev);
+ 	if (rc) {
+ 		efc_log_err(efct, "failed to enable PCI device after reset\n");
+-- 
+2.51.0
+
 
