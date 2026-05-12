@@ -1,139 +1,120 @@
-Return-Path: <target-devel+bounces-1118-lists+target-devel=lfdr.de@vger.kernel.org>
+Return-Path: <target-devel+bounces-1119-lists+target-devel=lfdr.de@vger.kernel.org>
 Delivered-To: lists+target-devel@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Mj2CJyrAmrtvQEAu9opvQ
-	(envelope-from <target-devel+bounces-1118-lists+target-devel=lfdr.de@vger.kernel.org>)
-	for <lists+target-devel@lfdr.de>; Tue, 12 May 2026 06:25:00 +0200
+	id MPywE+0DA2pczgEAu9opvQ
+	(envelope-from <target-devel+bounces-1119-lists+target-devel=lfdr.de@vger.kernel.org>)
+	for <lists+target-devel@lfdr.de>; Tue, 12 May 2026 12:41:49 +0200
 X-Original-To: lists+target-devel@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BC14519915
-	for <lists+target-devel@lfdr.de>; Tue, 12 May 2026 06:24:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E650351EC01
+	for <lists+target-devel@lfdr.de>; Tue, 12 May 2026 12:41:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C0A7302495F
-	for <lists+target-devel@lfdr.de>; Tue, 12 May 2026 04:24:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D9CE4301F7DC
+	for <lists+target-devel@lfdr.de>; Tue, 12 May 2026 10:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E268E30FC03;
-	Tue, 12 May 2026 04:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4117D3839AB;
+	Tue, 12 May 2026 10:41:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MHcox8Ad"
 X-Original-To: target-devel@vger.kernel.org
-Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [144.76.133.104])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D36D3126BF;
-	Tue, 12 May 2026 04:24:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.133.104
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4FC38398D;
+	Tue, 12 May 2026 10:41:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778559878; cv=none; b=os0aYmOPNGvEBNc9EaT724hqIIcZ8D03yGWi0+RsEZtyBwp9BqyLw2Ill54Euw+1yE6xrjo8QXWQimkY8gGn1MAfGBuZToPjcVxOEw/AIhiFDgG2GTpme8IQ73t5JXnokt0pWEcY+Qj0S8rNIKCknsoTu1EK5MPAun5ZWiBWfKM=
+	t=1778582491; cv=none; b=dOB3giR55MlI+yiH0QVmDX0XCa8m2Ie4nZmSY7+Y3rpz0JFJORyRkD8PPteUrPEG0Qn8CIG/X3D/ASvpma+AQse+exzRhgQMA7Vhtxd984tY/KXXRIBY67mhyaQcvX2bs6UQvPEhPJrUtZJEm1jsiSP4jjfPFXJ3WIit6XOdnH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778559878; c=relaxed/simple;
-	bh=R6mAT2DfOSNb1VO7H38Jv0UhmmA7pUmRvjQXQDkptmA=;
-	h=Message-Id:From:Date:Subject:To:Cc; b=r/FNUItoZUpcDLk8UcgWUO7tSL7vRO83yI0F77i0L0Ry3ivtX9moH+cYiuXQBzRHb/C2GAUwrAzId5MNxbwyKPIMATcU68LqeXb25eVX6pQhNXnd3DhCClVEoaVoheaLC889CZmGQew1RbzlJ5UK+2WuQZInBor3yMQIa4jLDcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=144.76.133.104
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
-	 client-signature ECDSA (secp384r1) client-digest SHA384)
-	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
-	by mailout3.hostsharing.net (Postfix) with ESMTPS id 78627C8B;
-	Tue, 12 May 2026 06:24:26 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 47CF96029AF0; Tue, 12 May 2026 06:24:26 +0200 (CEST)
-Message-Id: <57f8a29ee7a75f81bd0a42f3fea54f0f1d3fe4e4.1778559000.git.lukas@wunner.de>
-From: Lukas Wunner <lukas@wunner.de>
-Date: Tue, 12 May 2026 06:24:10 +0200
-Subject: [PATCH] scsi: Drop pci_save_state() after pci_restore_state()
-To: Ram Vegesna <ram.vegesna@broadcom.com>, Justin Tee <justin.tee@broadcom.com>, Paul Ely <paul.ely@broadcom.com>, "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, Mike Christie <michael.christie@oracle.com>, James Smart <jsmart2021@gmail.com>
+	s=arc-20240116; t=1778582491; c=relaxed/simple;
+	bh=UoJ9DZYobAlGVmjJh7ijtxeOP8tMOKkc/vPcEbtldlg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=jjI+r/UUfzgvih/mGtmg0W3aFWHJ/lePMWhEiTqYHy3wtTluXD5S1Dti9qLRWNvYFJANGXvOYhYlgq+zCYJ9PpneRDnEmXq/173+TndUpt3lorB8q2gw2YupshSHpSbhqPcp8Vty196G5YVdlTVW25qkTUSBqP2PStQH0flEKe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MHcox8Ad; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51406C2BCB0;
+	Tue, 12 May 2026 10:41:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778582490;
+	bh=UoJ9DZYobAlGVmjJh7ijtxeOP8tMOKkc/vPcEbtldlg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=MHcox8AdoN5YeADzHWLhXDR3dzNx3GvmPwolUGANg1xAWld6VQWdRSIbKscBZi654
+	 TLYzbOi5Dz6noOjMHV8Xman0sWd7kce9qVLwHyZKBsY6GzPPkrylGKvvJuuzM+Vmyg
+	 FPdEDk6wXaBHm6E+2tC68iisER0u3oeRD9mvKhFopdLtcbzN5ElH5NY0YsExkaeedL
+	 HqaAkfPyzCjuCipqhcXu/UoxJQWu3/SfNZ3W3Vl6++5WgFEwe3oo4JB5t7VjqeayE5
+	 Upb0+0mhdkR7UfgXOc8MsrO5PCl/xbip3cu6rXf5Aqnt6H7qrXx047jlJI+Om8MC8W
+	 RssGOB52/22KA==
+From: Leon Romanovsky <leon@kernel.org>
+To: bvanassche@acm.org, jgg@ziepe.ca, 
+ Sara Venkatesh <sarajvenkatesh@gmail.com>
+Cc: dledford@redhat.com, linux-rdma@vger.kernel.org, 
+ target-devel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ carlos.bilbao@kernel.org
+In-Reply-To: <20260504080036.3482415-1-sarajvenkatesh@gmail.com>
+References: <20260504080036.3482415-1-sarajvenkatesh@gmail.com>
+Subject: Re: [PATCH] RDMA/srpt: fix integer overflow in immediate data
+ length check
+Message-Id: <177858248804.2277752.12077743618929897915.b4-ty@kernel.org>
+Date: Tue, 12 May 2026 06:41:28 -0400
 Precedence: bulk
 X-Mailing-List: target-devel@vger.kernel.org
 List-Id: <target-devel.vger.kernel.org>
 List-Subscribe: <mailto:target-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:target-devel+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 7BC14519915
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-18f8f
+X-Rspamd-Queue-Id: E650351EC01
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,oracle.com,gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_FROM(0.00)[bounces-1118-lists,target-devel=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-1119-lists,target-devel=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[wunner.de: no valid DMARC record];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[acm.org,ziepe.ca,gmail.com];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.837];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[leon@kernel.org,target-devel@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[target-devel];
-	FROM_NEQ_ENVFROM(0.00)[lukas@wunner.de,target-devel@vger.kernel.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,wunner.de:email,wunner.de:mid]
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Commit 383d89699c50 ("treewide: Drop pci_save_state() after
-pci_restore_state()") sought to purge all superfluous invocations of
-pci_save_state() from the tree.
 
-Unfortunately the commit missed one invocation in the Broadcom
-EFCT target driver and another one in the LPFC driver.  Drop them.
+On Mon, 04 May 2026 01:00:36 -0700, Sara Venkatesh wrote:
+> imm_buf->len is a user-controlled uint32_t received from the network.
+> Adding it to imm_data_offset without overflow checking allows a
+> malicious initiator to send len=0xFFFFFFFF, causing req_size to wrap
+> around to a small value, bypassing the bounds check, and subsequently
+> passing a ~4GB length to sg_init_one().
+> 
+> Use check_add_overflow() to detect wrapping before the comparison.
+> 
+> [...]
 
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
----
-I've combined removal from two drivers in a single patch because
-they're both Broadcom devices and this is a fairly trivial change.
-But if you prefer splitting the patch in two, please let me know.
+Applied, thanks!
 
- drivers/scsi/elx/efct/efct_driver.c | 7 -------
- drivers/scsi/lpfc/lpfc_init.c       | 5 -----
- 2 files changed, 12 deletions(-)
+[1/1] RDMA/srpt: fix integer overflow in immediate data length check
+      https://git.kernel.org/rdma/rdma/c/3f716b34c639f6
 
-diff --git a/drivers/scsi/elx/efct/efct_driver.c b/drivers/scsi/elx/efct/efct_driver.c
-index fe45009..6d4f00b 100644
---- a/drivers/scsi/elx/efct/efct_driver.c
-+++ b/drivers/scsi/elx/efct/efct_driver.c
-@@ -696,13 +696,6 @@
- 		return PCI_ERS_RESULT_DISCONNECT;
- 	}
- 
--	/*
--	 * As the new kernel behavior of pci_restore_state() API call clears
--	 * device saved_state flag, need to save the restored state again.
--	 */
--
--	pci_save_state(pdev);
--
- 	pci_set_master(pdev);
- 
- 	rc = efct_setup_msix(efct, efct->n_msix_vec);
-diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
-index 968a2523..dc58085 100644
---- a/drivers/scsi/lpfc/lpfc_init.c
-+++ b/drivers/scsi/lpfc/lpfc_init.c
-@@ -15245,11 +15245,6 @@ static int lpfc_cpu_online(unsigned int cpu, struct hlist_node *node)
- 	if (!hba_pci_err)
- 		dev_info(&pdev->dev,
- 			 "hba_pci_err was not set, recovering slot reset.\n");
--	/*
--	 * As the new kernel behavior of pci_restore_state() API call clears
--	 * device saved_state flag, need to save the restored state again.
--	 */
--	pci_save_state(pdev);
- 
- 	if (pdev->is_busmaster)
- 		pci_set_master(pdev);
+Best regards,
 -- 
-2.51.0
+Leon Romanovsky <leon@kernel.org>
 
 
