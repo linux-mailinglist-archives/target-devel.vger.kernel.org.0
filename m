@@ -1,160 +1,426 @@
-Return-Path: <target-devel+bounces-1217-lists+target-devel=lfdr.de@vger.kernel.org>
+Return-Path: <target-devel+bounces-1219-lists+target-devel=lfdr.de@vger.kernel.org>
 Delivered-To: lists+target-devel@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8LQfIPGoKmo5ugMAu9opvQ
-	(envelope-from <target-devel+bounces-1217-lists+target-devel=lfdr.de@vger.kernel.org>)
-	for <lists+target-devel@lfdr.de>; Thu, 11 Jun 2026 14:24:17 +0200
+	id 9VujApkBK2qC1AMAu9opvQ
+	(envelope-from <target-devel+bounces-1219-lists+target-devel=lfdr.de@vger.kernel.org>)
+	for <lists+target-devel@lfdr.de>; Thu, 11 Jun 2026 20:42:33 +0200
 X-Original-To: lists+target-devel@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9018B671CB0
-	for <lists+target-devel@lfdr.de>; Thu, 11 Jun 2026 14:24:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F420A67488B
+	for <lists+target-devel@lfdr.de>; Thu, 11 Jun 2026 20:42:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "target-devel+bounces-1217-lists+target-devel=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="target-devel+bounces-1217-lists+target-devel=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RmdUqlho;
+	spf=pass (mail.lfdr.de: domain of "target-devel+bounces-1219-lists+target-devel=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="target-devel+bounces-1219-lists+target-devel=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 87ADA337A2F9
-	for <lists+target-devel@lfdr.de>; Thu, 11 Jun 2026 12:22:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1B4AF30095FD
+	for <lists+target-devel@lfdr.de>; Thu, 11 Jun 2026 18:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8319C3F4DCF;
-	Thu, 11 Jun 2026 12:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C096937F00D;
+	Thu, 11 Jun 2026 18:42:26 +0000 (UTC)
 X-Original-To: target-devel@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD963F7A9E;
-	Thu, 11 Jun 2026 12:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A341356775;
+	Thu, 11 Jun 2026 18:42:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781180535; cv=none; b=B6nI2EfrKZNuRJIRalfu22e91rrV08h6chzcso4cmO/HbtXWwvSzufRlTACxkcFhwjQZCsAKGdFyuEDvrn6pT139eoHJ5x0IMOKljNO/nYUMPnu20nBSq5La0qps/S3N0Ltt5q9dMV229o3p0HK6Ey2fsFTPKjggiI0T22HoJRI=
+	t=1781203346; cv=none; b=JXWugm6m6gs5ciQyLfj2gPu75xgbpn3Xf9972NyDqjAc3+xpGguY6ENfz6+X7LmrHVThwEfb8CslyTAclM+2dBgUv6gcLHbx3n81IKfvYcagg7UlrBA0Q6X+VHIwFpBGOAYncc3tI0xyBg7l9RjcrUTJgvtc5VPstolP8uzj9Bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781180535; c=relaxed/simple;
-	bh=NNuGjHW7aiMuGvUX+YqgBQNUEL3YlheFCzAZacSIzBE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YuuE7jl70ozE3tAK4RVG1YTlvZxAnx7FIYE1PTo5wlhHyJqdWcEuzAwJEJzjD0LwPRMHAwwTbFS8O+8NHBSjFgZJkcMnHppIuaWlUAN+wIsbDMcyz2ts0R6WRpQl2ZR/+NSYe+cpI3zvOCrXVMjU2aRQcCCothTbf6Q4rdiHe4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Received: from localhost.localdomain (unknown [117.182.75.76])
-	by APP-05 (Coremail) with SMTP id zQCowACXHgJtqCpqb3IVEw--.237S2;
-	Thu, 11 Jun 2026 20:22:07 +0800 (CST)
-From: WenTao Liang <vulab@iscas.ac.cn>
-To: martin.petersen@oracle.com
-Cc: kees@kernel.org,
-	vulab@iscas.ac.cn,
-	linux-scsi@vger.kernel.org,
-	target-devel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] scsi: target: cxgbit: fix refcount leak in __cxgbit_free_cdev_np
-Date: Thu, 11 Jun 2026 20:22:03 +0800
-Message-ID: <20260611122203.78379-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1781203346; c=relaxed/simple;
+	bh=lxBBr1/vMErFMAMcr9BwqKhyWYHWkNIi/kDDbGuuUww=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=BhOIpLccyfxFwjnb9wzT6LzQJ+WVxmyaByb6NL/kyOyj0tLv3yK4bChtDbEWj6A4OzckYrHd2nDxPRFh1lvml0kzjjyOo8l2gCcvD6PpYek49yrf1lqlBaH/QwJnAuI0Lhqd0Myvu7QX7tEsXqJTtVte9vV5o6CzG2sIKQt76Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RmdUqlho; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 60BA5C2BCB0;
+	Thu, 11 Jun 2026 18:42:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1781203346;
+	bh=lxBBr1/vMErFMAMcr9BwqKhyWYHWkNIi/kDDbGuuUww=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=RmdUqlhoffejnYQmnQCd0hovTYcdeSYN0h4SbGMcpNMe1IIy5ExdKlyijUddTqjy7
+	 gQNU2ozs0dmQcDfW7gD1tnC3DqXfS6sPaKL3fmA3PVR7bJHQM6Feid/V/mpb788msu
+	 fzrzqgAqr1mautgohc1e0ww88WoysulXkwZMx2CGLxwc8oPt2EMHJJUd94Ax2YZym3
+	 z6IPzh2ybogf716n1CzxNNBkRvpNxQsEcgJF82I6NTnLfzHCjDuxk9yI68WVwZym1Q
+	 d6aKVX5PAmXPwr8Q58xqcVDXFSXbF7FLN2J+qfEFg5brssrmj0Lov7WBPWu7q5hbHg
+	 ReJaLC82sATzg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 359E2CD98CC;
+	Thu, 11 Jun 2026 18:42:26 +0000 (UTC)
+From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
+Date: Thu, 11 Jun 2026 13:42:26 -0500
+Subject: [PATCH v6] scsi: target: bound PR-OUT TransportID parsing to the
+ received buffer
 Precedence: bulk
 X-Mailing-List: target-devel@vger.kernel.org
 List-Id: <target-devel.vger.kernel.org>
 List-Subscribe: <mailto:target-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:target-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowACXHgJtqCpqb3IVEw--.237S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zw1fGw1fCF4rGw15XFWkZwb_yoW8CFyfpF
-	W0kFyUJF1DJrW5Jr4kAw4Ikr1Iva1ayFW3C348CwsIvws0vr4DKr1UAw12gay5Crykur43
-	Xa1Yvr15G3yDAw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkl14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
-	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
-	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjJ73PUUUU
-	U==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAcPA2oqh3hi8AAAsq
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260611-b4-disp-9f20739e-v6-1-f6630e2aae44@proton.me>
+X-B4-Tracking: v=1; b=H4sIAJEBK2oC/x3MMQqAMAxA0atIZgNtlEq9ijhommoWlRZEKN7d4
+ viG/wtkSSoZxqZAkluznkeFaxvgfTk2QQ3VQIaccdbi2mPQfKGPZIbOC7Ijtp5XChyhZleSqM+
+ /nOb3/QA2k3J7YgAAAA==
+To: James Bottomley <jejb@linux.ibm.com>, 
+ Mike Christie <michael.christie@oracle.com>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, David Disseldorp <ddiss@suse.de>, 
+ John Garry <john.g.garry@oracle.com>, 
+ Maurizio Lombardi <mlombard@redhat.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781203345; l=12609;
+ i=hexlabsecurity@proton.me; s=proton; h=from:subject:message-id;
+ bh=nsxrKCb3UtxX4JkOSI2wFRvBHFdqWp9SU0RZVzx58FM=;
+ b=XWoWJP2W5Rix1tadiX4wORZcGp4i8hXdxbKopOJTjBXeu1Qrir9cK9vyqnqVrzEd3zL5qbo6V
+ Ow5lA0TNECtBqTugaLLBYdisLFEl8UVOWOe7uz6KyJ9ogKtBgFsbDdd
+X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
+ pk=dmppBMZNLLoPzxHi9l8tZDzEZUunPbgsYqIZYXeUrL0=
+X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/proton with
+ auth_id=814
+X-Original-From: Bryam Vargas <hexlabsecurity@proton.me>
+Reply-To: hexlabsecurity@proton.me
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-1219-lists,target-devel=lfdr.de,hexlabsecurity.proton.me];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	TAGGED_FROM(0.00)[bounces-1217-lists,target-devel=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:martin.petersen@oracle.com,m:kees@kernel.org,m:vulab@iscas.ac.cn,m:linux-scsi@vger.kernel.org,m:target-devel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:jejb@linux.ibm.com,m:michael.christie@oracle.com,m:martin.petersen@oracle.com,m:linux-scsi@vger.kernel.org,m:target-devel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:ddiss@suse.de,m:john.g.garry@oracle.com,m:mlombard@redhat.com,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,target-devel@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,target-devel@vger.kernel.org];
-	ALIAS_RESOLVED(0.00)[];
-	TO_DN_NONE(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[target-devel];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[devnull@kernel.org,target-devel@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	FORWARDED(0.00)[lists@lfdr.de];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,target-devel@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	HAS_REPLYTO(0.00)[hexlabsecurity@proton.me];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[target-devel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,proton.me:replyto,proton.me:email,proton.me:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9018B671CB0
+X-Rspamd-Queue-Id: F420A67488B
 
-__cxgbit_free_cdev_np() calls cxgbit_get_cnp() to take a reference
-on cnp for the duration of the firmware remove-server operation.
-If cxgb4_remove_server() fails, the reference is correctly released
-in the error path with cxgbit_put_cnp(). However, once past that
-check, the reference is never released on any other path:
- - when cxgbit_wait_for_reply() times out,
- - when cxgbit_wait_for_reply() succeeds,
- - or when cxgbit_wait_for_reply() returns another error.
+From: Bryam Vargas <hexlabsecurity@proton.me>
 
-All three paths return without dropping the reference, and no
-called function consumes or releases the kref. The caller,
-cxgbit_free_cdev_np(), does not balance the reference either.
+core_scsi3_decode_spec_i_port() and core_scsi3_emulate_register_and_move()
+hand the raw PERSISTENT RESERVE OUT parameter buffer to
+target_parse_pr_out_transport_id() without telling it how many bytes are
+valid.  For an iSCSI TransportID (FORMAT CODE 01b),
+iscsi_parse_pr_out_transport_id() locates the ",i,0x" ISID separator with
+an unbounded strstr() (and on the error path prints the name with a
+further unbounded "%s").  An initiator can submit a TransportID whose
+iSCSI name contains neither a ",i,0x" substring nor a NUL terminator,
+filling the parameter list to its end, so the scan runs off the end of the
+buffer.
 
-Add the missing cxgbit_put_cnp() on the timeout and success paths,
-and use a unified cleanup to handle all non-early-error returns.
+When the parameter list spans more than one page the buffer is a
+multi-page vmap (transport_kmap_data_sg()), so the over-read walks into
+the trailing vmalloc guard page and oopses (KASAN: vmalloc-out-of-bounds
+in strstr).  It is reachable by any fabric that delivers a PR OUT to a
+device exported through an iSCSI TPG, including a guest via vhost-scsi.
 
+Pass the number of received bytes down to the parser and validate the
+iSCSI TransportID's own self-described length (ADDITIONAL LENGTH + 4)
+once, up front: reject it if it is below the spc4r17 minimum or larger
+than the received buffer, then bound the separator search, the ISID walk
+and the name copy by that length.  This is the length check the callers
+already perform after the parse (core_scsi3_decode_spec_i_port() compares
+tid_len against tpdl, core_scsi3_emulate_register_and_move() validates it
+against data_length), moved ahead of the scan.  Also drop the unbounded
+"%s" of the unterminated name.
+
+Add per-format explicit name-length checks before copying into i_str,
+rather than silently truncating with min_t: for FORMAT CODE 00b reject
+if the descriptor body (tid_len - 4 bytes) cannot fit in
+i_str[TRANSPORT_IQN_LEN]; for FORMAT CODE 01b reject if the name portion
+(from &buf[4] up to the separator) cannot fit.  Both checks make the
+bounds intent explicit at each format branch.
+
+While here, also reject a FORMAT CODE 01b TransportID whose ",i,0x"
+separator sits at the very end of the descriptor: that leaves an empty
+ISID and points the returned port nexus pointer at buf + tid_len, one past
+the descriptor, which the registration code (__core_scsi3_locate_pr_reg(),
+__core_scsi3_alloc_registration()) then dereferences as the ISID string --
+the same over-read of the parameter buffer for a malformed descriptor.
+
+Fixes: c66ac9db8d4a ("[SCSI] target: Add LIO target core v4.0.0-rc6")
 Cc: stable@vger.kernel.org
-Fixes: 9730ffcb8957 ("cxgbit: add files for cxgbit.ko")
-Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: David Disseldorp <ddiss@suse.de>
 ---
- drivers/target/iscsi/cxgbit/cxgbit_cm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+This fix was developed and reviewed under embargo on security@kernel.org
+with the SCSI target maintainers and reviewers (John Garry, David
+Disseldorp); the 7-day embargo has elapsed, so it is reposted here on the
+public lists for pickup.  No functional change since that review -- the
+Reviewed-by tags are carried in the patch.
 
-diff --git a/drivers/target/iscsi/cxgbit/cxgbit_cm.c b/drivers/target/iscsi/cxgbit/cxgbit_cm.c
-index 146705845fa3..f8cd6457666b 100644
---- a/drivers/target/iscsi/cxgbit/cxgbit_cm.c
-+++ b/drivers/target/iscsi/cxgbit/cxgbit_cm.c
-@@ -544,8 +544,10 @@ __cxgbit_free_cdev_np(struct cxgbit_device *cdev, struct cxgbit_np *cnp)
+Impact / reproducer (CONFIG_KASAN_VMALLOC, A/B-proven):
+
+A PERSISTENT RESERVE OUT with SPEC_I_PT=1 and a multi-page (>= 2 page)
+parameter list carrying a single FORMAT CODE 01b iSCSI TransportID whose
+iSCSI name is all 'A's -- no ",i,0x" substring and no NUL terminator --
+makes the unbounded strstr() walk off the multi-page vmap into the
+trailing vmalloc guard page:
+
+  BUG: KASAN: vmalloc-out-of-bounds in strstr
+   target_parse_pr_out_transport_id [target_core_mod]
+   core_scsi3_decode_spec_i_port [target_core_mod]
+   core_scsi3_emulate_pro_register [target_core_mod]
+   target_scsi3_emulate_pr_out [target_core_mod]
+   __target_execute_cmd [target_core_mod]
+   iscsit_get_rx_pdu [iscsi_target_mod]
+
+It is reachable by any fabric that delivers a PR OUT to a device exported
+through an iSCSI TPG (iSCSI native, tcm_loop, and guest->host via
+vhost-scsi were all reproduced).  With the patch the same input is
+rejected cleanly (CHECK CONDITION, INVALID FIELD IN PARAMETER LIST) and a
+well-formed TransportID still parses; no KASAN on any arm.
+
+Changelog:
+
+v6: first public posting (v1..v5 were embargoed on security@kernel.org);
+    dropped the redundant Reported-by (it equalled the Signed-off-by);
+    collected Reviewed-by from John Garry and David Disseldorp; reflowed
+    one log message onto a single line to clear a checkpatch warning.  No
+    functional change.
+v5: cite spc4r17 7.5.4.6; move the FORMAT CODE 01b name-length check to the
+    separator so a legal 212..223-byte name is no longer rejected.
+v4: split the shared min_t() name copy into explicit per-format
+    name-length rejects (00b on tid_len - 4, 01b on the name portion).
+v3: keep the name copy bounded by TRANSPORT_IQN_LEN (not an up-front
+    tid_len cap, which would reject legal long iSCSI names); reject an
+    empty ISID (",i,0x" ending the descriptor).
+v2: validate the self-described TransportID length up front and bound the
+    separator search, the ISID walk and the name copy by it; drop the
+    unbounded "%s" print of the unterminated name.
+---
+ drivers/target/target_core_fabric_lib.c | 89 +++++++++++++++++++++++++--------
+ drivers/target/target_core_internal.h   |  3 +-
+ drivers/target/target_core_pr.c         |  4 +-
+ 3 files changed, 73 insertions(+), 23 deletions(-)
+
+diff --git a/drivers/target/target_core_fabric_lib.c b/drivers/target/target_core_fabric_lib.c
+index 87c5d26a5089..2853b95b2c59 100644
+--- a/drivers/target/target_core_fabric_lib.c
++++ b/drivers/target/target_core_fabric_lib.c
+@@ -290,13 +290,24 @@ static void sbp_parse_pr_out_transport_id(char *buf, char *i_str)
+ static bool iscsi_parse_pr_out_transport_id(
+ 	struct se_portal_group *se_tpg,
+ 	char *buf,
++	u32 buf_len,
+ 	u32 *out_tid_len,
+ 	char **port_nexus_ptr,
+ 	char *i_str)
+ {
+ 	char *p;
++	u32 tid_len;
+ 	int i;
+-	u8 format_code = (buf[0] & 0xc0);
++	u8 format_code;
++
++	/*
++	 * The 4-byte iSCSI TransportID header (FORMAT CODE + 2-byte ADDITIONAL
++	 * LENGTH) must be present before any of it can be parsed.
++	 */
++	if (buf_len < 4)
++		return false;
++
++	format_code = buf[0] & 0xc0;
+ 	/*
+ 	 * Check for FORMAT CODE 00b or 01b from spc4r17, section 7.5.4.6:
+ 	 *
+@@ -316,15 +327,17 @@ static bool iscsi_parse_pr_out_transport_id(
+ 		return false;
+ 	}
+ 	/*
+-	 * If the caller wants the TransportID Length, we set that value for the
+-	 * entire iSCSI Tarnsport ID now.
++	 * Reconstruct the self-described TransportID length from the ADDITIONAL
++	 * LENGTH field plus the 4-byte header.  Reject it if it is below the
++	 * spc4r17 section 7.5.4.6 minimum (ADDITIONAL LENGTH shall be at least
++	 * 20) or if it runs past the bytes actually received, so that every
++	 * access below stays inside the TransportID.
+ 	 */
+-	if (out_tid_len) {
+-		/* The shift works thanks to integer promotion rules */
+-		*out_tid_len = get_unaligned_be16(&buf[2]);
+-		/* Add four bytes for iSCSI Transport ID header */
+-		*out_tid_len += 4;
+-	}
++	tid_len = get_unaligned_be16(&buf[2]) + 4;
++	if (tid_len < 24 || tid_len > buf_len)
++		return false;
++	if (out_tid_len)
++		*out_tid_len = tid_len;
  
- 	ret = cxgbit_wait_for_reply(cdev, &cnp->com.wr_wait,
- 				    0, 10, __func__);
--	if (ret == -ETIMEDOUT)
-+	if (ret == -ETIMEDOUT) {
-+		cxgbit_put_cnp(cnp);
- 		return ret;
+ 	/*
+ 	 * Check for ',i,0x' separator between iSCSI Name and iSCSI Initiator
+@@ -332,16 +345,32 @@ static bool iscsi_parse_pr_out_transport_id(
+ 	 * format.
+ 	 */
+ 	if (format_code == 0x40) {
+-		p = strstr(&buf[4], ",i,0x");
++		p = strnstr(&buf[4], ",i,0x", tid_len - 4);
+ 		if (!p) {
+-			pr_err("Unable to locate \",i,0x\" separator"
+-				" for Initiator port identifier: %s\n",
+-				&buf[4]);
++			pr_err("Unable to locate \",i,0x\" separator in iSCSI TransportID\n");
++			return false;
++		}
++		/*
++		 * The iSCSI name runs from &buf[4] up to the separator; reject it
++		 * if it cannot fit in i_str[TRANSPORT_IQN_LEN].
++		 */
++		if (p - &buf[4] >= TRANSPORT_IQN_LEN) {
++			pr_err("iSCSI Initiator port name too long in TransportID\n");
+ 			return false;
+ 		}
+ 		*p = '\0'; /* Terminate iSCSI Name */
+ 		p += 5; /* Skip over ",i,0x" separator */
+ 
++		/*
++		 * The ISID must follow the separator.  A ",i,0x" sitting at the
++		 * very end of the TransportID leaves no ISID and would point the
++		 * port nexus at buf + tid_len, i.e. past the descriptor, which
++		 * the registration code then reads as the ISID string.
++		 */
++		if (p >= buf + tid_len) {
++			pr_err("Missing ISID in iSCSI Initiator port TransportID\n");
++			return false;
++		}
+ 		*port_nexus_ptr = p;
+ 		/*
+ 		 * Go ahead and do the lower case conversion of the received
+@@ -349,7 +378,7 @@ static bool iscsi_parse_pr_out_transport_id(
+ 		 * for comparison against the running iSCSI session's ISID from
+ 		 * iscsi_target.c:lio_sess_get_initiator_sid()
+ 		 */
+-		for (i = 0; i < 12; i++) {
++		for (i = 0; i < 12 && p < buf + tid_len; i++) {
+ 			/*
+ 			 * The first ISCSI INITIATOR SESSION ID field byte
+ 			 * containing an ASCII null character terminates the
+@@ -367,10 +396,22 @@ static bool iscsi_parse_pr_out_transport_id(
+ 			*p = tolower(*p);
+ 			p++;
+ 		}
+-	} else
++		strscpy(i_str, &buf[4], TRANSPORT_IQN_LEN);
++	} else {
+ 		*port_nexus_ptr = NULL;
+-
+-	strscpy(i_str, &buf[4], TRANSPORT_IQN_LEN);
++		/*
++		 * FORMAT CODE 00b: the name occupies buf[4..tid_len-1].  The
++		 * declared length tid_len - 4 must fit in i_str[TRANSPORT_IQN_LEN].
++		 * (For 01b the same tid_len bound would be over-restrictive: the
++		 * descriptor also carries the separator and ISID, so a legal
++		 * <=223-byte name gives tid_len up to 244.)
++		 */
++		if (tid_len - 4 >= TRANSPORT_IQN_LEN) {
++			pr_err("iSCSI Initiator port name too long in TransportID\n");
++			return false;
++		}
++		strscpy(i_str, &buf[4], tid_len - 4);
 +	}
- 
- 	if (ipv6 && cnp->com.cdev) {
- 		struct sockaddr_in6 *sin6;
-@@ -558,6 +560,7 @@ __cxgbit_free_cdev_np(struct cxgbit_device *cdev, struct cxgbit_np *cnp)
- 
- 	cxgb4_free_stid(cdev->lldi.tids, stid,
- 			cnp->com.local_addr.ss_family);
-+	cxgbit_put_cnp(cnp);
- 	return 0;
+ 	return true;
  }
  
+@@ -420,8 +461,16 @@ int target_get_pr_transport_id(struct se_node_acl *nacl,
+ }
+ 
+ bool target_parse_pr_out_transport_id(struct se_portal_group *tpg,
+-		char *buf, u32 *out_tid_len, char **port_nexus_ptr, char *i_str)
++		char *buf, u32 buf_len, u32 *out_tid_len,
++		char **port_nexus_ptr, char *i_str)
+ {
++	/*
++	 * The fixed-length SAS/SRP/FCP/SBP TransportIDs are 24 bytes; the iSCSI
++	 * format is variable and bounds itself against buf_len below.
++	 */
++	if (tpg->proto_id != SCSI_PROTOCOL_ISCSI && buf_len < 24)
++		return false;
++
+ 	switch (tpg->proto_id) {
+ 	case SCSI_PROTOCOL_SAS:
+ 		/*
+@@ -440,8 +489,8 @@ bool target_parse_pr_out_transport_id(struct se_portal_group *tpg,
+ 		sbp_parse_pr_out_transport_id(buf, i_str);
+ 		break;
+ 	case SCSI_PROTOCOL_ISCSI:
+-		return iscsi_parse_pr_out_transport_id(tpg, buf, out_tid_len,
+-					port_nexus_ptr, i_str);
++		return iscsi_parse_pr_out_transport_id(tpg, buf, buf_len,
++					out_tid_len, port_nexus_ptr, i_str);
+ 	default:
+ 		pr_err("Unknown proto_id: 0x%02x\n", tpg->proto_id);
+ 		return false;
+diff --git a/drivers/target/target_core_internal.h b/drivers/target/target_core_internal.h
+index 763e6d26e187..f0886ea29034 100644
+--- a/drivers/target/target_core_internal.h
++++ b/drivers/target/target_core_internal.h
+@@ -104,7 +104,8 @@ int	target_get_pr_transport_id(struct se_node_acl *nacl,
+ 		struct t10_pr_registration *pr_reg, int *format_code,
+ 		unsigned char *buf);
+ bool target_parse_pr_out_transport_id(struct se_portal_group *tpg,
+-		char *buf, u32 *out_tid_len, char **port_nexus_ptr, char *i_str);
++		char *buf, u32 buf_len, u32 *out_tid_len,
++		char **port_nexus_ptr, char *i_str);
+ 
+ /* target_core_hba.c */
+ struct se_hba *core_alloc_hba(const char *, u32, u32);
+diff --git a/drivers/target/target_core_pr.c b/drivers/target/target_core_pr.c
+index 11790f2c5d80..0b19997c2edd 100644
+--- a/drivers/target/target_core_pr.c
++++ b/drivers/target/target_core_pr.c
+@@ -1573,7 +1573,7 @@ core_scsi3_decode_spec_i_port(
+ 
+ 			iport_ptr = NULL;
+ 			tid_found = target_parse_pr_out_transport_id(tmp_tpg,
+-					ptr, &tid_len, &iport_ptr, i_str);
++					ptr, tpdl, &tid_len, &iport_ptr, i_str);
+ 			if (!tid_found)
+ 				continue;
+ 			/*
+@@ -3285,7 +3285,7 @@ core_scsi3_emulate_pro_register_and_move(struct se_cmd *cmd, u64 res_key,
+ 		goto out;
+ 	}
+ 	tid_found = target_parse_pr_out_transport_id(dest_se_tpg,
+-			&buf[24], &tmp_tid_len, &iport_ptr, initiator_str);
++			&buf[24], tid_len, &tmp_tid_len, &iport_ptr, initiator_str);
+ 	if (!tid_found) {
+ 		pr_err("SPC-3 PR REGISTER_AND_MOVE: Unable to locate"
+ 			" initiator_str from Transport ID\n");
+
+---
+base-commit: 8e65320d91cdc3b241d4b94855c88459b91abf66
+change-id: 20260611-b4-disp-9f20739e-c62c19cb2dcf
+
+Best regards,
 -- 
-2.50.1 (Apple Git-155)
+Bryam Vargas <hexlabsecurity@proton.me>
+
 
 
