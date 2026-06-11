@@ -1,201 +1,154 @@
-Return-Path: <target-devel+bounces-1214-lists+target-devel=lfdr.de@vger.kernel.org>
+Return-Path: <target-devel+bounces-1215-lists+target-devel=lfdr.de@vger.kernel.org>
 Delivered-To: lists+target-devel@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GfXDEfuWKWroaAMAu9opvQ
-	(envelope-from <target-devel+bounces-1214-lists+target-devel=lfdr.de@vger.kernel.org>)
-	for <lists+target-devel@lfdr.de>; Wed, 10 Jun 2026 18:55:23 +0200
+	id vnPoHcVIKmoVlwMAu9opvQ
+	(envelope-from <target-devel+bounces-1215-lists+target-devel=lfdr.de@vger.kernel.org>)
+	for <lists+target-devel@lfdr.de>; Thu, 11 Jun 2026 07:33:57 +0200
 X-Original-To: lists+target-devel@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8605866BB95
-	for <lists+target-devel@lfdr.de>; Wed, 10 Jun 2026 18:55:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4906366E9F7
+	for <lists+target-devel@lfdr.de>; Thu, 11 Jun 2026 07:33:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dYINVrSZ;
-	spf=pass (mail.lfdr.de: domain of "target-devel+bounces-1214-lists+target-devel=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="target-devel+bounces-1214-lists+target-devel=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "target-devel+bounces-1215-lists+target-devel=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="target-devel+bounces-1215-lists+target-devel=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CF1DB30D3E8B
-	for <lists+target-devel@lfdr.de>; Wed, 10 Jun 2026 16:36:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A2CE23004590
+	for <lists+target-devel@lfdr.de>; Thu, 11 Jun 2026 05:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E4E33344A;
-	Wed, 10 Jun 2026 16:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7524B2F0C79;
+	Thu, 11 Jun 2026 05:31:12 +0000 (UTC)
 X-Original-To: target-devel@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E9A29D26E;
-	Wed, 10 Jun 2026 16:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F04279DAF;
+	Thu, 11 Jun 2026 05:31:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781109365; cv=none; b=tUslUKp1eqF9qdgLJnqFRIKAKyMTnjAM3yyPWX9eOwEAvBQrGi7AwwI1sa9V0JEWcdX3DvIX6fx9ibUuvOJgrUVcDAnTqg93LVDC0SQonKKzkK23fNZExqnmAx0j16XTIJ+JIVgqWlSjnrjsk6yFD42CwQY9sZlmxF7BIaKraCQ=
+	t=1781155872; cv=none; b=PUXPp7hSJ7/mrFEq4V5N/uJDc7PwK9scpkr3IpjuveHENV4TkKhHVKEfPFXVXRvyg94z03bYu9WGcwYmE3Ui9KYr7A+4YvtX7f+1dtE6UhxO3uXrmBwftBIFL3+Cy/AX8z7w4475/dbmb4D0FsS7BbIdN4ysBgbg/k6KgklhxXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781109365; c=relaxed/simple;
-	bh=Ub3aJDzQfV3ndDy3RlbrtoMFR4cZS0ws3oiDXOTKo58=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l1YSoOPv65VP/yjqZGuI7ndP5S6BuJ+kmbmiTbPS8kcT4BWIfU60ToER5wywp/7rNa8+N4uN15iLmvR5Yv8di4JEGiTAjOX6zRRZRlbJwA68KcNn6BhANePT25C2Phsn1ZzhA0MG+kVQJjheW93jEywWawbyBpiyL81W8u7leP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dYINVrSZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E40111F00893;
-	Wed, 10 Jun 2026 16:36:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781109364;
-	bh=nh8wY943fEj9O68DsnnpwY2/V+toQvePmwkX7p5hMSw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dYINVrSZftHL1+14yqMRRxzqdHQ5Aru2hX4Xj5usxEkwHzPmZX+0xwOsW6Dztp5wP
-	 buvP2PuA+QV5xPj78OletWBvmwhb43jqvV5GFsrZnuZuAMghgSwQoh0S8sgN+S9BTm
-	 ixgW2hKOY1IFxC79EBrsQJFmBJhTgHzktayoDV1vYQ6PUatVZ8z/Tcr6XFUKU/a9/Z
-	 pheURjB4DZFygToELeoT3p6Kl+8pJ6zz/rbZLD4ZtWjHEo3RFM2sDUxPLErYC7D1UE
-	 E752J6xO3yZ8ppjwDDHNoD60M4V39r80G3RPynl7+S0nx3QFq8NW+mgS9cg+pAi3HA
-	 Rq8MlrT88sswQ==
-Date: Wed, 10 Jun 2026 10:35:59 -0600
-From: Keith Busch <kbusch@kernel.org>
-To: Sumit Saxena <sumit.saxena@broadcom.com>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-	linux-scsi@vger.kernel.org, linux-block@vger.kernel.org,
-	Adam Radford <aradford@gmail.com>,
-	Khalid Aziz <khalid@gonehiking.org>,
-	Adaptec OEM Raid Solutions <aacraid@microsemi.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Hannes Reinecke <hare@suse.com>,
-	"Juergen E . Fischer" <fischer@norbit.de>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-arm-kernel@lists.infradead.org,
-	Finn Thain <fthain@linux-m68k.org>,
-	Michael Schmitz <schmitzmic@gmail.com>,
-	Anil Gurumurthy <anil.gurumurthy@qlogic.com>,
-	Sudarsana Kalluru <sudarsana.kalluru@qlogic.com>,
-	Oliver Neukum <oliver@neukum.org>, Ali Akcaagac <aliakc@web.de>,
-	Jamie Lenehan <lenehan@twibble.org>,
-	Ram Vegesna <ram.vegesna@broadcom.com>,
+	s=arc-20240116; t=1781155872; c=relaxed/simple;
+	bh=IRM+dtaQotklCxJJoISuAXvpw9PcSf9XUvbWScma7Mk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lEqmYYTEtS9HmOcSqDF8k2BE7pkAvrgjXgMkr6CbaEBK7x5CLEzpdLuslwYyLYa9yXmpZZLDAGUgsE+JkrLO1Np1IcGIrhHpNGZdFGkiEcj7vjYLEBvllm4jy3SJ7xt+JUMgz8QLUpY2oxEbbECL7evyh5+UI3iKe6s1oqYK67s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Received: from localhost.localdomain (unknown [117.182.75.76])
+	by APP-05 (Coremail) with SMTP id zQCowACnMwf_Rypq8qYNEw--.21366S2;
+	Thu, 11 Jun 2026 13:30:41 +0800 (CST)
+From: WenTao Liang <vulab@iscas.ac.cn>
+To: Ram Vegesna <ram.vegesna@broadcom.com>,
+	"James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>
+Cc: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
+	WenTao Liang <vulab@iscas.ac.cn>,
+	Daniel Wagner <dwagner@suse.de>,
+	Kees Cook <kees@kernel.org>,
+	James Smart <jsmart2021@gmail.com>,
+	linux-scsi@vger.kernel.org,
 	target-devel@vger.kernel.org,
-	Bradley Grove <linuxdrivers@attotech.com>,
-	Satish Kharat <satishkh@cisco.com>,
-	Sesidhar Baddela <sebaddel@cisco.com>,
-	Karan Tilak Kumar <kartilak@cisco.com>,
-	Yihang Li <liyihang9@h-partners.com>,
-	Don Brace <don.brace@microchip.com>, storagedev@microchip.com,
-	HighPoint Linux Team <linux@highpoint-tech.com>,
-	Tyrel Datwyler <tyreld@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org, Brian King <brking@us.ibm.com>,
-	Lee Duncan <lduncan@suse.com>, Chris Leech <cleech@redhat.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	open-iscsi@googlegroups.com, Justin Tee <justin.tee@broadcom.com>,
-	Paul Ely <paul.ely@broadcom.com>,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
-	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
-	megaraidlinux.pdl@broadcom.com,
-	Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>,
-	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-	mpi3mr-linuxdrv.pdl@broadcom.com,
-	Suganath Prabu Subramani <suganath-prabu.subramani@broadcom.com>,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	MPT-FusionLinux.pdl@broadcom.com, Daniel Palmer <daniel@thingy.jp>,
-	GOTO Masanori <gotom@debian.or.jp>,
-	YOKOTA Hiroshi <yokota@netlab.is.tsukuba.ac.jp>,
-	Jack Wang <jinpu.wang@cloud.ionos.com>,
-	Geoff Levand <geoff@infradead.org>, Michael Reed <mdr@sgi.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	GR-QLogic-Storage-Upstream@marvell.com,
-	Narsimhulu Musini <nmusini@cisco.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>, linux-hyperv@vger.kernel.org,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Eugenio Perez <eperezma@redhat.com>, virtualization@lists.linux.dev,
-	Vishal Bhakta <vishal.bhakta@broadcom.com>,
-	bcm-kernel-feedback-list@broadcom.com,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	xen-devel@lists.xenproject.org,
-	Bart Van Assche <bvanassche@acm.org>
-Subject: Re: [PATCH v3 3/4] block: drop shared-tag fairness throttling
-Message-ID: <aimSb9I0Vl-68hy9@kbusch-mbp>
-References: <20260609121806.2121755-1-sumit.saxena@broadcom.com>
- <20260609121806.2121755-4-sumit.saxena@broadcom.com>
- <aikAs4X-2NWTuwCc@infradead.org>
- <CAL2rwxr1uGshb1o=jvP2OnBffNz2cKXj8tHuAUCN5HFuy2vB_g@mail.gmail.com>
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] scsi: elx: efct: fix refcount leak in efct_hw_io_abort()
+Date: Thu, 11 Jun 2026 13:30:37 +0800
+Message-ID: <20260611053037.63756-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: target-devel@vger.kernel.org
 List-Id: <target-devel.vger.kernel.org>
 List-Subscribe: <mailto:target-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:target-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAL2rwxr1uGshb1o=jvP2OnBffNz2cKXj8tHuAUCN5HFuy2vB_g@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowACnMwf_Rypq8qYNEw--.21366S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZF17ZrW3Xw45Zr1ftrWDurg_yoW8Wr45pa
+	n7u34DuryDXa1xKr48Cr4YyFy8Zws2qr98Gr1rW3y3u3yfJw1rta17Wasa9F1rA3WkKasI
+	gFsrGryIqF4DArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+	0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
+	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
+	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
+	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
+	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
+	nIWIevJa73UjIFyTuYvjfUonmRUUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ8PA2oqQiIRXgAAsl
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-1214-lists,target-devel=lfdr.de];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	TAGGED_FROM(0.00)[bounces-1215-lists,target-devel=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:ram.vegesna@broadcom.com,m:James.Bottomley@HansenPartnership.com,m:martin.petersen@oracle.com,m:v.shevtsov@mt-integration.ru,m:vulab@iscas.ac.cn,m:dwagner@suse.de,m:kees@kernel.org,m:jsmart2021@gmail.com,m:linux-scsi@vger.kernel.org,m:target-devel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[infradead.org,oracle.com,kernel.dk,hansenpartnership.com,vger.kernel.org,gmail.com,gonehiking.org,microsemi.com,suse.com,norbit.de,armlinux.org.uk,lists.infradead.org,linux-m68k.org,qlogic.com,neukum.org,web.de,twibble.org,broadcom.com,attotech.com,cisco.com,h-partners.com,microchip.com,highpoint-tech.com,linux.ibm.com,ellerman.id.au,kernel.org,lists.ozlabs.org,us.ibm.com,redhat.com,googlegroups.com,thingy.jp,debian.or.jp,netlab.is.tsukuba.ac.jp,cloud.ionos.com,sgi.com,marvell.com,microsoft.com,lists.linux.dev,epam.com,lists.xenproject.org,acm.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:sumit.saxena@broadcom.com,m:hch@infradead.org,m:martin.petersen@oracle.com,m:axboe@kernel.dk,m:James.Bottomley@hansenpartnership.com,m:linux-scsi@vger.kernel.org,m:linux-block@vger.kernel.org,m:aradford@gmail.com,m:khalid@gonehiking.org,m:aacraid@microsemi.com,m:willy@infradead.org,m:hare@suse.com,m:fischer@norbit.de,m:linux@armlinux.org.uk,m:linux-arm-kernel@lists.infradead.org,m:fthain@linux-m68k.org,m:schmitzmic@gmail.com,m:anil.gurumurthy@qlogic.com,m:sudarsana.kalluru@qlogic.com,m:oliver@neukum.org,m:aliakc@web.de,m:lenehan@twibble.org,m:ram.vegesna@broadcom.com,m:target-devel@vger.kernel.org,m:linuxdrivers@attotech.com,m:satishkh@cisco.com,m:sebaddel@cisco.com,m:kartilak@cisco.com,m:liyihang9@h-partners.com,m:don.brace@microchip.com,m:storagedev@microchip.com,m:linux@highpoint-tech.com,m:tyreld@linux.ibm.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:brking@us.ibm.com,m:lduncan
- @suse.com,m:cleech@redhat.com,m:michael.christie@oracle.com,m:open-iscsi@googlegroups.com,m:justin.tee@broadcom.com,m:paul.ely@broadcom.com,m:kashyap.desai@broadcom.com,m:shivasharan.srikanteshwara@broadcom.com,m:chandrakanth.patil@broadcom.com,m:megaraidlinux.pdl@broadcom.com,m:sathya.prakash@broadcom.com,m:sreekanth.reddy@broadcom.com,m:mpi3mr-linuxdrv.pdl@broadcom.com,m:suganath-prabu.subramani@broadcom.com,m:ranjan.kumar@broadcom.com,m:MPT-FusionLinux.pdl@broadcom.com,m:daniel@thingy.jp,m:gotom@debian.or.jp,m:yokota@netlab.is.tsukuba.ac.jp,m:jinpu.wang@cloud.ionos.com,m:geoff@infradead.org,m:mdr@sgi.com,m:njavali@marvell.com,m:GR-QLogic-Storage-Upstream@marvell.com,m:nmusini@cisco.com,m:kys@microsoft.com,m:haiyangz@microsoft.com,m:wei.liu@kernel.org,m:decui@microsoft.com,m:longli@microsoft.com,m:linux-hyperv@vger.kernel.org,m:mst@redhat.com,m:jasowang@redhat.com,m:pbonzini@redhat.com,m:stefanha@redhat.com,m:eperezma@redhat.com,m:virtualization@lists.linux.dev,m:vishal.bhakta@bro
- adcom.com,m:bcm-kernel-feedback-list@broadcom.com,m:jgross@suse.com,m:sstabellini@kernel.org,m:oleksandr_tyshchenko@epam.com,m:xen-devel@lists.xenproject.org,m:bvanassche@acm.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[kbusch@kernel.org,target-devel@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[83];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kbusch@kernel.org,target-devel@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[target-devel];
-	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,target-devel@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[mt-integration.ru,iscas.ac.cn,suse.de,kernel.org,gmail.com,vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,kbusch-mbp:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,target-devel@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	R_DKIM_NA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[target-devel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8605866BB95
+X-Rspamd-Queue-Id: 4906366E9F7
 
-On Wed, Jun 10, 2026 at 09:16:11PM +0530, Sumit Saxena wrote:
-> The motivation for this change stems from performance issue we
-> encountered due to false sharing of the 'nr_active_requests_shared_tags'
-> counter
-> on certain CPU architectures. I initially submitted a patch to move that
-> counter to
-> its own cache line to avoid conflicts with 'nr_requests' and other hot
-> fields
-> (see:
-> https://patchwork.kernel.org/project/linux-scsi/patch/20260402074637.92417-3-sumit.saxena@broadcom.com/
-> ).
-> 
-> During the review, Bart shared his work, which eliminates the
-> counter entirely by removing the fairness throttling. My testing confirmed
-> that
-> this approach resolved the performance issues and improved IOPS.
-> This patch is part of a larger set, and I have reported the cumulative
-> performance
-> improvements in the cover letter.
+When efct_hw_reqtag_alloc() fails in efct_hw_io_abort(), the error
+path returns -ENOSPC without releasing the reference obtained via
+kref_get_unless_zero() earlier in the function. All other error
+paths correctly drop the reference. This causes a permanent
+reference leak on the io_to_abort object.
 
-So the problem is just the atomic operation accounting overhead? I
-previously thought the device just really needed to consume all the tags
-to hit performance.
+Additionally, the abort_in_progress flag is left set to true on
+this path, which means future abort attempts for the same I/O will
+immediately return -EINPROGRESS even though the abort was never
+submitted, effectively blocking recovery.
+
+Fix this by adding the missing kref_put() call and reset
+abort_in_progress to false, matching the cleanup done in the
+efct_hw_wq_write() failure path below.
+
+Cc: stable@vger.kernel.org
+Fixes: 63de51327a64 ("scsi: elx: efct: Hardware I/O and SGL initialization")
+Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+---
+ drivers/scsi/elx/efct/efct_hw.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/scsi/elx/efct/efct_hw.c b/drivers/scsi/elx/efct/efct_hw.c
+index 1838032f6486..b79c6a7ea791 100644
+--- a/drivers/scsi/elx/efct/efct_hw.c
++++ b/drivers/scsi/elx/efct/efct_hw.c
+@@ -1997,6 +1997,8 @@ efct_hw_io_abort(struct efct_hw *hw, struct efct_hw_io *io_to_abort,
+ 	wqcb = efct_hw_reqtag_alloc(hw, efct_hw_wq_process_abort, io_to_abort);
+ 	if (!wqcb) {
+ 		efc_log_err(hw->os, "can't allocate request tag\n");
++		io_to_abort->abort_in_progress = false;
++		kref_put(&io_to_abort->ref, io_to_abort->release);
+ 		return -ENOSPC;
+ 	}
+ 
+-- 
+2.50.1 (Apple Git-155)
+
 
