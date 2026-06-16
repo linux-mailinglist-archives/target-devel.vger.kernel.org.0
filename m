@@ -1,173 +1,166 @@
-Return-Path: <target-devel+bounces-1221-lists+target-devel=lfdr.de@vger.kernel.org>
+Return-Path: <target-devel+bounces-1222-lists+target-devel=lfdr.de@vger.kernel.org>
 Delivered-To: lists+target-devel@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0cdiOWH2L2rdKAUAu9opvQ
-	(envelope-from <target-devel+bounces-1221-lists+target-devel=lfdr.de@vger.kernel.org>)
-	for <lists+target-devel@lfdr.de>; Mon, 15 Jun 2026 14:56:01 +0200
+	id N9EmC2y0MGq9WQUAu9opvQ
+	(envelope-from <target-devel+bounces-1222-lists+target-devel=lfdr.de@vger.kernel.org>)
+	for <lists+target-devel@lfdr.de>; Tue, 16 Jun 2026 04:26:52 +0200
 X-Original-To: lists+target-devel@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CAC768671B
-	for <lists+target-devel@lfdr.de>; Mon, 15 Jun 2026 14:56:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8047568B747
+	for <lists+target-devel@lfdr.de>; Tue, 16 Jun 2026 04:26:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Evbs9KgL;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RyskRKZ9;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Evbs9KgL;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RyskRKZ9;
-	spf=pass (mail.lfdr.de: domain of "target-devel+bounces-1221-lists+target-devel=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="target-devel+bounces-1221-lists+target-devel=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=suse.de;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Ze8Mo7zD;
+	spf=pass (mail.lfdr.de: domain of "target-devel+bounces-1222-lists+target-devel=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="target-devel+bounces-1222-lists+target-devel=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=oracle.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B42B230302AB
-	for <lists+target-devel@lfdr.de>; Mon, 15 Jun 2026 12:50:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B5A53048171
+	for <lists+target-devel@lfdr.de>; Tue, 16 Jun 2026 02:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98FA03F0755;
-	Mon, 15 Jun 2026 12:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152A93C09F8;
+	Tue, 16 Jun 2026 02:26:20 +0000 (UTC)
 X-Original-To: target-devel@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FD330C143
-	for <target-devel@vger.kernel.org>; Mon, 15 Jun 2026 12:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6AA3BFE44;
+	Tue, 16 Jun 2026 02:26:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781527854; cv=none; b=Mo4Xhs70xx5h2lrsZ5ijarMLyjgCQhdedyJvXBz+lh4bhGnws5heun8ketJeSTDj3DgbQI62nBqMIBEKris4KqvkLduKzEMdT3Z4tinsBkYsU4GfxD9F3BO5+dpw0ayxrD93FB6S1n+KtuxlP8i2kr9nyP39+66B6PPCfJUsFxU=
+	t=1781576780; cv=none; b=E/cRvKEP0djl37bQEdWrl9FyWULFz/TYujocByTk23+eJ7ZO1YWggASQ0GRJczyyuQi8LLPQVzqRssEZAHSIF5Z0++iqCrsgtu8FM4mC7nKGs1Z15aUaj6g+Y3AoM2ouBgI8xLRHaDzvRawsCA22ozAu3hq9vzeBYrz9XIa1Ob8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781527854; c=relaxed/simple;
-	bh=90lNY/xulwxZB3P0r/Sl5+VB4wxDcP0LsgmgJy3StvU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z4qtgJ65lkkqr8du1gyJWXDBZfYeJyNJ6+JLcTb/zJ+uKqaWAAIN9UKRXeqiX+A8n7MsWaztKhNkWTMv0n7GdWXfcyi30B7Ux+3Gg99p/iRWude66W0W4ZyfyFvCiYaW7FunDFbZkrj4K1pufwgLiIkIdVBKV+VcpaRLHkM4fX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Evbs9KgL; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=RyskRKZ9; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Evbs9KgL; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=RyskRKZ9; arc=none smtp.client-ip=195.135.223.131
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D1DE67590E;
-	Mon, 15 Jun 2026 12:50:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781527850; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e0zrWRe7Z9SAiwhFvATDSnMn5xVCuXFJp4Ikm9O6onk=;
-	b=Evbs9KgLfizUaZ/VECHepxUbjD+yabEonPD0PYn3ZXleglxZzhmRRlTT5bwz+sAjw6bAcS
-	9BepBxm28g5HceQuSWgs/AarLzazVuzRwVRIt6oXimC7jmvIPGr88YZ5rZ35ljfHC5u8MC
-	l0szJyp8h3aF0CTm/jBXGTCjmICXxF8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781527850;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e0zrWRe7Z9SAiwhFvATDSnMn5xVCuXFJp4Ikm9O6onk=;
-	b=RyskRKZ9V6QtGltkNx3r/EmwY1e+Z0R2P9PA42VYr3sNdfhoo+OnRtyTlh5Ez5R9kvtkzA
-	eyEJB2HcTRrpMLBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781527850; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e0zrWRe7Z9SAiwhFvATDSnMn5xVCuXFJp4Ikm9O6onk=;
-	b=Evbs9KgLfizUaZ/VECHepxUbjD+yabEonPD0PYn3ZXleglxZzhmRRlTT5bwz+sAjw6bAcS
-	9BepBxm28g5HceQuSWgs/AarLzazVuzRwVRIt6oXimC7jmvIPGr88YZ5rZ35ljfHC5u8MC
-	l0szJyp8h3aF0CTm/jBXGTCjmICXxF8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781527850;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e0zrWRe7Z9SAiwhFvATDSnMn5xVCuXFJp4Ikm9O6onk=;
-	b=RyskRKZ9V6QtGltkNx3r/EmwY1e+Z0R2P9PA42VYr3sNdfhoo+OnRtyTlh5Ez5R9kvtkzA
-	eyEJB2HcTRrpMLBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B7DB9779A9;
-	Mon, 15 Jun 2026 12:50:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id SXpCKyr1L2qtCwAAD6G6ig
-	(envelope-from <dwagner@suse.de>); Mon, 15 Jun 2026 12:50:50 +0000
-Date: Mon, 15 Jun 2026 14:50:49 +0200
-From: Daniel Wagner <dwagner@suse.de>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: Ram Vegesna <ram.vegesna@broadcom.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K . Petersen" <martin.petersen@oracle.com>, 
-	Kees Cook <kees@kernel.org>, Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>, 
-	linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] scsi: elx: efct: fix IO refcount leak in
- efct_hw_io_abort()
-Message-ID: <faf11a92-55e0-49e3-955f-80fe5b44f83d@flourine.local>
-References: <20260527100935.868042-1-vulab@iscas.ac.cn>
+	s=arc-20240116; t=1781576780; c=relaxed/simple;
+	bh=EPQDYqAi+QMRuyyuNXTiKynL5b2hEqzrhRkRhjqjzF0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MAHChB1LA3tCJz53fp2FD+j5vhYwY89CXNtE73sI7paFV7AdZBQkOLXW+/vBMBYpSToPn3cC17i24sVOH6PZx3QdwR9HJRrkE2mvPwji+PO+UjMjmxEtzRaSL31mYupiypHS/Dvlv6LTqd1okoZgRwf8JHWMvqDJTQwE8QD1AF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Ze8Mo7zD; arc=none smtp.client-ip=205.220.177.32
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65FKiaAu1304546;
+	Tue, 16 Jun 2026 02:26:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=ncL/8xhn/8YQRJcXFueLCD7uPN2/36VUocLuBsvGSgg=; b=
+	Ze8Mo7zDTDXDI2GnVTEbHj+kyu0Z1XIuYw62EwMfdrwoNyR+Lhrb6JkcH8/FhY2p
+	StpGwCFbmXJ8NjI+IGIHwFXYqtjX+eiTbqdr0u2LU32yZ/8denmP3F3A+gvjyOjI
+	ArnKsMrqMLLgmoogZlkALSszw4E12eUalXQgieGofW2i84JGMj3kD3txnMXt49zK
+	NC/UgvGPupakZ87HecAY5FrUkEu91FbWeHViAP8RMmNCCFELGYhYxHSDRMNLAiuf
+	anfpGo/g4qcO/Y+ObVx/JPkY7PVJw2Eq6DcSaiiCxHdvVr4tNZ2e4LSZYyKpSpeI
+	5KhsVHd/L5FuT4q6UUubsg==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4es1hxkjsu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Jun 2026 02:26:16 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 65G2NZbY016491;
+	Tue, 16 Jun 2026 02:26:16 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4erwnpnykr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Jun 2026 02:26:16 +0000 (GMT)
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 65G2QE2F023822;
+	Tue, 16 Jun 2026 02:26:15 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4erwnpnyjt-3;
+	Tue, 16 Jun 2026 02:26:15 +0000 (GMT)
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+To: linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        Mike Christie <michael.christie@oracle.com>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>, josef@toxicpanda.com
+Subject: Re: [PATCH] scsi: target: Remove tcm_loop target reset handling
+Date: Mon, 15 Jun 2026 22:26:07 -0400
+Message-ID: <178157184626.1899010.6380556511974602739.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260530052349.5134-1-michael.christie@oracle.com>
+References: <20260530052349.5134-1-michael.christie@oracle.com>
 Precedence: bulk
 X-Mailing-List: target-devel@vger.kernel.org
 List-Id: <target-devel.vger.kernel.org>
 List-Subscribe: <mailto:target-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:target-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260527100935.868042-1-vulab@iscas.ac.cn>
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spam-Level: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-16_01,2026-06-15_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ lowpriorityscore=0 phishscore=0 mlxscore=0 suspectscore=0 spamscore=0
+ mlxlogscore=669 malwarescore=0 adultscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2606040000 definitions=main-2606160021
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE2MDAyMSBTYWx0ZWRfXwktNIC9ceLCV
+ RSyykyDF8tKX3mufCv9h233kQQ7XDRHbghcUtXcAXXwn8mVkddHM5tbmAmjm/puP40hUUpkTf1Y
+ zCN28V/eRAoUP4AaXlmG8QB7CaejfGflXRawy6Pwuofw/e40bIK7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE2MDAyMSBTYWx0ZWRfX6P2HQfiEqz74
+ /IivoichyALk4tmsxWD58lYSMMo2rtp67TU0QbzWGdsj5BVQG10XmfL8XrKH0GtvnuLSo47xmzM
+ AOMbmRuYWsWZ3YI+yDDKm0p620ZN/ta6JFp/dEgD8wjNtye2BgynGW0xGu4D0fZUM1XdkUD1JTD
+ nHt71D6/lY6i45gqnMtKHw3nYZWeVgKMf6x8NMbpjndSqHlSWDanJzGMLkri5BSzAAKTPGIu3Zh
+ eLEVlH6Xw0xhSS94Ocb80ncOYjxnSV0WVCMAAvt2txWofDXI5ekKrRLESz+zcST3VF2zdLOgMDc
+ YG/Sl+I7yL1rXNibYYX4ngtjHQOTlzRMF6cf4y9gXaV4H8QplpWgLA5QaDn5QyHpdGHbD7ZoRwD
+ dmbA2ZFuDwjOOXw6Zq0NZSstYE7YUisfmp6gqq+CuPyewyBV2pz8L3oTXTqw0iRegAkT1Uh0Dbt
+ xnZycXWBpYTxa9hA4HeNCPj+UjMxo9HIJDgjNNfI=
+X-Authority-Analysis: v=2.4 cv=I6pVgtgg c=1 sm=1 tr=0 ts=6a30b448 b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=x4eqshVgHu-cdnggieHk:22 a=VwQbUJbxAAAA:8
+ a=xHR4Gg2pkDzugfHY-2IA:9 a=QEXdDO2ut3YA:10 a=5yU3S35YU4bGjq-dph-N:22
+ a=Bho9c0fBagfJEIQBS7DQ:22 cc=ntf awl=host:13723
+X-Proofpoint-GUID: Z5qlQJ2Hw4S4tyKoJVXqYcQZ2JpokkVT
+X-Proofpoint-ORIG-GUID: Z5qlQJ2Hw4S4tyKoJVXqYcQZ2JpokkVT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-9.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[oracle.com:D:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.de:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-1221-lists,target-devel=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[dwagner@suse.de,target-devel@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:ram.vegesna@broadcom.com,m:James.Bottomley@hansenpartnership.com,m:martin.petersen@oracle.com,m:kees@kernel.org,m:v.shevtsov@mt-integration.ru,m:linux-scsi@vger.kernel.org,m:target-devel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-1222-lists,target-devel=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dwagner@suse.de,target-devel@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux-scsi@vger.kernel.org,m:target-devel@vger.kernel.org,m:michael.christie@oracle.com,m:martin.petersen@oracle.com,m:josef@toxicpanda.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[martin.petersen@oracle.com,target-devel@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[oracle.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[martin.petersen@oracle.com,target-devel@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[target-devel];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:dkim,suse.de:from_mime,vger.kernel.org:from_smtp]
+	RCVD_COUNT_SEVEN(0.00)[9]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4CAC768671B
+X-Rspamd-Queue-Id: 8047568B747
 
-On Wed, May 27, 2026 at 10:09:35AM +0000, Wentao Liang wrote:
->  drivers/scsi/elx/efct/efct_hw.c | 1 +
->  1 file changed, 1 insertion(+)
+On Sat, 30 May 2026 00:23:47 -0500, Mike Christie wrote:
+
+> tcm_loop_target_reset is supposed to handle all the LUNs on a target
+> but it's only doing a TMR_LUN_RESET so only that one LUN is handled.
+> This will cause us to return early while IOs to other LUNs are still
+> hung in lower layers. This just removes the target reset handler for
+> the driver because LIO doesn't support target resets and for the
+> common case where this is run from the scsi-ml error hamdler we have
+> already tried an abort and lun reset so waiting again is most likely
+> useless.
 > 
-> diff --git a/drivers/scsi/elx/efct/efct_hw.c b/drivers/scsi/elx/efct/efct_hw.c
-> index 1838032f6486..4ecd6f4165f4 100644
-> --- a/drivers/scsi/elx/efct/efct_hw.c
-> +++ b/drivers/scsi/elx/efct/efct_hw.c
-> @@ -1997,6 +1997,7 @@ efct_hw_io_abort(struct efct_hw *hw, struct efct_hw_io *io_to_abort,
->  	wqcb = efct_hw_reqtag_alloc(hw, efct_hw_wq_process_abort, io_to_abort);
->  	if (!wqcb) {
->  		efc_log_err(hw->os, "can't allocate request tag\n");
-> +		kref_put(&io_to_abort->ref, io_to_abort->release);
->  		return -ENOSPC;
->  	}
+> [...]
 
-I think the Sashiko review is wrong. efct_hw_reqtag_alloc will only use
-the list_del_init when it was able to allocate an element, thus it
-wont return NULL. The Shashiko argument seems to miss how the life time
-of those io object are handled and there doesn't seem to be any code
-depended on the return value of efct_hw_io_abort too.
+Applied to 7.2/scsi-queue, thanks!
 
-Thus it doesn't really matter if efct_hw_io_abort is set or not. It is
-more consistent to do so. And efct_hw_init_free_io will initialize
-abort_in_progress anyway.
+[1/1] scsi: target: Remove tcm_loop target reset handling
+      https://git.kernel.org/mkp/scsi/c/7c08d430835a
 
+-- 
+Martin K. Petersen
 
