@@ -1,111 +1,193 @@
-Return-Path: <target-devel+bounces-1231-lists+target-devel=lfdr.de@vger.kernel.org>
+Return-Path: <target-devel+bounces-1234-lists+target-devel=lfdr.de@vger.kernel.org>
 Delivered-To: lists+target-devel@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AnWoMJgXPWqqwwgAu9opvQ
-	(envelope-from <target-devel+bounces-1231-lists+target-devel=lfdr.de@vger.kernel.org>)
-	for <lists+target-devel@lfdr.de>; Thu, 25 Jun 2026 13:57:12 +0200
+	id zsz4DO5iP2o9SgkAu9opvQ
+	(envelope-from <target-devel+bounces-1234-lists+target-devel=lfdr.de@vger.kernel.org>)
+	for <lists+target-devel@lfdr.de>; Sat, 27 Jun 2026 07:43:10 +0200
 X-Original-To: lists+target-devel@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D8F16C54F2
-	for <lists+target-devel@lfdr.de>; Thu, 25 Jun 2026 13:57:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F58C6D1336
+	for <lists+target-devel@lfdr.de>; Sat, 27 Jun 2026 07:43:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=seu.edu.cn header.s=default header.b=GuRgsp3u;
-	spf=pass (mail.lfdr.de: domain of "target-devel+bounces-1231-lists+target-devel=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="target-devel+bounces-1231-lists+target-devel=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=seu.edu.cn;
+	dkim=pass header.d=purestorage.com header.s=google2022 header.b=CWCUvefa;
+	spf=pass (mail.lfdr.de: domain of "target-devel+bounces-1234-lists+target-devel=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="target-devel+bounces-1234-lists+target-devel=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=purestorage.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BDC34307371F
-	for <lists+target-devel@lfdr.de>; Thu, 25 Jun 2026 11:55:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1EDC1301440E
+	for <lists+target-devel@lfdr.de>; Sat, 27 Jun 2026 05:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539C139B954;
-	Thu, 25 Jun 2026 11:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ADF43815F0;
+	Sat, 27 Jun 2026 05:42:50 +0000 (UTC)
 X-Original-To: target-devel@vger.kernel.org
-Received: from mail-m19731120.qiye.163.com (mail-m19731120.qiye.163.com [220.197.31.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f102.google.com (mail-pj1-f102.google.com [209.85.216.102])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F02378D82
-	for <target-devel@vger.kernel.org>; Thu, 25 Jun 2026 11:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D305331EC3
+	for <target-devel@vger.kernel.org>; Sat, 27 Jun 2026 05:42:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782388535; cv=none; b=EFXEbpXJjjxI21xpsW9W0t3+KO27KAv7TfJTArWbsgl3G5l52iaS3rmQhG+M+6qTUN22Mzq4g2YwC+y9Vb13D7NY78Q0MmfvQyC7RmkDs517P4Fuwus/PsZ7tHGwx26z3lp0yrbxUr4GB2dB4JkD+Ha8X4pATJMfyuIrCKfKEuQ=
+	t=1782538970; cv=none; b=eoxrh3UvswdQ4L9IeXkde7GSGyg/3ms29SprAIRUKIvgnNOGkMIEmcpUc4R7aZWhgEccTrraqVW75OqDBx/khCe8gU1tXOR/pa6bSxbooVOEbyQxcjq1vtVztnSVLxaSaE6dtwItxR8FRJwR4BQpln7zhEuLuVSTPRSZ1d5DLaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782388535; c=relaxed/simple;
-	bh=OV3N4CO3ObQFMWeqaBhm8vjzeIvbqn3rCEkZDP3ObJw=;
-	h=Content-Type:Message-ID:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:From:Date; b=Z+3dr+z6pabwaKgnebB33paSuWsNfErMT0s8QMjHYv9C4J15Pwexa6aEmlBRJykPlLTBl1Zdd6yhcy/cxNtFixyKxIA0TcMgaTuV52R2Gc3cCcetvQ5mbMwMDps5Aoaq/yXpmkreeWFUusvlOvR3MAe1Q5qCM4YwBxquRtgywp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=GuRgsp3u; arc=none smtp.client-ip=220.197.31.120
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-Message-ID: <AOwAlgBuKqAuQ7p1144EIKrg.3.1782388214805.Hmail.220255722@seu.edu.cn>
-To: "martin.petersen" <martin.petersen@oracle.com>
-Cc: linux-scsi <linux-scsi@vger.kernel.org>, 
-	target-devel <target-devel@vger.kernel.org>, 
-	linux-kernel <linux-kernel@vger.kernel.org>
-Subject: =?UTF-8?B?UmU6W1BBVENIXSBzY3NpOiB0YXJnZXQ6IGNvcmU6IGFubm90YXRlIExVTiBobGlzdCB0cmF2ZXJzYWxz?=
-X-Priority: 3
-X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com Sirius_WEB_WIN_1.64.1
-In-Reply-To: <20260625113807.574788-1-runyu.xiao@seu.edu.cn>
-References: <20260625113807.574788-1-runyu.xiao@seu.edu.cn>
+	s=arc-20240116; t=1782538970; c=relaxed/simple;
+	bh=ibHZUitqlYEsZVyxLJ8fClmaaZMHceqKSYFgEU/W9Qw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r6mzMqjcco3iL1oW6cSOCPysKPO4YZZ/PI7H+1aAYKxWzJk8OKJX8fRq/DVuS8CXAv+6cNtfZgtyiDZZo/Hy/YN0lCXzGiXqOnRU/ty79B5GvHln0M7c2ZzcUgJ4VN/D5S0Y+pjeI2Kxh/Sf8EXymUChMF26SEG7MhKY8vJFr/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=CWCUvefa; arc=none smtp.client-ip=209.85.216.102
+Received: by mail-pj1-f102.google.com with SMTP id 98e67ed59e1d1-37e203c7deeso77341a91.3
+        for <target-devel@vger.kernel.org>; Fri, 26 Jun 2026 22:42:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1782538967; x=1783143767; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LBI2TZBBdvnIGwxDwxfcA0X2DAXeqtxaRyAM5YR83X8=;
+        b=CWCUvefaDDQch/+W35Qc+2rLWEJHBY9EPbsKXfHAsoZBU+Y/jlJPlY1axXuRB0uZNo
+         NgmRAQ4S1Vaoi1w1KsL3hhe0LDWfMvcb9uk46rKBuJeMZPL6eveSY05tVaGmTA5liGpA
+         +wDfqNs3pdsdjA2cK/EHSfKkJ6S1cYoVa7q/QsWvlaNsKbBki4h+fiOl5LKy+4LvEHZe
+         hIdyZOoTIkhqKWkxd9ZK63LgQA06dr/xondc4LzkUvtIXuO0MI5yRXSISHWXf/uwfEHq
+         sSUHiuRvZkN2W//7VOX+q7FMBwHjSBXydMp9fydZfhGvuQqrHVOj1Eo1P2g5PHsiU+o5
+         U6sA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782538967; x=1783143767;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LBI2TZBBdvnIGwxDwxfcA0X2DAXeqtxaRyAM5YR83X8=;
+        b=X0/CRC5JdlSIpVOzZuIJqI8LigLJ8PK45PLXMCjRAA0U/W0srRlqb9kTiuqyDF8GMg
+         nGF7AfdkTwC/TtGAUOzE/3yw1I8cmO19UVl8NLlVB4Bzhr/cjMeTvzUzc844M4UjD3HG
+         /nI1jmFIu7ualAxqviLniUUdsa/2zb6eGYla5KUDKu7pDTvxwrhWuLAn2DsO/sZqZa8P
+         GxJgGLRYFGOg67IdYCrdhQCxKpwuR9ej+Ze8v5bqj/fX5bGB9AUbZI/Eyx8SLZ5kfg+8
+         xdaty9i9gUQdLw5cexWpmv+xIuT5O5IqCjVQ9B76u19rvYLTP7qru5fqjdH6/jHeQydv
+         r25A==
+X-Forwarded-Encrypted: i=1; AHgh+RoyOxquMl/qPwPfoWSlpar6fGKKX0KbmspPYQeZF9wIQG5zeGG0ukX2eIIRUj6Mqiln5lTmgt9tG9ltga0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyj39TJ8aLsdZCS4OptBHLGW5zFmcQoxECqHLgCeTL8jxHkMoJu
+	RHecc+aYGpG9Yx+J4mwMmDhmipmn7fOP2IqKqPVqyVHfLVI/KPFKusRuNff0x71L1nZ7SVS1yuw
+	9Umv8WbB1OtGfB0CZ4yLUOP+sI3/FIoPKjl1WiHIv5uGLSEfJ7Udx
+X-Gm-Gg: AfdE7cnXkW72mJnX+X1EA4T6Rn03rvMHsRfJZipKK0CKoy5YX7jzjUNt7Yp6329CtXZ
+	wlFgG22kVe3hROJP+REHQRnfIPh5RPQM4cKrGTM7uvzDDS53a/R5BFQnNzgkNHalxgrTvSYAMrj
+	x/xVjCSjYn6JiB13I/aEzHl1Zr7xwcCf3Wn2LMdboncokZb0QHOnkS2ElVOUzNIGNN/yLvGwiHj
+	KUYZH11ZrbDbBh7ltOfUz3HH8KkzIzZjCTnpnonMCNcnFZ9RUoQOuIKWuh/mjbF54eW9ZRurN2Q
+	4wGZoTLx+hFM4+wCy2wpT/66HpxMwkkT7x/glAvwyOf0DjzdTKcLIOS27jrt5azpIPADp6cQvLC
+	UJobleeb219yXTYYBmh99AVcq7RAY
+X-Received: by 2002:a17:90b:5207:b0:364:be8f:1d86 with SMTP id 98e67ed59e1d1-37dfa223d7dmr4789320a91.8.1782538966692;
+        Fri, 26 Jun 2026 22:42:46 -0700 (PDT)
+Received: from c7-smtp-2026.dev.purestorage.com ([2620:125:9017:12:36:3:6:0])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-37fb11c60c1sm166693a91.3.2026.06.26.22.42.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jun 2026 22:42:46 -0700 (PDT)
+X-Relaying-Domain: purestorage.com
+Received: from dev-csander.dev.purestorage.com (bond0.slc5-n17m28-k8s.dev.purestorage.com [IPv6:2620:125:9025:20::a31:41f])
+	by c7-smtp-2026.dev.purestorage.com (Postfix) with ESMTP id 0809840146;
+	Fri, 26 Jun 2026 23:42:46 -0600 (MDT)
+Received: by dev-csander.dev.purestorage.com (Postfix, from userid 1557716354)
+	id F351FE40712; Fri, 26 Jun 2026 23:42:45 -0600 (MDT)
+From: Caleb Sander Mateos <csander@purestorage.com>
+To: Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: Anuj Gupta <anuj20.g@samsung.com>,
+	linux-block@vger.kernel.org,
+	linux-nvme@lists.infradead.org,
+	linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Caleb Sander Mateos <csander@purestorage.com>
+Subject: [PATCH v4 0/5] block: use integrity interval instead of sector as seed
+Date: Fri, 26 Jun 2026 23:42:15 -0600
+Message-ID: <20260627054220.2174166-1-csander@purestorage.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: target-devel@vger.kernel.org
 List-Id: <target-devel.vger.kernel.org>
 List-Subscribe: <mailto:target-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:target-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Received: from 220255722@seu.edu.cn( [221.228.238.82] ) by ajax-webmail ( [127.0.0.1] ) ; Thu, 25 Jun 2026 19:50:14 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-Date: Thu, 25 Jun 2026 19:50:14 +0800 (GMT+08:00)
-X-HM-Tid: 0a9efe9d73ce02f2kunmab49e53f8cf9
-X-HM-MType: 1
-X-HM-NTES-SC: AL0_4z5B86Wr4Tz9jdMF+bhXMTUS6Y2fHkyPT6dc03QDwVaZPGiA09TnwhbhTj
-	hLfuFZO94YXwX6xgvkjGVFFRKj5CTGmV59jsRUJIPmi941HdO6Ef7e9WS7F+OJBJjXnBvr+UwNQg
-	mMmozmMC0NS0cX2hZ1Eu8c4Xpznz/iBuAICcU=
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDHxhPVh5CHk1LSRpCS0xKT1YVFA
-	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSk
-	tISk5OSFVKS0tVSkJLS1kG
-DKIM-Signature: a=rsa-sha256;
-	b=GuRgsp3untI2brSAOKJ9GnOX5RQUsNLwIHghS6SShQge1TQqy4V9DQKNeW7jUE5YWFcBlTqHMOyCzAxhXZ83rWu+FUeAZAK7EF76b3Ol/hieUyP3p4EQV85uK0TT7XKnbsBzqYRLtWZYtXPFPDqEkN+D0z1ah6E78syMWEuJPpY=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=OV3N4CO3ObQFMWeqaBhm8vjzeIvbqn3rCEkZDP3ObJw=;
-	h=date:mime-version:subject:message-id:from;
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.44 / 15.00];
-	SUBJ_EXCESS_BASE64(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[purestorage.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[purestorage.com:s=google2022];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_ALL(0.00)[];
-	TAGGED_FROM(0.00)[bounces-1231-lists,target-devel=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-1234-lists,target-devel=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:martin.petersen@oracle.com,m:linux-scsi@vger.kernel.org,m:target-devel@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,target-devel@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[csander@purestorage.com,target-devel@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:axboe@kernel.dk,m:hch@lst.de,m:sagi@grimberg.me,m:kch@nvidia.com,m:martin.petersen@oracle.com,m:anuj20.g@samsung.com,m:linux-block@vger.kernel.org,m:linux-nvme@lists.infradead.org,m:linux-scsi@vger.kernel.org,m:target-devel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:csander@purestorage.com,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,target-devel@vger.kernel.org];
-	HAS_X_PRIO_THREE(0.00)[3];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[target-devel];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[csander@purestorage.com,target-devel@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[purestorage.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,purestorage.com:dkim,purestorage.com:mid,purestorage.com:from_mime];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,seu.edu.cn:dkim,seu.edu.cn:mid,seu.edu.cn:from_mime,vger.kernel.org:from_smtp]
+	ALIAS_RESOLVED(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[target-devel];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3D8F16C54F2
+X-Rspamd-Queue-Id: 9F58C6D1336
 
-SGksCgpTb3JyeSwgdGhpcyBwYXRjaCB3YXMgc2VudCB0d2ljZSBieSBtaXN0YWtlLiBQbGVhc2Ug
-aWdub3JlIHRoaXMgZHVwbGljYXRlIGNvcHkuCgpUaGFua3MsClJ1bnl1Cgo=
+The block integrity layer currently sets the integrity seed (initial
+reference tag) in units of 512-byte sectors. However, Type 1 and Type 2
+ref tags are actually in units of integrity intervals. On devices with
+integrity interval size > 512 bytes, ref tags are seeded incorrectly.
+
+Ref tag "remapping" in blk_integrity_{prepare,complete}() covers up this
+ref tag seed discrepancy by offsetting all ref tags in each bio to
+convert to/from the absolute integrity interval numbers. But
+REQ_OP_ZONE_APPEND operations don't have their ref tags remapped, so the
+ref tags using units of sectors will be stored to the device. As future
+optimizations, the ref tag remapping could be avoided entirely on NVMe
+and some SCSI devices by passing the ref tag seed instead of the
+absolute integrity interval as the expected initial ref tag.
+
+So avoid relying on remapping to convert between the ref tag seed in
+units of sectors and stored ref tags in units of integrity intervals.
+Initialize the ref tag seed as the integrity interval, not sector.
+
+The subsequent commits clean up the integrity ref tag seed code a bit.
+
+v4:
+- Drop patch already applied
+
+v3: https://lore.kernel.org/linux-block/20260417015732.2692434-1-csander@purestorage.com/T/
+- Drop bi and bip arguments to bip_set_seed() (Christoph)
+
+v2:
+- Reorder fixes before refactoring commits
+- Use u64, SECTOR_SHIFT (Christoph)
+- Don't take sector_t in bip_set_seed() (Christoph)
+
+Caleb Sander Mateos (5):
+  block: use integrity interval instead of sector as seed
+  blk-integrity: take u64 in bio_integrity_intervals()
+  bio-integrity-fs: use integrity interval instead of sector as seed
+  t10-pi: use bio_integrity_intervals() helper
+  blk-integrity: avoid sector_t in bip_{get,set}_seed()
+
+ block/bio-integrity-fs.c            |  2 +-
+ block/bio-integrity.c               |  4 ++--
+ block/t10-pi.c                      |  7 ++++---
+ drivers/nvme/target/io-cmd-bdev.c   |  3 +--
+ drivers/target/target_core_iblock.c |  3 +--
+ include/linux/bio-integrity.h       | 11 -----------
+ include/linux/blk-integrity.h       | 27 ++++++++++++++++++++-------
+ include/linux/bvec.h                |  1 +
+ 8 files changed, 30 insertions(+), 28 deletions(-)
+
+-- 
+2.54.0
+
 
