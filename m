@@ -1,139 +1,155 @@
-Return-Path: <target-devel+bounces-1293-lists+target-devel=lfdr.de@vger.kernel.org>
+Return-Path: <target-devel+bounces-1294-lists+target-devel=lfdr.de@vger.kernel.org>
 Delivered-To: lists+target-devel@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 690PFw3LVWqdtQAAu9opvQ
-	(envelope-from <target-devel+bounces-1293-lists+target-devel=lfdr.de@vger.kernel.org>)
-	for <lists+target-devel@lfdr.de>; Tue, 14 Jul 2026 07:37:17 +0200
+	id cKpoIj4+Vmpt2AAAu9opvQ
+	(envelope-from <target-devel+bounces-1294-lists+target-devel=lfdr.de@vger.kernel.org>)
+	for <lists+target-devel@lfdr.de>; Tue, 14 Jul 2026 15:48:46 +0200
 X-Original-To: lists+target-devel@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEB14751333
-	for <lists+target-devel@lfdr.de>; Tue, 14 Jul 2026 07:37:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD0575556D
+	for <lists+target-devel@lfdr.de>; Tue, 14 Jul 2026 15:48:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=fail ("headers rsa verify failed") header.d=suksangroup.co.th header.s=default header.b=fJnf1HKX;
-	spf=pass (mail.lfdr.de: domain of "target-devel+bounces-1293-lists+target-devel=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="target-devel+bounces-1293-lists+target-devel=lfdr.de@vger.kernel.org";
-	dmarc=fail reason="SPF not aligned (relaxed)" header.from=inbox.org (policy=none);
+	dkim=none;
+	spf=pass (mail.lfdr.de: domain of "target-devel+bounces-1294-lists+target-devel=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="target-devel+bounces-1294-lists+target-devel=lfdr.de@vger.kernel.org";
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=lst.de (policy=none);
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4971A301830C
-	for <lists+target-devel@lfdr.de>; Tue, 14 Jul 2026 05:31:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 232A1303267B
+	for <lists+target-devel@lfdr.de>; Tue, 14 Jul 2026 13:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB39299A87;
-	Tue, 14 Jul 2026 05:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA4D477E2B;
+	Tue, 14 Jul 2026 13:46:07 +0000 (UTC)
 X-Original-To: target-devel@vger.kernel.org
-Received: from ns1.suksangroup.com (ns1.suksangroup.com [103.13.31.55])
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47AC5332610
-	for <target-devel@vger.kernel.org>; Tue, 14 Jul 2026 05:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2554477E28;
+	Tue, 14 Jul 2026 13:46:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784007097; cv=none; b=pCNqPNoEdcAzvH2ozc0Rd4FKUN4lRL0PX8oYaTZQzARugEULvEKgROR6kkmM/Uv9Jc3vCSp5Rq+LrcvAXb7NBkYm72jOypLWFKakYrYIqK24lxMksaY6ISDwczB0yzd4lsF9tLsQX5QJMc+r0M6DcBdDi4NKovIUo+0xEHGH6VQ=
+	t=1784036767; cv=none; b=PwTmMj2HtGNMPwBL6LkpZC4cSic6LjC7wRooe58XQbj/BI0dV5Xv0NvxMBnc8vbNL31lwp3FhHpnMwFPDfFhVYzzctFRcM+iWMfq1MXsg57LsnYvRCjhpXt2uYHww8HFc/1tRAT+9GiOR6sxVO+gAnRxt0jJ2j6lcVJe5RNYFeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784007097; c=relaxed/simple;
-	bh=bGYUnpSQpEquBQPwRF8fR1SDGghdQ+6rKQPPerlf8FI=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mm7bN5f7E2A8JaovV3ebtHdYdwqvoAug+AJq+PfnXmERha7Hw85vswD55fBYrPjWyoeBAl98X1JVxQo9QmsmCp67S+ZohbOEp+lJM8KqLKPfYNGIY2wFbwz5XH2uB0CdwJoMjwmaoAXdVS1m0mmE8tqSMAiGQO+oGfcnxf9KOJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=inbox.org; spf=fail smtp.mailfrom=inbox.org; dkim=pass (2048-bit key) header.d=suksangroup.co.th header.i=@suksangroup.co.th header.b=fJnf1HKX; arc=none smtp.client-ip=103.13.31.55
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=suksangroup.co.th; s=default; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Sender:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=bGYUnpSQpEquBQPwRF8fR1SDGghdQ+6rKQPPerlf8FI=; b=fJnf1HKX+Z5Fw+mUa5/MI3fB7A
-	+HuA1ubqab1y8pP7ZKvu1BhLzfM+C07B1MfRqYqrJ6XliNYuo3R41xr/Y7PY/dVzEn2rINmO/I0aQ
-	VwVEYKhBI8qyqFf/0nUM2YKTDjkgGbqB/KtRZqLFbavYjziFtH1iPuipKSwnWGrVSdZ9Mn5yxzy/a
-	iaHP1HWzvLthVX3gjfWsyhnI/VRMF2d+gDWndJ6j7b7wW6zcHbg0ax7GujOYVbEft/MfGS2y5EPee
-	hGHzx0zsZghg6LgoTfK26x0zayDxA6oZdLYuUuTo3NVGkYrsKOvYNwWTksiCs7vS3WEVdXIBFQf93
-	ePVXlfbQ==;
-Received: from [207.189.26.187] (port=65383)
-	by ns1.suksangroup.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.4)
-	(envelope-from <info@inbox.org>)
-	id 1wjVjz-0000000G25b-0SP9
-	for target-devel@vger.kernel.org;
-	Tue, 14 Jul 2026 12:31:34 +0700
-Reply-To: hanns.schofield@lexcapitalgrowth.com
-From: Harry Schofield ESQ <info@inbox.org>
-To: target-devel@vger.kernel.org
-Subject: Dear target-devel@vger.kernel.org, 
-Date: 14 Jul 2026 00:31:30 -0500
-Message-ID: <20260714003130.E72555F637C9528D@inbox.org>
+	s=arc-20240116; t=1784036767; c=relaxed/simple;
+	bh=iQ66h0CSnaeDJY+5S4c4RU6btkxvwUiep2IzGUB8V3o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c0Hsd/EfKWIrIQP1j6nU3N9XPFBW5aYB1yXUf/4sKKGYJHJ6WfaqAEl53XWvAY9ThgHlGacR7gb3co89eKbZv7LuTLqIhFqHmBbrUPU6Lixkd/vGc0rqN5rdYRqGZhLVf2rqOsGz6Pt/Jiucj7F7WqCu+XL5sgotde+tjfSiYIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 3D70168B05; Tue, 14 Jul 2026 15:45:59 +0200 (CEST)
+Date: Tue, 14 Jul 2026 15:45:58 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: Caleb Sander Mateos <csander@purestorage.com>,
+	Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Anuj Gupta <anuj20.g@samsung.com>, linux-block@vger.kernel.org,
+	linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/5] block: use integrity interval instead of sector
+ as seed
+Message-ID: <20260714134558.GA714@lst.de>
+References: <20260627054220.2174166-1-csander@purestorage.com> <yq1cxwrdgmx.fsf@ca-mkp.ca.oracle.com>
 Precedence: bulk
 X-Mailing-List: target-devel@vger.kernel.org
 List-Id: <target-devel.vger.kernel.org>
 List-Subscribe: <mailto:target-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:target-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - ns1.suksangroup.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - inbox.org
-X-Get-Message-Sender-Via: ns1.suksangroup.com: authenticated_id: smtp@suksangroup.co.th
-X-Authenticated-Sender: ns1.suksangroup.com: smtp@suksangroup.co.th
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Rspamd-Action: add header
-X-Spamd-Result: default: False [6.44 / 15.00];
-	ABUSE_SURBL(5.00)[lexcapitalgrowth.com:replyto];
-	R_DKIM_REJECT(1.00)[suksangroup.co.th:s=default];
-	SUBJECT_ENDS_SPACES(0.50)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq1cxwrdgmx.fsf@ca-mkp.ca.oracle.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-1.36 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
+	DMARC_POLICY_SOFTFAIL(0.10)[lst.de : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[inbox.org : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:target-devel@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-1293-lists,target-devel=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	HAS_X_AS(0.00)[smtp@suksangroup.co.th];
-	GREYLIST(0.00)[pass,body];
-	HAS_X_SOURCE(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	HAS_X_GMSV(0.00)[smtp@suksangroup.co.th];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCPT_COUNT_ONE(0.00)[1];
-	FORGED_SENDER(0.00)[info@inbox.org,target-devel@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:martin.petersen@oracle.com,m:csander@purestorage.com,m:axboe@kernel.dk,m:hch@lst.de,m:sagi@grimberg.me,m:kch@nvidia.com,m:anuj20.g@samsung.com,m:linux-block@vger.kernel.org,m:linux-nvme@lists.infradead.org,m:linux-scsi@vger.kernel.org,m:target-devel@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	HAS_REPLYTO(0.00)[hanns.schofield@lexcapitalgrowth.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[hch@lst.de,target-devel@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-1294-lists,target-devel=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hch@lst.de,target-devel@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[info@inbox.org,target-devel@vger.kernel.org];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[target-devel];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	HAS_X_ANTIABUSE(0.00)[];
-	DKIM_TRACE(0.00)[suksangroup.co.th:-];
-	R_SPF_ALLOW(0.00)[+ip4:172.232.135.74:c];
-	MISSING_XM_UA(0.00)[];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lexcapitalgrowth.com:replyto,vger.kernel.org:from_smtp,inbox.org:from_mime,inbox.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:from_mime,lst.de:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DEB14751333
-X-Spam: Yes
+X-Rspamd-Queue-Id: DDD0575556D
 
+On Sun, Jul 12, 2026 at 07:09:01PM -0400, Martin K. Petersen wrote:
+> 
+> Caleb,
+> 
+> > The block integrity layer currently sets the integrity seed (initial
+> > reference tag) in units of 512-byte sectors.
+> 
+> ... because that is the fundamental addressing unit in the block layer.
+> 
+> > However, Type 1 and Type 2 ref tags are actually in units of integrity
+> > intervals.
+> 
+> They are not in units of anything until they reach their final
+> protection envelope.
 
-Re:Good day target-devel,
+If that is the assumption we need to clearly specify that somewhere,
+and also explain why that is a good idea.
 
-Please let me know if this is best email to send you the project=20
-info.
+Most users of bip_set_seed seem to assume it is in integrity interval
+units, see commits:
 
-Kind regards,
+e4dc9a4c31fe10d1751c542702afc85be8a5c56a
+c6e3f13398123a008cd2ee28f93510b113a32791
+3d8b5a22d40435b4a7e58f06ae2cd3506b222898
 
-Harry Schofield, ceMBA
+so we'll need to find out a way to come up with interfaces that
+just do the right thing.
 
+> 
+> > On devices with integrity interval size > 512 bytes, ref tags are
+> > seeded incorrectly.
+> 
+> The bip seed is whatever the caller decides it should be. The integrity
+> interval size is irrelevant. As is the destination LBA.
+> 
+> > But REQ_OP_ZONE_APPEND operations don't have their ref tags remapped,
+> > so the ref tags using units of sectors will be stored to the device.
+> 
+> Then there's a problem with how we handle REQ_OP_ZONE_APPEND. For NVMe,
+> the PIREMAP flag should address this issue by remapping the written ref
+> tags based on their ultimate destination LBA.
+
+PIREMAP expects the ref tag to be in logical block sized units.
+
+> Fundamentally, you should be able to set the bip seed for any READ or
+> WRITE bio to 42, regardless of logical block size, and have it work. If
+> it doesn't, then that's a bug.
+> 
+> The fact that the block layer happens to know the start LBA or ZSLBA
+> does not mean that callers above the block layer have access to the same
+> information. Changing the block layer's integrity handling semantics is
+> not the correct approach. Everything above the block layer depends on
+> the existing, format-agnostic, semantics.
+
+We have 4 callers above the block layer, and all of them know that the
+see is the LBA.  For type 1 that is enforced by hardware, and all the
+Linux code is basically based around a type 1 model, which is emulate
+don type 2 PI and type 3 PI using the available means.
 
 
