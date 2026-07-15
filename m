@@ -1,150 +1,148 @@
-Return-Path: <target-devel+bounces-1296-lists+target-devel=lfdr.de@vger.kernel.org>
+Return-Path: <target-devel+bounces-1297-lists+target-devel=lfdr.de@vger.kernel.org>
 Delivered-To: lists+target-devel@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QjsQNuJPV2pMJAEAu9opvQ
-	(envelope-from <target-devel+bounces-1296-lists+target-devel=lfdr.de@vger.kernel.org>)
-	for <lists+target-devel@lfdr.de>; Wed, 15 Jul 2026 11:16:18 +0200
+	id 5PzXNv5ZV2r9KAEAu9opvQ
+	(envelope-from <target-devel+bounces-1297-lists+target-devel=lfdr.de@vger.kernel.org>)
+	for <lists+target-devel@lfdr.de>; Wed, 15 Jul 2026 11:59:26 +0200
 X-Original-To: lists+target-devel@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A3975C564
-	for <lists+target-devel@lfdr.de>; Wed, 15 Jul 2026 11:16:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59EDE75CBA3
+	for <lists+target-devel@lfdr.de>; Wed, 15 Jul 2026 11:59:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NA6iqLfi;
-	spf=pass (mail.lfdr.de: domain of "target-devel+bounces-1296-lists+target-devel=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="target-devel+bounces-1296-lists+target-devel=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=163.com header.s=s110527 header.b="g 0QHF64";
+	spf=pass (mail.lfdr.de: domain of "target-devel+bounces-1297-lists+target-devel=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="target-devel+bounces-1297-lists+target-devel=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=163.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E231E30EC4B3
-	for <lists+target-devel@lfdr.de>; Wed, 15 Jul 2026 09:06:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3C88F300C274
+	for <lists+target-devel@lfdr.de>; Wed, 15 Jul 2026 09:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 278953EB0F6;
-	Wed, 15 Jul 2026 09:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14A2436BF0;
+	Wed, 15 Jul 2026 09:59:15 +0000 (UTC)
 X-Original-To: target-devel@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2228C3E7BA4;
-	Wed, 15 Jul 2026 09:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0E1432BC5;
+	Wed, 15 Jul 2026 09:59:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784106365; cv=none; b=u2KBteluQEOs8d5ZJPgWIe8QGeBqlk875R4/PvpnXO87VMT96gP0ZuYt0XLyFIyeGuzO3kq2iMO60suZFqsvx+2jZpEfbBgSzSAsp129qqJlJm+e7nR06yLqdwwaCscQ9zVuaH1RbOJykBxch3x/8rpSS/lbgAu+mIfIUYz/T8Q=
+	t=1784109555; cv=none; b=f2YTXKOx+HUu84a8JscVW5+gYQol7PTpJzaWG+YgtCtGbOSN5ZB7AtFHSDlgU3VL25xGRJhrjv1iJwutTy2oAo9hOLrkgBN9BqiT79P/t2fhZwIFIndrjPghSKZhx3ktLCoJsa4WVe6VT9guhwwYwRDdEsv5pm93J6SAHoFWO+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784106365; c=relaxed/simple;
-	bh=3BI5Z4OqUuRtYp7BClG+SHiYvpqE3H+/n/Rx4Jg1ivQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uUGRb3Ts7p4witJqCmrZ4XeaZTUbFXwhnZBUvD0HMIjbCeSGZysdz0AmXF9036QQkc0hL36zHmpqnRUOg7N3RNMp50UFtzCUr+NJsnNefVB3GVPf7ZQWnB9EJIlo5KXobWhKYEoybpgh8UzxVYSsPt/tRhd0JmrnWNI2CdUPaT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NA6iqLfi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C62031F000E9;
-	Wed, 15 Jul 2026 09:06:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784106362;
-	bh=Y88tzC1/LJ6aLdthsFjO8w+Vf1/wl511Iaf+O9aceZ4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NA6iqLfiTDjHV10czvzfbX+T/3yibb2uvqjCZh4lOIrlyViE77SGOlCfLAn4b6mxy
-	 7XHfZcBucN6pAWXdVAkV8pa+aWpo0vkNIuV+kpZ+XKgELT1PWy5mhQWjI9GWlSiS0J
-	 bB5KZfOtuEVuckco1Mu4wmPUxhTQMm4sojvzMbQwlrJbuXqG4mnCoKiIKSOCoWkb1m
-	 rmeDEdcI5JI993RtjdFhs2NyKrW532YbDrBVWTYqL5YjjfAFIeyIVbS33Hxhrdiyt9
-	 PY5P6QFqvcjy9sS7yekx0j2B4atzmHuX3v8kacZaY9SYTK3yyjWUkUVj+yXunJnvrD
-	 L/1W0wvS8BuKQ==
-Date: Wed, 15 Jul 2026 12:05:57 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: kensanya@163.com
+	s=arc-20240116; t=1784109555; c=relaxed/simple;
+	bh=zSbJg7XMMBwbVhKSPC13G5dCS6JpHC7flw9AlXz0OMg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=krBYfydDgGE6AUDtTZJgY4K4MJ+8QCXhK8/f7xheCo9Yo4P0Xhecfa7XBdCV/hlR2vjONOAklo6gcd5T5nw6f09quA0TJdycHDnF7/44q8jkKy/9o0LNDww3iFYnoNEZQGz2jQwQuF4JpA1ZKRtCWxyc2CXSG5CE4R/C8uLTKow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=g0QHF64p; arc=none smtp.client-ip=117.135.210.3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=zSbJg7XMMBwbVhKSPC13G5dCS6JpHC7flw9AlXz0OMg=; b=g
+	0QHF64pYQlLpRDG1lfk0QFEuRbxNGOgFMlou/OzCZddL+aVpOeb1nhV4t9LSdIcO
+	wYpYFWhjyLto39+7YRMFg7H4lmY1Y7LxJpHjLmEhNDCqSA7/ofgc2n/oCpaTbsa7
+	AQpmhqKmHjCOFAyjLmXqx5HoKy79gGbyDEuDR3ZbUo=
+Received: from kensanya$163.com ( [116.128.244.171] ) by
+ ajax-webmail-wmsvr-40-113 (Coremail) ; Wed, 15 Jul 2026 17:57:59 +0800
+ (CST)
+Date: Wed, 15 Jul 2026 17:57:59 +0800 (CST)
+From: kensanya  <kensanya@163.com>
+To: "Leon Romanovsky" <leon@kernel.org>
 Cc: bvanassche@acm.org, jgg@ziepe.ca, linux-rdma@vger.kernel.org,
 	target-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
 	TanZheng <tanzheng@kylinos.cn>
-Subject: Re: [PATCH] RDMA/srpt: Fix srpt_alloc_rw_ctxs() unwind counters
-Message-ID: <20260715090557.GE21348@unreal>
+Subject: Re:Re: [PATCH] RDMA/srpt: Fix srpt_alloc_rw_ctxs() unwind counters
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
+ 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
+In-Reply-To: <20260715090557.GE21348@unreal>
 References: <20260715023016.56767-1-kensanya@163.com>
+ <20260715090557.GE21348@unreal>
+X-NTES-SC: AL_Qu2TBv2btkws7yicbOkcnkcTg+k8WMW1ufsg2Ydec/sEugrvxwoGdGZ7DETX6fyXMgCeqzmGXwV38vpARqxKzexupUyaJ78qPOkEB6JpWg==
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 Precedence: bulk
 X-Mailing-List: target-devel@vger.kernel.org
 List-Id: <target-devel.vger.kernel.org>
 List-Subscribe: <mailto:target-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:target-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260715023016.56767-1-kensanya@163.com>
+Message-ID: <6c3eb2da.8145.19f653637b1.Coremail.kensanya@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:cSgvCgBXH1OoWVdqcIweAA--.13970W
+X-CM-SenderInfo: 5nhq2txq1dqiywtou0bp/xtbCwQjwzGpXWah7NAAA32
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.06 / 15.00];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:kensanya@163.com,m:bvanassche@acm.org,m:jgg@ziepe.ca,m:linux-rdma@vger.kernel.org,m:target-devel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:tanzheng@kylinos.cn,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[163.com];
-	TAGGED_FROM(0.00)[bounces-1296-lists,target-devel=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[leon@kernel.org,target-devel@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:leon@kernel.org,m:bvanassche@acm.org,m:jgg@ziepe.ca,m:linux-rdma@vger.kernel.org,m:target-devel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:tanzheng@kylinos.cn,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[kensanya@163.com,target-devel@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-1297-lists,target-devel=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leon@kernel.org,target-devel@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[kensanya@163.com,target-devel@vger.kernel.org];
+	HAS_X_PRIO_THREE(0.00)[3];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[target-devel];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,unreal:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 08A3975C564
+X-Rspamd-Queue-Id: 59EDE75CBA3
 
-On Wed, Jul 15, 2026 at 10:30:16AM +0800, kensanya@163.com wrote:
-> From: TanZheng <tanzheng@kylinos.cn>
-> 
-> When srpt_alloc_rw_ctxs() fails partway through a multi-buffer indirect
-> descriptor, the unwind path destroys RDMA contexts but leaves stale
-> n_rw_ctx and n_rdma values (and a dangling rw_ctxs pointer). Later
-> sq_wr_avail accounting in srpt_queue_response() or srpt_write_pending()
-> can then subtract the wrong number of send queue credits.
-> 
-> Reset the counters and rw_ctxs pointer before returning an error.
-> 
-> Fixes: b99f8e4d7bcd ("IB/srpt: convert to the generic RDMA READ/WRITE API")
-> Signed-off-by: TanZheng <tanzheng@kylinos.cn>
-> ---
->  drivers/infiniband/ulp/srpt/ib_srpt.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-> index f66cfd70c263..4644429fae14 100644
-> --- a/drivers/infiniband/ulp/srpt/ib_srpt.c
-> +++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-> @@ -1016,6 +1016,9 @@ static int srpt_alloc_rw_ctxs(struct srpt_send_ioctx *ioctx,
->  	}
->  	if (ioctx->rw_ctxs != &ioctx->s_rw_ctx)
->  		kfree(ioctx->rw_ctxs);
-> +	ioctx->rw_ctxs = &ioctx->s_rw_ctx;
-
-This line seems questionable to me.
-You probably need to write:
-if (ioctx->rw_ctxs != &ioctx->s_rw_ctx) {
-  kfree(ioctx->rw_ctxs);
-  ioctx->rw_ctxs = NULL;
-}
-
-> +	ioctx->n_rw_ctx = 0;
-> +	ioctx->n_rdma = 0;
-
-These lines seem correct to me.
-
->  	return ret;
->  }
->  
-> -- 
-> 2.25.1
-> 
+CgoKCgoKCgoKCgoKCgoKCgpBdCAyMDI2LTA3LTE1IDE3OjA1OjU3LCAiTGVvbiBSb21hbm92c2t5
+IiA8bGVvbkBrZXJuZWwub3JnPiB3cm90ZToKPk9uIFdlZCwgSnVsIDE1LCAyMDI2IGF0IDEwOjMw
+OjE2QU0gKzA4MDAsIGtlbnNhbnlhQDE2My5jb20gd3JvdGU6Cj4+IEZyb206IFRhblpoZW5nIDx0
+YW56aGVuZ0BreWxpbm9zLmNuPgo+PiAKPj4gV2hlbiBzcnB0X2FsbG9jX3J3X2N0eHMoKSBmYWls
+cyBwYXJ0d2F5IHRocm91Z2ggYSBtdWx0aS1idWZmZXIgaW5kaXJlY3QKPj4gZGVzY3JpcHRvciwg
+dGhlIHVud2luZCBwYXRoIGRlc3Ryb3lzIFJETUEgY29udGV4dHMgYnV0IGxlYXZlcyBzdGFsZQo+
+PiBuX3J3X2N0eCBhbmQgbl9yZG1hIHZhbHVlcyAoYW5kIGEgZGFuZ2xpbmcgcndfY3R4cyBwb2lu
+dGVyKS4gTGF0ZXIKPj4gc3Ffd3JfYXZhaWwgYWNjb3VudGluZyBpbiBzcnB0X3F1ZXVlX3Jlc3Bv
+bnNlKCkgb3Igc3JwdF93cml0ZV9wZW5kaW5nKCkKPj4gY2FuIHRoZW4gc3VidHJhY3QgdGhlIHdy
+b25nIG51bWJlciBvZiBzZW5kIHF1ZXVlIGNyZWRpdHMuCj4+IAo+PiBSZXNldCB0aGUgY291bnRl
+cnMgYW5kIHJ3X2N0eHMgcG9pbnRlciBiZWZvcmUgcmV0dXJuaW5nIGFuIGVycm9yLgo+PiAKPj4g
+Rml4ZXM6IGI5OWY4ZTRkN2JjZCAoIklCL3NycHQ6IGNvbnZlcnQgdG8gdGhlIGdlbmVyaWMgUkRN
+QSBSRUFEL1dSSVRFIEFQSSIpCj4+IFNpZ25lZC1vZmYtYnk6IFRhblpoZW5nIDx0YW56aGVuZ0Br
+eWxpbm9zLmNuPgo+PiAtLS0KPj4gIGRyaXZlcnMvaW5maW5pYmFuZC91bHAvc3JwdC9pYl9zcnB0
+LmMgfCAzICsrKwo+PiAgMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKQo+PiAKPj4gZGlm
+ZiAtLWdpdCBhL2RyaXZlcnMvaW5maW5pYmFuZC91bHAvc3JwdC9pYl9zcnB0LmMgYi9kcml2ZXJz
+L2luZmluaWJhbmQvdWxwL3NycHQvaWJfc3JwdC5jCj4+IGluZGV4IGY2NmNmZDcwYzI2My4uNDY0
+NDQyOWZhZTE0IDEwMDY0NAo+PiAtLS0gYS9kcml2ZXJzL2luZmluaWJhbmQvdWxwL3NycHQvaWJf
+c3JwdC5jCj4+ICsrKyBiL2RyaXZlcnMvaW5maW5pYmFuZC91bHAvc3JwdC9pYl9zcnB0LmMKPj4g
+QEAgLTEwMTYsNiArMTAxNiw5IEBAIHN0YXRpYyBpbnQgc3JwdF9hbGxvY19yd19jdHhzKHN0cnVj
+dCBzcnB0X3NlbmRfaW9jdHggKmlvY3R4LAo+PiAgCX0KPj4gIAlpZiAoaW9jdHgtPnJ3X2N0eHMg
+IT0gJmlvY3R4LT5zX3J3X2N0eCkKPj4gIAkJa2ZyZWUoaW9jdHgtPnJ3X2N0eHMpOwo+PiArCWlv
+Y3R4LT5yd19jdHhzID0gJmlvY3R4LT5zX3J3X2N0eDsKPgo+VGhpcyBsaW5lIHNlZW1zIHF1ZXN0
+aW9uYWJsZSB0byBtZS4KPllvdSBwcm9iYWJseSBuZWVkIHRvIHdyaXRlOgo+aWYgKGlvY3R4LT5y
+d19jdHhzICE9ICZpb2N0eC0+c19yd19jdHgpIHsKPiAga2ZyZWUoaW9jdHgtPnJ3X2N0eHMpOwo+
+ICBpb2N0eC0+cndfY3R4cyA9IE5VTEw7Cj59Cj4KPj4gKwlpb2N0eC0+bl9yd19jdHggPSAwOwo+
+PiArCWlvY3R4LT5uX3JkbWEgPSAwOwo+Cj5UaGVzZSBsaW5lcyBzZWVtIGNvcnJlY3QgdG8gbWUu
+Cj4KPj4gIAlyZXR1cm4gcmV0Owo+PiAgfQo+PiAgCj4+IC0tIAo+PiAyLjI1LjEKPj4gCkhpIEJh
+cnQsCgpUaGFua3MgZm9yIHRoZSByZXZpZXcuCgpJIG9yaWdpbmFsbHkgc2V0IHJ3X2N0eHMgYmFj
+ayB0byAmaW9jdHgtPnNfcndfY3R4IGFmdGVyIGtmcmVlKCkKYmVjYXVzZSB0aGF0IGlzIHRoZSBv
+bmx5IG90aGVyIHZhbGlkIHZhbHVlIHVzZWQgaW4gdGhpcyBmaWxlCihuYnVmcyA9PSAxIHBhdGgp
+LCBhbmQgSSB3YW50ZWQgdG8gY2xlYXIgdGhlIGRhbmdsaW5nIHBvaW50ZXIKd2hpbGUga2VlcGlu
+ZyB0aGUgZXhpc3RpbmcgImVtYmVkZGVkIHZzIGhlYXAiIGNvbnZlbnRpb24uCgpUaGlzIGlzIGlu
+ZGVlZCBtaXNsZWFkaW5nLkkgd2lsbCBjaGFuZ2UgaXQgdG86CglpZiAoaW9jdHgtPnJ3X2N0eHMg
+IT0gJmlvY3R4LT5zX3J3X2N0eCkgewoJCWtmcmVlKGlvY3R4LT5yd19jdHhzKTsKCQlpb2N0eC0+
+cndfY3R4cyA9IE5VTEw7Cgl9CmFuZCBrZWVwIHRoZSBuX3J3X2N0eCAvIG5fcmRtYSByZXNldHMu
+IFdpbGwgc2VuZCBhIHYyLgoKVGhhbmtzLApUYW5aaGVuZwoK
 
